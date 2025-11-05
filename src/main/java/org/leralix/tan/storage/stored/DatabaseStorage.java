@@ -143,6 +143,27 @@ public abstract class DatabaseStorage<T> {
     }
 
     /**
+     * Get an object from cache ONLY, without blocking on database operations.
+     * This is safe to call from any thread, including Folia scheduler threads.
+     * Returns null if the object is not in cache.
+     *
+     * WARNING: This should only be used when you need synchronous access and can accept
+     * potentially stale or missing data. For accurate data, use get() with async handling.
+     *
+     * @param id The ID of the object
+     * @return The cached object, or null if not in cache
+     */
+    public T getFromCacheOnly(String id) {
+        if (id == null) {
+            return null;
+        }
+        if (cacheEnabled && cache != null) {
+            return cache.get(id);
+        }
+        return null;
+    }
+
+    /**
      * Helper method to run a task asynchronously, detecting Folia/Paper environment.
      */
     private void runAsync(Runnable task) {

@@ -51,7 +51,8 @@ public class AdminGUI {
     }
 
     public static void openAdminWarMenu(Player player, int page) {
-        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        LangType langType = tanPlayer.getLang();
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_WAR_MENU.get(langType), 6);
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for (PlannedAttack plannedAttack : PlannedAttackStorage.getInstance().getAllSync().values()) {
@@ -72,12 +73,14 @@ public class AdminGUI {
         }
         GuiUtil.createIterator(gui, guiItems, page, player, p -> openLandmarks(player, 0),
                 p -> openAdminWarMenu(player, page + 1),
-                p -> openAdminWarMenu(player, page - 1));
+                p -> openAdminWarMenu(player, page - 1),
+                tanPlayer);
         gui.open(player);
     }
 
     public static void openLandmarks(Player player, int page) {
-        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        LangType langType = tanPlayer.getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_LANDMARK_MENU.get(langType), 6);
 
@@ -108,7 +111,8 @@ public class AdminGUI {
         }
         GuiUtil.createIterator(gui, guiItems, page, player, p -> new AdminMainMenu(player),
                 p -> openLandmarks(player, page + 1),
-                p -> openLandmarks(player, page - 1));
+                p -> openLandmarks(player, page - 1),
+                tanPlayer);
 
         ItemStack createLandmark = HeadUtils.makeSkullB64(Lang.ADMIN_GUI_CREATE_LANDMARK.get(langType), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
 
@@ -183,7 +187,8 @@ public class AdminGUI {
     }
 
     public static void openAdminBrowseRegion(Player player, int page) {
-        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        LangType langType = tanPlayer.getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_REGION_MENU.get(langType), 6);
 
@@ -202,7 +207,8 @@ public class AdminGUI {
 
         GuiUtil.createIterator(gui, guiItems, page, player, p -> new AdminMainMenu(player),
                 p -> openAdminBrowseRegion(player, page + 1),
-                p -> openAdminBrowseRegion(player, page - 1));
+                p -> openAdminBrowseRegion(player, page - 1),
+                tanPlayer);
         gui.open(player);
     }
 
@@ -315,7 +321,8 @@ public class AdminGUI {
         GuiUtil.createIterator(gui, guiItems, page, player,
                 p -> openSpecificRegionMenu(player, regionData),
                 p -> openRegionDebugChangeOwnershipPlayerSelect(player, regionData, page + 1),
-                p -> openRegionDebugChangeOwnershipPlayerSelect(player, regionData, page - 1));
+                p -> openRegionDebugChangeOwnershipPlayerSelect(player, regionData, page - 1),
+                tanPlayer);
 
 
         gui.open(player);
@@ -345,7 +352,8 @@ public class AdminGUI {
 
         GuiUtil.createIterator(gui, guiItems, page, player, p -> new MainMenu(player),
                 p -> openAdminBrowseTown(player, page + 1),
-                p -> openAdminBrowseTown(player, page - 1));
+                p -> openAdminBrowseTown(player, page - 1),
+                tanPlayer);
 
 
         ItemStack createTown = HeadUtils.makeSkullB64(Lang.ADMIN_GUI_CREATE_TOWN.get(langType), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19",
@@ -438,14 +446,16 @@ public class AdminGUI {
         GuiUtil.createIterator(gui, guiItems, page, player,
                 p -> openSpecificTerritoryMenu(player, territoryData),
                 p -> openChooseNewOverlord(player, territoryData, page + 1),
-                p -> openChooseNewOverlord(player, territoryData, page - 1));
+                p -> openChooseNewOverlord(player, territoryData, page - 1),
+                tanPlayer);
 
         gui.open(player);
 
     }
 
     private static void openTownDebugChangeOwnershipPlayerSelect(Player player, TownData townData, int page) {
-        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        LangType langType = tanPlayer.getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_CHANGE_TOWN_LEADER.get(langType, townData.getName()), 3);
 
@@ -471,31 +481,34 @@ public class AdminGUI {
         GuiUtil.createIterator(gui, guiItems, page, player,
                 p -> openSpecificTownMenu(player, townData),
                 p -> openTownDebugChangeOwnershipPlayerSelect(player, townData, page + 1),
-                p -> openTownDebugChangeOwnershipPlayerSelect(player, townData, page - 1));
+                p -> openTownDebugChangeOwnershipPlayerSelect(player, townData, page - 1),
+                tanPlayer);
 
         gui.open(player);
     }
 
     public static void openPlayerMenu(Player player, int page) {
-        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        LangType langType = tanPlayer.getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_PLAYER_MENU.get(langType), 6);
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (ITanPlayer tanPlayer : PlayerDataStorage.getInstance().getAllSync().values()) {
+        for (ITanPlayer iterateTanPlayer : PlayerDataStorage.getInstance().getAllSync().values()) {
 
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(tanPlayer.getID()));
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(iterateTanPlayer.getID()));
             ItemStack playerHead = HeadUtils.getPlayerHeadInformation(offlinePlayer);
 
             GuiItem playerHeadGui = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
-                openSpecificPlayerMenu(player, tanPlayer);
+                openSpecificPlayerMenu(player, iterateTanPlayer);
             });
             guiItems.add(playerHeadGui);
         }
         GuiUtil.createIterator(gui, guiItems, page, player, p -> new AdminMainMenu(player),
                 p -> openPlayerMenu(player, page + 1),
-                p -> openPlayerMenu(player, page - 1));
+                p -> openPlayerMenu(player, page - 1),
+                tanPlayer);
         gui.open(player);
     }
 
@@ -547,7 +560,8 @@ public class AdminGUI {
     }
 
     private static void setPlayerTown(Player player, ITanPlayer tanPlayer, int page) {
-        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
+        ITanPlayer adminTanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        LangType langType = adminTanPlayer.getLang();
 
         Gui gui = GuiUtil.createChestGui(Lang.HEADER_ADMIN_SET_PLAYER_TOWN.get(langType), 6);
 
@@ -571,7 +585,8 @@ public class AdminGUI {
         GuiUtil.createIterator(gui, guiItems, page, player,
                 p -> openSpecificPlayerMenu(player, tanPlayer),
                 p -> setPlayerTown(player, tanPlayer, page + 1),
-                p -> setPlayerTown(player, tanPlayer, page - 1)
+                p -> setPlayerTown(player, tanPlayer, page - 1),
+                adminTanPlayer
         );
         gui.open(player);
 

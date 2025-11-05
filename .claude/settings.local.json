@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn clean:*)",
+      "Bash(findstr:*)",
+      "Bash(Select-String -Pattern \"error:\" -Context 0,2)",
+      "Bash(./gradle/wrapper/gradle-wrapper.jar --version)",
+      "Bash(where:*)",
+      "Bash(cmd /c mvn clean compile)",
+      "Bash(dir:*)",
+      "Bash(gradle clean:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

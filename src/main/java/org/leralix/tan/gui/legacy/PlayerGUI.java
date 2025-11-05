@@ -82,7 +82,8 @@ public class PlayerGUI {
         GuiUtil.createIterator(gui, landmarkGui, page, player,
                 p -> new TownMenu(player, townData),
                 p -> openOwnedLandmark(player, townData, page + 1),
-                p -> openOwnedLandmark(player, townData, page - 1)
+                p -> openOwnedLandmark(player, townData, page - 1),
+                tanPlayer
         );
 
         gui.open(player);
@@ -172,7 +173,8 @@ public class PlayerGUI {
 
         GuiUtil.createIterator(gui, guiLists, page, player, p -> new ChunkSettingsMenu(player, townData),
                 p -> openTownChunkMobSettings(player, page + 1),
-                p -> openTownChunkMobSettings(player, page - 1));
+                p -> openTownChunkMobSettings(player, page - 1),
+                tanPlayer);
 
 
         gui.open(player);
@@ -207,7 +209,8 @@ public class PlayerGUI {
         GuiUtil.createIterator(gui, guiItems, 0, player,
                 p -> new TerritoryChunkSettingsMenu(player, territoryData),
                 p -> openPlayerListForChunkPermission(player, territoryData, type, page + 1),
-                p -> openPlayerListForChunkPermission(player, territoryData, type, page - 1));
+                p -> openPlayerListForChunkPermission(player, territoryData, type, page - 1),
+                tanPlayer);
 
 
         ItemStack addIcon = HeadUtils.makeSkullB64(Lang.GUI_GENERIC_ADD_BUTTON.get(tanPlayer), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWZmMzE0MzFkNjQ1ODdmZjZlZjk4YzA2NzU4MTA2ODFmOGMxM2JmOTZmNTFkOWNiMDdlZDc4NTJiMmZmZDEifX19");
@@ -260,7 +263,8 @@ public class PlayerGUI {
         GuiUtil.createIterator(gui, guiItems, 0, player,
                 p -> territoryData.openMainMenu(player),
                 p -> openAddPlayerForChunkPermission(player, territoryData, type, page + 1),
-                p -> openAddPlayerForChunkPermission(player, territoryData, type, page - 1));
+                p -> openAddPlayerForChunkPermission(player, territoryData, type, page - 1),
+                tanPlayer);
 
         gui.open(player);
     }
@@ -289,7 +293,8 @@ public class PlayerGUI {
 
         GuiUtil.createIterator(gui, guiItems, page, player, p -> new VassalsMenu(player, territoryData),
                 p -> openAddVassal(player, territoryData, page + 1),
-                p -> openAddVassal(player, territoryData, page - 1));
+                p -> openAddVassal(player, territoryData, page - 1),
+                tanPlayer);
 
         gui.open(player);
     }
@@ -327,7 +332,8 @@ public class PlayerGUI {
         GuiUtil.createIterator(gui, guiItems, page, player,
                 p -> new RegionSettingsMenu(player, regionData),
                 p -> openRegionChangeOwnership(player, page + 1),
-                p -> openRegionChangeOwnership(player, page - 1));
+                p -> openRegionChangeOwnership(player, page - 1),
+                tanPlayer);
 
         gui.open(player);
     }
@@ -553,6 +559,7 @@ public class PlayerGUI {
     }
 
     public static void openChooseOverlordMenu(Player player, TerritoryData territoryData, int page) {
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
         Gui gui = GuiUtil.createChestGui("Choose Overlord", 6);
 
         List<GuiItem> guiItems = territoryData.getAllSubjugationProposals(player, page);
@@ -560,7 +567,8 @@ public class PlayerGUI {
         GuiUtil.createIterator(gui, guiItems, page, player,
                 p -> openHierarchyMenu(player, territoryData),
                 p -> openChooseOverlordMenu(player, territoryData, page + 1),
-                p -> openChooseOverlordMenu(player, territoryData, page - 1));
+                p -> openChooseOverlordMenu(player, territoryData, page - 1),
+                tanPlayer);
 
 
         gui.open(player);

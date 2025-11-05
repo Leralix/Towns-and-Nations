@@ -42,7 +42,8 @@ public class BrowseTerritoryMenu extends IteratorGUI {
         GuiUtil.createIterator(gui, getTerritory(), page, player,
                 exitMenu,
                 p -> nextPage(),
-                p -> previousPage());
+                p -> previousPage(),
+                tanPlayer);
 
         gui.setItem(6, 5, getScopeButton());
 

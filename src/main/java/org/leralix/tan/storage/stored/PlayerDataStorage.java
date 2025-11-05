@@ -116,7 +116,15 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
         }
 
         String jsonData = gson.toJson(obj, typeToken);
-        String upsertSQL = "INSERT INTO " + tableName + " (id, player_name, town_name, nation_name, data) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE player_name = VALUES(player_name), town_name = VALUES(town_name), nation_name = VALUES(nation_name), data = VALUES(data)";
+
+        // Use database-specific UPSERT syntax
+        String upsertSQL;
+        if (getDatabase().isMySQL()) {
+            upsertSQL = "INSERT INTO " + tableName + " (id, player_name, town_name, nation_name, data) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE player_name = VALUES(player_name), town_name = VALUES(town_name), nation_name = VALUES(nation_name), data = VALUES(data)";
+        } else {
+            // SQLite syntax
+            upsertSQL = "INSERT OR REPLACE INTO " + tableName + " (id, player_name, town_name, nation_name, data) VALUES (?, ?, ?, ?, ?)";
+        }
 
         FoliaScheduler.runTaskAsynchronously(TownsAndNations.getPlugin(), () -> {
             try (Connection conn = getDatabase().getDataSource().getConnection();
@@ -214,19 +222,17 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
 
     /**
      * Synchronous get method for backward compatibility
-     * WARNING: This blocks the current thread. Use get() with thenAccept() for async operations.
+     *
+     * IMPORTANT: To prevent Folia deadlocks, this method now uses cache-only access.
+     * This is safe because player data is pre-loaded into cache during normal operations.
+     * If you need guaranteed fresh data from the database, use get() with async handling.
+     *
      * @param id The ID of the player
-     * @return The player data, or NO_PLAYER if not found
+     * @return The player data from cache, or NO_PLAYER if not in cache
      */
     public ITanPlayer getSync(String id) {
-        try {
-            return get(id).join();
-        } catch (Exception e) {
-            TownsAndNations.getPlugin().getLogger().warning(
-                "Error getting player data synchronously: " + e.getMessage()
-            );
-            return NO_PLAYER;
-        }
+        ITanPlayer cached = getFromCacheOnly(id);
+        return cached != null ? cached : NO_PLAYER;
     }
 
     public ITanPlayer getSync(UUID playerID) {

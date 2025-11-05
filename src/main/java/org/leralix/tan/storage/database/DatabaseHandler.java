@@ -171,7 +171,8 @@ public abstract class DatabaseHandler {
             throw new IllegalArgumentException("Invalid table name: " + tableName);
         }
         if (isMySQL()) {
-            return "INSERT INTO " + tableName + " (id, data) VALUES (?, ?) ON DUPLICATE KEY UPDATE data = VALUES(data)";
+            // Use new MySQL 8.0.19+ syntax that doesn't use deprecated VALUES()
+            return "INSERT INTO " + tableName + " (id, data) VALUES (?, ?) AS new_data ON DUPLICATE KEY UPDATE data = new_data.data";
         } else {
             return "INSERT OR REPLACE INTO " + tableName + " (id, data) VALUES (?, ?)";
         }

@@ -30,7 +30,8 @@ public class LangMenu extends IteratorGUI {
         GuiUtil.createIterator(gui, getLangItems(), page, player,
                 p -> new PlayerMenu(player),
                 p -> nextPage(),
-                p -> previousPage()
+                p -> previousPage(),
+                tanPlayer
         );
 
         gui.setItem(3, 6, getPlayerGUI());

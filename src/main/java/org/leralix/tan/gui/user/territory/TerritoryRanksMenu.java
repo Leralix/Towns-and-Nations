@@ -36,7 +36,8 @@ public class TerritoryRanksMenu extends IteratorGUI {
         GuiUtil.createIterator(gui, getRanks(), page, player,
                 p -> territoryData.openMainMenu(player),
                 p -> nextPage(),
-                p -> previousPage()
+                p -> previousPage(),
+                tanPlayer
         );
 
         gui.setItem(4, 5, getCreateNewRoleButton());

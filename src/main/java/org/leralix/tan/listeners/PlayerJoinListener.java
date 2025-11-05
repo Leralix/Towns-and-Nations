@@ -41,14 +41,15 @@ public class PlayerJoinListener implements Listener {
                     TanChatUtils.message(player, Lang.NEW_VERSION_AVAILABLE_2.get(langType));
                 }
 
-                int nbNewsletterForPlayer = NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player);
-                if (nbNewsletterForPlayer > 0) {
-                    TanChatUtils.message(player, Lang.NEWSLETTER_STRING.get(langType) + Lang.NEWSLETTER_GREETING.get(langType, Integer.toString(nbNewsletterForPlayer)));
-                    Component message = Component.text(Lang.CLICK_TO_OPEN_NEWSLETTER.get(langType))
-                            .color(NamedTextColor.GOLD)
-                            .clickEvent(ClickEvent.runCommand("/tan newsletter"));
-                    player.sendMessage(message);
-                }
+                NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player).thenAccept(nbNewsletterForPlayer -> {
+                    if (nbNewsletterForPlayer > 0) {
+                        TanChatUtils.message(player, Lang.NEWSLETTER_STRING.get(langType) + Lang.NEWSLETTER_GREETING.get(langType, Integer.toString(nbNewsletterForPlayer)));
+                        Component message = Component.text(Lang.CLICK_TO_OPEN_NEWSLETTER.get(langType))
+                                .color(NamedTextColor.GOLD)
+                                .clickEvent(ClickEvent.runCommand("/tan newsletter"));
+                        player.sendMessage(message);
+                    }
+                });
 
                 // Check premium status asynchronously
                 org.leralix.tan.utils.FoliaScheduler.runTaskAsynchronously(TownsAndNations.getPlugin(), () -> {

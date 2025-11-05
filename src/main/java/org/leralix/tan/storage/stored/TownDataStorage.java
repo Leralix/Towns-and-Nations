@@ -101,7 +101,15 @@ public class TownDataStorage extends DatabaseStorage<TownData>{
         }
 
         String jsonData = gson.toJson(obj, typeToken);
-        String upsertSQL = "INSERT INTO " + tableName + " (id, town_name, data) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE town_name = VALUES(town_name), data = VALUES(data)";
+
+        // Use database-specific UPSERT syntax
+        String upsertSQL;
+        if (getDatabase().isMySQL()) {
+            upsertSQL = "INSERT INTO " + tableName + " (id, town_name, data) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE town_name = VALUES(town_name), data = VALUES(data)";
+        } else {
+            // SQLite syntax
+            upsertSQL = "INSERT OR REPLACE INTO " + tableName + " (id, town_name, data) VALUES (?, ?, ?)";
+        }
 
         FoliaScheduler.runTaskAsynchronously(TownsAndNations.getPlugin(), () -> {
             try (Connection conn = getDatabase().getDataSource().getConnection();
@@ -224,19 +232,16 @@ public class TownDataStorage extends DatabaseStorage<TownData>{
 
     /**
      * Synchronous get method for backward compatibility
-     * WARNING: This blocks the current thread. Use get() with thenAccept() for async operations.
+     *
+     * IMPORTANT: To prevent Folia deadlocks, this method now uses cache-only access.
+     * This is safe because town data is pre-loaded into cache during normal operations.
+     * If you need guaranteed fresh data from the database, use get() with async handling.
+     *
      * @param id The ID of the town
-     * @return The town data, or null if not found
+     * @return The town data from cache, or null if not in cache
      */
     public TownData getSync(String id) {
-        try {
-            return get(id).join();
-        } catch (Exception e) {
-            TownsAndNations.getPlugin().getLogger().warning(
-                "Error getting town data synchronously: " + e.getMessage()
-            );
-            return null;
-        }
+        return getFromCacheOnly(id);
     }
 
     public TownData getSync(ITanPlayer tanPlayer) {

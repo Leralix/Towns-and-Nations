@@ -100,7 +100,15 @@ public class RegionDataStorage extends DatabaseStorage<RegionData> {
         }
 
         String jsonData = gson.toJson(obj, typeToken);
-        String upsertSQL = "INSERT INTO " + tableName + " (id, region_name, data) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE region_name = VALUES(region_name), data = VALUES(data)";
+
+        // Use database-specific UPSERT syntax
+        String upsertSQL;
+        if (getDatabase().isMySQL()) {
+            upsertSQL = "INSERT INTO " + tableName + " (id, region_name, data) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE region_name = VALUES(region_name), data = VALUES(data)";
+        } else {
+            // SQLite syntax
+            upsertSQL = "INSERT OR REPLACE INTO " + tableName + " (id, region_name, data) VALUES (?, ?, ?)";
+        }
 
         FoliaScheduler.runTaskAsynchronously(TownsAndNations.getPlugin(), () -> {
             try (Connection conn = getDatabase().getDataSource().getConnection();

@@ -39,7 +39,8 @@ public class PlayerApplicationMenu extends IteratorGUI {
                 p -> new TerritoryMemberMenu(player, townData).open(),
                 p -> nextPage(),
                 p -> previousPage(),
-                Material.LIME_STAINED_GLASS_PANE
+                Material.LIME_STAINED_GLASS_PANE,
+                tanPlayer
         );
         gui.open(player);
     }

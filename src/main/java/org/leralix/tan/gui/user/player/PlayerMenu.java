@@ -13,6 +13,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.TownsAndNations;
 
 public class PlayerMenu extends BasicGui {
 
@@ -28,13 +29,37 @@ public class PlayerMenu extends BasicGui {
         gui.setItem(1, 5, getPlayerHeadIcon());
         gui.setItem(2, 2, getBalanceButton());
         gui.setItem(2, 3, getPropertyButton());
-        gui.setItem(2, 4, getNewsletterButton());
+        // Initially set newsletter button with a loading state
+        GuiItem newsletterLoadingButton = IconManager.getInstance().get(IconKey.NEWSLETTER_ICON)
+                .setName(Lang.GUI_PLAYER_NEWSLETTER.get(tanPlayer))
+                .setDescription(Lang.GUI_PLAYER_NEWSLETTER_DESC1.get("...")) // Placeholder for loading
+                .setAction(event -> new NewsletterMenu(player).open())
+                .asGuiItem(player, langType);
+        gui.setItem(2, 4, newsletterLoadingButton);
+
         gui.setItem(2, 6, getTimezoneButton());
         gui.setItem(2, 8, getLanguageButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, MainMenu::new));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(p).open()));
 
         gui.open(player);
+
+        // Asynchronously fetch unread newsletter count and update the button
+        NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player).thenAccept(nbNewsletterForPlayer -> {
+            org.leralix.tan.utils.FoliaScheduler.runTask(TownsAndNations.getPlugin(), () -> {
+                GuiItem updatedNewsletterButton = IconManager.getInstance().get(IconKey.NEWSLETTER_ICON)
+                        .setName(Lang.GUI_PLAYER_NEWSLETTER.get(tanPlayer))
+                        .setDescription(
+                                Lang.GUI_PLAYER_NEWSLETTER_DESC1.get(Integer.toString(nbNewsletterForPlayer))
+                        )
+                        .setAction(event -> new NewsletterMenu(player).open())
+                        .asGuiItem(player, langType);
+                gui.setItem(2, 4, updatedNewsletterButton);
+            });
+        }).exceptionally(ex -> {
+            TownsAndNations.getPlugin().getLogger().severe("Error fetching unread newsletters for " + player.getName() + ": " + ex.getMessage());
+            return null;
+        });
     }
 
     private GuiItem getPlayerHeadIcon() {
@@ -58,15 +83,16 @@ public class PlayerMenu extends BasicGui {
                 .asGuiItem(player, langType);
     }
 
-    private GuiItem getNewsletterButton() {
-        return IconManager.getInstance().get(IconKey.NEWSLETTER_ICON)
-                .setName(Lang.GUI_PLAYER_NEWSLETTER.get(tanPlayer))
-                .setDescription(
-                        Lang.GUI_PLAYER_NEWSLETTER_DESC1.get(Integer.toString(NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player)))
-                )
-                .setAction(event -> new NewsletterMenu(player).open())
-                .asGuiItem(player, langType);
-    }
+    // This method is no longer needed as the button is created and updated in open()
+    // private GuiItem getNewsletterButton() {
+    //     return IconManager.getInstance().get(IconKey.NEWSLETTER_ICON)
+    //             .setName(Lang.GUI_PLAYER_NEWSLETTER.get(tanPlayer))
+    //             .setDescription(
+    //                     Lang.GUI_PLAYER_NEWSLETTER_DESC1.get(Integer.toString(NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player)))
+    //             )
+    //             .setAction(event -> new NewsletterMenu(player).open())
+    //             .asGuiItem(player, langType);
+    // }
 
     private GuiItem getTimezoneButton() {
         TimeZoneManager timeZoneManager = TimeZoneManager.getInstance();

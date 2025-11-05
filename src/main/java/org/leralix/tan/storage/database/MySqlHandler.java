@@ -112,7 +112,7 @@ public class MySqlHandler extends DatabaseHandler {
 
     @Override
     public void updateNextTownId(int newId) {
-        String upsertSQL = "INSERT INTO tan_metadata (meta_key, meta_value) VALUES ('next_town_id', ?) ON DUPLICATE KEY UPDATE meta_value = VALUES(meta_value)";
+        String upsertSQL = "INSERT INTO tan_metadata (meta_key, meta_value) VALUES ('next_town_id', ?) AS new_data ON DUPLICATE KEY UPDATE meta_value = new_data.meta_value";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
             ps.setString(1, String.valueOf(newId));
@@ -142,7 +142,7 @@ public class MySqlHandler extends DatabaseHandler {
 
     @Override
     public void updateNextRegionId(int newId) {
-        String upsertSQL = "INSERT INTO tan_metadata (meta_key, meta_value) VALUES ('next_region_id', ?) ON DUPLICATE KEY UPDATE meta_value = VALUES(meta_value)";
+        String upsertSQL = "INSERT INTO tan_metadata (meta_key, meta_value) VALUES ('next_region_id', ?) AS new_data ON DUPLICATE KEY UPDATE meta_value = new_data.meta_value";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
             ps.setString(1, String.valueOf(newId));

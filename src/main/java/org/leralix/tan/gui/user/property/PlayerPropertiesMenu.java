@@ -35,7 +35,8 @@ public class PlayerPropertiesMenu extends IteratorGUI {
         GuiUtil.createIterator(gui, getProperties(), page, player,
                 p -> new PlayerMenu(player).open(),
                 p -> nextPage(),
-                p -> previousPage());
+                p -> previousPage(),
+                tanPlayer);
 
         gui.setItem(3, 5, getNewPropertyButton());
 

@@ -48,27 +48,28 @@ public class GuiUtil {
 
     public static void createIterator(Gui gui, List<GuiItem> guItems, int page,
                                       Player player, Consumer<Player> backArrowAction,
-                                      Consumer<Player> nextPageAction, Consumer<Player> previousPageAction) {
+                                      Consumer<Player> nextPageAction, Consumer<Player> previousPageAction,
+                                      ITanPlayer tanPlayer) {
 
-        createIterator(gui, guItems, page, player, backArrowAction, nextPageAction, previousPageAction, Material.GRAY_STAINED_GLASS_PANE);
+        createIterator(gui, guItems, page, player, backArrowAction, nextPageAction, previousPageAction, Material.GRAY_STAINED_GLASS_PANE, tanPlayer);
     }
 
     public static void createIterator(Gui gui, List<GuiItem> guItems, int page,
                                       Player player, Consumer<Player> backArrowAction,
                                       Consumer<Player> nextPageAction, Consumer<Player> previousPageAction,
-                                      Material decorativeMaterial) {
+                                      Material decorativeMaterial, ITanPlayer tanPlayer) {
 
         ItemStack decorativeGlassPane = new ItemStack(decorativeMaterial);
         ItemMeta itemMeta = decorativeGlassPane.getItemMeta();
         itemMeta.setDisplayName("");
         decorativeGlassPane.setItemMeta(itemMeta);
-        createIterator(gui, guItems, page, player, backArrowAction, nextPageAction, previousPageAction, decorativeGlassPane);
+        createIterator(gui, guItems, page, player, backArrowAction, nextPageAction, previousPageAction, decorativeGlassPane, tanPlayer);
     }
 
     public static void createIterator(Gui gui, List<GuiItem> guItems, int page,
                                       Player player, Consumer<Player> backArrowAction,
                                       Consumer<Player> nextPageAction, Consumer<Player> previousPageAction,
-                                      ItemStack decorativeGlassPane) {
+                                      ItemStack decorativeGlassPane, ITanPlayer tanPlayer) {
 
         int pageSize = (gui.getRows() - 1) * 9;
         int startIndex = page * pageSize;
@@ -95,10 +96,10 @@ public class GuiUtil {
             slot++;
         }
         GuiItem panel = ItemBuilder.from(decorativeGlassPane).asGuiItem(event -> event.setCancelled(true));
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+        // ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player); // Removed synchronous call
         ItemStack previousPageButton = HeadUtils.makeSkullB64(
                 Lang.GUI_PREVIOUS_PAGE.get(tanPlayer),
-                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19"
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmJkYWRhYmMzOTc2ZDE1MDYxIn19fQ=="
         );
         ItemStack nextPageButton = HeadUtils.makeSkullB64(
                 Lang.GUI_NEXT_PAGE.get(tanPlayer),

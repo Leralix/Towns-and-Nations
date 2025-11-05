@@ -31,7 +31,8 @@ public class TerritoryMemberMenu extends IteratorGUI {
                 p -> territoryData.openMainMenu(player),
                 p -> nextPage(),
                 p -> previousPage(),
-                Material.LIME_STAINED_GLASS_PANE
+                Material.LIME_STAINED_GLASS_PANE,
+                tanPlayer
         );
 
         gui.setItem(6,4, getManageRankButton());

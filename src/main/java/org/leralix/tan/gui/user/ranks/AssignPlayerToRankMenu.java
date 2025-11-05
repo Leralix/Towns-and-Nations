@@ -37,7 +37,8 @@ public class AssignPlayerToRankMenu extends IteratorGUI {
         GuiUtil.createIterator(gui, getAvailablePlayers(), page, player,
                 p -> new RankManagerMenu(player, territoryData, rankData),
                 p -> nextPage(),
-                p -> previousPage());
+                p -> previousPage(),
+                tanPlayer);
 
         gui.open(player);
     }

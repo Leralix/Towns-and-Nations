@@ -32,7 +32,8 @@ public class ApplyToTownMenu extends IteratorGUI {
         GuiUtil.createIterator(gui, getTowns(), page, player,
                 p -> new NoTownMenu(player),
                 p -> nextPage(),
-                p -> previousPage());
+                p -> previousPage(),
+                tanPlayer);
 
         gui.open(player);
     }

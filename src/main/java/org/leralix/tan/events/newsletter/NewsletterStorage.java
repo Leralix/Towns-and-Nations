@@ -14,6 +14,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class NewsletterStorage {
@@ -68,47 +69,46 @@ public class NewsletterStorage {
         return newsletterDAO.getNewsletters();
     }
 
-    public List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onClick) {
-        List<GuiItem> newsletters = new ArrayList<>();
+    public CompletableFuture<List<GuiItem>> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onClick) {
+        return PlayerDataStorage.getInstance().get(player).thenApply(tanPlayer -> {
+            List<GuiItem> newsletters = new ArrayList<>();
+            LangType langType = tanPlayer.getLang();
 
-        LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
+            for (Newsletter newsletter : getNewsletters()) {
+                EventScope eventScope = newsletter.getType().getNewsletterScope();
 
-        for (Newsletter newsletter : getNewsletters()) {
+                if (eventScope == EventScope.NONE) {
+                    continue;
+                }
 
-            EventScope eventScope = newsletter.getType().getNewsletterScope();
-
-            if (eventScope == EventScope.NONE) {
-                continue;
+                if (eventScope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)) {
+                    if (scope == NewsletterScope.SHOW_ALL) {
+                        newsletters.add(newsletter.createConcernedGuiItem(player, langType, onClick));
+                        continue;
+                    }
+                    if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
+                        newsletters.add(newsletter.createGuiItem(player, langType, onClick));
+                        continue;
+                    }
+                }
+                if (eventScope == EventScope.ALL) {
+                    if (scope == NewsletterScope.SHOW_ALL) {
+                        newsletters.add(newsletter.createGuiItem(player, langType, onClick));
+                        continue;
+                    }
+                    if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
+                        newsletters.add(newsletter.createGuiItem(player, langType, onClick));
+                        continue;
+                    }
+                }
             }
-
-            if (eventScope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)) {
-                if (scope == NewsletterScope.SHOW_ALL) {
-                    newsletters.add(newsletter.createConcernedGuiItem(player, langType, onClick));
-                    continue;
-                }
-                if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
-                    newsletters.add(newsletter.createGuiItem(player, langType, onClick));
-                    continue;
-                }
-            }
-            if (eventScope == EventScope.ALL) {
-                if (scope == NewsletterScope.SHOW_ALL) {
-                    newsletters.add(newsletter.createGuiItem(player, langType, onClick));
-                    continue;
-                }
-                if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
-                    newsletters.add(newsletter.createGuiItem(player, langType, onClick));
-                    continue;
-                }
-            }
-        }
-        newsletters.removeAll(Collections.singleton(null));
-
-        return newsletters;
+            newsletters.removeAll(Collections.singleton(null));
+            return newsletters;
+        });
     }
 
-    public int getNbUnreadNewsletterForPlayer(Player player) {
-        return getNewsletterForPlayer(player, NewsletterScope.SHOW_ONLY_UNREAD, null).size();
+    public CompletableFuture<Integer> getNbUnreadNewsletterForPlayer(Player player) {
+        return getNewsletterForPlayer(player, NewsletterScope.SHOW_ONLY_UNREAD, null).thenApply(List::size);
     }
 
     public void clearOldNewsletters() {
