@@ -2,8 +2,9 @@ package org.leralix.tan.events.newsletter;
 
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.utils.deprecated.DisplayableEnum;
 
-public enum NewsletterScope {
+public enum NewsletterScope implements DisplayableEnum {
     SHOW_ALL(Lang.NEWSLETTER_SHOW_ALL),
     SHOW_ONLY_UNREAD(Lang.NEWSLETTER_SHOW_ONLY_UNREAD);
 
@@ -19,13 +20,11 @@ public enum NewsletterScope {
         SHOW_ONLY_UNREAD.nextScope = SHOW_ALL;
     }
 
-    public String getName(LangType langType) {
+    public String getDisplayName(LangType langType) {
         return name.get(langType);
     }
 
     public NewsletterScope getNextScope() {
         return nextScope;
     }
-
-
 }

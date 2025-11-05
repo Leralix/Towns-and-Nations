@@ -15,7 +15,7 @@ import java.util.List;
 
 public class NewsletterMenu extends IteratorGUI {
 
-    NewsletterScope scope;
+    private NewsletterScope scope;
 
     public NewsletterMenu(Player player) {
         super(player, Lang.HEADER_NEWSLETTER, 6);
@@ -53,15 +53,14 @@ public class NewsletterMenu extends IteratorGUI {
     }
 
     private GuiItem getCheckScopeGui() {
-        return IconManager.getInstance().get(IconKey.CHANGE_NEWSLETTER_SCOPE_ICON)
-                .setName(Lang.NEWSLETTER_SCOPE_ICON.get(tanPlayer))
-                .setDescription(Lang.NEWSLETTER_SCOPE_ICON_DESC1.get(scope.getName(tanPlayer.getLang())))
-                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
-                .setAction(event -> {
-                    scope = scope.getNextScope();
-                    open();
-                })
-                .asGuiItem(player, langType);
+        return GuiUtil.getNextScopeButton(
+                iconManager,
+                this,
+                scope,
+                nextScope -> scope = nextScope,
+                langType,
+                player
+        );
     }
 
 

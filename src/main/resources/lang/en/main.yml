@@ -1080,9 +1080,9 @@ language:
   GUI_JOIN_DEFENDING_SIDE_DESC1: "{0}§f joins the defending side against :"
   GUI_WAR_GOAL_INFO: "{0}"
   #Brose scope
-  BROWSE_SELECT: "§fSelect scope :"
-  BROWSE_ITERATOR_SELECTED_OPTION: "§9{0}"
-  BROWSE_ITERATOR_UNSELECTED_OPTION: "§f{0}"
+  BROWSE_SELECT: "§aSelect scope :"
+  BROWSE_ITERATOR_SELECTED_OPTION: "§9●{0}"
+  BROWSE_ITERATOR_UNSELECTED_OPTION: "§f●{0}"
   BROWSE_ALL_NAME: "All"
   BROWSE_TOWNS_NAME: "Towns"
   BROWSE_REGIONS_NAME: "Regions"
