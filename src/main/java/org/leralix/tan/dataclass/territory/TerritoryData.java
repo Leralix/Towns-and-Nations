@@ -22,7 +22,6 @@ import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.newhistory.ChunkPaymentHistory;
 import org.leralix.tan.dataclass.newhistory.MiscellaneousHistory;
-import org.leralix.tan.dataclass.newhistory.PlayerDonationHistory;
 import org.leralix.tan.dataclass.newhistory.SalaryPaymentHistory;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
@@ -46,12 +45,14 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.CurrentAttacksStorage;
+import org.leralix.tan.storage.database.transactions.TransactionManager;
+import org.leralix.tan.storage.database.transactions.instance.DonationTransaction;
+import org.leralix.tan.storage.database.transactions.instance.SalaryTransaction;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.upgrade.TerritoryStats;
-import org.leralix.tan.upgrade.Upgrade;
 import org.leralix.tan.upgrade.rewards.StatsType;
 import org.leralix.tan.upgrade.rewards.list.BiomeStat;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
@@ -654,7 +655,7 @@ public abstract class TerritoryData {
         EconomyUtil.removeFromBalance(player, amount);
         addToBalance(amount);
 
-        TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new PlayerDonationHistory(this, player, amount));
+        TransactionManager.getInstance().register(new DonationTransaction(this, player, amount));
         TanChatUtils.message(player, Lang.PLAYER_SEND_MONEY_SUCCESS.get(langType, Double.toString(amount) , getBaseColoredName()), SoundEnum.MINOR_GOOD);
     }
 
@@ -858,7 +859,9 @@ public abstract class TerritoryData {
     }
 
     public double getTax() {
-        if (baseTax == null) setTax(0.0);
+        if (baseTax == null){
+            baseTax = 0.0;
+        }
         return baseTax;
     }
 
@@ -889,6 +892,7 @@ public abstract class TerritoryData {
             for (String playerId : playerIdList) {
                 ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerId);
                 EconomyUtil.addFromBalance(tanPlayer, rankSalary);
+                TransactionManager.getInstance().register(new SalaryTransaction(getID(), playerId, costOfSalary));
                 TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SalaryPaymentHistory(this, String.valueOf(rank.getID()), costOfSalary));
             }
         }
@@ -1143,9 +1147,5 @@ public abstract class TerritoryData {
             }
         }
         return upgradesStatus;
-    }
-
-    public void upgradeTown(Upgrade townUpgrade){
-        getNewLevel().levelUp(townUpgrade);
     }
 }

@@ -4,6 +4,8 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
+import org.leralix.tan.storage.database.transactions.TransactionManager;
+import org.leralix.tan.storage.database.transactions.instance.CreatingPropertyTransaction;
 
 public class CreatePlayerPropertyEvent extends CreatePropertyEvent {
 
@@ -17,9 +19,18 @@ public class CreatePlayerPropertyEvent extends CreatePropertyEvent {
         townData.addToBalance(cost);
 
         PropertyData property = townData.registerNewProperty(position1, position2, tanPlayer);
+
+        TransactionManager.getInstance().register(
+                new CreatingPropertyTransaction(
+                        townData.getID(),
+                        property.getPropertyID(),
+                        player.getUniqueId().toString(),
+                        cost,
+                        townData.getTaxOnCreatingProperty()
+                )
+        );
+
         new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
         return property;
     }
-
-
 }

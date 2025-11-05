@@ -9,6 +9,7 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.gui.user.property.PlayerPropertiesMenu;
+import org.leralix.tan.gui.user.territory.history.PlayerTransactionHistory;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.timezone.TimeZoneManager;
@@ -26,10 +27,13 @@ public class PlayerMenu extends BasicGui {
     public void open() {
 
         gui.setItem(1, 5, getPlayerHeadIcon());
+
         gui.setItem(2, 2, getBalanceButton());
         gui.setItem(2, 3, getPropertyButton());
         gui.setItem(2, 4, getNewsletterButton());
-        gui.setItem(2, 6, getTimezoneButton());
+
+        gui.setItem(2, 6, getTransactionHistory());
+        gui.setItem(2, 7, getTimezoneButton());
         gui.setItem(2, 8, getLanguageButton());
 
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, MainMenu::new));
@@ -94,6 +98,16 @@ public class PlayerMenu extends BasicGui {
                         Lang.GUI_LANGUAGE_BUTTON_DESC2.get(playerLang.getName())
                 )
                 .setAction(event -> new LangMenu(player).open())
+                .asGuiItem(player, langType);
+    }
+
+    protected GuiItem getTransactionHistory(){
+        return iconManager.get(IconKey.MISCELLANEOUS_SPENDING_ICON)
+                .setName(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(tanPlayer))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY)
+                .setAction(action ->
+                        new PlayerTransactionHistory(player, tanPlayer, p -> open())
+                )
                 .asGuiItem(player, langType);
     }
 

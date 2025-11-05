@@ -3,7 +3,6 @@ package org.leralix.tan.listeners.chat.events.treasury;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.user.territory.TreasuryMenu;
@@ -27,7 +26,7 @@ public abstract class SetSpecificRate extends ChatListenerEvent {
             TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(player));
             return false;
         }
-        amount = Math.min(100, Math.max(0, amount));
+        amount = Math.clamp(amount, 0, 100);
 
         TanChatUtils.message(player, Lang.TOWN_SET_RATE_SUCCESS.get(player, Double.toString(amount)), SoundEnum.MINOR_GOOD);
 

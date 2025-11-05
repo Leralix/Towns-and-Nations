@@ -9,10 +9,18 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.gui.BasicGui;
+import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -127,5 +135,54 @@ public class GuiUtil {
         gui.setItem(lastRow, 1, GuiUtil.createBackArrow(player, backArrowAction));
         gui.setItem(lastRow, 7, previousButton);
         gui.setItem(lastRow, 8, nextButton);
+    }
+
+    public static  <E extends Enum<E> & DisplayableEnum> GuiItem getNextScopeButton(
+            IconManager iconManager,
+            BasicGui basicGui,
+            E currentValue,
+            Consumer<E> valueUpdater,
+            LangType langType,
+            Player player
+    ) {
+        List<FilledLang> description = new ArrayList<>();
+
+        for (E enumConstant : currentValue.getDeclaringClass().getEnumConstants()) {
+            String name = enumConstant.getDisplayName(langType);
+            if (enumConstant == currentValue) {
+                description.add(Lang.BROWSE_ITERATOR_SELECTED_OPTION.get(name));
+            } else {
+                description.add(Lang.BROWSE_ITERATOR_UNSELECTED_OPTION.get(name));
+            }
+        }
+
+        return iconManager.get(IconKey.CHANGE_SCOPE_ICON)
+                .setName(Lang.BROWSE_SELECT.get(langType, currentValue.getDisplayName(langType)))
+                .setDescription(description)
+                .setClickToAcceptMessage(
+                        Lang.GUI_GENERIC_RIGHT_CLICK_TO_BACK,
+                        Lang.GUI_GENERIC_LEFT_CLICK_TO_NEXT
+                )
+                .setAction(action -> {
+                    E next = action.isLeftClick() ?
+                            getNextEnumValue(currentValue) :
+                            getPreviousEnumValue(currentValue);
+
+                    valueUpdater.accept(next);
+                    SoundUtil.playSound(player, SoundEnum.ADD);
+                    basicGui.open();
+                })
+                .asGuiItem(player, langType);
+    }
+
+    private static <E extends Enum<E>> E getNextEnumValue(E current) {
+        E[] values = current.getDeclaringClass().getEnumConstants();
+        int nextIndex = (current.ordinal() + 1) % values.length;
+        return values[nextIndex];
+    }
+    private static <E extends Enum<E>> E getPreviousEnumValue(E current) {
+        E[] values = current.getDeclaringClass().getEnumConstants();
+        int prevIndex = (current.ordinal() - 1 + values.length) % values.length;
+        return values[prevIndex];
     }
 }

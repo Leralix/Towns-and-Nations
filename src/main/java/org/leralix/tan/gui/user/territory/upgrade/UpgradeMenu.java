@@ -114,7 +114,7 @@ public class UpgradeMenu extends BasicGui {
                                     return;
                                 }
                                 TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
-                                territoryData.upgradeTown(upgrade);
+                                territoryData.getNewLevel().levelUp(upgrade);
                                 open();
                             })
                             .asGuiItem(player, langType)

@@ -47,8 +47,8 @@ public class ClaimBlacklistStorage {
     }
 
     public static boolean cannotBeClaimed(Chunk chunk) {
-        for(IBlackList instance : blacklist) {
-            if(instance.isChunkInArea(chunk)) {
+        for(IBlackList blacklist : blacklist) {
+            if(blacklist.isChunkInArea(chunk)) {
                 return true;
             }
         }

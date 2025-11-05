@@ -20,4 +20,6 @@ public abstract class AbstractOwner {
     public abstract boolean canAccess(ITanPlayer tanPlayer);
 
     public abstract void addToBalance(double amount);
+
+    public abstract String getID();
 }

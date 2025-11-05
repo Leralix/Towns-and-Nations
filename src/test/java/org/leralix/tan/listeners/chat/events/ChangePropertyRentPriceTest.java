@@ -81,7 +81,7 @@ class ChangePropertyRentPriceTest {
 
         changePropertyRentPrice.execute(player, "1000");
 
-        assertEquals(1000, propertyData.getBaseRentPrice());
+        assertEquals(1000, propertyData.getRentPrice());
     }
 
     @Test
@@ -91,6 +91,6 @@ class ChangePropertyRentPriceTest {
 
         changePropertyRentPrice.execute(player, "1%");
 
-        assertEquals(0, propertyData.getBaseRentPrice());
+        assertEquals(0, propertyData.getRentPrice());
     }
 }

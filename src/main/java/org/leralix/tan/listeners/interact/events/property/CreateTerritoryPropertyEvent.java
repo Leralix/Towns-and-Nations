@@ -8,16 +8,16 @@ import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 
 public class CreateTerritoryPropertyEvent extends CreatePropertyEvent {
 
-    private final TownData teritoryData;
+    private final TownData territoryData;
 
     public CreateTerritoryPropertyEvent(Player player, TownData townData) {
         super(player);
-        teritoryData = townData;
+        territoryData = townData;
     }
 
     @Override
     protected PropertyData createProperty() {
-        PropertyData property = teritoryData.registerNewProperty(position1, position2, teritoryData);
+        PropertyData property = territoryData.registerNewProperty(position1, position2, territoryData);
         new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
         return property;
     }

@@ -9,6 +9,7 @@ import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.user.territory.history.TerritoryTransactionHistory;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -66,7 +67,7 @@ public class TreasuryMenu extends BasicGui {
                 .setName(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY)
                 .setAction(action ->
-                        new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.MISCELLANEOUS)
+                        new TerritoryTransactionHistory(player, territoryData, p -> open())
                 )
                 .asGuiItem(player, langType);
     }

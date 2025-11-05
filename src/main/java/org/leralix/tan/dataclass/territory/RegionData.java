@@ -10,10 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.RankData;
-import org.leralix.tan.dataclass.newhistory.SubjectTaxHistory;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.events.EventManager;
@@ -22,6 +20,8 @@ import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.database.transactions.TransactionManager;
+import org.leralix.tan.storage.database.transactions.instance.TerritoryTaxTransaction;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
@@ -194,12 +194,18 @@ public class RegionData extends TerritoryData {
         for (TerritoryData town : getVassals()) {
             if (town == null) continue;
             double tax = getTax();
-            if (town.getBalance() < tax) {
-                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SubjectTaxHistory(this, town, -1));
-            } else {
+            double currentBalance = town.getBalance();
+
+            //If town does not have enough money, take what they can give
+            if (currentBalance < tax) {
+                addToBalance(currentBalance);
+                town.removeFromBalance(currentBalance);
+                TransactionManager.getInstance().register(new TerritoryTaxTransaction(town.getID(), this.getID(), currentBalance, false));
+            }
+            else {
                 town.removeFromBalance(tax);
                 addToBalance(tax);
-                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SubjectTaxHistory(this, town, tax));
+                TransactionManager.getInstance().register(new TerritoryTaxTransaction(town.getID(), this.getID(), tax, true));
             }
         }
     }
