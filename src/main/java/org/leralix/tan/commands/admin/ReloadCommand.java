@@ -12,7 +12,6 @@ import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.constants.EnabledPermissions;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -65,7 +64,6 @@ public class ReloadCommand extends SubCommand {
             MobChunkSpawnStorage.init();
             ClaimBlacklistStorage.init();
             NumberUtil.init();
-            EnabledPermissions.getInstance().init();
 
             TanChatUtils.message(commandSender, Lang.RELOAD_SUCCESS);
             TanChatUtils.message(commandSender, Lang.LANGUAGE_SUCCESSFULLY_LOADED);

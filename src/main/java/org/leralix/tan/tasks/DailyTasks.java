@@ -7,11 +7,9 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
-import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
@@ -83,21 +81,6 @@ public class DailyTasks {
 
 
     public static void clearOldTaxes() {
-        int timeBeforeClearingDonation = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("NumberOfDonationBeforeClearing",90);
-        int timeBeforeClearingHistory = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingTaxHistory",90);
-        int timeBeforeClearingSalary = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingSalaryHistory",90);
-        int timeBeforeClearingMisc = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("NumberOfMiscPurchaseBeforeClearing",90);
-        int timeBeforeClearingChunk = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingChunkHistory",90);
-
-        DatabaseHandler databaseHandler = TownsAndNations.getPlugin().getDatabaseHandler();
-        databaseHandler.deleteOldHistory(timeBeforeClearingDonation, TransactionHistoryEnum.DONATION);
-        databaseHandler.deleteOldHistory(timeBeforeClearingHistory, TransactionHistoryEnum.PLAYER_TAX);
-        databaseHandler.deleteOldHistory(timeBeforeClearingHistory, TransactionHistoryEnum.SUBJECT_TAX);
-        databaseHandler.deleteOldHistory(timeBeforeClearingHistory, TransactionHistoryEnum.PROPERTY_RENT_TAX);
-        databaseHandler.deleteOldHistory(timeBeforeClearingHistory, TransactionHistoryEnum.PROPERTY_BUY_TAX);
-        databaseHandler.deleteOldHistory(timeBeforeClearingSalary, TransactionHistoryEnum.SALARY);
-        databaseHandler.deleteOldHistory(timeBeforeClearingMisc, TransactionHistoryEnum.MISCELLANEOUS);
-        databaseHandler.deleteOldHistory(timeBeforeClearingChunk, TransactionHistoryEnum.CHUNK_SPENDING);
 
     }
 }

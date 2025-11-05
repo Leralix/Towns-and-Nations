@@ -30,7 +30,6 @@ import org.leralix.tan.storage.SudoPlayerStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.constants.EnabledPermissions;
 
 public class ChunkListener implements Listener {
 
@@ -509,10 +508,6 @@ public class ChunkListener implements Listener {
 
     private boolean canPlayerDoAction(Location location, Player player, ChunkPermissionType permissionType){
 
-        //Admins disabled the specific permission
-        if(EnabledPermissions.getInstance().isPermissionDisabled(permissionType)){
-            return true;
-        }
 
         //Player in admin mode
         if(SudoPlayerStorage.isSudoPlayer(player))

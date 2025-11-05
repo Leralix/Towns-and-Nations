@@ -41,7 +41,6 @@ public class MySqlHandler extends DatabaseHandler {
         ds.setUseSSL(true);
 
         this.dataSource = ds;
-        initialize();
     }
 
 }

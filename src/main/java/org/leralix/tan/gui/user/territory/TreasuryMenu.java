@@ -3,7 +3,6 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.enums.RolePermission;
@@ -16,6 +15,7 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.DonateToTerritory;
 import org.leralix.tan.listeners.chat.events.RetrieveMoney;
+import org.leralix.tan.storage.database.transactions.TransactionType;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -81,7 +81,7 @@ public class TreasuryMenu extends BasicGui {
                         PlayerChatListenerStorage.register(player, new DonateToTerritory(territoryData));
                     }
                     else {
-                        new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.DONATION);
+                        new TerritoryTransactionHistory(player, territoryData, TransactionType.DONATION, p -> new TreasuryMenu(player, territoryData));
                     }
                 })
                 .setDescription(Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get())

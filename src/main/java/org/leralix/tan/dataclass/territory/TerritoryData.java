@@ -15,14 +15,10 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.RandomUtil;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
-import org.leralix.tan.dataclass.newhistory.ChunkPaymentHistory;
-import org.leralix.tan.dataclass.newhistory.MiscellaneousHistory;
-import org.leralix.tan.dataclass.newhistory.SalaryPaymentHistory;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
@@ -140,8 +136,6 @@ public abstract class TerritoryData {
             TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(cost - getBalance())));
             return;
         }
-
-        TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new MiscellaneousHistory(this, cost));
 
         removeFromBalance(cost);
         FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(), name, newName));
@@ -893,7 +887,6 @@ public abstract class TerritoryData {
                 ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerId);
                 EconomyUtil.addFromBalance(tanPlayer, rankSalary);
                 TransactionManager.getInstance().register(new SalaryTransaction(getID(), playerId, costOfSalary));
-                TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new SalaryPaymentHistory(this, String.valueOf(rank.getID()), costOfSalary));
             }
         }
     }
@@ -905,10 +898,8 @@ public abstract class TerritoryData {
         double totalUpkeep = numberClaimedChunk * upkeepCost;
         if (totalUpkeep > getBalance()) {
             deletePortionOfChunk();
-            TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new ChunkPaymentHistory(this, -1));
         } else {
             removeFromBalance(totalUpkeep);
-            TownsAndNations.getPlugin().getDatabaseHandler().addTransactionHistory(new ChunkPaymentHistory(this, totalUpkeep));
         }
 
     }

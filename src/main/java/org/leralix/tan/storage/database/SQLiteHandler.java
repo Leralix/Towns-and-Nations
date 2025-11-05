@@ -5,7 +5,7 @@ import org.sqlite.SQLiteDataSource;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.SQLException;
 
 public class SQLiteHandler extends DatabaseHandler {
 
@@ -35,6 +35,5 @@ public class SQLiteHandler extends DatabaseHandler {
         SQLiteDataSource sqLiteDataSource = new SQLiteDataSource();
         sqLiteDataSource.setUrl("jdbc:sqlite:" + databasePath);
         this.dataSource = sqLiteDataSource;
-        initialize();
     }
 }

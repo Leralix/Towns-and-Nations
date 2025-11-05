@@ -10,17 +10,17 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.newhistory.TransactionHistoryEnum;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
-import org.leralix.tan.gui.user.territory.EconomicHistoryMenu;
 import org.leralix.tan.gui.user.territory.TreasuryMenu;
+import org.leralix.tan.gui.user.territory.history.TerritoryTransactionHistory;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.treasury.SetTerritoryTax;
+import org.leralix.tan.storage.database.transactions.TransactionType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.StringUtil;
@@ -106,7 +106,7 @@ public class PlayerTaxLine extends ProfitLine {
                 return;
             }
             if (event.isLeftClick()) {
-                new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.PLAYER_TAX);
+                new TerritoryTransactionHistory(player, territoryData, TransactionType.TAXES, p -> new TreasuryMenu(player, territoryData));
             }
             else if (event.isRightClick()) {
                 TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
