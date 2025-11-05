@@ -65,46 +65,49 @@ public class NewsletterStorage {
         }
     }
 
-    private List<Newsletter> getNewsletters() {
-        return newsletterDAO.getNewsletters();
+    private CompletableFuture<List<Newsletter>> getNewslettersAsync() {
+        return CompletableFuture.supplyAsync(() -> newsletterDAO.getNewsletters());
     }
 
     public CompletableFuture<List<GuiItem>> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onClick) {
-        return PlayerDataStorage.getInstance().get(player).thenApply(tanPlayer -> {
-            List<GuiItem> newsletters = new ArrayList<>();
-            LangType langType = tanPlayer.getLang();
+        return PlayerDataStorage.getInstance().get(player).thenCombine(
+            getNewslettersAsync(),
+            (tanPlayer, newsletters) -> {
+                List<GuiItem> guiItems = new ArrayList<>();
+                LangType langType = tanPlayer.getLang();
 
-            for (Newsletter newsletter : getNewsletters()) {
-                EventScope eventScope = newsletter.getType().getNewsletterScope();
+                for (Newsletter newsletter : newsletters) {
+                    EventScope eventScope = newsletter.getType().getNewsletterScope();
 
-                if (eventScope == EventScope.NONE) {
-                    continue;
-                }
+                    if (eventScope == EventScope.NONE) {
+                        continue;
+                    }
 
-                if (eventScope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)) {
-                    if (scope == NewsletterScope.SHOW_ALL) {
-                        newsletters.add(newsletter.createConcernedGuiItem(player, langType, onClick));
-                        continue;
+                    if (eventScope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)) {
+                        if (scope == NewsletterScope.SHOW_ALL) {
+                            guiItems.add(newsletter.createConcernedGuiItem(player, langType, onClick));
+                            continue;
+                        }
+                        if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
+                            guiItems.add(newsletter.createGuiItem(player, langType, onClick));
+                            continue;
+                        }
                     }
-                    if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
-                        newsletters.add(newsletter.createGuiItem(player, langType, onClick));
-                        continue;
+                    if (eventScope == EventScope.ALL) {
+                        if (scope == NewsletterScope.SHOW_ALL) {
+                            guiItems.add(newsletter.createGuiItem(player, langType, onClick));
+                            continue;
+                        }
+                        if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
+                            guiItems.add(newsletter.createGuiItem(player, langType, onClick));
+                            continue;
+                        }
                     }
                 }
-                if (eventScope == EventScope.ALL) {
-                    if (scope == NewsletterScope.SHOW_ALL) {
-                        newsletters.add(newsletter.createGuiItem(player, langType, onClick));
-                        continue;
-                    }
-                    if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
-                        newsletters.add(newsletter.createGuiItem(player, langType, onClick));
-                        continue;
-                    }
-                }
+                guiItems.removeAll(Collections.singleton(null));
+                return guiItems;
             }
-            newsletters.removeAll(Collections.singleton(null));
-            return newsletters;
-        });
+        );
     }
 
     public CompletableFuture<Integer> getNbUnreadNewsletterForPlayer(Player player) {
@@ -113,14 +116,16 @@ public class NewsletterStorage {
 
     public void clearOldNewsletters() {
         int nbDays = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingNewsletter");
-        newsletterDAO.deleteOldNewsletters(nbDays);
+        CompletableFuture.runAsync(() -> newsletterDAO.deleteOldNewsletters(nbDays));
     }
 
 
     public void markAllAsReadForPlayer(Player player) {
-        for (Newsletter newsletter : getNewsletters()) {
-            newsletter.markAsRead(player);
-        }
+        getNewslettersAsync().thenAccept(newsletters -> {
+            for (Newsletter newsletter : newsletters) {
+                newsletter.markAsRead(player);
+            }
+        });
     }
 
 

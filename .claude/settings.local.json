@@ -9,7 +9,11 @@
       "Bash(cmd /c mvn clean compile)",
       "Bash(dir:*)",
       "Bash(gradle clean:*)",
-      "Bash(gradle build:*)"
+      "Bash(gradle build:*)",
+      "Bash(./gradlew build:*)",
+      "Bash(Select-String -Pattern \"(BUILD|FAILED|error:|warning:)\" -Context 0,2)",
+      "Bash(gradlew.bat build:*)",
+      "Bash(cmd /c \"gradlew.bat build -x test\")"
     ],
     "deny": [],
     "ask": []
