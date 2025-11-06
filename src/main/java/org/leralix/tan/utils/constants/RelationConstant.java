@@ -14,7 +14,7 @@ public class RelationConstant {
     private final Set<String> blockedCommands;
 
     public RelationConstant(ConfigurationSection configurationSection){
-        this.canPvP = configurationSection.getBoolean("CanPvP", true);
+        this.canPvP = configurationSection.getBoolean("enablePvP", true);
         this.trucePeriod = configurationSection.getInt("truce_period", 0);
         this.canInteractWithProperty = configurationSection.getBoolean("canInteractWithProperty", true);
         this.canAccessTerritory = configurationSection.getBoolean("canAccessTerritory", true);
