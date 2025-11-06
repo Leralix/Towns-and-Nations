@@ -1,0 +1,50 @@
+package org.leralix.tan.wars.legacy.wargoals;
+
+import java.util.ArrayList;
+import java.util.List;
+import org.bukkit.Material;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.gui.cosmetic.type.IconBuilder;
+import org.leralix.tan.lang.FilledLang;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
+
+public class ConquerWarGoal extends WarGoal {
+
+  private final int numberOfChunks;
+
+  public ConquerWarGoal(int nbChunks) {
+    numberOfChunks = nbChunks;
+  }
+
+  @Override
+  public IconBuilder getIcon(LangType langType) {
+
+    List<FilledLang> description = new ArrayList<>();
+    description.add(Lang.CONQUER_WAR_GOAL_DESC.get());
+    description.add(Lang.CONQUER_WAR_GOAL_DESC1.get(Integer.toString(numberOfChunks)));
+
+    return buildIcon(Material.IRON_SWORD, description, langType);
+  }
+
+  @Override
+  public String getDisplayName(LangType langType) {
+    return Lang.CONQUER_WAR_GOAL.get(langType);
+  }
+
+  @Override
+  public void applyWarGoal(TerritoryData winner, TerritoryData loser) {
+    if (winner == null) return;
+    winner.addAvailableClaims(loser.getID(), numberOfChunks);
+  }
+
+  @Override
+  public boolean isCompleted() {
+    return true;
+  }
+
+  @Override
+  public String getCurrentDesc(LangType langType) {
+    return Lang.GUI_CONQUER_CHUNK_CURRENT_DESC.get(langType, Integer.toString(numberOfChunks));
+  }
+}

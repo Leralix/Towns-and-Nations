@@ -1,0 +1,16 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'folia'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+}
+
+dependencies {
+    compileOnly 'org.jetbrains:annotations:24.0.0'
+    compileOnly 'dev.folia:folia-api:1.20.1-R0.1-SNAPSHOT'
+}

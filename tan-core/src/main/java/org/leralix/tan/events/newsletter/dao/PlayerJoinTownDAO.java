@@ -1,0 +1,81 @@
+package org.leralix.tan.events.newsletter.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.UUID;
+import javax.sql.DataSource;
+import org.leralix.tan.events.newsletter.news.PlayerJoinTownNews;
+
+public class PlayerJoinTownDAO extends NewsletterSubDAO<PlayerJoinTownNews> {
+
+  private static final String TABLE_NAME = "player_join_town_newsletter";
+
+  public PlayerJoinTownDAO(DataSource connection) {
+    super(connection);
+  }
+
+  @Override
+  protected void createTableIfNotExists() {
+    String sql =
+        "CREATE TABLE IF NOT EXISTS "
+            + TABLE_NAME
+            + " ("
+            + "id VARCHAR(36) PRIMARY KEY, "
+            + "playerID VARCHAR(36) NOT NULL, "
+            + "townID VARCHAR(36) NOT NULL"
+            + ")";
+    try (Connection conn = dataSource.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+      ps.executeUpdate();
+    } catch (SQLException e) {
+      throw new RuntimeException("Failed to create table " + TABLE_NAME, e);
+    }
+  }
+
+  @Override
+  public void save(PlayerJoinTownNews newsletter) {
+    String sql = "INSERT INTO " + TABLE_NAME + " (id, playerID, townID) VALUES (?, ?, ?)";
+    try (Connection conn = dataSource.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+      ps.setString(1, newsletter.getId().toString());
+      ps.setString(2, newsletter.getPlayerID());
+      ps.setString(3, newsletter.getTownID());
+      ps.executeUpdate();
+    } catch (SQLException e) {
+      throw new RuntimeException("Failed to save to table " + TABLE_NAME, e);
+    }
+  }
+
+  @Override
+  public PlayerJoinTownNews load(UUID id, long date) {
+    String sql = "SELECT playerID, townID FROM " + TABLE_NAME + " WHERE id = ?";
+    try (Connection conn = dataSource.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+      ps.setString(1, id.toString());
+      try (ResultSet rs = ps.executeQuery()) {
+        if (rs.next()) {
+          String playerID = rs.getString("playerID");
+          String townID = rs.getString("townID");
+          return new PlayerJoinTownNews(id, date, playerID, townID);
+        }
+      }
+    } catch (SQLException e) {
+      throw new RuntimeException("Failed to load from table " + TABLE_NAME, e);
+    }
+    return null;
+  }
+
+  @Override
+  public void delete(UUID id) {
+    String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+    try (Connection conn = dataSource.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+      ps.setString(1, id.toString());
+      ps.executeUpdate();
+    } catch (SQLException e) {
+      throw new RuntimeException("Failed to delete from table " + TABLE_NAME, e);
+    }
+  }
+}
