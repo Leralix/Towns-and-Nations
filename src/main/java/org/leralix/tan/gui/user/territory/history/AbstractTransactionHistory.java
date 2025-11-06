@@ -15,16 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public abstract class AbstractTerritoryTransactionHistory extends IteratorGUI {
+public abstract class AbstractTransactionHistory extends IteratorGUI {
 
     private TransactionType transactionType;
     private final Consumer<Player> guiCallback;
 
-    protected AbstractTerritoryTransactionHistory(Player player, Consumer<Player> guiCallback) {
+    protected AbstractTransactionHistory(Player player, Consumer<Player> guiCallback) {
         this(player, guiCallback, TransactionType.INDEX);
     }
 
-    protected AbstractTerritoryTransactionHistory(Player player, Consumer<Player> guiCallback, TransactionType transactionType) {
+    protected AbstractTransactionHistory(Player player, Consumer<Player> guiCallback, TransactionType transactionType) {
         super(player, Lang.HEADER_HISTORY, 6);
         this.guiCallback = guiCallback;
         this.transactionType = transactionType;

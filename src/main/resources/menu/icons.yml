@@ -198,10 +198,10 @@ WAR_GOAL_SUBJUGATE_ICON: "minecraft:CHAIN"
 WAR_GOAL_LIBERATE_ICON: "minecraft:LANTERN"
 
 #Upgrade
-RIGHT_ARROW: "http://textures.minecraft.net/texture/406262af1d5f414c597055c22e39cce148e5edbec45559a2d6b88c8d67b92ea6"
-LEFT_ARROW: "http://textures.minecraft.net/texture/542fde8b82e8c1b8c22b22679983fe35cb76a79778429bdadabc397fd15061"
-UP_ARROW: "http://textures.minecraft.net/texture/14a5667ef7285c9225fc267d45117eab5478c786bd5af0a199c29a2c14c1f"
-DOWN_ARROW: "http://textures.minecraft.net/texture/d1b62db5c0a3fa1ef441bf7044f511be58bedf9b6731853e50ce90cd44fb69"
+RIGHT_ARROW: "https://textures.minecraft.net/texture/406262af1d5f414c597055c22e39cce148e5edbec45559a2d6b88c8d67b92ea6"
+LEFT_ARROW: "https://textures.minecraft.net/texture/542fde8b82e8c1b8c22b22679983fe35cb76a79778429bdadabc397fd15061"
+UP_ARROW: "https://textures.minecraft.net/texture/14a5667ef7285c9225fc267d45117eab5478c786bd5af0a199c29a2c14c1f"
+DOWN_ARROW: "https://textures.minecraft.net/texture/d1b62db5c0a3fa1ef441bf7044f511be58bedf9b6731853e50ce90cd44fb69"
 LEVEL_UP_ICON: "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1"
 
 #Transaction
@@ -215,3 +215,7 @@ UPGRADE_REQUIREMENT: "https://textures.minecraft.net/texture/fbe529ab6b2ea7c50d9
 PROPERTY_BUY_TRANSACTION: "minecraft:PAPER"
 PROPERTY_RENT_TRANSACTION: "minecraft:PAPER"
 PROPERTY_CREATE_TRANSACTION: "minecraft:PAPER"
+
+# Admins menus
+CREATE_LANDMARK: "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1"
+LANDMARK_RENAME_ICON: "minecraft:NAME_TAG"

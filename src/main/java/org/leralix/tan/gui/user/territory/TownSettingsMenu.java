@@ -200,17 +200,13 @@ public class TownSettingsMenu extends SettingsMenus {
     private @NotNull GuiItem getChangeOwnershipButton() {
         return iconManager.get(IconKey.TOWN_CHANGE_OWNERSHIP_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.get(tanPlayer))
+                .setRequirements(new LeaderRequirement(territoryData, tanPlayer))
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(),
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.get()
                 )
                 .setAction(event -> {
-                    if (townData.isLeader(tanPlayer)){
-                        new SelectNewOwnerForTownMenu(player, townData);
-                    }
-                    else{
-                        TanChatUtils.message(player, Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
-                    }
+                    new SelectNewOwnerForTownMenu(player, townData);
                 })
                 .asGuiItem(player, langType);
 

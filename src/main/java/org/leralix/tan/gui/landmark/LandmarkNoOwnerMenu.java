@@ -84,11 +84,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
 
         if (cost > playerTown.getBalance()) {
             isRequirementsMet = false;
-            description.add(Lang.GUI_LANDMARK_NOT_ENOUGH_MONEY.get( Double.toString(Constants.getClaimLandmarkCost())));
-        }
-
-        if (isRequirementsMet) {
-            description.add(Lang.GUI_LANDMARK_LEFT_CLICK_TO_CLAIM.get());
+            description.add(Lang.GUI_LANDMARK_NOT_ENOUGH_MONEY.get(Double.toString(Constants.getClaimLandmarkCost())));
         }
 
 
@@ -99,6 +95,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
         return iconManager.get(iconKey)
                 .setName(Lang.GUI_TOWN_RELATION_ADD_TOWN.get(tanPlayer))
                 .setDescription(description)
+                .setClickToAcceptMessage(Lang.GUI_LANDMARK_LEFT_CLICK_TO_CLAIM)
                 .setAction(event -> {
                     if (!requirementMet) {
                         SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);

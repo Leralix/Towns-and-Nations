@@ -4,7 +4,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.AdminGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
@@ -32,7 +31,7 @@ public class AdminMainMenu extends BasicGui {
     private GuiItem getWarButton() {
         return iconManager.get(IconKey.TERRITORY_WAR_ICON)
                 .setName(Lang.ADMIN_GUI_WAR_ICON.get(langType))
-                .setAction(action -> AdminGUI.openAdminWarMenu(player, 0))
+                .setAction(action -> new AdminWarMenu(player))
                 .asGuiItem(player, langType);
     }
 
@@ -40,28 +39,28 @@ public class AdminMainMenu extends BasicGui {
     private GuiItem getLandmarkButton() {
         return iconManager.get(IconKey.TOWN_LANDMARKS_ICON)
                 .setName(Lang.ADMIN_GUI_LANDMARK_ICON.get(langType))
-                .setAction(action -> AdminGUI.openLandmarks(player, 0))
+                .setAction(action -> new AdminLandmarksMenu(player))
                 .asGuiItem(player, langType);
     }
 
     private GuiItem getPlayerButton() {
         return iconManager.get(IconKey.PLAYER_HEAD_ICON)
                 .setName(Lang.GUI_ADMIN_PLAYER_ICON.get(langType))
-                .setAction(action -> AdminGUI.openPlayerMenu(player, 0))
+                .setAction(action -> new AdminBrowsePlayers(player))
                 .asGuiItem(player, langType);
     }
 
     private GuiItem getTownButton() {
         return iconManager.get(IconKey.TOWN_BASE_ICON)
                 .setName(Lang.GUI_TOWN_ICON.get(langType))
-                .setAction(action -> AdminGUI.openAdminBrowseTown(player, 0))
+                .setAction(action -> new AdminBrowseTown(player))
                 .asGuiItem(player, langType);
     }
 
     private GuiItem getRegionButton() {
         return iconManager.get(IconKey.REGION_BASE_ICON)
                 .setName(Lang.GUI_REGION_ICON.get(langType))
-                .setAction(action -> AdminGUI.openAdminBrowseRegion(player, 0))
+                .setAction(action -> new AdminBrowseRegion(player))
                 .asGuiItem(player, langType);
     }
 }
