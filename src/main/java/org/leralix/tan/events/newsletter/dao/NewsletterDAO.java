@@ -226,20 +226,34 @@ public class NewsletterDAO {
 
         if (ids.isEmpty()) return;
 
-        // Adaptez le nom et les colonnes selon votre schéma réel
-        String sql = "INSERT INTO newsletter_read (newsletter_id, player_id) VALUES (?, ?)";
+        String checkSql = "SELECT newsletter_id FROM newsletter_read WHERE player_id = ?";
+        Set<String> alreadyRead = new HashSet<>();
+
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            conn.setAutoCommit(false);
-            ps.setString(2, playerId);
-            for (UUID nid : ids) {
-                ps.setString(1, nid.toString());
-                ps.addBatch();
+             PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+
+            checkStmt.setString(1, playerId);
+            try (ResultSet rs = checkStmt.executeQuery()) {
+                while (rs.next()) {
+                    alreadyRead.add(rs.getString("newsletter_id"));
+                }
             }
-            ps.executeBatch();
-            conn.commit();
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to mark newsletters as read in batch", e);
+
+            String insertSql = "INSERT INTO newsletter_read (newsletter_id, player_id) VALUES (?, ?)";
+            try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+                conn.setAutoCommit(false);
+                insertStmt.setString(2, playerId);
+                for (UUID nid : ids) {
+                    if (alreadyRead.contains(nid.toString())) continue;
+                    insertStmt.setString(1, nid.toString());
+                    insertStmt.addBatch();
+                }
+                insertStmt.executeBatch();
+                conn.commit();
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException("Failed to mark newsletters as read in batch : " + e.getMessage(), e);
         }
     }
 }
