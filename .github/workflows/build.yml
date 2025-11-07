@@ -8,7 +8,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
     - name: Checkout code
@@ -21,17 +24,33 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
-    - name: Grant execute permission for gradlew
+    - name: Grant execute permission for gradlew (Unix)
+      if: runner.os != 'Windows'
       run: chmod +x gradlew
 
     - name: Check code formatting with Spotless
       run: ./gradlew spotlessCheck
+      if: runner.os != 'Windows'
 
-    - name: Build with Gradle
+    - name: Check code formatting with Spotless (Windows)
+      run: .\gradlew.bat spotlessCheck
+      if: runner.os == 'Windows'
+
+    - name: Build with Gradle (Unix)
+      if: runner.os != 'Windows'
       run: ./gradlew clean build --no-daemon
 
-    - name: Run tests
+    - name: Build with Gradle (Windows)
+      if: runner.os == 'Windows'
+      run: .\gradlew.bat clean build --no-daemon
+
+    - name: Run tests (Unix)
+      if: runner.os != 'Windows'
       run: ./gradlew test --no-daemon
+
+    - name: Run tests (Windows)
+      if: runner.os == 'Windows'
+      run: .\gradlew.bat test --no-daemon
 
     - name: Archive build artifacts
       if: success()
