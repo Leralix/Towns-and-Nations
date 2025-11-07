@@ -3,7 +3,6 @@ package org.leralix.tan.gui.user.player;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
