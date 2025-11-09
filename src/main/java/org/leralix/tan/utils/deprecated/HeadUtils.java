@@ -145,14 +145,6 @@ public class HeadUtils {
         return makeSkull(name, getProfile(createURL(url)), List.of(lore));
     }
 
-    public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull String url, List<String> lore) {
-        return makeSkull(name, getProfile(createURL(url)), lore);
-    }
-
-    public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull URL url, String... lore) {
-        return makeSkull(name, getProfile(url), List.of(lore));
-    }
-
     public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull URL url, List<String> lore) {
         return makeSkull(name, getProfile(url), lore);
     }
@@ -364,19 +356,6 @@ public class HeadUtils {
      */
     public static void setLore(ItemStack itemStack, String... loreLines) {
         List<String> lore = List.of(loreLines);
-        setLore(itemStack, lore);
-    }
-
-    /**
-     * Set the lore of an {@link ItemStack}
-     *
-     * @param itemStack The item stack to set the lore
-     * @param lore      The lore to set
-     * @param loreLines Additional lore
-     */
-    public static void setLore(ItemStack itemStack, List<String> lore, String... loreLines) {
-        List<String> lore2 = List.of(loreLines);
-        lore.addAll(lore2);
         setLore(itemStack, lore);
     }
 

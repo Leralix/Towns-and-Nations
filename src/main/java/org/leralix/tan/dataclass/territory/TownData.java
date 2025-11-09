@@ -6,7 +6,6 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
@@ -18,6 +17,8 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.PlayerJoinTownAcceptedInternalEvent;
 import org.leralix.tan.events.events.PlayerJoinTownRequestInternalEvent;
+import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.territory.TerritoryMemberMenu;
 import org.leralix.tan.lang.FilledLang;
@@ -130,36 +131,18 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public ItemStack getIconWithName() {
-        ItemStack itemStack = getIcon();
+    public IconBuilder getIconWithInformations(LangType langType) {
 
-        ItemMeta meta = itemStack.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(ChatColor.GREEN + getName());
-            itemStack.setItemMeta(meta);
-        }
-        return itemStack;
-    }
-
-    @Override
-    public ItemStack getIconWithInformations(LangType langType) {
-        ItemStack icon = getIcon();
-
-        ItemMeta meta = icon.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(ChatColor.GREEN + getName());
-
-            List<String> lore = new ArrayList<>();
-            lore.add(Lang.GUI_TOWN_INFO_DESC0.get(langType, getDescription()));
-            lore.add(Lang.GUI_TOWN_INFO_DESC1.get(langType, getLeaderName()));
-            lore.add(Lang.GUI_TOWN_INFO_DESC2.get(langType, Integer.toString(getPlayerIDList().size())));
-            lore.add(Lang.GUI_TOWN_INFO_DESC3.get(langType, Integer.toString(getNumberOfClaimedChunk())));
-            lore.add(getOverlord().map(overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(langType, overlord.getName())).orElseGet(() -> Lang.GUI_TOWN_INFO_DESC5_NO_REGION.get(langType)));
-
-            meta.setLore(lore);
-            icon.setItemMeta(meta);
-        }
-        return icon;
+        return IconManager.getInstance().get(getIcon())
+                .setName(ChatColor.GREEN + getName())
+                .setDescription(
+                        Lang.GUI_TOWN_INFO_DESC0.get(getDescription()),
+                        Lang.GUI_TOWN_INFO_DESC1.get(getLeaderName()),
+                        Lang.GUI_TOWN_INFO_DESC2.get(Integer.toString(getPlayerIDList().size())),
+                        Lang.GUI_TOWN_INFO_DESC3.get(Integer.toString(getNumberOfClaimedChunk())),
+                        getOverlord().map(overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(overlord.getName()))
+                                .orElseGet(Lang.GUI_TOWN_INFO_DESC5_NO_REGION::get)
+                );
     }
 
     @Override

@@ -1,8 +1,11 @@
 package org.leralix.tan.gui.cosmetic;
 
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
@@ -110,5 +113,16 @@ public class IconManager {
 
     public IconBuilder get(Material material) {
         return get(new ItemStack(material));
+    }
+
+    public IconBuilder get(OfflinePlayer offlinePlayer){
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+
+        ItemMeta itemMeta = head.getItemMeta();
+        if(itemMeta instanceof SkullMeta skullMeta){
+            skullMeta.setOwningPlayer(offlinePlayer);
+            head.setItemMeta(skullMeta);
+        }
+        return get(head);
     }
 }

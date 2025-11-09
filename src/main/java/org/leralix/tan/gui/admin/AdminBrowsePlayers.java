@@ -25,7 +25,6 @@ public class AdminBrowsePlayers extends IteratorGUI {
     
     @Override
     public void open() {
-        
         iterator(getPlayers(), p -> new AdminMainMenu(player));
         gui.open(player);
     }
@@ -37,10 +36,9 @@ public class AdminBrowsePlayers extends IteratorGUI {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(tanPlayer.getID()));
             ItemStack playerHead = HeadUtils.getPlayerHeadInformation(offlinePlayer);
 
-            GuiItem playerHeadGui = ItemBuilder.from(playerHead).asGuiItem(event -> {
-                event.setCancelled(true);
-                new AdminManagePlayer(player, tanPlayer);
-            });
+            GuiItem playerHeadGui = ItemBuilder.from(playerHead).asGuiItem(
+                    event -> new AdminManagePlayer(player, tanPlayer)
+            );
             guiItems.add(playerHeadGui);
         }
         return guiItems;

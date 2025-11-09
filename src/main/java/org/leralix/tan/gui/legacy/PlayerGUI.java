@@ -276,15 +276,14 @@ public class PlayerGUI {
             if (territoryData.isVassal(potentialVassal) || potentialVassal.containsVassalisationProposal(territoryData))
                 continue;
 
-            ItemStack territoryIcon = potentialVassal.getIconWithInformationAndRelation(territoryData, tanPlayer.getLang());
-            HeadUtils.addLore(territoryIcon, Lang.GUI_REGION_INVITE_TOWN_DESC1.get(tanPlayer));
-
-            GuiItem townButton = ItemBuilder.from(territoryIcon).asGuiItem(event -> {
-                event.setCancelled(true);
-                potentialVassal.addVassalisationProposal(territoryData);
-                openAddVassal(player, territoryData, page);
-            });
-            guiItems.add(townButton);
+            guiItems.add(potentialVassal.getIconWithInformationAndRelation(territoryData, tanPlayer.getLang())
+                    .setClickToAcceptMessage(Lang.GUI_REGION_INVITE_TOWN_DESC1)
+                    .setAction(action -> {
+                        potentialVassal.addVassalisationProposal(territoryData);
+                        openAddVassal(player, territoryData, page);
+                    })
+                    .asGuiItem(player, tanPlayer.getLang())
+            );
         }
 
         GuiUtil.createIterator(gui, guiItems, page, player, p -> new VassalsMenu(player, territoryData),
