@@ -10,7 +10,6 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
-import org.leralix.tan.gui.legacy.AdminGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.StringUtil;
@@ -68,9 +67,7 @@ public class AdminManagePlayer extends BasicGui {
             iconBuilder
                     .setName(Lang.ADMIN_GUI_PLAYER_NO_TOWN.get(langType))
                     .setClickToAcceptMessage(Lang.GUI_GENERIC_ADD_BUTTON)
-                    .setAction(action ->
-                            AdminGUI.setPlayerTown(player, tanPlayer, 0)
-                    );
+                    .setAction(action -> new AdminSetPlayerTown(player, tanPlayer));
         }
         return iconBuilder.asGuiItem(player, langType);
     }

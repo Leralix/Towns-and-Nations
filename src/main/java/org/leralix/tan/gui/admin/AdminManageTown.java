@@ -7,7 +7,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.gui.legacy.AdminGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -61,7 +60,7 @@ public class AdminManageTown extends AdminManageTerritory {
                     open();
                 }
             } else {
-                AdminGUI.openChooseNewOverlord(player, townData, 0);
+                new AdminSelectNewOverlord(player, townData);
             }
         });
 
