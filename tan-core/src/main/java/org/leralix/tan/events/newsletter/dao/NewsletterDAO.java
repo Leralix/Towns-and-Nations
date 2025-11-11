@@ -85,8 +85,8 @@ public class NewsletterDAO {
   }
 
   public void markAsRead(UUID newsletterId, UUID playerId) {
-    // Use SQLite-compatible syntax
-    String sql = "INSERT OR IGNORE INTO newsletter_read (newsletter_id, player_id) VALUES (?, ?)";
+    // Use MySQL/MariaDB compatible syntax (INSERT IGNORE)
+    String sql = "INSERT IGNORE INTO newsletter_read (newsletter_id, player_id) VALUES (?, ?)";
     try (Connection conn = dataSource.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql)) {
       ps.setString(1, newsletterId.toString());

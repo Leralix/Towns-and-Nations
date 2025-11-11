@@ -130,13 +130,16 @@ public abstract class TerritoryMenu extends BasicGui {
         .get(IconKey.TERRITORY_BROWSE_ICON)
         .setName(Lang.GUI_BROWSE_TERRITORY_ICON.get(langType))
         .setAction(
-            event ->
-                new BrowseTerritoryMenu(
-                    player,
-                    tanPlayer,
-                    territoryData,
-                    BrowseScope.ALL,
-                    p -> territoryData.openMainMenu(player)))
+            event -> {
+              BrowseTerritoryMenu browseMenu =
+                  new BrowseTerritoryMenu(
+                      player,
+                      tanPlayer,
+                      territoryData,
+                      BrowseScope.ALL,
+                      p -> territoryData.openMainMenu(player));
+              browseMenu.open();
+            })
         .asGuiItem(player, langType);
   }
 
@@ -185,7 +188,11 @@ public abstract class TerritoryMenu extends BasicGui {
         .setDescription(Lang.GUI_BUILDING_MENU_DESC1.get())
         .setRequirements(
             new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_PROPERTY))
-        .setAction(event -> new BuildingMenu(player, tanPlayer, territoryData, this))
+        .setAction(
+            event -> {
+              BuildingMenu buildingMenu = new BuildingMenu(player, tanPlayer, territoryData, this);
+              buildingMenu.open();
+            })
         .asGuiItem(player, langType);
   }
 }

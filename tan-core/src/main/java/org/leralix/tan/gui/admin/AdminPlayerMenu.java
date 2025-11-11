@@ -51,14 +51,10 @@ public class AdminPlayerMenu extends IteratorGUI {
       ITanPlayer tanPlayerData = PlayerDataStorage.getInstance().get(targetPlayer).join();
 
       String townInfo =
-          tanPlayerData.hasTown()
-              ? tanPlayerData.getTownSync().getColoredName()
-              : "No Town";
+          tanPlayerData.hasTown() ? tanPlayerData.getTownSync().getColoredName() : "No Town";
 
       String regionInfo =
-          tanPlayerData.hasRegion()
-              ? tanPlayerData.getRegionSync().getColoredName()
-              : "No Region";
+          tanPlayerData.hasRegion() ? tanPlayerData.getRegionSync().getColoredName() : "No Region";
 
       guiItems.add(
           ItemBuilder.from(Material.PLAYER_HEAD)

@@ -15,15 +15,20 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 public class NewClaimedChunkStorage extends DatabaseStorage<ClaimedChunk2> {
 
   private static final String TABLE_NAME = "tan_claimed_chunks";
-  private static NewClaimedChunkStorage instance;
+  private static volatile NewClaimedChunkStorage instance;
 
   private NewClaimedChunkStorage() {
     super(TABLE_NAME, ClaimedChunk2.class, new GsonBuilder().setPrettyPrinting().create());
   }
 
-  public static synchronized NewClaimedChunkStorage getInstance() {
+  public static NewClaimedChunkStorage getInstance() {
+    // Double-checked locking without initial synchronization (fast path)
     if (instance == null) {
-      instance = new NewClaimedChunkStorage();
+      synchronized (NewClaimedChunkStorage.class) {
+        if (instance == null) {
+          instance = new NewClaimedChunkStorage();
+        }
+      }
     }
     return instance;
   }
@@ -143,7 +148,17 @@ public class NewClaimedChunkStorage extends DatabaseStorage<ClaimedChunk2> {
   }
 
   public boolean isChunkClaimed(Chunk chunk) {
-    return exists(getChunkKey(chunk));
+    String key = getChunkKey(chunk);
+    // OPTIMIZATION: Check cache first before DB lookup
+    if (cacheEnabled && cache != null) {
+      synchronized (cache) {
+        if (cache.containsKey(key)) {
+          return true;
+        }
+      }
+    }
+    // If not in cache, check DB
+    return exists(key);
   }
 
   public Collection<TerritoryChunk> getAllChunkFrom(TerritoryData territoryData) {

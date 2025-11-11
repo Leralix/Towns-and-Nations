@@ -21,6 +21,8 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.PlayerJoinTownAcceptedInternalEvent;
 import org.leralix.tan.events.events.PlayerJoinTownRequestInternalEvent;
+import org.leralix.tan.gui.user.territory.TownMenu;
+import org.leralix.tan.gui.utils.ConfirmMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -32,8 +34,6 @@ import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.leralix.tan.gui.utils.ConfirmMenu;
-import org.leralix.tan.gui.user.territory.TownMenu;
 
 public class TownData extends TerritoryData {
 

@@ -13,8 +13,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 /**
  * Generic confirmation menu to replace PlayerGUI.openConfirmMenu().
  *
- * <p>Usage: ConfirmMenu.open(player, "Are you sure?", p -> doAction(), p ->
- * cancelAction());
+ * <p>Usage: ConfirmMenu.open(player, "Are you sure?", p -> doAction(), p -> cancelAction());
  */
 public class ConfirmMenu extends BasicGui {
 
@@ -52,15 +51,11 @@ public class ConfirmMenu extends BasicGui {
             });
   }
 
-
   @Override
   public void open() {
     // Display message in center
     GuiItem messageItem =
-        iconManager
-            .get(Material.PAPER)
-            .setName(message.get(langType))
-            .asGuiItem(player, langType);
+        iconManager.get(Material.PAPER).setName(message.get(langType)).asGuiItem(player, langType);
     gui.setItem(2, 5, messageItem);
 
     // Confirm button (green emerald)

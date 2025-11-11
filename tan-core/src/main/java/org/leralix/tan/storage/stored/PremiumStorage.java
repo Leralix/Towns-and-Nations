@@ -16,7 +16,7 @@ import org.leralix.tan.utils.constants.Constants;
 public class PremiumStorage extends DatabaseStorage<Boolean> {
 
   private static final String TABLE_NAME = "tan_premium_accounts";
-  private static PremiumStorage instance;
+  private static volatile PremiumStorage instance;
 
   private PremiumStorage() {
     super(TABLE_NAME, Boolean.class, new GsonBuilder().setPrettyPrinting().create());
@@ -43,9 +43,14 @@ public class PremiumStorage extends DatabaseStorage<Boolean> {
     }
   }
 
-  public static synchronized PremiumStorage getInstance() {
+  public static PremiumStorage getInstance() {
+    // Double-checked locking without initial synchronization (fast path)
     if (instance == null) {
-      instance = new PremiumStorage();
+      synchronized (PremiumStorage.class) {
+        if (instance == null) {
+          instance = new PremiumStorage();
+        }
+      }
     }
     return instance;
   }

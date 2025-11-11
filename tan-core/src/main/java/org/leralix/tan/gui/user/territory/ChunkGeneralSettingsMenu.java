@@ -15,7 +15,8 @@ public class ChunkGeneralSettingsMenu extends BasicGui {
 
   private final TerritoryData territoryData;
 
-  private ChunkGeneralSettingsMenu(Player player, ITanPlayer tanPlayer, TerritoryData territoryData) {
+  private ChunkGeneralSettingsMenu(
+      Player player, ITanPlayer tanPlayer, TerritoryData territoryData) {
     super(player, tanPlayer, Lang.HEADER_CHUNK_GENERAL_SETTINGS.get(tanPlayer.getLang()), 3);
     this.territoryData = territoryData;
   }
@@ -37,13 +38,15 @@ public class ChunkGeneralSettingsMenu extends BasicGui {
       gui.setItem(slot++, getSettingButton(setting));
     }
 
-    gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> ChunkSettingsMenu.open(player, territoryData)));
+    gui.setItem(
+        3, 1, GuiUtil.createBackArrow(player, p -> ChunkSettingsMenu.open(player, territoryData)));
 
     gui.open(player);
   }
 
   private GuiItem getSettingButton(GeneralChunkSetting setting) {
-    boolean isEnabled = territoryData.getChunkSettings().getChunkSetting().getOrDefault(setting, false);
+    boolean isEnabled =
+        territoryData.getChunkSettings().getChunkSetting().getOrDefault(setting, false);
 
     return ItemBuilder.from(setting.getIcon(isEnabled, langType))
         .asGuiItem(

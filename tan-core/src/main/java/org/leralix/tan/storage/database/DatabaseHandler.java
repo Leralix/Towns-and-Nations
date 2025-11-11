@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import javax.sql.DataSource;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.newhistory.TransactionHistory;
@@ -106,6 +107,19 @@ public abstract class DatabaseHandler {
     return new ArrayList<>(groupedByDate.values());
   }
 
+  /**
+   * Get transaction history asynchronously P3.6: Async transaction history for non-blocking GUI
+   * loading
+   *
+   * @param territoryData The territory data
+   * @param type The transaction type
+   * @return CompletableFuture that completes with the transaction history list
+   */
+  public CompletableFuture<List<List<TransactionHistory>>> getTransactionHistoryAsync(
+      TerritoryData territoryData, TransactionHistoryEnum type) {
+    return CompletableFuture.supplyAsync(() -> getTransactionHistory(territoryData, type));
+  }
+
   public void deleteOldHistory(int nbDays, TransactionHistoryEnum type) {
     String deleteSQL;
 
@@ -114,14 +128,14 @@ public abstract class DatabaseHandler {
           """
             DELETE FROM territoryTransactionHistory
             WHERE date < DATE_SUB(NOW(), INTERVAL ? DAY)
-            AND type != ?
+            AND type = ?
         """;
     } else {
       deleteSQL =
           """
             DELETE FROM territoryTransactionHistory
             WHERE date < DATE('now', '-' || ? || ' days')
-            AND type != ?
+            AND type = ?
         """;
     }
 

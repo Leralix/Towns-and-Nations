@@ -15,6 +15,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.NoPlayerData;
 import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.storage.exceptions.DatabaseNotReadyException;
 import org.leralix.tan.utils.FoliaScheduler;
 
 public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
@@ -22,7 +23,11 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
   private static final String ERROR_MESSAGE = "Error while creating player storage";
   private static final String TABLE_NAME = "tan_players";
 
-  private static PlayerDataStorage instance;
+  // Retry configuration for database errors
+  private static final int MAX_RETRY_ATTEMPTS = 3;
+  private static final long RETRY_DELAY_MS = 500; // 500ms between retries
+
+  private static volatile PlayerDataStorage instance;
 
   private static ITanPlayer NO_PLAYER;
 
@@ -36,10 +41,15 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
             .create());
   }
 
-  public static synchronized PlayerDataStorage getInstance() {
+  public static PlayerDataStorage getInstance() {
+    // Double-checked locking without initial synchronization (fast path)
     if (instance == null) {
-      instance = new PlayerDataStorage();
-      NO_PLAYER = new NoPlayerData();
+      synchronized (PlayerDataStorage.class) {
+        if (instance == null) {
+          instance = new PlayerDataStorage();
+          NO_PLAYER = new NoPlayerData();
+        }
+      }
     }
     return instance;
   }
@@ -219,49 +229,113 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
       return future;
     }
 
+    // Start with attempt 1
+    getWithRetry(id, 1, future);
+    return future;
+  }
+
+  /**
+   * Recursive retry method for database operations
+   *
+   * @param id Player UUID as string
+   * @param attemptNumber Current attempt number (1-indexed)
+   * @param future The future to complete with the result
+   */
+  private void getWithRetry(String id, int attemptNumber, CompletableFuture<ITanPlayer> future) {
     super.get(id)
         .thenAccept(
             res -> {
               if (res != null) {
+                // Player found in database - success!
                 future.complete(res);
               } else {
-                // If not in database, try to create from online player
-                // MUST execute Bukkit.getPlayer() on the main thread (Folia/Paper requirement)
-                FoliaScheduler.runTask(
-                    TownsAndNations.getPlugin(),
-                    () -> {
-                      Player newPlayer = Bukkit.getPlayer(UUID.fromString(id));
-                      if (newPlayer != null) {
-                        // Create PlayerData and register it
-                        ITanPlayer newTanPlayer = new PlayerData(newPlayer);
-                        // Register asynchronously
-                        register(newTanPlayer)
-                            .thenAccept(
-                                registeredPlayer -> {
-                                  future.complete(registeredPlayer);
-                                })
-                            .exceptionally(
-                                ex -> {
-                                  future.completeExceptionally(ex);
-                                  return null;
-                                });
-                      } else {
-                        // If player not found in DB and not online, complete with NO_PLAYER or
-                        // throw exception
-                        future.completeExceptionally(
-                            new RuntimeException(
-                                "Error : Player ID [" + id + "] has not been found"));
-                      }
-                    });
+                // Player NOT found in database (null result, no exception)
+                // This means the player is truly new - create a new profile
+                createNewPlayerProfile(id, future);
               }
             })
         .exceptionally(
             ex -> {
-              future.completeExceptionally(ex);
+              // Check if it's a DatabaseNotReadyException (recoverable)
+              if (ex.getCause() instanceof DatabaseNotReadyException) {
+                if (attemptNumber < MAX_RETRY_ATTEMPTS) {
+                  // Log retry attempt
+                  TownsAndNations.getPlugin()
+                      .getLogger()
+                      .warning(
+                          String.format(
+                              "[TaN] Database not ready for player %s (attempt %d/%d). Retrying in %dms...",
+                              id, attemptNumber, MAX_RETRY_ATTEMPTS, RETRY_DELAY_MS));
+
+                  // Schedule retry after delay
+                  FoliaScheduler.runTaskLaterAsynchronously(
+                      TownsAndNations.getPlugin(),
+                      () -> getWithRetry(id, attemptNumber + 1, future),
+                      RETRY_DELAY_MS / 50); // Convert ms to ticks (50ms = 1 tick)
+                } else {
+                  // Max retries reached - log error and fail
+                  TownsAndNations.getPlugin()
+                      .getLogger()
+                      .severe(
+                          String.format(
+                              "[TaN] CRITICAL: Failed to load player %s after %d attempts. Database may be down!",
+                              id, MAX_RETRY_ATTEMPTS));
+                  future.completeExceptionally(
+                      new RuntimeException(
+                          "Failed to load player after " + MAX_RETRY_ATTEMPTS + " attempts", ex));
+                }
+              } else {
+                // Non-recoverable error (e.g., JSON parsing error)
+                TownsAndNations.getPlugin()
+                    .getLogger()
+                    .severe(
+                        String.format(
+                            "[TaN] Non-recoverable error loading player %s: %s",
+                            id, ex.getMessage()));
+                future.completeExceptionally(ex);
+              }
               return null;
             });
+  }
 
-    return future;
+  /**
+   * Create a new player profile when player is not found in database
+   *
+   * @param id Player UUID as string
+   * @param future The future to complete with the new player
+   */
+  private void createNewPlayerProfile(String id, CompletableFuture<ITanPlayer> future) {
+    // MUST execute Bukkit.getPlayer() on the main thread (Folia/Paper requirement)
+    FoliaScheduler.runTask(
+        TownsAndNations.getPlugin(),
+        () -> {
+          Player newPlayer = Bukkit.getPlayer(UUID.fromString(id));
+          if (newPlayer != null) {
+            TownsAndNations.getPlugin()
+                .getLogger()
+                .info(
+                    String.format(
+                        "[TaN] Creating new player profile for %s (%s)", newPlayer.getName(), id));
+
+            // Create PlayerData and register it
+            ITanPlayer newTanPlayer = new PlayerData(newPlayer);
+            // Register asynchronously
+            register(newTanPlayer)
+                .thenAccept(
+                    registeredPlayer -> {
+                      future.complete(registeredPlayer);
+                    })
+                .exceptionally(
+                    ex -> {
+                      future.completeExceptionally(ex);
+                      return null;
+                    });
+          } else {
+            // Player not found in DB and not online - this is an error
+            future.completeExceptionally(
+                new RuntimeException("Error: Player ID [" + id + "] has not been found"));
+          }
+        });
   }
 
   @Override

@@ -41,6 +41,7 @@ import org.leralix.tan.service.EconomyService;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.database.DatabaseHandler;
+import org.leralix.tan.storage.database.DatabaseHealthCheck;
 import org.leralix.tan.storage.database.MySqlHandler;
 import org.leralix.tan.storage.database.SQLiteHandler;
 import org.leralix.tan.storage.impl.FortDataStorage;
@@ -108,6 +109,9 @@ public class TownsAndNations extends JavaPlugin {
   /** Database handler used to access the database. */
   private DatabaseHandler databaseHandler;
 
+  /** Database health check for auto-reconnection */
+  private DatabaseHealthCheck databaseHealthCheck;
+
   @Override
   public void onEnable() {
     // Plugin startup logic
@@ -172,6 +176,13 @@ public class TownsAndNations extends JavaPlugin {
 
     LOGGER.info("[TaN] -Loading Database");
     loadDB();
+
+    // P3.3: Initialize database health check for auto-reconnection
+    if (databaseHandler != null) {
+      databaseHealthCheck = new DatabaseHealthCheck(databaseHandler, this);
+      databaseHealthCheck.start();
+      LOGGER.info("[TaN] -Database health check started");
+    }
 
     LOGGER.info("[TaN] -Loading Local data");
 
@@ -290,6 +301,12 @@ public class TownsAndNations extends JavaPlugin {
     LOGGER.info("[TaN] Savings Data");
 
     SaveStats.saveAll();
+
+    // P3.3: Stop database health check before closing connection
+    if (databaseHealthCheck != null) {
+      databaseHealthCheck.stop();
+      LOGGER.info("[TaN] -Database health check stopped");
+    }
 
     // Wait for async save operations to complete (non-blocking approach)
     // Instead of Thread.sleep which blocks the main thread, we just log completion
@@ -428,6 +445,10 @@ public class TownsAndNations extends JavaPlugin {
 
   public DatabaseHandler getDatabaseHandler() {
     return databaseHandler;
+  }
+
+  public DatabaseHealthCheck getDatabaseHealthCheck() {
+    return databaseHealthCheck;
   }
 
   /**

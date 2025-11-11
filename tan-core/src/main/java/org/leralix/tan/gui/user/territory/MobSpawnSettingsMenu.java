@@ -4,11 +4,10 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import java.util.ArrayList;
 import java.util.List;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.UpgradeStatus;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.MobChunkSpawnEnum;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
@@ -46,9 +45,10 @@ public class MobSpawnSettingsMenu extends IteratorGUI {
     for (MobChunkSpawnEnum mobType : MobChunkSpawnStorage.getMobSpawnStorage().values()) {
       UpgradeStatus status = townData.getChunkSettings().getSpawnControl(mobType);
 
-      String statusText = status.canSpawn()
-          ? Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_ACTIVATED.get(langType)
-          : Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_DEACTIVATED.get(langType);
+      String statusText =
+          status.canSpawn()
+              ? Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_ACTIVATED.get(langType)
+              : Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_DEACTIVATED.get(langType);
 
       GuiItem mobButton =
           ItemBuilder.from(HeadUtils.makeSkullB64(mobType.name(), mobType.getTexture()))

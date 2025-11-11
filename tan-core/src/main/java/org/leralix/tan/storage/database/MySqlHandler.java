@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import org.leralix.tan.TownsAndNations;
 
 public class MySqlHandler extends DatabaseHandler {
@@ -18,6 +20,11 @@ public class MySqlHandler extends DatabaseHandler {
   private final String password;
   private final TownsAndNations plugin;
   private HikariDataSource hikariDataSource;
+
+  // P3.5: Metadata caching with TTL (5 minutes)
+  private static final ConcurrentMap<String, String> metadataCache = new ConcurrentHashMap<>();
+  private static final long METADATA_CACHE_TTL = 300_000L; // 5 minutes in milliseconds
+  private static volatile long metadataCacheTime = 0;
 
   public MySqlHandler(
       TownsAndNations plugin,
@@ -107,18 +114,13 @@ public class MySqlHandler extends DatabaseHandler {
 
   @Override
   public int getNextTownId() {
-    String selectSQL = "SELECT meta_value FROM tan_metadata WHERE meta_key = 'next_town_id'";
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement ps = conn.prepareStatement(selectSQL)) {
-      try (ResultSet rs = ps.executeQuery()) {
-        if (rs.next()) {
-          return Integer.parseInt(rs.getString("meta_value"));
-        }
-      }
-    } catch (SQLException | NumberFormatException e) {
-      // Ignore, we'll insert the default value
+    // P3.5: Use cached value if available
+    if (shouldRefreshMetadataCache()) {
+      refreshMetadataCache();
     }
-    return 1;
+
+    String value = metadataCache.get("next_town_id");
+    return value != null ? Integer.parseInt(value) : 1;
   }
 
   @Override
@@ -129,6 +131,8 @@ public class MySqlHandler extends DatabaseHandler {
         PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
       ps.setString(1, String.valueOf(newId));
       ps.executeUpdate();
+      // Update cache immediately
+      metadataCache.put("next_town_id", String.valueOf(newId));
     } catch (SQLException e) {
       TownsAndNations.getPlugin()
           .getLogger()
@@ -138,18 +142,13 @@ public class MySqlHandler extends DatabaseHandler {
 
   @Override
   public int getNextRegionId() {
-    String selectSQL = "SELECT meta_value FROM tan_metadata WHERE meta_key = 'next_region_id'";
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement ps = conn.prepareStatement(selectSQL)) {
-      try (ResultSet rs = ps.executeQuery()) {
-        if (rs.next()) {
-          return Integer.parseInt(rs.getString("meta_value"));
-        }
-      }
-    } catch (SQLException | NumberFormatException e) {
-      // Ignore, we'll insert the default value
+    // P3.5: Use cached value if available
+    if (shouldRefreshMetadataCache()) {
+      refreshMetadataCache();
     }
-    return 1;
+
+    String value = metadataCache.get("next_region_id");
+    return value != null ? Integer.parseInt(value) : 1;
   }
 
   @Override
@@ -160,10 +159,39 @@ public class MySqlHandler extends DatabaseHandler {
         PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
       ps.setString(1, String.valueOf(newId));
       ps.executeUpdate();
+      // Update cache immediately
+      metadataCache.put("next_region_id", String.valueOf(newId));
     } catch (SQLException e) {
       TownsAndNations.getPlugin()
           .getLogger()
           .severe("Error updating next_region_id: " + e.getMessage());
+    }
+  }
+
+  /**
+   * Check if metadata cache needs to be refreshed
+   *
+   * @return true if cache is expired, false otherwise
+   */
+  private static boolean shouldRefreshMetadataCache() {
+    return System.currentTimeMillis() - metadataCacheTime > METADATA_CACHE_TTL;
+  }
+
+  /** Refresh metadata cache from database P3.5: Load all metadata in one query */
+  private void refreshMetadataCache() {
+    String selectSQL = "SELECT meta_key, meta_value FROM tan_metadata";
+    try (Connection conn = dataSource.getConnection();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(selectSQL)) {
+
+      while (rs.next()) {
+        metadataCache.put(rs.getString("meta_key"), rs.getString("meta_value"));
+      }
+      metadataCacheTime = System.currentTimeMillis();
+    } catch (SQLException e) {
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .warning("Error refreshing metadata cache: " + e.getMessage());
     }
   }
 
@@ -173,15 +201,20 @@ public class MySqlHandler extends DatabaseHandler {
    */
   @Override
   public void close() {
-    if (hikariDataSource != null && !hikariDataSource.isClosed()) {
-      plugin.getLogger().info("[TaN] Closing MySQL connection pool...");
+    if (dataSource instanceof HikariDataSource) {
+      HikariDataSource hikari = (HikariDataSource) dataSource;
       try {
-        hikariDataSource.close();
-        plugin.getLogger().info("[TaN] MySQL connection pool closed successfully");
+        if (!hikari.isClosed()) {
+          plugin.getLogger().info("[TaN] Closing MySQL connection pool...");
+          hikari.close();
+          plugin.getLogger().info("[TaN] MySQL connection pool closed successfully");
+        }
       } catch (Exception e) {
         plugin.getLogger().severe("[TaN] Error closing MySQL connection pool: " + e.getMessage());
       }
     }
+    // Clear metadata cache on shutdown
+    metadataCache.clear();
   }
 
   /** Reconnect to the database if connection is lost P3.4: MySQL reconnection logic */

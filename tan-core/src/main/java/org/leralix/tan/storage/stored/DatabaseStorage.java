@@ -9,6 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.storage.database.DatabaseHandler;
+import org.leralix.tan.storage.exceptions.DatabaseNotReadyException;
 
 /**
  * Base class for database-backed storage with optional caching. Each get() retrieves data from the
@@ -137,11 +138,19 @@ public abstract class DatabaseStorage<T> {
     // Load from database asynchronously
     runAsync(
         () -> {
-          T object = loadFromDatabase(id);
-          if (object != null && cacheEnabled && cache != null) {
-            cache.put(id, object);
+          try {
+            T object = loadFromDatabase(id);
+            if (object != null && cacheEnabled && cache != null) {
+              cache.put(id, object);
+            }
+            future.complete(object);
+          } catch (DatabaseNotReadyException e) {
+            // Propagate exception - caller should handle retry logic
+            future.completeExceptionally(e);
+          } catch (Exception e) {
+            // Any other exception - propagate it
+            future.completeExceptionally(e);
           }
-          future.complete(object);
         });
 
     return future;
@@ -164,18 +173,19 @@ public abstract class DatabaseStorage<T> {
    * Load an object from the database (internal method, not cached)
    *
    * @param id The ID of the object
-   * @return The object, or null if not found
+   * @return The object if found, null if not found in database
+   * @throws DatabaseNotReadyException if database connection is not available (recoverable error -
+   *     retry recommended)
    */
   private T loadFromDatabase(String id) {
     String selectSQL = "SELECT data FROM " + tableName + " WHERE id = ?";
 
     try (Connection conn = getDatabase().getDataSource().getConnection()) {
-      // Validate connection
+      // Validate connection - throw exception instead of returning null
       if (conn == null || conn.isClosed()) {
-        TownsAndNations.getPlugin()
-            .getLogger()
-            .severe("Database connection is null or closed for " + typeClass.getSimpleName());
-        return null;
+        String errorMsg = "Database connection is null or closed for " + typeClass.getSimpleName();
+        TownsAndNations.getPlugin().getLogger().severe(errorMsg);
+        throw new DatabaseNotReadyException(errorMsg);
       }
 
       try (PreparedStatement ps = conn.prepareStatement(selectSQL)) {
@@ -197,21 +207,33 @@ public abstract class DatabaseStorage<T> {
 
             return gson.fromJson(jsonData, typeToken);
           }
+          // Player not found in database - return null (not an error, just not found)
+          return null;
         }
       }
-    } catch (SQLException | JsonSyntaxException e) {
-      TownsAndNations.getPlugin()
-          .getLogger()
-          .severe(
-              "Error retrieving "
-                  + typeClass.getSimpleName()
-                  + " with ID "
-                  + id
-                  + ": "
-                  + e.getMessage());
+    } catch (SQLException e) {
+      // SQL errors might indicate temporary database issues - throw DatabaseNotReadyException
+      String errorMsg =
+          "SQL error retrieving "
+              + typeClass.getSimpleName()
+              + " with ID "
+              + id
+              + ": "
+              + e.getMessage();
+      TownsAndNations.getPlugin().getLogger().severe(errorMsg);
+      throw new DatabaseNotReadyException(errorMsg, e);
+    } catch (JsonSyntaxException e) {
+      // JSON parsing errors indicate corrupted data - this is NOT recoverable
+      String errorMsg =
+          "JSON parsing error for "
+              + typeClass.getSimpleName()
+              + " with ID "
+              + id
+              + ": "
+              + e.getMessage();
+      TownsAndNations.getPlugin().getLogger().severe(errorMsg);
+      throw new RuntimeException(errorMsg, e);
     }
-
-    return null;
   }
 
   /**
@@ -697,6 +719,15 @@ public abstract class DatabaseStorage<T> {
    * @return true if exists, false otherwise
    */
   public boolean exists(String id) {
+    // OPTIMIZATION: Check cache first
+    if (cacheEnabled && cache != null) {
+      synchronized (cache) {
+        if (cache.containsKey(id)) {
+          return true;
+        }
+      }
+    }
+
     String selectSQL = "SELECT 1 FROM " + tableName + " WHERE id = ?";
 
     try (Connection conn = getDatabase().getDataSource().getConnection();
@@ -828,15 +859,17 @@ public abstract class DatabaseStorage<T> {
         () -> {
           try {
             int offset = 0;
-            int totalCount = count();
+            boolean hasMore = true;
 
-            while (offset < totalCount) {
+            // Process batches without counting total (avoids blocking count() call)
+            while (hasMore) {
               Map<String, T> batch = getPaginated(offset, batchSize).join();
               if (batch.isEmpty()) {
-                break;
+                hasMore = false;
+              } else {
+                consumer.accept(batch);
+                offset += batchSize;
               }
-              consumer.accept(batch);
-              offset += batchSize;
             }
 
             future.complete(null);

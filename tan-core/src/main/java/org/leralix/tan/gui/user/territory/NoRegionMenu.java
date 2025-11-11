@@ -5,7 +5,6 @@ import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.BrowseScope;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -15,7 +14,6 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.CreateRegion;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -68,19 +66,26 @@ public class NoRegionMenu extends BasicGui {
                 TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer), NOT_ALLOWED);
                 return;
               }
-              TownData townData = TownDataStorage.getInstance().getSync(player);
-              double townMoney = townData.getBalance();
-              if (townMoney < regionCost) {
-                TanChatUtils.message(
-                    player,
-                    Lang.TERRITORY_NOT_ENOUGH_MONEY.get(
-                        tanPlayer,
-                        townData.getColoredName(),
-                        Double.toString(regionCost - townMoney)));
-              } else {
-                TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(tanPlayer));
-                PlayerChatListenerStorage.register(player, new CreateRegion(regionCost));
-              }
+              // OPTIMIZATION: Use async to avoid blocking on player click
+              tanPlayer
+                  .getTown()
+                  .thenAccept(
+                      townData -> {
+                        if (townData == null) return;
+                        double townMoney = townData.getBalance();
+                        if (townMoney < regionCost) {
+                          TanChatUtils.message(
+                              player,
+                              Lang.TERRITORY_NOT_ENOUGH_MONEY.get(
+                                  tanPlayer,
+                                  townData.getColoredName(),
+                                  Double.toString(regionCost - townMoney)));
+                        } else {
+                          TanChatUtils.message(
+                              player, Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(tanPlayer));
+                          PlayerChatListenerStorage.register(player, new CreateRegion(regionCost));
+                        }
+                      });
             })
         .asGuiItem(player, langType);
   }
@@ -94,8 +99,12 @@ public class NoRegionMenu extends BasicGui {
                 Integer.toString(RegionDataStorage.getInstance().getAllSync().size())),
             Lang.GUI_REGION_BROWSE_DESC2.get())
         .setAction(
-            action ->
-                new BrowseTerritoryMenu(player, tanPlayer, null, BrowseScope.REGIONS, p -> open()))
+            action -> {
+              BrowseTerritoryMenu browseMenu =
+                  new BrowseTerritoryMenu(
+                      player, tanPlayer, null, BrowseScope.REGIONS, p -> open());
+              browseMenu.open();
+            })
         .asGuiItem(player, langType);
   }
 }

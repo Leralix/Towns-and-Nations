@@ -9,7 +9,6 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.gui.IteratorGUI;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -32,7 +31,13 @@ public class AdminBrowseRegionMenu extends IteratorGUI {
   @Override
   public void open() {
     GuiUtil.createIterator(
-        gui, getRegions(), page, player, p -> AdminMainMenu.open(player), p -> nextPage(), p -> previousPage());
+        gui,
+        getRegions(),
+        page,
+        player,
+        p -> AdminMainMenu.open(player),
+        p -> nextPage(),
+        p -> previousPage());
 
     gui.open(player);
   }

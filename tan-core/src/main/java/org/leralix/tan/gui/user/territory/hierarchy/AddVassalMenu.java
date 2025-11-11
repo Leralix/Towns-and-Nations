@@ -40,8 +40,7 @@ public class AddVassalMenu extends IteratorGUI {
 
   private List<GuiItem> getAvailableTowns() {
     List<GuiItem> items = new ArrayList<>();
-    List<TownData> allTowns =
-        new ArrayList<>(TownDataStorage.getInstance().getAllSync().values());
+    List<TownData> allTowns = new ArrayList<>(TownDataStorage.getInstance().getAllSync().values());
 
     for (TownData town : allTowns) {
       // Skip if already a vassal or is the overlord itself

@@ -21,6 +21,7 @@ import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TerritoryIndependanceInternalEvent;
+import org.leralix.tan.gui.user.territory.RegionMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -31,8 +32,6 @@ import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
-import org.leralix.tan.utils.text.TanChatUtils;
-import org.leralix.tan.gui.user.territory.RegionMenu;
 
 public class RegionData extends TerritoryData {
 

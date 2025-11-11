@@ -9,7 +9,6 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.IteratorGUI;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -32,14 +31,19 @@ public class AdminBrowseTownMenu extends IteratorGUI {
   @Override
   public void open() {
     GuiUtil.createIterator(
-        gui, getTowns(), page, player, p -> AdminMainMenu.open(player), p -> nextPage(), p -> previousPage());
+        gui,
+        getTowns(),
+        page,
+        player,
+        p -> AdminMainMenu.open(player),
+        p -> nextPage(),
+        p -> previousPage());
 
     gui.open(player);
   }
 
   private List<GuiItem> getTowns() {
-    List<TownData> townList =
-        new ArrayList<>(TownDataStorage.getInstance().getAllSync().values());
+    List<TownData> townList = new ArrayList<>(TownDataStorage.getInstance().getAllSync().values());
 
     ArrayList<GuiItem> townGuiItems = new ArrayList<>();
 

@@ -36,7 +36,13 @@ public class AdminWarsMenu extends IteratorGUI {
   public void open() {
     // Show immediate loading screen with cached data
     GuiUtil.createIterator(
-        gui, cachedWars, page, player, p -> AdminMainMenu.open(player), p -> nextPage(), p -> previousPage());
+        gui,
+        cachedWars,
+        page,
+        player,
+        p -> AdminMainMenu.open(player),
+        p -> nextPage(),
+        p -> previousPage());
     gui.open(player);
 
     // Load data asynchronously if not already loaded
@@ -48,7 +54,13 @@ public class AdminWarsMenu extends IteratorGUI {
             cachedWars = items;
             isLoaded = true;
             GuiUtil.createIterator(
-                gui, items, page, player, p -> AdminMainMenu.open(player), p -> nextPage(), p -> previousPage());
+                gui,
+                items,
+                page,
+                player,
+                p -> AdminMainMenu.open(player),
+                p -> nextPage(),
+                p -> previousPage());
             gui.update();
           });
     }
