@@ -13,6 +13,7 @@ import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.CreateRegion;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
@@ -21,10 +22,19 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 public class NoRegionMenu extends BasicGui {
 
-  public NoRegionMenu(Player player, ITanPlayer tanPlayer) {
+  private NoRegionMenu(Player player, ITanPlayer tanPlayer) {
     super(player, tanPlayer, Lang.HEADER_NO_REGION.get(player), 3);
     // open() doit être appelé explicitement après la construction pour respecter le modèle
     // asynchrone
+  }
+
+  public static void open(Player player) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new NoRegionMenu(player, tanPlayer).open();
+            });
   }
 
   @Override

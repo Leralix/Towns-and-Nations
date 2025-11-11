@@ -50,8 +50,6 @@ public class OpenDiplomacyMenu extends BasicGui {
     gui.setItem(15, getAllianceButton());
     gui.setItem(17, getProposalButton());
 
-    // TODO: Replace with proper territory menu navigation after PlayerGUI migration
-    // Original: GuiUtil.createBackArrow(player, p -> PlayerGUI.dispatchPlayerTown(player))
     gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player)));
 
     gui.open(player);

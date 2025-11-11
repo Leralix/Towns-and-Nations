@@ -14,6 +14,7 @@ import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.RegionDeletednternalEvent;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.MainMenu;
+import org.leralix.tan.gui.utils.ConfirmMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -106,17 +107,19 @@ public class RegionSettingsMenu extends SettingsMenus {
                 return;
               }
 
-              // TODO: Restore confirmation dialog after PlayerGUI migration
-              // Original: PlayerGUI.openConfirmMenu(player, confirmMsg, onConfirm, onCancel)
-              // Temporary: Direct deletion without confirmation
-              FileUtil.addLineToHistory(
-                  Lang.REGION_DELETED_NEWSLETTER.get(player.getName(), regionData.getName()));
-
-              EventManager.getInstance()
-                  .callEvent(new RegionDeletednternalEvent(regionData, tanPlayer));
-              regionData.delete();
-              SoundUtil.playSound(player, GOOD);
-              MainMenu.open(player);
+              ConfirmMenu.open(
+                  player,
+                  Lang.GUI_CONFIRM_DELETE_REGION.get(),
+                  p -> {
+                    FileUtil.addLineToHistory(
+                        Lang.REGION_DELETED_NEWSLETTER.get(player.getName(), regionData.getName()));
+                    EventManager.getInstance()
+                        .callEvent(new RegionDeletednternalEvent(regionData, tanPlayer));
+                    regionData.delete();
+                    SoundUtil.playSound(player, GOOD);
+                    MainMenu.open(player);
+                  },
+                  p -> open());
             })
         .asGuiItem(player, langType);
   }

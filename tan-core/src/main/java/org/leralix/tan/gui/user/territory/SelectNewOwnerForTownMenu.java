@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.IteratorGUI;
+import org.leralix.tan.gui.utils.ConfirmMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
@@ -61,19 +62,18 @@ public class SelectNewOwnerForTownMenu extends IteratorGUI {
                   event -> {
                     event.setCancelled(true);
 
-                    // TODO: Restore confirmation dialog after PlayerGUI migration
-                    // Original: PlayerGUI.openConfirmMenu(player, confirmMsg, confirmAction,
-                    // cancelAction)
-                    // Temporary: Direct ownership transfer without confirmation
-                    townData.setLeaderID(townPlayer.getUniqueId().toString());
-                    TanChatUtils.message(
+                    ConfirmMenu.open(
                         player,
-                        Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(
-                            tanPlayer, townPlayer.getName()));
-
-                    // TODO: Replace with proper town menu navigation after PlayerGUI migration
-                    // Original: PlayerGUI.dispatchPlayerTown(player);
-                    player.closeInventory();
+                        Lang.GUI_CONFIRM_CHANGE_TOWN_LEADER.get(),
+                        p -> {
+                          townData.setLeaderID(townPlayer.getUniqueId().toString());
+                          TanChatUtils.message(
+                              player,
+                              Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS
+                                  .get(tanPlayer, townPlayer.getName()));
+                          townData.openMainMenu(player);
+                        },
+                        p -> open());
                   });
       guiItems.add(playerHeadIcon);
     }

@@ -13,6 +13,7 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
+import org.leralix.tan.gui.utils.ConfirmMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
@@ -38,9 +39,7 @@ public class VassalsMenu extends IteratorGUI {
 
   @Override
   public void open() {
-    // TODO: Replace with hierarchy menu after PlayerGUI migration
-    // Original: p -> PlayerGUI.openHierarchyMenu(player, territoryData)
-    iterator(getVassals(), p -> player.closeInventory());
+    iterator(getVassals(), p -> territoryData.openMainMenu(player));
 
     gui.setItem(4, 3, getAddVassalButton());
 
@@ -62,9 +61,7 @@ public class VassalsMenu extends IteratorGUI {
                 TanChatUtils.message(player, Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
                 return;
               }
-              // TODO: Implement add vassal GUI after PlayerGUI migration
-              // Original: PlayerGUI.openAddVassal(player, territoryData, 0);
-              TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), BAD);
+              AddVassalMenu.open(player, territoryData);
             });
   }
 
@@ -95,14 +92,16 @@ public class VassalsMenu extends IteratorGUI {
                           player, Lang.CANT_KICK_REGIONAL_CAPITAL.get(tanPlayer, vassal.getName()));
                       return;
                     }
-                    // TODO: Restore confirmation dialog after PlayerGUI migration
-                    // Original: PlayerGUI.openConfirmMenu(player, "", confirmAction,
-                    // previousAction)
-                    // Temporary: Direct vassal removal without confirmation
-                    territoryData.broadcastMessageWithSound(
-                        Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(vassal.getName()), BAD);
-                    vassal.removeOverlord();
-                    player.closeInventory();
+                    ConfirmMenu.open(
+                        player,
+                        Lang.GUI_REGION_KICK_TOWN_DESC1.get(),
+                        p -> {
+                          territoryData.broadcastMessageWithSound(
+                              Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(vassal.getName()), BAD);
+                          vassal.removeOverlord();
+                          open();
+                        },
+                        p -> open());
                   })
               .asGuiItem(player, langType);
       res.add(vassalButton);

@@ -83,4 +83,53 @@ nb-configuration.xml
 ## OS X
 ##############################
 .DS_Store
+
+##############################
+## Windows
+##############################
+Thumbs.db
+desktop.ini
+
+##############################
+## Minecraft Server Testing
+##############################
+logs/
+crash-reports/
+server.properties
+eula.txt
+usercache.json
+banned-ips.json
+banned-players.json
+ops.json
+whitelist.json
+world/
+world_nether/
+world_the_end/
+plugins/
+!plugins/*.jar
+
+##############################
+## Test & Coverage Reports
+##############################
+**/jacoco.exec
+**/jacocoTestReport.xml
+test-results/
+test-output/
+*.log
+
+##############################
+## Database
+##############################
+*.db
+*.sqlite
+*.db-shm
+*.db-wal
 src/test/resources/database/main.db
+
+##############################
+## Temporary & Backup
+##############################
+*.tmp
+*.temp
+*~
+.~lock.*

@@ -12,6 +12,8 @@ import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.player.PlayerMenu;
+import org.leralix.tan.gui.user.territory.NoRegionMenu;
+import org.leralix.tan.gui.user.territory.NoTownMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -120,7 +122,7 @@ public class MainMenu extends BasicGui {
               if (tanPlayer.hasRegion()) {
                 tanPlayer.getRegionSync().openMainMenu(player);
               } else {
-                player.closeInventory();
+                NoRegionMenu.open(player);
               }
             })
         .asGuiItem(player, langType);
@@ -150,7 +152,7 @@ public class MainMenu extends BasicGui {
               if (tanPlayer.hasTown()) {
                 tanPlayer.getTownSync().openMainMenu(player);
               } else {
-                player.closeInventory();
+                NoTownMenu.open(player);
               }
             })
         .asGuiItem(player, langType);

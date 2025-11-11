@@ -11,6 +11,7 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.utils.ConfirmMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangePropertyDescription;
@@ -174,11 +175,14 @@ public abstract class PropertyMenus extends BasicGui {
         .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
         .setAction(
             event -> {
-              // TODO: Restore confirmation dialog after PlayerGUI migration
-              // Original: PlayerGUI.openConfirmMenu(player, confirmMsg, onConfirm, onCancel)
-              // Temporary: Direct deletion without confirmation
-              propertyData.delete();
-              player.closeInventory();
+              ConfirmMenu.open(
+                  player,
+                  Lang.GUI_PROPERTY_DELETE_PROPERTY_CONFIRM.get(),
+                  p -> {
+                    propertyData.delete();
+                    player.closeInventory();
+                  },
+                  p -> open());
             })
         .asGuiItem(player, langType);
   }

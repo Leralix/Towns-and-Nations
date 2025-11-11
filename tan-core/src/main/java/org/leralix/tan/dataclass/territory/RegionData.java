@@ -32,6 +32,7 @@ import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
+import org.leralix.tan.gui.user.territory.RegionMenu;
 
 public class RegionData extends TerritoryData {
 
@@ -272,10 +273,7 @@ public class RegionData extends TerritoryData {
 
   @Override
   public void openMainMenu(Player player) {
-    // TEMPORARY FIX: PlayerGUI.dispatchPlayerRegion disabled while legacy GUIs migrated
-    // TODO: Re-enable after Sprint 2 GUI async migration
-    TanChatUtils.message(player, "Region menu temporarily disabled during migration");
-    // PlayerGUI.dispatchPlayerRegion(player);
+    RegionMenu.open(player, this);
   }
 
   @Override

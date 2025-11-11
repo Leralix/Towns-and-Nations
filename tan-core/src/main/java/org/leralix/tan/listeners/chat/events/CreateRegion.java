@@ -68,8 +68,6 @@ public class CreateRegion extends ChatListenerEvent {
     EventManager.getInstance()
         .callEvent(new RegionCreatedInternalEvent(newRegion, TanPlayerWrapper.of(playerData)));
 
-    // TODO: Replace with proper region menu navigation after PlayerGUI migration
-    // Original: openGui(p -> PlayerGUI.dispatchPlayerRegion(player), player);
-    openGui(p -> player.closeInventory(), player);
+    openGui(p -> newRegion.openMainMenu(player), player);
   }
 }

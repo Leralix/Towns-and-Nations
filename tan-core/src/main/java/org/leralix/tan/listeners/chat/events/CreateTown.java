@@ -67,8 +67,6 @@ public class CreateTown extends ChatListenerEvent {
     org.leralix.tan.utils.FoliaScheduler.runTask(
         TownsAndNations.getPlugin(), () -> TeamUtils.setIndividualScoreBoard(player));
 
-    // TODO: Replace with proper town menu navigation after PlayerGUI migration
-    // Original: openGui(p -> PlayerGUI.dispatchPlayerTown(player), player);
-    openGui(p -> player.closeInventory(), player);
+    openGui(p -> newTown.openMainMenu(player), player);
   }
 }

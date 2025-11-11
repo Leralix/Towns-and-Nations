@@ -69,13 +69,7 @@ public class ChunkSettingsMenu extends BasicGui {
         .setRequirements(
             new RankPermissionRequirement(
                 territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS))
-        .setAction(
-            event -> {
-              // TODO: Implement chunk general settings GUI after PlayerGUI migration
-              // Original: PlayerGUI.openChunkGeneralSettings(player, territoryData)
-              TanChatUtils.message(
-                  player, Lang.PLAYER_NO_PERMISSION.get(langType), SoundEnum.NOT_ALLOWED);
-            })
+        .setAction(event -> ChunkGeneralSettingsMenu.open(player, territoryData))
         .asGuiItem(player, langType);
   }
 
@@ -91,10 +85,7 @@ public class ChunkSettingsMenu extends BasicGui {
               if (territoryData instanceof TownData townData) {
                 boolean canAccess = townData.getNewLevel().getStat(EnableMobBan.class).isEnabled();
                 if (canAccess) {
-                  // TODO: Implement mob spawn settings GUI after PlayerGUI migration
-                  // Original: PlayerGUI.openTownChunkMobSettings(player, 0)
-                  TanChatUtils.message(
-                      player, Lang.PLAYER_NO_PERMISSION.get(langType), SoundEnum.NOT_ALLOWED);
+                  MobSpawnSettingsMenu.open(player, townData);
                 } else {
                   TanChatUtils.message(
                       player,

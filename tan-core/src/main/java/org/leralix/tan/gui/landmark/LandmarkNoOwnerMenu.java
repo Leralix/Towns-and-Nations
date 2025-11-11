@@ -16,6 +16,7 @@ import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.utils.ConfirmMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -118,20 +119,16 @@ public class LandmarkNoOwnerMenu extends BasicGui {
                 return;
               }
 
-              double actualBalance = playerTown.getBalance();
-              double newBalance = actualBalance - cost;
-
-              // TODO: Restore confirmation dialog after PlayerGUI migration
-              // Original: PlayerGUI.openConfirmMenu(player, confirmMsg, confirmAction,
-              // cancelAction)
-              // Temporary: Direct landmark claim without confirmation
-              playerTown.removeFromBalance(cost);
-              landmark.setOwner(playerTown);
-              playerTown.broadcastMessageWithSound(Lang.GUI_LANDMARK_CLAIMED.get(), GOOD);
-
-              // TODO: Implement landmark GUI after PlayerGUI migration
-              // Original: PlayerGUI.dispatchLandmarkGui(player, landmark);
-              player.closeInventory();
+              ConfirmMenu.open(
+                  player,
+                  Lang.GUI_LANDMARK_LEFT_CLICK_TO_CLAIM.get(),
+                  p -> {
+                    playerTown.removeFromBalance(cost);
+                    landmark.setOwner(playerTown);
+                    playerTown.broadcastMessageWithSound(Lang.GUI_LANDMARK_CLAIMED.get(), GOOD);
+                    player.closeInventory();
+                  },
+                  p -> open());
             })
         .asGuiItem(player, langType);
   }

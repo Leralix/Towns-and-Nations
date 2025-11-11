@@ -32,6 +32,8 @@ import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
+import org.leralix.tan.gui.utils.ConfirmMenu;
+import org.leralix.tan.gui.user.territory.TownMenu;
 
 public class TownData extends TerritoryData {
 
@@ -453,21 +455,15 @@ public class TownData extends TerritoryData {
                         return;
                       }
 
-                      // TEMPORARY FIX: PlayerGUI.openConfirmMenu disabled while legacy GUIs
-                      // migrated
-                      // TODO: Re-enable after Sprint 2 GUI async migration
-                      TanChatUtils.message(
-                          player, "Kick feature temporarily disabled during migration");
-                      /*
-                      PlayerGUI.openConfirmMenu(
+                      // Open confirmation menu for kicking player
+                      ConfirmMenu.open(
                           player,
-                          Lang.CONFIRM_PLAYER_KICKED.get(langType, playerIterate.getName()),
-                          confirmAction -> {
+                          Lang.CONFIRM_PLAYER_KICKED.get(playerIterate.getName()),
+                          p -> {
                             kickPlayer(playerIterate);
-                            new TerritoryMemberMenu(player, this).open();
+                            openMainMenu(player);
                           },
-                          p -> new TerritoryMemberMenu(player, this).open());
-                      */
+                          p -> openMainMenu(player));
                     }
                   });
       res.add(playerButton);
@@ -647,10 +643,7 @@ public class TownData extends TerritoryData {
 
   @Override
   public void openMainMenu(Player player) {
-    // TEMPORARY FIX: PlayerGUI.dispatchPlayerTown disabled while legacy GUIs migrated
-    // TODO: Re-enable after Sprint 2 GUI async migration
-    TanChatUtils.message(player, "Main menu temporarily disabled during migration");
-    // PlayerGUI.dispatchPlayerTown(player);
+    TownMenu.open(player, this);
   }
 
   @Override

@@ -20,6 +20,7 @@ import org.leralix.tan.events.events.TownDeletedInternalEvent;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.LeaderRequirement;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
+import org.leralix.tan.gui.utils.ConfirmMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
@@ -156,15 +157,17 @@ public class TownSettingsMenu extends SettingsMenus {
                 }
               }
 
-              // TODO: Restore confirmation dialog after PlayerGUI migration
-              // Original: PlayerGUI.openConfirmMenu(player, confirmMsg, confirmAction,
-              // cancelAction)
-              // Temporary: Direct quit without confirmation
-              player.closeInventory();
-              townData.removePlayer(tanPlayer);
-              TanChatUtils.message(player, Lang.CHAT_PLAYER_LEFT_THE_TOWN.get(tanPlayer));
-              townData.broadcastMessageWithSound(
-                  Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(tanPlayer.getNameStored()), BAD);
+              ConfirmMenu.open(
+                  player,
+                  Lang.GUI_CONFIRM_PLAYER_LEAVE_TOWN.get(),
+                  p -> {
+                    townData.removePlayer(tanPlayer);
+                    TanChatUtils.message(player, Lang.CHAT_PLAYER_LEFT_THE_TOWN.get(tanPlayer));
+                    townData.broadcastMessageWithSound(
+                        Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(tanPlayer.getNameStored()),
+                        BAD);
+                  },
+                  p -> open());
             })
         .asGuiItem(player, langType);
   }
@@ -193,17 +196,18 @@ public class TownSettingsMenu extends SettingsMenus {
                 return;
               }
 
-              // TODO: Restore confirmation dialog after PlayerGUI migration
-              // Original: PlayerGUI.openConfirmMenu(player, confirmMsg, confirmAction,
-              // cancelAction)
-              // Temporary: Direct deletion without confirmation
-              FileUtil.addLineToHistory(
-                  Lang.TOWN_DELETED_NEWSLETTER.get(player.getName(), townData.getName()));
-              EventManager.getInstance()
-                  .callEvent(new TownDeletedInternalEvent(townData, tanPlayer));
-              townData.delete();
-              player.closeInventory();
-              SoundUtil.playSound(player, GOOD);
+              ConfirmMenu.open(
+                  player,
+                  Lang.GUI_CONFIRM_PLAYER_DELETE_TOWN.get(),
+                  p -> {
+                    FileUtil.addLineToHistory(
+                        Lang.TOWN_DELETED_NEWSLETTER.get(player.getName(), townData.getName()));
+                    EventManager.getInstance()
+                        .callEvent(new TownDeletedInternalEvent(townData, tanPlayer));
+                    townData.delete();
+                    SoundUtil.playSound(player, GOOD);
+                  },
+                  p -> open());
             })
         .asGuiItem(player, langType);
   }
