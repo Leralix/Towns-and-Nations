@@ -58,14 +58,14 @@ public class CreateAttackMenu extends BasicGui {
 
     private @NotNull GuiItem getConfirmButton() {
 
-        boolean isOutsideOfSlots = isIsOutsideOfSlots();
+        boolean isAuthorized = isStartDateAuthorized();
 
-        IconKey iconKey = isOutsideOfSlots ? IconKey.CONFIRM_WAR_START_ICON : IconKey.CONFIRM_WAR_START_IMPOSSIBLE_ICON;
+        IconKey iconKey = isAuthorized ? IconKey.CONFIRM_WAR_START_ICON : IconKey.CONFIRM_WAR_START_IMPOSSIBLE_ICON;
 
         return iconManager.get(iconKey)
                 .setName(Lang.GUI_CONFIRM_ATTACK.get(tanPlayer))
                 .setClickToAcceptMessage(
-                        isOutsideOfSlots ?
+                        isAuthorized ?
                                 Lang.GUI_GENERIC_CLICK_TO_PROCEED
                                 : Lang.GUI_WARGOAL_OUTSIDE_AUTHORIZED_SLOTS
 
@@ -73,7 +73,7 @@ public class CreateAttackMenu extends BasicGui {
                 .setAction(event -> {
                     event.setCancelled(true);
 
-                    if (!isOutsideOfSlots) {
+                    if (!isAuthorized) {
                         SoundUtil.playSound(player, REMOVE);
                         return;
                     }
@@ -87,9 +87,9 @@ public class CreateAttackMenu extends BasicGui {
 
     }
 
-    private boolean isIsOutsideOfSlots() {
+    private boolean isStartDateAuthorized() {
         Instant warStart = Instant.now().plusSeconds(attackData.getSelectedTime() * 60L);
-        return !Constants.getWarTimeSlot().canWarBeDeclared(warStart);
+        return Constants.getWarTimeSlot().canWarBeDeclared(warStart);
     }
 
     private @NotNull GuiItem getAddTimeButton() {
@@ -123,7 +123,7 @@ public class CreateAttackMenu extends BasicGui {
         availableTimeSlots.addAll(Constants.getWarTimeSlot().getPrintedTimeSlots());
 
         return IconManager.getInstance().get(IconKey.WAR_START_TIME_ICON)
-                .setName(Lang.GUI_ATTACK_SET_TO_START_IN.get(tanPlayer, DateUtil.getDateStringFromTicks(attackData.getSelectedTime())))
+                .setName(Lang.GUI_ATTACK_SET_TO_START_IN.get(tanPlayer, DateUtil.getDateStringFromMinutes(attackData.getSelectedTime())))
                 .setDescription(availableTimeSlots)
                 .asGuiItem(player, langType);
     }

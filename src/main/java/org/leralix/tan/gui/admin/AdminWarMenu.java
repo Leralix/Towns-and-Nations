@@ -1,9 +1,7 @@
 package org.leralix.tan.gui.admin;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
@@ -17,7 +15,7 @@ public class AdminWarMenu extends IteratorGUI {
 
     private final Collection<PlannedAttack> plannedAttackList;
 
-    public AdminWarMenu(Player player){
+    public AdminWarMenu(Player player) {
         super(player, Lang.HEADER_ADMIN_WAR_MENU, 6);
         plannedAttackList = PlannedAttackStorage.getInstance().getAll().values();
         open();
@@ -33,20 +31,20 @@ public class AdminWarMenu extends IteratorGUI {
     private List<GuiItem> getWars() {
         List<GuiItem> res = new ArrayList<>();
         for (PlannedAttack plannedAttack : plannedAttackList) {
-            ItemStack icon = plannedAttack.getAdminIcon(langType);
 
-            GuiItem item = ItemBuilder.from(icon).asGuiItem(event -> {
-                event.setCancelled(true);
-                if (!plannedAttack.isAdminApproved()) {
-                    if (event.isLeftClick()) {
-                        plannedAttack.setAdminApproved(true);
-                    } else if (event.isRightClick()) {
-                        plannedAttack.end();
-                    }
-                }
-                open();
-            });
-            res.add(item);
+            res.add(plannedAttack.getAdminIcon(iconManager, langType, tanPlayer.getTimeZone())
+                    .setAction(action -> {
+                        if (!plannedAttack.isAdminApproved()) {
+                            if (action.isLeftClick()) {
+                                plannedAttack.setAdminApproved(true);
+                            } else if (action.isRightClick()) {
+                                plannedAttack.end();
+                            }
+                        }
+                        open();
+                    })
+                    .asGuiItem(player, langType)
+            );
         }
         return res;
     }

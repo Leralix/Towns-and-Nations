@@ -27,7 +27,7 @@ import java.util.UUID;
 
 public class PlayerData implements ITanPlayer {
 
-    private String UUID;
+    private final String UUID;
     private String storedName;
     private Double Balance;
     private String TownId;
@@ -95,6 +95,10 @@ public class PlayerData implements ITanPlayer {
     public boolean isTownOverlord() {
         if (!hasTown())
             return false;
+        TownData townData = getTown();
+        if (townData == null) {
+            return false;
+        }
         return getTown().isLeader(this.UUID);
     }
 

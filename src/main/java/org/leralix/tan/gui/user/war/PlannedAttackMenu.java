@@ -130,8 +130,11 @@ public class PlannedAttackMenu extends BasicGui {
     }
 
     private @NotNull GuiItem getAttackIcon() {
-        return  ItemBuilder.from(plannedAttack.getIcon(tanPlayer, territoryData)).asGuiItem();
-
+        return plannedAttack.getIcon(
+                iconManager,
+                tanPlayer.getLang(),
+                tanPlayer.getTimeZone()
+        ).asGuiItem(player, langType);
     }
 
 

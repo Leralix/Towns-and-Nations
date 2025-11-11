@@ -40,7 +40,7 @@ public class WarMenu extends BasicGui {
         gui.setItem(2, 4, getAttackButton());
         gui.setItem(2, 6, getEnemyWargoalsIcon());
         gui.setItem(2, 7, getSurrenderButton());
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new WarsMenu(player, territoryData)));
         gui.open(player);
     }
 

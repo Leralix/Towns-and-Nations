@@ -38,7 +38,10 @@ public class TimeZoneManager {
     }
 
     public FilledLang formatDateForPlayer(ITanPlayer tanPlayer, Instant timestamp) {
-        TimeZoneEnum timeZone = tanPlayer.getTimeZone();
+        return formatDate(timestamp, tanPlayer.getTimeZone());
+    }
+
+    public FilledLang formatDate(Instant timestamp, TimeZoneEnum timeZone) {
         return getDate(timestamp, timeZone);
     }
 
@@ -53,7 +56,7 @@ public class TimeZoneManager {
     private static FilledLang getDate(Instant timestamp, TimeZoneEnum timeZone) {
         ZonedDateTime zonedDateTime = timestamp.atZone(timeZone.toZoneOffset());
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM HH:mm").withLocale(Locale.ENGLISH);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm").withLocale(Locale.ENGLISH);
         return Lang.STRING.get(formatter.format(zonedDateTime));
     }
 
