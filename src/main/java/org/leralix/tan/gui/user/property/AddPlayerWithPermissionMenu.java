@@ -28,7 +28,7 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
     private final BrowsePlayerWithPermissionMenu returnMenu;
 
     public AddPlayerWithPermissionMenu(Player player, PermissionManager permissionManager, ChunkPermissionType chunkPermission, BrowsePlayerWithPermissionMenu browsePlayerWithPermissionMenu) {
-        super(player, chunkPermission.getLabel(player), 3);
+        super(player, chunkPermission.getLabel(), 3);
 
         this.permissionManager = permissionManager;
         this.chunkPermission = chunkPermission;

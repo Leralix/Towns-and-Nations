@@ -1,6 +1,5 @@
 package org.leralix.tan.enums.permissions;
 
-import org.bukkit.entity.Player;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -33,8 +32,8 @@ public enum ChunkPermissionType {
         this.label = label;
     }
 
-    public String getLabel(Player player) {
-        return label.get(player);
+    public Lang getLabel() {
+        return label;
     }
 
     public String getLabel(LangType langType) {

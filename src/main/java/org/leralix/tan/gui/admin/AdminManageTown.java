@@ -16,7 +16,7 @@ public class AdminManageTown extends AdminManageTerritory {
     private final TownData townData;
 
     public AdminManageTown(Player player, TownData townData) {
-        super(player, Lang.HEADER_ADMIN_SPECIFIC_REGION_MENU.get(player, townData.getName()), 3, townData);
+        super(player, Lang.HEADER_ADMIN_SPECIFIC_REGION_MENU.get(townData.getName()), 3, townData);
         this.townData = townData;
         open();
     }

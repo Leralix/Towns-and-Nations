@@ -36,7 +36,7 @@ public class CreateAttackMenu extends BasicGui {
     private final WarRole warRole;
 
     public CreateAttackMenu(Player player, TerritoryData territoryData, War war, WarRole warRole) {
-        super(player, Lang.HEADER_CREATE_WAR_MANAGER.get(player, war.getMainDefender().getName()), 3);
+        super(player, Lang.HEADER_CREATE_WAR_MANAGER.get(war.getMainDefender().getName()), 3);
         this.territoryData = territoryData;
         this.war = war;
         this.warRole = warRole;

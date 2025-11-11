@@ -16,7 +16,7 @@ public class AdminSelectNewOverlord extends IteratorGUI {
     private final TownData townData;
 
     public AdminSelectNewOverlord(Player player, TownData townData) {
-        super(player, Lang.HEADER_ADMIN_CHANGE_OVERLORD.get(player, townData.getName()), 6);
+        super(player, Lang.HEADER_ADMIN_CHANGE_OVERLORD.get(townData.getName()), 6);
         this.townData = townData;
         open();
     }

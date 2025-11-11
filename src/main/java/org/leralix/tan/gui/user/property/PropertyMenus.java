@@ -8,6 +8,7 @@ import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangePropertyDescription;
@@ -25,7 +26,7 @@ public abstract class PropertyMenus extends BasicGui {
 
     protected final PropertyData propertyData;
 
-    protected PropertyMenus(Player player, String title, int rows, PropertyData propertyData) {
+    protected PropertyMenus(Player player, FilledLang title, int rows, PropertyData propertyData) {
         super(player, title, rows);
         this.propertyData = propertyData;
     }

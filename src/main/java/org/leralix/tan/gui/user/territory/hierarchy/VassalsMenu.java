@@ -23,7 +23,7 @@ public class VassalsMenu extends IteratorGUI {
     private final TerritoryData territoryData;
 
     public VassalsMenu(Player player, TerritoryData territoryData) {
-        super(player, Lang.HEADER_VASSALS.get(player), 4);
+        super(player, Lang.HEADER_VASSALS, 4);
         this.territoryData = territoryData;
         open();
     }

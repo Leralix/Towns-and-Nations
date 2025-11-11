@@ -37,7 +37,7 @@ public class TownSettingsMenu extends SettingsMenus {
     private final TownData townData;
 
     public TownSettingsMenu(Player player, TownData townData) {
-        super(player, Lang.HEADER_SETTINGS.get(player), townData, 4);
+        super(player, Lang.HEADER_SETTINGS, townData, 4);
         this.townData = townData;
         open();
     }

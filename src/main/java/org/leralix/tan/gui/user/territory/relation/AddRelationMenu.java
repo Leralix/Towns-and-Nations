@@ -30,7 +30,7 @@ public class AddRelationMenu extends IteratorGUI {
 
 
     public AddRelationMenu(Player player, TerritoryData territory, TownRelation wantedRelation) {
-        super(player, Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(player, wantedRelation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
+        super(player, Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(wantedRelation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
         this.territoryData = territory;
         this.wantedRelation = wantedRelation;
         open();

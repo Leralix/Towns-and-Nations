@@ -26,7 +26,7 @@ public class RemoveRelationMenu extends IteratorGUI {
     private final TownRelation relation;
 
     public RemoveRelationMenu(Player player, TerritoryData territoryData, TownRelation relation){
-        super(player, Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(player, relation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
+        super(player, Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(relation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
         this.territoryData = territoryData;
         this.relation = relation;
         open();

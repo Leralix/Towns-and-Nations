@@ -24,7 +24,7 @@ public class SelectTerritoryForLIberation extends IteratorGUI {
 
 
     public SelectTerritoryForLIberation(Player player, TerritoryData territoryData, War war, WarRole warRole) {
-        super(player, Lang.HEADER_SELECT_WARGOAL.get(player), 3);
+        super(player, Lang.HEADER_SELECT_WARGOAL, 3);
         this.warRole = warRole;
         this.territoryData = territoryData;
         this.war = war;

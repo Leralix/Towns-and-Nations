@@ -28,7 +28,7 @@ public class AddPlayerForChunkPermission extends IteratorGUI {
     private final BasicGui backMenu;
 
     public AddPlayerForChunkPermission(Player player, TerritoryData territoryData, ChunkPermissionType type, BasicGui backMenu) {
-        super(player, Lang.HEADER_AUTHORIZE_PLAYER.get(player), 6);
+        super(player, Lang.HEADER_AUTHORIZE_PLAYER, 6);
         this.territoryData = territoryData;
         this.type = type;
         this.backMenu = backMenu;

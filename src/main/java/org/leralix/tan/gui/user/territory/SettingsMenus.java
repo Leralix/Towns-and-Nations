@@ -25,7 +25,7 @@ public abstract class SettingsMenus extends BasicGui {
 
     protected final TerritoryData territoryData;
 
-    protected SettingsMenus(Player player, String title, TerritoryData territoryData, int nbRows) {
+    protected SettingsMenus(Player player, Lang title, TerritoryData territoryData, int nbRows) {
         super(player, title, nbRows);
         this.territoryData = territoryData;
     }

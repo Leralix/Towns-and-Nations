@@ -22,7 +22,7 @@ public class SelectNewOwnerForTownMenu extends IteratorGUI {
     private final TownData townData;
 
     public SelectNewOwnerForTownMenu(Player player, TownData townData) {
-        super(player, Lang.HEADER_CHANGE_OWNERSHIP.get(player), 3);
+        super(player, Lang.HEADER_CHANGE_OWNERSHIP, 3);
         this.townData = townData;
         open();
     }

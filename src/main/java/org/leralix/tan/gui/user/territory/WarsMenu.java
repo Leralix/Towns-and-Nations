@@ -20,7 +20,7 @@ public class WarsMenu extends IteratorGUI {
     private final TerritoryData territoryData;
 
     public WarsMenu(Player player, TerritoryData territoryData) {
-        super(player, "War Menu", 4);
+        super(player, Lang.HEADER_WARS_MENU, 4);
         this.territoryData = territoryData;
         open();
     }

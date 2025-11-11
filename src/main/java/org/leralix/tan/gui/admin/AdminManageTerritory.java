@@ -6,6 +6,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.history.TerritoryTransactionHistory;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
@@ -17,7 +18,7 @@ public abstract class AdminManageTerritory extends BasicGui {
 
     private final TerritoryData territoryData;
 
-    protected AdminManageTerritory(Player player, String menuName, int nbRows, TerritoryData territoryData) {
+    protected AdminManageTerritory(Player player, FilledLang menuName, int nbRows, TerritoryData territoryData) {
         super(player, menuName, nbRows);
         this.territoryData = territoryData;
         open();

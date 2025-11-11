@@ -31,7 +31,7 @@ public class RankManagerMenu extends BasicGui {
     private final RankData rankData;
 
     public RankManagerMenu(Player player, TerritoryData territoryData, RankData rankData){
-        super(player, Lang.HEADER_TERRITORY_RANKS.get(player, rankData.getName()), 4);
+        super(player, Lang.HEADER_TERRITORY_RANKS.get(rankData.getName()), 4);
         this.territoryData = territoryData;
         this.rankData = rankData;
         open();

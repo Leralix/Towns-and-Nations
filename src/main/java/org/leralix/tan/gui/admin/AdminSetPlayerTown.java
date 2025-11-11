@@ -17,7 +17,7 @@ public class AdminSetPlayerTown extends IteratorGUI {
     private final ITanPlayer targetPlayer;
 
     public AdminSetPlayerTown(Player player, ITanPlayer tanPlayer) {
-        super(player, Lang.HEADER_ADMIN_SET_PLAYER_TOWN.get(player), 6);
+        super(player, Lang.HEADER_ADMIN_SET_PLAYER_TOWN, 6);
         this.targetPlayer = tanPlayer;
         open();
     }

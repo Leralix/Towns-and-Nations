@@ -21,7 +21,7 @@ public class ChunkSettingsMenu extends BasicGui {
     private final TerritoryData territoryData;
 
     public ChunkSettingsMenu(Player player, TerritoryData territoryData){
-        super(player, Lang.HEADER_TOWN_MENU.get(player, territoryData.getName()), 3);
+        super(player, Lang.HEADER_TOWN_MENU.get(territoryData.getName()), 3);
         this.territoryData = territoryData;
         open();
     }

@@ -24,7 +24,7 @@ public class AdminLandmarkMenu extends BasicGui {
     private final Landmark landmark;
 
     public AdminLandmarkMenu(Player player, Landmark landmark) {
-        super(player, Lang.HEADER_ADMIN_SPECIFIC_LANDMARK_MENU.get(player, landmark.getName()), 3);
+        super(player, Lang.HEADER_ADMIN_SPECIFIC_LANDMARK_MENU.get(landmark.getName()), 3);
         this.landmark = landmark;
         open();
     }

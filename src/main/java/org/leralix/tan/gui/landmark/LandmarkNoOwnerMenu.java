@@ -32,7 +32,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
     private final Landmark landmark;
 
     public LandmarkNoOwnerMenu(Player player, Landmark landmark) {
-        super(player, Lang.HEADER_LANDMARK_UNCLAIMED.get(player), 3);
+        super(player, Lang.HEADER_LANDMARK_UNCLAIMED, 3);
         this.landmark = landmark;
         open();
     }

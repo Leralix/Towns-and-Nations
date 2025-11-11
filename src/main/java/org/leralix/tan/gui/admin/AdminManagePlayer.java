@@ -21,7 +21,7 @@ public class AdminManagePlayer extends BasicGui {
     private final ITanPlayer targetPlayer;
 
     public AdminManagePlayer(Player player, ITanPlayer targetPlayer) {
-        super(player, Lang.HEADER_ADMIN_PLAYER_MENU.get(player, targetPlayer.getNameStored()), 3);
+        super(player, Lang.HEADER_ADMIN_PLAYER_MENU.get(targetPlayer.getNameStored()), 3);
         this.targetPlayer = targetPlayer;
         open();
     }

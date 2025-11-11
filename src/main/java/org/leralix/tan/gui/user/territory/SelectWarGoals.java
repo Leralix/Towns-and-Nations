@@ -22,7 +22,7 @@ public class SelectWarGoals extends IteratorGUI {
     private final WarRole warRole;
 
     public SelectWarGoals(Player player, TerritoryData territoryData, War war, WarRole warRole) {
-        super(player, Lang.HEADER_SELECT_WARGOAL.get(player), 3);
+        super(player, Lang.HEADER_SELECT_WARGOAL, 3);
         this.territoryData = territoryData;
         this.war = war;
         this.warRole = warRole;

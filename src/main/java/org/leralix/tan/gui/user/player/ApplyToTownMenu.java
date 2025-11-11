@@ -19,7 +19,7 @@ public class ApplyToTownMenu extends IteratorGUI {
 
 
     public ApplyToTownMenu(Player player) {
-        super(player, Lang.HEADER_TOWN_LIST.get(player), 6);
+        super(player, Lang.HEADER_TOWN_LIST, 6);
         open();
     }
 

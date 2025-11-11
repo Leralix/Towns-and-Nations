@@ -13,7 +13,7 @@ import org.leralix.tan.utils.deprecated.GuiUtil;
 public class BuyOrRentPropertyMenu extends PropertyMenus {
 
     public BuyOrRentPropertyMenu(Player player, PropertyData propertyData){
-        super(player, Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(player, propertyData.getName()), 3, propertyData);
+        super(player, Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(propertyData.getName()), 3, propertyData);
         open();
     }
 

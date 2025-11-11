@@ -10,7 +10,7 @@ public class AdminManageRegion extends AdminManageTerritory {
 
 
     public AdminManageRegion(Player player, RegionData regionData) {
-        super(player, Lang.HEADER_ADMIN_SPECIFIC_REGION_MENU.get(player, regionData.getName()), 3, regionData);
+        super(player, Lang.HEADER_ADMIN_SPECIFIC_REGION_MENU.get(regionData.getName()), 3, regionData);
         open();
     }
 

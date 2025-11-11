@@ -14,7 +14,7 @@ public class PlayerSelectTimezoneMenu extends IteratorGUI {
 
 
     public PlayerSelectTimezoneMenu(Player player){
-        super(player, Lang.HEADER_SELECT_TIMEZONE.get(player), 4);
+        super(player, Lang.HEADER_SELECT_TIMEZONE, 4);
         open();
     }
 

@@ -24,7 +24,7 @@ public class OpenDiplomacyMenu extends BasicGui {
     private final TerritoryData territoryData;
 
     public OpenDiplomacyMenu(Player player, TerritoryData territoryData){
-        super(player, Lang.HEADER_RELATIONS.get(player, territoryData.getName()), 3);
+        super(player, Lang.HEADER_RELATIONS.get(territoryData.getName()), 3);
         this.territoryData = territoryData;
         open();
     }

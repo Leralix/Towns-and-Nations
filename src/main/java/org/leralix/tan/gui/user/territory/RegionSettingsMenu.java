@@ -24,7 +24,7 @@ public class RegionSettingsMenu extends SettingsMenus {
     private final RegionData regionData;
 
     public RegionSettingsMenu(Player player, RegionData regionData) {
-        super(player, Lang.HEADER_SETTINGS.get(player), regionData, 3);
+        super(player, Lang.HEADER_SETTINGS, regionData, 3);
         this.regionData = regionData;
         open();
     }
