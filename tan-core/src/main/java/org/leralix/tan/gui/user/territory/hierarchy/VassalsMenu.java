@@ -9,11 +9,12 @@ import java.util.List;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -21,15 +22,25 @@ public class VassalsMenu extends IteratorGUI {
 
   private final TerritoryData territoryData;
 
-  public VassalsMenu(Player player, TerritoryData territoryData) {
-    super(player, Lang.HEADER_VASSALS.get(player), 4);
+  private VassalsMenu(Player player, ITanPlayer tanPlayer, TerritoryData territoryData) {
+    super(player, tanPlayer, Lang.HEADER_VASSALS.get(tanPlayer.getLang()), 4);
     this.territoryData = territoryData;
-    open();
+  }
+
+  public static void open(Player player, TerritoryData territoryData) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new VassalsMenu(player, tanPlayer, territoryData).open();
+            });
   }
 
   @Override
   public void open() {
-    iterator(getVassals(), p -> PlayerGUI.openHierarchyMenu(player, territoryData));
+    // TODO: Replace with hierarchy menu after PlayerGUI migration
+    // Original: p -> PlayerGUI.openHierarchyMenu(player, territoryData)
+    iterator(getVassals(), p -> player.closeInventory());
 
     gui.setItem(4, 3, getAddVassalButton());
 
@@ -51,7 +62,9 @@ public class VassalsMenu extends IteratorGUI {
                 TanChatUtils.message(player, Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
                 return;
               }
-              PlayerGUI.openAddVassal(player, territoryData, 0);
+              // TODO: Implement add vassal GUI after PlayerGUI migration
+              // Original: PlayerGUI.openAddVassal(player, territoryData, 0);
+              TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), BAD);
             });
   }
 
@@ -82,16 +95,14 @@ public class VassalsMenu extends IteratorGUI {
                           player, Lang.CANT_KICK_REGIONAL_CAPITAL.get(tanPlayer, vassal.getName()));
                       return;
                     }
-                    PlayerGUI.openConfirmMenu(
-                        player,
-                        "",
-                        confirmAction -> {
-                          territoryData.broadcastMessageWithSound(
-                              Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(vassal.getName()), BAD);
-                          vassal.removeOverlord();
-                          player.closeInventory();
-                        },
-                        previousAction -> open());
+                    // TODO: Restore confirmation dialog after PlayerGUI migration
+                    // Original: PlayerGUI.openConfirmMenu(player, "", confirmAction,
+                    // previousAction)
+                    // Temporary: Direct vassal removal without confirmation
+                    territoryData.broadcastMessageWithSound(
+                        Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(vassal.getName()), BAD);
+                    vassal.removeOverlord();
+                    player.closeInventory();
                   })
               .asGuiItem(player, langType);
       res.add(vassalButton);

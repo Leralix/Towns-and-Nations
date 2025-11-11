@@ -11,13 +11,13 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TownDeletedInternalEvent;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.service.requirements.LeaderRequirement;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.FilledLang;
@@ -26,6 +26,7 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeTownTag;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.ChangeCapital;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.file.FileUtil;
@@ -35,10 +36,18 @@ public class TownSettingsMenu extends SettingsMenus {
 
   private final TownData townData;
 
-  public TownSettingsMenu(Player player, TownData townData) {
-    super(player, Lang.HEADER_SETTINGS.get(player), townData, 4);
+  private TownSettingsMenu(Player player, ITanPlayer tanPlayer, TownData townData) {
+    super(player, tanPlayer, Lang.HEADER_SETTINGS.get(tanPlayer.getLang()), townData, 4);
     this.townData = townData;
-    open();
+  }
+
+  public static void open(Player player, TownData townData) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new TownSettingsMenu(player, tanPlayer, townData).open();
+            });
   }
 
   @Override
@@ -61,7 +70,7 @@ public class TownSettingsMenu extends SettingsMenus {
     gui.setItem(2, 7, getQuitButton());
     gui.setItem(2, 8, getDeleteButton());
 
-    gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> new TownMenu(player, townData)));
+    gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> TownMenu.open(player, townData)));
 
     gui.open(player);
   }
@@ -143,21 +152,19 @@ public class TownSettingsMenu extends SettingsMenus {
                       player,
                       Lang.CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER.get(tanPlayer),
                       NOT_ALLOWED);
+                  return;
                 }
               }
 
-              PlayerGUI.openConfirmMenu(
-                  player,
-                  Lang.GUI_CONFIRM_PLAYER_LEAVE_TOWN.get(tanPlayer, tanPlayer.getNameStored()),
-                  confirm -> {
-                    player.closeInventory();
-                    townData.removePlayer(tanPlayer);
-                    TanChatUtils.message(player, Lang.CHAT_PLAYER_LEFT_THE_TOWN.get(tanPlayer));
-                    townData.broadcastMessageWithSound(
-                        Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(tanPlayer.getNameStored()),
-                        BAD);
-                  },
-                  remove -> open());
+              // TODO: Restore confirmation dialog after PlayerGUI migration
+              // Original: PlayerGUI.openConfirmMenu(player, confirmMsg, confirmAction,
+              // cancelAction)
+              // Temporary: Direct quit without confirmation
+              player.closeInventory();
+              townData.removePlayer(tanPlayer);
+              TanChatUtils.message(player, Lang.CHAT_PLAYER_LEFT_THE_TOWN.get(tanPlayer));
+              townData.broadcastMessageWithSound(
+                  Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(tanPlayer.getNameStored()), BAD);
             })
         .asGuiItem(player, langType);
   }
@@ -186,19 +193,17 @@ public class TownSettingsMenu extends SettingsMenus {
                 return;
               }
 
-              PlayerGUI.openConfirmMenu(
-                  player,
-                  Lang.GUI_CONFIRM_PLAYER_DELETE_TOWN.get(tanPlayer, townData.getName()),
-                  confirm -> {
-                    FileUtil.addLineToHistory(
-                        Lang.TOWN_DELETED_NEWSLETTER.get(player.getName(), townData.getName()));
-                    EventManager.getInstance()
-                        .callEvent(new TownDeletedInternalEvent(townData, tanPlayer));
-                    townData.delete();
-                    player.closeInventory();
-                    SoundUtil.playSound(player, GOOD);
-                  },
-                  remove -> open());
+              // TODO: Restore confirmation dialog after PlayerGUI migration
+              // Original: PlayerGUI.openConfirmMenu(player, confirmMsg, confirmAction,
+              // cancelAction)
+              // Temporary: Direct deletion without confirmation
+              FileUtil.addLineToHistory(
+                  Lang.TOWN_DELETED_NEWSLETTER.get(player.getName(), townData.getName()));
+              EventManager.getInstance()
+                  .callEvent(new TownDeletedInternalEvent(townData, tanPlayer));
+              townData.delete();
+              player.closeInventory();
+              SoundUtil.playSound(player, GOOD);
             })
         .asGuiItem(player, langType);
   }
@@ -236,7 +241,7 @@ public class TownSettingsMenu extends SettingsMenus {
         .setAction(
             event -> {
               if (townData.isLeader(tanPlayer)) {
-                new SelectNewOwnerForTownMenu(player, townData);
+                SelectNewOwnerForTownMenu.open(player, townData);
               } else {
                 TanChatUtils.message(player, Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
               }

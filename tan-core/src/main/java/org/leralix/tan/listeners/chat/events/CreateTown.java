@@ -10,7 +10,6 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TownCreatedInternalEvent;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -68,6 +67,8 @@ public class CreateTown extends ChatListenerEvent {
     org.leralix.tan.utils.FoliaScheduler.runTask(
         TownsAndNations.getPlugin(), () -> TeamUtils.setIndividualScoreBoard(player));
 
-    openGui(p -> PlayerGUI.dispatchPlayerTown(player), player);
+    // TODO: Replace with proper town menu navigation after PlayerGUI migration
+    // Original: openGui(p -> PlayerGUI.dispatchPlayerTown(player), player);
+    openGui(p -> player.closeInventory(), player);
   }
 }

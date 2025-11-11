@@ -1,14 +1,15 @@
 package org.leralix.tan.commands.admin;
 
 import java.util.List;
-import org.bukkit.Bukkit;
+import java.util.Optional;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.commands.CommandExceptionHandler;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -42,33 +43,49 @@ public class AddMoney extends SubCommand {
   @Override
   public void perform(CommandSender commandSender, String[] args) {
 
-    if (args.length < 2) {
-      TanChatUtils.message(commandSender, Lang.NOT_ENOUGH_ARGS_ERROR, SoundEnum.NOT_ALLOWED);
-      TanChatUtils.message(commandSender, Lang.CORRECT_SYNTAX_INFO);
-    } else if (args.length == 3) {
-      ITanPlayer target =
-          PlayerDataStorage.getInstance().getSync(Bukkit.getServer().getOfflinePlayer(args[1]));
-      addMoney(commandSender, args, target);
-    } else {
-      TanChatUtils.message(commandSender, Lang.TOO_MANY_ARGS_ERROR, SoundEnum.NOT_ALLOWED);
-      TanChatUtils.message(commandSender, Lang.CORRECT_SYNTAX_INFO);
+    // Validate argument count
+    if (!CommandExceptionHandler.validateArgCount(commandSender, args, 3, getSyntax())) {
+      return;
     }
+
+    // Find the target player
+    Optional<OfflinePlayer> offlinePlayerOpt =
+        CommandExceptionHandler.findPlayer(commandSender, args[1]);
+    if (offlinePlayerOpt.isEmpty()) {
+      return;
+    }
+
+    // Get TAN player data
+    Optional<ITanPlayer> targetOpt =
+        CommandExceptionHandler.getTanPlayer(commandSender, offlinePlayerOpt.get());
+    if (targetOpt.isEmpty()) {
+      return;
+    }
+
+    addMoney(commandSender, args, targetOpt.get());
   }
 
   static void addMoney(CommandSender commandSender, String[] args, ITanPlayer target) {
-    double amount;
-    try {
-      amount = Double.parseDouble(args[2]);
-    } catch (NumberFormatException e) {
-      TanChatUtils.message(commandSender, Lang.SYNTAX_ERROR_AMOUNT);
+    // Parse amount with error handling
+    Optional<Double> amountOpt =
+        CommandExceptionHandler.parseDouble(commandSender, args[2], "amount");
+    if (amountOpt.isEmpty()) {
       return;
     }
-    EconomyUtil.addFromBalance(target, amount);
-    TanChatUtils.message(
-        commandSender,
-        Lang.ADD_MONEY_COMMAND_SUCCESS.get(Double.toString(amount), target.getNameStored()));
-    FileUtil.addLineToHistory(
-        Lang.HISTORY_ADMIN_GIVE_MONEY.get(
-            commandSender.getName(), Double.toString(amount), target.getNameStored()));
+
+    double amount = amountOpt.get();
+
+    try {
+      EconomyUtil.addFromBalance(target, amount);
+      TanChatUtils.message(
+          commandSender,
+          Lang.ADD_MONEY_COMMAND_SUCCESS.get(Double.toString(amount), target.getNameStored()));
+      FileUtil.addLineToHistory(
+          Lang.HISTORY_ADMIN_GIVE_MONEY.get(
+              commandSender.getName(), Double.toString(amount), target.getNameStored()));
+    } catch (Exception e) {
+      TanChatUtils.message(commandSender, Lang.SYNTAX_ERROR, SoundEnum.NOT_ALLOWED);
+      CommandExceptionHandler.logCommandExecution(commandSender, "addmoney", args);
+    }
   }
 }

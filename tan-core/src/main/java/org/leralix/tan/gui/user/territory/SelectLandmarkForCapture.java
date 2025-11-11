@@ -4,6 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -11,6 +12,7 @@ import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.wars.War;
 import org.leralix.tan.wars.legacy.WarRole;
 import org.leralix.tan.wars.legacy.wargoals.CaptureLandmarkWarGoal;
@@ -23,21 +25,29 @@ public class SelectLandmarkForCapture extends IteratorGUI {
 
   private final TownData enemyTownData;
 
-  public SelectLandmarkForCapture(
-      Player player, TerritoryData territoryData, War war, WarRole warRole) {
-    super(player, Lang.HEADER_SELECT_WARGOAL.get(player), 3);
+  private SelectLandmarkForCapture(
+      Player player, ITanPlayer tanPlayer, TerritoryData territoryData, War war, WarRole warRole) {
+    super(player, tanPlayer, Lang.HEADER_SELECT_WARGOAL.get(tanPlayer.getLang()), 3);
     this.warRole = warRole;
     this.territoryData = territoryData;
     this.war = war;
     this.enemyTownData =
         (TownData)
             (war.isMainAttacker(territoryData) ? war.getMainDefender() : war.getMainAttacker());
-    open();
+  }
+
+  public static void open(Player player, TerritoryData territoryData, War war, WarRole warRole) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new SelectLandmarkForCapture(player, tanPlayer, territoryData, war, warRole).open();
+            });
   }
 
   @Override
   public void open() {
-    iterator(getLandmarks(langType), p -> new ChooseWarGoal(player, territoryData, war, warRole));
+    iterator(getLandmarks(langType), p -> ChooseWarGoal.open(p, territoryData, war, warRole));
     gui.open(player);
   }
 
@@ -55,7 +65,7 @@ public class SelectLandmarkForCapture extends IteratorGUI {
               .setAction(
                   event -> {
                     war.addGoal(warRole, new CaptureLandmarkWarGoal(landmark));
-                    new SelectWarGoals(player, territoryData, war, warRole);
+                    SelectWarGoals.open(player, territoryData, war, warRole);
                   })
               .asGuiItem(player, langType);
       items.add(item);

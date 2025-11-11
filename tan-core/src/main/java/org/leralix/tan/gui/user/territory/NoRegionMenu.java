@@ -4,6 +4,7 @@ import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.BrowseScope;
 import org.leralix.tan.gui.BasicGui;
@@ -20,9 +21,10 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 public class NoRegionMenu extends BasicGui {
 
-  public NoRegionMenu(Player player) {
-    super(player, Lang.HEADER_NO_REGION, 3);
-    open();
+  public NoRegionMenu(Player player, ITanPlayer tanPlayer) {
+    super(player, tanPlayer, Lang.HEADER_NO_REGION.get(player), 3);
+    // open() doit être appelé explicitement après la construction pour respecter le modèle
+    // asynchrone
   }
 
   @Override
@@ -30,7 +32,7 @@ public class NoRegionMenu extends BasicGui {
 
     gui.setItem(2, 3, getCreateRegionButton());
     gui.setItem(2, 7, getBrowseRegionsButton());
-    gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
+    gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> MainMenu.open(player)));
 
     gui.open(player);
   }
@@ -82,7 +84,8 @@ public class NoRegionMenu extends BasicGui {
                 Integer.toString(RegionDataStorage.getInstance().getAllSync().size())),
             Lang.GUI_REGION_BROWSE_DESC2.get())
         .setAction(
-            action -> new BrowseTerritoryMenu(player, null, BrowseScope.REGIONS, p -> open()))
+            action ->
+                new BrowseTerritoryMenu(player, tanPlayer, null, BrowseScope.REGIONS, p -> open()))
         .asGuiItem(player, langType);
   }
 }

@@ -5,20 +5,15 @@ import java.util.List;
 import java.util.function.Consumer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.leralix.tan.lang.Lang;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public abstract class IteratorGUI extends BasicGui {
 
   protected int page;
 
-  protected IteratorGUI(Player player, Lang title, int rows) {
-    super(player, title, rows);
-    this.page = 0;
-  }
-
-  protected IteratorGUI(Player player, String title, int rows) {
-    super(player, title, rows);
+  protected IteratorGUI(Player player, ITanPlayer tanPlayer, String title, int rows) {
+    super(player, tanPlayer, title, rows);
     this.page = 0;
   }
 

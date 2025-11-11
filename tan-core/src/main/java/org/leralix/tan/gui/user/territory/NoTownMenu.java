@@ -4,6 +4,7 @@ import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -13,6 +14,7 @@ import org.leralix.tan.gui.user.player.ApplyToTownMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.CreateTown;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -20,9 +22,17 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 public class NoTownMenu extends BasicGui {
 
-  public NoTownMenu(Player player) {
-    super(player, Lang.HEADER_NO_TOWN_MENU, 3);
-    open();
+  private NoTownMenu(Player player, ITanPlayer tanPlayer) {
+    super(player, tanPlayer, Lang.HEADER_NO_TOWN_MENU.get(tanPlayer.getLang()), 3);
+  }
+
+  public static void open(Player player) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new NoTownMenu(player, tanPlayer).open();
+            });
   }
 
   @Override
@@ -30,7 +40,7 @@ public class NoTownMenu extends BasicGui {
 
     gui.setItem(2, 3, getCreateTownButton());
     gui.setItem(2, 7, getBrowseTownsButton());
-    gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
+    gui.setItem(3, 1, GuiUtil.createBackArrow(player, MainMenu::open));
 
     gui.open(player);
   }
@@ -74,7 +84,7 @@ public class NoTownMenu extends BasicGui {
         .setDescription(
             Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(
                 Integer.toString(TownDataStorage.getInstance().getNumberOfTown())))
-        .setAction(event -> new ApplyToTownMenu(player))
+        .setAction(event -> ApplyToTownMenu.open(player))
         .asGuiItem(player, langType);
   }
 }

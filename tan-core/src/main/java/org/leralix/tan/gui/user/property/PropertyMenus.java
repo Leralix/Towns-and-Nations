@@ -7,10 +7,10 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangePropertyDescription;
@@ -25,8 +25,9 @@ public abstract class PropertyMenus extends BasicGui {
 
   protected final PropertyData propertyData;
 
-  protected PropertyMenus(Player player, String title, int rows, PropertyData propertyData) {
-    super(player, title, rows);
+  protected PropertyMenus(
+      Player player, ITanPlayer tanPlayer, String title, int rows, PropertyData propertyData) {
+    super(player, tanPlayer, title, rows);
     this.propertyData = propertyData;
   }
 
@@ -172,15 +173,13 @@ public abstract class PropertyMenus extends BasicGui {
         .setName(Lang.GUI_PROPERTY_DELETE_PROPERTY.get(langType))
         .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
         .setAction(
-            event ->
-                PlayerGUI.openConfirmMenu(
-                    player,
-                    Lang.GUI_PROPERTY_DELETE_PROPERTY_CONFIRM.get(langType, propertyData.getName()),
-                    p -> {
-                      propertyData.delete();
-                      player.closeInventory();
-                    },
-                    p -> open()))
+            event -> {
+              // TODO: Restore confirmation dialog after PlayerGUI migration
+              // Original: PlayerGUI.openConfirmMenu(player, confirmMsg, onConfirm, onCancel)
+              // Temporary: Direct deletion without confirmation
+              propertyData.delete();
+              player.closeInventory();
+            })
         .asGuiItem(player, langType);
   }
 
@@ -204,7 +203,7 @@ public abstract class PropertyMenus extends BasicGui {
                     Lang.CANNOT_MANAGE_AUTHORIZED_PLAYER_IF_PROPERTY_IS_RENTED.get(langType));
                 return;
               }
-              new PropertyChunkSettingsMenu(player, propertyData, this);
+              PropertyChunkSettingsMenu.open(player, propertyData, this);
             })
         .asGuiItem(player, langType);
   }

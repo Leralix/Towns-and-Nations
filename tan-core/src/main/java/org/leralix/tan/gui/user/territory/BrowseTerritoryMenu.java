@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.BrowseScope;
 import org.leralix.tan.gui.IteratorGUI;
@@ -23,12 +24,17 @@ public class BrowseTerritoryMenu extends IteratorGUI {
   private final Consumer<Player> exitMenu;
 
   public BrowseTerritoryMenu(
-      Player player, TerritoryData territoryData, BrowseScope scope, Consumer<Player> exitMenu) {
-    super(player, Lang.HEADER_TERRITORY_LIST, 6);
+      Player player,
+      ITanPlayer tanPlayer,
+      TerritoryData territoryData,
+      BrowseScope scope,
+      Consumer<Player> exitMenu) {
+    super(player, tanPlayer, Lang.HEADER_TERRITORY_LIST.get(player), 6);
     this.territoryData = territoryData;
     this.scope = scope;
     this.exitMenu = exitMenu;
-    open();
+    // open() doit être appelé explicitement après la construction pour respecter le modèle
+    // asynchrone
   }
 
   public void setScope(BrowseScope newScope) {

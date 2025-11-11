@@ -2,17 +2,27 @@ package org.leralix.tan.gui.admin;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.AdminGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 public class AdminMainMenu extends BasicGui {
 
-  public AdminMainMenu(Player player) {
-    super(player, Lang.HEADER_ADMIN_MAIN_MENU.get(player), 3);
-    open();
+  private AdminMainMenu(Player player, ITanPlayer tanPlayer) {
+    super(player, tanPlayer, Lang.HEADER_ADMIN_MAIN_MENU.get(tanPlayer.getLang()), 3);
+  }
+
+  public static void open(Player player) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new AdminMainMenu(player, tanPlayer).open();
+            });
   }
 
   @Override
@@ -33,7 +43,10 @@ public class AdminMainMenu extends BasicGui {
     return iconManager
         .get(IconKey.TERRITORY_WAR_ICON)
         .setName(Lang.ADMIN_GUI_WAR_ICON.get(langType))
-        .setAction(action -> AdminGUI.openAdminWarMenu(player, 0))
+        .setAction(
+            action ->
+                TanChatUtils.message(
+                    player, "Admin war menu temporairement désactivé pendant la migration"))
         .asGuiItem(player, langType);
   }
 
@@ -41,7 +54,10 @@ public class AdminMainMenu extends BasicGui {
     return iconManager
         .get(IconKey.TOWN_LANDMARKS_ICON)
         .setName(Lang.ADMIN_GUI_LANDMARK_ICON.get(langType))
-        .setAction(action -> AdminGUI.openLandmarks(player, 0))
+        .setAction(
+            action ->
+                TanChatUtils.message(
+                    player, "Landmarks temporairement désactivé pendant la migration"))
         .asGuiItem(player, langType);
   }
 
@@ -49,7 +65,10 @@ public class AdminMainMenu extends BasicGui {
     return iconManager
         .get(IconKey.PLAYER_HEAD_ICON)
         .setName(Lang.GUI_ADMIN_PLAYER_ICON.get(langType))
-        .setAction(action -> AdminGUI.openPlayerMenu(player, 0))
+        .setAction(
+            action ->
+                TanChatUtils.message(
+                    player, "Player menu temporairement désactivé pendant la migration"))
         .asGuiItem(player, langType);
   }
 
@@ -57,7 +76,10 @@ public class AdminMainMenu extends BasicGui {
     return iconManager
         .get(IconKey.TOWN_BASE_ICON)
         .setName(Lang.GUI_TOWN_ICON.get(langType))
-        .setAction(action -> AdminGUI.openAdminBrowseTown(player, 0))
+        .setAction(
+            action ->
+                TanChatUtils.message(
+                    player, "Admin browse town temporairement désactivé pendant la migration"))
         .asGuiItem(player, langType);
   }
 
@@ -65,7 +87,10 @@ public class AdminMainMenu extends BasicGui {
     return iconManager
         .get(IconKey.REGION_BASE_ICON)
         .setName(Lang.GUI_REGION_ICON.get(langType))
-        .setAction(action -> AdminGUI.openAdminBrowseRegion(player, 0))
+        .setAction(
+            action ->
+                TanChatUtils.message(
+                    player, "Admin browse region temporairement désactivé pendant la migration"))
         .asGuiItem(player, langType);
   }
 }

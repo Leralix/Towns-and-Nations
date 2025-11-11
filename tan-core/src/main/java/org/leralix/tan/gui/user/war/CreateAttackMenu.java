@@ -9,6 +9,7 @@ import java.util.List;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.AttackDeclaredInternalEvent;
@@ -19,6 +20,7 @@ import org.leralix.tan.gui.user.territory.AttackMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -34,13 +36,26 @@ public class CreateAttackMenu extends BasicGui {
   private final War war;
   private final WarRole warRole;
 
-  public CreateAttackMenu(Player player, TerritoryData territoryData, War war, WarRole warRole) {
-    super(player, Lang.HEADER_CREATE_WAR_MANAGER.get(player, war.getMainDefender().getName()), 3);
+  private CreateAttackMenu(
+      Player player, ITanPlayer tanPlayer, TerritoryData territoryData, War war, WarRole warRole) {
+    super(
+        player,
+        tanPlayer,
+        Lang.HEADER_CREATE_WAR_MANAGER.get(tanPlayer.getLang(), war.getMainDefender().getName()),
+        3);
     this.territoryData = territoryData;
     this.war = war;
     this.warRole = warRole;
     this.attackData = new CreateAttackData(war, warRole);
-    open();
+  }
+
+  public static void open(Player player, TerritoryData territoryData, War war, WarRole warRole) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new CreateAttackMenu(player, tanPlayer, territoryData, war, warRole).open();
+            });
   }
 
   @Override
@@ -51,7 +66,7 @@ public class CreateAttackMenu extends BasicGui {
 
     gui.setItem(2, 8, getConfirmButton());
     gui.setItem(
-        3, 1, GuiUtil.createBackArrow(player, e -> new WarMenu(player, territoryData, war)));
+        3, 1, GuiUtil.createBackArrow(player, e -> WarMenu.open(player, territoryData, war)));
 
     gui.open(player);
   }
@@ -87,7 +102,7 @@ public class CreateAttackMenu extends BasicGui {
                           war.getTerritory(warRole.opposite()), war.getTerritory(warRole)));
 
               PlannedAttackStorage.getInstance().newAttack(attackData);
-              new AttackMenu(player, war.getTerritory(warRole));
+              AttackMenu.open(player, war.getTerritory(warRole));
             })
         .asGuiItem(player, langType);
   }

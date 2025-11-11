@@ -2,6 +2,7 @@ package org.leralix.tan.commands.player;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.dataclass.ITanPlayer;
@@ -10,6 +11,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.PlayerAutoClaimStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.commands.CommandExceptionHandler;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class AutoClaimCommand extends PlayerSubCommand {
@@ -46,13 +48,13 @@ public class AutoClaimCommand extends PlayerSubCommand {
 
   @Override
   public void perform(Player player, String[] args) {
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
-    LangType langType = tanPlayer.getLang();
-
-    if (args.length != 2) {
-      TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+    // Validate argument count
+    if (!CommandExceptionHandler.validateArgCount((CommandSender) player, args, 2, getSyntax())) {
       return;
     }
+
+    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+    LangType langType = tanPlayer.getLang();
 
     String message = args[1];
 

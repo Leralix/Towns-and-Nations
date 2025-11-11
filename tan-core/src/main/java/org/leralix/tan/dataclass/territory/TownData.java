@@ -21,8 +21,6 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.PlayerJoinTownAcceptedInternalEvent;
 import org.leralix.tan.events.events.PlayerJoinTownRequestInternalEvent;
-import org.leralix.tan.gui.legacy.PlayerGUI;
-import org.leralix.tan.gui.user.territory.TerritoryMemberMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -455,6 +453,12 @@ public class TownData extends TerritoryData {
                         return;
                       }
 
+                      // TEMPORARY FIX: PlayerGUI.openConfirmMenu disabled while legacy GUIs
+                      // migrated
+                      // TODO: Re-enable after Sprint 2 GUI async migration
+                      TanChatUtils.message(
+                          player, "Kick feature temporarily disabled during migration");
+                      /*
                       PlayerGUI.openConfirmMenu(
                           player,
                           Lang.CONFIRM_PLAYER_KICKED.get(langType, playerIterate.getName()),
@@ -463,6 +467,7 @@ public class TownData extends TerritoryData {
                             new TerritoryMemberMenu(player, this).open();
                           },
                           p -> new TerritoryMemberMenu(player, this).open());
+                      */
                     }
                   });
       res.add(playerButton);
@@ -642,7 +647,10 @@ public class TownData extends TerritoryData {
 
   @Override
   public void openMainMenu(Player player) {
-    PlayerGUI.dispatchPlayerTown(player);
+    // TEMPORARY FIX: PlayerGUI.dispatchPlayerTown disabled while legacy GUIs migrated
+    // TODO: Re-enable after Sprint 2 GUI async migration
+    TanChatUtils.message(player, "Main menu temporarily disabled during migration");
+    // PlayerGUI.dispatchPlayerTown(player);
   }
 
   @Override

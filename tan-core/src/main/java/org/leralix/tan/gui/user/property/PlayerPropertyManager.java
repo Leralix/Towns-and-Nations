@@ -7,23 +7,35 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class PlayerPropertyManager extends PropertyMenus {
 
-  Consumer<Player> onClose;
+  private final Consumer<Player> onClose;
 
-  public PlayerPropertyManager(Player player, PropertyData propertyData, Consumer<Player> onClose) {
+  private PlayerPropertyManager(
+      Player player, ITanPlayer tanPlayer, PropertyData propertyData, Consumer<Player> onClose) {
     super(
         player,
-        Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(player, propertyData.getName()),
+        tanPlayer,
+        Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(tanPlayer.getLang(), propertyData.getName()),
         3,
         propertyData);
     this.onClose = onClose;
-    open();
+  }
+
+  public static void open(Player player, PropertyData propertyData, Consumer<Player> onClose) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new PlayerPropertyManager(player, tanPlayer, propertyData, onClose).open();
+            });
   }
 
   @Override

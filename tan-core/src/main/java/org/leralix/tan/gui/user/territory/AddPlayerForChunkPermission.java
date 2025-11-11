@@ -27,12 +27,17 @@ public class AddPlayerForChunkPermission extends IteratorGUI {
   private final BasicGui backMenu;
 
   public AddPlayerForChunkPermission(
-      Player player, TerritoryData territoryData, ChunkPermissionType type, BasicGui backMenu) {
-    super(player, Lang.HEADER_AUTHORIZE_PLAYER.get(player), 6);
+      Player player,
+      ITanPlayer tanPlayer,
+      TerritoryData territoryData,
+      ChunkPermissionType type,
+      BasicGui backMenu) {
+    super(player, tanPlayer, Lang.HEADER_AUTHORIZE_PLAYER.get(player), 6);
     this.territoryData = territoryData;
     this.type = type;
     this.backMenu = backMenu;
-    open();
+    // open() doit être appelé explicitement après la construction pour respecter le modèle
+    // asynchrone
   }
 
   @Override

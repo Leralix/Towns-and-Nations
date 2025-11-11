@@ -4,21 +4,32 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.RenterPropertyMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class BuyOrRentPropertyMenu extends PropertyMenus {
 
-  public BuyOrRentPropertyMenu(Player player, PropertyData propertyData) {
+  private BuyOrRentPropertyMenu(Player player, ITanPlayer tanPlayer, PropertyData propertyData) {
     super(
         player,
-        Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(player, propertyData.getName()),
+        tanPlayer,
+        Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(tanPlayer.getLang(), propertyData.getName()),
         3,
         propertyData);
-    open();
+  }
+
+  public static void open(Player player, PropertyData propertyData) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new BuyOrRentPropertyMenu(player, tanPlayer, propertyData).open();
+            });
   }
 
   @Override
@@ -53,7 +64,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
         .setAction(
             action -> {
               propertyData.buyProperty(player);
-              new PlayerPropertyManager(player, propertyData, p -> player.closeInventory());
+              PlayerPropertyManager.open(player, propertyData, p -> player.closeInventory());
             })
         .asGuiItem(player, langType);
   }
@@ -79,7 +90,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
         .setAction(
             event -> {
               propertyData.allocateRenter(player);
-              new RenterPropertyMenu(player, propertyData);
+              RenterPropertyMenu.open(player, propertyData);
             })
         .asGuiItem(player, langType);
   }

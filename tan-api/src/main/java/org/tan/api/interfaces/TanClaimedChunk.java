@@ -1,35 +1,34 @@
 package org.tan.api.interfaces;
 
-import org.bukkit.Chunk;
+import java.util.Optional;
+import java.util.UUID;
+import org.bukkit.Location;
+import org.tan.api.enums.EChunkPermission;
 
-/** Represents a claimed chunk. */
 public interface TanClaimedChunk {
+  int getX();
 
-  /**
-   * Get the chunk.
-   *
-   * @return The chunk.
-   */
-  Chunk getChunk();
+  int getZ();
 
-  /**
-   * Get the owner of the chunk.
-   *
-   * @return The town that owns the chunk.
-   */
-  TanTown getOwner();
+  UUID getWorldUUID();
 
-  /**
-   * Check if the chunk is a landmark.
-   *
-   * @return True if the chunk is a landmark, false otherwise.
-   */
-  boolean isLandmark();
+  String getworldName();
 
-  /**
-   * Get the owner of the chunk.
-   *
-   * @return The territory that owns the chunk.
-   */
-  TanTerritory getTerritoryOwner();
+  Boolean isClaimed();
+
+  Optional<UUID> getOwnerID();
+
+  void unclaim();
+
+  boolean canClaim(TanTerritory territory);
+
+  void claim(TanTerritory territory);
+
+  boolean canBeGriefByExplosion();
+
+  boolean canBeGriefByFire();
+
+  boolean canPvpHappen();
+
+  boolean canPlayerDoAction(TanPlayer player, EChunkPermission permission, Location location);
 }

@@ -3,6 +3,7 @@ package org.leralix.tan.commands.admin;
 import java.util.Collections;
 import java.util.List;
 import org.bukkit.Chunk;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
@@ -13,6 +14,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
+import org.leralix.tan.utils.commands.CommandExceptionHandler;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class UnclaimAdminCommand extends PlayerSubCommand {
@@ -41,12 +43,12 @@ public class UnclaimAdminCommand extends PlayerSubCommand {
 
   @Override
   public void perform(Player player, String[] args) {
-    LangType langType = LangType.of(player);
-    if (args.length != 1) {
-      TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType));
+    // Validate argument count (expects exactly 1 - just the command)
+    if (!CommandExceptionHandler.validateArgCount((CommandSender) player, args, 1, getSyntax())) {
       return;
     }
 
+    LangType langType = LangType.of(player);
     Chunk chunk = player.getLocation().getChunk();
     ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
     if (claimedChunk instanceof TerritoryChunk territoryChunk) {

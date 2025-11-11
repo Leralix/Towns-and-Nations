@@ -4,12 +4,14 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.SelectNbChunksForConquer;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.wars.War;
@@ -23,12 +25,21 @@ public class ChooseWarGoal extends BasicGui {
   private final War war;
   private final WarRole warRole;
 
-  public ChooseWarGoal(Player player, TerritoryData territoryData, War war, WarRole warRole) {
-    super(player, Lang.HEADER_SELECT_WARGOAL, 3);
+  private ChooseWarGoal(
+      Player player, ITanPlayer tanPlayer, TerritoryData territoryData, War war, WarRole warRole) {
+    super(player, tanPlayer, Lang.HEADER_SELECT_WARGOAL.get(tanPlayer.getLang()), 3);
     this.territoryData = territoryData;
     this.war = war;
     this.warRole = warRole;
-    open();
+  }
+
+  public static void open(Player player, TerritoryData territoryData, War war, WarRole warRole) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new ChooseWarGoal(player, tanPlayer, territoryData, war, warRole).open();
+            });
   }
 
   @Override
@@ -43,8 +54,7 @@ public class ChooseWarGoal extends BasicGui {
     gui.setItem(
         3,
         1,
-        GuiUtil.createBackArrow(
-            player, p -> new SelectWarGoals(player, territoryData, war, warRole)));
+        GuiUtil.createBackArrow(player, p -> SelectWarGoals.open(p, territoryData, war, warRole)));
 
     gui.open(player);
   }
@@ -75,7 +85,7 @@ public class ChooseWarGoal extends BasicGui {
               PlayerChatListenerStorage.register(
                   player,
                   new SelectNbChunksForConquer(
-                      war, warRole, new SelectWarGoals(player, territoryData, war, warRole)));
+                      war, warRole, p -> SelectWarGoals.open(p, territoryData, war, warRole)));
             })
         .asGuiItem(player, langType);
   }
@@ -86,7 +96,7 @@ public class ChooseWarGoal extends BasicGui {
         .setName(Lang.CAPTURE_LANDMARK_WAR_GOAL.get(langType))
         .setDescription(Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC.get())
         .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
-        .setAction(action -> new SelectLandmarkForCapture(player, territoryData, war, warRole))
+        .setAction(action -> SelectLandmarkForCapture.open(player, territoryData, war, warRole))
         .asGuiItem(player, langType);
   }
 
@@ -96,7 +106,7 @@ public class ChooseWarGoal extends BasicGui {
         .setName(Lang.CAPTURE_FORT_WAR_GOAL.get(langType))
         .setDescription(Lang.CAPTURE_FORT_WAR_GOAL_DESC.get())
         .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
-        .setAction(action -> new SelectFortForCapture(player, territoryData, war, warRole))
+        .setAction(action -> SelectFortForCapture.open(player, territoryData, war, warRole))
         .asGuiItem(player, langType);
   }
 
@@ -124,7 +134,7 @@ public class ChooseWarGoal extends BasicGui {
               }
 
               war.addGoal(warRole, new SubjugateWarGoal());
-              new SelectWarGoals(player, territoryData, war, warRole);
+              SelectWarGoals.open(player, territoryData, war, warRole);
             })
         .asGuiItem(player, langType);
   }
@@ -152,7 +162,7 @@ public class ChooseWarGoal extends BasicGui {
                 return;
               }
 
-              new SelectTerritoryForLIberation(player, territoryData, war, warRole);
+              SelectTerritoryForLIberation.open(player, territoryData, war, warRole);
             })
         .asGuiItem(player, langType);
   }

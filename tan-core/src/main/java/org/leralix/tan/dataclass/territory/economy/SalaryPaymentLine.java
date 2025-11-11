@@ -50,7 +50,7 @@ public class SalaryPaymentLine extends ProfitLine {
         ItemBuilder.from(salarySpending)
             .asGuiItem(
                 event -> {
-                  new EconomicHistoryMenu(player, territoryData, TransactionHistoryEnum.SALARY);
+                  EconomicHistoryMenu.open(player, territoryData, TransactionHistoryEnum.SALARY);
                   event.setCancelled(true);
                 });
     gui.setItem(2, 6, salaryHistoryButton);

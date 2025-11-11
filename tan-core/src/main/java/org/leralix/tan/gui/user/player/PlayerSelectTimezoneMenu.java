@@ -4,21 +4,31 @@ import dev.triumphteam.gui.guis.GuiItem;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.timezone.TimeZoneEnum;
 
 public class PlayerSelectTimezoneMenu extends IteratorGUI {
 
-  public PlayerSelectTimezoneMenu(Player player) {
-    super(player, Lang.HEADER_SELECT_TIMEZONE.get(player), 4);
-    open();
+  private PlayerSelectTimezoneMenu(Player player, ITanPlayer tanPlayer) {
+    super(player, tanPlayer, Lang.HEADER_SELECT_TIMEZONE.get(tanPlayer.getLang()), 4);
+  }
+
+  public static void open(Player player) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new PlayerSelectTimezoneMenu(player, tanPlayer).open();
+            });
   }
 
   @Override
   public void open() {
-    iterator(getTimezones(), PlayerMenu::new);
+    iterator(getTimezones(), PlayerMenu::open);
 
     gui.open(player);
   }
@@ -35,7 +45,7 @@ public class PlayerSelectTimezoneMenu extends IteratorGUI {
               .setAction(
                   action -> {
                     tanPlayer.setTimeZone(timeZoneEnum);
-                    new PlayerMenu(player);
+                    PlayerMenu.open(player);
                   })
               .asGuiItem(player, langType));
     }

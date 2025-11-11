@@ -18,7 +18,7 @@ public class CreateTerritoryPropertyEvent extends CreatePropertyEvent {
   @Override
   protected PropertyData createProperty() {
     PropertyData property = teritoryData.registerNewProperty(position1, position2, teritoryData);
-    new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
+    PlayerPropertyManager.open(player, property, HumanEntity::closeInventory);
     return property;
   }
 }

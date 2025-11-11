@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
@@ -12,17 +13,27 @@ import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.PermissionManager;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 public class PropertyChunkSettingsMenu extends IteratorGUI {
 
   private final PropertyData propertyData;
   private final BasicGui returnMenu;
 
-  public PropertyChunkSettingsMenu(Player player, PropertyData propertyData, BasicGui returnGui) {
-    super(player, Lang.HEADER_CHUNK_PERMISSION, 4);
+  private PropertyChunkSettingsMenu(
+      Player player, ITanPlayer tanPlayer, PropertyData propertyData, BasicGui returnGui) {
+    super(player, tanPlayer, Lang.HEADER_CHUNK_PERMISSION.get(tanPlayer.getLang()), 4);
     this.propertyData = propertyData;
     this.returnMenu = returnGui;
-    open();
+  }
+
+  public static void open(Player player, PropertyData propertyData, BasicGui returnGui) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new PropertyChunkSettingsMenu(player, tanPlayer, propertyData, returnGui).open();
+            });
   }
 
   @Override
@@ -55,7 +66,7 @@ public class PropertyChunkSettingsMenu extends IteratorGUI {
                       permissionManager.nextPermission(type);
                       open();
                     } else if (event.isRightClick()) {
-                      new BrowsePlayerWithPermissionMenu(player, permissionManager, type, this);
+                      BrowsePlayerWithPermissionMenu.open(player, permissionManager, type, this);
                     }
                   })
               .asGuiItem(player, langType);

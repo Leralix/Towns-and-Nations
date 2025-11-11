@@ -1,0 +1,47 @@
+# Command Cooldown Configuration
+# Cooldowns are in seconds. Set to 0 to disable.
+
+# Town Management
+town:
+  create: 300      # 5 minutes - Prevent town spam
+  delete: 60       # 1 minute - Safety against accidental deletion
+  rename: 600      # 10 minutes - Prevent abuse
+  invite: 5        # 5 seconds - Prevent spam invites
+  kick: 10         # 10 seconds - Prevent rapid kicks
+
+# Region Management
+region:
+  create: 600      # 10 minutes - Major operation
+  delete: 120      # 2 minutes - Safety
+  rename: 600      # 10 minutes
+
+# Chunk Management
+chunk:
+  claim: 2         # 2 seconds - Prevent rapid claiming
+  unclaim: 2       # 2 seconds - Prevent accidents
+  autoclaim: 1     # 1 second - Can claim multiple chunks
+
+# Economy
+economy:
+  donate: 3        # 3 seconds - Prevent spam donations
+  withdraw: 5      # 5 seconds - Safety for withdrawals
+
+# War System
+war:
+  declare: 1800    # 30 minutes - Major decision
+  surrender: 300   # 5 minutes - Safety
+
+# Property Management
+property:
+  create: 10       # 10 seconds
+  buy: 5           # 5 seconds
+  rent: 5          # 5 seconds
+
+# Diplomacy
+diplomacy:
+  ally: 60         # 1 minute - Prevent proposal spam
+  neutral: 30      # 30 seconds
+  enemy: 60        # 1 minute
+
+# Bypass permission for all cooldowns
+# Grant to admins: tan.cooldown.bypass

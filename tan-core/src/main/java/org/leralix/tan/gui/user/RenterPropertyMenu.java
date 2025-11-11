@@ -9,24 +9,35 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.property.AbstractOwner;
 import org.leralix.tan.dataclass.property.PlayerOwned;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.property.PropertyMenus;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class RenterPropertyMenu extends PropertyMenus {
 
-  public RenterPropertyMenu(Player player, PropertyData propertyData) {
+  private RenterPropertyMenu(Player player, ITanPlayer tanPlayer, PropertyData propertyData) {
     super(
         player,
-        Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(player, propertyData.getName()),
+        tanPlayer,
+        Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(tanPlayer.getLang(), propertyData.getName()),
         3,
         propertyData);
-    open();
+  }
+
+  public static void open(Player player, PropertyData propertyData) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new RenterPropertyMenu(player, tanPlayer, propertyData).open();
+            });
   }
 
   @Override

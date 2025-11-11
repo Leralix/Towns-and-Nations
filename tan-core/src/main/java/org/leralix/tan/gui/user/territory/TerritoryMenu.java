@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.enums.BrowseScope;
@@ -14,7 +15,6 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.gui.user.territory.relation.OpenDiplomacyMenu;
 import org.leralix.tan.gui.user.territory.upgrade.UpgradeMenu;
@@ -26,8 +26,9 @@ public abstract class TerritoryMenu extends BasicGui {
 
   protected final TerritoryData territoryData;
 
-  protected TerritoryMenu(Player player, String name, TerritoryData territoryData) {
-    super(player, name, 4);
+  protected TerritoryMenu(
+      Player player, ITanPlayer tanPlayer, String name, TerritoryData territoryData) {
+    super(player, tanPlayer, name, 4);
     this.territoryData = territoryData;
   }
 
@@ -62,7 +63,7 @@ public abstract class TerritoryMenu extends BasicGui {
               }
 
               if (action.isRightClick()) {
-                new SelectTerritoryHeadMenu(player, territoryData);
+                SelectTerritoryHeadMenu.open(player, territoryData);
                 return;
               }
 
@@ -91,7 +92,7 @@ public abstract class TerritoryMenu extends BasicGui {
         .setDescription(Lang.GUI_TOWN_LEVEL_ICON_DESC1.get())
         .setRequirements(
             new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.UPGRADE_TOWN))
-        .setAction(event -> new UpgradeMenu(player, territoryData))
+        .setAction(event -> UpgradeMenu.open(player, territoryData))
         .asGuiItem(player, langType);
   }
 
@@ -102,7 +103,7 @@ public abstract class TerritoryMenu extends BasicGui {
         .setDescription(Lang.GUI_TOWN_TREASURY_ICON_DESC1.get())
         .setRequirements(
             new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_TAXES))
-        .setAction(event -> new TreasuryMenu(player, territoryData))
+        .setAction(event -> TreasuryMenu.open(player, territoryData))
         .asGuiItem(player, langType);
   }
 
@@ -111,7 +112,7 @@ public abstract class TerritoryMenu extends BasicGui {
         .get(IconKey.TERRITORY_MEMBER_ICON)
         .setName(Lang.GUI_TOWN_MEMBERS_ICON.get(langType))
         .setDescription(Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get())
-        .setAction(event -> new TerritoryMemberMenu(player, territoryData).open())
+        .setAction(event -> TerritoryMemberMenu.open(player, territoryData))
         .asGuiItem(player, langType);
   }
 
@@ -120,7 +121,7 @@ public abstract class TerritoryMenu extends BasicGui {
         .get(IconKey.TERRITORY_LAND_ICON)
         .setName(Lang.GUI_CLAIM_ICON.get(langType))
         .setDescription(Lang.GUI_CLAIM_ICON_DESC1.get())
-        .setAction(event -> new ChunkSettingsMenu(player, territoryData))
+        .setAction(event -> ChunkSettingsMenu.open(player, territoryData))
         .asGuiItem(player, langType);
   }
 
@@ -132,6 +133,7 @@ public abstract class TerritoryMenu extends BasicGui {
             event ->
                 new BrowseTerritoryMenu(
                     player,
+                    tanPlayer,
                     territoryData,
                     BrowseScope.ALL,
                     p -> territoryData.openMainMenu(player)))
@@ -146,7 +148,7 @@ public abstract class TerritoryMenu extends BasicGui {
         .setRequirements(
             new RankPermissionRequirement(
                 territoryData, tanPlayer, RolePermission.MANAGE_TOWN_RELATION))
-        .setAction(event -> new OpenDiplomacyMenu(player, territoryData))
+        .setAction(event -> OpenDiplomacyMenu.open(player, territoryData))
         .asGuiItem(player, langType);
   }
 
@@ -157,7 +159,7 @@ public abstract class TerritoryMenu extends BasicGui {
         .setDescription(Lang.GUI_ATTACK_ICON_DESC1.get())
         .setRequirements(
             new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_WARS))
-        .setAction(event -> new WarsMenu(player, territoryData))
+        .setAction(event -> WarsMenu.open(player, territoryData))
         .asGuiItem(player, langType);
   }
 
@@ -169,7 +171,10 @@ public abstract class TerritoryMenu extends BasicGui {
         .setRequirements(
             new RankPermissionRequirement(
                 territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
-        .setAction(event -> PlayerGUI.openHierarchyMenu(player, territoryData))
+        .setAction(
+            event ->
+                org.leralix.tan.gui.user.territory.hierarchy.VassalsMenu.open(
+                    player, territoryData))
         .asGuiItem(player, langType);
   }
 
@@ -180,7 +185,7 @@ public abstract class TerritoryMenu extends BasicGui {
         .setDescription(Lang.GUI_BUILDING_MENU_DESC1.get())
         .setRequirements(
             new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_PROPERTY))
-        .setAction(event -> new BuildingMenu(player, territoryData, this))
+        .setAction(event -> new BuildingMenu(player, tanPlayer, territoryData, this))
         .asGuiItem(player, langType);
   }
 }

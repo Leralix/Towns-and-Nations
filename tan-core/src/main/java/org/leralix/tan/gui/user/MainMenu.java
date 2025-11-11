@@ -11,10 +11,10 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.player.PlayerMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -22,9 +22,17 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 public class MainMenu extends BasicGui {
 
-  public MainMenu(Player player) {
-    super(player, Lang.HEADER_MAIN_MENU, 3);
-    open();
+  private MainMenu(Player player, ITanPlayer tanPlayer) {
+    super(player, tanPlayer, Lang.HEADER_MAIN_MENU.get(tanPlayer.getLang()), 3);
+  }
+
+  public static void open(Player player) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new MainMenu(player, tanPlayer).open();
+            });
   }
 
   @Override
@@ -105,7 +113,16 @@ public class MainMenu extends BasicGui {
         .get(IconKey.REGION_BASE_ICON)
         .setName(Lang.GUI_REGION_ICON.get(tanPlayer))
         .setDescription(description)
-        .setAction(action -> PlayerGUI.dispatchPlayerRegion(player))
+        .setAction(
+            action -> {
+              // TODO: Replace with proper region menu navigation after PlayerGUI migration
+              // Original: PlayerGUI.dispatchPlayerRegion(player)
+              if (tanPlayer.hasRegion()) {
+                tanPlayer.getRegionSync().openMainMenu(player);
+              } else {
+                player.closeInventory();
+              }
+            })
         .asGuiItem(player, langType);
   }
 
@@ -126,7 +143,16 @@ public class MainMenu extends BasicGui {
         .get(IconKey.TOWN_BASE_ICON)
         .setName(Lang.GUI_TOWN_ICON.get(tanPlayer))
         .setDescription(description)
-        .setAction(action -> PlayerGUI.dispatchPlayerTown(player))
+        .setAction(
+            action -> {
+              // TODO: Replace with proper town menu navigation after PlayerGUI migration
+              // Original: PlayerGUI.dispatchPlayerTown(player)
+              if (tanPlayer.hasTown()) {
+                tanPlayer.getTownSync().openMainMenu(player);
+              } else {
+                player.closeInventory();
+              }
+            })
         .asGuiItem(player, langType);
   }
 
@@ -134,7 +160,7 @@ public class MainMenu extends BasicGui {
     return iconManager
         .get(IconKey.PLAYER_BASE_ICON)
         .setName(Lang.GUI_PLAYER_MENU_ICON.get(tanPlayer, player.getName()))
-        .setAction(action -> new PlayerMenu(player))
+        .setAction(action -> PlayerMenu.open(player))
         .asGuiItem(player, langType);
   }
 }

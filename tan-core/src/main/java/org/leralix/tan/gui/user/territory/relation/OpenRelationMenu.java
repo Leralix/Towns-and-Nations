@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
@@ -27,21 +28,30 @@ public class OpenRelationMenu extends IteratorGUI {
   private final TerritoryData territoryData;
   private final TownRelation relation;
 
-  public OpenRelationMenu(Player player, TerritoryData territoryData, TownRelation relation) {
+  private OpenRelationMenu(
+      Player player, ITanPlayer tanPlayer, TerritoryData territoryData, TownRelation relation) {
     super(
         player,
-        Lang.HEADER_RELATION_WITH.get(
-            player, relation.getName(PlayerDataStorage.getInstance().getSync(player).getLang())),
+        tanPlayer,
+        Lang.HEADER_RELATION_WITH.get(tanPlayer.getLang(), relation.getName(tanPlayer.getLang())),
         6);
     this.territoryData = territoryData;
     this.relation = relation;
-    open();
+  }
+
+  public static void open(Player player, TerritoryData territoryData, TownRelation relation) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new OpenRelationMenu(player, tanPlayer, territoryData, relation).open();
+            });
   }
 
   @Override
   public void open() {
 
-    iterator(getTerritories(), p -> new OpenDiplomacyMenu(player, territoryData));
+    iterator(getTerritories(), p -> OpenDiplomacyMenu.open(p, territoryData));
 
     gui.setItem(6, 4, getRemoveTerritoryButton());
     gui.setItem(6, 5, getAddTerritoryButton());
@@ -60,7 +70,7 @@ public class OpenRelationMenu extends IteratorGUI {
                 TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                 return;
               }
-              new RemoveRelationMenu(player, territoryData, relation);
+              RemoveRelationMenu.open(player, territoryData, relation);
             })
         .asGuiItem(player, langType);
   }
@@ -76,7 +86,7 @@ public class OpenRelationMenu extends IteratorGUI {
                 TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                 return;
               }
-              new AddRelationMenu(player, territoryData, relation);
+              AddRelationMenu.open(player, territoryData, relation);
             })
         .asGuiItem(player, langType);
   }
@@ -123,7 +133,7 @@ public class OpenRelationMenu extends IteratorGUI {
                               territoryData.getColoredName(), otherTerritory.getColoredName()),
                           SoundEnum.WAR);
                       War newWar = warStorage.newWar(territoryData, otherTerritory);
-                      new WarMenu(player, territoryData, newWar);
+                      WarMenu.open(player, territoryData, newWar);
                     }
                   });
       guiItems.add(townButton);

@@ -5,27 +5,39 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 public class TerritoryChunkSettingsMenu extends IteratorGUI {
 
   private final TerritoryData territoryData;
 
-  public TerritoryChunkSettingsMenu(Player player, TerritoryData territoryData) {
-    super(player, Lang.HEADER_CHUNK_PERMISSION, 4);
+  public TerritoryChunkSettingsMenu(
+      Player player, ITanPlayer tanPlayer, TerritoryData territoryData) {
+    super(player, tanPlayer, Lang.HEADER_CHUNK_PERMISSION.get(player), 4);
     this.territoryData = territoryData;
     open();
+  }
+
+  public static void open(Player player, TerritoryData territoryData) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new TerritoryChunkSettingsMenu(player, tanPlayer, territoryData).open();
+            });
   }
 
   @Override
   public void open() {
     iterator(
         getChunkPermission(),
-        p -> new ChunkSettingsMenu(player, territoryData),
+        p -> ChunkSettingsMenu.open(player, territoryData),
         Material.LIME_STAINED_GLASS_PANE);
     gui.open(player);
   }
@@ -50,7 +62,7 @@ public class TerritoryChunkSettingsMenu extends IteratorGUI {
                       territoryData.nextPermission(type);
                       open();
                     } else if (event.isRightClick()) {
-                      new OpenPlayerListForChunkPermission(player, territoryData, type, this);
+                      OpenPlayerListForChunkPermission.open(player, territoryData, type, this);
                     }
                   })
               .asGuiItem(player, langType);

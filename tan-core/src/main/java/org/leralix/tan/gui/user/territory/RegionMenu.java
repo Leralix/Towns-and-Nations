@@ -3,6 +3,7 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -15,14 +16,20 @@ public class RegionMenu extends TerritoryMenu {
 
   private final RegionData regionData;
 
-  public RegionMenu(Player player, RegionData regionData) {
-    super(
-        player,
-        Lang.HEADER_REGION_MENU.get(
-            player, PlayerDataStorage.getInstance().getSync(player).getRegionSync().getName()),
-        regionData);
+  public RegionMenu(Player player, ITanPlayer tanPlayer, RegionData regionData) {
+    super(player, tanPlayer, Lang.HEADER_REGION_MENU.get(player, regionData.getName()), regionData);
     this.regionData = regionData;
-    open();
+    // open() doit être appelé explicitement après la construction pour respecter le modèle
+    // asynchrone
+  }
+
+  public static void open(Player player, RegionData regionData) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new RegionMenu(player, tanPlayer, regionData).open();
+            });
   }
 
   @Override
@@ -42,7 +49,7 @@ public class RegionMenu extends TerritoryMenu {
     gui.setItem(3, 3, getAttackButton());
     gui.setItem(3, 4, getHierarchyButton());
 
-    gui.setItem(4, 1, GuiUtil.createBackArrow(player, MainMenu::new));
+    gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> MainMenu.open(player)));
 
     gui.open(player);
   }
@@ -52,7 +59,7 @@ public class RegionMenu extends TerritoryMenu {
         .get(IconKey.TERRITORY_SETTINGS_ICON)
         .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(tanPlayer.getLang()))
         .setDescription(Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get())
-        .setAction(event -> new RegionSettingsMenu(player, regionData))
+        .setAction(event -> RegionSettingsMenu.open(player, regionData))
         .asGuiItem(player, langType);
   }
 }

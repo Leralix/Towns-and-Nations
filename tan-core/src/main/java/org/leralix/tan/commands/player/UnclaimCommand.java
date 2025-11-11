@@ -2,6 +2,7 @@ package org.leralix.tan.commands.player;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
@@ -12,6 +13,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.commands.CommandExceptionHandler;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class UnclaimCommand extends PlayerSubCommand {
@@ -43,31 +45,47 @@ public class UnclaimCommand extends PlayerSubCommand {
 
     ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
     LangType langType = tanPlayer.getLang();
-    if (!(args.length == 1 || args.length == 4)) {
+
+    // Validate argument count (1 or 4 arguments)
+    if (args.length != 1 && args.length != 4) {
       TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
       TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
       return;
     }
 
-    Chunk chunk = null;
-    if (args.length == 1) {
-      chunk = player.getLocation().getChunk();
-    }
+    Chunk chunk;
+    try {
+      if (args.length == 1) {
+        chunk = player.getLocation().getChunk();
+      } else {
+        // Parse coordinates with error handling
+        Optional<Integer> xOpt = CommandExceptionHandler.parseInt(player, args[2], "x coordinate");
+        Optional<Integer> yOpt = CommandExceptionHandler.parseInt(player, args[3], "y coordinate");
 
-    if (args.length == 4) {
-      int x = Integer.parseInt(args[2]);
-      int y = Integer.parseInt(args[3]);
-      chunk = player.getLocation().getWorld().getChunkAt(x, y);
-    }
+        if (xOpt.isEmpty() || yOpt.isEmpty()) {
+          return;
+        }
 
-    if (!NewClaimedChunkStorage.getInstance().isChunkClaimed(chunk)) {
-      TanChatUtils.message(player, Lang.CHUNK_NOT_CLAIMED.get(langType));
-      return;
-    }
-    ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
-    claimedChunk.unclaimChunk(player);
-    if (args.length == 4) {
-      MapCommand.openMap(player, new MapSettings(args[0], args[1]));
+        chunk = player.getLocation().getWorld().getChunkAt(xOpt.get(), yOpt.get());
+      }
+
+      // Validate chunk is claimed
+      if (!NewClaimedChunkStorage.getInstance().isChunkClaimed(chunk)) {
+        TanChatUtils.message(player, Lang.CHUNK_NOT_CLAIMED.get(langType));
+        return;
+      }
+
+      // Unclaim the chunk
+      ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
+      claimedChunk.unclaimChunk(player);
+
+      // Open map if coordinates were provided
+      if (args.length == 4) {
+        MapCommand.openMap(player, new MapSettings(args[0], args[1]));
+      }
+    } catch (Exception e) {
+      TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
+      CommandExceptionHandler.logCommandExecution(player, "unclaim", args);
     }
   }
 }

@@ -11,22 +11,34 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 
 public class SelectTerritoryHeadMenu extends IteratorGUI {
 
   private final TerritoryData territoryData;
 
-  protected SelectTerritoryHeadMenu(Player player, TerritoryData territoryData) {
-    super(player, Lang.HEADER_SELECT_ICON, 4);
+  private SelectTerritoryHeadMenu(
+      Player player, ITanPlayer tanPlayer, TerritoryData territoryData) {
+    super(player, tanPlayer, Lang.HEADER_SELECT_ICON.get(player), 4);
 
     this.territoryData = territoryData;
 
     open();
+  }
+
+  public static void open(Player player, TerritoryData territoryData) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new SelectTerritoryHeadMenu(player, tanPlayer, territoryData).open();
+            });
   }
 
   @Override

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
@@ -17,27 +18,31 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.property.CreatePlayerPropertyEvent;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.upgrade.rewards.numeric.PropertyCap;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class PlayerPropertiesMenu extends IteratorGUI {
 
-  public PlayerPropertiesMenu(Player player) {
-    super(player, Lang.HEADER_PLAYER_PROPERTIES, 3);
+  private PlayerPropertiesMenu(Player player, ITanPlayer tanPlayer) {
+    super(player, tanPlayer, Lang.HEADER_PLAYER_PROPERTIES.get(tanPlayer.getLang()), 3);
+  }
+
+  public static void open(Player player) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new PlayerPropertiesMenu(player, tanPlayer).open();
+            });
   }
 
   @Override
   public void open() {
 
     GuiUtil.createIterator(
-        gui,
-        getProperties(),
-        page,
-        player,
-        p -> new PlayerMenu(player).open(),
-        p -> nextPage(),
-        p -> previousPage());
+        gui, getProperties(), page, player, PlayerMenu::open, p -> nextPage(), p -> previousPage());
 
     gui.setItem(3, 5, getNewPropertyButton());
 
@@ -93,7 +98,7 @@ public class PlayerPropertiesMenu extends IteratorGUI {
               .get(propertyData.getIcon())
               .setName(propertyData.getName())
               .setDescription(propertyData.getBasicDescription())
-              .setAction(event -> new PlayerPropertyManager(player, propertyData, p -> open()))
+              .setAction(event -> PlayerPropertyManager.open(player, propertyData, p -> open()))
               .asGuiItem(player, langType));
     }
     return guiItems;

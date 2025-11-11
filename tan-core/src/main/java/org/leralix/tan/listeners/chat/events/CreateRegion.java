@@ -9,7 +9,6 @@ import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.RegionCreatedInternalEvent;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -69,6 +68,8 @@ public class CreateRegion extends ChatListenerEvent {
     EventManager.getInstance()
         .callEvent(new RegionCreatedInternalEvent(newRegion, TanPlayerWrapper.of(playerData)));
 
-    openGui(p -> PlayerGUI.dispatchPlayerRegion(player), player);
+    // TODO: Replace with proper region menu navigation after PlayerGUI migration
+    // Original: openGui(p -> PlayerGUI.dispatchPlayerRegion(player), player);
+    openGui(p -> player.closeInventory(), player);
   }
 }

@@ -6,12 +6,14 @@ import dev.triumphteam.gui.guis.GuiItem;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.user.territory.TownMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -19,10 +21,18 @@ public class TownPropertiesMenu extends IteratorGUI {
 
   private final TownData townData;
 
-  public TownPropertiesMenu(Player player, TownData townData) {
-    super(player, Lang.HEADER_PLAYER_PROPERTIES, 3);
+  private TownPropertiesMenu(Player player, ITanPlayer tanPlayer, TownData townData) {
+    super(player, tanPlayer, Lang.HEADER_PLAYER_PROPERTIES.get(tanPlayer.getLang()), 3);
     this.townData = townData;
-    open();
+  }
+
+  public static void open(Player player, TownData townData) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new TownPropertiesMenu(player, tanPlayer, townData).open();
+            });
   }
 
   @Override
@@ -33,7 +43,7 @@ public class TownPropertiesMenu extends IteratorGUI {
         getProperties(),
         page,
         player,
-        p -> new TownMenu(player, townData),
+        p -> TownMenu.open(p, townData),
         p -> nextPage(),
         p -> previousPage());
 
@@ -63,7 +73,7 @@ public class TownPropertiesMenu extends IteratorGUI {
                           player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
                       return;
                     }
-                    new TownPropertyManager(player, townProperty, townData);
+                    TownPropertyManager.open(player, townProperty, townData);
                   })
               .asGuiItem(player, langType));
     }

@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.building.Building;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
@@ -27,11 +28,13 @@ public class BuildingMenu extends IteratorGUI {
   private final BasicGui previousMenu;
   private final TerritoryData territoryData;
 
-  public BuildingMenu(Player player, TerritoryData territoryData, BasicGui previousMenu) {
-    super(player, Lang.HEADER_BUILDING_MENU, 4);
+  public BuildingMenu(
+      Player player, ITanPlayer tanPlayer, TerritoryData territoryData, BasicGui previousMenu) {
+    super(player, tanPlayer, Lang.HEADER_BUILDING_MENU.get(player), 4);
     this.territoryData = territoryData;
     this.previousMenu = previousMenu;
-    open();
+    // open() doit être appelé explicitement après la construction pour respecter le modèle
+    // asynchrone
   }
 
   @Override

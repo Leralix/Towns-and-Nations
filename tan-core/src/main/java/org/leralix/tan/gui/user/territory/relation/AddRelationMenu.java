@@ -29,16 +29,25 @@ public class AddRelationMenu extends IteratorGUI {
   private final TerritoryData territoryData;
   private final TownRelation wantedRelation;
 
-  public AddRelationMenu(Player player, TerritoryData territory, TownRelation wantedRelation) {
+  private AddRelationMenu(
+      Player player, ITanPlayer tanPlayer, TerritoryData territory, TownRelation wantedRelation) {
     super(
         player,
+        tanPlayer,
         Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(
-            player,
-            wantedRelation.getName(PlayerDataStorage.getInstance().getSync(player).getLang())),
+            tanPlayer.getLang(), wantedRelation.getName(tanPlayer.getLang())),
         6);
     this.territoryData = territory;
     this.wantedRelation = wantedRelation;
-    open();
+  }
+
+  public static void open(Player player, TerritoryData territoryData, TownRelation wantedRelation) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new AddRelationMenu(player, tanPlayer, territoryData, wantedRelation).open();
+            });
   }
 
   @Override
@@ -46,7 +55,7 @@ public class AddRelationMenu extends IteratorGUI {
 
     iterator(
         getTerritories(),
-        p -> new OpenRelationMenu(player, territoryData, wantedRelation),
+        p -> OpenRelationMenu.open(p, territoryData, wantedRelation),
         Material.GREEN_STAINED_GLASS_PANE);
 
     gui.open(player);
@@ -132,7 +141,7 @@ public class AddRelationMenu extends IteratorGUI {
                       TruceStorage.getInstance().add(activeTruce);
                       territoryData.setRelation(otherTerritory, wantedRelation);
                     }
-                    new OpenRelationMenu(player, territoryData, wantedRelation);
+                    OpenRelationMenu.open(player, territoryData, wantedRelation);
                   });
       guiItems.add(iconGui);
     }

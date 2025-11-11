@@ -49,7 +49,7 @@ public class ChunkUpkeepLine extends ProfitLine {
         new GuiItem(
             chunkSpending,
             event ->
-                new EconomicHistoryMenu(
+                EconomicHistoryMenu.open(
                     player, territoryData, TransactionHistoryEnum.CHUNK_SPENDING));
     gui.setItem(2, 7, chunkSpendingItem);
   }

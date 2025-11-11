@@ -9,12 +9,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.PermissionManager;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 
 public class BrowsePlayerWithPermissionMenu extends IteratorGUI {
@@ -23,17 +25,31 @@ public class BrowsePlayerWithPermissionMenu extends IteratorGUI {
   private final ChunkPermissionType chunkPermission;
   private final BasicGui returnMenu;
 
-  public BrowsePlayerWithPermissionMenu(
+  private BrowsePlayerWithPermissionMenu(
+      Player player,
+      ITanPlayer tanPlayer,
+      PermissionManager permissionManager,
+      ChunkPermissionType permission,
+      BasicGui returnMenu) {
+    super(player, tanPlayer, permission.getLabel(tanPlayer.getLang()), 3);
+    this.permissionManager = permissionManager;
+    this.chunkPermission = permission;
+    this.returnMenu = returnMenu;
+  }
+
+  public static void open(
       Player player,
       PermissionManager permissionManager,
       ChunkPermissionType permission,
       BasicGui returnMenu) {
-    super(player, permission.getLabel(player), 3);
-    this.permissionManager = permissionManager;
-    this.chunkPermission = permission;
-    this.returnMenu = returnMenu;
-
-    open();
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new BrowsePlayerWithPermissionMenu(
+                      player, tanPlayer, permissionManager, permission, returnMenu)
+                  .open();
+            });
   }
 
   @Override
@@ -52,7 +68,7 @@ public class BrowsePlayerWithPermissionMenu extends IteratorGUI {
         .setAction(
             event -> {
               event.setCancelled(true);
-              new AddPlayerWithPermissionMenu(player, permissionManager, chunkPermission, this);
+              AddPlayerWithPermissionMenu.open(player, permissionManager, chunkPermission, this);
             })
         .asGuiItem(player, langType);
   }

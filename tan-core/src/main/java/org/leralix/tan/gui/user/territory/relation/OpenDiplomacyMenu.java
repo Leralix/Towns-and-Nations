@@ -5,14 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.constants.RelationConstant;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -22,10 +23,22 @@ public class OpenDiplomacyMenu extends BasicGui {
 
   private final TerritoryData territoryData;
 
-  public OpenDiplomacyMenu(Player player, TerritoryData territoryData) {
-    super(player, Lang.HEADER_RELATIONS.get(player, territoryData.getName()), 3);
+  private OpenDiplomacyMenu(Player player, ITanPlayer tanPlayer, TerritoryData territoryData) {
+    super(
+        player,
+        tanPlayer,
+        Lang.HEADER_RELATIONS.get(tanPlayer.getLang(), territoryData.getName()),
+        3);
     this.territoryData = territoryData;
-    open();
+  }
+
+  public static void open(Player player, TerritoryData territoryData) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new OpenDiplomacyMenu(player, tanPlayer, territoryData).open();
+            });
   }
 
   @Override
@@ -37,7 +50,9 @@ public class OpenDiplomacyMenu extends BasicGui {
     gui.setItem(15, getAllianceButton());
     gui.setItem(17, getProposalButton());
 
-    gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> PlayerGUI.dispatchPlayerTown(player)));
+    // TODO: Replace with proper territory menu navigation after PlayerGUI migration
+    // Original: GuiUtil.createBackArrow(player, p -> PlayerGUI.dispatchPlayerTown(player))
+    gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player)));
 
     gui.open(player);
   }
@@ -50,7 +65,7 @@ public class OpenDiplomacyMenu extends BasicGui {
         .get(IconKey.GUI_WAR_ICON)
         .setName(Lang.GUI_TOWN_RELATION_HOSTILE.get(langType))
         .setDescription(desc)
-        .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.WAR))
+        .setAction(p -> OpenRelationMenu.open(player, territoryData, TownRelation.WAR))
         .asGuiItem(player, langType);
   }
 
@@ -62,7 +77,7 @@ public class OpenDiplomacyMenu extends BasicGui {
         .get(IconKey.GUI_EMBARGO_ICON)
         .setName(Lang.GUI_TOWN_RELATION_EMBARGO.get(langType))
         .setDescription(desc)
-        .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.EMBARGO))
+        .setAction(p -> OpenRelationMenu.open(player, territoryData, TownRelation.EMBARGO))
         .asGuiItem(player, langType);
   }
 
@@ -74,7 +89,7 @@ public class OpenDiplomacyMenu extends BasicGui {
         .get(IconKey.GUI_NON_AGGRESSION_PACT_ICON)
         .setName(Lang.GUI_TOWN_RELATION_NAP.get(langType))
         .setDescription(desc)
-        .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.NON_AGGRESSION))
+        .setAction(p -> OpenRelationMenu.open(player, territoryData, TownRelation.NON_AGGRESSION))
         .asGuiItem(player, langType);
   }
 
@@ -86,7 +101,7 @@ public class OpenDiplomacyMenu extends BasicGui {
         .get(IconKey.GUI_ALLIANCE_ICON)
         .setName(Lang.GUI_TOWN_RELATION_ALLIANCE.get(langType))
         .setDescription(desc)
-        .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.ALLIANCE))
+        .setAction(p -> OpenRelationMenu.open(player, territoryData, TownRelation.ALLIANCE))
         .asGuiItem(player, langType);
   }
 
@@ -105,7 +120,7 @@ public class OpenDiplomacyMenu extends BasicGui {
                 TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
                 return;
               }
-              new OpenDiplomacyProposalsMenu(player, territoryData);
+              OpenDiplomacyProposalsMenu.open(player, territoryData);
             })
         .asGuiItem(player, langType);
   }

@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.user.territory.NoTownMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.deprecated.HeadUtils;
@@ -19,22 +21,24 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 public class ApplyToTownMenu extends IteratorGUI {
 
-  public ApplyToTownMenu(Player player) {
-    super(player, Lang.HEADER_TOWN_LIST.get(player), 6);
-    open();
+  private ApplyToTownMenu(Player player, ITanPlayer tanPlayer) {
+    super(player, tanPlayer, Lang.HEADER_TOWN_LIST.get(tanPlayer.getLang()), 6);
+  }
+
+  public static void open(Player player) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new ApplyToTownMenu(player, tanPlayer).open();
+            });
   }
 
   @Override
   public void open() {
 
     GuiUtil.createIterator(
-        gui,
-        getTowns(),
-        page,
-        player,
-        p -> new NoTownMenu(player),
-        p -> nextPage(),
-        p -> previousPage());
+        gui, getTowns(), page, player, NoTownMenu::open, p -> nextPage(), p -> previousPage());
 
     gui.open(player);
   }

@@ -2,7 +2,10 @@ package org.leralix.tan.commands.player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.utils.ChatUtils;
@@ -13,6 +16,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.commands.CommandExceptionHandler;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class InvitePlayerCommand extends PlayerSubCommand {
@@ -48,19 +52,12 @@ public class InvitePlayerCommand extends PlayerSubCommand {
 
   @Override
   public void perform(Player player, String[] args) {
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
-    LangType langType = tanPlayer.getLang();
-
-    if (args.length <= 1) {
-      TanChatUtils.message(player, Lang.NOT_ENOUGH_ARGS_ERROR.get(langType));
-      TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
-
-    } else if (args.length == 2) {
-      invite(player, args[1]);
-    } else {
-      TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.get(langType));
-      TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+    // Validate argument count
+    if (!CommandExceptionHandler.validateArgCount((CommandSender) player, args, 2, getSyntax())) {
+      return;
     }
+
+    invite(player, args[1]);
   }
 
   private static void invite(Player player, String playerToInvite) {
@@ -80,7 +77,15 @@ public class InvitePlayerCommand extends PlayerSubCommand {
       return;
     }
 
-    Player invite = Bukkit.getPlayer(playerToInvite);
+    // Find and validate player
+    Optional<OfflinePlayer> offlinePlayerOpt =
+        CommandExceptionHandler.findPlayer((CommandSender) player, playerToInvite);
+    if (offlinePlayerOpt.isEmpty()) {
+      return;
+    }
+
+    // Check if player is online
+    Player invite = offlinePlayerOpt.get().getPlayer();
     if (invite == null) {
       TanChatUtils.message(player, Lang.PLAYER_NOT_FOUND.get(langType));
       return;

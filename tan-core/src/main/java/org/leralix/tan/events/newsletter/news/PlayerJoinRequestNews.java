@@ -122,7 +122,7 @@ public class PlayerJoinRequestNews extends Newsletter {
             event -> {
               event.setCancelled(true);
               if (event.isLeftClick()) {
-                new PlayerApplicationMenu(player, getTownData()).open();
+                PlayerApplicationMenu.open(player, getTownData());
               }
               if (event.isRightClick()) {
                 markAsRead(player);

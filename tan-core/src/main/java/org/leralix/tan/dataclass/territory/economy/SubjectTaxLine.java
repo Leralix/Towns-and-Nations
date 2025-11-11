@@ -91,7 +91,7 @@ public class SubjectTaxLine extends ProfitLine {
                   SoundUtil.playSound(player, SoundEnum.REMOVE);
 
                   territoryData.addToTax(-amountToRemove);
-                  new TreasuryMenu(player, territoryData);
+                  TreasuryMenu.open(player, territoryData);
                 });
 
     GuiItem increaseTaxButton =
@@ -109,7 +109,7 @@ public class SubjectTaxLine extends ProfitLine {
                   SoundUtil.playSound(player, SoundEnum.ADD);
 
                   territoryData.addToTax(amountToRemove);
-                  new TreasuryMenu(player, territoryData);
+                  TreasuryMenu.open(player, territoryData);
                 });
 
     GuiItem taxInfo =
@@ -123,14 +123,14 @@ public class SubjectTaxLine extends ProfitLine {
                   }
                   event.setCancelled(true);
                   if (event.isLeftClick()) {
-                    new EconomicHistoryMenu(
+                    EconomicHistoryMenu.open(
                         player, territoryData, TransactionHistoryEnum.SUBJECT_TAX);
                   } else if (event.isRightClick()) {
                     TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
                     PlayerChatListenerStorage.register(
                         player,
                         new SetTerritoryTax(
-                            territoryData, p -> new TreasuryMenu(player, territoryData)));
+                            territoryData, p -> TreasuryMenu.open(player, territoryData)));
                   }
                 });
 

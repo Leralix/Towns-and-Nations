@@ -25,18 +25,36 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
   private final ChunkPermissionType chunkPermission;
   private final BrowsePlayerWithPermissionMenu returnMenu;
 
-  public AddPlayerWithPermissionMenu(
+  private AddPlayerWithPermissionMenu(
       Player player,
+      ITanPlayer tanPlayer,
       PermissionManager permissionManager,
       ChunkPermissionType chunkPermission,
       BrowsePlayerWithPermissionMenu browsePlayerWithPermissionMenu) {
-    super(player, chunkPermission.getLabel(player), 3);
+    super(player, tanPlayer, chunkPermission.getLabel(tanPlayer.getLang()), 3);
 
     this.permissionManager = permissionManager;
     this.chunkPermission = chunkPermission;
     this.returnMenu = browsePlayerWithPermissionMenu;
+  }
 
-    open();
+  public static void open(
+      Player player,
+      PermissionManager permissionManager,
+      ChunkPermissionType chunkPermission,
+      BrowsePlayerWithPermissionMenu browsePlayerWithPermissionMenu) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new AddPlayerWithPermissionMenu(
+                      player,
+                      tanPlayer,
+                      permissionManager,
+                      chunkPermission,
+                      browsePlayerWithPermissionMenu)
+                  .open();
+            });
   }
 
   @Override
@@ -55,6 +73,8 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
     List<GuiItem> guiItems = new ArrayList<>();
     for (Player playerToAdd : Bukkit.getOnlinePlayers()) {
 
+      // TODO: This is a blocking call and should be refactored to be fully asynchronous.
+      // This would require pre-loading all online players' data before opening the GUI.
       ITanPlayer playerToAddData = PlayerDataStorage.getInstance().getSync(playerToAdd);
       ChunkPermission permission = permissionManager.get(chunkPermission);
       // Check with town since only town can have territories

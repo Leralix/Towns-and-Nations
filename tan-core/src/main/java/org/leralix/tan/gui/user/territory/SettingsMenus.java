@@ -4,6 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
@@ -24,8 +25,9 @@ public abstract class SettingsMenus extends BasicGui {
 
   protected final TerritoryData territoryData;
 
-  protected SettingsMenus(Player player, String title, TerritoryData territoryData, int nbRows) {
-    super(player, title, nbRows);
+  protected SettingsMenus(
+      Player player, ITanPlayer tanPlayer, String title, TerritoryData territoryData, int nbRows) {
+    super(player, tanPlayer, title, nbRows);
     this.territoryData = territoryData;
   }
 

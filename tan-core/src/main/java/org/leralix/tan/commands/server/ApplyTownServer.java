@@ -2,12 +2,15 @@ package org.leralix.tan.commands.server;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.commands.CommandExceptionHandler;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class ApplyTownServer extends SubCommand {
@@ -40,21 +43,28 @@ public class ApplyTownServer extends SubCommand {
 
   @Override
   public void perform(CommandSender commandSender, String[] args) {
-    if (args.length < 3) {
-      TanChatUtils.message(commandSender, Lang.INVALID_ARGUMENTS);
+    // Validate argument count
+    if (!CommandExceptionHandler.validateMinArgCount(commandSender, args, 3, getSyntax())) {
       return;
     }
+
     String townID = args[1];
-    String playerName = args[2];
-    Player p = commandSender.getServer().getPlayer(playerName);
+
+    // Find and validate player
+    Optional<OfflinePlayer> offlinePlayerOpt =
+        CommandExceptionHandler.findPlayer(commandSender, args[2]);
+    if (offlinePlayerOpt.isEmpty()) {
+      return;
+    }
+
+    // Check if player is online
+    Player p = offlinePlayerOpt.get().getPlayer();
     if (p == null) {
       TanChatUtils.message(commandSender, Lang.PLAYER_NOT_FOUND);
       return;
     }
-    if (townID == null) {
-      TanChatUtils.message(commandSender, Lang.TOWN_NOT_FOUND);
-      return;
-    }
+
+    // Async: Get player data and add join request
     PlayerDataStorage.getInstance()
         .get(p.getUniqueId().toString())
         .thenAccept(

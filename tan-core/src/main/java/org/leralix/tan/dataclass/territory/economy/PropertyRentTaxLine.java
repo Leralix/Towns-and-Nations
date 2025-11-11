@@ -69,7 +69,7 @@ public class PropertyRentTaxLine extends ProfitLine {
                   }
 
                   if (event.isLeftClick()) {
-                    new EconomicHistoryMenu(
+                    EconomicHistoryMenu.open(
                         player, territoryData, TransactionHistoryEnum.PROPERTY_RENT_TAX);
                   } else if (event.isRightClick()) {
                     TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.get(lang));

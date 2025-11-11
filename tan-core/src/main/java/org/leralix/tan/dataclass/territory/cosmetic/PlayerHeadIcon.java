@@ -6,8 +6,10 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerProfile;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.storage.stored.PremiumStorage;
+import org.leralix.tan.utils.PlayerProfileCache;
 
 public class PlayerHeadIcon implements ICustomIcon {
   private final String playerUUID;
@@ -37,7 +39,10 @@ public class PlayerHeadIcon implements ICustomIcon {
       return icon;
     }
 
-    skullMeta.setOwnerProfile(offlinePlayer.getPlayerProfile());
+    // Use PlayerProfileCache to prevent Mojang API rate limiting (429 errors)
+    // This fetches from cache or creates a basic profile without network request
+    PlayerProfile profile = PlayerProfileCache.getInstance().getProfileSync(offlinePlayer);
+    skullMeta.setOwnerProfile(profile);
     icon.setItemMeta(skullMeta);
     return icon;
   }

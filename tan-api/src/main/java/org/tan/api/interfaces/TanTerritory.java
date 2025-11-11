@@ -1,19 +1,45 @@
 package org.tan.api.interfaces;
 
-/** Represents a territory, which can be a town or a nation. */
-public interface TanTerritory {
+import java.util.Collection;
+import java.util.UUID;
+import org.bukkit.Color;
+import org.bukkit.inventory.ItemStack;
+import org.tan.api.enums.ETownPermission;
 
-  /**
-   * Get the name of the territory.
-   *
-   * @return The name of the territory.
-   */
+public interface TanTerritory {
+  String getID();
+
   String getName();
 
-  /**
-   * Get the ID of the territory.
-   *
-   * @return The ID of the territory.
-   */
-  String getID();
+  void setName(String name);
+
+  String getDescription();
+
+  void setDescription(String description);
+
+  TanPlayer getOwner();
+
+  UUID getOwnerUUID();
+
+  Long getCreationDate();
+
+  ItemStack getIcon();
+
+  Color getColor();
+
+  void setColor(Color color);
+
+  int getNumberOfClaimedChunk();
+
+  Collection<TanClaimedChunk> getClaimedChunks();
+
+  Collection<TanPlayer> getMembers();
+
+  Collection<TanTerritory> getVassals();
+
+  boolean haveOverlord();
+
+  TanTerritory getOverlord();
+
+  boolean canPlayerDoAction(TanPlayer player, ETownPermission permission);
 }

@@ -4,6 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.events.newsletter.NewsletterScope;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.gui.BasicGui;
@@ -11,6 +12,7 @@ import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.FoliaScheduler;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
@@ -20,9 +22,18 @@ public class NewsletterMenu extends IteratorGUI {
   private List<GuiItem> cachedNewsletters = new ArrayList<>();
   private boolean isLoaded = false;
 
-  public NewsletterMenu(Player player) {
-    super(player, Lang.HEADER_NEWSLETTER, 6);
+  private NewsletterMenu(Player player, ITanPlayer tanPlayer) {
+    super(player, tanPlayer, Lang.HEADER_NEWSLETTER.get(tanPlayer.getLang()), 6);
     this.scope = NewsletterScope.SHOW_ONLY_UNREAD;
+  }
+
+  public static void open(Player player) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new NewsletterMenu(player, tanPlayer).open();
+            });
   }
 
   @Override
@@ -33,7 +44,7 @@ public class NewsletterMenu extends IteratorGUI {
         cachedNewsletters,
         page,
         player,
-        p -> new PlayerMenu(player),
+        PlayerMenu::open,
         p -> nextPage(),
         p -> previousPage());
 
@@ -76,7 +87,7 @@ public class NewsletterMenu extends IteratorGUI {
         cachedNewsletters,
         page,
         player,
-        p -> new PlayerMenu(player),
+        PlayerMenu::open,
         p -> nextPage(),
         p -> previousPage());
     gui.update();

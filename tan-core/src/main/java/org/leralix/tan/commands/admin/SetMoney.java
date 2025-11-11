@@ -1,14 +1,15 @@
 package org.leralix.tan.commands.admin;
 
 import java.util.List;
-import org.bukkit.Bukkit;
+import java.util.Optional;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.commands.CommandExceptionHandler;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -41,35 +42,49 @@ public class SetMoney extends SubCommand {
 
   @Override
   public void perform(CommandSender player, String[] args) {
-    if (args.length < 3) {
-      TanChatUtils.message(player, Lang.NOT_ENOUGH_ARGS_ERROR, SoundEnum.NOT_ALLOWED);
-      TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO);
-    } else if (args.length == 3) {
-      ITanPlayer target = PlayerDataStorage.getInstance().getSync(Bukkit.getOfflinePlayer(args[1]));
-      setMoney(player, args, target);
-
-    } else {
-      TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR);
-      TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
-    }
-  }
-
-  static void setMoney(CommandSender commandSender, String[] args, ITanPlayer target) {
-    double amount;
-    try {
-      amount = Double.parseDouble(args[2]);
-    } catch (NumberFormatException e) {
-      TanChatUtils.message(commandSender, Lang.SYNTAX_ERROR_AMOUNT);
+    // Validate argument count
+    if (!CommandExceptionHandler.validateArgCount(player, args, 3, getSyntax())) {
       return;
     }
 
-    EconomyUtil.setBalance(target, amount);
+    // Find the target player
+    Optional<OfflinePlayer> offlinePlayerOpt = CommandExceptionHandler.findPlayer(player, args[1]);
+    if (offlinePlayerOpt.isEmpty()) {
+      return;
+    }
 
-    TanChatUtils.message(
-        commandSender,
-        Lang.SET_MONEY_COMMAND_SUCCESS.get(Double.toString(amount), target.getNameStored()));
-    FileUtil.addLineToHistory(
-        Lang.HISTORY_ADMIN_SET_MONEY.get(
-            commandSender.getName(), Double.toString(amount), target.getNameStored()));
+    // Get TAN player data
+    Optional<ITanPlayer> targetOpt =
+        CommandExceptionHandler.getTanPlayer(player, offlinePlayerOpt.get());
+    if (targetOpt.isEmpty()) {
+      return;
+    }
+
+    setMoney(player, args, targetOpt.get());
+  }
+
+  static void setMoney(CommandSender commandSender, String[] args, ITanPlayer target) {
+    // Parse amount with error handling
+    Optional<Double> amountOpt =
+        CommandExceptionHandler.parseDouble(commandSender, args[2], "amount");
+    if (amountOpt.isEmpty()) {
+      return;
+    }
+
+    double amount = amountOpt.get();
+
+    try {
+      EconomyUtil.setBalance(target, amount);
+
+      TanChatUtils.message(
+          commandSender,
+          Lang.SET_MONEY_COMMAND_SUCCESS.get(Double.toString(amount), target.getNameStored()));
+      FileUtil.addLineToHistory(
+          Lang.HISTORY_ADMIN_SET_MONEY.get(
+              commandSender.getName(), Double.toString(amount), target.getNameStored()));
+    } catch (Exception e) {
+      TanChatUtils.message(commandSender, Lang.SYNTAX_ERROR, SoundEnum.NOT_ALLOWED);
+      CommandExceptionHandler.logCommandExecution(commandSender, "setmoney", args);
+    }
   }
 }

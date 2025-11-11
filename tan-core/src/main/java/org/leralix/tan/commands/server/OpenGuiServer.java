@@ -53,7 +53,7 @@ class OpenGuiServer extends SubCommand {
       TanChatUtils.message(commandSender, Lang.PLAYER_NOT_FOUND);
       return;
     }
-    new MainMenu(player);
+    MainMenu.open(player);
     TanChatUtils.message(commandSender, Lang.COMMAND_GENERIC_SUCCESS);
   }
 }

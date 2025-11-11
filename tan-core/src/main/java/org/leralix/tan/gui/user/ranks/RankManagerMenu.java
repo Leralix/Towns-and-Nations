@@ -21,6 +21,7 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.RenameRank;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -29,11 +30,24 @@ public class RankManagerMenu extends BasicGui {
   private final TerritoryData territoryData;
   private final RankData rankData;
 
-  public RankManagerMenu(Player player, TerritoryData territoryData, RankData rankData) {
-    super(player, Lang.HEADER_TERRITORY_RANKS.get(player, rankData.getName()), 4);
+  private RankManagerMenu(
+      Player player, ITanPlayer tanPlayer, TerritoryData territoryData, RankData rankData) {
+    super(
+        player,
+        tanPlayer,
+        Lang.HEADER_TERRITORY_RANKS.get(tanPlayer.getLang(), rankData.getName()),
+        4);
     this.territoryData = territoryData;
     this.rankData = rankData;
-    open();
+  }
+
+  public static void open(Player player, TerritoryData territoryData, RankData rankData) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new RankManagerMenu(player, tanPlayer, territoryData, rankData).open();
+            });
   }
 
   @Override
@@ -58,9 +72,7 @@ public class RankManagerMenu extends BasicGui {
     gui.setItem(3, 6, deleteRankIcon());
 
     gui.setItem(
-        4,
-        1,
-        GuiUtil.createBackArrow(player, p -> new TerritoryRanksMenu(player, territoryData).open()));
+        4, 1, GuiUtil.createBackArrow(player, p -> TerritoryRanksMenu.open(p, territoryData)));
     gui.open(player);
   }
 
@@ -95,7 +107,7 @@ public class RankManagerMenu extends BasicGui {
                 return;
               }
               territoryData.removeRank(rankData.getID());
-              new TerritoryRanksMenu(player, territoryData).open();
+              TerritoryRanksMenu.open(player, territoryData);
               SoundUtil.playSound(player, MINOR_GOOD);
             })
         .asGuiItem(player, langType);
@@ -216,7 +228,7 @@ public class RankManagerMenu extends BasicGui {
     return iconManager
         .get(IconKey.MANAGE_PERMISSION_ICON)
         .setName(Lang.GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION.get(tanPlayer))
-        .setAction(event -> new ManageRankPermissionMenu(player, territoryData, rankData))
+        .setAction(event -> ManageRankPermissionMenu.open(player, territoryData, rankData))
         .asGuiItem(player, langType);
   }
 
@@ -294,7 +306,7 @@ public class RankManagerMenu extends BasicGui {
         .get(IconKey.PLAYER_LIST_ICON)
         .setName(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.get(tanPlayer))
         .setDescription(description)
-        .setAction(p -> new AssignPlayerToRankMenu(player, territoryData, rankData).open())
+        .setAction(p -> AssignPlayerToRankMenu.open(player, territoryData, rankData))
         .asGuiItem(player, langType);
   }
 }

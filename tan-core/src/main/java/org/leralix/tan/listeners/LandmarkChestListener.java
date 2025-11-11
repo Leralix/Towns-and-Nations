@@ -10,7 +10,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.MetadataValue;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -35,7 +34,9 @@ public class LandmarkChestListener implements Listener {
           TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer.getLang()));
           return;
         }
-        PlayerGUI.dispatchLandmarkGui(player, landmark);
+        // TODO: Implement landmark GUI after PlayerGUI migration
+        // Original: PlayerGUI.dispatchLandmarkGui(player, landmark);
+        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer.getLang()));
       }
     }
   }

@@ -49,7 +49,6 @@ public class TownDataWrapper extends TerritoryDataWrapper implements TanTown {
     return townData.getCapitalLocation();
   }
 
-  @Override
   public String getLeader() {
     return townData.getLeaderID();
   }
@@ -61,12 +60,10 @@ public class TownDataWrapper extends TerritoryDataWrapper implements TanTown {
         .collect(Collectors.toList());
   }
 
-  @Override
   public boolean isMember(Player player) {
     return townData.getPlayerIDList().contains(player.getUniqueId().toString());
   }
 
-  @Override
   public boolean isMember(UUID playerUUID) {
     return townData.getPlayerIDList().contains(playerUUID.toString());
   }

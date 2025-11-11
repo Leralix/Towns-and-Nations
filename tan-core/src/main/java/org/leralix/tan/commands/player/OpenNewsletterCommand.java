@@ -46,6 +46,6 @@ public class OpenNewsletterCommand extends PlayerSubCommand {
       TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
       return;
     }
-    new NewsletterMenu(player).open();
+    NewsletterMenu.open(player);
   }
 }

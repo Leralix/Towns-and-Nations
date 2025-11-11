@@ -26,9 +26,20 @@ public class PlayerApplicationMenu extends IteratorGUI {
 
   TownData townData;
 
-  public PlayerApplicationMenu(Player player, TownData townData) {
-    super(player, Lang.HEADER_TOWN_APPLICATIONS, 3);
+  public PlayerApplicationMenu(Player player, ITanPlayer tanPlayer, TownData townData) {
+    super(player, tanPlayer, Lang.HEADER_TOWN_APPLICATIONS.get(player), 3);
     this.townData = townData;
+    // open() doit être appelé explicitement après la construction pour respecter le modèle
+    // asynchrone
+  }
+
+  public static void open(Player player, TownData townData) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new PlayerApplicationMenu(player, tanPlayer, townData).open();
+            });
   }
 
   @Override
@@ -39,7 +50,7 @@ public class PlayerApplicationMenu extends IteratorGUI {
         getApplicationList(),
         page,
         player,
-        p -> new TerritoryMemberMenu(player, townData).open(),
+        p -> TerritoryMemberMenu.open(player, townData),
         p -> nextPage(),
         p -> previousPage(),
         Material.LIME_STAINED_GLASS_PANE);

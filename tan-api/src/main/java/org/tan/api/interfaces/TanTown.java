@@ -1,39 +1,15 @@
 package org.tan.api.interfaces;
 
 import java.util.Collection;
-import java.util.UUID;
-import org.bukkit.entity.Player;
+import java.util.Optional;
+import org.leralix.lib.position.Vector2D;
 
-/** Represents a town. */
 public interface TanTown extends TanTerritory {
+  int getLevel();
 
-  /**
-   * Get the leader of the town.
-   *
-   * @return The UUID of the leader.
-   */
-  String getLeader();
+  Collection<TanProperty> getProperties();
 
-  /**
-   * Get all the members of the town.
-   *
-   * @return A collection of the UUIDs of all members.
-   */
-  Collection<TanPlayer> getMembers();
+  Collection<TanLandmark> getLandmarksOwned();
 
-  /**
-   * Check if a player is a member of the town.
-   *
-   * @param player The player to check.
-   * @return True if the player is a member, false otherwise.
-   */
-  boolean isMember(Player player);
-
-  /**
-   * Check if a player is a member of the town.
-   *
-   * @param playerUUID The UUID of the player to check.
-   * @return True if the player is a member, false otherwise.
-   */
-  boolean isMember(UUID playerUUID);
+  Optional<Vector2D> getCapitalLocation();
 }

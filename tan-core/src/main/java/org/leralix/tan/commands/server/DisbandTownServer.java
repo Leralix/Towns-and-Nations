@@ -2,11 +2,14 @@ package org.leralix.tan.commands.server;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.commands.CommandExceptionHandler;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 class DisbandTownServer extends SubCommand {
@@ -39,18 +42,28 @@ class DisbandTownServer extends SubCommand {
 
   @Override
   public void perform(CommandSender commandSender, String[] args) {
-    if (args.length < 2) {
-      TanChatUtils.message(commandSender, Lang.INVALID_ARGUMENTS);
+    // Validate argument count
+    if (!CommandExceptionHandler.validateArgCount(commandSender, args, 2, getSyntax())) {
       return;
     }
 
-    Player p = commandSender.getServer().getPlayer(args[1]);
-    if (p == null) {
+    // Find the target player
+    Optional<OfflinePlayer> offlinePlayerOpt =
+        CommandExceptionHandler.findPlayer(commandSender, args[1]);
+    if (offlinePlayerOpt.isEmpty()) {
+      return;
+    }
+
+    // Check if player is online
+    Player player = offlinePlayerOpt.get().getPlayer();
+    if (player == null) {
       TanChatUtils.message(commandSender, Lang.PLAYER_NOT_FOUND);
       return;
     }
+
+    // Async: Get player data and town, then delete
     PlayerDataStorage.getInstance()
-        .get(p)
+        .get(player)
         .thenAccept(
             tanPlayer -> {
               tanPlayer

@@ -37,7 +37,7 @@ public class OpenAdminGUI extends PlayerSubCommand {
   @Override
   public void perform(Player player, String[] args) {
     if (args.length == 1) {
-      new AdminMainMenu(player);
+      AdminMainMenu.open(player);
     } else if (args.length > 1) {
       LangType langType = LangType.of(player);
       TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.get(langType));

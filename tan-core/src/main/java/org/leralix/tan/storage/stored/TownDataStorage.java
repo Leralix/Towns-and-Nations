@@ -182,7 +182,9 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
             ps.setString(1, id);
             ps.setString(2, obj.getName()); // Set town_name
             ps.setString(3, obj.getLeaderID()); // Set creator_uuid (leader is creator)
-            ps.setString(4, obj.getLeaderData().getNameStored()); // Set creator_name (leader name)
+            ITanPlayer leaderData = obj.getLeaderData();
+            String leaderName = (leaderData != null) ? leaderData.getNameStored() : null;
+            ps.setString(4, leaderName); // Set creator_name (leader name)
             ps.setString(5, jsonData);
             ps.executeUpdate();
 

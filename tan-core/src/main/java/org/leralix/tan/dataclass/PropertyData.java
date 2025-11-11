@@ -632,7 +632,7 @@ public class PropertyData extends Building {
                 SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                 return;
               }
-              new PlayerPropertyManager(player, this, p -> basicGui.open());
+              PlayerPropertyManager.open(player, this, p -> basicGui.open());
             })
         .asGuiItem(player, langType);
   }

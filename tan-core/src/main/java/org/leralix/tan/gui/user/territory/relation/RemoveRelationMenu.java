@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.ActiveTruce;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.IteratorGUI;
@@ -26,22 +27,32 @@ public class RemoveRelationMenu extends IteratorGUI {
   private final TerritoryData territoryData;
   private final TownRelation relation;
 
-  public RemoveRelationMenu(Player player, TerritoryData territoryData, TownRelation relation) {
+  private RemoveRelationMenu(
+      Player player, ITanPlayer tanPlayer, TerritoryData territoryData, TownRelation relation) {
     super(
         player,
+        tanPlayer,
         Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(
-            player, relation.getName(PlayerDataStorage.getInstance().getSync(player).getLang())),
+            tanPlayer.getLang(), relation.getName(tanPlayer.getLang())),
         6);
     this.territoryData = territoryData;
     this.relation = relation;
-    open();
+  }
+
+  public static void open(Player player, TerritoryData territoryData, TownRelation relation) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new RemoveRelationMenu(player, tanPlayer, territoryData, relation).open();
+            });
   }
 
   @Override
   public void open() {
     iterator(
         getTerritories(),
-        p -> new OpenRelationMenu(player, territoryData, relation),
+        p -> OpenRelationMenu.open(p, territoryData, relation),
         Material.RED_STAINED_GLASS_PANE);
 
     gui.open(player);
@@ -82,7 +93,7 @@ public class RemoveRelationMenu extends IteratorGUI {
                               tanPlayer, otherTerritory.getName()),
                           MINOR_GOOD);
                     }
-                    new OpenRelationMenu(player, territoryData, relation);
+                    OpenRelationMenu.open(player, territoryData, relation);
                   });
       guiItems.add(townGui);
     }

@@ -12,7 +12,6 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.newsletter.NewsletterType;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -94,8 +93,12 @@ public class TerritoryVassalProposalNews extends Newsletter {
         .asGuiItem(
             event -> {
               event.setCancelled(true);
-              if (event.isLeftClick())
-                PlayerGUI.openChooseOverlordMenu(player, receivingTerritory, 0);
+              if (event.isLeftClick()) {
+                // TODO: Implement choose overlord menu after PlayerGUI migration
+                // Original: PlayerGUI.openChooseOverlordMenu(player, receivingTerritory, 0);
+                ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+              }
               if (event.isRightClick()) {
                 markAsRead(player);
                 onClick.accept(player);

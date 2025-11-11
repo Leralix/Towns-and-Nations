@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.user.territory.AttackMenu;
@@ -17,6 +18,7 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeAttackName;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -29,13 +31,24 @@ public class PlannedAttackMenu extends BasicGui {
   private final PlannedAttack plannedAttack;
   private final WarRole warRole;
 
-  public PlannedAttackMenu(
-      Player player, TerritoryData territoryData, PlannedAttack plannedAttack) {
-    super(player, Lang.HEADER_WAR_MANAGER.get(player), 3);
+  private PlannedAttackMenu(
+      Player player,
+      ITanPlayer tanPlayer,
+      TerritoryData territoryData,
+      PlannedAttack plannedAttack) {
+    super(player, tanPlayer, Lang.HEADER_WAR_MANAGER.get(tanPlayer.getLang()), 3);
     this.territoryData = territoryData;
     this.plannedAttack = plannedAttack;
     this.warRole = plannedAttack.getTerritoryRole(territoryData);
-    open();
+  }
+
+  public static void open(Player player, TerritoryData territoryData, PlannedAttack plannedAttack) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new PlannedAttackMenu(player, tanPlayer, territoryData, plannedAttack).open();
+            });
   }
 
   @Override
@@ -65,7 +78,7 @@ public class PlannedAttackMenu extends BasicGui {
                         Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(
                             plannedAttack.getWar().getMainDefender().getName()),
                         MINOR_GOOD);
-                    new AttackMenu(player, territoryData);
+                    AttackMenu.open(player, territoryData);
                   });
 
       GuiItem renameButton =
@@ -97,7 +110,7 @@ public class PlannedAttackMenu extends BasicGui {
               .setAction(
                   event -> {
                     plannedAttack.territorySurrendered();
-                    new AttackMenu(player, territoryData);
+                    AttackMenu.open(player, territoryData);
                   })
               .asGuiItem(player, langType));
     } else if (warRole == WarRole.OTHER_ATTACKER || warRole == WarRole.OTHER_DEFENDER) {
@@ -115,7 +128,7 @@ public class PlannedAttackMenu extends BasicGui {
                         Lang.TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE.get(
                             plannedAttack.getWar().getMainDefender().getName()),
                         MINOR_GOOD);
-                    new AttackMenu(player, territoryData);
+                    AttackMenu.open(player, territoryData);
                   })
               .asGuiItem(player, langType));
     } else if (warRole == WarRole.NEUTRAL) {
@@ -154,7 +167,7 @@ public class PlannedAttackMenu extends BasicGui {
               .asGuiItem(player, langType));
     }
 
-    gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AttackMenu(player, territoryData)));
+    gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> AttackMenu.open(p, territoryData)));
     gui.open(player);
   }
 

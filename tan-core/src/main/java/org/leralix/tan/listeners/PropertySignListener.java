@@ -56,13 +56,13 @@ public class PropertySignListener implements Listener {
               return;
             }
             if (propertyData.getOwner().canAccess(tanPlayer)) {
-              new PlayerPropertyManager(player, propertyData, HumanEntity::closeInventory);
+              PlayerPropertyManager.open(player, propertyData, HumanEntity::closeInventory);
             } else if (propertyData.isRented()
                 && propertyData.getRenterID().equals(player.getUniqueId().toString())) {
-              new RenterPropertyMenu(player, propertyData);
+              RenterPropertyMenu.open(player, propertyData);
             } else {
               if (propertyData.isForRent() || propertyData.isForSale()) {
-                new BuyOrRentPropertyMenu(player, propertyData);
+                BuyOrRentPropertyMenu.open(player, propertyData);
               } else {
                 TanChatUtils.message(player, Lang.PROPERTY_NOT_FOR_SALE_OR_RENT.get(langType));
               }

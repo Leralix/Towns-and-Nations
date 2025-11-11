@@ -104,22 +104,18 @@ public class ClaimedChunkWrapper implements TanClaimedChunk {
     return claimedChunk.canPlayerDo(player, chunkPermissionType, location);
   }
 
-  @Override
   public org.bukkit.Chunk getChunk() {
     return claimedChunk.getChunk();
   }
 
-  @Override
   public TanTown getOwner() {
     return null;
   }
 
-  @Override
   public boolean isLandmark() {
     return claimedChunk.getType() == ChunkType.LANDMARK;
   }
 
-  @Override
   public TanTerritory getTerritoryOwner() {
     return null;
   }

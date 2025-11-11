@@ -1,10 +1,35 @@
 package org.tan.api;
 
-/** Provides access to the Towns and Nations API. */
+/**
+ * Main entry point for accessing the Towns and Nations API.
+ *
+ * <p>This class provides static access to all API interfaces. The API implementations are
+ * registered by the plugin on startup.
+ *
+ * <p><b>Usage Example:</b>
+ *
+ * <pre>{@code
+ * // Get a town by player
+ * TownAPI townAPI = TANAPIProvider.getTownAPI();
+ * TanTown town = townAPI.getTown(player);
+ *
+ * if (town != null) {
+ *     player.sendMessage("You are in: " + town.getName());
+ * }
+ *
+ * // Check economy balance
+ * EconomyAPI economyAPI = TANAPIProvider.getEconomyAPI();
+ * double balance = economyAPI.getBalance(player);
+ * }</pre>
+ *
+ * <p><b>Note:</b> All API methods may return {@code null} if the requested data does not exist or
+ * if the API has not been initialized yet. Always check for null returns.
+ *
+ * @since 0.1.0
+ */
 public class TANAPIProvider {
 
   private static TownAPI townAPI;
-  private static NationAPI nationAPI;
   private static EconomyAPI economyAPI;
   private static ClaimAPI claimAPI;
 
@@ -15,15 +40,6 @@ public class TANAPIProvider {
    */
   public static TownAPI getTownAPI() {
     return townAPI;
-  }
-
-  /**
-   * Get the NationAPI instance.
-   *
-   * @return The NationAPI instance.
-   */
-  public static NationAPI getNationAPI() {
-    return nationAPI;
   }
 
   /**
@@ -51,15 +67,6 @@ public class TANAPIProvider {
    */
   public static void registerTownAPI(TownAPI townAPI) {
     TANAPIProvider.townAPI = townAPI;
-  }
-
-  /**
-   * Register the NationAPI implementation.
-   *
-   * @param nationAPI The NationAPI implementation.
-   */
-  public static void registerNationAPI(NationAPI nationAPI) {
-    TANAPIProvider.nationAPI = nationAPI;
   }
 
   /**

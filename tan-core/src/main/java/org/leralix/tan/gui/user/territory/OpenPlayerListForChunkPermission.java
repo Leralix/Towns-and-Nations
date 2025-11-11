@@ -12,12 +12,14 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -28,12 +30,28 @@ public class OpenPlayerListForChunkPermission extends IteratorGUI {
   private final BasicGui backMenu;
 
   public OpenPlayerListForChunkPermission(
-      Player player, TerritoryData territoryData, ChunkPermissionType type, BasicGui backMenu) {
-    super(player, type.getLabel(player), 6);
+      Player player,
+      ITanPlayer tanPlayer,
+      TerritoryData territoryData,
+      ChunkPermissionType type,
+      BasicGui backMenu) {
+    super(player, tanPlayer, type.getLabel(player), 6);
     this.territoryData = territoryData;
     this.chunkPermissionType = type;
     this.backMenu = backMenu;
-    open();
+    // open() doit être appelé explicitement après la construction pour respecter le modèle
+    // asynchrone
+  }
+
+  public static void open(
+      Player player, TerritoryData territoryData, ChunkPermissionType type, BasicGui backMenu) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new OpenPlayerListForChunkPermission(player, tanPlayer, territoryData, type, backMenu)
+                  .open();
+            });
   }
 
   @Override
@@ -61,7 +79,9 @@ public class OpenPlayerListForChunkPermission extends IteratorGUI {
                 TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
                 return;
               }
-              new AddPlayerForChunkPermission(player, territoryData, chunkPermissionType, this);
+              new AddPlayerForChunkPermission(
+                      player, tanPlayer, territoryData, chunkPermissionType, this)
+                  .open();
             });
   }
 

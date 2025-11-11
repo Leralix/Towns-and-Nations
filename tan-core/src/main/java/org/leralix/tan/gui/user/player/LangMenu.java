@@ -8,31 +8,36 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class LangMenu extends IteratorGUI {
 
-  public LangMenu(Player player) {
-    super(player, Lang.HEADER_SELECT_LANGUAGE, 3);
+  private LangMenu(Player player, ITanPlayer tanPlayer) {
+    super(player, tanPlayer, Lang.HEADER_SELECT_LANGUAGE.get(tanPlayer.getLang()), 3);
+  }
+
+  public static void open(Player player) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new LangMenu(player, tanPlayer).open();
+            });
   }
 
   @Override
   public void open() {
 
     GuiUtil.createIterator(
-        gui,
-        getLangItems(),
-        page,
-        player,
-        p -> new PlayerMenu(player),
-        p -> nextPage(),
-        p -> previousPage());
+        gui, getLangItems(), page, player, PlayerMenu::open, p -> nextPage(), p -> previousPage());
 
     gui.setItem(3, 6, getPlayerGUI());
 
@@ -50,7 +55,7 @@ public class LangMenu extends IteratorGUI {
                     tanPlayer.setLang(lang);
                     TanChatUtils.message(
                         player, Lang.GUI_LANGUAGE_CHANGED.get(tanPlayer, lang.getName()));
-                    new PlayerMenu(player);
+                    PlayerMenu.open(player);
                   });
       guiItems.add(langGui);
     }

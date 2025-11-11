@@ -2,6 +2,7 @@ package org.leralix.tan.commands.player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
@@ -11,6 +12,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.commands.CommandExceptionHandler;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class ClaimCommand extends PlayerSubCommand {
@@ -48,12 +50,12 @@ public class ClaimCommand extends PlayerSubCommand {
 
     LangType langType = LangType.of(player);
 
-    if (!(args.length == 2 || args.length == 4)) {
-      TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
-      TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+    // Validate argument count
+    if (!CommandExceptionHandler.validateArgCountRange(player, args, 2, 4, getSyntax())) {
       return;
     }
 
+    // Determine territory type (town or region)
     TerritoryData territoryData;
 
     if (args[1].equals("town")) {
@@ -65,6 +67,7 @@ public class ClaimCommand extends PlayerSubCommand {
       return;
     }
 
+    // Check if territory exists
     if (territoryData == null) {
       if (args[1].equals("town")) {
         TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get().getDefault());
@@ -74,14 +77,32 @@ public class ClaimCommand extends PlayerSubCommand {
       return;
     }
 
+    // Handle chunk coordinates if provided
     if (args.length == 4) {
-      int x = Integer.parseInt(args[2]);
-      int z = Integer.parseInt(args[3]);
-      Chunk chunk = player.getWorld().getChunkAt(x, z);
-      territoryData.claimChunk(player, chunk);
-      MapCommand.openMap(player, new MapSettings(args[0], args[1]));
+      // Parse coordinates with error handling
+      Optional<Integer> xOpt = CommandExceptionHandler.parseInt(player, args[2], "x coordinate");
+      Optional<Integer> zOpt = CommandExceptionHandler.parseInt(player, args[3], "z coordinate");
+
+      if (xOpt.isEmpty() || zOpt.isEmpty()) {
+        return;
+      }
+
+      try {
+        Chunk chunk = player.getWorld().getChunkAt(xOpt.get(), zOpt.get());
+        territoryData.claimChunk(player, chunk);
+        MapCommand.openMap(player, new MapSettings(args[0], args[1]));
+      } catch (Exception e) {
+        TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
+        CommandExceptionHandler.logCommandExecution(player, "claim", args);
+      }
     } else {
-      territoryData.claimChunk(player);
+      // Claim current chunk
+      try {
+        territoryData.claimChunk(player);
+      } catch (Exception e) {
+        TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
+        CommandExceptionHandler.logCommandExecution(player, "claim", args);
+      }
     }
   }
 }

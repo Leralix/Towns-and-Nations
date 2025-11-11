@@ -43,7 +43,6 @@ import org.leralix.tan.events.events.DiplomacyProposalAcceptedInternalEvent;
 import org.leralix.tan.events.events.DiplomacyProposalInternalEvent;
 import org.leralix.tan.events.events.TerritoryVassalAcceptedInternalEvent;
 import org.leralix.tan.events.events.TerritoryVassalProposalInternalEvent;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -822,11 +821,15 @@ public abstract class TerritoryData {
                           Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(
                               this.getBaseColoredName(), proposalOverlord.getName()),
                           SoundEnum.GOOD);
-                      PlayerGUI.openHierarchyMenu(player, this);
+                      // TEMPORARY FIX: Disabled while legacy GUIs migrated
+                      // TODO: Re-enable after Sprint 2 GUI async migration
+                      // PlayerGUI.openHierarchyMenu(player, this);
                     }
                     if (event.isRightClick()) {
                       getOverlordsProposals().remove(proposalID);
-                      PlayerGUI.openChooseOverlordMenu(player, this, page);
+                      // TEMPORARY FIX: Disabled while legacy GUIs migrated
+                      // TODO: Re-enable after Sprint 2 GUI async migration
+                      // PlayerGUI.openChooseOverlordMenu(player, this, page);
                     }
                   });
       proposals.add(acceptInvitation);

@@ -24,10 +24,20 @@ public class AssignPlayerToRankMenu extends IteratorGUI {
   private final TerritoryData territoryData;
   private final RankData rankData;
 
-  public AssignPlayerToRankMenu(Player player, TerritoryData territoryData, RankData rankData) {
-    super(player, Lang.HEADER_RANK_ADD_PLAYER.get(player), 3);
+  private AssignPlayerToRankMenu(
+      Player player, ITanPlayer tanPlayer, TerritoryData territoryData, RankData rankData) {
+    super(player, tanPlayer, Lang.HEADER_RANK_ADD_PLAYER.get(tanPlayer.getLang()), 3);
     this.territoryData = territoryData;
     this.rankData = rankData;
+  }
+
+  public static void open(Player player, TerritoryData territoryData, RankData rankData) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new AssignPlayerToRankMenu(player, tanPlayer, territoryData, rankData).open();
+            });
   }
 
   @Override
@@ -37,7 +47,7 @@ public class AssignPlayerToRankMenu extends IteratorGUI {
         getAvailablePlayers(),
         page,
         player,
-        p -> new RankManagerMenu(player, territoryData, rankData),
+        p -> RankManagerMenu.open(p, territoryData, rankData),
         p -> nextPage(),
         p -> previousPage());
 
@@ -72,7 +82,7 @@ public class AssignPlayerToRankMenu extends IteratorGUI {
                     ITanPlayer playerStat =
                         PlayerDataStorage.getInstance().getSync(otherPlayerUUID);
                     territoryData.setPlayerRank(playerStat, rankData);
-                    new RankManagerMenu(player, territoryData, rankData).open();
+                    RankManagerMenu.open(player, territoryData, rankData);
                   });
       playersToAdd.add(playerInfo);
     }

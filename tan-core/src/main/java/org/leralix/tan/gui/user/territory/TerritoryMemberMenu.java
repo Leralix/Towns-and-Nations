@@ -4,6 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
@@ -12,15 +13,25 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class TerritoryMemberMenu extends IteratorGUI {
 
   private final TerritoryData territoryData;
 
-  public TerritoryMemberMenu(Player player, TerritoryData territoryData) {
-    super(player, Lang.HEADER_TOWN_MEMBERS, 6);
+  public TerritoryMemberMenu(Player player, ITanPlayer tanPlayer, TerritoryData territoryData) {
+    super(player, tanPlayer, Lang.HEADER_TOWN_MEMBERS.get(player), 6);
     this.territoryData = territoryData;
+  }
+
+  public static void open(Player player, TerritoryData territoryData) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new TerritoryMemberMenu(player, tanPlayer, territoryData).open();
+            });
   }
 
   @Override
@@ -52,7 +63,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
         .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.get(tanPlayer))
         .setRequirements(
             new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_RANKS))
-        .setAction(p -> new TerritoryRanksMenu(player, territoryData).open())
+        .setAction(p -> TerritoryRanksMenu.open(player, territoryData))
         .asGuiItem(player, langType);
   }
 
@@ -65,7 +76,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
         .setDescription(
             Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(
                 Integer.toString(townData.getPlayerJoinRequestSet().size())))
-        .setAction(p -> new PlayerApplicationMenu(player, townData).open())
+        .setAction(p -> PlayerApplicationMenu.open(player, townData))
         .asGuiItem(player, langType);
   }
 }

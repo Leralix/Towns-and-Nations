@@ -11,11 +11,13 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.upgrade.TerritoryStats;
 import org.leralix.tan.upgrade.Upgrade;
 import org.leralix.tan.upgrade.rewards.IndividualStat;
@@ -29,12 +31,21 @@ public class UpgradeMenu extends BasicGui {
   private int scrollIndex;
   private final int maxLevel;
 
-  public UpgradeMenu(Player player, TerritoryData territoryData) {
-    super(player, Lang.HEADER_TOWN_UPGRADE, 6);
+  public UpgradeMenu(Player player, ITanPlayer tanPlayer, TerritoryData territoryData) {
+    super(player, tanPlayer, Lang.HEADER_TOWN_UPGRADE.get(player), 6);
     this.territoryData = territoryData;
     this.scrollIndex = 0;
     this.maxLevel = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownMaxLevel", 10);
     open();
+  }
+
+  public static void open(Player player, TerritoryData territoryData) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new UpgradeMenu(player, tanPlayer, territoryData).open();
+            });
   }
 
   @Override

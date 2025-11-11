@@ -17,7 +17,7 @@ public class CreatePlayerPropertyEvent extends CreatePropertyEvent {
     townData.addToBalance(cost);
 
     PropertyData property = townData.registerNewProperty(position1, position2, tanPlayer);
-    new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
+    PlayerPropertyManager.open(player, property, HumanEntity::closeInventory);
     return property;
   }
 }

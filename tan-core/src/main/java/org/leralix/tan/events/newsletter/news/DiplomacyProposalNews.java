@@ -146,7 +146,7 @@ public class DiplomacyProposalNews extends Newsletter {
                       player, Lang.PLAYER_NO_PERMISSION.get(lang), SoundEnum.NOT_ALLOWED);
                   return;
                 }
-                new OpenDiplomacyProposalsMenu(player, receivingTerritory);
+                OpenDiplomacyProposalsMenu.open(player, receivingTerritory);
               }
               if (event.isRightClick()) {
                 markAsRead(player);

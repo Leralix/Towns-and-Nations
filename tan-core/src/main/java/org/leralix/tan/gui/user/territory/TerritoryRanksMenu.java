@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
@@ -17,6 +18,7 @@ import org.leralix.tan.gui.user.ranks.RankManagerMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.CreateRank;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -24,9 +26,18 @@ public class TerritoryRanksMenu extends IteratorGUI {
 
   private final TerritoryData territoryData;
 
-  public TerritoryRanksMenu(Player player, TerritoryData territoryData) {
-    super(player, Lang.HEADER_TERRITORY_RANKS, 4);
+  private TerritoryRanksMenu(Player player, ITanPlayer tanPlayer, TerritoryData territoryData) {
+    super(player, tanPlayer, Lang.HEADER_TERRITORY_RANKS.get(tanPlayer.getLang()), 4);
     this.territoryData = territoryData;
+  }
+
+  public static void open(Player player, TerritoryData territoryData) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new TerritoryRanksMenu(player, tanPlayer, territoryData).open();
+            });
   }
 
   @Override
@@ -69,9 +80,7 @@ public class TerritoryRanksMenu extends IteratorGUI {
               }
               TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(tanPlayer));
               PlayerChatListenerStorage.register(
-                  player,
-                  new CreateRank(
-                      territoryData, p -> new TerritoryRanksMenu(player, territoryData).open()));
+                  player, new CreateRank(territoryData, p -> open(player, territoryData)));
             })
         .asGuiItem(player, langType);
   }
@@ -101,7 +110,7 @@ public class TerritoryRanksMenu extends IteratorGUI {
                     player, Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(langType));
                 return;
               }
-              new RankManagerMenu(player, territoryData, rank).open();
+              RankManagerMenu.open(player, territoryData, rank);
             })
         .asGuiItem(player, langType);
   }
