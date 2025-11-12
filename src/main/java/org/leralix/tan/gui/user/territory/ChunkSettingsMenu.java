@@ -52,7 +52,7 @@ public class ChunkSettingsMenu extends BasicGui {
         return iconManager.get(IconKey.GENERAL_SETTINGS_ICON)
                 .setName(Lang.CHUNK_GENERAL_SETTINGS.get(tanPlayer))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS))
-                .setAction(event -> PlayerGUI.openChunkGeneralSettings(player, territoryData))
+                .setAction(event -> new TerritoryChunkGeneralSettings(player, territoryData))
                 .asGuiItem(player, langType);
     }
 

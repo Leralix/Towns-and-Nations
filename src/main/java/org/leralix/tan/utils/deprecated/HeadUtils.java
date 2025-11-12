@@ -11,13 +11,9 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.text.StringUtil;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,30 +28,6 @@ import java.util.UUID;
 public class HeadUtils {
     private HeadUtils() {
         throw new IllegalStateException("Utility class");
-    }
-
-    /**
-     * Return the player head with information on balance, town name and rank name
-     *
-     * @param offlinePlayer The offline player to copy the head
-     * @return The head of the player as an {@link ItemStack}
-     */
-    public static @NotNull ItemStack getPlayerHeadInformation(final @NotNull OfflinePlayer offlinePlayer) {
-        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(offlinePlayer);
-        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
-
-        if (skullMeta == null) {
-            return head;
-        }
-
-        skullMeta.setOwningPlayer(offlinePlayer);
-        skullMeta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + offlinePlayer.getName());
-
-        head.setItemMeta(skullMeta);
-
-        setLore(head, Lang.GUI_YOUR_BALANCE_DESC1.get(tanPlayer, StringUtil.formatMoney(EconomyUtil.getBalance(offlinePlayer))));
-        return head;
     }
 
     /**

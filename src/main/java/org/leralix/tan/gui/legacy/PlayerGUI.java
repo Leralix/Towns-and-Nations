@@ -20,7 +20,7 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.MobChunkSpawnEnum;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
-import org.leralix.tan.enums.permissions.GeneralChunkSetting;
+import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.landmark.LandmarkNoOwnerMenu;
 import org.leralix.tan.gui.user.territory.*;
 import org.leralix.tan.gui.user.territory.hierarchy.VassalsMenu;
@@ -28,7 +28,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.DonateToTerritory;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
-import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -64,57 +63,6 @@ public class PlayerGUI {
         } else {
             new NoTownMenu(player);
         }
-    }
-
-    //Landmarks, to update
-    public static void openOwnedLandmark(Player player, TownData townData, int page) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_TOWN_OWNED_LANDMARK.get(tanPlayer, String.valueOf(page + 1)), 6);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-
-        ArrayList<GuiItem> landmarkGui = new ArrayList<>();
-
-        for (Landmark landmark : LandmarkStorage.getInstance().getLandmarkOf(townData)) {
-
-            GuiItem landmarkButton = ItemBuilder.from(landmark.getIcon(tanPlayer.getLang())).asGuiItem(event -> event.setCancelled(true));
-            landmarkGui.add(landmarkButton);
-        }
-        GuiUtil.createIterator(gui, landmarkGui, page, player,
-                p -> new TownMenu(player, townData),
-                p -> openOwnedLandmark(player, townData, page + 1),
-                p -> openOwnedLandmark(player, townData, page - 1)
-        );
-
-        gui.open(player);
-
-    }
-
-
-    public static void openChunkGeneralSettings(Player player, TerritoryData territoryData) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_CHUNK_GENERAL_SETTINGS.get(tanPlayer), 3);
-        gui.setDefaultClickAction(event -> event.setCancelled(true));
-        Map<GeneralChunkSetting, Boolean> generalSettings = territoryData.getChunkSettings().getChunkSetting();
-
-        for (GeneralChunkSetting generalChunkSetting : GeneralChunkSetting.values()) {
-
-
-            GuiItem guiItem = ItemBuilder.from(generalChunkSetting.getIcon(generalSettings.getOrDefault(generalChunkSetting, false), tanPlayer.getLang())).asGuiItem(event -> {
-                event.setCancelled(true);
-                if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                    TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
-                    return;
-                }
-                generalSettings.put(generalChunkSetting, !generalSettings.get(generalChunkSetting));
-                SoundUtil.playSound(player, ADD);
-                openChunkGeneralSettings(player, territoryData);
-            });
-            gui.addItem(guiItem);
-        }
-
-
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new ChunkSettingsMenu(player, territoryData)));
-        gui.open(player);
     }
 
     public static void openTownChunkMobSettings(Player player, int page) {
@@ -187,21 +135,23 @@ public class PlayerGUI {
 
         for (String authorizedPlayerID : territoryData.getPermission(type).getAuthorizedPlayers()) {
             OfflinePlayer authorizedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(authorizedPlayerID));
-            ItemStack icon = HeadUtils.getPlayerHead(authorizedPlayer.getName(), authorizedPlayer,
-                    Lang.GUI_TOWN_MEMBER_DESC3.get(tanPlayer));
 
-            GuiItem guiItem = ItemBuilder.from(icon).asGuiItem(event -> {
-                event.setCancelled(true);
-                if (!territoryData.doesPlayerHavePermission(playerStat, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                    TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                    return;
-                }
-                if (event.isRightClick()) {
-                    territoryData.getPermission(type).removeSpecificPlayerPermission(authorizedPlayerID);
-                    openPlayerListForChunkPermission(player, territoryData, type, page);
-                }
-            });
-            guiItems.add(guiItem);
+            guiItems.add(
+                    IconManager.getInstance().get(authorizedPlayer)
+                            .setName(authorizedPlayer.getName())
+                            .setClickToAcceptMessage(Lang.GUI_TOWN_MEMBER_DESC3)
+                            .setAction(action -> {
+                                if (action.isRightClick()) {
+                                    if (!territoryData.doesPlayerHavePermission(playerStat, RolePermission.MANAGE_CLAIM_SETTINGS)) {
+                                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                                        return;
+                                    }
+                                    territoryData.getPermission(type).removeSpecificPlayerPermission(authorizedPlayerID);
+                                    openPlayerListForChunkPermission(player, territoryData, type, page);
+                                }
+                            })
+                            .asGuiItem(player, playerStat.getLang())
+            );
         }
 
         GuiUtil.createIterator(gui, guiItems, 0, player,
