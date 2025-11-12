@@ -23,10 +23,22 @@ public class PlayerJoinListener implements Listener {
   public void onPlayerJoin(PlayerJoinEvent event) {
     Player player = event.getPlayer();
 
+    if (player == null) {
+      return;
+    }
+
     PlayerDataStorage.getInstance()
         .get(player)
         .thenAccept(
             tanPlayer -> {
+              // Null check for tanPlayer
+              if (tanPlayer == null) {
+                TownsAndNations.getPlugin()
+                    .getLogger()
+                    .warning("TanPlayer is null for " + player.getName());
+                return;
+              }
+
               // All player interactions MUST run on the main thread (Folia global region scheduler)
               org.leralix.tan.utils.FoliaScheduler.runTask(
                   TownsAndNations.getPlugin(),
@@ -38,6 +50,11 @@ public class PlayerJoinListener implements Listener {
 
                     TeamUtils.setIndividualScoreBoard(player);
                     LangType langType = tanPlayer.getLang();
+
+                    if (langType == null) {
+                      langType = LangType.ENGLISH;
+                    }
+
                     if (player.hasPermission("tan.debug")
                         && !TownsAndNations.getPlugin().isLatestVersion()) {
                       TanChatUtils.message(
@@ -62,23 +79,35 @@ public class PlayerJoinListener implements Listener {
                       player.sendMessage(message);
                     }
 
-                    // Check premium status asynchronously
+                    // Check premium status asynchronously (non-blocking)
                     org.leralix.tan.utils.FoliaScheduler.runTaskAsynchronously(
                         TownsAndNations.getPlugin(),
                         () -> {
-                          PremiumStorage.getInstance().isPremium(player.getName());
+                          try {
+                            PremiumStorage.getInstance().isPremium(player.getName());
+                          } catch (Exception ex) {
+                            TownsAndNations.getPlugin()
+                                .getLogger()
+                                .warning(
+                                    "Error checking premium for "
+                                        + player.getName()
+                                        + ": "
+                                        + ex.getMessage());
+                          }
                         });
                   });
             })
         .exceptionally(
             ex -> {
-              TownsAndNations.getPlugin()
-                  .getLogger()
-                  .severe(
-                      "Error retrieving player data for "
-                          + player.getName()
-                          + ": "
-                          + ex.getMessage());
+              if (ex != null && TownsAndNations.getPlugin() != null) {
+                TownsAndNations.getPlugin()
+                    .getLogger()
+                    .severe(
+                        "Error retrieving player data for "
+                            + (player != null ? player.getName() : "unknown")
+                            + ": "
+                            + ex.getMessage());
+              }
               return null;
             });
   }

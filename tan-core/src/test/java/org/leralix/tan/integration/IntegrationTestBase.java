@@ -133,9 +133,7 @@ public abstract class IntegrationTestBase {
     }
   }
 
-  /**
-   * Waits for async operations with default timeout of 1 second.
-   */
+  /** Waits for async operations with default timeout of 1 second. */
   protected void waitForAsync() {
     waitForAsync(1000);
   }

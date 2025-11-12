@@ -5,6 +5,151 @@
 #   |_|\___/ \_/\_/ |_| |_|___/    \___/\/   |_| \_|\__,_|\__|_|\___/|_| |_|___/
 #
 
+########################
+##       Database     ##
+########################
+
+#As of 0.14.4+, tax history and newsletter are stored in the database
+#Full support for MySQL with replication and circuit breaker
+database:
+  #Database type (sqlite or mysql)
+  type: "sqlite"
+  #Database host (if using sqlite, leave empty)
+  host: "localhost"
+  #Database port (if using sqlite, unused)
+  port: 3306
+  #Database name (if using sqlite, unused)
+  name: "towns_and_nations"
+  #Database user (if using sqlite, unused)
+  user: "user"
+  #Database password (if using sqlite, unused)
+  password: "password"
+  ssl:
+    enabled: false
+    require: false
+    verify-server-certificate: false
+  pool-size: 200
+  min-idle: 50
+  connection-timeout: 10000
+  idle-timeout: 300000
+  max-lifetime: 900000
+  
+  # MySQL Replication (for high availability)
+  replication:
+    enabled: true
+    read-replicas:
+      - "mysql-replica1.example.com:3306"
+      - "mysql-replica2.example.com:3306"
+      - "mysql-replica3.example.com:3306"
+    load-balancing: "least_connections" # round_robin, random, or least_connections
+    replica-lag-threshold: 3000 # Max replication lag in ms
+  
+  # Circuit Breaker (automatic failover)
+  circuit-breaker:
+    enabled: true
+    failure-threshold: 5 # Number of failures before opening circuit
+    timeout: 60000 # Time in ms before attempting to close circuit
+    half-open-requests: 3 # Number of test requests in half-open state
+
+########################
+##     Redis Cache    ##
+########################
+
+#Redis cluster for distributed caching and real-time synchronization
+redis:
+  enabled: true
+  mode: "cluster" # standalone, sentinel, or cluster
+  
+  # Standalone mode
+  host: "localhost"
+  port: 6379
+  password: ""
+  database: 0
+  
+  # Cluster mode (requires mode: cluster)
+  cluster:
+    nodes:
+      - "redis-node1.example.com:6379"
+      - "redis-node2.example.com:6379"
+      - "redis-node3.example.com:6379"
+      - "redis-node4.example.com:6379"
+      - "redis-node5.example.com:6379"
+      - "redis-node6.example.com:6379"
+    max-redirects: 5
+    scan-interval: 5000 # Cluster topology refresh interval in ms
+  
+  # Sentinel mode (requires mode: sentinel)
+  sentinel:
+    master-name: "mymaster"
+    nodes:
+      - "sentinel1.example.com:26379"
+      - "sentinel2.example.com:26379"
+      - "sentinel3.example.com:26379"
+    database: 0
+  
+  # Connection pool
+  pool:
+    max-total: 512
+    max-idle: 256
+    min-idle: 128
+  
+  # Timeouts - OPTIMIZED FOR HIGH-LOAD SERVERS
+  timeout: 2000 # Connection timeout in ms (reduced for faster failover)
+  socket-timeout: 3000 # Socket timeout in ms - prevents hanging connections
+  socket-keep-alive: true # Keeps connections alive
+  retry-attempts: 3 # Reduced from 5 to fail faster
+  retry-interval: 500 # Faster retry for failover
+
+########################
+##    Query Cache     ##
+########################
+
+#Multi-level caching (Local Caffeine + Redis)
+cache:
+  # Player cache
+  tan_players: 500
+  tan_towns: 300
+  tan_regions: 200
+  
+  # Query result cache
+  query-cache:
+    enabled: true
+    local-size: 5000 # Caffeine local cache size
+    ttl-seconds: 600 # Time-to-live for cached queries (10 min)
+    negative-ttl: 120 # TTL for null/empty results
+  
+  # Territory lazy loading
+  lazy-loading:
+    enabled: true
+    batch-size: 20 # Number of territories to preload (reduced for 800 players)
+    preload-delay: 50 # Delay between batches in ms (reduced)
+    background-refresh: true
+    refresh-interval: 180000 # 3 minutes (more frequent refresh)
+
+########################
+##     Monitoring     ##
+########################
+
+#Metrics collection and Prometheus export
+monitoring:
+  enabled: true
+  prometheus:
+    enabled: true
+    port: 9090
+    host: "0.0.0.0"
+  
+  # Performance metrics
+  metrics:
+    query-performance: true
+    cache-statistics: true
+    thread-pool-stats: true
+    memory-usage: true
+    
+  # Event sourcing (transaction history)
+  event-sourcing:
+    enabled: true
+    batch-size: 500
+    flush-interval: 2000 # ms (more frequent flush for 800 players)
 
 ########################
 ##      General       ##
@@ -15,6 +160,20 @@
 # If false (cracked mode), the plugin will attempt to fetch the skin for the given player name;
 # only players with a valid skin will have their head displayed as a town icon.
 onlineMode: true
+
+########################
+##   Profile Caching  ##
+########################
+
+# Minecraft Profile Caching to avoid HTTP 429 errors
+profile-cache:
+  enabled: true
+  ttl-seconds: 86400 # 24 hours - cache player profiles locally
+  max-size: 10000
+  async-fetch: true
+  retry-on-429: true
+  retry-delay-ms: 5000
+  max-retries: 3
 
 #Time of the day when taxes are collected (default is midnight at 0:00)
 taxHourTime: 0 #0-23
@@ -497,39 +656,6 @@ wildernessRules:
 #Time before old newsletter are deleted in days (will be deleted at midnight)
 TimeBeforeClearingNewsletter: 7
 
-
-########################
-##       Database     ##
-########################
-
-#EXPERIMENTAL FEATURE
-#As of 0.14.4+, tax history and newsletter are stored in the database
-#A full support for databases is not yet available
-#Database url cannot be configured
-
-database:
-  #Database type (sqlite or mysql)
-  type: "sqlite"
-  #Database host (if using sqlite, leave empty)
-  host: "localhost"
-  #Database port (if using sqlite, unused)
-  port: 3306
-  #Database name (if using sqlite, unused)
-  name: "towns_and_nations"
-  #Database user (if using sqlite, unused)
-  user: "user"
-  #Database password (if using sqlite, unused)
-  password: "password"
-  ssl:
-    enabled: false
-    require: false
-    verify-server-certificate: false
-  pool-size: 50
-  min-idle: 2
-  connection-timeout: 30000
-  idle-timeout: 600000
-  max-lifetime: 1800000
-
 ########################
 ##     Extensions     ##
 ########################
@@ -632,19 +758,3 @@ CancelMobSpawnInTown:
   ZOMBIE: 1000
   ZOMBIE_HORSE: 0
   ZOMBIE_VILLAGER: 0
-
-
-
-
-
-
-
-
-########################
-##       Cache        ##
-########################
-
-cache:
-  tan_players: 100
-  tan_towns: 100
-  tan_regions: 100

@@ -16,6 +16,9 @@ public abstract class DatabaseHandler {
 
   protected DataSource dataSource;
 
+  // OPTIMIZATION: Query batch executor to reduce database load for high-player servers
+  protected QueryBatchExecutor queryBatchExecutor;
+
   public abstract void connect() throws SQLException;
 
   /** Close the database connection and clean up resources Called during plugin shutdown */
@@ -226,6 +229,45 @@ public abstract class DatabaseHandler {
           + " (id, data) VALUES (?, ?) ON DUPLICATE KEY UPDATE data = VALUES(data)";
     } else {
       return "INSERT OR REPLACE INTO " + tableName + " (id, data) VALUES (?, ?)";
+    }
+  }
+
+  /**
+   * Initialize the query batch executor. Call this during database connection setup.
+   *
+   * @param batchSize Number of queries to batch together (default: 50)
+   * @param delayMs Maximum delay before flushing a batch in milliseconds (default: 100)
+   */
+  public void initializeQueryBatcher(int batchSize, int delayMs) {
+    this.queryBatchExecutor = new QueryBatchExecutor(batchSize, delayMs);
+    TownsAndNations.getPlugin()
+        .getLogger()
+        .info(
+            "[TaN] Query batch executor initialized: batch="
+                + batchSize
+                + ", delay="
+                + delayMs
+                + "ms");
+  }
+
+  /**
+   * Get the query batch executor (if initialized).
+   *
+   * @return QueryBatchExecutor or null if not initialized
+   */
+  public QueryBatchExecutor getQueryBatchExecutor() {
+    return queryBatchExecutor;
+  }
+
+  /**
+   * Shutdown the query batch executor. Call this during plugin shutdown to cleanly shut down the
+   * batch executor thread.
+   */
+  public void shutdownQueryBatcher() {
+    if (queryBatchExecutor != null) {
+      queryBatchExecutor.shutdown();
+      queryBatchExecutor = null;
+      TownsAndNations.getPlugin().getLogger().info("[TaN] Query batch executor shutdown");
     }
   }
 }

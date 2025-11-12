@@ -36,9 +36,9 @@ import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
 import org.leralix.tan.listeners.chat.events.CreateEmptyTown;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.gui.GuiUtil;
 import org.leralix.tan.utils.item.HeadUtils;
-import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.wars.PlannedAttack;
 
@@ -124,7 +124,7 @@ public class AdminGUI {
         guiItems,
         page,
         player,
-        p -> new AdminMainMenu(player),
+        p -> AdminMainMenu.open(player),
         p -> openLandmarks(player, page + 1),
         p -> openLandmarks(player, page - 1));
 
@@ -261,7 +261,7 @@ public class AdminGUI {
         guiItems,
         page,
         player,
-        p -> new AdminMainMenu(player),
+        p -> AdminMainMenu.open(player),
         p -> openAdminBrowseRegion(player, page + 1),
         p -> openAdminBrowseRegion(player, page - 1));
     gui.open(player);
@@ -463,7 +463,7 @@ public class AdminGUI {
         guiItems,
         page,
         player,
-        p -> new MainMenu(player),
+        p -> MainMenu.open(player),
         p -> openAdminBrowseTown(player, page + 1),
         p -> openAdminBrowseTown(player, page - 1));
 
@@ -668,7 +668,7 @@ public class AdminGUI {
         guiItems,
         page,
         player,
-        p -> new AdminMainMenu(player),
+        p -> AdminMainMenu.open(player),
         p -> openPlayerMenu(player, page + 1),
         p -> openPlayerMenu(player, page - 1));
     gui.open(player);

@@ -26,6 +26,9 @@ public class MySqlHandler extends DatabaseHandler {
   private static final long METADATA_CACHE_TTL = 300_000L; // 5 minutes in milliseconds
   private static volatile long metadataCacheTime = 0;
 
+  // OPTIMIZATION: Query limiter to prevent pool saturation
+  private QueryLimiter queryLimiter;
+
   public MySqlHandler(
       TownsAndNations plugin,
       String host,
@@ -87,6 +90,13 @@ public class MySqlHandler extends DatabaseHandler {
         plugin.getConfig().getLong("database.leak-detection-threshold", 60000L));
 
     this.dataSource = new HikariDataSource(config);
+
+    // OPTIMIZATION: Initialize query limiter (100 concurrent queries, 5s timeout)
+    this.queryLimiter = new QueryLimiter(100, 5000);
+    plugin.getLogger().info("[TaN] Query limiter initialized: max 100 concurrent queries");
+
+    // OPTIMIZATION: Initialize query batch executor (50 queries per batch, 100ms delay)
+    initializeQueryBatcher(50, 100);
 
     createMetadataTable();
     initialize();
@@ -201,6 +211,9 @@ public class MySqlHandler extends DatabaseHandler {
    */
   @Override
   public void close() {
+    // Shutdown batch executor first
+    shutdownQueryBatcher();
+
     if (dataSource instanceof HikariDataSource) {
       HikariDataSource hikari = (HikariDataSource) dataSource;
       try {
@@ -231,5 +244,40 @@ public class MySqlHandler extends DatabaseHandler {
     } catch (SQLException e) {
       plugin.getLogger().severe("[TaN] Failed to reconnect to MySQL database: " + e.getMessage());
     }
+  }
+
+  /**
+   * Execute a query with query limiter protection. Prevents connection pool saturation for
+   * high-player servers.
+   *
+   * @param query The query operation to execute
+   * @return Result from the query
+   * @throws SQLException If the query fails or timeout occurs
+   */
+  protected <T> T executeWithLimit(QuerySupplier<T> query) throws SQLException {
+    if (queryLimiter == null) {
+      return query.execute();
+    }
+
+    if (!queryLimiter.acquirePermit()) {
+      throw new SQLException("Query queue full - timeout after 5s");
+    }
+
+    try {
+      return query.execute();
+    } finally {
+      queryLimiter.releasePermit();
+    }
+  }
+
+  /** Functional interface for queries to support query limiting. */
+  @FunctionalInterface
+  protected interface QuerySupplier<T> {
+    T execute() throws SQLException;
+  }
+
+  /** Get query limiter statistics (for monitoring). */
+  public String getQueryLimiterStats() {
+    return queryLimiter != null ? queryLimiter.getStats() : "Query limiter not initialized";
   }
 }

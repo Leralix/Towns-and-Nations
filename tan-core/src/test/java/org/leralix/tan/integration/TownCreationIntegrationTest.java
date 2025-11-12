@@ -107,8 +107,7 @@ public class TownCreationIntegrationTest extends IntegrationTestBase {
 
     // Assert - Claims added
     assertEquals(10, town.getChunks().getAvailableClaims("world"), "Should have 10 claims");
-    assertTrue(
-        town.getChunks().canClaimInWorld("world"), "Should be able to claim in world");
+    assertTrue(town.getChunks().canClaimInWorld("world"), "Should be able to claim in world");
   }
 
   @Test
@@ -125,8 +124,7 @@ public class TownCreationIntegrationTest extends IntegrationTestBase {
     waitForAsync(); // Wait for async deletion
 
     // Assert - Town deleted
-    assertNull(
-        TownDataStorage.getInstance().getSync(townId), "Town should be deleted");
+    assertNull(TownDataStorage.getInstance().getSync(townId), "Town should be deleted");
 
     // Assert - Player no longer in town
     ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);

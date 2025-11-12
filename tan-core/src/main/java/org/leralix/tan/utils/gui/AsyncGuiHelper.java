@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.gui.circuitbreaker.GuiCircuitBreaker;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.FoliaScheduler;
 import org.slf4j.Logger;
@@ -56,6 +57,10 @@ import org.slf4j.LoggerFactory;
 public class AsyncGuiHelper {
 
   private static final Logger logger = LoggerFactory.getLogger(AsyncGuiHelper.class);
+
+  // OPTIMIZATION: Circuit breaker to prevent cascading failures during GUI operations
+  private static final GuiCircuitBreaker guiCircuitBreaker =
+      new GuiCircuitBreaker(5, 60000); // Open after 5 failures, retry after 1 minute
 
   private AsyncGuiHelper() {
     throw new IllegalStateException("Utility class");
@@ -254,4 +259,39 @@ public class AsyncGuiHelper {
    * <p>Use this for static or rarely changing data like configuration.
    */
   public static final long CACHE_DURATION_LONG = 300_000L;
+
+  /**
+   * Execute a GUI operation with circuit breaker protection.
+   *
+   * <p>Prevents cascading failures when database is slow by failing fast once a threshold of
+   * failures is reached.
+   *
+   * @param player The player opening the GUI
+   * @param guiOperation The GUI operation to execute
+   * @param onSuccess Called if operation succeeds
+   * @param onFailure Called if operation fails or circuit is open
+   */
+  public static void executeWithCircuitBreaker(
+      Player player, Runnable guiOperation, Runnable onSuccess, Consumer<Throwable> onFailure) {
+
+    guiCircuitBreaker.execute(
+        guiOperation,
+        ex -> {
+          logger.debug("GUI operation succeeded for player {}", player.getName());
+          onSuccess.run();
+        },
+        ex -> {
+          logger.warn("GUI operation failed for player {}: {}", player.getName(), ex.getMessage());
+          onFailure.accept(ex);
+        });
+  }
+
+  /**
+   * Get the current state of the GUI circuit breaker (for monitoring).
+   *
+   * @return Circuit breaker state as string
+   */
+  public static String getCircuitBreakerState() {
+    return guiCircuitBreaker.getState();
+  }
 }

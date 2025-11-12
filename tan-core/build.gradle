@@ -82,6 +82,20 @@ dependencies {
     implementation 'com.mysql:mysql-connector-j:8.4.0'
     implementation 'org.xerial:sqlite-jdbc:3.43.2.0'
     implementation 'com.zaxxer:HikariCP:5.1.0'
+    // JSON parsing (for head textures parsing). Ensure recent Gson for JsonParser.parseString
+    implementation 'com.google.code.gson:gson:2.11.0'
+
+    // IMPROVEMENT #1: Redis Clustering
+    implementation 'org.redisson:redisson:3.24.0'
+    
+    // IMPROVEMENT #4: Circuit Breaker
+    implementation 'io.github.resilience4j:resilience4j-circuitbreaker:2.1.0'
+    implementation 'io.github.resilience4j:resilience4j-core:2.1.0'
+    
+    // IMPROVEMENT #7: Prometheus Monitoring
+    implementation 'io.prometheus:simpleclient:0.16.0'
+    implementation 'io.prometheus:simpleclient_httpserver:0.16.0'
+    implementation 'io.prometheus:simpleclient_hotspot:0.16.0'
 
     testImplementation 'io.github.leralix:sphere-lib:0.6.0'
     testImplementation 'com.github.MockBukkit:MockBukkit:v4.72.9'

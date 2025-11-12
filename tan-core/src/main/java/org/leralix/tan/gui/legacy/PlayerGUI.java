@@ -36,9 +36,9 @@ import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.gui.GuiUtil;
 import org.leralix.tan.utils.item.HeadUtils;
-import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class PlayerGUI {
@@ -50,18 +50,18 @@ public class PlayerGUI {
   public static void dispatchPlayerRegion(Player player) {
     RegionData regionData = RegionDataStorage.getInstance().getSync(player);
     if (regionData != null) {
-      new RegionMenu(player, regionData);
+      RegionMenu.open(player, regionData);
     } else {
-      new NoRegionMenu(player);
+      NoRegionMenu.open(player);
     }
   }
 
   public static void dispatchPlayerTown(Player player) {
     TownData townData = TownDataStorage.getInstance().getSync(player);
     if (townData != null) {
-      new TownMenu(player, townData);
+      TownMenu.open(player, townData);
     } else {
-      new NoTownMenu(player);
+      NoTownMenu.open(player);
     }
   }
 
@@ -87,7 +87,7 @@ public class PlayerGUI {
         landmarkGui,
         page,
         player,
-        p -> new TownMenu(player, townData),
+        p -> TownMenu.open(player, townData),
         p -> openOwnedLandmark(player, townData, page + 1),
         p -> openOwnedLandmark(player, townData, page - 1));
 
@@ -126,7 +126,7 @@ public class PlayerGUI {
     }
 
     gui.setItem(
-        3, 1, GuiUtil.createBackArrow(player, p -> new ChunkSettingsMenu(player, territoryData)));
+        3, 1, GuiUtil.createBackArrow(player, p -> ChunkSettingsMenu.open(player, territoryData)));
     gui.open(player);
   }
 
@@ -200,7 +200,7 @@ public class PlayerGUI {
         guiLists,
         page,
         player,
-        p -> new ChunkSettingsMenu(player, townData),
+        p -> ChunkSettingsMenu.open(player, townData),
         p -> openTownChunkMobSettings(player, page + 1),
         p -> openTownChunkMobSettings(player, page - 1));
 
@@ -249,7 +249,7 @@ public class PlayerGUI {
         guiItems,
         0,
         player,
-        p -> new TerritoryChunkSettingsMenu(player, territoryData),
+        p -> TerritoryChunkSettingsMenu.open(player, territoryData),
         p -> openPlayerListForChunkPermission(player, territoryData, type, page + 1),
         p -> openPlayerListForChunkPermission(player, territoryData, type, page - 1));
 
@@ -358,7 +358,7 @@ public class PlayerGUI {
         guiItems,
         page,
         player,
-        p -> new VassalsMenu(player, territoryData),
+        p -> VassalsMenu.open(player, territoryData),
         p -> openAddVassal(player, territoryData, page + 1),
         p -> openAddVassal(player, territoryData, page - 1));
 
@@ -409,7 +409,7 @@ public class PlayerGUI {
                                     iteratetanPlayer.getTownSync().getName()));
                             regionData.setCapital(iteratetanPlayer.getTownId());
                           }
-                          new RegionSettingsMenu(player, regionData);
+                          RegionSettingsMenu.open(player, regionData);
                         },
                         remove -> openRegionChangeOwnership(player, page));
                   });
@@ -421,7 +421,7 @@ public class PlayerGUI {
         guiItems,
         page,
         player,
-        p -> new RegionSettingsMenu(player, regionData),
+        p -> RegionSettingsMenu.open(player, regionData),
         p -> openRegionChangeOwnership(player, page + 1),
         p -> openRegionChangeOwnership(player, page - 1));
 
@@ -433,7 +433,7 @@ public class PlayerGUI {
     TownData townData = TownDataStorage.getInstance().getSync(player);
     ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
     if (!landmark.isOwned()) {
-      new LandmarkNoOwnerMenu(player, landmark);
+      LandmarkNoOwnerMenu.open(player, landmark);
       return;
     }
     if (landmark.isOwnedBy(townData)) {
@@ -703,7 +703,7 @@ public class PlayerGUI {
               .asGuiItem(
                   event -> {
                     event.setCancelled(true);
-                    new VassalsMenu(player, territoryData);
+                    VassalsMenu.open(player, territoryData);
                   });
       vassalInfo = ItemBuilder.from(vassalIcon).asGuiItem(event -> event.setCancelled(true));
       gui.setItem(2, 6, vassalsButton);

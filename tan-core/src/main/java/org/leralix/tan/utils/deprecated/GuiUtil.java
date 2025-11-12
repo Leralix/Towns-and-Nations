@@ -14,6 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.item.HeadUtils;
 
 public class GuiUtil {
 
@@ -39,7 +40,7 @@ public class GuiUtil {
   public static GuiItem getUnnamedItem(Material material) {
     ItemStack item = new ItemStack(material);
     ItemMeta itemMeta = item.getItemMeta();
-    itemMeta.setDisplayName(" ");
+    itemMeta.displayName(Component.text(" "));
     item.setItemMeta(itemMeta);
     return ItemBuilder.from(item).asGuiItem(event -> event.setCancelled(true));
   }
@@ -76,7 +77,7 @@ public class GuiUtil {
 
     ItemStack decorativeGlassPane = new ItemStack(decorativeMaterial);
     ItemMeta itemMeta = decorativeGlassPane.getItemMeta();
-    itemMeta.setDisplayName("");
+    itemMeta.displayName(Component.text(""));
     decorativeGlassPane.setItemMeta(itemMeta);
     createIterator(
         gui,

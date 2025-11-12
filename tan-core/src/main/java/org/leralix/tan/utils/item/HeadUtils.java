@@ -19,7 +19,6 @@ import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.utils.text.ComponentUtil;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -276,7 +275,7 @@ public class HeadUtils {
 
     ItemMeta meta = icon.getItemMeta();
     if (meta != null) {
-      meta.displayName(Component.text(regionData.getName(, NamedTextColor.AQUA)));
+      meta.displayName(Component.text(regionData.getName(), NamedTextColor.AQUA));
 
       List<String> lore = new ArrayList<>();
       lore.add(Lang.GUI_REGION_INFO_DESC0.get(langType, regionData.getDescription()));

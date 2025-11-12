@@ -37,6 +37,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.*;
 import org.leralix.tan.listeners.chat.ChatListener;
 import org.leralix.tan.listeners.interact.RightClickListener;
+import org.leralix.tan.monitoring.PrometheusMetricsCollector;
 import org.leralix.tan.service.EconomyService;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
@@ -90,8 +91,6 @@ public class TownsAndNations extends JavaPlugin {
   private static final PluginVersion CURRENT_VERSION = new PluginVersion(0, 16, 0);
 
   private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0, 14, 0);
-
-  private static final PluginVersion MINIMUM_SUPPORTING_SPHERELIB = new PluginVersion(0, 6, 0);
 
   /**
    * The Latest version of the plugin on GitHub. Used to check if the plugin is up to date to the
@@ -182,6 +181,15 @@ public class TownsAndNations extends JavaPlugin {
       databaseHealthCheck = new DatabaseHealthCheck(databaseHandler, this);
       databaseHealthCheck.start();
       LOGGER.info("[TaN] -Database health check started");
+    }
+
+    // OPTIMIZATION: Initialize Prometheus metrics collection
+    try {
+      PrometheusMetricsCollector metricsCollector = new PrometheusMetricsCollector();
+      metricsCollector.startServer(9090);
+      LOGGER.info("[TaN] -Prometheus metrics enabled on port 9090");
+    } catch (Exception ex) {
+      LOGGER.warn("[TaN] -Failed to initialize Prometheus metrics: " + ex.getMessage());
     }
 
     LOGGER.info("[TaN] -Loading Local data");
@@ -355,6 +363,7 @@ public class TownsAndNations extends JavaPlugin {
    * Check GitHub and notify admins if a new version of Towns and Nations is available. This method
    * is called when the plugin is enabled.
    */
+  @SuppressWarnings("unused") // Called conditionally from config
   private void checkForUpdate() {
     if (!TownsAndNations.getPlugin().getConfig().getBoolean("CheckForUpdate", true)) {
       LOGGER.info("[TaN] Update check is disabled");

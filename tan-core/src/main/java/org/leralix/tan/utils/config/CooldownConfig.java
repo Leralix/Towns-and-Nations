@@ -33,15 +33,13 @@ public class CooldownConfig {
 
   /** Loads the cooldowns.yml configuration file. */
   private void loadConfig() {
-    File configFile =
-        new File(TownsAndNations.getPlugin().getDataFolder(), "cooldowns.yml");
+    File configFile = new File(TownsAndNations.getPlugin().getDataFolder(), "cooldowns.yml");
 
     // Create file if it doesn't exist
     if (!configFile.exists()) {
       try {
         configFile.getParentFile().mkdirs();
-        try (InputStream defaultConfig =
-            TownsAndNations.getPlugin().getResource("cooldowns.yml")) {
+        try (InputStream defaultConfig = TownsAndNations.getPlugin().getResource("cooldowns.yml")) {
           if (defaultConfig != null) {
             Files.copy(defaultConfig, configFile.toPath());
           }

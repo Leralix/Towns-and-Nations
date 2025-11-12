@@ -54,7 +54,9 @@ public class CommandCooldownManager {
    */
   public void setCooldown(UUID playerUUID, String commandKey, long seconds) {
     long expiryTime = System.currentTimeMillis() + (seconds * 1000);
-    cooldowns.computeIfAbsent(playerUUID, k -> new ConcurrentHashMap<>()).put(commandKey, expiryTime);
+    cooldowns
+        .computeIfAbsent(playerUUID, k -> new ConcurrentHashMap<>())
+        .put(commandKey, expiryTime);
   }
 
   /**
