@@ -32,6 +32,6 @@ public class RenameRank extends ChatListenerEvent {
 
         rankData.setName(message);
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> new RankManagerMenu(player, territoryConcerned, rankData).open());
-        return false;
+        return true;
     }
 }
