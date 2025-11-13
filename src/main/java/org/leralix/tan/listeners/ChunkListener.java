@@ -113,8 +113,24 @@ public class ChunkListener implements Listener {
                 materialBlock == Material.DISPENSER ||
                 materialBlock == Material.DROPPER ||
                 materialBlock == Material.BREWING_STAND ||
-                materialBlock == Material.SHULKER_BOX){
-
+                materialBlock == Material.SHULKER_BOX ||
+                materialBlock == Material.WHITE_SHULKER_BOX ||
+                materialBlock == Material.ORANGE_SHULKER_BOX ||
+                materialBlock == Material.MAGENTA_SHULKER_BOX ||
+                materialBlock == Material.LIGHT_BLUE_SHULKER_BOX ||
+                materialBlock == Material.YELLOW_SHULKER_BOX ||
+                materialBlock == Material.LIME_SHULKER_BOX ||
+                materialBlock == Material.PINK_SHULKER_BOX ||
+                materialBlock == Material.GRAY_SHULKER_BOX ||
+                materialBlock == Material.LIGHT_GRAY_SHULKER_BOX ||
+                materialBlock == Material.CYAN_SHULKER_BOX ||
+                materialBlock == Material.PURPLE_SHULKER_BOX ||
+                materialBlock == Material.BLUE_SHULKER_BOX ||
+                materialBlock == Material.BROWN_SHULKER_BOX ||
+                materialBlock == Material.GREEN_SHULKER_BOX ||
+                materialBlock == Material.RED_SHULKER_BOX ||
+                materialBlock == Material.BLACK_SHULKER_BOX)
+        {
             if(!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_CHEST)){
                 event.setCancelled(true);
             }
