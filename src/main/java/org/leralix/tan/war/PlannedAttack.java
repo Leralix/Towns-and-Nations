@@ -218,7 +218,7 @@ public class PlannedAttack {
         long startDateInSeconds = (startTime - new Date().getTime()) / 1000;
         long attackDurationInSeconds = (endTime - startTime) / 1000;
 
-        FilledLang exactTimeStart = TimeZoneManager.getInstance().formatDate(Instant.ofEpochMilli(startTime), timeZone);
+        FilledLang exactTimeStart = TimeZoneManager.getInstance().formatDate(Instant.ofEpochMilli(startTime), timeZone, langType.getLocale());
 
         return iconManager.get(Material.IRON_SWORD)
                 .setName(ChatColor.GREEN + name)
