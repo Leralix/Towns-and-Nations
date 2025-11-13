@@ -2,6 +2,7 @@ package org.leralix.tan.gui.admin;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -11,6 +12,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
+import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -57,12 +59,18 @@ public abstract class AdminManageTerritory extends BasicGui {
                    FileUtil.addLineToHistory(Lang.REGION_DELETED_NEWSLETTER.get(player.getName(), territoryData.getName()));
                    if (territoryData.isCapital()) {
                        territoryData.getOverlord().ifPresent(overlord ->
-                               TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(langType, overlord.getBaseColoredName()))
+                               TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(langType, overlord.getBaseColoredName()), SoundEnum.NOT_ALLOWED)
                        );
                        return;
                    }
-                   territoryData.delete();
 
+                   // A territory cannot be deleted if it is at war to avoid errors
+                   if(!WarStorage.getInstance().getWarsOfTerritory(territoryData).isEmpty()){
+                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR.get(langType));
+                       return;
+                   }
+
+                   territoryData.delete();
                    player.closeInventory();
                })
                .asGuiItem(player,langType);
