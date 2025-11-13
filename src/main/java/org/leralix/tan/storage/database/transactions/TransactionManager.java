@@ -8,10 +8,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class TransactionManager {
@@ -207,7 +204,7 @@ public class TransactionManager {
         addToIndex(conn, transactionID, transaction.getType(), transaction.getConcerned());
     }
 
-    private void addToIndex(Connection conn, long transactionId, TransactionType transactionType, List<String> concerned) throws SQLException {
+    private void addToIndex(Connection conn, long transactionId, TransactionType transactionType, Set<String> concerned) throws SQLException {
         if (concerned == null || concerned.isEmpty()) {
             return;
         }

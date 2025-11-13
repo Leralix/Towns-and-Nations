@@ -16,7 +16,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 public class UpgradeTransaction extends AbstractTransaction {
 
@@ -76,8 +76,8 @@ public class UpgradeTransaction extends AbstractTransaction {
     }
 
     @Override
-    public List<String> getConcerned() {
-        return Collections.singletonList(territoryID);
+    public Set<String> getConcerned() {
+        return Collections.singleton(territoryID);
     }
 
     public String getTerritoryID() {

@@ -15,8 +15,8 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TerritoryTaxTransaction extends AbstractTransaction {
 
@@ -73,8 +73,8 @@ public class TerritoryTaxTransaction extends AbstractTransaction {
     }
 
     @Override
-    public List<String> getConcerned() {
-        List<String> res = new ArrayList<>();
+    public Set<String> getConcerned() {
+        Set<String> res = new HashSet<>();
         res.add(senderID);
         res.add(recieverID);
         return res;

@@ -16,8 +16,8 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RetrieveTransaction extends AbstractTransaction {
 
@@ -70,8 +70,8 @@ public class RetrieveTransaction extends AbstractTransaction {
     }
 
     @Override
-    public List<String> getConcerned() {
-        List<String> res = new ArrayList<>();
+    public Set<String> getConcerned() {
+        Set<String> res = new HashSet<>();
         res.add(playerID);
         res.add(territoryID);
         return res;

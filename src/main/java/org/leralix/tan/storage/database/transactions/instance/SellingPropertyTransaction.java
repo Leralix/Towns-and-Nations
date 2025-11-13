@@ -15,8 +15,8 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SellingPropertyTransaction extends AbstractTransaction {
 
@@ -93,13 +93,10 @@ public class SellingPropertyTransaction extends AbstractTransaction {
     }
 
     @Override
-    public List<String> getConcerned() {
-        List<String> res = new ArrayList<>();
+    public Set<String> getConcerned() {
+        Set<String> res = new HashSet<>();
         res.add(territoryID);
-        // Seller can be the town itself
-        if(!territoryID.equals(sellerID)){
-            res.add(sellerID);
-        }
+        res.add(sellerID);
         res.add(buyerID);
         return res;
     }

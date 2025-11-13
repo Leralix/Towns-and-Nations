@@ -20,7 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public abstract class AbstractTransaction {
@@ -119,5 +119,5 @@ public abstract class AbstractTransaction {
 
     public abstract void fillInsertStatement(PreparedStatement ps) throws SQLException;
 
-    public abstract List<String> getConcerned();
+    public abstract Set<String> getConcerned();
 }
