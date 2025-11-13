@@ -16,7 +16,7 @@ public class OpenDiplomacyProposalsMenu extends IteratorGUI {
     private final TerritoryData territoryData;
 
     public OpenDiplomacyProposalsMenu(Player player, TerritoryData territoryData) {
-        super(player, Lang.HEADER_RELATIONS.get(player, territoryData.getName()), 6);
+        super(player, Lang.HEADER_RELATIONS.get(territoryData.getName()), 6);
         this.territoryData = territoryData;
         open();
     }

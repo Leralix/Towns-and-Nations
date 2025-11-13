@@ -1,15 +1,12 @@
 package org.leralix.tan.enums.permissions;
 
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.legacy.InteractionStatus;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public enum GeneralChunkSetting {
     ENABLE_PVP(Material.DIAMOND_SWORD, Lang.ENABLE_PVP_SETTING),
@@ -25,31 +22,29 @@ public enum GeneralChunkSetting {
         this.name = name;
     }
 
-    public ItemStack getIcon(Boolean isEnabled, LangType lang) {
-        ItemStack icon = new ItemStack(this.material);
-        ItemMeta meta = icon.getItemMeta();
-        meta.setDisplayName(name.get(lang));
-        meta.setLore(getDescription(isEnabled, lang));
-        icon.setItemMeta(meta);
-        return icon;
-    }
+    public IconBuilder getIcon(IconManager iconManager, boolean isEnabled, LangType lang) {
 
-    public List<String> getDescription(boolean isEnabled, LangType lang) {
+        IconBuilder iconBuilder = iconManager.get(this.material)
+                .setName(name.get(lang));
 
         InteractionStatus state = Constants.getChunkSettings(this);
         boolean canBeModified = state != InteractionStatus.ALWAYS && state != InteractionStatus.NEVER && state != InteractionStatus.WAR_ONLY;
 
-        List<String> description = new ArrayList<>();
         if(canBeModified) {
             String status = isEnabled ? Lang.ENABLED.get(lang) : Lang.DISABLED.get(lang);
-            description.add(Lang.CURRENT_STATE.get(lang, status));
-            description.add(Lang.LEFT_CLICK_TO_MODIFY.get(lang));
+            iconBuilder.setDescription(Lang.CURRENT_STATE.get(status));
+            iconBuilder.setClickToAcceptMessage(Lang.LEFT_CLICK_TO_MODIFY);
         }
         else {
-            description.add(Lang.CANNOT_BE_MODIFIED.get(lang));
+
+            if(state == InteractionStatus.ALWAYS){
+                iconBuilder.setDescription(Lang.CURRENT_STATE.get(Lang.ENABLED.get(lang)));
+            }
+            else if (state == InteractionStatus.NEVER) {
+                iconBuilder.setDescription(Lang.CURRENT_STATE.get(Lang.DISABLED.get(lang)));
+            }
+            iconBuilder.setClickToAcceptMessage(Lang.CANNOT_BE_MODIFIED);
         }
-        return description;
-
-
+        return iconBuilder;
     }
 }

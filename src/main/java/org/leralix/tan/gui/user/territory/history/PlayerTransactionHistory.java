@@ -7,7 +7,7 @@ import org.leralix.tan.storage.database.transactions.TransactionType;
 
 import java.util.function.Consumer;
 
-public class PlayerTransactionHistory extends AbstractTerritoryTransactionHistory {
+public class PlayerTransactionHistory extends AbstractTransactionHistory {
 
     private final ITanPlayer playerData;
 

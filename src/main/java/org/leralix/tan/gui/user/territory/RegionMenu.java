@@ -8,7 +8,6 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class RegionMenu extends TerritoryMenu {
@@ -16,7 +15,7 @@ public class RegionMenu extends TerritoryMenu {
     private final RegionData regionData;
 
     public RegionMenu(Player player, RegionData regionData){
-        super(player, Lang.HEADER_REGION_MENU.get(player, PlayerDataStorage.getInstance().get(player).getRegion().getName()), regionData);
+        super(player, Lang.HEADER_REGION_MENU.get(regionData.getName()), regionData);
         this.regionData = regionData;
         open();
     }

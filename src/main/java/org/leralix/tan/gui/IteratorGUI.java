@@ -3,6 +3,7 @@ package org.leralix.tan.gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
@@ -18,7 +19,7 @@ public abstract class IteratorGUI extends BasicGui {
         this.page = 0;
     }
 
-    protected IteratorGUI(Player player, String title, int rows) {
+    protected IteratorGUI(Player player, FilledLang title, int rows) {
         super(player, title, rows);
         this.page = 0;
     }

@@ -22,7 +22,7 @@ import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
 public class RenterPropertyMenu extends PropertyMenus {
 
     public RenterPropertyMenu(Player player, PropertyData propertyData){
-        super(player, Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(player, propertyData.getName()), 3, propertyData);
+        super(player, Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(propertyData.getName()), 3, propertyData);
         open();
     }
 

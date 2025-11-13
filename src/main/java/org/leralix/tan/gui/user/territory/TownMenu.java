@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -17,7 +16,7 @@ public class TownMenu extends TerritoryMenu {
     private final TownData townData;
 
     public TownMenu(Player player, TownData townData) {
-        super(player, Lang.HEADER_TOWN_MENU.get(PlayerDataStorage.getInstance().get(player).getLang(), PlayerDataStorage.getInstance().get(player).getTown().getName()), townData);
+        super(player, Lang.HEADER_TOWN_MENU.get(PlayerDataStorage.getInstance().get(player).getTown().getName()), townData);
         this.townData = townData;
         open();
     }
@@ -60,7 +59,7 @@ public class TownMenu extends TerritoryMenu {
         return IconManager.getInstance().get(IconKey.TOWN_LANDMARKS_ICON)
                 .setName(Lang.ADMIN_GUI_LANDMARK_ICON.get(tanPlayer.getLang()))
                 .setDescription(Lang.ADMIN_GUI_LANDMARK_DESC1.get())
-                .setAction(event -> PlayerGUI.openOwnedLandmark(player, townData, 0))
+                .setAction(event -> new PlayerOwnedLandmarksMenu(player, townData))
                 .asGuiItem(player, langType);
     }
 }

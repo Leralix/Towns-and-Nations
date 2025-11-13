@@ -11,13 +11,9 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.text.StringUtil;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,30 +28,6 @@ import java.util.UUID;
 public class HeadUtils {
     private HeadUtils() {
         throw new IllegalStateException("Utility class");
-    }
-
-    /**
-     * Return the player head with information on balance, town name and rank name
-     *
-     * @param offlinePlayer The offline player to copy the head
-     * @return The head of the player as an {@link ItemStack}
-     */
-    public static @NotNull ItemStack getPlayerHeadInformation(final @NotNull OfflinePlayer offlinePlayer) {
-        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(offlinePlayer);
-        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
-
-        if (skullMeta == null) {
-            return head;
-        }
-
-        skullMeta.setOwningPlayer(offlinePlayer);
-        skullMeta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + offlinePlayer.getName());
-
-        head.setItemMeta(skullMeta);
-
-        setLore(head, Lang.GUI_YOUR_BALANCE_DESC1.get(tanPlayer, StringUtil.formatMoney(EconomyUtil.getBalance(offlinePlayer))));
-        return head;
     }
 
     /**
@@ -143,14 +115,6 @@ public class HeadUtils {
 
     public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull String url, String... lore) {
         return makeSkull(name, getProfile(createURL(url)), List.of(lore));
-    }
-
-    public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull String url, List<String> lore) {
-        return makeSkull(name, getProfile(createURL(url)), lore);
-    }
-
-    public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull URL url, String... lore) {
-        return makeSkull(name, getProfile(url), List.of(lore));
     }
 
     public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull URL url, List<String> lore) {
@@ -364,19 +328,6 @@ public class HeadUtils {
      */
     public static void setLore(ItemStack itemStack, String... loreLines) {
         List<String> lore = List.of(loreLines);
-        setLore(itemStack, lore);
-    }
-
-    /**
-     * Set the lore of an {@link ItemStack}
-     *
-     * @param itemStack The item stack to set the lore
-     * @param lore      The lore to set
-     * @param loreLines Additional lore
-     */
-    public static void setLore(ItemStack itemStack, List<String> lore, String... loreLines) {
-        List<String> lore2 = List.of(loreLines);
-        lore.addAll(lore2);
         setLore(itemStack, lore);
     }
 

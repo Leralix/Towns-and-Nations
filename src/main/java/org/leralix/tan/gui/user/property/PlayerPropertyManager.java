@@ -18,7 +18,7 @@ public class PlayerPropertyManager extends PropertyMenus {
     Consumer<Player> onClose;
 
     public PlayerPropertyManager(Player player, PropertyData propertyData, Consumer<Player> onClose) {
-        super(player, Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(player, propertyData.getName()), 3, propertyData);
+        super(player, Lang.HEADER_PLAYER_SPECIFIC_PROPERTY.get(propertyData.getName()), 3, propertyData);
         this.onClose = onClose;
         open();
     }

@@ -15,11 +15,14 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.DefenderAcceptDemandsBeforeWarInternalEvent;
+import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
+import org.leralix.tan.timezone.TimeZoneEnum;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
@@ -57,8 +60,9 @@ public class PlannedAttack {
 
     /**
      * Constructor for a Planned attack
-     * @param id                The ID of the attack
-     * @param createAttackData  Data related to the attack and its war.
+     *
+     * @param id               The ID of the attack
+     * @param createAttackData Data related to the attack and its war.
      */
     public PlannedAttack(String id, CreateAttackData createAttackData) {
         this.ID = id;
@@ -66,7 +70,11 @@ public class PlannedAttack {
         this.war = createAttackData.getWar();
         this.warRole = createAttackData.getAttackingSide();
 
-        this.name = Lang.BASIC_ATTACK_NAME.get(Lang.getServerLang(), war.getMainAttacker().getName(), war.getMainDefender().getName());
+        this.name = Lang.BASIC_ATTACK_NAME.get(
+                Lang.getServerLang(),
+                war.getMainAttacker().getName(),
+                war.getMainDefender().getName()
+        );
 
         this.isAdminApproved = !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AdminApproval", false);
 
@@ -76,7 +84,7 @@ public class PlannedAttack {
         this.defendersID.add(war.getMainDefenderID());
 
         this.startTime = new Date().getTime() + (long) createAttackData.getSelectedTime() * 60 * 1000;
-        this.endTime = this.startTime + Constants.getAttackDuration() * 60 * 1000 ;
+        this.endTime = this.startTime + Constants.getAttackDuration() * 60 * 1000;
 
         war.getMainDefender().addPlannedAttack(this);
         war.getMainAttacker().addPlannedAttack(this);
@@ -152,7 +160,7 @@ public class PlannedAttack {
         long timeLeftBeforeWarning = timeLeftBeforeStart - 1200; //Warning 1 minute before
 
 
-        if(timeLeftBeforeStart <= 0) {
+        if (timeLeftBeforeStart <= 0) {
             startWar(startTime - timeLeftBeforeStart);
             return;
         }
@@ -165,7 +173,7 @@ public class PlannedAttack {
         };
         warStartTask.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeStart);
 
-        if(timeLeftBeforeWarning > 0){
+        if (timeLeftBeforeWarning > 0) {
             warWarningTask = new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -189,60 +197,44 @@ public class PlannedAttack {
         attackersID.add(territoryData.getID());
     }
 
-    public ItemStack getAdminIcon(LangType langType) {
+    public IconBuilder getAdminIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZoneEnum) {
 
-        long startDate = startTime - new Date().getTime() / 50;
-        long attackDuration = endTime - startTime;
+        IconBuilder iconBuilder = getIcon(iconManager, langType, timeZoneEnum);
 
-        ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta != null) {
-            itemMeta.setDisplayName(ChatColor.GREEN + name);
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add(Lang.ATTACK_ICON_DESC_1.get(langType, war.getMainAttacker().getName()));
-            lore.add(Lang.ATTACK_ICON_DESC_2.get(langType, war.getMainDefender().getName()));
-            lore.add(Lang.ATTACK_ICON_DESC_3.get(langType, Integer.toString(getNumberOfAttackers())));
-            lore.add(Lang.ATTACK_ICON_DESC_4.get(langType, Integer.toString(getNumberOfDefenders())));
-            lore.add(Lang.ATTACK_ICON_DESC_6.get(langType, DateUtil.getDateStringFromTicks(startDate)));
-            lore.add(Lang.ATTACK_ICON_DESC_7.get(langType, DateUtil.getDateStringFromTicks(attackDuration)));
-            if (isAdminApproved) {
-                lore.add(Lang.ATTACK_ICON_DESC_ADMIN_APPROVED.get(langType));
-            } else {
-                lore.add(Lang.ATTACK_ICON_DESC_ADMIN_NOT_APPROVED.get(langType));
-                lore.add(Lang.LEFT_CLICK_TO_AUTHORIZE.get(langType));
-                lore.add(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(langType));
-                lore.add(Lang.ATTACK_WILL_NOT_TRIGGER_IF_NOT_APPROVED.get(langType));
-            }
-            itemMeta.setLore(lore);
+        if(isAdminApproved) {
+            return iconBuilder.addDescription(Lang.ATTACK_ICON_DESC_ADMIN_APPROVED.get());
         }
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
+        else {
+            return iconBuilder.addDescription(
+                    Lang.ATTACK_ICON_DESC_ADMIN_NOT_APPROVED.get(),
+                    Lang.LEFT_CLICK_TO_AUTHORIZE.get(),
+                    Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(),
+                    Lang.ATTACK_WILL_NOT_TRIGGER_IF_NOT_APPROVED.get()
+            );
+        }
     }
 
-    public ItemStack getIcon(ITanPlayer tanPlayer, TerritoryData territoryConcerned) {
+    public IconBuilder getIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZone) {
+        long startDateInSeconds = (startTime - new Date().getTime()) / 1000;
+        long attackDurationInSeconds = (endTime - startTime) / 1000;
 
-        long startDate = startTime - new Date().getTime() / 50;
-        long attackDuration = endTime - startTime;
-        FilledLang exactTimeStart = TimeZoneManager.getInstance().formatDateForPlayer(tanPlayer, Instant.ofEpochSecond(startTime / 20));
-        LangType langType = tanPlayer.getLang();
+        FilledLang exactTimeStart = TimeZoneManager.getInstance().formatDate(Instant.ofEpochMilli(startTime), timeZone, langType.getLocale());
 
-        ItemStack itemStack = new ItemStack(Material.IRON_SWORD);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta != null) {
-            itemMeta.setDisplayName(ChatColor.GREEN + name);
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add(Lang.ATTACK_ICON_DESC_1.get(langType, war.getMainAttacker().getName()));
-            lore.add(Lang.ATTACK_ICON_DESC_2.get(langType, war.getMainDefender().getName()));
-            lore.add(Lang.ATTACK_ICON_DESC_3.get(langType, Integer.toString(getNumberOfAttackers())));
-            lore.add(Lang.ATTACK_ICON_DESC_4.get(langType, Integer.toString(getNumberOfDefenders())));
-            lore.add(Lang.ATTACK_ICON_DESC_6.get(langType, DateUtil.getDateStringFromTicks(startDate), exactTimeStart.get(langType)));
-            lore.add(Lang.ATTACK_ICON_DESC_7.get(langType, DateUtil.getDateStringFromTicks(attackDuration)));
-            lore.add(Lang.ATTACK_ICON_DESC_8.get(langType, getTerritoryRole(territoryConcerned).getName(langType)));
+        return iconManager.get(Material.IRON_SWORD)
+                .setName(ChatColor.GREEN + name)
+                .setDescription(
+                        Lang.ATTACK_ICON_DESC_1.get(war.getMainAttacker().getName()),
+                        Lang.ATTACK_ICON_DESC_2.get(war.getMainDefender().getName()),
+                        Lang.ATTACK_ICON_DESC_3.get(Integer.toString(getNumberOfAttackers())),
+                        Lang.ATTACK_ICON_DESC_4.get(Integer.toString(getNumberOfDefenders())),
+                        Lang.ATTACK_ICON_DESC_6.get(DateUtil.getDateStringFromSeconds(startDateInSeconds), exactTimeStart.get(langType)),
+                        Lang.ATTACK_ICON_DESC_7.get(DateUtil.getDateStringFromSeconds(attackDurationInSeconds))
+                );
+    }
 
-            itemMeta.setLore(lore);
-        }
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
+    public IconBuilder getIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZone, TerritoryData territoryConcerned) {
+        return getIcon(iconManager, langType, timeZone)
+                .addDescription(Lang.ATTACK_ICON_DESC_8.get(getTerritoryRole(territoryConcerned).getName(langType)));
     }
 
     private int getNumberOfAttackers() {
@@ -257,7 +249,7 @@ public class PlannedAttack {
         if (warStartTask != null) {
             warStartTask.cancel();
         }
-        if (warWarningTask != null){
+        if (warWarningTask != null) {
             warWarningTask.cancel();
         }
 
@@ -265,7 +257,7 @@ public class PlannedAttack {
         CaptureManager.getInstance().removeCapture(this);
 
         CurrentAttack currentAttack = CurrentAttacksStorage.get(ID);
-        if(currentAttack != null){
+        if (currentAttack != null) {
             currentAttack.end();
         }
         for (TerritoryData territory : getAttackingTerritories()) {

@@ -1,7 +1,6 @@
 package org.leralix.tan.dataclass.territory;
 
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -10,7 +9,6 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
@@ -35,6 +33,7 @@ import org.leralix.tan.events.events.DiplomacyProposalAcceptedInternalEvent;
 import org.leralix.tan.events.events.DiplomacyProposalInternalEvent;
 import org.leralix.tan.events.events.TerritoryVassalAcceptedInternalEvent;
 import org.leralix.tan.events.events.TerritoryVassalProposalInternalEvent;
+import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
@@ -54,7 +53,6 @@ import org.leralix.tan.upgrade.rewards.list.BiomeStat;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCost;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.graphic.PrefixUtil;
@@ -322,26 +320,13 @@ public abstract class TerritoryData {
 
     public abstract boolean haveNoLeader();
 
-    protected abstract ItemStack getIconWithName();
+    public abstract IconBuilder getIconWithInformations(LangType langType);
 
-    public abstract ItemStack getIconWithInformations(LangType langType);
+    public IconBuilder getIconWithInformationAndRelation(TerritoryData territoryData, LangType langType) {
+        IconBuilder icon = getIconWithInformations(langType);
 
-    public ItemStack getIconWithInformationAndRelation(TerritoryData territoryData, LangType langType) {
-        ItemStack icon = getIconWithInformations(langType);
-
-        ItemMeta meta = icon.getItemMeta();
-        if (meta != null) {
-            List<String> lore = meta.getLore();
-
-            if (territoryData != null && lore != null) {
-                TownRelation relation = getRelationWith(territoryData);
-                lore.add(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(langType, relation.getColoredName(langType)));
-            }
-
-            meta.setLore(lore);
-            icon.setItemMeta(meta);
-        }
-        return icon;
+        TownRelation relation = getRelationWith(territoryData);
+        return icon.addDescription(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relation.getColoredName(langType)));
     }
 
     public Collection<String> getAttacksInvolvedID() {
@@ -714,28 +699,31 @@ public abstract class TerritoryData {
         for (String proposalID : getOverlordsProposals()) {
             TerritoryData proposalOverlord = TerritoryUtil.getTerritory(proposalID);
             if (proposalOverlord == null) continue;
-            ItemStack territoryItem = proposalOverlord.getIconWithInformations(langType);
-            HeadUtils.addLore(territoryItem, Lang.GUI_GENERIC_LEFT_CLICK_TO_ACCEPT.get(langType), Lang.RIGHT_CLICK_TO_REFUSE.get(langType));
-            GuiItem acceptInvitation = ItemBuilder.from(territoryItem).asGuiItem(event -> {
-                event.setCancelled(true);
-                if (event.isLeftClick()) {
-                    if (haveOverlord()) {
-                        TanChatUtils.message(player, Lang.TOWN_ALREADY_HAVE_OVERLORD.get(langType), SoundEnum.NOT_ALLOWED);
-                        return;
-                    }
 
-                    setOverlord(proposalOverlord);
-                    broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getBaseColoredName(), proposalOverlord.getName()), SoundEnum.GOOD);
-                    PlayerGUI.openHierarchyMenu(player, this);
-                }
-                if (event.isRightClick()) {
-                    getOverlordsProposals().remove(proposalID);
-                    PlayerGUI.openChooseOverlordMenu(player, this, page);
-                }
+            proposals.add(proposalOverlord
+                    .getIconWithInformations(langType)
+                    .setClickToAcceptMessage(
+                            Lang.GUI_GENERIC_LEFT_CLICK_TO_ACCEPT,
+                            Lang.RIGHT_CLICK_TO_REFUSE
+                    )
+                    .setAction(action -> {
+                        if (action.isLeftClick()) {
+                            if (haveOverlord()) {
+                                TanChatUtils.message(player, Lang.TOWN_ALREADY_HAVE_OVERLORD.get(langType), SoundEnum.NOT_ALLOWED);
+                                return;
+                            }
 
-
-            });
-            proposals.add(acceptInvitation);
+                            setOverlord(proposalOverlord);
+                            broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getBaseColoredName(), proposalOverlord.getName()), SoundEnum.GOOD);
+                            PlayerGUI.openHierarchyMenu(player, this);
+                        }
+                        else if (action.isRightClick()) {
+                            getOverlordsProposals().remove(proposalID);
+                            PlayerGUI.openChooseOverlordMenu(player, this, page);
+                        }
+                    })
+                    .asGuiItem(player, langType)
+            );
         }
         return proposals;
     }

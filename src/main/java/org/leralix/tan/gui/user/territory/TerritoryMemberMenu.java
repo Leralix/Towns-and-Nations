@@ -1,7 +1,6 @@
 package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -11,7 +10,6 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 
 import java.util.List;
 
@@ -27,12 +25,8 @@ public class TerritoryMemberMenu extends IteratorGUI {
 
     @Override
     public void open() {
-        GuiUtil.createIterator(gui, getMemberList(), page, player,
-                p -> territoryData.openMainMenu(player),
-                p -> nextPage(),
-                p -> previousPage(),
-                Material.LIME_STAINED_GLASS_PANE
-        );
+
+        iterator(getMemberList(), p -> territoryData.openMainMenu(player));
 
         gui.setItem(6,4, getManageRankButton());
         if(territoryData instanceof TownData townData) {

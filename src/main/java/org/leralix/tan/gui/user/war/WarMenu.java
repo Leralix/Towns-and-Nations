@@ -25,7 +25,7 @@ public class WarMenu extends BasicGui {
     private final WarRole warRole;
 
     public WarMenu(Player player, TerritoryData territoryData, War war) {
-        super(player, "War Menu", 3);
+        super(player, Lang.HEADER_WARS_MENU, 3);
         this.territoryData = territoryData;
         this.war = war;
         this.warRole = war.isMainAttacker(territoryData) ? WarRole.MAIN_ATTACKER : WarRole.MAIN_DEFENDER;
@@ -40,7 +40,7 @@ public class WarMenu extends BasicGui {
         gui.setItem(2, 4, getAttackButton());
         gui.setItem(2, 6, getEnemyWargoalsIcon());
         gui.setItem(2, 7, getSurrenderButton());
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new WarsMenu(player, territoryData)));
         gui.open(player);
     }
 

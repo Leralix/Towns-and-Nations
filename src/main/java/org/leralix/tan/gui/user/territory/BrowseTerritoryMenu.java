@@ -1,9 +1,7 @@
 package org.leralix.tan.gui.user.territory;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.BrowseScope;
 import org.leralix.tan.gui.IteratorGUI;
@@ -20,7 +18,7 @@ public class BrowseTerritoryMenu extends IteratorGUI {
 
     private final TerritoryData territoryData;
     private BrowseScope scope;
-    private final  Consumer<Player> exitMenu;
+    private final Consumer<Player> exitMenu;
 
     public BrowseTerritoryMenu(Player player, TerritoryData territoryData, BrowseScope scope, Consumer<Player> exitMenu){
         super(player, Lang.HEADER_TERRITORY_LIST, 6);
@@ -70,10 +68,11 @@ public class BrowseTerritoryMenu extends IteratorGUI {
         ArrayList<GuiItem> townGuiItems = new ArrayList<>();
 
         for(TerritoryData specificTerritoryData : territoryList){
-            ItemStack territoryIcon = specificTerritoryData.getIconWithInformationAndRelation(territoryData, tanPlayer.getLang());
-            GuiItem territoryGUI = ItemBuilder.from(territoryIcon).asGuiItem();
 
-            townGuiItems.add(territoryGUI);
+            townGuiItems.add(specificTerritoryData
+                    .getIconWithInformationAndRelation(territoryData, tanPlayer.getLang())
+                    .asGuiItem(player, langType)
+            );
         }
         return townGuiItems;
     }

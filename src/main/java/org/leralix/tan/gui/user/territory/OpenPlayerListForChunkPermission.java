@@ -7,7 +7,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
@@ -30,7 +29,7 @@ public class OpenPlayerListForChunkPermission extends IteratorGUI {
     private final BasicGui backMenu;
 
     public OpenPlayerListForChunkPermission(Player player, TerritoryData territoryData, ChunkPermissionType type, BasicGui backMenu) {
-        super(player, type.getLabel(player), 6);
+        super(player, type.getLabel(), 6);
         this.territoryData = territoryData;
         this.chunkPermissionType = type;
         this.backMenu = backMenu;

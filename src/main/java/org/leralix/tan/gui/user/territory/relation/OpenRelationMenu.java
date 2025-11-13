@@ -1,10 +1,7 @@
 package org.leralix.tan.gui.user.territory.relation;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -12,6 +9,7 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.gui.user.war.WarMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -29,7 +27,7 @@ public class OpenRelationMenu extends IteratorGUI {
     private final TownRelation relation;
 
     public OpenRelationMenu(Player player, TerritoryData territoryData, TownRelation relation) {
-        super(player, Lang.HEADER_RELATION_WITH.get(player, relation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
+        super(player, Lang.HEADER_RELATION_WITH.get(relation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
         this.territoryData = territoryData;
         this.relation = relation;
         open();
@@ -79,19 +77,16 @@ public class OpenRelationMenu extends IteratorGUI {
         for (String territoryID : territoryData.getRelations().getTerritoriesIDWithRelation(relation)) {
 
             TerritoryData otherTerritory = TerritoryUtil.getTerritory(territoryID);
-            ItemStack icon = otherTerritory.getIconWithInformationAndRelation(territoryData, tanPlayer.getLang());
+            if(otherTerritory == null){
+                continue;
+            }
+            IconBuilder icon = otherTerritory.getIconWithInformationAndRelation(territoryData, tanPlayer.getLang());
 
             if (relation == TownRelation.WAR) {
-                ItemMeta meta = icon.getItemMeta();
-                assert meta != null;
-                List<String> lore = meta.getLore();
-                assert lore != null;
-                lore.add(Lang.GUI_TOWN_ATTACK_TOWN_DESC1.get(tanPlayer));
-                meta.setLore(lore);
-                icon.setItemMeta(meta);
+                icon.addDescription(Lang.GUI_TOWN_ATTACK_TOWN_DESC1.get());
             }
 
-            GuiItem townButton = ItemBuilder.from(icon).asGuiItem(event -> {
+            icon.setAction(event -> {
                 event.setCancelled(true);
 
                 if (relation == TownRelation.WAR && event.isRightClick()) {
@@ -108,7 +103,7 @@ public class OpenRelationMenu extends IteratorGUI {
                     new WarMenu(player, territoryData, newWar);
                 }
             });
-            guiItems.add(townButton);
+            guiItems.add(icon.asGuiItem(player, langType));
         }
         return guiItems;
     }

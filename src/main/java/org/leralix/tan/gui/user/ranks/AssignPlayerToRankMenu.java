@@ -26,7 +26,7 @@ public class AssignPlayerToRankMenu extends IteratorGUI {
     private final RankData rankData;
 
     public AssignPlayerToRankMenu(Player player, TerritoryData territoryData, RankData rankData){
-        super(player, Lang.HEADER_RANK_ADD_PLAYER.get(player), 3);
+        super(player, Lang.HEADER_RANK_ADD_PLAYER.get(), 3);
         this.territoryData = territoryData;
         this.rankData = rankData;
 

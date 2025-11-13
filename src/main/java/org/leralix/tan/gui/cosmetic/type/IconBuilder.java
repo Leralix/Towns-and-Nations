@@ -52,6 +52,15 @@ public class IconBuilder {
         return this;
     }
 
+    public IconBuilder addDescription(FilledLang... descriptions) {
+        return addDescription(List.of(descriptions));
+    }
+
+    public IconBuilder addDescription(Collection<FilledLang> description) {
+        this.description.addAll(description);
+        return this;
+    }
+
     public IconBuilder setDescription(FilledLang... descriptions) {
         return setDescription(List.of(descriptions));
     }
@@ -135,9 +144,11 @@ public class IconBuilder {
             res.add("");
             res.addAll(requirements.getRequirementsParagraph(langType));
         }
-        res.add("");
-        for(Lang messages : clickForActionMessage){
-            res.add(messages.get(langType));
+        if(action != null){
+            res.add("");
+            for(Lang messages : clickForActionMessage){
+                res.add(messages.get(langType));
+            }
         }
         return res;
     }

@@ -31,7 +31,7 @@ public class RankManagerMenu extends BasicGui {
     private final RankData rankData;
 
     public RankManagerMenu(Player player, TerritoryData territoryData, RankData rankData){
-        super(player, Lang.HEADER_TERRITORY_RANKS.get(player, rankData.getName()), 4);
+        super(player, Lang.HEADER_TERRITORY_RANKS.get(rankData.getName()), 4);
         this.territoryData = territoryData;
         this.rankData = rankData;
         open();
@@ -97,13 +97,17 @@ public class RankManagerMenu extends BasicGui {
         boolean isDefaultRank = Objects.equals(rankData.getID(), territoryData.getDefaultRankID());
 
         List<FilledLang> description = new ArrayList<>();
+        description.add(isDefaultRank ?
+                Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT.get() :
+                Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT.get()
+        );
         description.add(Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1.get());
-        if(isDefaultRank)
-            description.add(Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2.get());
+
 
         return iconManager.get(IconKey.SET_DEFAULT_ROLE_ICON)
-                .setName(isDefaultRank ? Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_DEFAULT.get(tanPlayer) : Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_IS_NOT_DEFAULT.get(tanPlayer))
+                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT.get(langType))
                 .setDescription(description)
+                .setClickToAcceptMessage(Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2)
                 .setAction(event -> {
                     if(isDefaultRank){
                         TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT.get(tanPlayer), NOT_ALLOWED);
@@ -205,9 +209,9 @@ public class RankManagerMenu extends BasicGui {
         RankEnum rankEnum = rankData.getRankEnum();
         return iconManager.get(rankData.getRankEnum().getBasicRankIcon())
                 .setName(rankEnum.getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.get(tanPlayer, Integer.toString(rankEnum.getLevel())))
-                .setDescription(
-                        Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1.get(),
-                        Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2.get()
+                .setClickToAcceptMessage(
+                        Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1,
+                        Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2
                 )
                 .setAction(event -> {
                     RankData playerRank = territoryData.getRank(player);
@@ -236,7 +240,7 @@ public class RankManagerMenu extends BasicGui {
 
         return iconManager.get(rankData.getRankIcon())
                 .setName(Lang.GUI_BASIC_NAME.get(tanPlayer, rankData.getColoredName()))
-                .setDescription(Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1.get())
+                .setClickToAcceptMessage(Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1)
                 .setAction(event -> {
                     ItemStack itemMaterial = event.getCursor();
                     if(itemMaterial.getType() == Material.AIR){
@@ -258,12 +262,12 @@ public class RankManagerMenu extends BasicGui {
         for(ITanPlayer tanPlayer : rankData.getPlayers()){
             description.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC.get(tanPlayer.getNameStored()));
         }
-        description.add(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1.get());
 
 
         return iconManager.get(IconKey.PLAYER_LIST_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.get(tanPlayer))
                 .setDescription(description)
+                .setClickToAcceptMessage(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1)
                 .setAction(p -> new AssignPlayerToRankMenu(player, territoryData, rankData).open())
                 .asGuiItem(player, langType);
     }

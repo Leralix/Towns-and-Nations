@@ -11,8 +11,8 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TownDeletedInternalEvent;
+import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.service.requirements.LeaderRequirement;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.FilledLang;
@@ -37,7 +37,7 @@ public class TownSettingsMenu extends SettingsMenus {
     private final TownData townData;
 
     public TownSettingsMenu(Player player, TownData townData) {
-        super(player, Lang.HEADER_SETTINGS.get(player), townData, 4);
+        super(player, Lang.HEADER_SETTINGS, townData, 4);
         this.townData = townData;
         open();
     }
@@ -54,7 +54,7 @@ public class TownSettingsMenu extends SettingsMenus {
 
         gui.setItem(3, 2, getChangeApplicationButton());
         gui.setItem(3, 3, getChangeCapitalChunkButton());
-        if(Constants.enableTownTag()){
+        if (Constants.enableTownTag()) {
             gui.setItem(3, 4, getChangeTagButton());
         }
 
@@ -88,8 +88,8 @@ public class TownSettingsMenu extends SettingsMenus {
                                 Lang.GUI_NO_CAPITAL_CHUNK
                 )
                 .setAction(action -> {
-                            RightClickListener.register(player, new ChangeCapital(townData, p -> open()));
-                        })
+                    RightClickListener.register(player, new ChangeCapital(townData, p -> open()));
+                })
                 .asGuiItem(player, langType);
 
     }
@@ -100,7 +100,7 @@ public class TownSettingsMenu extends SettingsMenus {
                 .setDescription(Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1.get(townData.getColoredTag()))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
-                .setAction( action -> {
+                .setAction(action -> {
                     TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
                     PlayerChatListenerStorage.register(player, new ChangeTownTag(townData, p -> open()));
                 })
@@ -134,12 +134,17 @@ public class TownSettingsMenu extends SettingsMenus {
                         }
                     }
 
-                    PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_PLAYER_LEAVE_TOWN.get(tanPlayer, tanPlayer.getNameStored()), confirm -> {
-                        player.closeInventory();
-                        townData.removePlayer(tanPlayer);
-                        TanChatUtils.message(player, Lang.CHAT_PLAYER_LEFT_THE_TOWN.get(tanPlayer));
-                        townData.broadcastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(tanPlayer.getNameStored()), BAD);
-                    }, remove -> open());
+                    new ConfirmMenu(
+                            player,
+                            Lang.GUI_CONFIRM_PLAYER_LEAVE_TOWN.get(tanPlayer.getNameStored()),
+                            () -> {
+                                player.closeInventory();
+                                townData.removePlayer(tanPlayer);
+                                TanChatUtils.message(player, Lang.CHAT_PLAYER_LEFT_THE_TOWN.get(tanPlayer));
+                                townData.broadcastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(tanPlayer.getNameStored()), BAD);
+                            },
+                            this::open
+                    );
                 })
                 .asGuiItem(player, langType);
 
@@ -167,15 +172,18 @@ public class TownSettingsMenu extends SettingsMenus {
                         return;
                     }
 
-                    PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_PLAYER_DELETE_TOWN.get(tanPlayer, townData.getName()), confirm -> {
-                        FileUtil.addLineToHistory(Lang.TOWN_DELETED_NEWSLETTER.get(player.getName(), townData.getName()));
-                        EventManager.getInstance().callEvent(new TownDeletedInternalEvent(townData, tanPlayer));
-                        townData.delete();
-                        player.closeInventory();
-                        SoundUtil.playSound(player, GOOD);
-                    }, remove -> open());
-
-
+                    new ConfirmMenu(
+                            player,
+                            Lang.GUI_CONFIRM_PLAYER_DELETE_TOWN.get(townData.getName()),
+                            () -> {
+                                FileUtil.addLineToHistory(Lang.TOWN_DELETED_NEWSLETTER.get(player.getName(), townData.getName()));
+                                EventManager.getInstance().callEvent(new TownDeletedInternalEvent(townData, tanPlayer));
+                                townData.delete();
+                                player.closeInventory();
+                                SoundUtil.playSound(player, GOOD);
+                            },
+                            this::open
+                    );
                 })
                 .asGuiItem(player, langType);
     }
@@ -200,17 +208,13 @@ public class TownSettingsMenu extends SettingsMenus {
     private @NotNull GuiItem getChangeOwnershipButton() {
         return iconManager.get(IconKey.TOWN_CHANGE_OWNERSHIP_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.get(tanPlayer))
+                .setRequirements(new LeaderRequirement(territoryData, tanPlayer))
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(),
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.get()
                 )
                 .setAction(event -> {
-                    if (townData.isLeader(tanPlayer)){
-                        new SelectNewOwnerForTownMenu(player, townData);
-                    }
-                    else{
-                        TanChatUtils.message(player, Lang.NOT_TOWN_LEADER_ERROR.get(tanPlayer));
-                    }
+                    new SelectNewOwnerForTownMenu(player, townData);
                 })
                 .asGuiItem(player, langType);
 

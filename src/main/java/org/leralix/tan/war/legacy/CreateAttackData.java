@@ -3,6 +3,10 @@ package org.leralix.tan.war.legacy;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.War;
 
+/**
+ * Class used during {@link org.leralix.tan.gui.user.war.CreateAttackMenu}
+ * to specify the starting date of the new attack
+ */
 public class CreateAttackData {
 
     /**
@@ -17,7 +21,13 @@ public class CreateAttackData {
      * The selected time, in minutes
      */
     private int selectedTime;
+    /**
+     * The war in which the created attack will take place
+     */
     private final War war;
+    /**
+     * The side declaring an attack.
+     */
     private final WarRole attackingSide;
 
     public CreateAttackData(War war, WarRole attackingSide){

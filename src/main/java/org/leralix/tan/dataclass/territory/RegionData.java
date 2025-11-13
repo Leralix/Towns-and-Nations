@@ -8,7 +8,6 @@ import org.bukkit.Chunk;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.RankData;
@@ -16,6 +15,8 @@ import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TerritoryIndependanceInternalEvent;
+import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
@@ -104,37 +105,16 @@ public class RegionData extends TerritoryData {
 
 
     @Override
-    public ItemStack getIconWithName() {
-        ItemStack icon = getIcon();
-
-        ItemMeta meta = icon.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(ChatColor.AQUA + getName());
-            icon.setItemMeta(meta);
-        }
-        return icon;
-
-    }
-
-    @Override
-    public ItemStack getIconWithInformations(LangType langType) {
-        ItemStack icon = getIcon();
-
-        ItemMeta meta = icon.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(ChatColor.AQUA + getName());
-
-            List<String> lore = new ArrayList<>();
-            lore.add(Lang.GUI_REGION_INFO_DESC0.get(langType, getDescription()));
-            lore.add(Lang.GUI_REGION_INFO_DESC1.get(langType, getCapital().getName()));
-            lore.add(Lang.GUI_REGION_INFO_DESC2.get(langType, Integer.toString(getNumberOfTownsIn()) ));
-            lore.add(Lang.GUI_REGION_INFO_DESC3.get(langType, Integer.toString(getTotalPlayerCount())));
-            lore.add(Lang.GUI_REGION_INFO_DESC5.get(langType, Integer.toString(getNumberOfClaimedChunk())));
-
-            meta.setLore(lore);
-            icon.setItemMeta(meta);
-        }
-        return icon;
+    public IconBuilder getIconWithInformations(LangType langType) {
+        return IconManager.getInstance().get(getIcon())
+                .setName(ChatColor.AQUA + getName())
+                .setDescription(
+                        Lang.GUI_REGION_INFO_DESC0.get(getDescription()),
+                        Lang.GUI_REGION_INFO_DESC1.get(getCapital().getName()),
+                        Lang.GUI_REGION_INFO_DESC2.get(Integer.toString(getNumberOfTownsIn())),
+                        Lang.GUI_REGION_INFO_DESC3.get(Integer.toString(getTotalPlayerCount())),
+                        Lang.GUI_REGION_INFO_DESC5.get(Integer.toString(getNumberOfClaimedChunk()))
+                );
     }
 
     public int getTotalPlayerCount() {

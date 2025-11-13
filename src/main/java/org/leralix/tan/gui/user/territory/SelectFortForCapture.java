@@ -26,7 +26,7 @@ public class SelectFortForCapture extends IteratorGUI {
     private final TerritoryData enemyTerritoryData;
 
     public SelectFortForCapture(Player player, TerritoryData territoryData, War war, WarRole warRole) {
-        super(player, Lang.HEADER_SELECT_WARGOAL.get(player), 3);
+        super(player, Lang.HEADER_SELECT_WARGOAL, 3);
         this.warRole = warRole;
         this.territoryData = territoryData;
         this.war = war;
