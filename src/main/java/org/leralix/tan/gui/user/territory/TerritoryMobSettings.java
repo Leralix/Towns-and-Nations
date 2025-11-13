@@ -53,9 +53,12 @@ public class TerritoryMobSettings extends IteratorGUI {
             List<FilledLang> status = generateDescription(upgradeStatus, cost);
             ItemStack mobIcon = HeadUtils.makeSkullB64(mobEnum.name(), mobEnum.getTexture());
 
+            boolean upgradeBought = upgradeStatus.isUnlocked();
+
             guiLists.add(iconManager.get(mobIcon)
                     .setName(mobEnum.name())
                     .setDescription(status)
+                    .setClickToAcceptMessage(upgradeBought ? Lang.GUI_GENERIC_CLICK_TO_SWITCH : Lang.GUI_GENERIC_CLICK_TO_UPGRADE)
                     .setAction(event -> {
                         event.setCancelled(true);
                         if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_MOB_SPAWN)) {

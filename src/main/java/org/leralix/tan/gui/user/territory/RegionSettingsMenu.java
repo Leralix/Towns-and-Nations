@@ -8,6 +8,7 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.RegionDeletednternalEvent;
+import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.MainMenu;
@@ -88,14 +89,19 @@ public class RegionSettingsMenu extends SettingsMenus {
                         return;
                     }
 
-                    PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_DELETE_REGION.get(tanPlayer, regionData.getName()), confirm -> {
-                        FileUtil.addLineToHistory(Lang.REGION_DELETED_NEWSLETTER.get(player.getName(), regionData.getName()));
+                    new ConfirmMenu(
+                            player,
+                            Lang.GUI_CONFIRM_DELETE_REGION.get(regionData.getName()),
+                            () -> {
+                                FileUtil.addLineToHistory(Lang.REGION_DELETED_NEWSLETTER.get(player.getName(), regionData.getName()));
 
-                        EventManager.getInstance().callEvent(new RegionDeletednternalEvent(regionData, tanPlayer));
-                        regionData.delete();
-                        SoundUtil.playSound(player, GOOD);
-                        new MainMenu(player);
-                    }, remove -> open());
+                                EventManager.getInstance().callEvent(new RegionDeletednternalEvent(regionData, tanPlayer));
+                                regionData.delete();
+                                SoundUtil.playSound(player, GOOD);
+                                new MainMenu(player);
+                            },
+                            this::open
+                    );
                 })
                 .asGuiItem(player, langType);
     }

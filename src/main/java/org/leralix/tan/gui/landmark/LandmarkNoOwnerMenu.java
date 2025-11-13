@@ -9,9 +9,12 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
+import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -96,6 +99,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
                 .setName(Lang.GUI_TOWN_RELATION_ADD_TOWN.get(tanPlayer))
                 .setDescription(description)
                 .setClickToAcceptMessage(Lang.GUI_LANDMARK_LEFT_CLICK_TO_CLAIM)
+                .setRequirements(new RankPermissionRequirement(playerTown, tanPlayer, RolePermission.MANAGE_LANDMARK))
                 .setAction(event -> {
                     if (!requirementMet) {
                         SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
@@ -105,16 +109,16 @@ public class LandmarkNoOwnerMenu extends BasicGui {
                     double actualBalance = playerTown.getBalance();
                     double newBalance = actualBalance - cost;
 
-                    PlayerGUI.openConfirmMenu(
+                    new ConfirmMenu(
                             player,
-                            Lang.GUI_GENERIC_NEW_BALANCE_MENU.get(tanPlayer, Double.toString(actualBalance), Double.toString(newBalance)),
-                            confirm -> {
+                            Lang.GUI_GENERIC_NEW_BALANCE_MENU.get(Double.toString(actualBalance), Double.toString(newBalance)),
+                            () -> {
                                 playerTown.removeFromBalance(cost);
                                 landmark.setOwner(playerTown);
                                 playerTown.broadcastMessageWithSound(Lang.GUI_LANDMARK_CLAIMED.get(), GOOD);
                                 PlayerGUI.dispatchLandmarkGui(player, landmark);
                             },
-                            cancel -> open()
+                            this::open
                     );
 
                 })

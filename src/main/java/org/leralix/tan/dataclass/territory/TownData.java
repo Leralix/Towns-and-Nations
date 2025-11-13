@@ -17,6 +17,7 @@ import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.PlayerJoinTownAcceptedInternalEvent;
 import org.leralix.tan.events.events.PlayerJoinTownRequestInternalEvent;
+import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.gui.legacy.PlayerGUI;
@@ -391,11 +392,15 @@ public class TownData extends TerritoryData {
                         return;
                     }
 
-                    PlayerGUI.openConfirmMenu(player, Lang.CONFIRM_PLAYER_KICKED.get(langType, playerIterate.getName()), confirmAction -> {
-                        kickPlayer(playerIterate);
-                        new TerritoryMemberMenu(player, this).open();
-
-                    }, p -> new TerritoryMemberMenu(player, this).open());
+                    new ConfirmMenu(
+                            player,
+                            Lang.CONFIRM_PLAYER_KICKED.get(playerIterate.getName()),
+                            () -> {
+                                kickPlayer(playerIterate);
+                                new TerritoryMemberMenu(player, this).open();
+                            },
+                            () -> new TerritoryMemberMenu(player, this).open()
+                    );
                 }
             });
             res.add(playerButton);
@@ -489,7 +494,7 @@ public class TownData extends TerritoryData {
 
         broadcastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()), SoundEnum.BAD);
         Player player = kickedPlayer.getPlayer();
-        TanChatUtils.message(player,Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get(player), SoundEnum.BAD);
+        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get(player), SoundEnum.BAD);
     }
 
     public boolean haveNoLeader() {

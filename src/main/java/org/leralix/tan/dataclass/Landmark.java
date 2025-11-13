@@ -170,7 +170,7 @@ public class Landmark {
 
     }
 
-    public int computeStoredReward(TownData townData) {
+    public int computeStoredReward(TerritoryData townData) {
         TerritoryStats territoryStats = townData.getNewLevel();
         LandmarkBonus bonus = territoryStats.getStat(LandmarkBonus.class);
         return (int) bonus.multiply((double) this.amount * storedDays);

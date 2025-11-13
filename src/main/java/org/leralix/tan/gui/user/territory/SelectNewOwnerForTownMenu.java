@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.IteratorGUI;
+import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.HeadUtils;
@@ -47,20 +48,22 @@ public class SelectNewOwnerForTownMenu extends IteratorGUI {
             GuiItem playerHeadIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
                 event.setCancelled(true);
 
-                PlayerGUI.openConfirmMenu(player, Lang.GUI_CONFIRM_CHANGE_TOWN_LEADER.get(tanPlayer, townPlayer.getName()), confirm -> {
+                new ConfirmMenu(
+                        player,
+                        Lang.GUI_CONFIRM_CHANGE_TOWN_LEADER.get(townPlayer.getName()),
+                        () -> {
+                            townData.setLeaderID(townPlayer.getUniqueId().toString());
+                            TanChatUtils.message(player, Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(tanPlayer, townPlayer.getName()));
+                            PlayerGUI.dispatchPlayerTown(player);
 
-                    townData.setLeaderID(townPlayer.getUniqueId().toString());
-                    TanChatUtils.message(player, Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(tanPlayer, townPlayer.getName()));
-                    PlayerGUI.dispatchPlayerTown(player);
-
-                    player.closeInventory();
-
-                }, remove -> new TownSettingsMenu(player, townData));
-
+                            player.closeInventory();
+                        },
+                        this::open
+                );
             });
             guiItems.add(playerHeadIcon);
         }
-       return guiItems;
+        return guiItems;
 
     }
 }

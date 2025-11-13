@@ -23,7 +23,9 @@ public enum RolePermission {
     MANAGE_MOB_SPAWN(true, IconKey.GUI_MANAGE_MOB_SPAWN_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_MOB_SPAWN),
     CREATE_PROPERTY(false, IconKey.GUI_CREATE_PROPERTY_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_CREATE_PROPERTY),
     MANAGE_PROPERTY(false, IconKey.GUI_MANAGE_PROPERTY_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_PROPERTY), // Manage all buildings
-    TOWN_ADMINISTRATOR(true, IconKey.GUI_ADMINISTRATOR_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_TOWN_ADMINISTRATOR),;
+    TOWN_ADMINISTRATOR(true, IconKey.GUI_ADMINISTRATOR_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_TOWN_ADMINISTRATOR),
+    MANAGE_LANDMARK(false, IconKey.GUI_MANAGE_LANDMARK_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_MANAGE_LANDMARK),
+    COLLECT_LANDMARK(false, IconKey.GUI_COLLECT_LANDMARK_ICON, Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_COLLECT_LANDMARK);
 
     private final boolean onlyTown;
     private final IconKey iconKey;
@@ -37,20 +39,21 @@ public enum RolePermission {
     }
 
     public boolean isForTerritory(TerritoryData territoryData) {
-        if(territoryData instanceof TownData) {
+        if (territoryData instanceof TownData) {
             return true;
         }
         return !onlyTown;
     }
 
-    public IconKey getIconKey(){
+    public IconKey getIconKey() {
         return iconKey;
     }
 
-    public Lang getName(){
+    public Lang getName() {
         return name;
     }
-    public String getName(LangType langType){
+
+    public String getName(LangType langType) {
         return name.get(langType);
     }
 }
