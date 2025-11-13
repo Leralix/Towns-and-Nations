@@ -10,14 +10,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.ClaimedChunkSettings;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.dataclass.UpgradeStatus;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.MobChunkSpawnEnum;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -27,7 +24,6 @@ import org.leralix.tan.gui.user.territory.hierarchy.VassalsMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.DonateToTerritory;
-import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -36,7 +32,10 @@ import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.leralix.lib.data.SoundEnum.*;
@@ -63,67 +62,6 @@ public class PlayerGUI {
         } else {
             new NoTownMenu(player);
         }
-    }
-
-    public static void openTownChunkMobSettings(Player player, int page) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_MOB_SETTINGS.get(tanPlayer, Integer.toString(page + 1)), 6);
-
-        TownData townData = TownDataStorage.getInstance().get(player);
-        ClaimedChunkSettings chunkSettings = townData.getChunkSettings();
-
-        ArrayList<GuiItem> guiLists = new ArrayList<>();
-        Collection<MobChunkSpawnEnum> mobCollection = MobChunkSpawnStorage.getMobSpawnStorage().values();
-
-        for (MobChunkSpawnEnum mobEnum : mobCollection) {
-
-            UpgradeStatus upgradeStatus = chunkSettings.getSpawnControl(mobEnum);
-
-            List<String> status = new ArrayList<>();
-            int cost = MobChunkSpawnStorage.getMobSpawnCost(mobEnum);
-            if (upgradeStatus.isUnlocked()) {
-                if (upgradeStatus.canSpawn()) {
-                    status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_ACTIVATED.get(tanPlayer));
-                } else {
-                    status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_DEACTIVATED.get(tanPlayer));
-                }
-            } else {
-                status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED.get(tanPlayer));
-                status.add(Lang.GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED2.get(tanPlayer, Integer.toString(cost)));
-            }
-            ItemStack mobIcon = HeadUtils.makeSkullB64(mobEnum.name(), mobEnum.getTexture(), status);
-
-            GuiItem mobItem = new GuiItem(mobIcon, event -> {
-                event.setCancelled(true);
-                if (!townData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_MOB_SPAWN)) {
-                    TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
-                    return;
-                }
-                if (upgradeStatus.isUnlocked()) {
-                    upgradeStatus.setActivated(!upgradeStatus.canSpawn());
-                    SoundUtil.playSound(player, ADD);
-                } else {
-                    if (townData.getBalance() < cost) {
-                        TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), Double.toString(cost - townData.getBalance())));
-                        return;
-                    }
-                    townData.removeFromBalance(cost);
-                    SoundUtil.playSound(player, GOOD);
-                    upgradeStatus.setUnlocked(true);
-                }
-
-                openTownChunkMobSettings(player, page);
-
-            });
-            guiLists.add(mobItem);
-        }
-
-        GuiUtil.createIterator(gui, guiLists, page, player, p -> new ChunkSettingsMenu(player, townData),
-                p -> openTownChunkMobSettings(player, page + 1),
-                p -> openTownChunkMobSettings(player, page - 1));
-
-
-        gui.open(player);
     }
 
     public static void openPlayerListForChunkPermission(Player player, TerritoryData territoryData, ChunkPermissionType type, int page) {

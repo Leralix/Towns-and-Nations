@@ -5,11 +5,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.upgrade.rewards.bool.EnableMobBan;
@@ -61,14 +59,14 @@ public class ChunkSettingsMenu extends BasicGui {
                 .setName(Lang.GUI_TOWN_CHUNK_MOB.get(tanPlayer))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS))
                 .setAction(event -> {
-                    if (territoryData instanceof TownData townData) {
-                        boolean canAccess = townData.getNewLevel().getStat(EnableMobBan.class).isEnabled();
-                        if (canAccess)
-                            PlayerGUI.openTownChunkMobSettings(player, 0);
-                        else {
-                            TanChatUtils.message(player, Lang.TOWN_NOT_ENOUGH_LEVEL.get(langType, Lang.UNLOCK_MOB_BAN.get(langType)), SoundEnum.NOT_ALLOWED);
-                        }
+                    boolean canAccess = territoryData.getNewLevel().getStat(EnableMobBan.class).isEnabled();
+                    if (canAccess){
+                        new TerritoryMobSettings(player, territoryData);
                     }
+                    else {
+                        TanChatUtils.message(player, Lang.TOWN_NOT_ENOUGH_LEVEL.get(langType, Lang.UNLOCK_MOB_BAN.get(langType)), SoundEnum.NOT_ALLOWED);
+                    }
+
                 })
                 .asGuiItem(player, langType);
     }
