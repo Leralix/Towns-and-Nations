@@ -1,6 +1,7 @@
 package org.leralix.tan.upgrade.rewards;
 
 import org.leralix.tan.lang.FilledLang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 
 public abstract class IndividualStat {
@@ -20,6 +21,11 @@ public abstract class IndividualStat {
      * @return the stat reward description.
      */
     public abstract FilledLang getStatReward(LangType langType);
+
+    /**
+     * @return The name of the Stat
+     */
+    public abstract Lang getStatName();
 
     protected String getMathSign(int value){
         if(value > 0){

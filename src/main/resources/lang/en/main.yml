@@ -654,8 +654,10 @@ language:
   REQUIREMENT_MAIN_LEVEL_POSITIVE: "§a- Level required : {0}/{1}"
   REQUIREMENT_UPGRADE_LEVEL_NEGATIVE: "§c- Upgrade level required : {0} {1}/{2}"
   REQUIREMENT_UPGRADE_LEVEL_POSITIVE: "§a- Upgrade level required : {0} {1}/{2}"
-  REQUIREMENT_RESOURCES_NEGATIVE: "§c- Resources : {1} {2}"
-  REQUIREMENT_RESOURCES_POSITIVE: "§a- Resources : {1} {2}"
+  REQUIREMENT_RESOURCES_NEGATIVE: "§c- Resources : {0} {1}"
+  REQUIREMENT_RESOURCES_POSITIVE: "§a- Resources : {0} {1}"
+  REQUIREMENT_UPGRADE_NEGATIVE: "§c- {0} : Not unclocked"
+  REQUIREMENT_UPGRADE_POSITIVE: "§a- {0} : Unlocked"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§cYou do not meet the prerequisites"
   #Upgrade rewards
   UPGRADE_CURRENT_LEVEL: "§fCurrent level: §e{0}/{1}"

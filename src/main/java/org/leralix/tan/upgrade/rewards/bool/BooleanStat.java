@@ -13,24 +13,23 @@ public abstract class BooleanStat extends IndividualStat {
         this.state = state;
     }
 
-    protected FilledLang getStatReward(LangType langType, int level, Lang statName) {
+    protected FilledLang getStatReward(LangType langType, int level) {
         if(level == 0){
-            return Lang.UPGRADE_LINE_LOCKED_UNLOCKED.get(statName.get(langType));
+            return Lang.UPGRADE_LINE_LOCKED_UNLOCKED.get(getStatName().get(langType));
         }
         else {
-            return Lang.UPGRADE_LINE_UNLOCKED.get(statName.get(langType));
+            return Lang.UPGRADE_LINE_UNLOCKED.get(getStatName().get(langType));
         }
     }
 
-    protected FilledLang getStatReward(LangType langType, Lang statName) {
+    public FilledLang getStatReward(LangType langType) {
         if(state){
-            return Lang.UPGRADE_LINE_UNLOCKED.get(statName.get(langType));
+            return Lang.UPGRADE_LINE_UNLOCKED.get(getStatName().get(langType));
         }
         else {
-            return Lang.UPGRADE_LINE_LOCKED.get(statName.get(langType));
+            return Lang.UPGRADE_LINE_LOCKED.get(getStatName().get(langType));
         }
     }
-
 
     public boolean isEnabled() {
         return state;

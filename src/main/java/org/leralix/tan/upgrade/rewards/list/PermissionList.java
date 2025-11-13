@@ -71,4 +71,9 @@ public class PermissionList extends IndividualStat implements AggregatableStat<P
             return Lang.UPGRADE_LINE_INT_MAX.get(Lang.UNLOCK_PERMISSION.get(langType), nbNewCommands);
         }
     }
+
+    @Override
+    public Lang getStatName() {
+        return Lang.UNLOCK_PERMISSION;
+    }
 }

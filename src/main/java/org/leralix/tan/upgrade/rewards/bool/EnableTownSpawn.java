@@ -38,11 +38,11 @@ public class EnableTownSpawn extends BooleanStat implements AggregatableStat<Ena
 
     @Override
     public FilledLang getStatReward(LangType langType, int level, int maxLevel) {
-        return getStatReward(langType, level, Lang.UNLOCK_TOWN_SPAWN);
+        return getStatReward(langType, level);
     }
 
     @Override
-    public FilledLang getStatReward(LangType langType) {
-        return getStatReward(langType, Lang.UNLOCK_TOWN_SPAWN);
+    public Lang getStatName() {
+        return Lang.UNLOCK_TOWN_SPAWN;
     }
 }

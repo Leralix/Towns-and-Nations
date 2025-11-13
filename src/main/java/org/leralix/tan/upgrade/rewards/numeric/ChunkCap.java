@@ -1,8 +1,6 @@
 package org.leralix.tan.upgrade.rewards.numeric;
 
-import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
 import org.leralix.tan.upgrade.rewards.AggregatableStat;
 
 import java.util.List;
@@ -14,7 +12,7 @@ public class ChunkCap extends NumericStat implements AggregatableStat<ChunkCap> 
      * Needed to create an empty stat. Do not remove
      */
     @SuppressWarnings("unused")
-    public ChunkCap(){
+    public ChunkCap() {
         super(0, false);
     }
 
@@ -50,12 +48,7 @@ public class ChunkCap extends NumericStat implements AggregatableStat<ChunkCap> 
     }
 
     @Override
-    public FilledLang getStatReward(LangType langType, int level, int maxLevel) {
-        return getStatReward(langType, level, maxLevel, Lang.CHUNK_CAP);
-    }
-
-    @Override
-    public FilledLang getStatReward(LangType langType) {
-        return getStatReward(langType, Lang.CHUNK_CAP);
+    public Lang getStatName() {
+        return Lang.CHUNK_CAP;
     }
 }

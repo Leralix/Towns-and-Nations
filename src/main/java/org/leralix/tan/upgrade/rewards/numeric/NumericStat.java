@@ -15,25 +15,25 @@ public abstract class NumericStat extends IndividualStat {
         this.isUnlimited = isUnlimited;
     }
 
-    protected FilledLang getStatReward(LangType langType, int level, int maxLevel, Lang statName) {
+    public FilledLang getStatReward(LangType langType, int level, int maxLevel) {
         if(isUnlimited){
             if(level == 0){
-                return Lang.UPGRADE_LINE_INFINITY_LOCKED.get(statName.get(langType));
+                return Lang.UPGRADE_LINE_INFINITY_LOCKED.get(getStatName().get(langType));
             }
             else {
-                return Lang.UPGRADE_LINE_INFINITY_UNLOCKED.get(statName.get(langType));
+                return Lang.UPGRADE_LINE_INFINITY_UNLOCKED.get(getStatName().get(langType));
             }
         }
         else {
             if(level >= maxLevel){
                 return Lang.UPGRADE_LINE_INT_MAX.get(
-                        statName.get(langType),
+                        getStatName().get(langType),
                         getMathSign(maxAmount * maxLevel)
                 );
             }
             else {
                 return Lang.UPGRADE_LINE_INT.get(
-                        statName.get(langType),
+                        getStatName().get(langType),
                         getMathSign(maxAmount * level),
                         getMathSign(maxAmount)
                 );
@@ -42,13 +42,13 @@ public abstract class NumericStat extends IndividualStat {
     }
 
 
-    protected FilledLang getStatReward(LangType langType, Lang statName) {
+    public FilledLang getStatReward(LangType langType) {
         if(isUnlimited){
-            return Lang.UPGRADE_LINE_INFINITY_UNLOCKED.get(statName.get(langType));
+            return Lang.UPGRADE_LINE_INFINITY_UNLOCKED.get(getStatName().get(langType));
         }
         else {
             return Lang.UPGRADE_LINE_INT_MAX.get(
-                    statName.get(langType),
+                    getStatName().get(langType),
                     getMathSign(maxAmount));
         }
     }

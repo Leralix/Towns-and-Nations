@@ -1,8 +1,6 @@
 package org.leralix.tan.upgrade.rewards.numeric;
 
-import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
 import org.leralix.tan.upgrade.rewards.AggregatableStat;
 
 import java.util.List;
@@ -38,13 +36,8 @@ public class ChunkCost extends NumericStat implements AggregatableStat<ChunkCost
     }
 
     @Override
-    public FilledLang getStatReward(LangType langType, int level, int maxLevel) {
-        return getStatReward(langType, level, maxLevel, Lang.CHUNK_COST);
-    }
-
-    @Override
-    public FilledLang getStatReward(LangType langType) {
-        return getStatReward(langType, Lang.CHUNK_COST);
+    public Lang getStatName() {
+        return Lang.CHUNK_COST;
     }
 
     public int getCost() {

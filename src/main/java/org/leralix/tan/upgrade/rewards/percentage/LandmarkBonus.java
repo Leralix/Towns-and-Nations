@@ -41,16 +41,21 @@ public class LandmarkBonus extends IndividualStat implements AggregatableStat<La
         int percentValueNext = (int) (percentage * (level + 1) * 100);
 
         if(level >= maxLevel){
-            return Lang.UPGRADE_LINE_PERCENT_MAX.get(Lang.LANDMARK_BONUS.get(langType), Integer.toString(percentValue));
+            return Lang.UPGRADE_LINE_PERCENT_MAX.get(getStatName().get(langType), Integer.toString(percentValue));
         } else {
-            return Lang.UPGRADE_LINE_PERCENT.get(Lang.LANDMARK_BONUS.get(langType), Integer.toString(percentValue), Integer.toString(percentValueNext));
+            return Lang.UPGRADE_LINE_PERCENT.get(getStatName().get(langType), Integer.toString(percentValue), Integer.toString(percentValueNext));
         }
     }
 
     @Override
     public FilledLang getStatReward(LangType langType) {
         int percentValue = (int) ((1. + percentage) * 100);
-        return Lang.UPGRADE_LINE_PERCENT_MAX.get(Lang.LANDMARK_BONUS.get(langType), Double.toString(percentValue));
+        return Lang.UPGRADE_LINE_PERCENT_MAX.get(getStatName().get(langType), Double.toString(percentValue));
+    }
+
+    @Override
+    public Lang getStatName() {
+        return Lang.LANDMARK_BONUS;
     }
 
     public double multiply(double baseValue) {

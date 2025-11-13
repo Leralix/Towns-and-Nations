@@ -38,11 +38,11 @@ public class EnableMobBan extends BooleanStat implements AggregatableStat<Enable
 
     @Override
     public FilledLang getStatReward(LangType langType, int level, int maxLevel) {
-        return getStatReward(langType, level, Lang.UNLOCK_MOB_BAN);
+        return getStatReward(langType, level);
     }
 
     @Override
-    public FilledLang getStatReward(LangType langType) {
-        return getStatReward(langType, Lang.UNLOCK_MOB_BAN);
+    public Lang getStatName() {
+        return Lang.UNLOCK_MOB_BAN;
     }
 }

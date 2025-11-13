@@ -94,6 +94,11 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
         return Lang.UPGRADE_LINE_INT_MAX.get(Lang.CHUNK_AUTHORIZED_BIOMES.get(langType), nbNewCommands);
     }
 
+    @Override
+    public Lang getStatName() {
+        return Lang.CHUNK_AUTHORIZED_BIOMES;
+    }
+
     public boolean canClaimBiome(Chunk chunk) {
         Biome biome = chunk.getWorld().getBiome(chunk.getX() << 4, 64, chunk.getZ() << 4);
         return biomes.contains(biome);

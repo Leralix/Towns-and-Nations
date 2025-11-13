@@ -8,6 +8,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.service.requirements.BooleanStatRequirement;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.upgrade.rewards.bool.EnableMobBan;
@@ -57,7 +58,10 @@ public class ChunkSettingsMenu extends BasicGui {
     private GuiItem getChunkMobSpawnSettings(){
         return iconManager.get(IconKey.MOBS_SPAWN_SETTINGS_ICON)
                 .setName(Lang.GUI_TOWN_CHUNK_MOB.get(tanPlayer))
-                .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS))
+                .setRequirements(
+                        new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS),
+                        new BooleanStatRequirement<>(territoryData, EnableMobBan.class)
+                )
                 .setAction(event -> {
                     boolean canAccess = territoryData.getNewLevel().getStat(EnableMobBan.class).isEnabled();
                     if (canAccess){
