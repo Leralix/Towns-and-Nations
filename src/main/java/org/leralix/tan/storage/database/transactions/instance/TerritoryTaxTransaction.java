@@ -52,7 +52,7 @@ public class TerritoryTaxTransaction extends AbstractTransaction {
                 .setName(Lang.DONATION_TRANSACTION_NAME.get(langType))
                 .setDescription(
                         Lang.TRANSACTION_FROM.get(getTerritoryName(senderID, langType)),
-                        Lang.TRANSACTION_TO.get(getPlayerName(recieverID, langType)),
+                        Lang.TRANSACTION_TO.get(getTerritoryName(recieverID, langType)),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount))
                 )
                 .asGuiItem(player, langType);
