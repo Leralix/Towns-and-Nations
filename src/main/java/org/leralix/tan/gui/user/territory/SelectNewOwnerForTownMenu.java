@@ -9,7 +9,6 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -21,10 +20,13 @@ import java.util.UUID;
 public class SelectNewOwnerForTownMenu extends IteratorGUI {
 
     private final TownData townData;
+    private final Runnable backMenu;
 
-    public SelectNewOwnerForTownMenu(Player player, TownData townData) {
+
+    public SelectNewOwnerForTownMenu(Player player, TownData townData, Runnable backMenu) {
         super(player, Lang.HEADER_CHANGE_OWNERSHIP, 3);
         this.townData = townData;
+        this.backMenu = backMenu;
         open();
     }
 
@@ -37,6 +39,9 @@ public class SelectNewOwnerForTownMenu extends IteratorGUI {
     private List<GuiItem> getCandidates() {
         List<GuiItem> guiItems = new ArrayList<>();
         for (String playerUUID : townData.getPlayerIDList()) {
+            if(townData.isLeader(playerUUID)){
+                continue;
+            }
 
             OfflinePlayer townPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerUUID));
 
@@ -54,9 +59,8 @@ public class SelectNewOwnerForTownMenu extends IteratorGUI {
                         () -> {
                             townData.setLeaderID(townPlayer.getUniqueId().toString());
                             TanChatUtils.message(player, Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(tanPlayer, townPlayer.getName()));
-                            PlayerGUI.dispatchPlayerTown(player);
 
-                            player.closeInventory();
+                            backMenu.run();
                         },
                         this::open
                 );

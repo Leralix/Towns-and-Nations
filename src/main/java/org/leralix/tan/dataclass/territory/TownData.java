@@ -1,11 +1,7 @@
 package org.leralix.tan.dataclass.territory;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
@@ -13,15 +9,12 @@ import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.territory.economy.*;
 import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.PlayerJoinTownAcceptedInternalEvent;
 import org.leralix.tan.events.events.PlayerJoinTownRequestInternalEvent;
-import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.gui.legacy.PlayerGUI;
-import org.leralix.tan.gui.user.territory.TerritoryMemberMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -30,10 +23,8 @@ import org.leralix.tan.storage.database.transactions.instance.PlayerTaxTransacti
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.upgrade.rewards.numeric.TownPlayerCap;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
-import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.*;
@@ -351,61 +342,6 @@ public class TownData extends TerritoryData {
     @Override
     public TerritoryData getCapital() {
         return null;
-    }
-
-    @Override
-    public List<GuiItem> getOrderedMemberList(ITanPlayer tanPlayer) {
-        Player player = tanPlayer.getPlayer();
-        List<GuiItem> res = new ArrayList<>();
-        LangType langType = tanPlayer.getLang();
-
-        for (String playerUUID : getOrderedPlayerIDList()) {
-            OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-            ITanPlayer playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
-            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate,
-                    Lang.GUI_TOWN_MEMBER_DESC1.get(langType, playerIterateData.getTownRank().getColoredName()),
-                    Lang.GUI_TOWN_MEMBER_DESC2.get(langType, StringUtil.formatMoney(EconomyUtil.getBalance(playerIterate))),
-                    doesPlayerHavePermission(tanPlayer, RolePermission.KICK_PLAYER) ? Lang.GUI_TOWN_MEMBER_DESC3.get(langType) : "");
-
-            GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> {
-                event.setCancelled(true);
-                if (event.getClick() == ClickType.RIGHT) {
-
-                    ITanPlayer kickedPlayer = PlayerDataStorage.getInstance().get(playerIterate);
-                    TownData townData = TownDataStorage.getInstance().get(tanPlayer);
-
-
-                    if (!doesPlayerHavePermission(tanPlayer, RolePermission.KICK_PLAYER)) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType));
-                        return;
-                    }
-                    if (townData.getRank(kickedPlayer).isSuperiorTo(townData.getRank(tanPlayer))) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(langType));
-                        return;
-                    }
-                    if (isLeader(kickedPlayer)) {
-                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get(langType));
-                        return;
-                    }
-                    if (tanPlayer.getID().equals(kickedPlayer.getID())) {
-                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_CANT_KICK_YOURSELF.get(langType));
-                        return;
-                    }
-
-                    new ConfirmMenu(
-                            player,
-                            Lang.CONFIRM_PLAYER_KICKED.get(playerIterate.getName()),
-                            () -> {
-                                kickPlayer(playerIterate);
-                                new TerritoryMemberMenu(player, this).open();
-                            },
-                            () -> new TerritoryMemberMenu(player, this).open()
-                    );
-                }
-            });
-            res.add(playerButton);
-        }
-        return res;
     }
 
     @Override

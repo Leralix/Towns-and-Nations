@@ -18,12 +18,11 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 public abstract class AdminManageTerritory extends BasicGui {
 
-    private final TerritoryData territoryData;
+    protected final TerritoryData territoryData;
 
     protected AdminManageTerritory(Player player, FilledLang menuName, int nbRows, TerritoryData territoryData) {
         super(player, menuName, nbRows);
         this.territoryData = territoryData;
-        open();
     }
 
 

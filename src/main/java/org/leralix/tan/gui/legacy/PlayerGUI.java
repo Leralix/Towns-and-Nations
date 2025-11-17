@@ -3,7 +3,6 @@ package org.leralix.tan.gui.legacy;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -16,7 +15,10 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.landmark.LandmarkNoOwnerMenu;
 import org.leralix.tan.gui.landmark.LandmarkOwnedMenu;
-import org.leralix.tan.gui.user.territory.*;
+import org.leralix.tan.gui.user.territory.NoRegionMenu;
+import org.leralix.tan.gui.user.territory.NoTownMenu;
+import org.leralix.tan.gui.user.territory.RegionMenu;
+import org.leralix.tan.gui.user.territory.TownMenu;
 import org.leralix.tan.gui.user.territory.hierarchy.VassalsMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
@@ -26,15 +28,14 @@ import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.deprecated.HeadUtils;
-import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-import static org.leralix.lib.data.SoundEnum.*;
+import static org.leralix.lib.data.SoundEnum.BAD;
+import static org.leralix.lib.data.SoundEnum.MINOR_BAD;
 
 public class PlayerGUI {
 
@@ -58,51 +59,6 @@ public class PlayerGUI {
         } else {
             new NoTownMenu(player);
         }
-    }
-
-
-    public static void openRegionChangeOwnership(Player player, int page) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_CHANGE_OWNERSHIP.get(tanPlayer), 6);
-        RegionData regionData = tanPlayer.getRegion();
-
-        ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (String playerID : regionData.getPlayerIDList()) {
-
-            ITanPlayer iterateTanPlayer = PlayerDataStorage.getInstance().get(playerID);
-            ItemStack switchPlayerIcon = HeadUtils.getPlayerHead(Bukkit.getOfflinePlayer(UUID.fromString(playerID)));
-
-            GuiItem switchPlayerButton = ItemBuilder.from(switchPlayerIcon).asGuiItem(event -> {
-                event.setCancelled(true);
-
-
-                new ConfirmMenu(
-                        player,
-                        Lang.GUI_CONFIRM_CHANGE_LEADER.get(iterateTanPlayer.getNameStored()),
-                        () -> {
-                            FileUtil.addLineToHistory(Lang.HISTORY_REGION_CAPITAL_CHANGED.get(player.getName(), regionData.getCapital().getName(), tanPlayer.getTown().getName()));
-                            regionData.setLeaderID(iterateTanPlayer.getID());
-
-                            regionData.broadcastMessageWithSound(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST.get(iterateTanPlayer.getNameStored()), GOOD);
-
-                            if (!regionData.getCapital().getID().equals(iterateTanPlayer.getTown().getID())) {
-                                regionData.broadCastMessage(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST.get(iterateTanPlayer.getTown().getName()));
-                                regionData.setCapital(iterateTanPlayer.getTownId());
-                            }
-                            new RegionSettingsMenu(player, regionData);
-                        },
-                        () -> openRegionChangeOwnership(player, page)
-                );
-            });
-            guiItems.add(switchPlayerButton);
-        }
-
-        GuiUtil.createIterator(gui, guiItems, page, player,
-                p -> new RegionSettingsMenu(player, regionData),
-                p -> openRegionChangeOwnership(player, page + 1),
-                p -> openRegionChangeOwnership(player, page - 1));
-
-        gui.open(player);
     }
 
     public static void dispatchLandmarkGui(Player player, Landmark landmark) {

@@ -213,9 +213,7 @@ public class TownSettingsMenu extends SettingsMenus {
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(),
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.get()
                 )
-                .setAction(event -> {
-                    new SelectNewOwnerForTownMenu(player, townData);
-                })
+                .setAction(event -> new SelectNewOwnerForTownMenu(player, townData, this::open))
                 .asGuiItem(player, langType);
 
     }

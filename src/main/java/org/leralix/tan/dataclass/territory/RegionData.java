@@ -1,13 +1,8 @@
 package org.leralix.tan.dataclass.territory;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.RankData;
@@ -27,14 +22,12 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 public class RegionData extends TerritoryData {
 
@@ -286,20 +279,6 @@ public class RegionData extends TerritoryData {
             return null;
         }
         return getRank(tanPlayer.getRegionRankID());
-    }
-
-    @Override
-    public List<GuiItem> getOrderedMemberList(ITanPlayer tanPlayer) {
-        List<GuiItem> res = new ArrayList<>();
-        for (String playerUUID : getOrderedPlayerIDList()) {
-            OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-            ITanPlayer playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
-            ItemStack playerHead = HeadUtils.getPlayerHead(playerIterate, Lang.GUI_TOWN_MEMBER_DESC1.get(tanPlayer.getLang(), playerIterateData.getRegionRank().getColoredName()));
-
-            GuiItem playerButton = ItemBuilder.from(playerHead).asGuiItem(event -> event.setCancelled(true));
-            res.add(playerButton);
-        }
-        return res;
     }
 
     @Override

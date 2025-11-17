@@ -10,7 +10,6 @@ import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.RegionDeletednternalEvent;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -51,16 +50,16 @@ public class RegionSettingsMenu extends SettingsMenus {
         return iconManager.get(IconKey.REGION_CHANGE_OWNERSHIP_ICON)
                 .setName(Lang.GUI_REGION_CHANGE_CAPITAL.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_REGION_CHANGE_CAPITAL_DESC1.get(regionData.getCapital().getName()),
-                        Lang.GUI_REGION_CHANGE_CAPITAL_DESC2.get()
+                        Lang.GUI_REGION_CHANGE_CAPITAL_DESC1.get(regionData.getCapital().getName())
                 )
+                .setClickToAcceptMessage(Lang.GUI_REGION_CHANGE_CAPITAL_DESC2)
                 .setAction(event -> {
                     event.setCancelled(true);
                     if (!regionData.isLeader(tanPlayer)) {
                         TanChatUtils.message(player, Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
                         return;
                     }
-                    PlayerGUI.openRegionChangeOwnership(player, 0);
+                    new RegionChangeOwnership(player, regionData);
                 })
                 .asGuiItem(player, langType);
     }

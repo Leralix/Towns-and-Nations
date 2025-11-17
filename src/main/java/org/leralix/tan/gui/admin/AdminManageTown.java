@@ -7,7 +7,10 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.user.territory.SelectNewOwnerForTownMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -31,6 +34,8 @@ public class AdminManageTown extends AdminManageTerritory {
 
         gui.setItem(2, 6, getTransactionHistory());
         gui.setItem(2, 8, getDelete());
+
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminMainMenu(player)));
 
         gui.open(player);
     }
@@ -67,8 +72,14 @@ public class AdminManageTown extends AdminManageTerritory {
     }
 
     private @NotNull GuiItem changeLeader() {
-        //TODO : merge leader system between town and region
-        return null;
+        return iconManager.get(IconKey.TOWN_CHANGE_OWNERSHIP_ICON)
+                .setName(Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.get(langType))
+                .setDescription(
+                        Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(townData.getLeaderData().getNameStored())
+                )
+                .setClickToAcceptMessage(Lang.GUI_REGION_CHANGE_CAPITAL_DESC2)
+                .setAction(action -> new SelectNewOwnerForTownMenu(player, townData, this::open))
+                .asGuiItem(player, langType);
     }
 
 }

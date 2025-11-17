@@ -275,18 +275,19 @@ public abstract class TerritoryData {
 
     /**
      * Get the worst relation a territory may have with a all the territory a player is part of (town, region...)
-     * @param player    The player to check
-     * @return          The worst relation
+     *
+     * @param player The player to check
+     * @return The worst relation
      */
     public TownRelation getWorstRelationWith(ITanPlayer player) {
         TownRelation worstRelation = null;
-        for(TerritoryData territoryData : player.getAllTerritoriesPlayerIsIn()){
+        for (TerritoryData territoryData : player.getAllTerritoriesPlayerIsIn()) {
             TownRelation actualRelation = getRelationWith(territoryData);
-            if(worstRelation == null || worstRelation.isSuperiorTo(actualRelation)){
+            if (worstRelation == null || worstRelation.isSuperiorTo(actualRelation)) {
                 worstRelation = actualRelation;
             }
         }
-        if(worstRelation == null){
+        if (worstRelation == null) {
             return TownRelation.NEUTRAL;
         }
         return worstRelation;
@@ -346,7 +347,7 @@ public abstract class TerritoryData {
         Collection<CurrentAttack> res = new ArrayList<>();
         for (String attackID : getAttacksInvolvedID()) {
             CurrentAttack attackInvolved = CurrentAttacksStorage.get(attackID);
-            if(attackInvolved != null){
+            if (attackInvolved != null) {
                 res.add(attackInvolved);
             }
         }
@@ -485,25 +486,24 @@ public abstract class TerritoryData {
     /**
      * Claim the chunk for the territory
      *
-     * @param player            The player wishing to claim a chunk
-     * @param chunk             The chunk to claim
-     * @param ignoreAdjacent    Defines whether the chunk to claim should respect adjacent claiming
+     * @param player         The player wishing to claim a chunk
+     * @param chunk          The chunk to claim
+     * @param ignoreAdjacent Defines whether the chunk to claim should respect adjacent claiming
      * @return True if the chunk has been claimed successfully, false otherwise
      */
     public boolean claimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
-        if(!canClaimChunk(player, chunk, ignoreAdjacent)) {
+        if (!canClaimChunk(player, chunk, ignoreAdjacent)) {
             return false;
         }
 
-         abstractClaimChunk(player, chunk, ignoreAdjacent);
+        abstractClaimChunk(player, chunk, ignoreAdjacent);
 
         ChunkCap chunkCap = getNewLevel().getStat(ChunkCap.class);
 
         FilledLang message;
-        if(chunkCap.isUnlimited()){
+        if (chunkCap.isUnlimited()) {
             message = Lang.CHUNK_CLAIMED_SUCCESS_UNLIMITED.get(getColoredName());
-        }
-        else {
+        } else {
             String currentAmountOfChunks = Integer.toString(getNumberOfClaimedChunk());
             String maxAmountOfChunks = Integer.toString(chunkCap.getMaxAmount());
             message = Lang.CHUNK_CLAIMED_SUCCESS_LIMITED.get(getColoredName(), currentAmountOfChunks, maxAmountOfChunks);
@@ -540,7 +540,7 @@ public abstract class TerritoryData {
         TerritoryStats territoryStats = getNewLevel();
         int nbOfClaimedChunks = getNumberOfClaimedChunk();
 
-        if(!territoryStats.getStat(BiomeStat.class).canClaimBiome(chunk)){
+        if (!territoryStats.getStat(BiomeStat.class).canClaimBiome(chunk)) {
             TanChatUtils.message(player, Lang.CHUNK_BIOME_NOT_ALLOWED.get(player));
             return false;
         }
@@ -561,14 +561,14 @@ public abstract class TerritoryData {
             return false;
         }
 
-        if(ignoreAdjacent){
+        if (ignoreAdjacent) {
             return true;
         }
 
         // If first claim of the territory and in a buffer zone of another territory, deny the claim
-        if(getNumberOfClaimedChunk() == 0) {
+        if (getNumberOfClaimedChunk() == 0) {
 
-            if(ChunkUtil.isInBufferZone(chunkData, this)) {
+            if (ChunkUtil.isInBufferZone(chunkData, this)) {
                 TanChatUtils.message(player, Lang.CHUNK_IN_BUFFER_ZONE.get(player, Integer.toString(Constants.territoryClaimBufferZone())));
                 return false;
             }
@@ -583,7 +583,7 @@ public abstract class TerritoryData {
         return true;
     }
 
-    public int getClaimCost(){
+    public int getClaimCost() {
         return getNewLevel().getStat(ChunkCost.class).getCost();
     }
 
@@ -635,7 +635,7 @@ public abstract class TerritoryData {
         addToBalance(amount);
 
         TransactionManager.getInstance().register(new DonationTransaction(this, player, amount));
-        TanChatUtils.message(player, Lang.PLAYER_SEND_MONEY_SUCCESS.get(langType, Double.toString(amount) , getBaseColoredName()), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player, Lang.PLAYER_SEND_MONEY_SUCCESS.get(langType, Double.toString(amount), getBaseColoredName()), SoundEnum.MINOR_GOOD);
     }
 
     public abstract void openMainMenu(Player player);
@@ -716,8 +716,7 @@ public abstract class TerritoryData {
                             setOverlord(proposalOverlord);
                             broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getBaseColoredName(), proposalOverlord.getName()), SoundEnum.GOOD);
                             PlayerGUI.openHierarchyMenu(player, this);
-                        }
-                        else if (action.isRightClick()) {
+                        } else if (action.isRightClick()) {
                             getOverlordsProposals().remove(proposalID);
                             PlayerGUI.openChooseOverlordMenu(player, this, page);
                         }
@@ -796,8 +795,6 @@ public abstract class TerritoryData {
         this.defaultRankID = rankID;
     }
 
-    public abstract List<GuiItem> getOrderedMemberList(ITanPlayer tanPlayer);
-
 
     public boolean doesPlayerHavePermission(Player player, RolePermission townRolePermission) {
         return doesPlayerHavePermission(PlayerDataStorage.getInstance().get(player), townRolePermission);
@@ -841,7 +838,7 @@ public abstract class TerritoryData {
     }
 
     public double getTax() {
-        if (baseTax == null){
+        if (baseTax == null) {
             baseTax = 0.0;
         }
         return baseTax;
@@ -1051,7 +1048,7 @@ public abstract class TerritoryData {
     public Collection<Building> getBuildings() {
         List<Building> buildings = new ArrayList<>(getOwnedForts());
 
-        if(this instanceof TownData townData){
+        if (this instanceof TownData townData) {
             buildings.addAll(townData.getProperties());
         }
         buildings.removeAll(Collections.singleton(null));
@@ -1092,36 +1089,35 @@ public abstract class TerritoryData {
     /**
      * Defines if a territory can claim next to an already claimed chunk.
      * If the chunk is owned by the territory itself or by its overlord, it can claim
-     * @param territoryChunk    The chunk to check
-     * @return      True if the territory can claim next to the chunk, false otherwise
+     *
+     * @param territoryChunk The chunk to check
+     * @return True if the territory can claim next to the chunk, false otherwise
      */
     public boolean canAccessBufferZone(TerritoryChunk territoryChunk) {
         String ownerID = territoryChunk.getOwnerID();
-        if(ownerID.equals(id)){
+        if (ownerID.equals(id)) {
             return true;
         }
         Optional<TerritoryData> optCapital = getOverlord();
 
-        if(optCapital.isPresent()){
+        if (optCapital.isPresent()) {
             TerritoryData capital = optCapital.get();
             return ownerID.equals(capital.getID());
         }
         return false;
     }
 
-    public TerritoryStats getNewLevel(){
-        if(this.upgradesStatus == null){
+    public TerritoryStats getNewLevel() {
+        if (this.upgradesStatus == null) {
             // Migrate old data if exists
-            if(this instanceof TownData townData) {
-                if(townData.townLevel != null){
+            if (this instanceof TownData townData) {
+                if (townData.townLevel != null) {
                     this.upgradesStatus = new TerritoryStats(townData.townLevel);
                     townData.townLevel = null;
-                }
-                else {
+                } else {
                     this.upgradesStatus = new TerritoryStats(StatsType.TOWN);
                 }
-            }
-            else {
+            } else {
                 this.upgradesStatus = new TerritoryStats(StatsType.REGION);
             }
         }
