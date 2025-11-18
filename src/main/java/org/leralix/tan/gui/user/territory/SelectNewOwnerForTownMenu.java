@@ -32,7 +32,7 @@ public class SelectNewOwnerForTownMenu extends IteratorGUI {
 
     @Override
     public void open() {
-        iterator(getCandidates(), p -> new TownSettingsMenu(player, townData));
+        iterator(getCandidates(), p -> backMenu.run());
         gui.open(player);
     }
 
