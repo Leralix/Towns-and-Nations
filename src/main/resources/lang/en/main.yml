@@ -305,7 +305,7 @@ language:
   GUI_PLAYER_MENU_ICON: "§aYour profile"
   #Player manu
   GUI_PLAYER_ICON: "§a{0}"
-  GUI_YOUR_BALANCE: "§aYour Balance"
+  GUI_YOUR_BALANCE: "§aBalance"
   GUI_YOUR_BALANCE_DESC1: "§fBalance : §6{0}{MONEY_CHAR}"
   GUI_PLAYER_MANAGE_PROPERTIES: "§aProperties"
   GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§fCreate, delete or manage your properties"

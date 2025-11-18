@@ -11,6 +11,8 @@ import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.listeners.chat.events.AdminSetPlayerBalance;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -30,11 +32,26 @@ public class AdminManagePlayer extends BasicGui {
     public void open() {
         gui.setItem(1, 5, getPlayerInfo());
 
-        gui.setItem(2, 2, getTownButton());
+        gui.setItem(2, 4, getBalanceButton());
+        gui.setItem(2, 6, getTownButton());
 
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminBrowsePlayers(player)));
 
         gui.open(player);
+    }
+
+    private @NotNull GuiItem getBalanceButton() {
+        return iconManager.get(IconKey.PLAYER_BALANCE_ICON)
+                .setName(Lang.GUI_YOUR_BALANCE.get(langType))
+                .setDescription(
+                        Lang.GUI_YOUR_BALANCE_DESC1.get(StringUtil.formatMoney(EconomyUtil.getBalance(targetPlayer.getOfflinePlayer())))
+                )
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
+                .setAction(action -> {
+                    player.closeInventory();
+                    PlayerChatListenerStorage.register(player, new AdminSetPlayerBalance(targetPlayer));
+                })
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getTownButton() {
