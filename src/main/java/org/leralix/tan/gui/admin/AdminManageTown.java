@@ -35,7 +35,7 @@ public class AdminManageTown extends AdminManageTerritory {
         gui.setItem(2, 6, getTransactionHistory());
         gui.setItem(2, 8, getDelete());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminMainMenu(player)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminBrowseTown(player)));
 
         gui.open(player);
     }

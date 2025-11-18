@@ -29,7 +29,7 @@ public class AdminManageRegion extends AdminManageTerritory {
         gui.setItem(2, 6, getTransactionHistory());
         gui.setItem(2, 7, getDelete());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminMainMenu(player)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminBrowseRegion(player)));
 
         gui.open(player);
     }
