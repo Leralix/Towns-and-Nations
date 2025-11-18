@@ -43,6 +43,7 @@ import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.DonationTransaction;
 import org.leralix.tan.storage.database.transactions.instance.SalaryTransaction;
+import org.leralix.tan.storage.database.transactions.instance.TerritoryChunkUpkeepTransaction;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
@@ -883,8 +884,10 @@ public abstract class TerritoryData {
         double totalUpkeep = numberClaimedChunk * upkeepCost;
         if (totalUpkeep > getBalance()) {
             deletePortionOfChunk();
+            TransactionManager.getInstance().register(new TerritoryChunkUpkeepTransaction(getID(), upkeepCost, numberClaimedChunk, false));
         } else {
             removeFromBalance(totalUpkeep);
+            TransactionManager.getInstance().register(new TerritoryChunkUpkeepTransaction(getID(), upkeepCost, numberClaimedChunk, true));
         }
 
     }

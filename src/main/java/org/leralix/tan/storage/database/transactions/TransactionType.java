@@ -123,8 +123,17 @@ public enum TransactionType implements DisplayableEnum {
                 amount DOUBLE PRECISION NOT NULL,
                 enough_money SMALLINT NOT NULL CHECK (enough_money IN (0, 1))
             );
-        """)
-    ;
+        """),
+    TERRITORY_CHUNK_UPKEEP(Lang.TERRITORY_CHUNK_UPKEEP_TRANSACTION_SCOPE, "transaction_territory_chunk_upkeep",
+        """
+            id %s,
+            timestamp TIMESTAMP NOT NULL,
+            territory_id BIGINT NOT NULL,
+            cost_per_chunk DOUBLE PRECISION NOT NULL,
+            number_of_chunks INT NOT NULL,
+            enough_money SMALLINT NOT NULL CHECK (enough_money IN (0, 1))
+        );
+    """);
 
 
     private final Lang name;

@@ -40,7 +40,7 @@ public class ChunkUpkeepLine extends ProfitLine {
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(lang, StringUtil.getColoredMoney(-Constants.getUpkeepCost(territoryData))),
                 Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(lang, Integer.toString(territoryData.getNumberOfClaimedChunk())));
         GuiItem chunkSpendingItem = new GuiItem(chunkSpending, event ->
-                new TerritoryTransactionHistory(player, territoryData, TransactionType.INDEX, p -> new TreasuryMenu(player, territoryData))
+                new TerritoryTransactionHistory(player, territoryData, TransactionType.TERRITORY_CHUNK_UPKEEP, p -> new TreasuryMenu(player, territoryData))
         );
         gui.setItem(2, 7, chunkSpendingItem);
     }

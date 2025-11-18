@@ -1099,6 +1099,7 @@ language:
   RETRIEVE_TRANSACTION_SCOPE: "Territory withdrawal"
   TAXES_TRANSACTION_SCOPE: "Player taxes"
   TERRITORY_TAXES_TRANSACTION_SCOPE: "Territory taxes"
+  TERRITORY_CHUNK_UPKEEP_TRANSACTION_SCOPE: "Territory chunk upkeep"
   SALARY_TRANSACTION_SCOPE: "Salaries"
   CREATE_PROPERTY_TRANSACTION_SCOPE: "Properties creation"
   SELL_PROPERTY_TRANSACTION_SCOPE: "Properties selling"
@@ -1122,6 +1123,8 @@ language:
   TRANSACTION_TAX: "§fTax : §9{0}%§f (§6{1}{MONEY_CHAR}§f)"
   TRANSACTION_FLAT_TAX: "§fTax : §9{0}{MONEY_CHAR}"
   TRANSACTION_UPGRADE: "§fUpgrade : §a{0}§f (lvl {1})"
+  CHUNK_UPKEEP_INFO: "§2{0}♦§f chunks (§6{1}{MONEY_CHAR}§f/chunks)"
+  TRANSACTION_FAILED_NOT_ENOUGH_MONEY: "§cTransaction failed: not enough money"
   TRANSACTION_DATE: "§fDate : {0}"
   #War menu
   MAIN_ATTACKER_NAME: "Main attacker"

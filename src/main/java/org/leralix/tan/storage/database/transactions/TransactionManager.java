@@ -132,6 +132,7 @@ public class TransactionManager {
                 case CREATE_PROPERTY -> CreatingPropertyTransaction.class;
                 case SELLING_PROPERTY -> SellingPropertyTransaction.class;
                 case RENTING_PROPERTY -> RentingPropertyTransaction.class;
+                case TERRITORY_CHUNK_UPKEEP -> TerritoryChunkUpkeepTransaction.class;
                 default -> null;
             };
             if(wantedClass == null){

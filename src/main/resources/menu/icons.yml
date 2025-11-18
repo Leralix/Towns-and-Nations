@@ -217,6 +217,7 @@ UPGRADE_REQUIREMENT: "https://textures.minecraft.net/texture/fbe529ab6b2ea7c50d9
 PROPERTY_BUY_TRANSACTION: "minecraft:PAPER"
 PROPERTY_RENT_TRANSACTION: "minecraft:PAPER"
 PROPERTY_CREATE_TRANSACTION: "minecraft:PAPER"
+CHUNK_UPKEEP_TRANSACTION: "minecraft:GRASS_BLOCK"
 
 # Admins menus
 CREATE_LANDMARK: "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1"
