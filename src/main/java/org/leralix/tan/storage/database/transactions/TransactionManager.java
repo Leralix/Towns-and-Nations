@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -219,6 +220,41 @@ public class TransactionManager {
             }
 
             ps.executeBatch();
+        }
+    }
+
+    public void deleteOldTransactions(int days) {
+        long threshold = System.currentTimeMillis() - (days * 24L * 60L * 60L * 1000L);
+        Timestamp timestampThreshold = new Timestamp(threshold);
+        try (Connection conn = dataSource.getConnection()) {
+            for (TransactionType type : TransactionType.values()) {
+                if (type == TransactionType.INDEX) continue;
+                deleteOldTransactions(conn, type, timestampThreshold);
+            }
+        } catch (SQLException e) {
+            pluginLogger.severe("[TAN] Error while deleting old transactions: " + e.getMessage());
+        }
+    }
+
+    private void deleteOldTransactions(Connection conn, TransactionType type, Timestamp threshold) {
+        String deleteFromTable = "DELETE FROM " + type.getTableName() + " WHERE timestamp < ?";
+        String cleanIndex = "DELETE FROM transaction_index WHERE type = ? AND id_transaction NOT IN (SELECT id FROM " + type.getTableName() + ")";
+
+        try (var ps = conn.prepareStatement(deleteFromTable)) {
+            ps.setTimestamp(1, threshold);
+            int deleted = ps.executeUpdate();
+            if(deleted > 0) {
+                pluginLogger.info("[TAN] Deleted " + deleted + " old transactions of type " + type);
+            }
+        } catch (SQLException e) {
+            pluginLogger.severe("[TAN] Error while deleting from " + type.getTableName() + ": " + e.getMessage());
+        }
+
+        try (var ps = conn.prepareStatement(cleanIndex)) {
+            ps.setString(1, type.name());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            pluginLogger.severe("[TAN] Error while cleaning index for " + type.name() + ": " + e.getMessage());
         }
     }
 

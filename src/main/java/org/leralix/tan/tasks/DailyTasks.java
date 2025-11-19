@@ -18,6 +18,8 @@ import org.leralix.tan.utils.file.ArchiveUtil;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import org.leralix.tan.storage.database.transactions.TransactionManager;
+import org.leralix.tan.utils.constants.Constants;
 
 public class DailyTasks {
 
@@ -53,7 +55,7 @@ public class DailyTasks {
             regionData.executeTasks();
         }
 
-        clearOldTaxes();
+        clearOldTransaction();
         updatePlayerUsernames();
 
         NewsletterStorage.getInstance().clearOldNewsletters();
@@ -80,7 +82,7 @@ public class DailyTasks {
     }
 
 
-    public static void clearOldTaxes() {
-
+    public static void clearOldTransaction() {
+        TransactionManager.getInstance().deleteOldTransactions(Constants.getNbDaysBeforeTransactionDeletion());
     }
 }

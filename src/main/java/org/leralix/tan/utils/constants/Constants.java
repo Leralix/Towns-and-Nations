@@ -26,6 +26,7 @@ public class Constants {
     private static DatabaseConstants databaseConstants;
     private static int dailyTaskHour;
     private static int dailyTaskMinute;
+    private static int nbDaysBeforeTransactionDeletion;
     //Economy
     private static boolean useStandaloneEconomy;
     private static double startingBalance;
@@ -128,6 +129,7 @@ public class Constants {
         databaseConstants = new DatabaseConstants(config.getConfigurationSection("database"));
         dailyTaskHour = config.getInt("taxHourTime", 0);
         dailyTaskMinute = config.getInt("taxMinuteTime", 0);
+        nbDaysBeforeTransactionDeletion = config.getInt("nbDaysBeforeTransactionDeletion", 90);
 
         //Economy
         useStandaloneEconomy = config.getBoolean("UseTanEconomy", false);
@@ -256,6 +258,10 @@ public class Constants {
 
     public static int getDailyTaskMinute() {
         return dailyTaskMinute;
+    }
+
+    public static int getNbDaysBeforeTransactionDeletion() {
+        return nbDaysBeforeTransactionDeletion;
     }
 
     public static boolean displayTerritoryColor() {

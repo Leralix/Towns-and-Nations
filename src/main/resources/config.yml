@@ -519,13 +519,9 @@ worldguard_override_landmark: false
 archiveHistory: true
 
 
-#Time before history is cleared in days (can be set to -1 to disable)
-#The more history kept the more storage is used and some action may take longer
-TimeBeforeClearingTaxHistory: 90
-TimeBeforeClearingChunkHistory: 90
-TimeBeforeClearingSalaryHistory: 90
-NumberOfDonationBeforeClearing: 90
-NumberOfMiscPurchaseBeforeClearing: 90
+#Time before old transactions are deleted (in days). Can be set to -1 to disable
+#Too much history can slow down the certains operations over time
+nbDaysBeforeTransactionDeletion: 90
 
 
 #Write the type of mobs you want a town to be able to cancel the spawn of.
