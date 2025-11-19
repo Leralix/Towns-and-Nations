@@ -55,15 +55,19 @@ public abstract class AbstractTransactionHistory extends IteratorGUI {
     private List<GuiItem> getTransactions() {
 
         List<GuiItem> res = new ArrayList<>();
-        var transactions = TransactionManager.getInstance().getTransactionOf(getID(), transactionType);
-
-        // Sort by date ascending
-        transactions.sort(Comparator.comparing(AbstractTransaction::getDate).reversed());
+        var transactions = fetchTransactions();
 
         for (AbstractTransaction transaction : transactions) {
             res.add(transaction.getIcon(iconManager, player, langType));
         }
         return res;
+    }
+
+    protected List<AbstractTransaction> fetchTransactions() {
+        var transactions = TransactionManager.getInstance().getTransactionOf(getID(), transactionType);
+        // Sort by date ascending
+        transactions.sort(Comparator.comparing(AbstractTransaction::getDate).reversed());
+        return transactions;
     }
 
     protected abstract String getID();

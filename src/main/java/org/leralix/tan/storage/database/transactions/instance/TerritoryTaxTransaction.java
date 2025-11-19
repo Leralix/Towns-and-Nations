@@ -4,6 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.AbstractTransaction;
@@ -46,7 +47,7 @@ public class TerritoryTaxTransaction extends AbstractTransaction {
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
         return iconManager.get(IconKey.TERRITORY_TAX_ICON)
-                .setName(Lang.DONATION_TRANSACTION_NAME.get(langType))
+                .setName(Lang.TERRITORY_TAX_TRANSACTION.get(langType))
                 .setDescription(
                         Lang.TRANSACTION_FROM.get(getTerritoryName(senderID, langType)),
                         Lang.TRANSACTION_TO.get(getTerritoryName(recieverID, langType)),
@@ -88,5 +89,14 @@ public class TerritoryTaxTransaction extends AbstractTransaction {
 
     public double getAmount() {
         return amount;
+    }
+
+    public FilledLang getDailyLine(LangType langType) {
+        if(enoughMoney){
+            return Lang.TRANSACTION_DAILY.get(getTerritoryName(senderID, langType), Double.toString(amount));
+        }
+        else{
+            return Lang.TRANSACTION_DAILY_NOT_ENOUGH_MONEY.get(getTerritoryName(senderID, langType));
+        }
     }
 }

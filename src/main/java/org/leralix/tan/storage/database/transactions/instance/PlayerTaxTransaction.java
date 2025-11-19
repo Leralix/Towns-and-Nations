@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.AbstractTransaction;
@@ -89,5 +90,15 @@ public class PlayerTaxTransaction extends AbstractTransaction {
 
     public double getAmount() {
         return amount;
+    }
+
+    public FilledLang getDailyLine(LangType langType) {
+
+        if(enoughMoney){
+            return Lang.TRANSACTION_DAILY.get(getPlayerName(playerID, langType), Double.toString(amount));
+        }
+        else{
+            return Lang.TRANSACTION_DAILY_NOT_ENOUGH_MONEY.get(getPlayerName(playerID, langType));
+        }
     }
 }
