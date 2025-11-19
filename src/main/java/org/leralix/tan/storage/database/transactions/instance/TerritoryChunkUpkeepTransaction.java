@@ -8,12 +8,12 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.AbstractTransaction;
 import org.leralix.tan.storage.database.transactions.TransactionType;
+import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.NumberUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.ZoneId;
 import java.util.Set;
 
 public class TerritoryChunkUpkeepTransaction extends AbstractTransaction {
@@ -54,7 +54,8 @@ public class TerritoryChunkUpkeepTransaction extends AbstractTransaction {
                 .setDescription(
                         Lang.TRANSACTION_FROM.get(getTerritoryName(territoryID, langType)),
                         enoughMoney ? Lang.TRANSACTION_AMOUNT.get(Double.toString(getCost())) : Lang.TRANSACTION_FAILED_NOT_ENOUGH_MONEY.get(Double.toString(getCost())),
-                        Lang.CHUNK_UPKEEP_INFO.get(Integer.toString(numberOfChunks), Double.toString(costPerChunk))
+                        Lang.CHUNK_UPKEEP_INFO.get(Integer.toString(numberOfChunks), Double.toString(costPerChunk)),
+                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate()))
                 )
                 .asGuiItem(player, langType);
     }
@@ -66,7 +67,7 @@ public class TerritoryChunkUpkeepTransaction extends AbstractTransaction {
 
     @Override
     public void fillInsertStatement(PreparedStatement ps) throws SQLException {
-        ps.setLong(1, getDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        ps.setLong(1, getDate());
         ps.setString(2, territoryID);
         ps.setDouble(3, costPerChunk);
         ps.setInt(4, numberOfChunks);

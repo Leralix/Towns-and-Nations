@@ -8,12 +8,11 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.AbstractTransaction;
 import org.leralix.tan.storage.database.transactions.TransactionType;
+import org.leralix.tan.utils.text.DateUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,8 +41,7 @@ public class CreatingPropertyTransaction extends AbstractTransaction {
     }
 
     public CreatingPropertyTransaction(ResultSet rs) throws SQLException {
-        long timestamp = rs.getLong("timestamp");
-        this.localDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+        super(rs.getLong("timestamp"));
         this.territoryID = rs.getString("territory_id");
         this.propertyID = rs.getString("property_id");
         this.creatorID = rs.getString("creator_id");
@@ -58,6 +56,7 @@ public class CreatingPropertyTransaction extends AbstractTransaction {
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
 
+        ;
 
         return iconManager.get(IconKey.PROPERTY_CREATE_TRANSACTION)
                 .setName(Lang.SELL_PROPERTY_TRANSACTION.get(langType))
@@ -66,7 +65,8 @@ public class CreatingPropertyTransaction extends AbstractTransaction {
                         Lang.TRANSACTION_TO.get(getTerritoryName(territoryID, langType)),
                         Lang.TRANSACTION_PROPERTY.get(getPropertyName(territoryID, propertyID, langType)),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount)),
-                        Lang.TRANSACTION_FLAT_TAX.get(Double.toString(taxPerBlock))
+                        Lang.TRANSACTION_FLAT_TAX.get(Double.toString(taxPerBlock)),
+                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate()))
                 )
                 .asGuiItem(player, langType);
     }
@@ -78,7 +78,7 @@ public class CreatingPropertyTransaction extends AbstractTransaction {
 
     @Override
     public void fillInsertStatement(PreparedStatement ps) throws SQLException {
-        ps.setLong(1, getDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        ps.setLong(1, getDate());
         ps.setString(2, territoryID);
         ps.setString(3, propertyID);
         ps.setString(4, creatorID);

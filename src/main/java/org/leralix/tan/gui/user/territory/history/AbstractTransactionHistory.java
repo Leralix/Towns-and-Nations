@@ -12,6 +12,7 @@ import org.leralix.tan.storage.database.transactions.TransactionType;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -55,6 +56,9 @@ public abstract class AbstractTransactionHistory extends IteratorGUI {
 
         List<GuiItem> res = new ArrayList<>();
         var transactions = TransactionManager.getInstance().getTransactionOf(getID(), transactionType);
+
+        // Sort by date ascending
+        transactions.sort(Comparator.comparing(AbstractTransaction::getDate));
 
         for (AbstractTransaction transaction : transactions) {
             res.add(transaction.getIcon(iconManager, player, langType));

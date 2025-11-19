@@ -19,23 +19,23 @@ import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
 public abstract class AbstractTransaction {
 
-    protected LocalDateTime localDate;
+    protected long localDate;
 
     protected AbstractTransaction(){
-        this.localDate = LocalDateTime.now();
+        this.localDate = new Date().getTime();
     }
 
-    protected AbstractTransaction(LocalDateTime localDate){
-        this.localDate = localDate;
+    protected AbstractTransaction(long timestamp) {
+        this.localDate = timestamp;
     }
 
-    public LocalDateTime getDate(){
+    public long getDate(){
         return localDate;
     }
 

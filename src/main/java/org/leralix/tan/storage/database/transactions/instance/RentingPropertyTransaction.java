@@ -8,13 +8,11 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.AbstractTransaction;
 import org.leralix.tan.storage.database.transactions.TransactionType;
+import org.leralix.tan.utils.text.DateUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,8 +43,7 @@ public class RentingPropertyTransaction extends AbstractTransaction {
     }
 
     public RentingPropertyTransaction(ResultSet rs) throws SQLException {
-        long timestamp = rs.getLong("timestamp");
-        this.localDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+        this.localDate = rs.getLong("timestamp");
         this.territoryID = rs.getString("territory_id");
         this.propertyID = rs.getString("property_id");
         this.sellerID = rs.getString("owner_id");
@@ -71,7 +68,8 @@ public class RentingPropertyTransaction extends AbstractTransaction {
                         Lang.TRANSACTION_TO.get(getColoredName(sellerID, langType)), // Owner can be a territory or a player
                         Lang.TRANSACTION_PROPERTY.get(getPropertyName(territoryID, propertyID, langType)),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount)),
-                        Lang.TRANSACTION_TAX.get(Double.toString(taxPercentage), Double.toString(taxedPart))
+                        Lang.TRANSACTION_TAX.get(Double.toString(taxPercentage), Double.toString(taxedPart)),
+                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate()))
                 )
                 .asGuiItem(player, langType);
     }
@@ -83,7 +81,7 @@ public class RentingPropertyTransaction extends AbstractTransaction {
 
     @Override
     public void fillInsertStatement(PreparedStatement ps) throws SQLException {
-        ps.setLong(1, getDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        ps.setLong(1, getDate());
         ps.setString(2, territoryID);
         ps.setString(3, propertyID);
         ps.setString(4, sellerID);

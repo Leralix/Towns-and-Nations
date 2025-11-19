@@ -9,13 +9,11 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.AbstractTransaction;
 import org.leralix.tan.storage.database.transactions.TransactionType;
+import org.leralix.tan.utils.text.DateUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,8 +31,7 @@ public class DonationTransaction extends AbstractTransaction {
     }
 
     public DonationTransaction(ResultSet rs) throws SQLException {
-        long timestamp = rs.getLong("timestamp");
-        this.localDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+        this.localDate = rs.getLong("timestamp");
         this.territoryID = rs.getString("territory_id");
         this.playerID = rs.getString("player_id");
         this.amount = rs.getDouble("amount");
@@ -51,7 +48,8 @@ public class DonationTransaction extends AbstractTransaction {
                 .setDescription(
                         Lang.TRANSACTION_FROM.get(getPlayerName(playerID, langType)),
                         Lang.TRANSACTION_TO.get(getTerritoryName(territoryID, langType)),
-                        Lang.TRANSACTION_AMOUNT.get(Double.toString(amount))
+                        Lang.TRANSACTION_AMOUNT.get(Double.toString(amount)),
+                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate()))
                 )
                 .asGuiItem(player, langType);
     }
@@ -63,7 +61,7 @@ public class DonationTransaction extends AbstractTransaction {
 
     @Override
     public void fillInsertStatement(PreparedStatement ps) throws SQLException {
-        ps.setLong(1, getDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        ps.setLong(1, getDate());
         ps.setString(2, territoryID);
         ps.setString(3, playerID);
         ps.setDouble(4, amount);

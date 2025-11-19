@@ -6,14 +6,13 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanTerritory;
 
@@ -56,7 +55,7 @@ public class AttackDeclaredNewsletter extends Newsletter {
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
                 Lang.ATTACK_DECLARED_TITLE.getDefault(),
-                Lang.NEWSLETTER_DATE.get(Lang.getServerLang(), String.valueOf(lang), TimeZoneManager.getInstance().getRelativeTimeDescription(lang, getDate())),
+                Lang.NEWSLETTER_DATE.get(Lang.getServerLang(), String.valueOf(lang), DateUtil.getRelativeTimeDescription(lang, getDate())),
                 Lang.ATTACK_DECLARED.get(Lang.getServerLang(), attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.getDefault());
 

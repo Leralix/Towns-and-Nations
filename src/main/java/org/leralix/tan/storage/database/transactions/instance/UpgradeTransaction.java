@@ -8,13 +8,11 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.AbstractTransaction;
 import org.leralix.tan.storage.database.transactions.TransactionType;
+import org.leralix.tan.utils.text.DateUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Set;
 
@@ -34,8 +32,7 @@ public class UpgradeTransaction extends AbstractTransaction {
     }
 
     public UpgradeTransaction(ResultSet rs) throws SQLException {
-        long timestamp = rs.getLong("timestamp");
-        this.localDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+        this.localDate = rs.getLong("timestamp");
         this.territoryID = rs.getString("territory_id");
         this.upgradeID = rs.getString("upgrade_id");
         this.newLevel = rs.getInt("upgrade_new_level");
@@ -56,7 +53,8 @@ public class UpgradeTransaction extends AbstractTransaction {
                 .setDescription(
                         Lang.TRANSACTION_FROM.get(getTerritoryName(territoryID, langType)),
                         Lang.TRANSACTION_UPGRADE.get(upgradeName, Integer.toString(newLevel)),
-                        Lang.TRANSACTION_AMOUNT.get(Double.toString(amount))
+                        Lang.TRANSACTION_AMOUNT.get(Double.toString(amount)),
+                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate()))
                 )
                 .asGuiItem(player, langType);
     }
@@ -68,7 +66,7 @@ public class UpgradeTransaction extends AbstractTransaction {
 
     @Override
     public void fillInsertStatement(PreparedStatement ps) throws SQLException {
-        ps.setLong(1, getDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        ps.setLong(1, getDate());
         ps.setString(2, territoryID);
         ps.setString(3, upgradeID);
         ps.setInt(4, newLevel);
