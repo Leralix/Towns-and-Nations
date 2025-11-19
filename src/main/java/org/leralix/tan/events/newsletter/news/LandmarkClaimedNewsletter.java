@@ -11,6 +11,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.DateUtil;
 import org.tan.api.interfaces.TanLandmark;
 import org.tan.api.interfaces.TanTerritory;
 
@@ -52,7 +53,10 @@ public class LandmarkClaimedNewsletter extends Newsletter {
 
         return IconManager.getInstance().get(Material.CHEST)
                 .setName(Lang.LANDMARK_CLAIMED_NEWSLETTER_TITLE.get(langType))
-                .setDescription(Lang.LANDMARK_CLAIMED_NEWSLETTER.get(newOwner.getColoredName(), landmark.getName()))
+                .setDescription(
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate())),
+                        Lang.LANDMARK_CLAIMED_NEWSLETTER.get(newOwner.getColoredName(), landmark.getName())
+                )
                 .setAction(event -> {
                     event.setCancelled(true);
                     if (event.isRightClick()) {

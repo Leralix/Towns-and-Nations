@@ -123,10 +123,10 @@ public class PlayerData implements ITanPlayer {
     }
 
     public boolean hasRegion() {
-        if (!this.hasTown()) {
+        var town = getTown();
+        if (town == null)
             return false;
-        }
-        return getTown().haveOverlord();
+        return town.haveOverlord();
     }
 
     public RegionData getRegion() {

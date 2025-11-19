@@ -13,6 +13,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -64,16 +65,16 @@ public class NewsletterStorage {
         }
     }
 
-    private List<Newsletter> getNewsletters() {
-        return newsletterDAO.getNewsletters();
-    }
-
     public List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onClick) {
-        List<GuiItem> newsletters = new ArrayList<>();
+        List<GuiItem> guis = new ArrayList<>();
 
         LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
 
-        for (Newsletter newsletter : getNewsletters()) {
+        List<Newsletter> newsletters = newsletterDAO.getNewsletters();
+
+        newsletters.sort(Comparator.comparing(Newsletter::getDate).reversed());
+
+        for (Newsletter newsletter : newsletters) {
 
             EventScope eventScope = newsletter.getType().getNewsletterScope();
 
@@ -83,28 +84,20 @@ public class NewsletterStorage {
 
             if (eventScope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)) {
                 if (scope == NewsletterScope.SHOW_ALL) {
-                    newsletters.add(newsletter.createConcernedGuiItem(player, langType, onClick));
-                    continue;
+                    guis.add(newsletter.createConcernedGuiItem(player, langType, onClick));
+                } else if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
+                    guis.add(newsletter.createGuiItem(player, langType, onClick));
                 }
-                if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
-                    newsletters.add(newsletter.createGuiItem(player, langType, onClick));
-                    continue;
-                }
+            } else if (eventScope == EventScope.ALL
+                    && (scope == NewsletterScope.SHOW_ALL
+                    || (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)))) {
+                guis.add(newsletter.createGuiItem(player, langType, onClick));
             }
-            if (eventScope == EventScope.ALL) {
-                if (scope == NewsletterScope.SHOW_ALL) {
-                    newsletters.add(newsletter.createGuiItem(player, langType, onClick));
-                    continue;
-                }
-                if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
-                    newsletters.add(newsletter.createGuiItem(player, langType, onClick));
-                    continue;
-                }
-            }
-        }
-        newsletters.removeAll(Collections.singleton(null));
 
-        return newsletters;
+        }
+        guis.removeAll(Collections.singleton(null));
+
+        return guis;
     }
 
     public int getNbUnreadNewsletterForPlayer(Player player) {

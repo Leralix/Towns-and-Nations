@@ -31,6 +31,7 @@ public class TerritoryChunkUpkeepTransaction extends AbstractTransaction {
     }
 
     public TerritoryChunkUpkeepTransaction(ResultSet rs) throws SQLException {
+        this.localDate = rs.getLong("timestamp");
         this.territoryID = rs.getString("territory_id");
         this.costPerChunk = rs.getDouble("cost_per_chunk");
         this.numberOfChunks = rs.getInt("number_of_chunks");

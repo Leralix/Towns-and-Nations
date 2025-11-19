@@ -58,7 +58,7 @@ public abstract class AbstractTransactionHistory extends IteratorGUI {
         var transactions = TransactionManager.getInstance().getTransactionOf(getID(), transactionType);
 
         // Sort by date ascending
-        transactions.sort(Comparator.comparing(AbstractTransaction::getDate));
+        transactions.sort(Comparator.comparing(AbstractTransaction::getDate).reversed());
 
         for (AbstractTransaction transaction : transactions) {
             res.add(transaction.getIcon(iconManager, player, langType));
