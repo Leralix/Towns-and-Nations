@@ -21,6 +21,7 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeTownTag;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.ChangeCapital;
+import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.file.FileUtil;
@@ -164,6 +165,11 @@ public class TownSettingsMenu extends SettingsMenus {
                     event.setCancelled(true);
                     if (townData.isCapital()) {
                         TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, townData.getOverlord().get().getBaseColoredName()));
+                        return;
+                    }
+
+                    if(!WarStorage.getInstance().getWarsOfTerritory(territoryData).isEmpty()){
+                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR.get(langType));
                         return;
                     }
 

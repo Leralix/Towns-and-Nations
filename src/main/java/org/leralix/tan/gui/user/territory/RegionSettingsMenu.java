@@ -10,8 +10,10 @@ import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.RegionDeletednternalEvent;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.service.requirements.LeaderRequirement;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -72,14 +74,19 @@ public class RegionSettingsMenu extends SettingsMenus {
                         Lang.GUI_REGION_DELETE_DESC2.get(),
                         Lang.GUI_REGION_DELETE_DESC3.get()
                 )
+                .setRequirements(
+                        new LeaderRequirement(territoryData, tanPlayer)
+                )
                 .setAction(event -> {
                     event.setCancelled(true);
-                    if (!regionData.isLeader(tanPlayer)) {
-                        TanChatUtils.message(player, Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
-                        return;
-                    }
+
                     if (regionData.isCapital()) {
                         TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, regionData.getOverlord().get().getBaseColoredName()));
+                        return;
+                    }
+
+                    if(!WarStorage.getInstance().getWarsOfTerritory(territoryData).isEmpty()){
+                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR.get(langType));
                         return;
                     }
 
