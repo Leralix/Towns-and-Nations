@@ -36,11 +36,6 @@ public class TownData extends TerritoryData {
     private String UuidLeader;
     private String townTag;
     private boolean isRecruiting;
-    /**
-     * Keep to maintain backward compatibility until 0.17.0
-     */
-    @Deprecated(since = "0.16.0", forRemoval = true)
-    Level townLevel;
     private HashSet<String> PlayerJoinRequestSet;
     private Map<String, PropertyData> propertyDataMap;
     private TeleportationPosition teleportationPosition;

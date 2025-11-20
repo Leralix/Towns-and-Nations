@@ -37,7 +37,6 @@ import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.database.MySqlHandler;
 import org.leralix.tan.storage.database.SQLiteHandler;
 import org.leralix.tan.storage.impl.FortDataStorage;
-import org.leralix.tan.storage.legacy.UpgradeStorage;
 import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
@@ -159,7 +158,6 @@ public class TownsAndNations extends JavaPlugin {
         getLogger().log(Level.INFO, "[TaN] -Loading Configs");
 
         Constants.init(ConfigUtil.getCustomConfig(ConfigTag.MAIN));
-        UpgradeStorage.init();
         MobChunkSpawnStorage.init();
         ClaimBlacklistStorage.init();
         NewsletterType.init();

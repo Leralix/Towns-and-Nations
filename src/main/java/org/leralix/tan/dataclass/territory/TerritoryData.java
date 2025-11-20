@@ -1113,13 +1113,8 @@ public abstract class TerritoryData {
     public TerritoryStats getNewLevel() {
         if (this.upgradesStatus == null) {
             // Migrate old data if exists
-            if (this instanceof TownData townData) {
-                if (townData.townLevel != null) {
-                    this.upgradesStatus = new TerritoryStats(townData.townLevel);
-                    townData.townLevel = null;
-                } else {
-                    this.upgradesStatus = new TerritoryStats(StatsType.TOWN);
-                }
+            if (this instanceof TownData) {
+                this.upgradesStatus = new TerritoryStats(StatsType.TOWN);
             } else {
                 this.upgradesStatus = new TerritoryStats(StatsType.REGION);
             }

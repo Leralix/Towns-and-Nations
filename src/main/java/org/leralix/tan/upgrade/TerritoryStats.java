@@ -6,7 +6,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.dataclass.Level;
 import org.leralix.tan.upgrade.rewards.AggregatableStat;
 import org.leralix.tan.upgrade.rewards.IndividualStat;
 import org.leralix.tan.upgrade.rewards.StatsType;
@@ -26,14 +25,6 @@ public class TerritoryStats {
     private int mainLevel;
     private Map<String, Integer> level;
     private final StatsType statsType;
-
-
-    public TerritoryStats(Level oldLevel){
-        this.mainLevel = oldLevel.getTownLevel();
-        this.level = oldLevel.getTotalBenefits();
-        this.level.put("CITY_HALL", 1); // Default upgrade
-        statsType = StatsType.TOWN;
-    }
 
     public TerritoryStats(StatsType statsType){
         this.mainLevel = 1;
