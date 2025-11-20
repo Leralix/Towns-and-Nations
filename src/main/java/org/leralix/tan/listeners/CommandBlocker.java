@@ -81,11 +81,18 @@ public class CommandBlocker implements Listener {
         return false;
     }
 
+    /**
+     * If the player is involved in an attack, check if the command is blacklisted during attacks.
+     * @param player        the player executing the command
+     * @param inputCommand  the raw command
+     * @return true if the command is blacklisted during attacks, false otherwise
+     */
     private static boolean isPlayerInAnAttack(Player player, String inputCommand) {
 
-        if(PlayerDataStorage.getInstance().get(player).getAttackInvolvedIn().isEmpty()){
+        if(!PlayerDataStorage.getInstance().get(player).getAttackInvolvedIn().isEmpty()){
             for(String blackListedCommands : Constants.getBlacklistedCommandsDuringAttacks()){
                 if(blackListedCommands.startsWith(inputCommand)){
+                    TanChatUtils.message(player, Lang.CANNOT_CAST_COMMAND_DURING_ATTACK, SoundEnum.NOT_ALLOWED);
                     return true;
                 }
             }
