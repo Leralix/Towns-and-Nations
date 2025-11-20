@@ -5,10 +5,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.storage.database.transactions.instance.*;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -17,7 +14,6 @@ public class TransactionManager {
     private final DataSource dataSource;
     private static TransactionManager instance;
     private final Logger pluginLogger;
-    private final String SQL_INDEX_STATEMENT = "INSERT INTO transaction_index (concerned, id_transaction, type) VALUES (?, ?, ?)";
 
     private TransactionManager(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -47,7 +43,7 @@ public class TransactionManager {
                 autoIncrementSyntax = "BIGSERIAL PRIMARY KEY";
             }
 
-            for(TransactionType transactionType : TransactionType.values()){
+            for (TransactionType transactionType : TransactionType.values()) {
                 statement.addBatch(transactionType.getCreateTableSQL(autoIncrementSyntax));
             }
 
@@ -102,8 +98,7 @@ public class TransactionManager {
                     }
                 }
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             pluginLogger.severe("[TAN] Error while reading index: " + e.getMessage());
             return Collections.emptyList();
         }
@@ -136,7 +131,7 @@ public class TransactionManager {
                 case TERRITORY_CHUNK_UPKEEP -> TerritoryChunkUpkeepTransaction.class;
                 default -> null;
             };
-            if(wantedClass == null){
+            if (wantedClass == null) {
                 pluginLogger.warning("[TAN] Unhandled transaction type: " + type);
                 continue;
             }
@@ -211,11 +206,13 @@ public class TransactionManager {
             return;
         }
 
-        try (var ps = conn.prepareStatement(SQL_INDEX_STATEMENT)) {
+        String sqlStatement = "INSERT INTO transaction_index (concerned, id_transaction, type) VALUES (?, ?, ?)";
+
+        try (var ps = conn.prepareStatement(sqlStatement)) {
+            ps.setLong(2, transactionId);
+            ps.setString(3, transactionType.name());
             for (String c : concerned) {
                 ps.setString(1, c);
-                ps.setLong(2, transactionId);
-                ps.setString(3, transactionType.name());
                 ps.addBatch();
             }
 
@@ -237,25 +234,38 @@ public class TransactionManager {
     }
 
     private void deleteOldTransactions(Connection conn, TransactionType type, Timestamp threshold) {
-        String deleteFromTable = "DELETE FROM " + type.getTableName() + " WHERE timestamp < ?";
-        String cleanIndex = "DELETE FROM transaction_index WHERE type = ? AND id_transaction NOT IN (SELECT id FROM " + type.getTableName() + ")";
 
-        try (var ps = conn.prepareStatement(deleteFromTable)) {
+        final String tableName = type.getTableName();
+
+        final String deleteFromTable = "DELETE FROM " + tableName + " WHERE timestamp < ?";
+        final String cleanIndex = """
+                DELETE FROM transaction_index
+                WHERE type = ?
+                  AND id_transaction NOT IN (SELECT id FROM %s)
+                """.formatted(tableName);
+
+        // Delete old rows
+        try (PreparedStatement ps = conn.prepareStatement(deleteFromTable)) {
             ps.setTimestamp(1, threshold);
             int deleted = ps.executeUpdate();
-            if(deleted > 0) {
-                pluginLogger.info("[TAN] Deleted " + deleted + " old transactions of type " + type);
+
+            if (deleted > 0) {
+                pluginLogger.info(() -> "[TAN] Deleted " + deleted + " old transactions of type " + type);
             }
+
         } catch (SQLException e) {
-            pluginLogger.severe("[TAN] Error while deleting from " + type.getTableName() + ": " + e.getMessage());
+            pluginLogger.severe(() -> "[TAN] Error while deleting from " + tableName + ": " + e.getMessage());
         }
 
-        try (var ps = conn.prepareStatement(cleanIndex)) {
+        // Clean index
+        try (PreparedStatement ps = conn.prepareStatement(cleanIndex)) {
             ps.setString(1, type.name());
             ps.executeUpdate();
+
         } catch (SQLException e) {
-            pluginLogger.severe("[TAN] Error while cleaning index for " + type.name() + ": " + e.getMessage());
+            pluginLogger.severe(() -> "[TAN] Error while cleaning index for type " + type.name() + ": " + e.getMessage());
         }
     }
+
 
 }
