@@ -11,7 +11,7 @@ public class CommandExecutor {
         throw new AssertionError("Static class");
     }
 
-    public static void applyStartWarCommands(PlannedAttack attackData){
+    public static void applyStartAttackCommands(PlannedAttack attackData){
 
         for(String command : Constants.getOnceStartCommands()){
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);

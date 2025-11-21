@@ -5,18 +5,17 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.war.fort.Fort;
+import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CaptureFort {
 
-    private final String warId;
     private final Fort fort;
-    private final TerritoryData attackingTerritory;
+    private final CurrentAttack currentAttack;
 
     private String title;
     private int score;
@@ -25,15 +24,14 @@ public class CaptureFort {
     private final List<Player> defenders;
     private final BossBar bossBar;
 
-    public CaptureFort(Fort fort, TerritoryData attackingTerritory, String warId) {
+    public CaptureFort(Fort fort, CurrentAttack currentAttack) {
         this.fort = fort;
         this.score = 0;
-        this.attackingTerritory = attackingTerritory;
+        this.currentAttack = currentAttack;
         this.attackers = new ArrayList<>();
         this.defenders = new ArrayList<>();
         updateTitle(0, 0);
         this.bossBar = Bukkit.createBossBar(this.title, BarColor.RED, BarStyle.SEGMENTED_10);
-        this.warId = warId;
     }
 
     private void updateTitle(int nbAttackers, int nbDefenders) {
@@ -67,12 +65,15 @@ public class CaptureFort {
         }
         if (score > maxScore) {
             score = maxScore;
-            fort.setOccupier(attackingTerritory);
+            fort.setOccupier(currentAttack.getAttackData().getWar().getMainAttacker());
             fort.updateFlag();
+            currentAttack.getAttackResultCounter().incrementFortsCaptured();
+
         } else if (score < 0) {
             score = 0;
             fort.liberate();
             fort.updateFlag();
+            currentAttack.getAttackResultCounter().decrementFortsCaptured();
         }
         updateBossBar(nbAttackers, nbDefenders);
     }
@@ -98,6 +99,6 @@ public class CaptureFort {
     }
 
     public String getWarID() {
-        return warId;
+        return currentAttack.getAttackData().getWar().getID();
     }
 }

@@ -46,7 +46,6 @@ import org.leralix.tan.storage.database.transactions.instance.SalaryTransaction;
 import org.leralix.tan.storage.database.transactions.instance.TerritoryChunkUpkeepTransaction;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.upgrade.TerritoryStats;
 import org.leralix.tan.upgrade.rewards.StatsType;
@@ -607,7 +606,6 @@ public abstract class TerritoryData {
         }
 
         getRelations().cleanAll(this);   //Cancel all Relation between the deleted territory and other territories
-        PlannedAttackStorage.getInstance().territoryDeleted(this);
     }
 
     public boolean canConquerChunk(ClaimedChunk2 chunk) {

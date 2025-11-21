@@ -4,10 +4,10 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
-import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.fort.Fort;
+import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,21 +18,19 @@ public class CaptureChunk {
     /**
      * The ID of the war related to this capture.
      */
-    private final String warID;
     private final TerritoryChunk territoryChunk;
     private int score;
     private final int maxScore = 100;
-    private final TerritoryData mainAttacker;
+    private final CurrentAttack currentAttack;
     private final List<Player> attackers;
     private final List<Player> defenders;
 
-    public CaptureChunk(int initialScore, TerritoryChunk territoryChunk, TerritoryData mainAttacker, String id) {
+    public CaptureChunk(int initialScore, TerritoryChunk territoryChunk, CurrentAttack currentAttack) {
         this.score = initialScore;
         this.attackers = new ArrayList<>();
         this.defenders = new ArrayList<>();
         this.territoryChunk = territoryChunk;
-        this.mainAttacker = mainAttacker;
-        this.warID = id;
+        this.currentAttack = currentAttack;
     }
 
     public boolean isCaptured() {
@@ -72,7 +70,7 @@ public class CaptureChunk {
     }
 
     public String getWarID() {
-        return warID;
+        return currentAttack.getAttackData().getWar().getID();
     }
 
     private Optional<Fort> getFortProtecting() {
@@ -115,9 +113,12 @@ public class CaptureChunk {
         if (score < 0) {
             score = 0;
             territoryChunk.liberate();
-        } else if (score > maxScore) {
+            currentAttack.getAttackResultCounter().incrementClaimsCaptured();
+        }
+        else if (score > maxScore) {
             score = maxScore;
-            territoryChunk.setOccupier(mainAttacker);
+            territoryChunk.setOccupier(currentAttack.getAttackData().getWar().getMainAttacker());
+            currentAttack.getAttackResultCounter().decrementClaimsCaptured();
         }
     }
 

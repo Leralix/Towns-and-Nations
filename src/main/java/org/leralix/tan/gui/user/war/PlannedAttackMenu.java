@@ -17,6 +17,7 @@ import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.PlannedAttack;
+import org.leralix.tan.war.info.AttackResultCancelled;
 import org.leralix.tan.war.legacy.WarRole;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class PlannedAttackMenu extends BasicGui {
             ItemStack cancelAttack = HeadUtils.createCustomItemStack(Material.BARRIER, Lang.GUI_CANCEL_ATTACK.get(tanPlayer), Lang.GUI_GENERIC_CLICK_TO_DELETE.get(tanPlayer));
             ItemStack renameAttack = HeadUtils.createCustomItemStack(Material.NAME_TAG, Lang.GUI_RENAME_ATTACK.get(tanPlayer), Lang.GUI_GENERIC_CLICK_TO_RENAME.get(tanPlayer));
             GuiItem cancelButton = ItemBuilder.from(cancelAttack).asGuiItem(event -> {
-                plannedAttack.end();
+                plannedAttack.end(new AttackResultCancelled());
                 territoryData.broadcastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(plannedAttack.getWar().getMainDefender().getName()), MINOR_GOOD);
                 new AttackMenu(player, territoryData);
             });

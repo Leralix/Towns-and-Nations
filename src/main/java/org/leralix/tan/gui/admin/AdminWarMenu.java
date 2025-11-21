@@ -6,6 +6,7 @@ import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.war.PlannedAttack;
+import org.leralix.tan.war.info.AttackResultCancelled;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,7 +39,7 @@ public class AdminWarMenu extends IteratorGUI {
                             if (action.isLeftClick()) {
                                 plannedAttack.setAdminApproved(true);
                             } else if (action.isRightClick()) {
-                                plannedAttack.end();
+                                plannedAttack.end(new AttackResultCancelled());
                             }
                         }
                         open();

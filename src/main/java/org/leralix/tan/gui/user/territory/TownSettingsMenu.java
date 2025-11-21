@@ -4,6 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.RegionData;
@@ -168,8 +169,8 @@ public class TownSettingsMenu extends SettingsMenus {
                         return;
                     }
 
-                    if(!WarStorage.getInstance().getWarsOfTerritory(territoryData).isEmpty()){
-                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR.get(langType));
+                    if (!WarStorage.getInstance().getWarsOfTerritory(territoryData).isEmpty()) {
+                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR.get(langType), SoundEnum.NOT_ALLOWED);
                         return;
                     }
 

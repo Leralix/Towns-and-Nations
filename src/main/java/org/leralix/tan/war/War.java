@@ -10,6 +10,7 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.war.info.AttackResultCancelled;
 import org.leralix.tan.war.legacy.WarRole;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
@@ -93,7 +94,7 @@ public class War {
         getMainAttacker().setRelation(getMainDefender(), TownRelation.NEUTRAL);
         for(PlannedAttack plannedAttack : PlannedAttackStorage.getInstance().getAll().values()){
             if(plannedAttack.getWar().getID().equals(getID())){
-                plannedAttack.end();
+                plannedAttack.end(new AttackResultCancelled());
             }
         }
         WarStorage.getInstance().remove(this);

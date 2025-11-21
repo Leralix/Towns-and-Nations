@@ -65,7 +65,7 @@ public abstract class AdminManageTerritory extends BasicGui {
 
                    // A territory cannot be deleted if it is at war to avoid errors
                    if(!WarStorage.getInstance().getWarsOfTerritory(territoryData).isEmpty()){
-                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR.get(langType));
+                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR.get(langType), SoundEnum.NOT_ALLOWED);
                        return;
                    }
 

@@ -2,10 +2,8 @@ package org.leralix.tan.storage.stored;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
-import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.storage.typeadapter.WargoalTypeAdapter;
 import org.leralix.tan.war.PlannedAttack;
-import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
@@ -50,19 +48,6 @@ public class PlannedAttackStorage extends JsonStorage<PlannedAttack> {
             ID++;
         }
         return "W" + ID;
-    }
-
-    public synchronized void territoryDeleted(TerritoryData territoryData) {
-        for (PlannedAttack plannedAttack : getAll().values()) {
-            War war = plannedAttack.getWar();
-            if (war == null) {
-                continue;
-            }
-            if (war.isMainAttacker(territoryData) || war.isMainDefender(territoryData)) {
-                plannedAttack.end();
-                //iterator.remove();
-            }
-        }
     }
 
 

@@ -13,10 +13,23 @@ import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.utils.gameplay.CommandExecutor;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.cosmetic.ShowBoundaries;
+import org.leralix.tan.war.info.AttackResultCounter;
 
+/**
+ * Represents an ongoing attack between territories.
+ * A currentAttack is created when a planned attack starts and is removed when it ends.
+ * Data will be transferred to the PlannedAttack object when the attack ends to keep a record of the attack.
+ */
 public class CurrentAttack {
 
+    /**
+     *  Data of the planned attack related to this current attack
+     */
     private final PlannedAttack attackData;
+
+    /**
+     * Indicates if the attack has ended
+     */
     private boolean end;
 
     /**
@@ -24,15 +37,26 @@ public class CurrentAttack {
      */
     private final long totalTime;
     /**
-     * Remaning time, in tick
+     * Remaining time, in tick
      */
     private long remaining;
+    /**
+     * Boss bar showing the remaining time
+     */
     private final BossBar bossBar;
 
+    private final AttackResultCounter attackResultCounter;
+
+    /**
+     * Constructor of CurrentAttack
+     * @param plannedAttack the planned attack data
+     * @param startTime     the start time in epoch milliseconds
+     * @param endTime       the end time in epoch milliseconds
+     */
     public CurrentAttack(PlannedAttack plannedAttack, long startTime, long endTime) {
 
         this.attackData = plannedAttack;
-
+        this.attackResultCounter = new AttackResultCounter();
         this.end = false;
 
         //Conversion from ms to ticks
@@ -40,7 +64,17 @@ public class CurrentAttack {
         this.remaining = totalTime;
 
         this.bossBar = Bukkit.createBossBar("", BarColor.RED, BarStyle.SOLID);
+        applyBossBar(plannedAttack);
 
+        CommandExecutor.applyStartAttackCommands(getAttackData());
+        start();
+    }
+
+    public AttackResultCounter getAttackResultCounter() {
+        return attackResultCounter;
+    }
+
+    private void applyBossBar(PlannedAttack plannedAttack) {
         for (TerritoryData territoryData : plannedAttack.getAttackingTerritories()) {
             for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
                 tanPlayer.addWar(this);
@@ -59,8 +93,6 @@ public class CurrentAttack {
                 }
             }
         }
-        CommandExecutor.applyStartWarCommands(getAttackData());
-        start();
     }
 
     private void updateBossBar() {
@@ -102,6 +134,8 @@ public class CurrentAttack {
 
         CommandExecutor.applyEndWarCommands(getAttackData());
         end = true;
+
+        attackData.end(attackResultCounter.buildResult());
 
         new BukkitRunnable() {
             @Override
@@ -157,6 +191,5 @@ public class CurrentAttack {
             }
         }
     }
-
 
 }

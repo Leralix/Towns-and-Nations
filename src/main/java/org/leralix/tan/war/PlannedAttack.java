@@ -28,6 +28,9 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.war.capture.CaptureManager;
+import org.leralix.tan.war.info.AttackNotYetStarted;
+import org.leralix.tan.war.info.AttackResult;
+import org.leralix.tan.war.info.AttackResultCancelled;
 import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.CurrentAttack;
 import org.leralix.tan.war.legacy.WarRole;
@@ -41,6 +44,7 @@ public class PlannedAttack {
     private String name;
     private final Collection<String> defendersID;
     private final Collection<String> attackersID;
+    private AttackResult attackResult;
 
     /**
      * The start time of the war, in milliseconds since January 1, 1970
@@ -85,6 +89,8 @@ public class PlannedAttack {
 
         this.startTime = new Date().getTime() + (long) createAttackData.getSelectedTime() * 60 * 1000;
         this.endTime = this.startTime + Constants.getAttackDuration() * 60 * 1000;
+
+        this.attackResult = new AttackNotYetStarted();
 
         war.getMainDefender().addPlannedAttack(this);
         war.getMainAttacker().addPlannedAttack(this);
@@ -245,7 +251,10 @@ public class PlannedAttack {
         return defendersID.size();
     }
 
-    public void end() {
+    public void end(AttackResult attackResult) {
+
+        this.attackResult = attackResult;
+
         if (warStartTask != null) {
             warStartTask.cancel();
         }
@@ -310,7 +319,7 @@ public class PlannedAttack {
     public void territorySurrendered() {
         EventManager.getInstance().callEvent(new DefenderAcceptDemandsBeforeWarInternalEvent(war.getMainDefender(), war.getMainAttacker()));
         war.territorySurrender(warRole);
-        end();
+        end(new AttackResultCancelled());
     }
 
     public ItemStack getAttackingIcon(LangType langType) {

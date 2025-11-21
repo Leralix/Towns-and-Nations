@@ -10,6 +10,7 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.fort.Fort;
+import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -31,18 +32,17 @@ public class CaptureManager {
         return instance;
     }
 
-    public CaptureManager(){
-
-    }
-
-    public void updateCapture(PlannedAttack currentAttack){
+    public void updateCapture(CurrentAttack currentAttack){
         handleFortCapture(currentAttack);
         handleChunkCapture(currentAttack);
     }
 
-    private void handleFortCapture(PlannedAttack attackData) {
+    private void handleFortCapture(CurrentAttack currentAttack) {
+
+        var attackData = currentAttack.getAttackData();
+
         for(Fort fortAtWar : attackData.getWar().getMainDefender().getOwnedForts()){
-            forts.putIfAbsent(fortAtWar.getID(), new CaptureFort(fortAtWar, attackData.getWar().getMainAttacker(), attackData.getID()));
+            forts.putIfAbsent(fortAtWar.getID(), new CaptureFort(fortAtWar, currentAttack));
         }
 
         registerPlayer(attackData.getAttackersPlayers(), forts, CaptureFort::addAttacker);
@@ -57,9 +57,11 @@ public class CaptureManager {
         }
     }
 
-    private void registerPlayer(Collection<ITanPlayer> players,
-                                Map<String, CaptureFort> forts,
-                                BiConsumer<CaptureFort, Player> consumer) {
+    private void registerPlayer(
+            Collection<ITanPlayer> players,
+            Map<String, CaptureFort> forts,
+            BiConsumer<CaptureFort, Player> consumer
+    ) {
         for (ITanPlayer tanPlayer : players) {
             Player player = tanPlayer.getPlayer();
             if (player == null || !player.isOnline()) continue;
@@ -74,7 +76,10 @@ public class CaptureManager {
         }
     }
 
-    private void handleChunkCapture(PlannedAttack attackData) {
+    private void handleChunkCapture(CurrentAttack currentAttack) {
+
+        var attackData = currentAttack.getAttackData();
+
         for(CaptureChunk captureChunk : captures.values()){
             captureChunk.resetPlayers();
         }
@@ -100,7 +105,7 @@ public class CaptureManager {
                 }
 
                 if(!captures.containsKey(territoryChunk)){
-                    captures.putIfAbsent(territoryChunk, new CaptureChunk(0, territoryChunk, mainAttacker, attackData.getID()));
+                    captures.putIfAbsent(territoryChunk, new CaptureChunk(0, territoryChunk, currentAttack));
                 }
                 captures.get(territoryChunk).addAttacker(attacker.getPlayer());
             }
@@ -121,7 +126,7 @@ public class CaptureManager {
                 }
 
                 if(!captures.containsKey(territoryChunk)){
-                    captures.putIfAbsent(territoryChunk, new CaptureChunk(100, territoryChunk, mainAttacker, attackData.getID()));
+                    captures.putIfAbsent(territoryChunk, new CaptureChunk(100, territoryChunk, currentAttack));
                 }
                 captures.get(territoryChunk).addDefender(defender.getPlayer());
             }
