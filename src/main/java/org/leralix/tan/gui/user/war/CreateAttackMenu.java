@@ -13,7 +13,6 @@ import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.territory.AttackMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -80,7 +79,7 @@ public class CreateAttackMenu extends BasicGui {
 
                     EventManager.getInstance().callEvent(new AttackDeclaredInternalEvent(war.getTerritory(warRole.opposite()), war.getTerritory(warRole)));
 
-                    PlannedAttackStorage.getInstance().newAttack(attackData);
+                    war.addAttack(attackData);
                     new AttackMenu(player, war.getTerritory(warRole));
                 })
                 .asGuiItem(player, langType);

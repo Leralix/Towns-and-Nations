@@ -3,10 +3,15 @@ package org.leralix.tan.storage.stored;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.storage.typeadapter.AttackResultAdapter;
 import org.leralix.tan.storage.typeadapter.WargoalTypeAdapter;
+import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.War;
+import org.leralix.tan.war.info.AttackResult;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,6 +25,7 @@ public class WarStorage extends JsonStorage<War>{
                 new TypeToken<HashMap<String, War>>() {}.getType(),
                 new GsonBuilder()
                         .registerTypeAdapter(WarGoal.class, new WargoalTypeAdapter())
+                        .registerTypeAdapter(AttackResult.class, new AttackResultAdapter())
                         .setPrettyPrinting().
                         create()
         );
@@ -81,5 +87,13 @@ public class WarStorage extends JsonStorage<War>{
     @Override
     public void reset() {
         instance = null;
+    }
+
+    public Collection<PlannedAttack> getAllAttacks() {
+        List<PlannedAttack> res = new ArrayList<>();
+        for(War war : getAll().values()){
+            res.addAll(war.getPlannedAttacks());
+        }
+        return res;
     }
 }

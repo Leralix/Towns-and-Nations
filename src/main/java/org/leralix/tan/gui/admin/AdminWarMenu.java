@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlannedAttackStorage;
+import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.info.AttackResultCancelled;
 
@@ -18,7 +18,7 @@ public class AdminWarMenu extends IteratorGUI {
 
     public AdminWarMenu(Player player) {
         super(player, Lang.HEADER_ADMIN_WAR_MENU, 6);
-        plannedAttackList = PlannedAttackStorage.getInstance().getAll().values();
+        plannedAttackList = WarStorage.getInstance().getAllAttacks();
         open();
     }
 

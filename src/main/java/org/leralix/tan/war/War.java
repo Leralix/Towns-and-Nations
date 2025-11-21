@@ -7,17 +7,14 @@ import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.war.info.AttackResultCancelled;
+import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.WarRole;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class War {
 
@@ -29,6 +26,8 @@ public class War {
     private final List<WarGoal> attackGoals;
     private final List<WarGoal> defenseGoals;
 
+    private HashMap<String, PlannedAttack> plannedAttacks;
+
     public War(String id, TerritoryData mainAttacker, TerritoryData mainDefender) {
         this.ID = id;
         this.name = "War " + id;
@@ -36,6 +35,7 @@ public class War {
         this.mainAttackerID = mainAttacker.getID();
         this.attackGoals = new ArrayList<>();
         this.defenseGoals = new ArrayList<>();
+        this.plannedAttacks = new HashMap<>();
     }
 
     public String getID() {
@@ -83,7 +83,7 @@ public class War {
         TerritoryData looser = getTerritory(looserTerritory);
         TerritoryData winner = getTerritory(looserTerritory.opposite());
 
-        for(WarGoal goal : getGoals(looserTerritory.opposite())) {
+        for (WarGoal goal : getGoals(looserTerritory.opposite())) {
             goal.applyWarGoal(winner, looser);
         }
 
@@ -92,12 +92,23 @@ public class War {
 
     public void endWar() {
         getMainAttacker().setRelation(getMainDefender(), TownRelation.NEUTRAL);
-        for(PlannedAttack plannedAttack : PlannedAttackStorage.getInstance().getAll().values()){
-            if(plannedAttack.getWar().getID().equals(getID())){
-                plannedAttack.end(new AttackResultCancelled());
-            }
+        for (PlannedAttack plannedAttack : getPlannedAttacks()) {
+            plannedAttack.end(new AttackResultCancelled());
         }
         WarStorage.getInstance().remove(this);
+    }
+
+
+    public Collection<PlannedAttack> getPlannedAttacks() {
+        return getPlannedAttacksMap().values();
+    }
+
+    public Map<String, PlannedAttack> getPlannedAttacksMap() {
+        if (plannedAttacks == null) {
+            //Old compatibility check
+            plannedAttacks = new HashMap<>();
+        }
+        return plannedAttacks;
     }
 
     public List<WarGoal> getGoals(WarRole warRole) {
@@ -126,10 +137,10 @@ public class War {
     }
 
     public TerritoryData getTerritory(WarRole warRole) {
-        if(warRole == WarRole.MAIN_ATTACKER){
+        if (warRole == WarRole.MAIN_ATTACKER) {
             return getMainAttacker();
         }
-        if(warRole == WarRole.MAIN_DEFENDER){
+        if (warRole == WarRole.MAIN_DEFENDER) {
             return getMainDefender();
         }
         throw new IllegalArgumentException(warRole + " is not authorized");
@@ -138,15 +149,28 @@ public class War {
     public Collection<FilledLang> generateWarGoalsDesciption(WarRole warRole, LangType langType) {
         List<WarGoal> goals = getGoals(warRole.opposite());
         List<FilledLang> goalsToString = new ArrayList<>();
-        for(WarGoal goal : goals) {
+        for (WarGoal goal : goals) {
             goalsToString.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(goal.getCurrentDesc(langType)));
         }
 
         // If no goals are set, add a message
-        if(goalsToString.isEmpty()) {
+        if (goalsToString.isEmpty()) {
             goalsToString.add(Lang.WAR_GOAL_LIST_BUTTON_LIST_NO_WAR_GOAL_SET.get());
         }
         return goalsToString;
 
+    }
+
+    public void addAttack(CreateAttackData createAttackData) {
+        String newID = getNextID();
+        getPlannedAttacksMap().put(newID, new PlannedAttack(newID, createAttackData));
+    }
+
+    private String getNextID() {
+        int ID = 0;
+        while (getPlannedAttacksMap().containsKey(getID() + "_" + ID)) {
+            ID++;
+        }
+        return getID() + "_" + ID;
     }
 }

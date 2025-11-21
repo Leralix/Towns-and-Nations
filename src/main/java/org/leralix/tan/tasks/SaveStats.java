@@ -25,7 +25,6 @@ public class SaveStats {
         PlayerDataStorage.getInstance().save();
         NewClaimedChunkStorage.getInstance().save();
         LandmarkStorage.getInstance().save();
-        PlannedAttackStorage.getInstance().save();
         WarStorage.getInstance().save();
         FortStorage.getInstance().save();
         PremiumStorage.getInstance().save();

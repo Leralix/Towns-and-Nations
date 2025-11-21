@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.leralix.lib.SphereLib;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.War;

@@ -21,7 +21,6 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
-import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.timezone.TimeZoneEnum;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.constants.Constants;
@@ -205,7 +204,7 @@ public class PlannedAttack {
 
     public IconBuilder getAdminIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZoneEnum) {
 
-        IconBuilder iconBuilder = getIcon(iconManager, langType, timeZoneEnum);
+        IconBuilder iconBuilder = getBaseIcon(iconManager, langType, timeZoneEnum);
 
         if(isAdminApproved) {
             return iconBuilder.addDescription(Lang.ATTACK_ICON_DESC_ADMIN_APPROVED.get());
@@ -220,7 +219,7 @@ public class PlannedAttack {
         }
     }
 
-    public IconBuilder getIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZone) {
+    private IconBuilder getBaseIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZone) {
         long startDateInSeconds = (startTime - new Date().getTime()) / 1000;
         long attackDurationInSeconds = (endTime - startTime) / 1000;
 
@@ -238,8 +237,14 @@ public class PlannedAttack {
                 );
     }
 
+    public IconBuilder getIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZone){
+        IconBuilder mainIcon = getBaseIcon(iconManager, langType, timeZone);
+        mainIcon.addDescription(attackResult.getResultLines());
+        return mainIcon;
+    }
+
     public IconBuilder getIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZone, TerritoryData territoryConcerned) {
-        return getIcon(iconManager, langType, timeZone)
+        return getBaseIcon(iconManager, langType, timeZone)
                 .addDescription(Lang.ATTACK_ICON_DESC_8.get(getTerritoryRole(territoryConcerned).getName(langType)));
     }
 
@@ -275,7 +280,6 @@ public class PlannedAttack {
         for (TerritoryData territory : getDefendingTerritories()) {
             territory.removePlannedAttack(this);
         }
-        PlannedAttackStorage.getInstance().delete(this);
     }
 
 

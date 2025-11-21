@@ -7,7 +7,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.user.war.PlannedAttackMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlannedAttackStorage;
+import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.war.PlannedAttack;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class AttackMenu extends IteratorGUI {
 
     private List<GuiItem> getWars(ITanPlayer tanPlayer) {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (PlannedAttack plannedAttack : PlannedAttackStorage.getInstance().getAll().values()) {
+        for (PlannedAttack plannedAttack : WarStorage.getInstance().getAllAttacks()) {
 
             guiItems.add(plannedAttack.getIcon(iconManager, tanPlayer.getLang(), tanPlayer.getTimeZone())
                     .setAction(action ->

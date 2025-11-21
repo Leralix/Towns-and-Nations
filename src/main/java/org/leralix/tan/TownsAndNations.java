@@ -178,7 +178,6 @@ public class TownsAndNations extends JavaPlugin {
         NewClaimedChunkStorage.getInstance();
         TownDataStorage.getInstance();
         LandmarkStorage.getInstance();
-        PlannedAttackStorage.getInstance();
         NewsletterStorage.getInstance();
         WarStorage.getInstance();
         EventManager.getInstance().registerEvents(new NewsletterEvents());
@@ -427,7 +426,6 @@ public class TownsAndNations extends JavaPlugin {
         PlayerDataStorage.getInstance().reset();
         TownDataStorage.getInstance().reset();
         LandmarkStorage.getInstance().reset();
-        PlannedAttackStorage.getInstance().reset();
         WarStorage.getInstance().reset();
         NewClaimedChunkStorage.getInstance().reset();
     }

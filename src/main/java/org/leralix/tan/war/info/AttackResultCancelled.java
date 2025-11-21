@@ -6,9 +6,16 @@ import java.util.List;
 
 public class AttackResultCancelled extends AttackResult {
 
+    private final long cancelledDate;
+
+    public AttackResultCancelled(){
+        this.cancelledDate = System.currentTimeMillis();
+    }
 
     @Override
     public List<FilledLang> getResultLines() {
-        return List.of();
+        return List.of(
+
+        );
     }
 }
