@@ -371,6 +371,9 @@ public class Constants {
         return notifyWhenEnemyEnterTerritory;
     }
 
+    /**
+     * @return Attack duration, in minutes
+     */
     public static long getAttackDuration() {
         return attackDuration;
     }

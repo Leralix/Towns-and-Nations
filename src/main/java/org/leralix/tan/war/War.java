@@ -161,9 +161,11 @@ public class War {
 
     }
 
-    public void addAttack(CreateAttackData createAttackData) {
+    public PlannedAttack addAttack(CreateAttackData createAttackData) {
         String newID = getNextID();
-        getPlannedAttacksMap().put(newID, new PlannedAttack(newID, createAttackData));
+        PlannedAttack newPlannedAttack = new PlannedAttack(newID, createAttackData);
+        getPlannedAttacksMap().put(newID, newPlannedAttack);
+        return newPlannedAttack;
     }
 
     private String getNextID() {

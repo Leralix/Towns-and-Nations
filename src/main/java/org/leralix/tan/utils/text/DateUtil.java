@@ -9,6 +9,10 @@ public class DateUtil {
         throw new IllegalStateException("Utility class");
     }
 
+    public static String getDateStringFromMilli(long date){
+        return getDateStringFromSeconds(date / 1000);
+    }
+
     public static String getDateStringFromSeconds(long date){
         return getDateStringFromMinutes(date / 60);
     }

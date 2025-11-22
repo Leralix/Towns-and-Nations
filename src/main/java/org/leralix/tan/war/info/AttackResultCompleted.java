@@ -1,7 +1,12 @@
 package org.leralix.tan.war.info;
 
 import org.leralix.tan.lang.FilledLang;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
+import org.leralix.tan.timezone.TimeZoneEnum;
+import org.leralix.tan.timezone.TimeZoneManager;
 
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -11,22 +16,26 @@ import java.util.List;
 public class AttackResultCompleted extends AttackResult {
 
     /**
+     * End of the attack, in epoch milliseconds
+     */
+    private final long endDateTime;
+    /**
      * Number of deaths on the attacker side
      */
-    int nbDeathsAttacker;
+    private final int nbDeathsAttacker;
     /**
      * Number of deaths on the defender side
      */
-    int nbDeathsDefender;
+    private final int nbDeathsDefender;
     /**
      * Number of forts captured by the attacker at the end of the attack.
      * If a fort was recaptured by the defender later, it is not counted here.
      */
-    int nbFortsCaptured;
+    private final int nbFortsCaptured;
     /**
      * Number of chunks captured by the attacker at the end of the attack.
      */
-    int nbChunkCaptured;
+    private final int nbChunkCaptured;
 
     public AttackResultCompleted(
             int nbAttackersKilled,
@@ -34,6 +43,7 @@ public class AttackResultCompleted extends AttackResult {
             int nbFortsCaptured,
             int nbClaimsCaptured
     ) {
+        this.endDateTime = System.currentTimeMillis();
         this.nbDeathsAttacker = nbAttackersKilled;
         this.nbDeathsDefender = nbDefendersKilled;
         this.nbFortsCaptured = nbFortsCaptured;
@@ -41,7 +51,17 @@ public class AttackResultCompleted extends AttackResult {
     }
 
     @Override
-    public List<FilledLang> getResultLines() {
-        return List.of();
+    public List<FilledLang> getResultLines(LangType langType, TimeZoneEnum timeZone) {
+
+        FilledLang exactTimeStart = TimeZoneManager.getInstance().formatDate(Instant.ofEpochMilli(endDateTime), timeZone, langType.getLocale());
+
+        return List.of(
+                Lang.ATTACK_ICON_FINISHED.get(),
+                Lang.ATTACK_ICON_FINISHED_DATE.get(exactTimeStart.get(langType)),
+                Lang.ATTACK_ICON_FINISHED_NB_DEATH_ATTACKERS.get(Integer.toString(nbDeathsAttacker)),
+                Lang.ATTACK_ICON_FINISHED_NB_DEATH_DEFENDERS.get(Integer.toString(nbDeathsDefender)),
+                Lang.ATTACK_ICON_FINISHED_NB_CHUNK_CAPTURED.get(Integer.toString(nbFortsCaptured)),
+                Lang.ATTACK_ICON_FINISHED_NB_FORTS_CAPTURED.get(Integer.toString(nbChunkCaptured))
+        );
     }
 }

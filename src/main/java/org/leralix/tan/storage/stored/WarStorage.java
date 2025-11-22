@@ -21,7 +21,7 @@ public class WarStorage extends JsonStorage<War>{
     private static WarStorage instance;
 
     private WarStorage(){
-        super("Wars.json",
+        super("TAN - Wars.json",
                 new TypeToken<HashMap<String, War>>() {}.getType(),
                 new GsonBuilder()
                         .registerTypeAdapter(WarGoal.class, new WargoalTypeAdapter())

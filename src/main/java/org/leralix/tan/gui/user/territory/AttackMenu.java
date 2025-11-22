@@ -36,7 +36,7 @@ public class AttackMenu extends IteratorGUI {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for (PlannedAttack plannedAttack : WarStorage.getInstance().getAllAttacks()) {
 
-            guiItems.add(plannedAttack.getIcon(iconManager, tanPlayer.getLang(), tanPlayer.getTimeZone())
+            guiItems.add(plannedAttack.getIcon(iconManager, tanPlayer.getLang(), tanPlayer.getTimeZone(), territoryData)
                     .setAction(action ->
                             new PlannedAttackMenu(player, territoryData, plannedAttack))
                     .asGuiItem(player, langType)

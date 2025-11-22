@@ -134,7 +134,8 @@ public class PlannedAttackMenu extends BasicGui {
         return plannedAttack.getIcon(
                 iconManager,
                 tanPlayer.getLang(),
-                tanPlayer.getTimeZone()
+                tanPlayer.getTimeZone(),
+                territoryData
         ).asGuiItem(player, langType);
     }
 

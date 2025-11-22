@@ -21,11 +21,10 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
+import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.timezone.TimeZoneEnum;
-import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
-import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.war.capture.CaptureManager;
 import org.leralix.tan.war.info.AttackNotYetStarted;
 import org.leralix.tan.war.info.AttackResult;
@@ -34,7 +33,6 @@ import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.CurrentAttack;
 import org.leralix.tan.war.legacy.WarRole;
 
-import java.time.Instant;
 import java.util.*;
 
 public class PlannedAttack {
@@ -53,7 +51,13 @@ public class PlannedAttack {
      * The end time of the war, in milliseconds since January 1, 1970
      */
     private final long endTime;
-    private final War war;
+
+    /**
+     * used to recover War after plugin reload
+     */
+    private final String warID;
+    private transient War war;
+
     private final WarRole warRole;
 
     private transient BukkitRunnable warStartTask;
@@ -71,28 +75,29 @@ public class PlannedAttack {
         this.ID = id;
 
         this.war = createAttackData.getWar();
+        this.warID = war.getID();
         this.warRole = createAttackData.getAttackingSide();
 
         this.name = Lang.BASIC_ATTACK_NAME.get(
                 Lang.getServerLang(),
-                war.getMainAttacker().getName(),
-                war.getMainDefender().getName()
+                getWar().getMainAttacker().getName(),
+                getWar().getMainDefender().getName()
         );
 
         this.isAdminApproved = !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AdminApproval", false);
 
         this.attackersID = new ArrayList<>();
-        this.attackersID.add(war.getMainAttackerID());
+        this.attackersID.add(getWar().getMainAttackerID());
         this.defendersID = new ArrayList<>();
-        this.defendersID.add(war.getMainDefenderID());
+        this.defendersID.add(getWar().getMainDefenderID());
 
         this.startTime = new Date().getTime() + (long) createAttackData.getSelectedTime() * 60 * 1000;
         this.endTime = this.startTime + Constants.getAttackDuration() * 60 * 1000;
 
-        this.attackResult = new AttackNotYetStarted();
+        this.attackResult = new AttackNotYetStarted(startTime);
 
-        war.getMainDefender().addPlannedAttack(this);
-        war.getMainAttacker().addPlannedAttack(this);
+        getWar().getMainDefender().addPlannedAttack(this);
+        getWar().getMainAttacker().addPlannedAttack(this);
 
         setUpStartOfAttack();
     }
@@ -106,6 +111,9 @@ public class PlannedAttack {
     }
 
     public War getWar() {
+        if(war == null){
+            war = WarStorage.getInstance().get(warID);
+        }
         return war;
     }
 
@@ -204,7 +212,7 @@ public class PlannedAttack {
 
     public IconBuilder getAdminIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZoneEnum) {
 
-        IconBuilder iconBuilder = getBaseIcon(iconManager, langType, timeZoneEnum);
+        IconBuilder iconBuilder = getIcon(iconManager, langType, timeZoneEnum);
 
         if(isAdminApproved) {
             return iconBuilder.addDescription(Lang.ATTACK_ICON_DESC_ADMIN_APPROVED.get());
@@ -219,32 +227,20 @@ public class PlannedAttack {
         }
     }
 
-    private IconBuilder getBaseIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZone) {
-        long startDateInSeconds = (startTime - new Date().getTime()) / 1000;
-        long attackDurationInSeconds = (endTime - startTime) / 1000;
-
-        FilledLang exactTimeStart = TimeZoneManager.getInstance().formatDate(Instant.ofEpochMilli(startTime), timeZone, langType.getLocale());
-
+    public IconBuilder getIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZone) {
         return iconManager.get(Material.IRON_SWORD)
                 .setName(ChatColor.GREEN + name)
                 .setDescription(
-                        Lang.ATTACK_ICON_DESC_1.get(war.getMainAttacker().getName()),
-                        Lang.ATTACK_ICON_DESC_2.get(war.getMainDefender().getName()),
+                        Lang.ATTACK_ICON_DESC_1.get(getWar().getMainAttacker().getName()),
+                        Lang.ATTACK_ICON_DESC_2.get(getWar().getMainDefender().getName()),
                         Lang.ATTACK_ICON_DESC_3.get(Integer.toString(getNumberOfAttackers())),
-                        Lang.ATTACK_ICON_DESC_4.get(Integer.toString(getNumberOfDefenders())),
-                        Lang.ATTACK_ICON_DESC_6.get(DateUtil.getDateStringFromSeconds(startDateInSeconds), exactTimeStart.get(langType)),
-                        Lang.ATTACK_ICON_DESC_7.get(DateUtil.getDateStringFromSeconds(attackDurationInSeconds))
-                );
-    }
-
-    public IconBuilder getIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZone){
-        IconBuilder mainIcon = getBaseIcon(iconManager, langType, timeZone);
-        mainIcon.addDescription(attackResult.getResultLines());
-        return mainIcon;
+                        Lang.ATTACK_ICON_DESC_4.get(Integer.toString(getNumberOfDefenders()))
+                )
+                .addDescription(attackResult.getResultLines(langType, timeZone));
     }
 
     public IconBuilder getIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZone, TerritoryData territoryConcerned) {
-        return getBaseIcon(iconManager, langType, timeZone)
+        return getIcon(iconManager, langType, timeZone)
                 .addDescription(Lang.ATTACK_ICON_DESC_8.get(getTerritoryRole(territoryConcerned).getName(langType)));
     }
 
@@ -302,9 +298,9 @@ public class PlannedAttack {
     }
 
     public WarRole getTerritoryRole(TerritoryData territory) {
-        if (war.isMainAttacker(territory))
+        if (getWar().isMainAttacker(territory))
             return WarRole.MAIN_ATTACKER;
-        if (war.isMainDefender(territory))
+        if (getWar().isMainDefender(territory))
             return WarRole.MAIN_DEFENDER;
         if (isSecondaryAttacker(territory))
             return WarRole.OTHER_ATTACKER;
@@ -321,8 +317,8 @@ public class PlannedAttack {
     }
 
     public void territorySurrendered() {
-        EventManager.getInstance().callEvent(new DefenderAcceptDemandsBeforeWarInternalEvent(war.getMainDefender(), war.getMainAttacker()));
-        war.territorySurrender(warRole);
+        EventManager.getInstance().callEvent(new DefenderAcceptDemandsBeforeWarInternalEvent(getWar().getMainDefender(), getWar().getMainAttacker()));
+        getWar().territorySurrender(warRole);
         end(new AttackResultCancelled());
     }
 

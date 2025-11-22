@@ -46,7 +46,7 @@ class ChangeAttackNameTest {
         War war = new War("W1", town1, town2);
 
         CreateAttackData createAttackData = new CreateAttackData(war, WarRole.MAIN_ATTACKER);
-        PlannedAttack plannedAttack = PlannedAttackStorage.getInstance().newAttack(createAttackData);
+        PlannedAttack plannedAttack = war.addAttack(createAttackData);
 
         ChangeAttackName changeAttackName = new ChangeAttackName(plannedAttack, null);
 

@@ -9,7 +9,7 @@ import org.leralix.tan.war.legacy.wargoals.*;
 
 import java.lang.reflect.Type;
 
-public class AttackResultAdapter implements JsonDeserializer<AttackResult>, JsonSerializer<AttackResult> {
+public class AttackResultAdapter implements JsonDeserializer<AttackResult> {
 
     @Override
     public AttackResult deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -21,13 +21,6 @@ public class AttackResultAdapter implements JsonDeserializer<AttackResult>, Json
             case "AttackResultCompleted" -> context.deserialize(jsonObject, AttackResultCompleted.class);
             default -> throw new JsonParseException("Unknown type: " + type);
         };
-    }
-
-    @Override
-    public JsonElement serialize(AttackResult src, Type typeOfSrc, JsonSerializationContext context) {
-        JsonObject result = context.serialize(src, src.getClass()).getAsJsonObject();
-        result.add("type", new JsonPrimitive(src.getClass().getSimpleName()));
-        return result;
     }
 
 }
