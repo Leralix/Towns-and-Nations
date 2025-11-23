@@ -54,18 +54,29 @@ public class GuiUtil {
         return ItemBuilder.from(item).asGuiItem(event -> event.setCancelled(true));
     }
 
-    public static void createIterator(Gui gui, List<GuiItem> guItems, int page,
-                                      Player player, Consumer<Player> backArrowAction,
-                                      Consumer<Player> nextPageAction, Consumer<Player> previousPageAction) {
+    public static void createIterator(
+            Gui gui,
+            List<GuiItem> guItems,
+            int page,
+            Player player,
+            Consumer<Player> backArrowAction,
+            Consumer<Player> nextPageAction,
+            Consumer<Player> previousPageAction
+    ) {
 
         createIterator(gui, guItems, page, player, backArrowAction, nextPageAction, previousPageAction, Material.GRAY_STAINED_GLASS_PANE);
     }
 
-    public static void createIterator(Gui gui, List<GuiItem> guItems, int page,
-                                      Player player, Consumer<Player> backArrowAction,
-                                      Consumer<Player> nextPageAction, Consumer<Player> previousPageAction,
-                                      Material decorativeMaterial) {
-
+    public static void createIterator(
+            Gui gui,
+            List<GuiItem> guItems,
+            int page,
+            Player player,
+            Consumer<Player> backArrowAction,
+            Consumer<Player> nextPageAction,
+            Consumer<Player> previousPageAction,
+            Material decorativeMaterial
+    ) {
         ItemStack decorativeGlassPane = new ItemStack(decorativeMaterial);
         ItemMeta itemMeta = decorativeGlassPane.getItemMeta();
         itemMeta.setDisplayName("");
@@ -73,10 +84,16 @@ public class GuiUtil {
         createIterator(gui, guItems, page, player, backArrowAction, nextPageAction, previousPageAction, decorativeGlassPane);
     }
 
-    public static void createIterator(Gui gui, List<GuiItem> guItems, int page,
-                                      Player player, Consumer<Player> backArrowAction,
-                                      Consumer<Player> nextPageAction, Consumer<Player> previousPageAction,
-                                      ItemStack decorativeGlassPane) {
+    public static void createIterator(
+            Gui gui,
+            List<GuiItem> guItems,
+            int page,
+            Player player,
+            Consumer<Player> backArrowAction,
+            Consumer<Player> nextPageAction,
+            Consumer<Player> previousPageAction,
+            ItemStack decorativeGlassPane
+    ) {
 
         int pageSize = (gui.getRows() - 1) * 9;
         int startIndex = page * pageSize;
@@ -104,40 +121,37 @@ public class GuiUtil {
         }
         GuiItem panel = ItemBuilder.from(decorativeGlassPane).asGuiItem(event -> event.setCancelled(true));
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        ItemStack previousPageButton = HeadUtils.makeSkullB64(
-                Lang.GUI_PREVIOUS_PAGE.get(tanPlayer),
-                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19"
-        );
-        ItemStack nextPageButton = HeadUtils.makeSkullB64(
-                Lang.GUI_NEXT_PAGE.get(tanPlayer),
-                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0="
-        );
-
-        GuiItem previousButton = ItemBuilder.from(previousPageButton).asGuiItem(event -> {
-            event.setCancelled(true);
-            if (page == 0) {
-                return;
-            }
-            previousPageAction.accept(player);
-        });
-
-        GuiItem nextButton = ItemBuilder.from(nextPageButton).asGuiItem(event -> {
-            event.setCancelled(true);
-            if (lastPage) {
-                return;
-            }
-            nextPageAction.accept(player);
-        });
 
         int lastRow = gui.getRows();
 
-        gui.getFiller().fillBottom(panel);
         gui.setItem(lastRow, 1, GuiUtil.createBackArrow(player, backArrowAction));
-        gui.setItem(lastRow, 7, previousButton);
-        gui.setItem(lastRow, 8, nextButton);
+
+        gui.setItem(lastRow, 7, IconManager.getInstance().get(IconKey.PREVIOUS_PAGE_ICON)
+                .setName(Lang.GUI_PREVIOUS_PAGE.get(tanPlayer))
+                .setAction(action -> {
+                    if (page == 0) {
+                        return;
+                    }
+                    previousPageAction.accept(player);
+                })
+                .asGuiItem(player, tanPlayer.getLang())
+        );
+
+        gui.setItem(lastRow, 8, IconManager.getInstance().get(IconKey.NEXT_PAGE_ICON)
+                .setName(Lang.GUI_NEXT_PAGE.get(tanPlayer))
+                .setAction(action -> {
+                    if (lastPage) {
+                        return;
+                    }
+                    nextPageAction.accept(player);
+                })
+                .asGuiItem(player, tanPlayer.getLang())
+        );
+
+        gui.getFiller().fillBottom(panel);
     }
 
-    public static  <E extends Enum<E> & DisplayableEnum> GuiItem getNextScopeButton(
+    public static <E extends Enum<E> & DisplayableEnum> GuiItem getNextScopeButton(
             IconManager iconManager,
             BasicGui basicGui,
             E currentValue,
@@ -180,6 +194,7 @@ public class GuiUtil {
         int nextIndex = (current.ordinal() + 1) % values.length;
         return values[nextIndex];
     }
+
     private static <E extends Enum<E>> E getPreviousEnumValue(E current) {
         E[] values = current.getDeclaringClass().getEnumConstants();
         int prevIndex = (current.ordinal() - 1 + values.length) % values.length;

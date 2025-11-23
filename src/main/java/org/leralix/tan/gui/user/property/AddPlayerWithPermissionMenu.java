@@ -1,10 +1,8 @@
 package org.leralix.tan.gui.user.property;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
@@ -13,7 +11,6 @@ import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.PermissionManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,17 +54,18 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
             if (permission.isAllowed(tanPlayer.getTown(), playerToAddData))
                 continue;
 
-            ItemStack icon = HeadUtils.getPlayerHead(playerToAdd.getName(), playerToAdd,
-                    Lang.GUI_GENERIC_ADD_BUTTON.get(tanPlayer));
-
-            GuiItem guiItem = ItemBuilder.from(icon).asGuiItem(event -> {
-                event.setCancelled(true);
-
-                permission.addSpecificPlayerPermission(playerToAdd.getUniqueId().toString());
-                SoundUtil.playSound(player, ADD);
-                open();
-            });
-            guiItems.add(guiItem);
+            guiItems.add(iconManager.get(playerToAdd)
+                    .setName(playerToAdd.getName())
+                    .setDescription(
+                            Lang.GUI_GENERIC_ADD_BUTTON.get()
+                    )
+                    .setAction(action -> {
+                        permission.addSpecificPlayerPermission(playerToAdd.getUniqueId().toString());
+                        SoundUtil.playSound(player, ADD);
+                        open();
+                    })
+                    .asGuiItem(player, langType)
+            );
         }
         return guiItems;
     }

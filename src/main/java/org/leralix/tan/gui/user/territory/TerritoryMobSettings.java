@@ -2,7 +2,6 @@ package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ClaimedChunkSettings;
@@ -14,7 +13,6 @@ import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -51,11 +49,10 @@ public class TerritoryMobSettings extends IteratorGUI {
             UpgradeStatus upgradeStatus = chunkSettings.getSpawnControl(mobEnum);
             int cost = MobChunkSpawnStorage.getMobSpawnCost(mobEnum);
             List<FilledLang> status = generateDescription(upgradeStatus, cost);
-            ItemStack mobIcon = HeadUtils.makeSkullB64(mobEnum.name(), mobEnum.getTexture());
 
             boolean upgradeBought = upgradeStatus.isUnlocked();
 
-            guiLists.add(iconManager.get(mobIcon)
+            guiLists.add(iconManager.get(mobEnum.getIconKey())
                     .setName(mobEnum.name())
                     .setDescription(status)
                     .setClickToAcceptMessage(upgradeBought ? Lang.GUI_GENERIC_CLICK_TO_SWITCH : Lang.GUI_GENERIC_CLICK_TO_UPGRADE)

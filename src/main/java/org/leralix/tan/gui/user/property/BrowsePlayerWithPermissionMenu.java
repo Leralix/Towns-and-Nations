@@ -1,18 +1,15 @@
 package org.leralix.tan.gui.user.property;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.PermissionManager;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,18 +62,23 @@ public class BrowsePlayerWithPermissionMenu extends IteratorGUI {
 
         for (String authorizedPlayerID : permissionManager.get(chunkPermission).getAuthorizedPlayers()) {
             OfflinePlayer authorizedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(authorizedPlayerID));
-            ItemStack icon = HeadUtils.getPlayerHead(authorizedPlayer.getName(), authorizedPlayer,
-                    Lang.GUI_TOWN_MEMBER_DESC3.get(tanPlayer));
 
-            GuiItem guiItem = ItemBuilder.from(icon).asGuiItem(event -> {
-                event.setCancelled(true);
+            guiItems.add(
+                    iconManager.get(authorizedPlayer)
+                            .setName(authorizedPlayer.getName())
+                            .setDescription(
+                                    Lang.GUI_TOWN_MEMBER_DESC3.get()
+                            )
+                            .setAction(action -> {
+                                action.setCancelled(true);
 
-                if (event.isRightClick()) {
-                    permissionManager.get(chunkPermission).removeSpecificPlayerPermission(authorizedPlayerID);
-                    open();
-                }
-            });
-            guiItems.add(guiItem);
+                                if (action.isRightClick()) {
+                                    permissionManager.get(chunkPermission).removeSpecificPlayerPermission(authorizedPlayerID);
+                                    open();
+                                }
+                            })
+                            .asGuiItem(player, langType)
+            );
         }
         return guiItems;
     }

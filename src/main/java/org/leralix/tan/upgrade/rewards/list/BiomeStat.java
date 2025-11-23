@@ -1,6 +1,7 @@
 package org.leralix.tan.upgrade.rewards.list;
 
 import org.bukkit.Chunk;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
@@ -99,7 +100,27 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
         return Lang.CHUNK_AUTHORIZED_BIOMES;
     }
 
+    /**
+     * Defines if the chunk's biome can be claimed with this stat.
+     * If at least one block in the chunk is in an authorized biome, then it can be claimed.
+     * Check will only be done at the maximum height of the chunk.
+     * @param chunk The chunk to check
+     * @return True if the chunk can be claimed, false otherwise
+     */
     public boolean canClaimBiome(Chunk chunk) {
+
+        int middleX = (chunk.getX() << 4);
+        int middleZ = (chunk.getZ() << 4);
+        World world = chunk.getWorld();
+        for(int x = middleX; x < middleX + 16; x++){
+            for(int z = middleZ; z < middleZ + 16; z++){
+                Biome biome = world.getBiome(x, world.getHighestBlockYAt(x, z), z);
+                if(biomes.contains(biome)){
+                    return true;
+                }
+            }
+        }
+
         Biome biome = chunk.getWorld().getBiome(chunk.getX() << 4, 64, chunk.getZ() << 4);
         return biomes.contains(biome);
     }

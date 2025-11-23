@@ -1,10 +1,10 @@
 package org.leralix.tan.dataclass.territory.economy;
 
 import dev.triumphteam.gui.guis.Gui;
-import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.territory.TreasuryMenu;
 import org.leralix.tan.gui.user.territory.history.TerritoryTransactionHistory;
 import org.leralix.tan.lang.FilledLang;
@@ -12,7 +12,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.TransactionType;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.StringUtil;
 
 public class ChunkUpkeepLine extends ProfitLine {
@@ -35,14 +34,18 @@ public class ChunkUpkeepLine extends ProfitLine {
 
     @Override
     public void addItems(Gui gui, Player player, LangType lang) {
-        ItemStack chunkSpending = HeadUtils.makeSkullB64(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(lang), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTc5ODBiOTQwYWY4NThmOTEwOTQzNDY0ZWUwMDM1OTI4N2NiMGI1ODEwNjgwYjYwYjg5YmU0MjEwZGRhMGVkMSJ9fX0=",
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.get(lang, StringUtil.getColoredMoney(getMoney())),
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(lang, StringUtil.getColoredMoney(-Constants.getUpkeepCost(territoryData))),
-                Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(lang, Integer.toString(territoryData.getNumberOfClaimedChunk())));
-        GuiItem chunkSpendingItem = new GuiItem(chunkSpending, event ->
-                new TerritoryTransactionHistory(player, territoryData, TransactionType.TERRITORY_CHUNK_UPKEEP, p -> new TreasuryMenu(player, territoryData))
+        gui.setItem(2, 7, IconManager.getInstance().get(IconKey.CHUNK_UPKEEP_ICON)
+                .setName(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(lang))
+                .setDescription(
+                        Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.get(StringUtil.getColoredMoney(getMoney())),
+                        Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(StringUtil.getColoredMoney(-Constants.getUpkeepCost(territoryData))),
+                        Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(Integer.toString(territoryData.getNumberOfClaimedChunk()))
+                )
+                .setAction(event ->
+                        new TerritoryTransactionHistory(player, territoryData, TransactionType.TERRITORY_CHUNK_UPKEEP, p -> new TreasuryMenu(player, territoryData))
+                )
+                .asGuiItem(player, lang)
         );
-        gui.setItem(2, 7, chunkSpendingItem);
     }
 
     @Override

@@ -3,7 +3,6 @@ package org.leralix.tan.gui.user.property;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.common.ConfirmMenu;
@@ -15,7 +14,6 @@ import org.leralix.tan.listeners.chat.events.ChangePropertyDescription;
 import org.leralix.tan.listeners.chat.events.ChangePropertyName;
 import org.leralix.tan.listeners.chat.events.ChangePropertyRentPrice;
 import org.leralix.tan.listeners.chat.events.ChangePropertySalePrice;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -184,7 +182,7 @@ public abstract class PropertyMenus extends BasicGui {
     }
 
     protected GuiItem getKickRenterButton() {
-        return iconManager.get(new ItemStack(HeadUtils.getPlayerHead(propertyData.getOfflineRenter())))
+        return iconManager.get(propertyData.getOfflineRenter())
                 .setName(Lang.GUI_PROPERTY_RENTED_BY.get(langType, propertyData.getRenter().getNameStored()))
                 .setDescription(Lang.GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER.get())
                 .setAction(event -> {

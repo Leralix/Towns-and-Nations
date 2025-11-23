@@ -4,13 +4,11 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,11 +40,10 @@ public class SelectTerritoryHeadMenu extends IteratorGUI {
         for (String playerID : territoryData.getPlayerIDList()) {
 
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
-            ItemStack playerHead = HeadUtils.getPlayerHead(offlinePlayer);
 
             guiItems.add(
                     iconManager
-                            .get(playerHead)
+                            .get(offlinePlayer)
                             .setName(offlinePlayer.getName())
                             .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                             .setAction(action -> {

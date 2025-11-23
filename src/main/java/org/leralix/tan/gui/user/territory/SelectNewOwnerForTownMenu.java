@@ -1,16 +1,13 @@
 package org.leralix.tan.gui.user.territory;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -39,33 +36,36 @@ public class SelectNewOwnerForTownMenu extends IteratorGUI {
     private List<GuiItem> getCandidates() {
         List<GuiItem> guiItems = new ArrayList<>();
         for (String playerUUID : townData.getPlayerIDList()) {
-            if(townData.isLeader(playerUUID)){
+            if (townData.isLeader(playerUUID)) {
                 continue;
             }
 
             OfflinePlayer townPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerUUID));
 
-            ItemStack playerHead = HeadUtils.getPlayerHead(townPlayer.getName(), townPlayer,
-                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1.get(tanPlayer, player.getName()),
-                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2.get(tanPlayer));
+            guiItems.add(
+                    iconManager.get(townPlayer)
+                            .setName(townPlayer.getName())
+                            .setDescription(
+                                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1.get(player.getName()),
+                                    Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2.get()
+                            )
+                            .setAction(action -> {
+                                action.setCancelled(true);
 
+                                new ConfirmMenu(
+                                        player,
+                                        Lang.GUI_CONFIRM_CHANGE_TOWN_LEADER.get(townPlayer.getName()),
+                                        () -> {
+                                            townData.setLeaderID(townPlayer.getUniqueId().toString());
+                                            TanChatUtils.message(player, Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(tanPlayer, townPlayer.getName()));
 
-            GuiItem playerHeadIcon = ItemBuilder.from(playerHead).asGuiItem(event -> {
-                event.setCancelled(true);
-
-                new ConfirmMenu(
-                        player,
-                        Lang.GUI_CONFIRM_CHANGE_TOWN_LEADER.get(townPlayer.getName()),
-                        () -> {
-                            townData.setLeaderID(townPlayer.getUniqueId().toString());
-                            TanChatUtils.message(player, Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(tanPlayer, townPlayer.getName()));
-
-                            backMenu.run();
-                        },
-                        this::open
-                );
-            });
-            guiItems.add(playerHeadIcon);
+                                            backMenu.run();
+                                        },
+                                        this::open
+                                );
+                            })
+                            .asGuiItem(player, langType)
+            );
         }
         return guiItems;
 
