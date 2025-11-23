@@ -132,6 +132,11 @@ public class CurrentAttack {
 
     public void end() {
 
+        //If Current attack already ended, do not repeat end logic.
+        if(end){
+            return;
+        }
+
         CommandExecutor.applyEndWarCommands(getAttackData());
         end = true;
 
