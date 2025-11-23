@@ -63,6 +63,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
         registerEntry(new PlayerTownBalance());
         registerEntry(new PlayerTownChunkActualQuantity());
         registerEntry(new PlayerTownChunkMaxQuantity());
+        registerEntry(new PlayerTownColoredName());
         registerEntry(new PlayerTownName());
         registerEntry(new PlayerTownRankColoredName());
         registerEntry(new PlayerTownRankName());
