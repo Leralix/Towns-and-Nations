@@ -51,6 +51,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
         registerEntry(new OtherPlayerTownName());
         registerEntry(new OtherPlayerTownTag());
         registerEntry(new OtherPlayerRegionName());
+        registerEntry(new OtherPlayerTownColoredName());
         registerEntry(new OtherPlayerChatMode());
         registerEntry(new PlayerBalance());
         registerEntry(new PlayerBiggerOverlordName());

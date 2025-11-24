@@ -26,7 +26,7 @@ public class PlayerNameIsTownLeader extends PapiEntry {
         String[] values = extractValues(params);
         if(values.length == 0) return Lang.INVALID_VALUE.get(tanPlayer);
         String playerName = values[0];
-        if(playerName == null) return Lang.INVALID_PLAYER_NAME.get(tanPlayer);
+        if(playerName == null || playerName.isEmpty()) return Lang.INVALID_PLAYER_NAME.get(tanPlayer);
         OfflinePlayer playerSelected = Bukkit.getOfflinePlayer(playerName);
         ITanPlayer tanPlayer1 = PlayerDataStorage.getInstance().get(playerSelected);
         if(tanPlayer1 == null) return Lang.INVALID_NAME.get(tanPlayer);
