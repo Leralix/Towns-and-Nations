@@ -1,6 +1,5 @@
 package org.leralix.tan.utils.deprecated;
 
-import com.google.gson.JsonParser;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -14,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,27 +24,8 @@ public class HeadUtils {
         throw new IllegalStateException("Utility class");
     }
 
-    /**
-     * Create a head from base64 encoded string
-     * This method is called when loading custom heads from the internet
-     * Check <a href="https://minecraft-heads.com/">minecraft-heads.com</a> for more heads.
-     * This method calls an unsafe bukkit methods but no other methods have been found
-     *
-     * @param name                The name of the new created head.
-     * @param base64EncodedString The base64 encoded String of the new head.
-     * @param lore                The lore of the new created head.
-     * @return The {@link ItemStack} with custom texture.
-     */
-    public static @NotNull ItemStack makeSkullB64(final @NotNull String name, final @NotNull String base64EncodedString, List<String> lore) {
-        return makeSkullURL(name, getUrlFromBase64(base64EncodedString), lore);
-    }
-
     public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull String url, String... lore) {
         return makeSkull(name, getProfile(createURL(url)), List.of(lore));
-    }
-
-    public static @NotNull ItemStack makeSkullURL(final @NotNull String name, final @NotNull URL url, List<String> lore) {
-        return makeSkull(name, getProfile(url), lore);
     }
 
     public static @NotNull ItemStack makeSkull(final @NotNull String name, final @NotNull PlayerProfile profile, List<String> lore) {
@@ -73,17 +52,6 @@ public class HeadUtils {
     }
 
 
-    @NotNull
-    public static URL getUrlFromBase64(@NotNull String base64) {
-        var decoded = new String(Base64.getDecoder().decode(base64));
-        JsonParser parser = new JsonParser();
-        var json = parser.parse(decoded).getAsJsonObject();
-        var url = json.getAsJsonObject("textures")
-                .getAsJsonObject("SKIN")
-                .get("url").getAsString();
-        return createURL(url);
-    }
-
     private static URL createURL(String url) {
         try {
             return new URL(url);
@@ -96,22 +64,6 @@ public class HeadUtils {
         }
     }
 
-
-    /**
-     * Create a head from base64 encoded string
-     * This method is called when loading custom heads from the internet
-     * Check <a href="https://minecraft-heads.com/">minecraft-heads.com</a> for more heads.
-     * This method calls an unsafe bukkit methods but no other methods have been found
-     *
-     * @param name                The name of the new created head.
-     * @param base64EncodedString The base64 encoded String of the new head.
-     * @param loreLines           The lore of the new created head.
-     * @return The {@link ItemStack} with custom texture.
-     */
-    public static @NotNull ItemStack makeSkullB64(final @NotNull String name, final @NotNull String base64EncodedString, String... loreLines) {
-        List<String> lore = List.of(loreLines);
-        return makeSkullB64(name, base64EncodedString, lore);
-    }
 
     /**
      * Create an {@link ItemStack} with custom Lore

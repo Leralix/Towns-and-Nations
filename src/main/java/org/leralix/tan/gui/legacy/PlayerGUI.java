@@ -13,6 +13,8 @@ import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.common.ConfirmMenu;
+import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.landmark.LandmarkNoOwnerMenu;
 import org.leralix.tan.gui.landmark.LandmarkOwnedMenu;
 import org.leralix.tan.gui.user.territory.NoRegionMenu;
@@ -166,17 +168,21 @@ public class PlayerGUI {
 
         GuiItem vassalInfo;
         if (territoryData.canHaveVassals()) {
-            ItemStack vassalIcon = HeadUtils.createCustomItemStack(Material.GOLDEN_SWORD, Lang.VASSAL_GUI.get(tanPlayer),
-                    Lang.VASSAL_GUI_DESC1.get(tanPlayer, territoryData.getBaseColoredName(), Integer.toString(territoryData.getVassalCount())));
+            ItemStack vassalIcon = HeadUtils.createCustomItemStack(
+                    Material.GOLDEN_SWORD,
+                    Lang.VASSAL_GUI.get(tanPlayer),
+                    Lang.VASSAL_GUI_DESC1.get(tanPlayer, territoryData.getBaseColoredName(), Integer.toString(territoryData.getVassalCount()))
+            );
 
-            ItemStack vassals = HeadUtils.makeSkullB64(Lang.GUI_REGION_TOWN_LIST.get(tanPlayer), "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNkMDJjZGMwNzViYjFjYzVmNmZlM2M3NzExYWU0OTc3ZTM4YjkxMGQ1MGVkNjAyM2RmNzM5MTNlNWU3ZmNmZiJ9fX0=",
-                    Lang.GUI_REGION_TOWN_LIST_DESC1.get(tanPlayer));
-            GuiItem vassalsButton = ItemBuilder.from(vassals).asGuiItem(event -> {
-                event.setCancelled(true);
-                new VassalsMenu(player, territoryData);
-            });
+            gui.setItem(2, 6, IconManager.getInstance().get(IconKey.TOWN_BASE_ICON)
+                    .setName(Lang.GUI_REGION_TOWN_LIST.get(tanPlayer))
+                    .setDescription(
+                            Lang.GUI_REGION_TOWN_LIST_DESC1.get()
+                    )
+                    .setAction(event -> new VassalsMenu(player, territoryData))
+                    .asGuiItem(player, tanPlayer.getLang()));
+
             vassalInfo = ItemBuilder.from(vassalIcon).asGuiItem(event -> event.setCancelled(true));
-            gui.setItem(2, 6, vassalsButton);
         } else {
             ItemStack noVassalsIcon = HeadUtils.createCustomItemStack(Material.IRON_BARS, Lang.VASSAL_GUI.get(tanPlayer),
                     Lang.CANNOT_HAVE_VASSAL.get(tanPlayer));
