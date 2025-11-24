@@ -192,7 +192,7 @@ public class Constants {
 
         warTimeSlot = new WarTimeSlot(config.getStringList("allowedTimeSlotsWar"));
         warBoundaryRadius = config.getDouble("warBoundaryRadius", 16);
-        warBoundaryParticle = getParticle(config, "warBoundaryParticle"));
+        warBoundaryParticle = getParticle(config, "warBoundaryParticle");
         notifyWhenEnemyEnterTerritory = config.getBoolean("notifyEnemyEnterTown", true);
 
         relationsConstants = new EnumMap<>(TownRelation.class);
