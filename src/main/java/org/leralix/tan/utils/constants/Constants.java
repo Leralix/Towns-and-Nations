@@ -3,6 +3,7 @@ package org.leralix.tan.utils.constants;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.chunk.ChunkType;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -120,8 +121,6 @@ public class Constants {
     //Upgrades
     private static NewUpgradeStorage upgradeStorage;
 
-    private static final String ALWAYS = "ALWAYS";
-
     public static void init(FileConfiguration config) {
 
 
@@ -187,13 +186,13 @@ public class Constants {
         maxPropertySignMargin = config.getInt("maxPropertyMargin", 3);
         maxPropertySize = config.getInt("MaxPropertySize", 50000);
         payRentAtStart = config.getBoolean("payRentAtStart", true);
-        propertyBoundaryParticles = Particle.valueOf(config.getString("propertyBoundaryParticles"));
+        propertyBoundaryParticles = getParticle(config, "propertyBoundaryParticles");
 
         //Attacks
 
         warTimeSlot = new WarTimeSlot(config.getStringList("allowedTimeSlotsWar"));
         warBoundaryRadius = config.getDouble("warBoundaryRadius", 16);
-        warBoundaryParticle = Particle.valueOf(config.getString("warBoundaryParticle", "DRAGON_BREATH").toUpperCase());
+        warBoundaryParticle = getParticle(config, "warBoundaryParticle"));
         notifyWhenEnemyEnterTerritory = config.getBoolean("notifyEnemyEnterTown", true);
 
         relationsConstants = new EnumMap<>(TownRelation.class);
@@ -242,6 +241,26 @@ public class Constants {
 
         //Upgrade
         upgradeStorage = new NewUpgradeStorage();
+    }
+
+    /**
+     * Depending on the config value, return the Particle enum.
+     * In case the config is wrong or the particles does not exist in the used version of Minecraft,
+     * return DRAGON_BREATH as default.
+     * @param config    The configuration file
+     * @param key       The key to get the particle name from
+     * @return  The Particle enum, or DRAGON_BREATH if not found
+     */
+    private static Particle getParticle(FileConfiguration config, String key) {
+        String particleName = config.getString(key, "DRAGON_BREATH").toUpperCase();
+        Particle particle;
+        try {
+            particle = Particle.valueOf(particleName);
+        } catch (IllegalArgumentException e) {
+            particle = Particle.DRAGON_BREATH;
+            TownsAndNations.getPlugin().getLogger();
+        }
+        return particle;
     }
 
     public static boolean onlineMode() {
