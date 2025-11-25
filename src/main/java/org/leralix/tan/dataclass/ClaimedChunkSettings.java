@@ -5,33 +5,46 @@ import org.leralix.tan.dataclass.territory.permission.RelationPermission;
 import org.leralix.tan.enums.MobChunkSpawnEnum;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
+import org.leralix.tan.storage.PermissionManager;
 
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ClaimedChunkSettings {
-    private Map<ChunkPermissionType, ChunkPermission> newPermission;
+
+    /**
+     * The permission manager to handle permissions related to players.
+     */
+    private PermissionManager newPermissionManager;
+
+    /**
+     * The mob spawn settings for the territory.
+     */
     private Map<String, UpgradeStatus> mobSpawnStorage;
+
+    /**
+     * The general settings unrelated to players.
+     */
     private Map<GeneralChunkSetting, Boolean> generalSettings;
 
     public ClaimedChunkSettings() {
-        this.newPermission = new EnumMap<>(ChunkPermissionType.class);
+        this.newPermissionManager = new PermissionManager(RelationPermission.TOWN);
         this.mobSpawnStorage = new HashMap<>();
         this.generalSettings = new EnumMap<>(GeneralChunkSetting.class);
 
-        for (ChunkPermissionType type : ChunkPermissionType.values()) {
-            newPermission.put(type, new ChunkPermission(RelationPermission.TOWN));
-        }
+
         for (GeneralChunkSetting setting : GeneralChunkSetting.values()) {
             generalSettings.put(setting, false);
         }
     }
 
-    public Map<ChunkPermissionType, ChunkPermission> getChunkPermissions() {
-        if (newPermission == null)
-            newPermission = new EnumMap<>(ChunkPermissionType.class);
-        return newPermission;
+    public PermissionManager getChunkPermissions() {
+        // Migrate old permission system if necessary
+        if (newPermissionManager == null){
+            newPermissionManager = new PermissionManager(RelationPermission.TOWN);
+        }
+        return newPermissionManager;
     }
 
     public Map<GeneralChunkSetting, Boolean> getChunkSetting() {
@@ -39,9 +52,7 @@ public class ClaimedChunkSettings {
     }
 
     public ChunkPermission getPermission(ChunkPermissionType type) {
-        var map = getChunkPermissions();
-        map.putIfAbsent(type, new ChunkPermission(RelationPermission.TOWN));
-        return map.get(type);
+        return getChunkPermissions().get(type);
     }
 
 

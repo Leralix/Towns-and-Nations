@@ -10,10 +10,12 @@ import java.util.List;
 public class ChunkPermission {
 
     private RelationPermission overallPermission;
+    private List<String> specificRankIDPermissions;
     private final List<String> specificPlayerPermissions;
 
     public ChunkPermission(RelationPermission defaultRelation) {
         this.overallPermission = defaultRelation;
+        this.specificRankIDPermissions = new ArrayList<>();
         this.specificPlayerPermissions = new ArrayList<>();
     }
 
@@ -33,13 +35,29 @@ public class ChunkPermission {
         this.specificPlayerPermissions.remove(playerName);
     }
 
+    public List<String> getAuthorizedRanks() {
+        if (this.specificRankIDPermissions == null) {
+            this.specificRankIDPermissions = new ArrayList<>();
+        }
+        return this.specificRankIDPermissions;
+    }
+
+    public void addSpecificRankPermission(String rankID) {
+        getAuthorizedRanks().add(rankID);
+    }
+
+    public void removeSpecificRankPermission(String rankID) {
+        getAuthorizedRanks().remove(rankID);
+    }
+
+
     private boolean isPlayerAllowed(String playerName) {
         return this.specificPlayerPermissions.contains(playerName);
     }
 
 
     public boolean isAllowed(TerritoryData territoryToCheck, ITanPlayer tanPlayer) {
-        if(this.overallPermission.isAllowed(territoryToCheck, tanPlayer)) {
+        if (this.overallPermission.isAllowed(territoryToCheck, tanPlayer)) {
             return true;
         }
         return isPlayerAllowed(tanPlayer.getID());

@@ -29,6 +29,7 @@ public class PropertyRentTaxLine extends ProfitLine {
 
     public PropertyRentTaxLine(TownData townData) {
         super(townData);
+        // TODO : Only count if property is rented + check why value is wrong (got 0.06 when supposed to get 5.0)
         for (PropertyData propertyData : townData.getProperties()) {
             taxes += propertyData.getRentPriceWithTax() * townData.getTaxOnRentingProperty() / 100;
         }

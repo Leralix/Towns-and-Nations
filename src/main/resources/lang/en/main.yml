@@ -732,6 +732,8 @@ language:
   ENABLE_FIRE_GRIEF_SETTING: "§aEnable fire griefing"
   ENABLE_TNT_GRIEF_SETTING: "§aEnable explosion griefing"
   GUI_TOWN_CLAIM_SETTINGS_DESC1: "§fCurrent permission: §e{0}"
+  GUI_TOWN_CLAIM_SETTINGS_DESC_ADDITIONAL_PLAYERS: "§fAdditional players authorized: §e{0}♣"
+  GUI_TOWN_CLAIM_SETTINGS_DESC_ADDITIONAL_RANKS: "§fAdditional ranks authorized: §6{0}"
   GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_ACTIVATED: "§fCurrent spawn:§a enabled"
   GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_DEACTIVATED: "§fCurrent spawn:§c disabled"
   GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED: "§fCurrent spawn: §cLocked"
