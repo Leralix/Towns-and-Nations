@@ -52,6 +52,7 @@ import org.leralix.tan.upgrade.rewards.StatsType;
 import org.leralix.tan.upgrade.rewards.list.BiomeStat;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCost;
+import org.leralix.tan.upgrade.rewards.numeric.ChunkUpkeepCost;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
@@ -876,7 +877,7 @@ public abstract class TerritoryData {
     }
 
     private void payChunkUpkeep() {
-        double upkeepCost = Constants.getUpkeepCost(this);
+        double upkeepCost = getNewLevel().getStat(ChunkUpkeepCost.class).getCost();
 
         int numberClaimedChunk = getNumberOfClaimedChunk();
         double totalUpkeep = numberClaimedChunk * upkeepCost;

@@ -21,6 +21,9 @@
 # - PLAYER_CAP: maximum number of player per town [-1,0,1,2... or infinity]
 # - CHUNK_CAP: maximum number of claimable chunk per town [-1,0,1,2... or infinity]
 # - CHUNK_COST : cost to claim one chunk [-1,0,1,2...]
+# - CHUNK_UPKEEP_COST : Upkeep cost per claimed chunk [-1,0,1,2...].
+#                       Capped to 0 when adding all stats of a territory.
+#                       Limited to 5 digits after the comma.
 # - PROPERTY_CAP: maximum number of property per town [-1,0,1,2... or infinity]
 # - LANDMARKS_CAP: maximum number of owned landmarks per town [-1,0,1,2... or infinity]
 # - UNLOCK_TOWN_SPAWN: unlock /tan spawn [level 0 -> locked, level 1 -> unlock]
@@ -48,6 +51,7 @@ regionLevelExpression:
   flatMultiplier: 20.0
   base: 200.0
 
+# Town upgrades
 upgrades:
 
   CITY_HALL: #"City hall" tag is already unlocked when creating a town. Use it to store default values of yur towns
@@ -63,6 +67,7 @@ upgrades:
       CHUNK_CAP: +100
       CHUNK_COST: 0
       AUTHORIZED_BIOMES: [ 'ALL' ]
+      CHUNK_UPKEEP_COST: 0.02
 
   ADMINISTRATION:
     col: 0
@@ -132,6 +137,18 @@ upgrades:
     benefits:
       PROPERTY_CAP: +3
 
+  EFFECTIVE_UPKEEP:
+    col: 3
+    row: 2
+    itemCode: 'IRON_HOE'
+    maxLevel: 5
+    cost: [ '500', '800', '1200' ]
+    prerequisites:
+      TOWN_LEVEL: 3
+      ADMINISTRATION: 1
+    benefits:
+      CHUNK_UPKEEP_COST: -0.002
+
   GUARDS:
     col: 5
     row: 2
@@ -199,3 +216,4 @@ region_upgrades:
       CHUNK_CAP: infinity
       CHUNK_COST: 5
       AUTHORIZED_BIOMES: [ 'ALL' ]
+      CHUNK_UPKEEP_COST: 0.01

@@ -91,14 +91,15 @@ public class NewUpgradeStorage {
                     for (String benefitKey : benefitsSection.getKeys(false)) {
 
                         boolean isUnlimited = isInfiniteValue(benefitsSection, benefitKey);
-                        int intValue = parseIntValue(benefitsSection, benefitKey);
+                        double value = parseDoubleValue(benefitsSection, benefitKey);
 
                         switch (benefitKey) {
-                            case "PROPERTY_CAP" -> rewards.add(new PropertyCap(intValue, isUnlimited));
-                            case "PLAYER_CAP" -> rewards.add(new TownPlayerCap(intValue, isUnlimited));
-                            case "CHUNK_CAP" -> rewards.add(new ChunkCap(intValue, isUnlimited));
-                            case "CHUNK_COST" -> rewards.add(new ChunkCost(intValue, isUnlimited));
-                            case "LANDMARKS_CAP" -> rewards.add(new LandmarkCap(intValue, isUnlimited));
+                            case "PROPERTY_CAP" -> rewards.add(new PropertyCap((int) value, isUnlimited));
+                            case "PLAYER_CAP" -> rewards.add(new TownPlayerCap((int) value, isUnlimited));
+                            case "CHUNK_CAP" -> rewards.add(new ChunkCap((int) value, isUnlimited));
+                            case "CHUNK_COST" -> rewards.add(new ChunkCost((int) value, isUnlimited));
+                            case "CHUNK_UPKEEP_COST" -> rewards.add(new ChunkUpkeepCost(value));
+                            case "LANDMARKS_CAP" -> rewards.add(new LandmarkCap((int) value, isUnlimited));
                             case "UNLOCK_TOWN_SPAWN" -> rewards.add(new EnableTownSpawn(true));
                             case "UNLOCK_MOB_BAN" -> rewards.add(new EnableMobBan(true));
                             case "LANDMARK_BONUS" -> rewards.add(new LandmarkBonus(
@@ -140,20 +141,19 @@ public class NewUpgradeStorage {
         return raw.equals("infinity") || raw.equals("inf") || raw.equals("∞") || raw.equals("unlimited");
     }
 
-    private static int parseIntValue(ConfigurationSection section, String path) {
+    private static double parseDoubleValue(ConfigurationSection section, String path) {
         String raw = section.getString(path);
-        if (raw == null) return 0;
+        if (raw == null) return 0.;
 
         raw = raw.trim().toLowerCase();
         if (raw.equals("infinity") || raw.equals("inf") || raw.equals("∞") || raw.equals("unlimited")) {
-            return 0; // valeur ignorée, on gère via isUnlimited = true
+            return 0.;
         }
 
         try {
-            // On supporte aussi les valeurs écrites comme "+3"
-            return Integer.parseInt(raw.replace("+", ""));
+            return Double.parseDouble(raw.replace("+", ""));
         } catch (NumberFormatException e) {
-            return 0;
+            return 0.;
         }
     }
 

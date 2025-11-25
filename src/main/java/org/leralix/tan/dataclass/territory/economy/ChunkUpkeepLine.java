@@ -11,7 +11,7 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.TransactionType;
-import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.upgrade.rewards.numeric.ChunkUpkeepCost;
 import org.leralix.tan.utils.text.StringUtil;
 
 public class ChunkUpkeepLine extends ProfitLine {
@@ -19,7 +19,7 @@ public class ChunkUpkeepLine extends ProfitLine {
 
     public ChunkUpkeepLine(TerritoryData territoryData) {
         super(territoryData);
-        this.totalUpkeep = territoryData.getNumberOfClaimedChunk() * -Constants.getUpkeepCost(territoryData);
+        this.totalUpkeep = -(territoryData.getNumberOfClaimedChunk() * territoryData.getNewLevel().getStat(ChunkUpkeepCost.class).getCost());
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ChunkUpkeepLine extends ProfitLine {
                 .setName(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(lang))
                 .setDescription(
                         Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.get(StringUtil.getColoredMoney(getMoney())),
-                        Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(StringUtil.getColoredMoney(-Constants.getUpkeepCost(territoryData))),
+                        Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(StringUtil.getColoredMoney(-territoryData.getNewLevel().getStat(ChunkUpkeepCost.class).getCost())),
                         Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC3.get(Integer.toString(territoryData.getNumberOfClaimedChunk()))
                 )
                 .setAction(event ->

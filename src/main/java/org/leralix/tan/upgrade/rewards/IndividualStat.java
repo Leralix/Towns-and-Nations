@@ -33,4 +33,11 @@ public abstract class IndividualStat {
         }
         return Integer.toString(value);
     }
+
+    protected String getMathSign(double value){
+        if(value > 0){
+            return "+" + value;
+        }
+        return Double.toString(value);
+    }
 }

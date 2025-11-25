@@ -101,9 +101,6 @@ ChangeRegionNameCost: 100
 #The cost of a region claim
 CostOfRegionChunk: 5
 
-#The upkeep cost of a region claim
-RegionChunkUpkeepCost: 0.1
-
 #Allow non-adjacent chunks to be claimed
 RegionAllowNonAdjacentChunks: false
 
@@ -126,9 +123,6 @@ ChangeTownNameCost: 100
 
 #The cost of a town claim
 CostOfTownChunk: 0
-
-#The upkeep cost of a town claim
-TownChunkUpkeepCost: 0.0
 
 #Allow non-adjacent chunks to be claimed
 TownAllowNonAdjacentChunks: false

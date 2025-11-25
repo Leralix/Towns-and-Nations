@@ -91,6 +91,7 @@ public class TerritoryStats {
         List<IndividualStat> allStats = new ArrayList<>();
         allStats.add(getStat(ChunkCap.class));
         allStats.add(getStat(ChunkCost.class));
+        allStats.add(getStat(ChunkUpkeepCost.class));
         // Town only stats.
         if(statsType == StatsType.TOWN){
             allStats.add(getStat(LandmarkCap.class));

@@ -53,8 +53,6 @@ public class Constants {
     private static int regionMaxDescriptionSize;
     private static int maxRankSize;
     private static int rankNameSize;
-    private static double townChunkUpkeepCost;
-    private static double regionChunkUpkeepCost;
     private static boolean displayTerritoryColor;
     private static int territoryClaimBufferZone;
     private static int minimumNumberOfChunksUnclaimed;
@@ -149,8 +147,6 @@ public class Constants {
         regionMaxDescriptionSize = config.getInt("RegionDescSize", 55);
         maxRankSize = config.getInt("maxRanks", 9);
         rankNameSize = config.getInt("RankNameSize", 40);
-        townChunkUpkeepCost = config.getDouble("TownChunkUpkeepCost", 0);
-        regionChunkUpkeepCost = config.getDouble("RegionChunkUpkeepCost", 0);
 
         displayTerritoryColor = config.getBoolean("displayTerritoryNameWithOwnColor", false);
         territoryClaimBufferZone = config.getInt("TerritoryClaimBufferZone", 2);
@@ -497,19 +493,6 @@ public class Constants {
 
     public static int getRankNameSize() {
         return rankNameSize;
-    }
-
-    public static double getUpkeepCost(TerritoryData territoryData) {
-        if (territoryData instanceof TownData) {
-            return townChunkUpkeepCost;
-        } else if (territoryData instanceof RegionData) {
-            return regionChunkUpkeepCost;
-        }
-        return townChunkUpkeepCost;
-    }
-
-    public static double getRegionChunkUpkeepCost() {
-        return regionChunkUpkeepCost;
     }
 
     public static RelationConstant getRelationConstants(TownRelation relation) {
