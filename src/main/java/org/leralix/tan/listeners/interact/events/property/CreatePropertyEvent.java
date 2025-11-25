@@ -12,6 +12,7 @@ import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.interact.ListenerState;
@@ -76,10 +77,11 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
             position2 = vector3D;
 
             cost = NumberUtil.roundWithDigits(getTotalCost());
-            if (tanPlayer.getBalance() < cost) {
-                TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(langType, Double.toString(cost - tanPlayer.getBalance())));
+            if (EconomyUtil.getBalance(player) < cost) {
+                TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(langType, Double.toString(cost - EconomyUtil.getBalance(player))));
                 return ListenerState.SUCCESS;
             }
+            EconomyUtil.removeFromBalance(player, cost);
 
             TanChatUtils.message(player, Lang.PLAYER_SECOND_POINT_SET.get(langType, vector3D.toString()));
             TanChatUtils.message(player, Lang.PLAYER_PLACE_SIGN.get(langType));
