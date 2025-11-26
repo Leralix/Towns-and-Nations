@@ -8,6 +8,7 @@ import org.leralix.lib.commands.SubCommand;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.exception.EconomyException;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.commands.CommandExceptionHandler;
 import org.leralix.tan.utils.file.FileUtil;
@@ -74,7 +75,7 @@ public class SetMoney extends SubCommand {
     double amount = amountOpt.get();
 
     try {
-      EconomyUtil.setBalance(target, amount);
+      executeSetMoney(target, amount);
 
       TanChatUtils.message(
           commandSender,
@@ -82,9 +83,24 @@ public class SetMoney extends SubCommand {
       FileUtil.addLineToHistory(
           Lang.HISTORY_ADMIN_SET_MONEY.get(
               commandSender.getName(), Double.toString(amount), target.getNameStored()));
-    } catch (Exception e) {
+    } catch (EconomyException e) {
       TanChatUtils.message(commandSender, Lang.SYNTAX_ERROR, SoundEnum.NOT_ALLOWED);
       CommandExceptionHandler.logCommandExecution(commandSender, "setmoney", args);
+    }
+  }
+
+  /**
+   * Executes the set money operation.
+   *
+   * @param target The player to set money for
+   * @param amount The amount to set
+   * @throws EconomyException If the economy operation fails
+   */
+  private static void executeSetMoney(ITanPlayer target, double amount) throws EconomyException {
+    try {
+      EconomyUtil.setBalance(target, amount);
+    } catch (Exception e) {
+      throw new EconomyException("Set money operation failed: " + e.getMessage(), e);
     }
   }
 }

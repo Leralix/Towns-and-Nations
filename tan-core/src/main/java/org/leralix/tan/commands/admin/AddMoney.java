@@ -8,6 +8,7 @@ import org.leralix.lib.commands.SubCommand;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.exception.EconomyException;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.commands.CommandExceptionHandler;
 import org.leralix.tan.utils.file.FileUtil;
@@ -76,16 +77,31 @@ public class AddMoney extends SubCommand {
     double amount = amountOpt.get();
 
     try {
-      EconomyUtil.addFromBalance(target, amount);
+      executeAddMoney(target, amount);
       TanChatUtils.message(
           commandSender,
           Lang.ADD_MONEY_COMMAND_SUCCESS.get(Double.toString(amount), target.getNameStored()));
       FileUtil.addLineToHistory(
           Lang.HISTORY_ADMIN_GIVE_MONEY.get(
               commandSender.getName(), Double.toString(amount), target.getNameStored()));
-    } catch (Exception e) {
+    } catch (EconomyException e) {
       TanChatUtils.message(commandSender, Lang.SYNTAX_ERROR, SoundEnum.NOT_ALLOWED);
       CommandExceptionHandler.logCommandExecution(commandSender, "addmoney", args);
+    }
+  }
+
+  /**
+   * Executes the add money operation.
+   *
+   * @param target The player to add money to
+   * @param amount The amount to add
+   * @throws EconomyException If the economy operation fails
+   */
+  private static void executeAddMoney(ITanPlayer target, double amount) throws EconomyException {
+    try {
+      EconomyUtil.addFromBalance(target, amount);
+    } catch (Exception e) {
+      throw new EconomyException("Add money operation failed: " + e.getMessage(), e);
     }
   }
 }

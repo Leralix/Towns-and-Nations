@@ -9,6 +9,7 @@ import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.enums.MapSettings;
+import org.leralix.tan.exception.TerritoryException;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
@@ -77,15 +78,31 @@ public class UnclaimCommand extends PlayerSubCommand {
 
       // Unclaim the chunk
       ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
-      claimedChunk.unclaimChunk(player);
+      executeUnclaimChunk(claimedChunk, player);
 
       // Open map if coordinates were provided
       if (args.length == 4) {
         MapCommand.openMap(player, new MapSettings(args[0], args[1]));
       }
-    } catch (Exception e) {
+    } catch (TerritoryException e) {
       TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
       CommandExceptionHandler.logCommandExecution(player, "unclaim", args);
+    }
+  }
+
+  /**
+   * Executes the chunk unclaim operation.
+   *
+   * @param claimedChunk The claimed chunk to unclaim
+   * @param player The player executing the unclaim
+   * @throws TerritoryException If the unclaim operation fails
+   */
+  private void executeUnclaimChunk(ClaimedChunk2 claimedChunk, Player player)
+      throws TerritoryException {
+    try {
+      claimedChunk.unclaimChunk(player);
+    } catch (Exception e) {
+      throw new TerritoryException("Chunk unclaim failed: " + e.getMessage(), e);
     }
   }
 }

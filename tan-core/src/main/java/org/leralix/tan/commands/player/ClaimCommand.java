@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.MapSettings;
+import org.leralix.tan.exception.TerritoryException;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.RegionDataStorage;
@@ -89,20 +90,52 @@ public class ClaimCommand extends PlayerSubCommand {
 
       try {
         Chunk chunk = player.getWorld().getChunkAt(xOpt.get(), zOpt.get());
-        territoryData.claimChunk(player, chunk);
+        executeClaimChunk(territoryData, player, chunk);
         MapCommand.openMap(player, new MapSettings(args[0], args[1]));
-      } catch (Exception e) {
+      } catch (TerritoryException e) {
         TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
         CommandExceptionHandler.logCommandExecution(player, "claim", args);
       }
     } else {
       // Claim current chunk
       try {
-        territoryData.claimChunk(player);
-      } catch (Exception e) {
+        executeClaimChunk(territoryData, player);
+      } catch (TerritoryException e) {
         TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
         CommandExceptionHandler.logCommandExecution(player, "claim", args);
       }
+    }
+  }
+
+  /**
+   * Executes the chunk claim operation.
+   *
+   * @param territory The territory claiming the chunk
+   * @param player The player executing the claim
+   * @throws TerritoryException If the claim operation fails
+   */
+  private void executeClaimChunk(TerritoryData territory, Player player) throws TerritoryException {
+    try {
+      territory.claimChunk(player);
+    } catch (Exception e) {
+      throw new TerritoryException("Chunk claim failed: " + e.getMessage(), e);
+    }
+  }
+
+  /**
+   * Executes the chunk claim operation at specific coordinates.
+   *
+   * @param territory The territory claiming the chunk
+   * @param player The player executing the claim
+   * @param chunk The chunk to claim
+   * @throws TerritoryException If the claim operation fails
+   */
+  private void executeClaimChunk(TerritoryData territory, Player player, Chunk chunk)
+      throws TerritoryException {
+    try {
+      territory.claimChunk(player, chunk);
+    } catch (Exception e) {
+      throw new TerritoryException("Chunk claim failed: " + e.getMessage(), e);
     }
   }
 }
