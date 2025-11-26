@@ -60,23 +60,23 @@ public class AdminManagePlayer extends BasicGui {
         IconBuilder iconBuilder = iconManager.get(IconKey.TOWN_BASE_ICON);
 
 
-        if(tanPlayer.hasTown()){
-            TownData townData = tanPlayer.getTown();
+        if(targetPlayer.hasTown()){
+            TownData townData = targetPlayer.getTown();
             iconBuilder
                     .setName(Lang.ADMIN_GUI_TOWN_PLAYER_TOWN.get(langType, townData.getName()))
                     .setClickToAcceptMessage(
-                            townData.isLeader(tanPlayer) ?
+                            townData.isLeader(targetPlayer) ?
                                     Lang.ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2 :
                                     Lang.ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1
                     )
                     .setAction(action -> {
-                            if (townData.isLeader(tanPlayer)) {
+                            if (townData.isLeader(targetPlayer)) {
                                 TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get(langType));
                                 return;
                             }
-                            townData.removePlayer(tanPlayer);
+                            townData.removePlayer(targetPlayer);
 
-                            TanChatUtils.message(player, Lang.ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS.get(langType, tanPlayer.getNameStored(), townData.getName()));
+                            TanChatUtils.message(player, Lang.ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS.get(langType, targetPlayer.getNameStored(), townData.getName()));
                             open();
                     });
         }
@@ -84,7 +84,7 @@ public class AdminManagePlayer extends BasicGui {
             iconBuilder
                     .setName(Lang.ADMIN_GUI_PLAYER_NO_TOWN.get(langType))
                     .setClickToAcceptMessage(Lang.GUI_GENERIC_ADD_BUTTON)
-                    .setAction(action -> new AdminSetPlayerTown(player, tanPlayer));
+                    .setAction(action -> new AdminSetPlayerTown(player, targetPlayer));
         }
         return iconBuilder.asGuiItem(player, langType);
     }
