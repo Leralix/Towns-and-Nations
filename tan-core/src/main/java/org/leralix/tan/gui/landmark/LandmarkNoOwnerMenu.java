@@ -9,6 +9,7 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
@@ -22,7 +23,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.upgrade.rewards.numeric.LandmarkCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -31,18 +31,39 @@ import org.leralix.tan.utils.deprecated.HeadUtils;
 public class LandmarkNoOwnerMenu extends BasicGui {
 
   private final Landmark landmark;
+  @Nullable private final TownData playerTown;
 
-  private LandmarkNoOwnerMenu(Player player, ITanPlayer tanPlayer, Landmark landmark) {
+  private LandmarkNoOwnerMenu(
+      Player player, ITanPlayer tanPlayer, Landmark landmark, @Nullable TownData playerTown) {
     super(player, tanPlayer, Lang.HEADER_LANDMARK_UNCLAIMED.get(tanPlayer.getLang()), 3);
     this.landmark = landmark;
+    this.playerTown = playerTown;
   }
 
+  /**
+   * Opens the landmark no owner menu asynchronously.
+   *
+   * @param player The player viewing the menu
+   * @param landmark The landmark without an owner
+   */
   public static void open(Player player, Landmark landmark) {
     PlayerDataStorage.getInstance()
         .get(player)
-        .thenAccept(
+        .thenCompose(
             tanPlayer -> {
-              new LandmarkNoOwnerMenu(player, tanPlayer, landmark).open();
+              // Pre-load player's town if they have one
+              if (tanPlayer.hasTown()) {
+                return tanPlayer.getTown().thenApply(town -> new Object[] {tanPlayer, town});
+              } else {
+                return java.util.concurrent.CompletableFuture.completedFuture(
+                    new Object[] {tanPlayer, null});
+              }
+            })
+        .thenAccept(
+            data -> {
+              ITanPlayer tanPlayer = (ITanPlayer) ((Object[]) data)[0];
+              TownData playerTown = (TownData) ((Object[]) data)[1];
+              new LandmarkNoOwnerMenu(player, tanPlayer, landmark, playerTown).open();
             });
   }
 
@@ -68,7 +89,6 @@ public class LandmarkNoOwnerMenu extends BasicGui {
   }
 
   private @NotNull GuiItem getClaimButton() {
-    TownData playerTown = TownDataStorage.getInstance().getSync(player);
     double cost = Constants.getClaimLandmarkCost();
     List<FilledLang> description = new ArrayList<>();
 
@@ -76,25 +96,27 @@ public class LandmarkNoOwnerMenu extends BasicGui {
       description.add(Lang.GUI_LANDMARK_CLAIM_COST.get(String.valueOf(cost)));
     }
 
-    boolean isRequirementsMet = true;
+    boolean isRequirementsMet = playerTown != null;
 
-    LandmarkCap landmarkCap = playerTown.getNewLevel().getStat(LandmarkCap.class);
-    int currentLandmarkCount = LandmarkStorage.getInstance().getLandmarkOf(playerTown).size();
-    if (!landmarkCap.canDoAction(currentLandmarkCount)) {
-      isRequirementsMet = false;
-      description.add(Lang.GUI_LANDMARK_TOWN_FULL.get());
-    }
+    if (playerTown != null) {
+      LandmarkCap landmarkCap = playerTown.getNewLevel().getStat(LandmarkCap.class);
+      int currentLandmarkCount = LandmarkStorage.getInstance().getLandmarkOf(playerTown).size();
+      if (!landmarkCap.canDoAction(currentLandmarkCount)) {
+        isRequirementsMet = false;
+        description.add(Lang.GUI_LANDMARK_TOWN_FULL.get());
+      }
 
-    if (Constants.isLandmarkClaimRequiresEncirclement() && !landmark.isEncircledBy(playerTown)) {
-      isRequirementsMet = false;
-      description.add(Lang.GUI_LANDMARK_NOT_ENCIRCLED.get());
-    }
+      if (Constants.isLandmarkClaimRequiresEncirclement() && !landmark.isEncircledBy(playerTown)) {
+        isRequirementsMet = false;
+        description.add(Lang.GUI_LANDMARK_NOT_ENCIRCLED.get());
+      }
 
-    if (cost > playerTown.getBalance()) {
-      isRequirementsMet = false;
-      description.add(
-          Lang.GUI_LANDMARK_NOT_ENOUGH_MONEY.get(
-              Double.toString(Constants.getClaimLandmarkCost())));
+      if (cost > playerTown.getBalance()) {
+        isRequirementsMet = false;
+        description.add(
+            Lang.GUI_LANDMARK_NOT_ENOUGH_MONEY.get(
+                Double.toString(Constants.getClaimLandmarkCost())));
+      }
     }
 
     if (isRequirementsMet) {
@@ -107,6 +129,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
             : IconKey.GUI_CONFIRM_CLAIM_LANDMARK_REQUIREMENTS_UNMET_ICON;
 
     final boolean requirementMet = isRequirementsMet;
+    final TownData finalPlayerTown = playerTown;
 
     return iconManager
         .get(iconKey)
@@ -114,7 +137,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
         .setDescription(description)
         .setAction(
             event -> {
-              if (!requirementMet) {
+              if (!requirementMet || finalPlayerTown == null) {
                 SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                 return;
               }
@@ -123,9 +146,10 @@ public class LandmarkNoOwnerMenu extends BasicGui {
                   player,
                   Lang.GUI_LANDMARK_LEFT_CLICK_TO_CLAIM.get(),
                   p -> {
-                    playerTown.removeFromBalance(cost);
-                    landmark.setOwner(playerTown);
-                    playerTown.broadcastMessageWithSound(Lang.GUI_LANDMARK_CLAIMED.get(), GOOD);
+                    finalPlayerTown.removeFromBalance(cost);
+                    landmark.setOwner(finalPlayerTown);
+                    finalPlayerTown.broadcastMessageWithSound(
+                        Lang.GUI_LANDMARK_CLAIMED.get(), GOOD);
                     player.closeInventory();
                   },
                   p -> open());

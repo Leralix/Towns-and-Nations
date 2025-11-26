@@ -3,12 +3,15 @@ package org.leralix.tan.gui.user;
 import dev.triumphteam.gui.guis.GuiItem;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.player.PlayerMenu;
@@ -24,16 +27,50 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 public class MainMenu extends BasicGui {
 
-  private MainMenu(Player player, ITanPlayer tanPlayer) {
+  @Nullable private final TownData townData;
+  @Nullable private final RegionData regionData;
+
+  private MainMenu(
+      Player player,
+      ITanPlayer tanPlayer,
+      @Nullable TownData townData,
+      @Nullable RegionData regionData) {
     super(player, tanPlayer, Lang.HEADER_MAIN_MENU.get(tanPlayer.getLang()), 3);
+    this.townData = townData;
+    this.regionData = regionData;
   }
 
+  /**
+   * Opens the main menu asynchronously.
+   *
+   * @param player The player viewing the menu
+   */
   public static void open(Player player) {
     PlayerDataStorage.getInstance()
         .get(player)
-        .thenAccept(
+        .thenCompose(
             tanPlayer -> {
-              new MainMenu(player, tanPlayer).open();
+              // Pre-load town and region data if player has them
+              CompletableFuture<TownData> townFuture =
+                  tanPlayer.hasTown()
+                      ? tanPlayer.getTown()
+                      : CompletableFuture.completedFuture(null);
+
+              CompletableFuture<RegionData> regionFuture =
+                  tanPlayer.hasRegion()
+                      ? tanPlayer.getRegion()
+                      : CompletableFuture.completedFuture(null);
+
+              // Wait for both to complete
+              return CompletableFuture.allOf(townFuture, regionFuture)
+                  .thenApply(v -> new Object[] {tanPlayer, townFuture.join(), regionFuture.join()});
+            })
+        .thenAccept(
+            data -> {
+              ITanPlayer tanPlayer = (ITanPlayer) ((Object[]) data)[0];
+              TownData townData = (TownData) ((Object[]) data)[1];
+              RegionData regionData = (RegionData) ((Object[]) data)[2];
+              new MainMenu(player, tanPlayer, townData, regionData).open();
             });
   }
 
@@ -102,8 +139,7 @@ public class MainMenu extends BasicGui {
 
     List<FilledLang> description = new ArrayList<>();
 
-    if (tanPlayer.hasRegion()) {
-      RegionData regionData = tanPlayer.getRegionSync();
+    if (regionData != null) {
       description.add(Lang.GUI_REGION_ICON_DESC1_REGION.get(regionData.getColoredName()));
       description.add(
           Lang.GUI_REGION_ICON_DESC2_REGION.get(regionData.getRank(tanPlayer).getColoredName()));
@@ -119,8 +155,8 @@ public class MainMenu extends BasicGui {
             action -> {
               // TODO: Replace with proper region menu navigation after PlayerGUI migration
               // Original: PlayerGUI.dispatchPlayerRegion(player)
-              if (tanPlayer.hasRegion()) {
-                tanPlayer.getRegionSync().openMainMenu(player);
+              if (regionData != null) {
+                regionData.openMainMenu(player);
               } else {
                 NoRegionMenu.open(player);
               }
@@ -131,12 +167,10 @@ public class MainMenu extends BasicGui {
   private GuiItem getTownButton(ITanPlayer tanPlayer) {
 
     List<FilledLang> description = new ArrayList<>();
-    if (tanPlayer.hasTown()) {
+    if (townData != null) {
+      description.add(Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(townData.getColoredName()));
       description.add(
-          Lang.GUI_TOWN_ICON_DESC1_HAVE_TOWN.get(tanPlayer.getTownSync().getColoredName()));
-      description.add(
-          Lang.GUI_TOWN_ICON_DESC2_HAVE_TOWN.get(
-              tanPlayer.getTownSync().getRank(tanPlayer).getColoredName()));
+          Lang.GUI_TOWN_ICON_DESC2_HAVE_TOWN.get(townData.getRank(tanPlayer).getColoredName()));
     } else {
       description.add(Lang.GUI_TOWN_ICON_DESC1_NO_TOWN.get());
     }
@@ -149,8 +183,8 @@ public class MainMenu extends BasicGui {
             action -> {
               // TODO: Replace with proper town menu navigation after PlayerGUI migration
               // Original: PlayerGUI.dispatchPlayerTown(player)
-              if (tanPlayer.hasTown()) {
-                tanPlayer.getTownSync().openMainMenu(player);
+              if (townData != null) {
+                townData.openMainMenu(player);
               } else {
                 NoTownMenu.open(player);
               }

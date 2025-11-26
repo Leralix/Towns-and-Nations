@@ -137,8 +137,8 @@ public class GuiHelperBridge {
    * @param backArrowAction Consumer called when back arrow is clicked
    * @param nextPageAction Consumer called when next page button is clicked
    * @param previousPageAction Consumer called when previous page button is clicked
-   * @deprecated This method calls blocking getSync(). Use
-   *     {@link AsyncGuiHelper#loadAsync(Player, Supplier, Consumer)} instead.
+   * @deprecated This method calls blocking getSync(). Use {@link AsyncGuiHelper#loadAsync(Player,
+   *     Supplier, Consumer)} instead.
    */
   @Deprecated(since = "0.16.0", forRemoval = true)
   public static void createIterator(
@@ -165,8 +165,8 @@ public class GuiHelperBridge {
    * @param nextPageAction Consumer called when next page button is clicked
    * @param previousPageAction Consumer called when previous page button is clicked
    * @param decorativeMaterial The material to use for decoration
-   * @deprecated This method calls blocking getSync(). Use
-   *     {@link AsyncGuiHelper#loadAsync(Player, Supplier, Consumer)} instead.
+   * @deprecated This method calls blocking getSync(). Use {@link AsyncGuiHelper#loadAsync(Player,
+   *     Supplier, Consumer)} instead.
    */
   @Deprecated(since = "0.16.0", forRemoval = true)
   public static void createIterator(
@@ -180,7 +180,13 @@ public class GuiHelperBridge {
       Material decorativeMaterial) {
     // Delegate to legacy implementation
     org.leralix.tan.utils.deprecated.GuiUtil.createIterator(
-        gui, guItems, page, player, backArrowAction, nextPageAction, previousPageAction,
+        gui,
+        guItems,
+        page,
+        player,
+        backArrowAction,
+        nextPageAction,
+        previousPageAction,
         decorativeMaterial);
   }
 
@@ -195,8 +201,8 @@ public class GuiHelperBridge {
    * @param nextPageAction Consumer called when next page button is clicked
    * @param previousPageAction Consumer called when previous page button is clicked
    * @param decorativeGlassPane The custom decoration ItemStack
-   * @deprecated This method calls blocking getSync(). Use
-   *     {@link AsyncGuiHelper#loadAsync(Player, Supplier, Consumer)} instead.
+   * @deprecated This method calls blocking getSync(). Use {@link AsyncGuiHelper#loadAsync(Player,
+   *     Supplier, Consumer)} instead.
    */
   @Deprecated(since = "0.16.0", forRemoval = true)
   public static void createIterator(
@@ -210,7 +216,13 @@ public class GuiHelperBridge {
       ItemStack decorativeGlassPane) {
     // Delegate to legacy implementation
     org.leralix.tan.utils.deprecated.GuiUtil.createIterator(
-        gui, guItems, page, player, backArrowAction, nextPageAction, previousPageAction,
+        gui,
+        guItems,
+        page,
+        player,
+        backArrowAction,
+        nextPageAction,
+        previousPageAction,
         decorativeGlassPane);
   }
 }

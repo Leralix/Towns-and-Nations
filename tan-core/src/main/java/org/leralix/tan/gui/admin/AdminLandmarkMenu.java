@@ -76,14 +76,16 @@ public class AdminLandmarkMenu extends IteratorGUI {
     List<GuiItem> guiItems = new ArrayList<>();
     for (Landmark landmark : landmarks) {
       String ownerName = "No Owner";
+      TownData owner = null;
       if (landmark.isOwned() && landmark.getOwnerID() != null) {
-        TownData owner = TownDataStorage.getInstance().getSync(landmark.getOwnerID());
+        owner = TownDataStorage.getInstance().getSync(landmark.getOwnerID());
         if (owner != null) {
           ownerName = owner.getColoredName();
         }
       }
 
       final String finalOwnerName = ownerName;
+      final TownData finalOwner = owner;
       guiItems.add(
           ItemBuilder.from(Material.BEACON)
               .name(Component.text(landmark.getName()))
@@ -98,11 +100,8 @@ public class AdminLandmarkMenu extends IteratorGUI {
                           + landmark.getPosition().getZ()))
               .asGuiItem(
                   event -> {
-                    if (landmark.isOwned() && landmark.getOwnerID() != null) {
-                      TownData owner = TownDataStorage.getInstance().getSync(landmark.getOwnerID());
-                      if (owner != null) {
-                        owner.openMainMenu(player);
-                      }
+                    if (finalOwner != null) {
+                      finalOwner.openMainMenu(player);
                     } else {
                       LandmarkNoOwnerMenu.open(player, landmark);
                     }
