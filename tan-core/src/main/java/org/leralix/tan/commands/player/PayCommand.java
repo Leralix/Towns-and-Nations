@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.exception.EconomyException;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -106,19 +107,40 @@ public class PayCommand extends PlayerSubCommand {
       return;
     }
 
-    // Execute transaction
+    // Execute transaction with typed exception handling
     try {
-      EconomyUtil.removeFromBalance(player, amount);
+      executePayment(player, receiver, amount, langType);
+    } catch (EconomyException e) {
+      // Economy-specific error (transaction failed, etc.)
+      TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY.get(langType));
+      CommandExceptionHandler.logCommandExecution(player, "pay", args);
+    }
+  }
+
+  /**
+   * Executes the payment transaction between two players.
+   *
+   * @param sender The player sending money
+   * @param receiver The player receiving money
+   * @param amount The amount to transfer
+   * @param langType The language type for messages
+   * @throws EconomyException If the transaction fails (insufficient funds, etc.)
+   */
+  private void executePayment(Player sender, Player receiver, int amount, LangType langType)
+      throws EconomyException {
+    try {
+      EconomyUtil.removeFromBalance(sender, amount);
       EconomyUtil.addFromBalance(receiver, amount);
+
       TanChatUtils.message(
-          player,
+          sender,
           Lang.PAY_CONFIRMED_SENDER.get(langType, Integer.toString(amount), receiver.getName()));
       TanChatUtils.message(
           receiver,
-          Lang.PAY_CONFIRMED_RECEIVER.get(receiver, Integer.toString(amount), player.getName()));
+          Lang.PAY_CONFIRMED_RECEIVER.get(receiver, Integer.toString(amount), sender.getName()));
     } catch (Exception e) {
-      TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
-      CommandExceptionHandler.logCommandExecution(player, "pay", args);
+      // Wrap generic exceptions into typed EconomyException
+      throw new EconomyException("Payment transaction failed: " + e.getMessage(), e);
     }
   }
 }
