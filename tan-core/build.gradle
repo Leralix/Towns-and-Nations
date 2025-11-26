@@ -61,6 +61,14 @@ repositories {
 
 }
 
+sourceSets {
+    test {
+        java {
+            exclude '**/integration/**'
+        }
+    }
+}
+
 dependencies {
     implementation project(':tan-api')
 
@@ -180,6 +188,7 @@ test {
         excludeTestsMatching "org.leralix.tan.gui.*"
         excludeTestsMatching "org.leralix.tan.utils.territory.*"
         excludeTestsMatching "org.leralix.tan.utils.gameplay.*"
+        excludeTestsMatching "org.leralix.tan.integration.*"
     }
 
     finalizedBy jacocoTestReport

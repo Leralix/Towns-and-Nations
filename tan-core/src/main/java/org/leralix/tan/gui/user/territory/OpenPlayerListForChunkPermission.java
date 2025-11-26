@@ -79,9 +79,8 @@ public class OpenPlayerListForChunkPermission extends IteratorGUI {
                 TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
                 return;
               }
-              new AddPlayerForChunkPermission(
-                      player, tanPlayer, territoryData, chunkPermissionType, this)
-                  .open();
+              // Use static factory method instead of constructor
+              AddPlayerForChunkPermission.open(player, territoryData, chunkPermissionType, this);
             });
   }
 

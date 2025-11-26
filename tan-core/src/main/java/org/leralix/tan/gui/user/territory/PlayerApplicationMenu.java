@@ -5,8 +5,11 @@ import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -25,20 +28,57 @@ import org.leralix.tan.utils.text.TanChatUtils;
 public class PlayerApplicationMenu extends IteratorGUI {
 
   TownData townData;
+  Map<String, ITanPlayer> applicantsData;
 
-  public PlayerApplicationMenu(Player player, ITanPlayer tanPlayer, TownData townData) {
+  private PlayerApplicationMenu(
+      Player player,
+      ITanPlayer tanPlayer,
+      TownData townData,
+      Map<String, ITanPlayer> applicantsData) {
     super(player, tanPlayer, Lang.HEADER_TOWN_APPLICATIONS.get(player), 3);
     this.townData = townData;
-    // open() doit être appelé explicitement après la construction pour respecter le modèle
-    // asynchrone
+    this.applicantsData = applicantsData;
   }
 
+  /**
+   * Opens the player application menu asynchronously.
+   *
+   * @param player The player viewing the menu
+   * @param townData The town data containing applications
+   */
   public static void open(Player player, TownData townData) {
-    PlayerDataStorage.getInstance()
+    PlayerDataStorage storage = PlayerDataStorage.getInstance();
+
+    // Load viewer data
+    storage
         .get(player)
-        .thenAccept(
+        .thenCompose(
             tanPlayer -> {
-              new PlayerApplicationMenu(player, tanPlayer, townData).open();
+              // Load all applicants data in parallel
+              List<CompletableFuture<ITanPlayer>> applicantFutures = new ArrayList<>();
+              for (String playerUUID : townData.getPlayerJoinRequestSet()) {
+                applicantFutures.add(storage.get(playerUUID));
+              }
+
+              // Wait for all applicants to load
+              return CompletableFuture.allOf(applicantFutures.toArray(new CompletableFuture[0]))
+                  .thenApply(
+                      v -> {
+                        Map<String, ITanPlayer> applicantsData = new HashMap<>();
+                        for (CompletableFuture<ITanPlayer> future : applicantFutures) {
+                          ITanPlayer applicant = future.join();
+                          applicantsData.put(applicant.getID(), applicant);
+                        }
+                        return new Object[] {tanPlayer, applicantsData};
+                      });
+            })
+        .thenAccept(
+            data -> {
+              ITanPlayer tanPlayer = (ITanPlayer) ((Object[]) data)[0];
+              @SuppressWarnings("unchecked")
+              Map<String, ITanPlayer> applicantsData =
+                  (Map<String, ITanPlayer>) ((Object[]) data)[1];
+              new PlayerApplicationMenu(player, tanPlayer, townData, applicantsData).open();
             });
   }
 
@@ -62,7 +102,7 @@ public class PlayerApplicationMenu extends IteratorGUI {
     for (String playerUUID : townData.getPlayerJoinRequestSet()) {
 
       OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-      ITanPlayer playerIterateData = PlayerDataStorage.getInstance().getSync(playerUUID);
+      ITanPlayer playerIterateData = applicantsData.get(playerUUID);
 
       ItemStack playerHead =
           HeadUtils.getPlayerHead(

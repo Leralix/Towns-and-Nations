@@ -5,7 +5,10 @@ import static org.leralix.lib.data.SoundEnum.ADD;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -24,18 +27,21 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
   private final PermissionManager permissionManager;
   private final ChunkPermissionType chunkPermission;
   private final BrowsePlayerWithPermissionMenu returnMenu;
+  private final Map<String, ITanPlayer> playersData;
 
   private AddPlayerWithPermissionMenu(
       Player player,
       ITanPlayer tanPlayer,
       PermissionManager permissionManager,
       ChunkPermissionType chunkPermission,
-      BrowsePlayerWithPermissionMenu browsePlayerWithPermissionMenu) {
+      BrowsePlayerWithPermissionMenu browsePlayerWithPermissionMenu,
+      Map<String, ITanPlayer> playersData) {
     super(player, tanPlayer, chunkPermission.getLabel(tanPlayer.getLang()), 3);
 
     this.permissionManager = permissionManager;
     this.chunkPermission = chunkPermission;
     this.returnMenu = browsePlayerWithPermissionMenu;
+    this.playersData = playersData;
   }
 
   public static void open(
@@ -43,16 +49,41 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
       PermissionManager permissionManager,
       ChunkPermissionType chunkPermission,
       BrowsePlayerWithPermissionMenu browsePlayerWithPermissionMenu) {
-    PlayerDataStorage.getInstance()
+    PlayerDataStorage storage = PlayerDataStorage.getInstance();
+
+    storage
         .get(player)
-        .thenAccept(
+        .thenCompose(
             tanPlayer -> {
+              // Load all online players data in parallel
+              List<CompletableFuture<ITanPlayer>> playerFutures = new ArrayList<>();
+              for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                playerFutures.add(storage.get(onlinePlayer));
+              }
+
+              return CompletableFuture.allOf(playerFutures.toArray(new CompletableFuture[0]))
+                  .thenApply(
+                      v -> {
+                        Map<String, ITanPlayer> playersData = new HashMap<>();
+                        for (CompletableFuture<ITanPlayer> future : playerFutures) {
+                          ITanPlayer playerData = future.join();
+                          playersData.put(playerData.getID(), playerData);
+                        }
+                        return new Object[] {tanPlayer, playersData};
+                      });
+            })
+        .thenAccept(
+            data -> {
+              ITanPlayer tanPlayer = (ITanPlayer) ((Object[]) data)[0];
+              @SuppressWarnings("unchecked")
+              Map<String, ITanPlayer> playersData = (Map<String, ITanPlayer>) ((Object[]) data)[1];
               new AddPlayerWithPermissionMenu(
                       player,
                       tanPlayer,
                       permissionManager,
                       chunkPermission,
-                      browsePlayerWithPermissionMenu)
+                      browsePlayerWithPermissionMenu,
+                      playersData)
                   .open();
             });
   }
@@ -73,9 +104,7 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
     List<GuiItem> guiItems = new ArrayList<>();
     for (Player playerToAdd : Bukkit.getOnlinePlayers()) {
 
-      // TODO: This is a blocking call and should be refactored to be fully asynchronous.
-      // This would require pre-loading all online players' data before opening the GUI.
-      ITanPlayer playerToAddData = PlayerDataStorage.getInstance().getSync(playerToAdd);
+      ITanPlayer playerToAddData = playersData.get(playerToAdd.getUniqueId().toString());
       ChunkPermission permission = permissionManager.get(chunkPermission);
       // Check with town since only town can have territories
       if (permission.isAllowed(tanPlayer.getTownSync(), playerToAddData)) continue;

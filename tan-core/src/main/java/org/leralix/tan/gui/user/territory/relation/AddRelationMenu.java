@@ -5,7 +5,10 @@ import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -28,9 +31,14 @@ public class AddRelationMenu extends IteratorGUI {
 
   private final TerritoryData territoryData;
   private final TownRelation wantedRelation;
+  private final Map<String, ITanPlayer> playersData;
 
   private AddRelationMenu(
-      Player player, ITanPlayer tanPlayer, TerritoryData territory, TownRelation wantedRelation) {
+      Player player,
+      ITanPlayer tanPlayer,
+      TerritoryData territory,
+      TownRelation wantedRelation,
+      Map<String, ITanPlayer> playersData) {
     super(
         player,
         tanPlayer,
@@ -39,14 +47,50 @@ public class AddRelationMenu extends IteratorGUI {
         6);
     this.territoryData = territory;
     this.wantedRelation = wantedRelation;
+    this.playersData = playersData;
   }
 
   public static void open(Player player, TerritoryData territoryData, TownRelation wantedRelation) {
-    PlayerDataStorage.getInstance()
+    PlayerDataStorage storage = PlayerDataStorage.getInstance();
+
+    storage
         .get(player)
-        .thenAccept(
+        .thenCompose(
             tanPlayer -> {
-              new AddRelationMenu(player, tanPlayer, territoryData, wantedRelation).open();
+              // Load all online players data in parallel
+              List<String> playerIDs = new ArrayList<>();
+              playerIDs.addAll(
+                  TownDataStorage.getInstance().getAllSync().values().stream()
+                      .flatMap(town -> town.getPlayerIDList().stream())
+                      .toList());
+              playerIDs.addAll(
+                  RegionDataStorage.getInstance().getAllSync().values().stream()
+                      .flatMap(region -> region.getPlayerIDList().stream())
+                      .toList());
+
+              List<CompletableFuture<ITanPlayer>> playerFutures = new ArrayList<>();
+              for (String playerID : playerIDs) {
+                playerFutures.add(storage.get(playerID));
+              }
+
+              return CompletableFuture.allOf(playerFutures.toArray(new CompletableFuture[0]))
+                  .thenApply(
+                      v -> {
+                        Map<String, ITanPlayer> playersData = new HashMap<>();
+                        for (CompletableFuture<ITanPlayer> future : playerFutures) {
+                          ITanPlayer playerData = future.join();
+                          playersData.put(playerData.getID(), playerData);
+                        }
+                        return new Object[] {tanPlayer, playersData};
+                      });
+            })
+        .thenAccept(
+            data -> {
+              ITanPlayer tanPlayer = (ITanPlayer) ((Object[]) data)[0];
+              @SuppressWarnings("unchecked")
+              Map<String, ITanPlayer> playersData = (Map<String, ITanPlayer>) ((Object[]) data)[1];
+              new AddRelationMenu(player, tanPlayer, territoryData, wantedRelation, playersData)
+                  .open();
             });
   }
 
@@ -62,7 +106,7 @@ public class AddRelationMenu extends IteratorGUI {
   }
 
   private List<GuiItem> getTerritories() {
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+    ITanPlayer tanPlayer = playersData.get(player.getUniqueId().toString());
 
     List<String> relationListID =
         territoryData.getRelations().getTerritoriesIDWithRelation(wantedRelation);

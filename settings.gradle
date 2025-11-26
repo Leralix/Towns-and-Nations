@@ -1,3 +1,4 @@
 rootProject.name = 'TownsAndNations'
-include 'TanApi'
+include 'tan-api'
+include 'tan-core'
 
