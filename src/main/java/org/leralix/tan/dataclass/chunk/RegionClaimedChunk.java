@@ -49,7 +49,7 @@ public class RegionClaimedChunk extends TerritoryChunk {
         }
 
         //Player have the right to do the action
-        ChunkPermission chunkPermission = ownerRegion.getPermission(permissionType);
+        ChunkPermission chunkPermission = ownerRegion.getChunkSettings().getPermission(permissionType);
         if (chunkPermission.isAllowed(ownerRegion, tanPlayer))
             return true;
 

@@ -43,12 +43,14 @@ public abstract class TerritoryMenu extends BasicGui {
         lore.add(territoryData.getOverlord().map(
                         overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(overlord.getName()))
                 .orElseGet(Lang.GUI_TOWN_INFO_DESC5_NO_REGION::get));
-        lore.add(Lang.GUI_TOWN_INFO_CHANGE_ICON.get());
-        lore.add(Lang.RIGHT_CLICK_TO_SELECT_MEMBER_HEAD.get());
 
         return iconManager.get(IconKey.TERRITORY_ICON)
                 .setName(Lang.GUI_TOWN_NAME.get(langType, territoryData.getName()))
                 .setDescription(lore)
+                .setClickToAcceptMessage(
+                        Lang.GUI_TOWN_INFO_CHANGE_ICON,
+                        Lang.RIGHT_CLICK_TO_SELECT_MEMBER_HEAD
+                )
                 .setAction(action -> {
 
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {

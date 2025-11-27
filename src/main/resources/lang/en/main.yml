@@ -375,6 +375,14 @@ language:
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fPlayers that are invited to the town automatically join the default rank"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2: "§7▶ Click to mark this role as default"
   GUI_TOWN_MEMBERS_ROLE_DELETE: "§aDelete the rank"
+
+  # Permissions
+  GUI_ADD_PLAYER_WITH_PERMISSION_ALREADY_HAS_PERMISSION_DESCRIPTION: "§eThis player already have permission due to his rank or territory"
+  GUI_ADD_PLAYER_WITH_PERMISSION_DESCRIPTION: "§fThis player currently does not have this permission"
+  GUI_ADD_RANK_CURRENT_STATUS : "§fCurrent status: §e{0}"
+  GUI_ADD_RANK_ALLOWED_PERMISSION: "§aAllowed"
+  GUI_ADD_RANK_NEUTRAL_PERMISSION: "§7Neutral"
+
   #Properties menu
   GUI_PROPERTY_CHANGE_NAME: "§aChange property name"
   GUI_PROPERTY_CHANGE_NAME_DESC1: "§fCurrent name: §9{0}"
@@ -478,6 +486,7 @@ language:
   GUI_TOWN_CHUNK_MOB: "§aMob spawn"
   #Player chunk settings
   GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER: "§7▶ Right click to add a specific player"
+  GUI_SHIFT_RIGHT_CLICK_TO_ADD_SPECIFIC_RANK: "§7▶ Shift + right click to add a specific rank"
   #Building menu
   GUI_BUILDING_MENU: "§aBuilding"
   GUI_BUILDING_MENU_DESC1: "§fCreate and manage buildings"
@@ -732,7 +741,7 @@ language:
   ENABLE_FIRE_GRIEF_SETTING: "§aEnable fire griefing"
   ENABLE_TNT_GRIEF_SETTING: "§aEnable explosion griefing"
   GUI_TOWN_CLAIM_SETTINGS_DESC1: "§fCurrent permission: §e{0}"
-  GUI_TOWN_CLAIM_SETTINGS_DESC_ADDITIONAL_PLAYERS: "§fAdditional players authorized: §e{0}♣"
+  GUI_TOWN_CLAIM_SETTINGS_DESC_ADDITIONAL_PLAYERS: "§fAdditional players authorized: §9{0}♣"
   GUI_TOWN_CLAIM_SETTINGS_DESC_ADDITIONAL_RANKS: "§fAdditional ranks authorized: §6{0}"
   GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_ACTIVATED: "§fCurrent spawn:§a enabled"
   GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_DEACTIVATED: "§fCurrent spawn:§c disabled"

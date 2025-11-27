@@ -4,12 +4,15 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PropertyData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
+import org.leralix.tan.gui.user.territory.OpenRankListForChunkPermission;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.PermissionManager;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +54,8 @@ public class PropertyChunkSettingsMenu extends IteratorGUI {
                     )
                     .setClickToAcceptMessage(
                             Lang.GUI_GENERIC_CLICK_TO_MODIFY,
-                            Lang.GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER
+                            Lang.GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER,
+                            Lang.GUI_SHIFT_RIGHT_CLICK_TO_ADD_SPECIFIC_RANK
                     )
                     .setAction(event -> {
                         event.setCancelled(true);
@@ -59,7 +63,18 @@ public class PropertyChunkSettingsMenu extends IteratorGUI {
                             permissionManager.nextPermission(type);
                             open();
                         } else if (event.isRightClick()) {
-                            new BrowsePlayerWithPermissionMenu(player, permissionManager, type, this);
+                            if(event.isShiftClick()){
+                                //Owner may not have a town
+                                TownData townData = tanPlayer.getTown();
+                                if(townData == null){
+                                    TanChatUtils.message(player, Lang.PLAYER_NO_TOWN);
+                                    return;
+                                }
+                                new OpenRankListForChunkPermission(player, townData, type, this);
+                            }
+                            else {
+                                new BrowsePlayerWithPermissionMenu(player, permissionManager, type, this);
+                            }
                         }
                     }).asGuiItem(player, langType);
 

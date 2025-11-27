@@ -23,7 +23,6 @@ import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.dataclass.territory.economy.ChunkUpkeepLine;
 import org.leralix.tan.dataclass.territory.economy.SalaryPaymentLine;
-import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
@@ -946,11 +945,6 @@ public abstract class TerritoryData {
 
     public boolean isAtWar() {
         return !getCurrentAttacks().isEmpty();
-    }
-
-
-    public ChunkPermission getPermission(ChunkPermissionType type) {
-        return getChunkSettings().getPermission(type);
     }
 
     public void nextPermission(ChunkPermissionType type) {

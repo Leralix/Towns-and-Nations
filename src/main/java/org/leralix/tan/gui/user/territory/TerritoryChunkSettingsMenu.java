@@ -32,7 +32,7 @@ public class TerritoryChunkSettingsMenu extends IteratorGUI {
     private List<GuiItem> getChunkPermission() {
         List<GuiItem> guiItems = new ArrayList<>();
         for (ChunkPermissionType type : ChunkPermissionType.values()) {
-            ChunkPermission permission = territoryData.getPermission(type);
+            ChunkPermission permission = territoryData.getChunkSettings().getPermission(type);
 
             GuiItem item = iconManager.get(type.getIconKey())
                     .setName(type.getName().get(tanPlayer))
@@ -43,7 +43,8 @@ public class TerritoryChunkSettingsMenu extends IteratorGUI {
                     )
                     .setClickToAcceptMessage(
                             Lang.GUI_GENERIC_CLICK_TO_MODIFY,
-                            Lang.GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER
+                            Lang.GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER,
+                            Lang.GUI_SHIFT_RIGHT_CLICK_TO_ADD_SPECIFIC_RANK
                     )
                     .setAction(event -> {
                         event.setCancelled(true);
@@ -51,7 +52,12 @@ public class TerritoryChunkSettingsMenu extends IteratorGUI {
                             territoryData.nextPermission(type);
                             open();
                         } else if (event.isRightClick()) {
-                            new OpenPlayerListForChunkPermission(player, territoryData, type, this);
+                            if(event.isShiftClick()){
+                                new OpenRankListForChunkPermission(player, territoryData, type, this);
+                            }
+                            else {
+                                new OpenPlayerListForChunkPermission(player, territoryData, type, this);
+                            }
                         }
                     }).asGuiItem(player, langType);
 

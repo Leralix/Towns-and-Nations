@@ -66,7 +66,7 @@ public class TownClaimedChunk extends TerritoryChunk {
                 return true;
         }
 
-        ChunkPermission chunkPermission = ownerTown.getPermission(permissionType);
+        ChunkPermission chunkPermission = ownerTown.getChunkSettings().getPermission(permissionType);
         if (chunkPermission.isAllowed(ownerTown, tanPlayer))
             return true;
 
