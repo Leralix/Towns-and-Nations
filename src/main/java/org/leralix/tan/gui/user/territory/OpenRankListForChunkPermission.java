@@ -24,7 +24,7 @@ public class OpenRankListForChunkPermission extends IteratorGUI {
     public OpenRankListForChunkPermission(Player player, TerritoryData territoryData, ChunkPermissionType type, BasicGui backMenu) {
         super(player, type.getLabel(), 6);
         this.territoryData = territoryData;
-        this.chunkPermission = territoryData.getChunkSettings().getPermission(type);
+        this.chunkPermission = territoryData.getChunkSettings().getChunkPermissions().get(type);
         this.backMenu = backMenu;
         open();
     }

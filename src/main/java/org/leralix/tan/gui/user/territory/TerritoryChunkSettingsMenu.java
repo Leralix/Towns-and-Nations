@@ -1,69 +1,50 @@
 package org.leralix.tan.gui.user.territory;
 
-import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
-import org.leralix.tan.gui.IteratorGUI;
-import org.leralix.tan.lang.Lang;
+import org.leralix.tan.gui.BasicGui;
+import org.leralix.tan.storage.PermissionManager;
+import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.constants.SpecificChunkConfig;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Consumer;
 
-public class TerritoryChunkSettingsMenu extends IteratorGUI {
+public class TerritoryChunkSettingsMenu extends CommonChunkSettingsMenu {
 
     private final TerritoryData territoryData;
 
-    public TerritoryChunkSettingsMenu(Player player, TerritoryData territoryData) {
-        super(player, Lang.HEADER_CHUNK_PERMISSION, 4);
+    public TerritoryChunkSettingsMenu(Player player, TerritoryData territoryData, BasicGui returnGui) {
+        super(player, territoryData.getChunkSettings().getChunkPermissions(), returnGui);
         this.territoryData = territoryData;
         open();
     }
 
-
     @Override
-    public void open() {
-        iterator(getChunkPermission(), p -> new ChunkSettingsMenu(player, territoryData), Material.LIME_STAINED_GLASS_PANE);
-        gui.open(player);
+    protected SpecificChunkConfig getSpecificChunkConfig(ChunkPermissionType type) {
+        if(territoryData instanceof RegionData){
+            return Constants.getChunkPermissionConfig().getRegionPermission(type);
+        }
+        return Constants.getChunkPermissionConfig().getTownPermission(type);
     }
 
-    private List<GuiItem> getChunkPermission() {
-        List<GuiItem> guiItems = new ArrayList<>();
-        for (ChunkPermissionType type : ChunkPermissionType.values()) {
-            ChunkPermission permission = territoryData.getChunkSettings().getPermission(type);
-
-            GuiItem item = iconManager.get(type.getIconKey())
-                    .setName(type.getName().get(tanPlayer))
-                    .setDescription(
-                            Lang.GUI_TOWN_CLAIM_SETTINGS_DESC1.get(permission.getOverallPermission().getColoredName(langType)),
-                            Lang.GUI_TOWN_CLAIM_SETTINGS_DESC_ADDITIONAL_PLAYERS.get(Integer.toString(permission.getAuthorizedPlayers().size())),
-                            Lang.GUI_TOWN_CLAIM_SETTINGS_DESC_ADDITIONAL_RANKS.get(Integer.toString(permission.getAuthorizedRanks().size()))
-                    )
-                    .setClickToAcceptMessage(
-                            Lang.GUI_GENERIC_CLICK_TO_MODIFY,
-                            Lang.GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER,
-                            Lang.GUI_SHIFT_RIGHT_CLICK_TO_ADD_SPECIFIC_RANK
-                    )
-                    .setAction(event -> {
-                        event.setCancelled(true);
-                        if (event.isLeftClick()) {
-                            territoryData.nextPermission(type);
-                            open();
-                        } else if (event.isRightClick()) {
-                            if(event.isShiftClick()){
-                                new OpenRankListForChunkPermission(player, territoryData, type, this);
-                            }
-                            else {
-                                new OpenPlayerListForChunkPermission(player, territoryData, type, this);
-                            }
-                        }
-                    }).asGuiItem(player, langType);
-
-            guiItems.add(item);
-        }
-        return guiItems;
+    @Override
+    protected Consumer<InventoryClickEvent> getAction(ChunkPermissionType type, PermissionManager permissionManager) {
+        return event -> {
+            event.setCancelled(true);
+            if (event.isLeftClick()) {
+                permissionManager.nextPermission(type);
+                open();
+            } else if (event.isRightClick()) {
+                if (event.isShiftClick()) {
+                    new OpenRankListForChunkPermission(player, territoryData, type, this);
+                } else {
+                    new OpenPlayerListForChunkPermission(player, territoryData, type, this);
+                }
+            }
+        };
     }
 
 

@@ -18,6 +18,7 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
@@ -48,8 +49,14 @@ public class RegionClaimedChunk extends TerritoryChunk {
                 return true;
         }
 
+        //If the permission is locked by admins, only shows default value.
+        var defaultPermission = Constants.getChunkPermissionConfig().getRegionPermission(permissionType);
+        if(defaultPermission.isLocked()){
+            return defaultPermission.defaultRelation().isAllowed(ownerRegion, tanPlayer);
+        }
+
         //Player have the right to do the action
-        ChunkPermission chunkPermission = ownerRegion.getChunkSettings().getPermission(permissionType);
+        ChunkPermission chunkPermission = ownerRegion.getChunkSettings().getChunkPermissions().get(permissionType);
         if (chunkPermission.isAllowed(ownerRegion, tanPlayer))
             return true;
 

@@ -348,6 +348,25 @@ warBoundaryParticle : "DRAGON_BREATH"
 #player enter claimed chunks.
 displayTerritoryNameWithOwnColor: false
 
+# Chunk permission defines what players can do in a area.
+# The same system is used for territory chunks and properties.
+# You can set the default permission for every claimed chunk of territory
+# You can also block specific actions so players cannot change them in-game. In that case, default settings will be used.
+# Available permissions: INTERACT_CHEST, INTERACT_DOOR, BREAK_BLOCK, PLACE_BLOCK, ATTACK_PASSIVE_MOB, INTERACT_BUTTON,
+# INTERACT_REDSTONE, INTERACT_FURNACE, INTERACT_ITEM_FRAME, INTERACT_ARMOR_STAND, INTERACT_DECORATIVE_BLOCK,
+# INTERACT_MUSIC_BLOCK, USE_LEAD, USE_SHEARS, INTERACT_BOAT, INTERACT_MINECART, USE_BONE_MEAL, INTERACT_BERRIES
+# Default permission: TOWN, ALLIANCE, FOREIGN, SELECTED_ONLY (default : TOWN)
+# Locked permission: locked (leave blank to allow changes). Locked permission will not allow additional players or ranks.
+# Example :
+# chunkPermissionConfig:
+#  townPermissions:
+#    INTERACT_CHEST:   <- Interact chest permission for towns
+#      - "ALLIANCE"    <- Set to "Alliance" by default
+#      - "locked"      <- If written, players will not be able to change this permission. Optional.
+chunkPermissionConfig:
+  townPermissions:
+  regionPermissions:
+  propertyPermissions:
 #General settings in claimed chunks of territories
 # Always                 | Always allow
 # Player choice          | Allow territories to choose

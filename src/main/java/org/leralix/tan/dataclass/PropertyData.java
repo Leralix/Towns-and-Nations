@@ -26,7 +26,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
-import org.leralix.tan.dataclass.territory.permission.RelationPermission;
+import org.leralix.tan.dataclass.territory.permission.PermissionGiven;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.gui.BasicGui;
@@ -112,7 +112,7 @@ public class PropertyData extends Building {
         this.rentingPlayerID = null;
         this.rentPrice = 0;
 
-        this.permissionManager = new PermissionManager(RelationPermission.SELECTED_ONLY);
+        this.permissionManager = new PermissionManager(PermissionGiven.PROPERTY);
     }
 
     public Vector3D getFirstCorner() {
@@ -169,7 +169,7 @@ public class PropertyData extends Building {
         if (Constants.shouldPayRentAtStart())
             payRent();
         this.updateSign();
-        getPermissionManager().setAll(RelationPermission.SELECTED_ONLY);
+        getPermissionManager().setAll(PermissionGiven.PROPERTY);
     }
 
     public boolean isRented() {
@@ -455,12 +455,17 @@ public class PropertyData extends Building {
 
         this.isForSale = false;
         updateSign();
-        getPermissionManager().setAll(RelationPermission.SELECTED_ONLY);
+        getPermissionManager().setAll(PermissionGiven.PROPERTY);
     }
 
     public boolean isPlayerAllowed(ChunkPermissionType action, ITanPlayer tanPlayer) {
 
-        if (getPermissionManager().canPlayerDo(getTown(), action, tanPlayer)) {
+        var defaultPermission = Constants.getChunkPermissionConfig().getPropertiesPermission(action);
+        if(defaultPermission.isLocked()){
+            return defaultPermission.defaultRelation().isAllowed(getTown(), tanPlayer);
+        }
+
+        if (getPermissionManager().get(action).isAllowed(getTown(), tanPlayer)) {
             return true;
         }
         if (isRented())
@@ -485,7 +490,7 @@ public class PropertyData extends Building {
         if (rentBack)
             isForRent = true;
         updateSign();
-        getPermissionManager().setAll(RelationPermission.SELECTED_ONLY);
+        getPermissionManager().setAll(PermissionGiven.PROPERTY);
     }
 
     public boolean isInChunk(ClaimedChunk2 chunk) {
@@ -501,7 +506,7 @@ public class PropertyData extends Building {
 
     public PermissionManager getPermissionManager() {
         if (permissionManager == null) {
-            permissionManager = new PermissionManager(RelationPermission.SELECTED_ONLY);
+            permissionManager = new PermissionManager(PermissionGiven.PROPERTY);
         }
         return permissionManager;
     }

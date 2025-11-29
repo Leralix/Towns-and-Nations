@@ -143,7 +143,9 @@ public class TownsAndNations extends JavaPlugin {
         List<String> mainBlackList = new ArrayList<>();
         mainBlackList.add("claimBlacklist");
         mainBlackList.add("wildernessRules");
-        mainBlackList.add("allowedTimeSlotsWar");
+        mainBlackList.add("townPermissions");
+        mainBlackList.add("regionPermissions");
+        mainBlackList.add("propertyPermissions");
         ConfigUtil.saveAndUpdateResource(this, "config.yml", mainBlackList);
         ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.MAIN);
 

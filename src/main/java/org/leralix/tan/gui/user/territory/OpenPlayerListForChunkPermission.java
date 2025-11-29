@@ -63,7 +63,7 @@ public class OpenPlayerListForChunkPermission extends IteratorGUI {
     private List<GuiItem> getAuthorizedPlayer() {
         List<GuiItem> guiItems = new ArrayList<>();
 
-        for (String authorizedPlayerID : chunkPermission.getPermission(chunkPermissionType).getAuthorizedPlayers()) {
+        for (String authorizedPlayerID : chunkPermission.getChunkPermissions().get(chunkPermissionType).getAuthorizedPlayers()) {
             OfflinePlayer authorizedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(authorizedPlayerID));
 
             guiItems.add(iconManager.get(authorizedPlayer)
@@ -78,7 +78,7 @@ public class OpenPlayerListForChunkPermission extends IteratorGUI {
                             return;
                         }
                         if (action.isRightClick()) {
-                            chunkPermission.getPermission(chunkPermissionType).removeSpecificPlayerPermission(authorizedPlayerID);
+                            chunkPermission.getChunkPermissions().get(chunkPermissionType).removeSpecificPlayerPermission(authorizedPlayerID);
                             open();
                         }
                     })

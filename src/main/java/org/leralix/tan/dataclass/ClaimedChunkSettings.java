@@ -1,7 +1,6 @@
 package org.leralix.tan.dataclass;
 
-import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
-import org.leralix.tan.dataclass.territory.permission.RelationPermission;
+import org.leralix.tan.dataclass.territory.permission.PermissionGiven;
 import org.leralix.tan.enums.MobChunkSpawnEnum;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
@@ -28,8 +27,8 @@ public class ClaimedChunkSettings {
      */
     private Map<GeneralChunkSetting, Boolean> generalSettings;
 
-    public ClaimedChunkSettings() {
-        this.newPermissionManager = new PermissionManager(RelationPermission.TOWN);
+    public ClaimedChunkSettings(PermissionGiven permissionGiven) {
+        this.newPermissionManager = new PermissionManager(permissionGiven);
         this.mobSpawnStorage = new HashMap<>();
         this.generalSettings = new EnumMap<>(GeneralChunkSetting.class);
 
@@ -42,17 +41,13 @@ public class ClaimedChunkSettings {
     public PermissionManager getChunkPermissions() {
         // Migrate old permission system if necessary
         if (newPermissionManager == null){
-            newPermissionManager = new PermissionManager(RelationPermission.TOWN);
+            newPermissionManager = new PermissionManager(PermissionGiven.TOWN);
         }
         return newPermissionManager;
     }
 
     public Map<GeneralChunkSetting, Boolean> getChunkSetting() {
         return generalSettings;
-    }
-
-    public ChunkPermission getPermission(ChunkPermissionType type) {
-        return getChunkPermissions().get(type);
     }
 
 

@@ -43,7 +43,7 @@ public class ChunkSettingsMenu extends BasicGui {
         return iconManager.get(IconKey.LANDS_PERMISSION_ICON)
                 .setName(Lang.GUI_TOWN_CHUNK_PLAYER.get(tanPlayer))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS))
-                .setAction(event -> new TerritoryChunkSettingsMenu(player, territoryData))
+                .setAction(event -> new TerritoryChunkSettingsMenu(player, territoryData, this))
                 .asGuiItem(player, langType);
     }
 

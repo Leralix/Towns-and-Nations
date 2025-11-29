@@ -98,6 +98,7 @@ public class Constants {
     private static List<String> perPlayerEndCommands;
 
     //Claims
+    private static ChunkPermissionConfig chunkPermissionConfig;
     private static GeneralChunkSettings generalChunkSettings;
     private static WildernessRules wildernessRules;
 
@@ -219,6 +220,7 @@ public class Constants {
         perPlayerEndCommands = config.getStringList("commandToExecutePerPlayerWhenAttackEnd");
 
         //Claims
+        chunkPermissionConfig = new ChunkPermissionConfig(config.getConfigurationSection("chunkPermissionConfig"));
         generalChunkSettings = new GeneralChunkSettings(config.getConfigurationSection("chunkGeneralSettings"));
         wildernessRules = new WildernessRules(config.getConfigurationSection("wildernessRules"));
 
@@ -411,6 +413,10 @@ public class Constants {
 
     public static InteractionStatus getChunkSettings(GeneralChunkSetting generalChunkSetting) {
         return generalChunkSettings.getAction(generalChunkSetting);
+    }
+
+    public static ChunkPermissionConfig getChunkPermissionConfig(){
+        return chunkPermissionConfig;
     }
 
     public static WildernessRules getWildernessRules() {

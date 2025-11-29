@@ -66,7 +66,14 @@ public class TownClaimedChunk extends TerritoryChunk {
                 return true;
         }
 
-        ChunkPermission chunkPermission = ownerTown.getChunkSettings().getPermission(permissionType);
+        //If the permission is locked by admins, only shows default value.
+        var defaultPermission = Constants.getChunkPermissionConfig().getTownPermission(permissionType);
+
+        if(defaultPermission.isLocked()){
+            return defaultPermission.defaultRelation().isAllowed(ownerTown, tanPlayer);
+        }
+
+        ChunkPermission chunkPermission = ownerTown.getChunkSettings().getChunkPermissions().get(permissionType);
         if (chunkPermission.isAllowed(ownerTown, tanPlayer))
             return true;
 
