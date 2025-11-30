@@ -87,6 +87,15 @@ public class TownClaimedChunk extends TerritoryChunk {
         LangType langType = playerStat.getLang();
         TownData playerTown = playerStat.getTown();
 
+        // Special case: one of the player's territories can conquer chunks due to a past war.
+        for(TerritoryData territoryData : playerStat.getAllTerritoriesPlayerIsIn()){
+            if(territoryData.canConquerChunk(this)){
+                NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
+                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(getTown().getColoredName()), SoundEnum.MINOR_GOOD);
+                return;
+            }
+        }
+
         if (playerTown == null) {
             TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
             return;

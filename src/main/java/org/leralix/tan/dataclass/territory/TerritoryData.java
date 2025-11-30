@@ -608,7 +608,13 @@ public abstract class TerritoryData {
         getRelations().cleanAll(this);   //Cancel all Relation between the deleted territory and other territories
     }
 
-    public boolean canConquerChunk(ClaimedChunk2 chunk) {
+    /**
+     * Check if the territory can claim over another one.
+     * If the territory can claim, the number of chunks it can claim will be directly decreased.
+     * @param chunk The chunk wanted to overclaim
+     * @return True if this territory can claim, false otherwise.
+     */
+    public boolean canConquerChunk(TerritoryChunk chunk) {
         if (getAvailableEnemyClaims().containsKey(chunk.getOwnerID())) {
             consumeEnemyClaim(chunk.getOwnerID());
             return true;

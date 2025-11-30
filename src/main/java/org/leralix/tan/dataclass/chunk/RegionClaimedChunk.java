@@ -7,6 +7,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -69,7 +70,17 @@ public class RegionClaimedChunk extends TerritoryChunk {
     }
 
     public void unclaimChunk(Player player) {
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player);
+
+        // Special case: one of the player's territories can conquer chunks due to a past war.
+        for(TerritoryData territoryData : playerStat.getAllTerritoriesPlayerIsIn()){
+            if(territoryData.canConquerChunk(this)){
+                NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
+                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(getRegion().getColoredName()), SoundEnum.MINOR_GOOD);
+                return;
+            }
+        }
+
         if (!playerStat.hasTown()) {
             TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(player));
             return;
