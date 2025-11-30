@@ -9,16 +9,19 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.Landmark;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.storage.impl.FortDataStorage;
+import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.war.fort.Fort;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -86,10 +89,28 @@ public class TANCustomNBT {
     }
 
     private static void setFortData() {
-        for(Fort fort : FortDataStorage.getInstance().getForts()){
-            fort.setProtectedBlockData();
+        for(Fort fort : FortStorage.getInstance().getForts()){
+            Vector3D flagPosition = fort.getPosition();
+
+            if(flagPosition.getWorld() == null){
+                FortStorage.getInstance().delete(fort);
+                continue;
+            }
+
+            setProtectedBlockData(fort);
         }
     }
+
+    public static void setProtectedBlockData(Fort fort) {
+        Vector3D flagPosition = fort.getPosition();
+
+        Block baseBlock = flagPosition.getLocation().getBlock();
+        Block flagBlock = flagPosition.getLocation().add(0, 1, 0).getBlock();
+
+        setBockMetaData(baseBlock, "fortFlag", fort.getID());
+        setBockMetaData(flagBlock, "fortFlag", fort.getID());
+    }
+
 
     /**
      * Sets metadata for property sign blocks and the blocks directly beneath them for all properties in all towns.
@@ -116,8 +137,20 @@ public class TANCustomNBT {
     }
 
     public static void setLandmarksData(){
-        for(Landmark landmark : LandmarkStorage.getInstance().getAll().values()){
-            landmark.getChest().ifPresent(block -> setBockMetaData(block, "LandmarkChest", landmark.getID()));
+        Iterator<Landmark> landmarkIterator = LandmarkStorage.getInstance().getAll().values().iterator();
+        List<Landmark> landmarksToDelete = new ArrayList<>();
+        while (landmarkIterator.hasNext()){
+            Landmark landmark = landmarkIterator.next();
+            var optChest = landmark.getChest();
+            if(optChest.isPresent()){
+                setBockMetaData(optChest.get(), "LandmarkChest", landmark.getID());
+            }
+            else {
+                landmarksToDelete.add(landmark);
+            }
+        }
+        for (Landmark landmark : landmarksToDelete){
+            LandmarkStorage.getInstance().delete(landmark);
         }
     }
 

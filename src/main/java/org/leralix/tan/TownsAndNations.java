@@ -88,7 +88,7 @@ public class TownsAndNations extends JavaPlugin {
      */
     private static final PluginVersion CURRENT_VERSION = new PluginVersion(0, 16, 3);
 
-    private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0, 14, 0);
+    private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0, 15, 0);
 
     private static final PluginVersion MINIMUM_SUPPORTING_SPHERELIB = new PluginVersion(0, 6, 0);
 

@@ -39,7 +39,7 @@ public abstract class Fort extends Building {
         Block flagBlock = flagPosition.getLocation().add(0, 1, 0).getBlock();
         flagBlock.setType(Material.GREEN_BANNER);
 
-        setProtectedBlockData();
+        TANCustomNBT.setProtectedBlockData(this);
     }
 
     public abstract String getID();
@@ -98,6 +98,11 @@ public abstract class Fort extends Building {
 
     private void deleteFlag() {
         Vector3D flagPosition = getPosition();
+
+        if(flagPosition.getWorld() == null){
+            return;
+        }
+
         Block baseBlock = flagPosition.getLocation().getBlock();
         Block flagBlock = flagPosition.getLocation().add(0, 1, 0).getBlock();
         flagBlock.setType(Material.AIR);
@@ -114,13 +119,4 @@ public abstract class Fort extends Building {
     }
 
     public abstract void setOwner(TerritoryData newOwner);
-
-    public void setProtectedBlockData() {
-        Vector3D flagPosition = getPosition();
-        Block baseBlock = flagPosition.getLocation().getBlock();
-        Block flagBlock = flagPosition.getLocation().add(0, 1, 0).getBlock();
-
-        TANCustomNBT.setBockMetaData(baseBlock, "fortFlag", getID());
-        TANCustomNBT.setBockMetaData(flagBlock, "fortFlag", getID());
-    }
 }
