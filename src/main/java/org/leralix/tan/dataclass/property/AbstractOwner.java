@@ -14,8 +14,9 @@ public abstract class AbstractOwner {
         this.type = type;
     }
 
-
     public abstract String getName();
+
+    public abstract String getColoredName();
 
     public abstract boolean canAccess(ITanPlayer tanPlayer);
 

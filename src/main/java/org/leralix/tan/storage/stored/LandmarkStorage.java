@@ -59,6 +59,10 @@ public class LandmarkStorage extends JsonStorage<Landmark> {
         }
     }
 
+    public void delete(Landmark landmark){
+        delete(landmark.getID());
+    }
+
     @Override
     public void load(){
         super.load();

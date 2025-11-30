@@ -30,6 +30,11 @@ public class PlayerOwned extends AbstractOwner{
     }
 
     @Override
+    public String getColoredName() {
+        return getName();
+    }
+
+    @Override
     public boolean canAccess(ITanPlayer tanPlayer) {
         return tanPlayer.getID().equals(playerID);
     }

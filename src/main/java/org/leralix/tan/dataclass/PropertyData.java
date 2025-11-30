@@ -56,15 +56,7 @@ public class PropertyData extends Building {
     private final String ID;
 
     /**
-     * Old storage method for the owner of the property
-     * Replaced by owner
-     * Keep until 0.17.0 to ensure retro-compatibility
-     * TODO : add TypeAdapter for Gson
-     */
-    @Deprecated(since = "0.15.6")
-    private String owningPlayerID;
-    /**
-     *
+     * Owner of the property
      */
     private AbstractOwner owner;
     /**
@@ -234,7 +226,7 @@ public class PropertyData extends Building {
 
     public AbstractOwner getOwner() {
         if (owner == null) {
-            owner = new PlayerOwned(owningPlayerID);
+            owner = new TerritoryOwned(getTown());
         }
         return owner;
     }

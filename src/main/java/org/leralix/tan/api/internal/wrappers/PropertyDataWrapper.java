@@ -2,6 +2,7 @@ package org.leralix.tan.api.internal.wrappers;
 
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.PropertyData;
+import org.tan.api.interfaces.TanOwner;
 import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.TanProperty;
 
@@ -47,8 +48,8 @@ public class PropertyDataWrapper implements TanProperty {
     }
 
     @Override
-    public TanPlayer getOwner() {
-        return null; //TODO : Update with new Owner class
+    public TanOwner getOwner() {
+        return TanOwnerWrapper.of(propertyData.getOwner());
     }
 
     @Override

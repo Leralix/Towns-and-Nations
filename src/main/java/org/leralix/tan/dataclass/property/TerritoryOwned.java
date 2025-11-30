@@ -17,6 +17,12 @@ public class TerritoryOwned extends AbstractOwner {
     @Override
     public String getName() {
         TerritoryData territoryData = TerritoryUtil.getTerritory(territoryID);
+        return territoryData.getName();
+    }
+
+    @Override
+    public String getColoredName() {
+        TerritoryData territoryData = TerritoryUtil.getTerritory(territoryID);
         return territoryData.getColoredName();
     }
 
