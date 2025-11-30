@@ -98,9 +98,6 @@ TownDescSize: 55
 #Cost of renaming a region:
 ChangeRegionNameCost: 100
 
-#The cost of a region claim
-CostOfRegionChunk: 5
-
 #Allow non-adjacent chunks to be claimed
 RegionAllowNonAdjacentChunks: false
 
@@ -120,9 +117,6 @@ RegionDescSize: 55
 
 #Cost of renaming a town:
 ChangeTownNameCost: 100
-
-#The cost of a town claim
-CostOfTownChunk: 0
 
 #Allow non-adjacent chunks to be claimed
 TownAllowNonAdjacentChunks: false
