@@ -10,7 +10,6 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.DateUtil;
@@ -53,13 +52,11 @@ public class AttackCancelledByDefenderNewsletter extends Newsletter {
         if (attackingTerritory == null || defendingTerritory == null)
             return null;
 
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
-
         ItemStack icon = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
-                Lang.ATTACK_CANCELLED_TITLE.get(langType),
-                Lang.NEWSLETTER_DATE.get(langType, DateUtil.getRelativeTimeDescription(langType, getDate())),
-                Lang.ATTACK_CANCELLED.get(langType, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(langType));
+                Lang.ATTACK_CANCELLED_TITLE.get(lang),
+                Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
+                Lang.ATTACK_CANCELLED.get(lang, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);

@@ -55,8 +55,8 @@ public class AttackDeclaredNewsletter extends Newsletter {
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
                 Lang.ATTACK_DECLARED_TITLE.getDefault(),
-                Lang.NEWSLETTER_DATE.get(Lang.getServerLang(), String.valueOf(lang), DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.ATTACK_DECLARED.get(Lang.getServerLang(), attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
+                Lang.ATTACK_DECLARED.get(lang, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.getDefault());
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
