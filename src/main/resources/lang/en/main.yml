@@ -1272,6 +1272,9 @@ language:
   CANNOT_CREATE_FORT_IF_ABOVE_BLOCKED: "§cYou cannot create a fort if the block above is not air"
   DEFAULT_FORT_NAME: "Fort n°{0}"
   RIGHT_CLICK_TO_PLACE_FORT: "§fRight click to place the fort flag"
+  #Capital
+  CHANGE_CAPITAL_NOT_OWNED_TOWN_CHUNK: "§cThis chunk owned by {0}"
+  CHANGE_CAPITAL_NOT_TOWN_CHUNK: "§cThis chunk is not a town chunk"
   #Wars
   WAR_INFO_CHUNK_PROTECTED: "§f🌑§f Protected ({0}) - §f[Atk : §e{1}§f, Def : §e{2}§f]"
   WAR_INFO_CHUNK_OWNED: "§a🌑§f Owned - §f[Atk : §e{0}§f, Def : §e{1}§f]"

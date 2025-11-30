@@ -8,9 +8,11 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.ListenerState;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.function.Consumer;
 
@@ -33,17 +35,21 @@ public class ChangeCapital extends RightClickListenerEvent {
         }
 
         ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(block.getChunk());
+        Player player = event.getPlayer();
 
-        if(claimedChunk2 instanceof TownClaimedChunk townClaimedChunk &&
-                townData.getID().equals(townClaimedChunk.getOwnerID())){
+        if(claimedChunk2 instanceof TownClaimedChunk townClaimedChunk) {
 
-            townData.setCapitalLocation(claimedChunk2.getVector2D());
-            Player player = event.getPlayer();
+            if(townData.getID().equals(townClaimedChunk.getOwnerID())){
+                townData.setCapitalLocation(claimedChunk2.getVector2D());
 
-            openGui(fallbackGui, player);
-            SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
-            return ListenerState.SUCCESS;
+                openGui(fallbackGui, player);
+                SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+                return ListenerState.SUCCESS;
+            }
+            TanChatUtils.message(player, Lang.CHANGE_CAPITAL_NOT_OWNED_TOWN_CHUNK.get(townClaimedChunk.getTown().getColoredName()));
+            return ListenerState.FAILURE;
         }
+        TanChatUtils.message(player, Lang.CHANGE_CAPITAL_NOT_TOWN_CHUNK.get());
         return ListenerState.FAILURE;
     }
 }
