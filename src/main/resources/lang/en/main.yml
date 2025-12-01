@@ -442,6 +442,8 @@ language:
   GUI_ATTACK_SET_TO_START_IN: "§aAttack will start in §6{0}"
   AUTHORIZED_ATTACK_TIME_SLOT_TITLE: "§aAuthorized attack time slot :"
   AUTHORIZED_ATTACK_TIME_SLOT_SINGLE: "§7▶ {0}:{1}-{2}:{3}"
+  WAR_TIME_SLOT_DAYS_ENABLED_TITLE: "§aAuthorized days :"
+  WAR_TIME_SLOT_DAYS_ENABLED_ITERATOR: "§7▶ {0}"
   GUI_CONFIRM_ATTACK: "§aConfirm attack"
   GUI_CONFIRM_ATTACK_DESC1: "§fConfirm attack on §6{0}"
   #Property GUI

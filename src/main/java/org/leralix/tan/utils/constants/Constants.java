@@ -187,7 +187,10 @@ public class Constants {
 
         //Attacks
 
-        warTimeSlot = new WarTimeSlot(config.getStringList("allowedTimeSlotsWar"));
+        warTimeSlot = new WarTimeSlot(
+                config.getStringList("allowedTimeSlotsWar"),
+                config.getIntegerList("allowedDays")
+        );
         warBoundaryRadius = config.getDouble("warBoundaryRadius", 16);
         warBoundaryParticle = getParticle(config, "warBoundaryParticle");
         notifyWhenEnemyEnterTerritory = config.getBoolean("notifyEnemyEnterTown", true);

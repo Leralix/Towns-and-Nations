@@ -5,25 +5,32 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.Range;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.timezone.TimeZoneManager;
 
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.format.TextStyle;
+import java.util.*;
 
 public class WarTimeSlot {
 
     private final List<Range> timeSlots;
+    private final Set<DayOfWeek> daysEnabled;
 
-    public WarTimeSlot(@NotNull List<String> allowedTimeSlotsWar){
+    public WarTimeSlot(@NotNull List<String> allowedTimeSlotsWar, List<Integer> daysEnabled){
         timeSlots = new ArrayList<>();
-
+        this.daysEnabled = new HashSet<>();
         for(String value : allowedTimeSlotsWar){
             timeSlots.add(extractTimeSlot(value));
         }
+        for(int dayValue : daysEnabled){
+            this.daysEnabled.add(DayOfWeek.of(dayValue));
+        }
+
     }
 
     private Range extractTimeSlot(String value) {
@@ -73,20 +80,39 @@ public class WarTimeSlot {
         return printedTime;
     }
 
-    public List<Range> getTimeSlots() {
-        return timeSlots;
-    }
-
     public boolean canWarBeDeclared(Instant dateTime) {
         LocalDateTime localDateTime = LocalDateTime.ofInstant(dateTime, TimeZoneManager.getInstance().getTimezoneEnum().toZoneOffset());
 
-        int currentMinutes = localDateTime.getHour() * 60 + localDateTime.getMinute();
+        // Check if the day of the week is correct
+        DayOfWeek dayOfWeek =  localDateTime.getDayOfWeek();
+        if (!daysEnabled.contains(dayOfWeek)){
+            return false;
+        }
 
+        // Check if the hour is correct
+        int currentMinutes = localDateTime.getHour() * 60 + localDateTime.getMinute();
         for (Range range : timeSlots) {
             if (currentMinutes >= range.getMinVal() && currentMinutes < range.getMaxVal()) {
                 return true;
             }
         }
+
+
         return false;
+    }
+
+    public Collection<FilledLang> getPrintedDaysOfTheWeek(LangType langType) {
+        List<FilledLang> res = new ArrayList<>();
+
+        if(daysEnabled.isEmpty() || daysEnabled.size() == 7){
+            return res;
+        }
+
+        res.add(Lang.WAR_TIME_SLOT_DAYS_ENABLED_TITLE.get());
+
+        for(DayOfWeek dayOfWeek : daysEnabled){
+            res.add(Lang.WAR_TIME_SLOT_DAYS_ENABLED_ITERATOR.get(dayOfWeek.getDisplayName(TextStyle.FULL, langType.getLocale())));
+        }
+        return res;
     }
 }

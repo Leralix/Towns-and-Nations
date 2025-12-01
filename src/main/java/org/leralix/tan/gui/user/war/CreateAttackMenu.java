@@ -18,6 +18,7 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.war.War;
+import org.leralix.tan.war.WarTimeSlot;
 import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.WarRole;
 
@@ -33,6 +34,7 @@ public class CreateAttackMenu extends BasicGui {
     private final TerritoryData territoryData;
     private final War war;
     private final WarRole warRole;
+    private final WarTimeSlot warTimeSlot;
 
     public CreateAttackMenu(Player player, TerritoryData territoryData, War war, WarRole warRole) {
         super(player, Lang.HEADER_CREATE_WAR_MANAGER.get(war.getMainDefender().getName()), 3);
@@ -40,6 +42,7 @@ public class CreateAttackMenu extends BasicGui {
         this.war = war;
         this.warRole = warRole;
         this.attackData = new CreateAttackData(war, warRole);
+        this.warTimeSlot = Constants.getWarTimeSlot();
         open();
     }
 
@@ -88,7 +91,7 @@ public class CreateAttackMenu extends BasicGui {
 
     private boolean isStartDateAuthorized() {
         Instant warStart = Instant.now().plusSeconds(attackData.getSelectedTime() * 60L);
-        return Constants.getWarTimeSlot().canWarBeDeclared(warStart);
+        return warTimeSlot.canWarBeDeclared(warStart);
     }
 
     private @NotNull GuiItem getAddTimeButton() {
@@ -119,7 +122,8 @@ public class CreateAttackMenu extends BasicGui {
         List<FilledLang> availableTimeSlots = new ArrayList<>();
         availableTimeSlots.add(TimeZoneManager.getInstance().formatDateForPlayer(tanPlayer, startTime));
         availableTimeSlots.add(Lang.AUTHORIZED_ATTACK_TIME_SLOT_TITLE.get());
-        availableTimeSlots.addAll(Constants.getWarTimeSlot().getPrintedTimeSlots());
+        availableTimeSlots.addAll(warTimeSlot.getPrintedTimeSlots());
+        availableTimeSlots.addAll(warTimeSlot.getPrintedDaysOfTheWeek(langType));
 
         return IconManager.getInstance().get(IconKey.WAR_START_TIME_ICON)
                 .setName(Lang.GUI_ATTACK_SET_TO_START_IN.get(tanPlayer, DateUtil.getDateStringFromMinutes(attackData.getSelectedTime())))
