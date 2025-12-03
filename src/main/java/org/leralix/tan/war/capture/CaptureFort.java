@@ -6,6 +6,7 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
@@ -19,7 +20,6 @@ public class CaptureFort {
 
     private String title;
     private int score;
-    private final int maxScore = 60;
     private final List<Player> attackers;
     private final List<Player> defenders;
     private final BossBar bossBar;
@@ -63,17 +63,21 @@ public class CaptureFort {
         } else if (nbDefenders > nbAttackers) {
             score--;
         }
-        if (score > maxScore) {
-            score = maxScore;
-            fort.setOccupier(currentAttack.getAttackData().getWar().getMainAttacker());
-            fort.updateFlag();
-            currentAttack.getAttackResultCounter().incrementFortsCaptured();
+        if (score > Constants.getFortCaptureTime()) {
+            score = Constants.getFortCaptureTime();
+            if(!fort.isOccupied()){
+                fort.setOccupier(currentAttack.getAttackData().getWar().getMainAttacker());
+                fort.updateFlag();
+                currentAttack.getAttackResultCounter().incrementFortsCaptured();
+            }
 
         } else if (score < 0) {
             score = 0;
-            fort.liberate();
-            fort.updateFlag();
-            currentAttack.getAttackResultCounter().decrementFortsCaptured();
+            if(fort.isOccupied()){
+                fort.liberate();
+                fort.updateFlag();
+                currentAttack.getAttackResultCounter().decrementFortsCaptured();
+            }
         }
         updateBossBar(nbAttackers, nbDefenders);
     }
@@ -84,7 +88,7 @@ public class CaptureFort {
         updateTitle(nbAttackers, nbDefenders);
 
         bossBar.setTitle(title);
-        bossBar.setProgress((double) score / maxScore);
+        bossBar.setProgress((double) score / Constants.getFortCaptureTime());
         List<Player> allPlayers = new ArrayList<>(attackers);
         allPlayers.addAll(defenders);
         for (Player player : allPlayers) {

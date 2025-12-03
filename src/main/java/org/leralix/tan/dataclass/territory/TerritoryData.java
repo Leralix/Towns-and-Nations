@@ -971,7 +971,7 @@ public abstract class TerritoryData {
 
     public String getColoredName() {
         if (Constants.displayTerritoryColor()) {
-            return StringUtil.rgbToLegacy(Integer.toString(color)) + getName();
+            return getChunkColor() + getName();
         } else {
             return getBaseColoredName();
         }

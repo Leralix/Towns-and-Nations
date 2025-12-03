@@ -69,13 +69,4 @@ public class StringUtil {
         double digitVal = Math.pow(10, Constants.getNbDigits());
         return Math.round(amount * digitVal) / digitVal;
     }
-
-    public static String rgbToLegacy(String hexColor) {
-        hexColor = hexColor.replace("#", "");
-        StringBuilder out = new StringBuilder("§x");
-        for (char c : hexColor.toCharArray()) {
-            out.append("§").append(c);
-        }
-        return out.toString();
-    }
 }

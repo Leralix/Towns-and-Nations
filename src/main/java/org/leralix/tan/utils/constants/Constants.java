@@ -72,6 +72,7 @@ public class Constants {
     private static double fortProtectionRadius;
     private static double fortCaptureRadius;
     private static boolean useAsOutpost;
+    private static int fortCaptureTime;
 
     //Properties
     private static int maxPropertySignMargin;
@@ -90,6 +91,7 @@ public class Constants {
     private static long attackDuration;
     private static int minTimeBeforeAttack;
     private static int maxTimeBeforeAttack;
+    private static int chunkCaptureTime;
     private static List<String> blacklistedCommandsDuringAttacks;
     private static int nbChunkToCaptureMax;
     private static List<String> onceStartCommands;
@@ -178,6 +180,7 @@ public class Constants {
             fortProtectionRadius = fortsSection.getDouble("fortProtectionRadius", 50.0);
             fortCaptureRadius = fortsSection.getDouble("fortCaptureRadius", 10.0);
             useAsOutpost = fortsSection.getBoolean("useAsOutpost", true);
+            fortCaptureTime = fortsSection.getInt("fortCaptureTime", 60);
         }
 
         maxPropertySignMargin = config.getInt("maxPropertyMargin", 3);
@@ -211,6 +214,8 @@ public class Constants {
         attackDuration = config.getLong("WarDuration", 30);
         minTimeBeforeAttack = config.getInt("MinimumTimeBeforeAttack", 120);
         maxTimeBeforeAttack = config.getInt("MaximumTimeBeforeAttack", 4320);
+
+        chunkCaptureTime = config.getInt("ChunkCaptureTime", 10);
 
         blacklistedCommandsDuringAttacks = config.getStringList("BlacklistedCommandsDuringAttacks");
         nbChunkToCaptureMax = config.getInt("MaximumChunkConquer", 0);
@@ -359,6 +364,10 @@ public class Constants {
         return useAsOutpost;
     }
 
+    public static int getFortCaptureTime() {
+        return fortCaptureTime;
+    }
+
     public static int getMaxPropertySignMargin() {
         return maxPropertySignMargin;
     }
@@ -404,6 +413,10 @@ public class Constants {
 
     public static int getMinTimeBeforeAttack() {
         return minTimeBeforeAttack;
+    }
+
+    public static int getChunkCaptureTime(){
+        return chunkCaptureTime;
     }
 
     public static List<String> getBlacklistedCommandsDuringAttacks() {

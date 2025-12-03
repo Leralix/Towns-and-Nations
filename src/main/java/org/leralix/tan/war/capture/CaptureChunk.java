@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
@@ -19,8 +20,12 @@ public class CaptureChunk {
      * The ID of the war related to this capture.
      */
     private final TerritoryChunk territoryChunk;
+    /**
+     * The actual capture score of the chunk
+     * 0: held by owner
+     * max: held by occupier
+     */
     private int score;
-    private final int maxScore = 100;
     private final CurrentAttack currentAttack;
     private final List<Player> attackers;
     private final List<Player> defenders;
@@ -34,7 +39,7 @@ public class CaptureChunk {
     }
 
     public boolean isCaptured() {
-        return score >= maxScore;
+        return score >= Constants.getChunkCaptureTime();
     }
 
     public boolean isLiberated() {
@@ -91,13 +96,13 @@ public class CaptureChunk {
         if (fortProtectingChunk.isPresent()) {
             message = Lang.WAR_INFO_CHUNK_PROTECTED.get(Lang.getServerLang(), fortProtectingChunk.get().getPosition().toString(), nbAttackers, nbDefenders);
         } else if (defenders.size() == attackers.size()) {
-            message = Lang.WAR_INFO_CONTESTED.get(Lang.getServerLang(), Integer.toString(score), nbAttackers, nbDefenders);
+            message = Lang.WAR_INFO_CONTESTED.get(Lang.getServerLang(), NumberUtil.getPercentage(score, Constants.getChunkCaptureTime()), nbAttackers, nbDefenders);
         } else if (isCaptured()) {
             message = Lang.WAR_INFO_CHUNK_CAPTURED.get(Lang.getServerLang(), territoryChunk.getOccupier().getColoredName(), nbAttackers, nbDefenders);
         } else if (isLiberated()) {
             message = Lang.WAR_INFO_CHUNK_OWNED.get(Lang.getServerLang(), nbAttackers, nbDefenders);
         } else {
-            message = Lang.WAR_INFO_CONTESTED.get(Lang.getServerLang(), Integer.toString(score), nbAttackers, nbDefenders);
+            message = Lang.WAR_INFO_CONTESTED.get(Lang.getServerLang(), NumberUtil.getPercentage(score, Constants.getChunkCaptureTime()), nbAttackers, nbDefenders);
         }
 
         return message;
@@ -105,20 +110,24 @@ public class CaptureChunk {
 
     private void updateScore() {
         if (attackers.size() > defenders.size()) {
-            score += 10;
+            score += 1;
         } else if (defenders.size() > attackers.size()) {
-            score -= 10;
+            score -= 1;
         }
 
         if (score < 0) {
             score = 0;
-            territoryChunk.liberate();
-            currentAttack.getAttackResultCounter().incrementClaimsCaptured();
+            if(territoryChunk.isOccupied()){
+                territoryChunk.liberate();
+                currentAttack.getAttackResultCounter().incrementClaimsCaptured();
+            }
         }
-        else if (score > maxScore) {
-            score = maxScore;
-            territoryChunk.setOccupier(currentAttack.getAttackData().getWar().getMainAttacker());
-            currentAttack.getAttackResultCounter().decrementClaimsCaptured();
+        else if (score > Constants.getChunkCaptureTime()) {
+            score = Constants.getChunkCaptureTime();
+            if(!territoryChunk.isOccupied()){
+                territoryChunk.setOccupier(currentAttack.getAttackData().getWar().getMainAttacker());
+                currentAttack.getAttackResultCounter().decrementClaimsCaptured();
+            }
         }
     }
 

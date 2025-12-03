@@ -304,6 +304,9 @@ MaximumTimeBeforeAttack: 4320 #72 hours
 # Set the value to 0 for unlimited chunks (capped by the maximum number of chunks the territory currently own).
 MaximumChunkConquer: 0
 
+#Chunk capture time (in seconds)
+ChunkCaptureTime : 10
+
 # Command to execute when an attack starts/end ONCE
 commandToExecuteOnceWhenAttackStart: [ ] #eg : ["time set day", "..."]
 commandToExecuteOnceWhenAttackEnd: [ ] #eg : ["time set night", "..."]
@@ -320,13 +323,21 @@ commandToExecutePerPlayerWhenAttackEnd: [ ] #eg : ["pvp %PLAYER% off", "..."]
 #"/tp"      WILL     block "/tp @r", "/tp <playerName>"...
 BlacklistedCommandsDuringAttacks: [ "/tan pay", "/tp" ]
 
-
 ## Forts
 Forts:
-  useAsOutpost: true # If TownAllowNonAdjacentChunks : true, forts can be used as outposts
+  # If TownAllowNonAdjacentChunks : true, forts can be used as outposts
+  useAsOutpost: true
+  # The cost of creating a fort for towns
   fortCost: 1000.0
+  # The protection radius of forts
   fortProtectionRadius: 50.0
+  # the radius to capture a fort during an attack, in block
   fortCaptureRadius: 10.0
+  # The time to capture a fort (in seconds)
+  fortCaptureTime: 60
+  # If true, all chunk protected by this fort and no longer protected by another one will also be captured by the
+  # owning side. Else, all chunks will need to be claimed by hand
+  claimAllIfCaptured : true
 
 # During a war, boundaries of territories at war are shown to players as a cylinder.
 # Radius of the cylinder.
