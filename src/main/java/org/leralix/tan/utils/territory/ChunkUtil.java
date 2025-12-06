@@ -17,7 +17,7 @@ public class ChunkUtil {
 
     private static final NewClaimedChunkStorage claimedChunkStorage = NewClaimedChunkStorage.getInstance();
 
-    private ChunkUtil(){
+    private ChunkUtil() {
         throw new AssertionError("Utility class");
     }
 
@@ -34,7 +34,7 @@ public class ChunkUtil {
 
         List<ClaimedChunk2> res = new ArrayList<>();
 
-        for(TerritoryChunk territoryChunk : claimedChunkStorage.getAllChunkFrom(territoryData)) {
+        for (TerritoryChunk territoryChunk : claimedChunkStorage.getAllChunkFrom(territoryData)) {
             if (!isChunkEncirecledBy(territoryChunk, chunk -> territoryData.getID().equals(chunk.getOwnerID()))) {
                 res.add(territoryChunk);
             }
@@ -44,20 +44,20 @@ public class ChunkUtil {
 
     }
 
-    public static void unclaimIfNoLongerSupplied(TerritoryChunk unclaimedChunk){
+    public static void unclaimIfNoLongerSupplied(TerritoryChunk unclaimedChunk) {
 
         List<ChunkPolygon> polygonsAnalysed = new ArrayList<>();
 
-        for(ClaimedChunk2 claimedChunk2 : claimedChunkStorage.getEightAjacentChunks(unclaimedChunk)){
+        for (ClaimedChunk2 claimedChunk2 : claimedChunkStorage.getEightAjacentChunks(unclaimedChunk)) {
 
-            if(claimedChunk2 instanceof TerritoryChunk territoryChunk){
-                if(alreadyAnalysed(territoryChunk, polygonsAnalysed)){
+            if (claimedChunk2 instanceof TerritoryChunk territoryChunk) {
+                if (alreadyAnalysed(territoryChunk, polygonsAnalysed)) {
                     continue;
                 }
 
                 ChunkPolygon chunkPolygon = ChunkUtil.getPolygon(territoryChunk);
 
-                if(!chunkPolygon.isSupplied()){
+                if (!chunkPolygon.isSupplied()) {
                     chunkPolygon.unclaimAll();
                 }
                 polygonsAnalysed.add(chunkPolygon);
@@ -106,8 +106,8 @@ public class ChunkUtil {
     }
 
     private static boolean alreadyAnalysed(ClaimedChunk2 claimedChunk2, List<ChunkPolygon> polygonsAnalysed) {
-        for(ChunkPolygon chunkPolygon : polygonsAnalysed){
-            if(chunkPolygon.contains(claimedChunk2)){
+        for (ChunkPolygon chunkPolygon : polygonsAnalysed) {
+            if (chunkPolygon.contains(claimedChunk2)) {
                 return true;
             }
         }
@@ -115,17 +115,17 @@ public class ChunkUtil {
     }
 
     public static boolean chunkContainsBuildings(TerritoryChunk townClaimedChunk, TerritoryData territoryData) {
-        for(Building building : territoryData.getBuildings()){
-            if(building.getPosition().getLocation().getChunk().equals(townClaimedChunk.getChunk())){
+        for (Building building : territoryData.getBuildings()) {
+            if (building.getPosition().getLocation().getChunk().equals(townClaimedChunk.getChunk())) {
                 return true;
             }
         }
 
-        if(territoryData instanceof TownData townData){
+        if (territoryData instanceof TownData townData) {
 
             var optionalLocation = townData.getCapitalLocation();
 
-            if(optionalLocation.isPresent()){
+            if (optionalLocation.isPresent()) {
                 Vector2D location = optionalLocation.get();
                 return location.getWorld().getChunkAt(location.getX(), location.getZ()).equals(townClaimedChunk.getChunk());
             }
@@ -137,57 +137,102 @@ public class ChunkUtil {
     /**
      * Get all claimed chunks in a radius around a center chunk
      * The radius is in chunks and is circular.
-     * @param center    The chunk at the center of the radius
-     * @param radius    The radius in chunks
-     * @return  A list of claimed chunks in the radius
+     *
+     * @param center The chunk at the center of the radius
+     * @param radius The radius in chunks
+     * @return A list of claimed chunks in the radius
      */
     public static List<ClaimedChunk2> getChunksInRadius(Chunk center, double radius) {
-        return getChunksInRadius(center, (int) Math.ceil(radius) );
+        return getChunksInRadius(center, radius, claimedChunk2 -> true);
     }
 
     /**
      * Get all claimed chunks in a radius around a center chunk
      * The radius is in chunks and is circular.
-     * @param center    The chunk at the center of the radius
-     * @param radius    The radius in chunks
-     * @return  A list of claimed chunks in the radius
+     *
+     * @param center The chunk at the center of the radius
+     * @param radius The radius in chunks
+     * @return A list of claimed chunks in the radius
+     */
+    public static List<ClaimedChunk2> getChunksInRadius(Chunk center, double radius, Predicate<ClaimedChunk2> filter) {
+        return getChunksInRadius(center, (int) Math.ceil(radius), filter);
+    }
+
+    /**
+     * Get all claimed chunks in a radius around a center chunk
+     * The radius is in chunks and is circular.
+     *
+     * @param center The chunk at the center of the radius
+     * @param radius The radius in chunks
+     * @return A list of claimed chunks in the radius
      */
     public static List<ClaimedChunk2> getChunksInRadius(Chunk center, int radius) {
-        return getChunksInRadius(NewClaimedChunkStorage.getInstance().get(center), radius);
+        return getChunksInRadius(NewClaimedChunkStorage.getInstance().get(center), radius, claimedChunk2 -> true);
+    }
+
+
+    /**
+     * Get all claimed chunks in a radius around a center chunk
+     * The radius is in chunks and is circular.
+     *
+     * @param center The chunk at the center of the radius
+     * @param radius The radius in chunks
+     * @return A list of claimed chunks in the radius
+     */
+    public static List<ClaimedChunk2> getChunksInRadius(Chunk center, int radius, Predicate<ClaimedChunk2> filter) {
+        return getChunksInRadius(NewClaimedChunkStorage.getInstance().get(center), radius, filter);
     }
 
     /**
      * Get all claimed chunks in a radius around a center chunk
      * The radius is in chunks and is circular.
-     * @param center    The chunk at the center of the radius
-     * @param radius    The radius in chunks
-     * @return  A list of claimed chunks in the radius
+     *
+     * @param center The chunk at the center of the radius
+     * @param radius The radius in chunks
+     * @return A list of claimed chunks in the radius
      */
     public static List<ClaimedChunk2> getChunksInRadius(ClaimedChunk2 center, double radius) {
-        return getChunksInRadius(center, (int) Math.ceil(radius) );
+        return getChunksInRadius(center, radius, claimedChunk -> true);
     }
 
     /**
      * Get all claimed chunks in a radius around a center chunk
      * The radius is in chunks and is circular.
-     * @param center    The chunk at the center of the radius
-     * @param radius    The radius in chunks
-     * @return  A list of claimed chunks in the radius
+     *
+     * @param center The chunk at the center of the radius
+     * @param radius The radius in chunks
+     * @return A list of claimed chunks in the radius
      */
-    public static List<ClaimedChunk2> getChunksInRadius(ClaimedChunk2 center, int radius) {
+    public static List<ClaimedChunk2> getChunksInRadius(ClaimedChunk2 center, double radius, Predicate<ClaimedChunk2> filter) {
+        return getChunksInRadius(center, (int) Math.ceil(radius), filter);
+    }
+
+    /**
+     * Get all claimed chunks in a radius using a custom filter.
+     * The chunk is added only if it is within the radius AND satisfies the predicate.
+     *
+     * @param center The center chunk
+     * @param radius Radius in chunks
+     * @param filter Additional filter to validate chunks
+     * @return A list of claimed chunks matching the filter
+     */
+    public static List<ClaimedChunk2> getChunksInRadius(ClaimedChunk2 center, int radius, Predicate<ClaimedChunk2> filter) {
         List<ClaimedChunk2> chunksInRadius = new ArrayList<>();
-        int centerX = center.getX();
-        int centerZ = center.getZ();
+        int centerX = center.getX() / 16;
+        int centerZ = center.getZ() / 16;
         String worldUUID = center.getWorldUUID();
 
-        Vector2D centerPos = new Vector2D(center.getX(), center.getZ(), worldUUID);
+        Vector2D centerPos = new Vector2D(centerX, centerZ, worldUUID);
 
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dz = -radius; dz <= radius; dz++) {
                 int chunkX = centerX + dx;
                 int chunkZ = centerZ + dz;
                 ClaimedChunk2 chunk = claimedChunkStorage.get(chunkX, chunkZ, worldUUID);
-                if (chunk != null && centerPos.getDistance(new Vector2D(chunk.getX(), chunk.getZ(), worldUUID)) <= radius) {
+                double distance = centerPos.getDistance(new Vector2D(chunk.getX(), chunk.getZ(), worldUUID));
+
+                // Distance AND user filter
+                if (distance <= radius && filter.test(chunk)) {
                     chunksInRadius.add(chunk);
                 }
             }
@@ -196,19 +241,17 @@ public class ChunkUtil {
         return chunksInRadius;
     }
 
+
     public static boolean isInBufferZone(ClaimedChunk2 chunkToAnalyse, TerritoryData territoryToAllow) {
 
         List<ClaimedChunk2> claimedChunkToAnalyse = getChunksInRadius(chunkToAnalyse, Constants.territoryClaimBufferZone());
 
-        for(ClaimedChunk2 claimedChunk2 : claimedChunkToAnalyse){
-            if(claimedChunk2 instanceof TerritoryChunk territoryChunk
-                    && !territoryToAllow.canAccessBufferZone(territoryChunk)){
+        for (ClaimedChunk2 claimedChunk2 : claimedChunkToAnalyse) {
+            if (claimedChunk2 instanceof TerritoryChunk territoryChunk
+                    && !territoryToAllow.canAccessBufferZone(territoryChunk)) {
                 return true;
             }
         }
         return false;
-
-
-
     }
 }

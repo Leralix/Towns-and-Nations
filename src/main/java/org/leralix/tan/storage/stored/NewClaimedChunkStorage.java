@@ -182,7 +182,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
         }
     }
 
-    public ClaimedChunk2 get(int x, int z, String worldID) {
+    public @NotNull ClaimedChunk2 get(int x, int z, String worldID) {
         ClaimedChunk2 claimedChunk = dataMap.get(getChunkKey(x, z, worldID));
         if (claimedChunk == null) {
             return new WildernessChunk(x, z, worldID);

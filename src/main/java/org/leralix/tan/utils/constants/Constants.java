@@ -73,6 +73,7 @@ public class Constants {
     private static double fortCaptureRadius;
     private static boolean useAsOutpost;
     private static int fortCaptureTime;
+    private static boolean claimAllIfCaptured;
 
     //Properties
     private static int maxPropertySignMargin;
@@ -181,6 +182,7 @@ public class Constants {
             fortCaptureRadius = fortsSection.getDouble("fortCaptureRadius", 10.0);
             useAsOutpost = fortsSection.getBoolean("useAsOutpost", true);
             fortCaptureTime = fortsSection.getInt("fortCaptureTime", 60);
+            claimAllIfCaptured = fortsSection.getBoolean("claimAllIfCaptured", true);
         }
 
         maxPropertySignMargin = config.getInt("maxPropertyMargin", 3);
@@ -366,6 +368,10 @@ public class Constants {
 
     public static int getFortCaptureTime() {
         return fortCaptureTime;
+    }
+
+    public static boolean isClaimAllIfCaptured() {
+        return claimAllIfCaptured;
     }
 
     public static int getMaxPropertySignMargin() {

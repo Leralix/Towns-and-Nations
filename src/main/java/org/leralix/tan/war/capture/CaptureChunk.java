@@ -56,7 +56,7 @@ public class CaptureChunk {
 
     public void update() {
 
-        Optional<Fort> fortProtectingChunk = getFortProtecting();
+        Optional<Fort> fortProtectingChunk =  territoryChunk.getFortProtecting();
 
         if (fortProtectingChunk.isEmpty()) {
             updateScore();
@@ -76,15 +76,6 @@ public class CaptureChunk {
 
     public String getWarID() {
         return currentAttack.getAttackData().getWar().getID();
-    }
-
-    private Optional<Fort> getFortProtecting() {
-        for (Fort fort : territoryChunk.getOccupier().getAllControlledFort()) {
-            if (fort.getPosition().getDistance(territoryChunk.getMiddleVector2D()) <= Constants.getFortProtectionRadius()) {
-                return Optional.of(fort);
-            }
-        }
-        return Optional.empty();
     }
 
     private String generateMessage(Optional<Fort> fortProtectingChunk) {

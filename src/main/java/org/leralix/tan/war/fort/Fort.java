@@ -8,6 +8,8 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.building.Building;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -15,7 +17,9 @@ import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.FortStorage;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
+import org.leralix.tan.utils.territory.ChunkUtil;
 
 public abstract class Fort extends Building {
 
@@ -59,11 +63,47 @@ public abstract class Fort extends Building {
     public void setOccupier(TerritoryData newOwner) {
         newOwner.addOccupiedFort(this);
         setOccupierInternal(newOwner);
+        // If "claim all" is enabled, all claims in the Fort radius not protected by others fort will be occupied
+        if(!Constants.isClaimAllIfCaptured()){
+            return;
+        }
+
+        var chunks = ChunkUtil.getChunksInRadius(
+                getPosition().getLocation().getWorld().getChunkAt(getPosition().getX(), getPosition().getZ()),
+                Constants.getFortProtectionRadius() / 16,
+                claimedChunk2 -> claimedChunk2 instanceof TerritoryChunk territoryChunk &&
+                        !territoryChunk.isOccupied() &&
+                        territoryChunk.getFortProtecting().isEmpty()
+        );
+
+        for (ClaimedChunk2 claimedChunk2 : chunks) {
+            if (claimedChunk2 instanceof TerritoryChunk territoryChunk) {
+                territoryChunk.setOccupier(newOwner);
+            }
+        }
     }
 
     public void liberate() {
         getOccupier().removeOccupiedFort(this);
         this.setOccupierInternal(getOwner());
+        // If "claim all" is enabled, all claims in the Fort radius not protected by others fort will be occupied
+        if(!Constants.isClaimAllIfCaptured()){
+            return;
+        }
+
+        var chunks = ChunkUtil.getChunksInRadius(
+                getPosition().getChunk(),
+                Constants.getFortProtectionRadius() / 16,
+                claimedChunk2 -> claimedChunk2 instanceof TerritoryChunk territoryChunk &&
+                            territoryChunk.isOccupied() &&
+                            territoryChunk.getFortProtecting().isEmpty()
+        );
+
+        for (ClaimedChunk2 claimedChunk2 : chunks) {
+            if (claimedChunk2 instanceof TerritoryChunk territoryChunk) {
+                territoryChunk.liberate();
+            }
+        }
     }
 
     public abstract void setCaptureProgress(int value);
@@ -99,7 +139,7 @@ public abstract class Fort extends Building {
     private void deleteFlag() {
         Vector3D flagPosition = getPosition();
 
-        if(flagPosition.getWorld() == null){
+        if (flagPosition.getWorld() == null) {
             return;
         }
 

@@ -10,6 +10,9 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.war.fort.Fort;
+
+import java.util.Optional;
 
 public abstract class TerritoryChunk extends ClaimedChunk2 {
 
@@ -53,6 +56,15 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
                 HoverEvent.Action.SHOW_TEXT,
                 new Text(text)));
         return textComponent;
+    }
+
+    public Optional<Fort> getFortProtecting() {
+        for (Fort fort : getOccupier().getAllControlledFort()) {
+            if (fort.getPosition().getDistance(getMiddleVector2D()) <= Constants.getFortProtectionRadius()) {
+                return Optional.of(fort);
+            }
+        }
+        return Optional.empty();
     }
 
 
