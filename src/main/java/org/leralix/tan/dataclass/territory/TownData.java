@@ -58,8 +58,10 @@ public class TownData extends TerritoryData {
             addPlayer(leader);
         }
 
-        int prefixSize = Constants.getPrefixSize();
-        this.townTag = townName.length() >= prefixSize ? townName.substring(0, prefixSize).toUpperCase() : townName.toUpperCase();
+        Range prefixSizeRange = Constants.getPrefixSize();
+        this.townTag = prefixSizeRange.isValueIn(townName.length()) ?
+                townName.toUpperCase() :
+                townName.substring(0, prefixSizeRange.getMaxVal()).toUpperCase();
     }
 
     @Override

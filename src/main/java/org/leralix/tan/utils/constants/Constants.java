@@ -4,6 +4,7 @@ import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.dataclass.Range;
 import org.leralix.tan.dataclass.chunk.ChunkType;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -42,7 +43,7 @@ public class Constants {
     private static boolean allowColorCode;
     private static String baseCurrencyChar;
     private static boolean showCurrency;
-    private static int prefixSize;
+    private static Range prefixSize;
 
     //Territory
     private static int townCost;
@@ -141,7 +142,10 @@ public class Constants {
         allowColorCode = config.getBoolean("EnablePlayerColorCode", false);
         baseCurrencyChar = config.getString("moneyIcon", "$");
         showCurrency = config.getBoolean("showCurrency", true);
-        prefixSize = config.getInt("prefixSize", 3);
+        prefixSize = new Range(
+                config.getInt("prefixMinSize", 3),
+                config.getInt("prefixMaxSize", 4)
+        );
         //Territory
         townCost = config.getInt("townCost", 1000);
         townMaxNameSize = config.getInt("TownNameSize", 45);
@@ -307,7 +311,7 @@ public class Constants {
         return percentageOfChunksUnclaimed;
     }
 
-    public static int getPrefixSize() {
+    public static Range getPrefixSize() {
         return prefixSize;
     }
 

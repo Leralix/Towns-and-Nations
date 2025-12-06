@@ -31,15 +31,15 @@ EnablePlayerColorCode: false
 #If the player color code is enable, you can add a 3 character prefix to the player name from their town
 EnablePlayerPrefix: false
 
-#Enable prefix for town
+# Enable town prefix
+# Players in a town will be shown with a prefix of their town name or tag
 EnableTownPrefix: true
+#If prefix enabled:
+prefixMinSize: 3
+prefixMaxSize: 4
 
 #Enable the version check
 CheckForUpdate: true
-
-#If prefix enabled:
-##Prefix Size (recommended 3)
-prefixSize: 3
 
 ########################
 ##      Economy       ##
