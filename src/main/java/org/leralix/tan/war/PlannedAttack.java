@@ -364,4 +364,8 @@ public class PlannedAttack {
         return getAllOfflinePlayers().stream().map(OfflinePlayer::getPlayer).filter(Objects::nonNull).toList();
     }
 
+    public boolean isFinished(){
+        return System.currentTimeMillis() > endTime;
+    }
+
 }
