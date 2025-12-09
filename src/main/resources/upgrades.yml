@@ -9,13 +9,24 @@
 #
 # prerequisites :
 # - TOWN_LEVEL: territory level required to unlock the upgrade. Same used for all levels of the upgrade
-# - Other upgrades: you can set other upgrade levels as prerequisite. Example: BARRACK : 1
-# - Resources : you can set resources as prerequisite. Example: OAK_WOOD: [100] or PLANK: [50, 100, 150] for each level
+#
+# - Other upgrades: you can set other upgrade levels as a prerequisite. Example: BARRACK : 1
+#
+# - Resources : you can set resources as prerequisite.
 #   Some special resources exists:
 #      - ANY_WOOD : any type of wood
 #      - ANY_LOG : any type of log
 #      - ANY_PLANK : any type of plank
 #      - ANY_STONE : any type of stone (cobblestone, granite, diorite, andesite, stone)
+#   Optional arguments : custom_name and custom_id
+#   Example :
+#    resources:
+#      DIORITE:
+#        quantity : [16, 32, 48, 64] # Level beyond will have the cost of the last one
+#        custom_name : "Special cobbleStone name"
+#        custom_id : "101500"
+#      ANY_WOOD:
+#        quantity : [16]
 #
 # benefits: the benefits of the upgrade
 # - PLAYER_CAP: maximum number of player per town [-1,0,1,2... or infinity]
@@ -78,7 +89,8 @@ upgrades:
     prerequisites:
       TOWN_LEVEL: 0
     resources:
-      ANY_PLANK: 32
+      ANY_PLANK:
+        quantity : [16, 32, 48, 64] # Level beyond will have the cost of the last one
     benefits:
       CHUNK_CAP: +35
 
@@ -91,7 +103,8 @@ upgrades:
     prerequisites:
       TOWN_LEVEL: 0
     resources:
-      ANY_STONE: 64
+      ANY_STONE:
+        quantity : [64]
     benefits:
       PLAYER_CAP: +3
 
@@ -105,7 +118,8 @@ upgrades:
       TOWN_LEVEL: 2
       BARRACKS: 1
     resources:
-      ANY_LOG: 64
+      ANY_LOG:
+        quantity : [64]
     benefits:
       CHUNK_CAP: +75
       PLAYER_CAP: -1
@@ -121,7 +135,8 @@ upgrades:
       BARRACKS: 1
       ADMINISTRATION: 2
     resources:
-      BEACON: 1
+      BEACON:
+        quantity : [1]
     benefits:
       UNLOCK_TOWN_SPAWN: +1
 
@@ -195,8 +210,10 @@ upgrades:
       TOWN_LEVEL: 5
       ADMINISTRATION: 3
     resources:
-      ANY_PLANK: 64
-      PAPER: 32
+      ANY_PLANK:
+        quantity : [64]
+      PAPER:
+        quantity : [32, 32, 32, 64]
     benefits:
       PROPERTY_CAP: +3
       CHUNK_CAP: +50

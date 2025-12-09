@@ -4,6 +4,7 @@ package org.leralix.tan.upgrade;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.territory.RegionData;
@@ -48,74 +49,11 @@ public class NewUpgradeStorage {
                 int maxLevel = upgradesSection.getInt(key + ".maxLevel");
 
                 // Prerequisites
-                List<UpgradeRequirement> newPrerequisites = new ArrayList<>();
-
-                List<Integer> cost = upgradesSection.getIntegerList(key + ".cost");
-                newPrerequisites.add(new UpgradeCostRequirement(cost));
-
-                ConfigurationSection prerequisiteSection = upgradesSection.getConfigurationSection(key + ".prerequisites");
-                if (prerequisiteSection != null) {
-                    for (String prerequisiteKey : prerequisiteSection.getKeys(false)) {
-                        int requiredLevel = prerequisiteSection.getInt(prerequisiteKey);
-                        if (prerequisiteKey.equals("TOWN_LEVEL")) {
-                            newPrerequisites.add(new LevelUpgradeRequirement(requiredLevel));
-                        } else {
-                            newPrerequisites.add(new OtherUpgradeRequirementBuilder(prerequisiteKey, requiredLevel));
-                        }
-                    }
-                }
-
-                ConfigurationSection resourcesSection = upgradesSection.getConfigurationSection(key + ".resources");
-                if (resourcesSection != null) {
-                    for (String ressourcesKey : resourcesSection.getKeys(false)) {
-                        int number = resourcesSection.getInt(ressourcesKey);
-                        switch (ressourcesKey) {
-                            case "ANY_WOOD" ->
-                                    newPrerequisites.add(new ItemRequirementBuilder(new AnyWoodScope(), number));
-                            case "ANY_LOG" ->
-                                    newPrerequisites.add(new ItemRequirementBuilder(new AnyLogScope(), number));
-                            case "ANY_PLANK" ->
-                                    newPrerequisites.add(new ItemRequirementBuilder(new AnyPlankScope(), number));
-                            case "ANY_STONE" ->
-                                    newPrerequisites.add(new ItemRequirementBuilder(new AnyStoneScope(), number));
-                            default ->
-                                    newPrerequisites.add(new ItemRequirementBuilder(new MaterialScope(Material.valueOf(ressourcesKey)), number));
-                        }
-                    }
-                }
+                List<UpgradeRequirement> prerequisites = getPrerequisites(upgradesSection, key);
 
                 //Benefits
                 ConfigurationSection benefitsSection = upgradesSection.getConfigurationSection(key + ".benefits");
-                List<IndividualStat> rewards = new ArrayList<>();
-                if (benefitsSection != null) {
-                    for (String benefitKey : benefitsSection.getKeys(false)) {
-
-                        boolean isUnlimited = isInfiniteValue(benefitsSection, benefitKey);
-                        double value = parseDoubleValue(benefitsSection, benefitKey);
-
-                        switch (benefitKey) {
-                            case "PROPERTY_CAP" -> rewards.add(new PropertyCap((int) value, isUnlimited));
-                            case "PLAYER_CAP" -> rewards.add(new TownPlayerCap((int) value, isUnlimited));
-                            case "CHUNK_CAP" -> rewards.add(new ChunkCap((int) value, isUnlimited));
-                            case "CHUNK_COST" -> rewards.add(new ChunkCost((int) value, isUnlimited));
-                            case "CHUNK_UPKEEP_COST" -> rewards.add(new ChunkUpkeepCost(value));
-                            case "LANDMARKS_CAP" -> rewards.add(new LandmarkCap((int) value, isUnlimited));
-                            case "UNLOCK_TOWN_SPAWN" -> rewards.add(new EnableTownSpawn(true));
-                            case "UNLOCK_MOB_BAN" -> rewards.add(new EnableMobBan(true));
-                            case "LANDMARK_BONUS" -> rewards.add(new LandmarkBonus(
-                                    benefitsSection.getDouble(benefitKey) / 100
-                            ));
-                            case "UNLOCK_NEW_PERMISSIONS" -> {
-                                List<String> permissions = benefitsSection.getStringList(benefitKey);
-                                rewards.add(new PermissionList(permissions));
-                            }
-                            case "AUTHORIZED_BIOMES" -> {
-                                List<String> biomeKeys = benefitsSection.getStringList(benefitKey);
-                                rewards.add(BiomeStat.fromStrings(biomeKeys));
-                            }
-                        }
-                    }
-                }
+                List<IndividualStat> rewards = getRewards(benefitsSection);
 
                 upgradeMap.put(
                         key,
@@ -125,12 +63,97 @@ public class NewUpgradeStorage {
                                 key,
                                 icon,
                                 maxLevel,
-                                newPrerequisites,
+                                prerequisites,
                                 rewards
                         )
                 );
             }
         }
+    }
+
+    private static @NotNull List<UpgradeRequirement> getPrerequisites(ConfigurationSection upgradesSection, String key) {
+        List<UpgradeRequirement> newPrerequisites = new ArrayList<>();
+
+        List<Integer> cost = upgradesSection.getIntegerList(key + ".cost");
+        newPrerequisites.add(new UpgradeCostRequirement(cost));
+
+        ConfigurationSection upgradePrerequisites = upgradesSection.getConfigurationSection(key + ".prerequisites");
+        if (upgradePrerequisites != null) {
+            for (String prerequisiteKey : upgradePrerequisites.getKeys(false)) {
+                int requiredLevel = upgradePrerequisites.getInt(prerequisiteKey);
+                if (prerequisiteKey.equals("TOWN_LEVEL")) {
+                    newPrerequisites.add(new LevelUpgradeRequirement(requiredLevel));
+                } else {
+                    newPrerequisites.add(new OtherUpgradeRequirementBuilder(prerequisiteKey, requiredLevel));
+                }
+            }
+        }
+
+        ConfigurationSection resourcesSection = upgradesSection.getConfigurationSection(key + ".resources");
+        if (resourcesSection != null) {
+            for (String ressourcesKey : resourcesSection.getKeys(false)) {
+
+                ConfigurationSection singleRessourceConfig = resourcesSection.getConfigurationSection(ressourcesKey);
+
+                if(singleRessourceConfig != null){
+                    ItemScope itemScope = getItemScope(ressourcesKey);
+
+                    List<Integer> quantity = singleRessourceConfig.getIntegerList("quantity");
+                    String customName = singleRessourceConfig.getString("custom_name");
+                    int customID = singleRessourceConfig.getInt("custom_id", Integer.MIN_VALUE);
+                    newPrerequisites.add(new ItemRequirementBuilder(itemScope, quantity, customName, customID));
+                }
+            }
+        }
+        return newPrerequisites;
+    }
+
+    private static ItemScope getItemScope(String ressourcesKey) {
+        return switch (ressourcesKey) {
+            case "ANY_WOOD" ->
+                    new AnyWoodScope();
+            case "ANY_LOG" ->
+                    new AnyLogScope();
+            case "ANY_PLANK" ->
+                    new AnyPlankScope();
+            case "ANY_STONE" ->
+                    new AnyStoneScope();
+            default -> new MaterialScope(Material.valueOf(ressourcesKey));
+        };
+    }
+
+    private static @NotNull List<IndividualStat> getRewards(ConfigurationSection benefitsSection) {
+        List<IndividualStat> rewards = new ArrayList<>();
+        if (benefitsSection != null) {
+            for (String benefitKey : benefitsSection.getKeys(false)) {
+
+                boolean isUnlimited = isInfiniteValue(benefitsSection, benefitKey);
+                double value = parseDoubleValue(benefitsSection, benefitKey);
+
+                switch (benefitKey) {
+                    case "PROPERTY_CAP" -> rewards.add(new PropertyCap((int) value, isUnlimited));
+                    case "PLAYER_CAP" -> rewards.add(new TownPlayerCap((int) value, isUnlimited));
+                    case "CHUNK_CAP" -> rewards.add(new ChunkCap((int) value, isUnlimited));
+                    case "CHUNK_COST" -> rewards.add(new ChunkCost((int) value, isUnlimited));
+                    case "CHUNK_UPKEEP_COST" -> rewards.add(new ChunkUpkeepCost(value));
+                    case "LANDMARKS_CAP" -> rewards.add(new LandmarkCap((int) value, isUnlimited));
+                    case "UNLOCK_TOWN_SPAWN" -> rewards.add(new EnableTownSpawn(true));
+                    case "UNLOCK_MOB_BAN" -> rewards.add(new EnableMobBan(true));
+                    case "LANDMARK_BONUS" -> rewards.add(new LandmarkBonus(
+                            benefitsSection.getDouble(benefitKey) / 100
+                    ));
+                    case "UNLOCK_NEW_PERMISSIONS" -> {
+                        List<String> permissions = benefitsSection.getStringList(benefitKey);
+                        rewards.add(new PermissionList(permissions));
+                    }
+                    case "AUTHORIZED_BIOMES" -> {
+                        List<String> biomeKeys = benefitsSection.getStringList(benefitKey);
+                        rewards.add(BiomeStat.fromStrings(biomeKeys));
+                    }
+                }
+            }
+        }
+        return rewards;
     }
 
     private static boolean isInfiniteValue(ConfigurationSection section, String path) {
