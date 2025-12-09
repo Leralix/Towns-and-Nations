@@ -10,20 +10,18 @@ import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
+import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.ArchiveUtil;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import org.leralix.tan.storage.database.transactions.TransactionManager;
-import org.leralix.tan.utils.constants.Constants;
 
 public class DailyTasks {
-
-    private final Calendar calendar;
 
     private final int hourTime;
     private final int minuteTime;
@@ -31,13 +29,15 @@ public class DailyTasks {
     public DailyTasks(int hourTime, int minuteTime) {
         this.hourTime = hourTime;
         this.minuteTime = minuteTime;
-        this.calendar = new GregorianCalendar();
     }
 
     public void scheduleMidnightTask() {
         new BukkitRunnable() {
             @Override
             public void run() {
+
+                Calendar calendar = new GregorianCalendar();
+
                 if (calendar.get(Calendar.HOUR_OF_DAY) == hourTime && calendar.get(Calendar.MINUTE) == minuteTime) {
                     executeMidnightTasks();
                 }
