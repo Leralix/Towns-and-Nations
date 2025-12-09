@@ -47,8 +47,7 @@ public class PlayerApplicationMenu extends IteratorGUI {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             ITanPlayer playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
-
-            iconManager.get(playerIterate)
+            guiItems.add(iconManager.get(playerIterate)
                     .setClickToAcceptMessage(
                             Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC2,
                             Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC3
@@ -73,7 +72,7 @@ public class PlayerApplicationMenu extends IteratorGUI {
                         }
                         open();
                     })
-                    .asGuiItem(player, langType);
+                    .asGuiItem(player, langType));
 
         }
         return guiItems;
