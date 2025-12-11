@@ -33,7 +33,7 @@ public class AddMoney extends SubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tanadmin addmoney <player> <amount>";
+    return "/coconationadmin addmoney <player> <amount>";
   }
 
   public List<String> getTabCompleteSuggestions(
@@ -44,19 +44,16 @@ public class AddMoney extends SubCommand {
   @Override
   public void perform(CommandSender commandSender, String[] args) {
 
-    // Validate argument count
     if (!CommandExceptionHandler.validateArgCount(commandSender, args, 3, getSyntax())) {
       return;
     }
 
-    // Find the target player
     Optional<OfflinePlayer> offlinePlayerOpt =
         CommandExceptionHandler.findPlayer(commandSender, args[1]);
     if (offlinePlayerOpt.isEmpty()) {
       return;
     }
 
-    // Get TAN player data
     Optional<ITanPlayer> targetOpt =
         CommandExceptionHandler.getTanPlayer(commandSender, offlinePlayerOpt.get());
     if (targetOpt.isEmpty()) {
@@ -67,7 +64,6 @@ public class AddMoney extends SubCommand {
   }
 
   static void addMoney(CommandSender commandSender, String[] args, ITanPlayer target) {
-    // Parse amount with error handling
     Optional<Double> amountOpt =
         CommandExceptionHandler.parseDouble(commandSender, args[2], "amount");
     if (amountOpt.isEmpty()) {
@@ -90,13 +86,6 @@ public class AddMoney extends SubCommand {
     }
   }
 
-  /**
-   * Executes the add money operation.
-   *
-   * @param target The player to add money to
-   * @param amount The amount to add
-   * @throws EconomyException If the economy operation fails
-   */
   private static void executeAddMoney(ITanPlayer target, double amount) throws EconomyException {
     try {
       EconomyUtil.addFromBalance(target, amount);

@@ -38,6 +38,11 @@ import org.leralix.tan.listeners.*;
 import org.leralix.tan.listeners.chat.ChatListener;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.monitoring.PrometheusMetricsCollector;
+import org.leralix.tan.redis.JedisManager;
+import org.leralix.tan.redis.RedisClusterConfig;
+import org.leralix.tan.redis.RedisServerConfig;
+import org.leralix.tan.redis.RedisServerRegistry;
+import org.leralix.tan.redis.RedisSyncManager;
 import org.leralix.tan.service.EconomyService;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
@@ -47,9 +52,12 @@ import org.leralix.tan.storage.database.MySqlHandler;
 import org.leralix.tan.storage.database.SQLiteHandler;
 import org.leralix.tan.storage.impl.FortDataStorage;
 import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.sync.TownSyncHandler;
+import org.leralix.tan.sync.TownSyncService;
 import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.tasks.SecondTask;
+import org.leralix.tan.utils.CocoLogger;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.constants.DatabaseConstants;
 import org.leralix.tan.utils.constants.EnabledPermissions;
@@ -59,11 +67,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tan.api.TanAPI;
 
-/**
- * Main Towns and Nations class, used to load the plugin and to manage the plugin.
- *
- * @author Leralix
- */
 public class TownsAndNations extends JavaPlugin {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TownsAndNations.class);
@@ -72,68 +75,49 @@ public class TownsAndNations extends JavaPlugin {
     super();
   }
 
-  /** Singleton instance of the plugin. */
   private static TownsAndNations plugin;
 
-  /** User agent used to access the GitHub API. */
   private static final String USER_AGENT = "Mozilla/5.0";
 
-  /** GitHub API link. */
   private static final String GITHUB_API_URL =
       "https://api.github.com/repos/leralix/towns-and-nations/releases/latest";
 
-  /**
-   * Current version of the plugin.
-   *
-   * <p>Used to check if the plugin is up-to-date to the latest version. Also used to check if the
-   * plugin has just been updated and config file needs an update
-   */
   private static final PluginVersion CURRENT_VERSION = new PluginVersion(0, 16, 0);
 
   private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0, 14, 0);
 
-  /**
-   * The Latest version of the plugin on GitHub. Used to check if the plugin is up to date to the
-   * latest version.
-   */
   private PluginVersion latestVersion;
 
-  /**
-   * This variable is used to check when the plugin has launched If the plugin close in less than 30
-   * seconds, it is most likely a crash during onEnable. Since a crash here might erase stored data,
-   * saving will not take place
-   */
   private boolean loadedSuccessfully = false;
 
-  /** Database handler used to access the database. */
   private DatabaseHandler databaseHandler;
 
-  /** Database health check for auto-reconnection */
   private DatabaseHealthCheck databaseHealthCheck;
+
+  private JedisManager redisClient;
+
+  private RedisSyncManager redisSyncManager;
+
+  private RedisServerConfig redisServerConfig;
+
+  private RedisServerRegistry redisServerRegistry;
+
+  private TownSyncService townSyncService;
+
+  private TownSyncHandler townSyncHandler;
 
   @Override
   public void onEnable() {
-    // Plugin startup logic
     plugin = this;
-    LOGGER.info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
-    LOGGER.info(
-        "To report a bug or request a feature, please ask on my discord server: https://discord.gg/Q8gZSFUuzb");
 
-    LOGGER.info("[TaN] Loading Plugin");
+    CocoLogger.printBanner();
+    LOGGER.info(CocoLogger.info("Discord Support: https://discord.gg/Q8gZSFUuzb"));
+    LOGGER.info("");
 
-    // if (SphereLib.getPluginVersion().isOlderThan(MINIMUM_SUPPORTING_SPHERELIB)) {
-    //   LOGGER.error("[TaN] You need to update SphereLib to use this version of Towns and
-    // Nations");
-    //   LOGGER.error(
-    //       "[TaN] Please update SphereLib to version "
-    //           + MINIMUM_SUPPORTING_SPHERELIB
-    //           + " or higher");
-    //   LOGGER.error("[TaN] Disabling plugin");
-    //   Bukkit.getPluginManager().disablePlugin(this);
-    //   return;
-    // }
+    CocoLogger.section("CHARGEMENT DE COCONATION");
+    LOGGER.info(CocoLogger.loading("du plugin..."));
 
-    LOGGER.info("[TaN] -Loading Lang");
+    LOGGER.info(CocoLogger.loading("des langues"));
 
     ConfigUtil.saveAndUpdateResource(this, "lang.yml");
     ConfigUtil.addCustomConfig(this, "lang.yml", ConfigTag.LANG);
@@ -142,9 +126,9 @@ public class TownsAndNations extends JavaPlugin {
     File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
     Lang.loadTranslations(langFolder, lang);
     DynamicLang.loadTranslations(langFolder, lang);
-    LOGGER.info(Lang.LANGUAGE_SUCCESSFULLY_LOADED.getDefault());
+    LOGGER.info(CocoLogger.success("Langue \"" + lang + "\" chargée avec succès"));
 
-    LOGGER.info("[TaN] -Loading Configs");
+    LOGGER.info(CocoLogger.loading("des configurations"));
 
     List<String> mainBlackList = new ArrayList<>();
     mainBlackList.add("claimBlacklist");
@@ -158,7 +142,7 @@ public class TownsAndNations extends JavaPlugin {
     ConfigUtil.saveAndUpdateResource(this, "upgrades.yml", upgradeBlackList);
     ConfigUtil.addCustomConfig(this, "upgrades.yml", ConfigTag.UPGRADE);
 
-    LOGGER.info("[TaN] -Loading Configs");
+    LOGGER.info(CocoLogger.success("Fichiers de configuration chargés"));
 
     Constants.init(ConfigUtil.getCustomConfig(ConfigTag.MAIN));
 
@@ -170,29 +154,42 @@ public class TownsAndNations extends JavaPlugin {
     EnabledPermissions.getInstance().init();
     FortStorage.init(new FortDataStorage());
 
-    LOGGER.info("[TaN] -Loading Economy");
+    LOGGER.info(CocoLogger.loading("du système économique"));
     setupEconomy();
 
-    LOGGER.info("[TaN] -Loading Database");
+    LOGGER.info(CocoLogger.loading("de la base de données"));
     loadDB();
 
-    // P3.3: Initialize database health check for auto-reconnection
+    if (databaseHandler != null && databaseHandler.getDataSource() != null) {
+      LOGGER.info(CocoLogger.database("Initialisation des tables..."));
+      org.leralix.tan.storage.TableInitializer tableInit =
+          new org.leralix.tan.storage.TableInitializer(databaseHandler);
+      tableInit.initializeAllTables();
+      LOGGER.info(CocoLogger.success("Tables initialisées avec succès"));
+    } else {
+      LOGGER.error(
+          CocoLogger.error(
+              "Handler de base de données NULL - impossible d'initialiser les tables!"));
+    }
+
+    LOGGER.info(CocoLogger.loading("de Redis & du système de cache"));
+    loadRedis();
+
     if (databaseHandler != null) {
       databaseHealthCheck = new DatabaseHealthCheck(databaseHandler, this);
       databaseHealthCheck.start();
-      LOGGER.info("[TaN] -Database health check started");
+      LOGGER.info(CocoLogger.success("Surveillance santé BDD activée (auto-reconnexion)"));
     }
 
-    // OPTIMIZATION: Initialize Prometheus metrics collection
     try {
       PrometheusMetricsCollector metricsCollector = new PrometheusMetricsCollector();
       metricsCollector.startServer(9090);
-      LOGGER.info("[TaN] -Prometheus metrics enabled on port 9090");
+      LOGGER.info(CocoLogger.performance("Métriques Prometheus activées (port 9090)"));
     } catch (Exception ex) {
-      LOGGER.warn("[TaN] -Failed to initialize Prometheus metrics: " + ex.getMessage());
+      LOGGER.warn(CocoLogger.warning("Échec initialisation Prometheus: " + ex.getMessage()));
     }
 
-    LOGGER.info("[TaN] -Loading Local data");
+    LOGGER.info(CocoLogger.loading("des données locales"));
 
     RegionDataStorage.getInstance();
     PlayerDataStorage.getInstance();
@@ -204,11 +201,12 @@ public class TownsAndNations extends JavaPlugin {
     WarStorage.getInstance();
     EventManager.getInstance().registerEvents(new NewsletterEvents());
     TruceStorage.getInstance();
+    LOGGER.info(CocoLogger.success("Données locales chargées (9 storages)"));
 
-    LOGGER.info("[TaN] -Loading blocks data");
+    LOGGER.info(CocoLogger.loading("des blocs personnalisés"));
     TANCustomNBT.setBlocsData();
 
-    LOGGER.info("[TaN] -Loading commands");
+    LOGGER.info(CocoLogger.loading("des commandes"));
     SaveStats.startSchedule();
 
     DailyTasks dailyTasks =
@@ -216,45 +214,51 @@ public class TownsAndNations extends JavaPlugin {
     dailyTasks.scheduleMidnightTask();
 
     enableEventList();
-    getCommand("tan").setExecutor(new PlayerCommandManager());
-    getCommand("tanadmin").setExecutor(new AdminCommandManager());
-    getCommand("tandebug").setExecutor(new DebugCommandManager());
-    getCommand("tanserver").setExecutor(new ServerCommandManager());
+    getCommand("coconation").setExecutor(new PlayerCommandManager());
+    getCommand("coconationadmin").setExecutor(new AdminCommandManager());
+    getCommand("coconationdebug").setExecutor(new DebugCommandManager());
+    getCommand("coconationserver").setExecutor(new ServerCommandManager());
+    LOGGER.info(CocoLogger.success("Commandes enregistrées (4 executeurs)"));
 
-    LOGGER.info("[TaN] -Registering Dependencies");
+    LOGGER.info(CocoLogger.loading("des dépendances externes"));
 
     if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-      LOGGER.info("[TaN] -Registering PlaceholderAPI");
       new PlaceHolderAPI().register();
+      LOGGER.info(CocoLogger.success("PlaceholderAPI enregistré"));
     }
 
     if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
-      LOGGER.info("[TaN] -Registering WorldGuard");
       WorldGuardManager.getInstance().register();
+      LOGGER.info(CocoLogger.success("WorldGuard enregistré"));
     }
 
-    // checkForUpdate();
-
-    LOGGER.info("[TaN] -Registering API");
-
     TanAPI.register(new InternalAPI(CURRENT_VERSION, MINIMUM_SUPPORTING_DYNMAP));
+    LOGGER.info(CocoLogger.success("API publique enregistrée (v" + CURRENT_VERSION + ")"));
 
     initBStats();
 
-    LOGGER.info("[TaN] -Registering Tasks");
     SecondTask secondTask = new SecondTask();
     secondTask.startScheduler();
+    LOGGER.info(CocoLogger.success("Tâches récurrentes démarrées"));
+
+    try {
+      org.leralix.tan.tasks.ReconciliationTask reconcile =
+          new org.leralix.tan.tasks.ReconciliationTask();
+      reconcile.start();
+      LOGGER.info(CocoLogger.success("Réconciliation périodique démarrée"));
+    } catch (Exception ex) {
+      LOGGER.warn(CocoLogger.warning("Échec démarrage réconciliation: " + ex.getMessage()));
+    }
 
     loadedSuccessfully = true;
-    LOGGER.info("[TaN] Plugin loaded successfully");
-    LOGGER.info("\u001B[33m----------------Towns & Nations------------------\u001B[0m");
+    LOGGER.info(CocoLogger.boxed("COCONATION CHARGÉ AVEC SUCCÈS", CocoLogger.BRIGHT_GREEN));
   }
 
   private void initBStats() {
     try {
       new Metrics(this, 20527);
     } catch (IllegalStateException e) {
-      LOGGER.warn("[TaN] Failed to submit stats to bStats");
+      LOGGER.warn(CocoLogger.warning("Échec envoi stats bStats"));
     }
   }
 
@@ -263,11 +267,15 @@ public class TownsAndNations extends JavaPlugin {
     DatabaseConstants constants = Constants.databaseConstants();
 
     String dbName = constants.getDbType();
+    LOGGER.info(CocoLogger.database("Type de BDD: " + dbName));
+
     if (dbName.equalsIgnoreCase("sqlite")) {
       String dbPath = getDataFolder().getAbsolutePath() + "/database/main.db";
+      LOGGER.info(CocoLogger.database("SQLite: " + dbPath));
       databaseHandler = new SQLiteHandler(dbPath);
-    }
-    if (dbName.equals("mysql")) {
+    } else if (dbName.equals("mysql")) {
+      String endpoint = constants.getHost() + ":" + constants.getPort() + "/" + constants.getName();
+      LOGGER.info(CocoLogger.database("MySQL: " + endpoint));
       databaseHandler =
           new MySqlHandler(
               this,
@@ -276,63 +284,187 @@ public class TownsAndNations extends JavaPlugin {
               constants.getName(),
               constants.getUser(),
               constants.getPassword());
+    } else {
+      LOGGER.error(CocoLogger.error("❌ Type BDD inconnu: " + dbName + " (attendu: sqlite/mysql)"));
+      LOGGER.error(CocoLogger.error("Plugin désactivé (config BDD invalide)"));
+      Bukkit.getPluginManager().disablePlugin(this);
+      return;
     }
+
     try {
+      LOGGER.info("[TaN] Connecting to database...");
       databaseHandler.connect();
+      LOGGER.info(CocoLogger.success("✓ Connexion BDD établie"));
     } catch (SQLException e) {
-      LOGGER.error("[TaN] Error while connecting to the database");
+      LOGGER.error(CocoLogger.error("✖ ERREUR CRITIQUE: Échec connexion BDD!"));
+      LOGGER.error(CocoLogger.error("Détails: " + e.getMessage()));
+      e.printStackTrace();
+      LOGGER.error(CocoLogger.error("Plugin désactivé (BDD inaccessible)"));
+      Bukkit.getPluginManager().disablePlugin(this);
     }
   }
 
-  /** Method used to set up the economy of the server if Vault is enabled. */
+  private void loadRedis() {
+    try {
+      boolean redisEnabled =
+          ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("redis.enabled", false);
+
+      if (!redisEnabled) {
+        LOGGER.info(CocoLogger.warning("Redis désactivé dans config"));
+        return;
+      }
+
+      redisServerConfig = new RedisServerConfig(ConfigUtil.getCustomConfig(ConfigTag.MAIN));
+      LOGGER.info(CocoLogger.info("🆔 Server ID: " + redisServerConfig.getServerId()));
+      LOGGER.info(
+          CocoLogger.info(
+              "📡 Connexion Redis: "
+                  + redisServerConfig.getHost()
+                  + ":"
+                  + redisServerConfig.getPort()
+                  + " (DB: "
+                  + redisServerConfig.getDatabase()
+                  + ")"));
+
+      redisClient =
+          RedisClusterConfig.createRedisClient(ConfigUtil.getCustomConfig(ConfigTag.MAIN));
+
+      if (redisClient != null && !redisClient.isClosed()) {
+        LOGGER.info(CocoLogger.network("✓ Client Redis initialisé"));
+
+        // Test de connexion
+        try {
+          boolean pingSuccess = redisClient.testConnection();
+          if (pingSuccess) {
+            LOGGER.info(CocoLogger.success("✓ Test de connexion Redis réussi"));
+          } else {
+            throw new Exception("PING failed");
+          }
+        } catch (Exception testEx) {
+          LOGGER.error(CocoLogger.error("✖ Échec test connexion Redis: " + testEx.getMessage()));
+          LOGGER.error(
+              CocoLogger.error(
+                  "Vérifiez: 1) Redis est démarré, 2) host/port corrects, 3) mot de passe valide"));
+          throw testEx;
+        }
+
+        redisServerRegistry = new RedisServerRegistry(redisClient, redisServerConfig);
+        redisServerRegistry.registerServer();
+
+        redisServerRegistry.addServerEventListener(
+            event -> {
+              LOGGER.info(
+                  CocoLogger.network(
+                      String.format("🌐 Serveur %s: %s", event.getServerId(), event.getType())));
+            });
+
+        redisSyncManager = new RedisSyncManager(redisClient, redisServerConfig.getServerId());
+        LOGGER.info(
+            CocoLogger.network("⇄ Sync multi-serveur activé: " + redisServerConfig.getServerId()));
+
+        townSyncService = new TownSyncService(redisSyncManager, redisServerConfig.getServerId());
+        townSyncHandler = new TownSyncHandler(redisServerConfig.getServerId());
+
+        LOGGER.info(CocoLogger.network("⇄ Module de synchronisation complet initialisé"));
+
+        java.util.Set<String> activeServers = redisServerRegistry.getActiveServers();
+        LOGGER.info(CocoLogger.success("🌐 Serveurs actifs: " + String.join(", ", activeServers)));
+      } else {
+        LOGGER.warn(CocoLogger.warning("⚠ Échec init client Redis - client null ou fermé"));
+      }
+    } catch (redis.clients.jedis.exceptions.JedisConnectionException e) {
+      LOGGER.error(CocoLogger.error("✖ ERREUR: Impossible de se connecter à Redis"));
+      LOGGER.error(CocoLogger.error("Cause: " + e.getMessage()));
+      LOGGER.error(
+          CocoLogger.error(
+              "Solutions: Vérifiez que Redis est démarré et accessible sur "
+                  + (redisServerConfig != null
+                      ? redisServerConfig.getHost() + ":" + redisServerConfig.getPort()
+                      : "l'hôte configuré")));
+    } catch (redis.clients.jedis.exceptions.JedisDataException e) {
+      LOGGER.error(CocoLogger.error("✖ ERREUR Redis: " + e.getMessage()));
+      if (e.getMessage().contains("WRONGPASS") || e.getMessage().contains("NOAUTH")) {
+        LOGGER.error(
+            CocoLogger.error(
+                "Erreur d'authentification - Vérifiez le mot de passe dans config.yml"));
+        LOGGER.error(
+            CocoLogger.error(
+                "Utilisez password: null (ou commentez) si Redis n'a pas de mot de passe"));
+      }
+    } catch (Exception e) {
+      LOGGER.error(CocoLogger.error("✖ Erreur inattendue lors de l'init Redis: " + e.getMessage()));
+      LOGGER.error(CocoLogger.error("Type: " + e.getClass().getName()));
+      e.printStackTrace();
+    }
+  }
+
   private void setupEconomy() {
     if (getServer().getPluginManager().getPlugin("Vault") == null) {
-      LOGGER.info("[TaN] -Vault is not detected. Running standalone economy");
+      LOGGER.info(CocoLogger.info("💰 Économie standalone (Vault non détecté)"));
       EconomyUtil.register(new TanEconomyStandalone());
       return;
     }
     VaultManager.setupVault();
   }
 
-  /**
-   * Disable the plugin If the plugin has been closed less than 30 seconds after launch, the data
-   * will not be saved.
-   */
   @Override
   public void onDisable() {
+    LOGGER.info(CocoLogger.boxed("ARRÊT DE COCONATION EN COURS", CocoLogger.BRIGHT_YELLOW));
+
     if (!loadedSuccessfully) {
-      LOGGER.info("[TaN] Not saving data because plugin crashed during loading");
-      LOGGER.info("[TaN] Plugin disabled");
+      LOGGER.info(CocoLogger.error("✖ Sauvegarde annulée (crash au démarrage)"));
+      LOGGER.info(CocoLogger.boxed("COCONATION DÉSACTIVÉ", CocoLogger.BRIGHT_RED));
       return;
     }
 
-    LOGGER.info("[TaN] Savings Data");
+    LOGGER.info(CocoLogger.loading("sauvegarde des données"));
 
     SaveStats.saveAll();
+    LOGGER.info(CocoLogger.success("Données sauvegardées"));
 
-    // P3.3: Stop database health check before closing connection
     if (databaseHealthCheck != null) {
       databaseHealthCheck.stop();
-      LOGGER.info("[TaN] -Database health check stopped");
+      LOGGER.info(CocoLogger.success("Surveillance santé BDD arrêtée"));
     }
 
-    // Wait for async save operations to complete (non-blocking approach)
-    // Instead of Thread.sleep which blocks the main thread, we just log completion
-    // The SaveStats.saveAll() should handle synchronization internally
-
-    // P3.2: Close database connection pool properly
-    if (databaseHandler != null) {
+    if (redisSyncManager != null) {
       try {
-        databaseHandler.close();
+        redisSyncManager.shutdown();
+        LOGGER.info(CocoLogger.success("Gestionnaire sync Redis arrêté"));
       } catch (Exception e) {
-        LOGGER.error("[TaN] Error closing database connection: " + e.getMessage());
+        LOGGER.error(CocoLogger.error("Échec arrêt sync Redis: " + e.getMessage()));
       }
     }
 
-    LOGGER.info("[TaN] Plugin disabled");
+    if (redisServerRegistry != null) {
+      try {
+        redisServerRegistry.unregisterServer();
+      } catch (Exception e) {
+        LOGGER.error(CocoLogger.error("Échec désenregistrement serveur: " + e.getMessage()));
+      }
+    }
+
+    if (redisClient != null && !redisClient.isClosed()) {
+      try {
+        redisClient.shutdown();
+        LOGGER.info(CocoLogger.success("Client Redis arrêté"));
+      } catch (Exception e) {
+        LOGGER.error(CocoLogger.error("Échec arrêt Redis: " + e.getMessage()));
+      }
+    }
+
+    if (databaseHandler != null) {
+      try {
+        databaseHandler.close();
+        LOGGER.info(CocoLogger.success("Pool connexions BDD fermé"));
+      } catch (Exception e) {
+        LOGGER.error(CocoLogger.error("Échec fermeture BDD: " + e.getMessage()));
+      }
+    }
+
+    LOGGER.info(CocoLogger.boxed("COCONATION DÉSACTIVÉ", CocoLogger.BRIGHT_YELLOW));
   }
 
-  /** Enable every event listener of the plugin. */
   private void enableEventList() {
     PluginManager pluginManager = getServer().getPluginManager();
     pluginManager.registerEvents(new ChatListener(), this);
@@ -350,20 +482,11 @@ public class TownsAndNations extends JavaPlugin {
     pluginManager.registerEvents(new RightClickListener(), this);
   }
 
-  /**
-   * Get the plugin instance
-   *
-   * @return the plugin instance
-   */
   public static TownsAndNations getPlugin() {
     return plugin;
   }
 
-  /**
-   * Check GitHub and notify admins if a new version of Towns and Nations is available. This method
-   * is called when the plugin is enabled.
-   */
-  @SuppressWarnings("unused") // Called conditionally from config
+  @SuppressWarnings("unused")
   private void checkForUpdate() {
     if (!TownsAndNations.getPlugin().getConfig().getBoolean("CheckForUpdate", true)) {
       LOGGER.info("[TaN] Update check is disabled");
@@ -371,13 +494,12 @@ public class TownsAndNations extends JavaPlugin {
       return;
     }
     try {
-      // P4.1: Use URI.toURL() instead of deprecated URL constructor
       URL url = java.net.URI.create(GITHUB_API_URL).toURL();
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setRequestMethod("GET");
       con.setRequestProperty("User-Agent", USER_AGENT);
-      con.setConnectTimeout(5000); // 5 seconds connection timeout
-      con.setReadTimeout(5000); // 5 seconds read timeout
+      con.setConnectTimeout(5000);
+      con.setReadTimeout(5000);
 
       int responseCode = con.getResponseCode();
       if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -406,44 +528,23 @@ public class TownsAndNations extends JavaPlugin {
     }
   }
 
-  /**
-   * Extract the version of the plugin from the response of the GitHub API.
-   *
-   * @param response the json of the GitHub API
-   * @return the {@link PluginVersion Version} of the plugin.
-   */
   private PluginVersion extractVersionFromResponse(String response) {
     JsonObject jsonResponse = JsonParser.parseString(response).getAsJsonObject();
     String version = jsonResponse.get("tag_name").getAsString();
     return new PluginVersion(version);
   }
 
-  /**
-   * Check if the plugin is up-to-date to the latest version outside the main class
-   *
-   * @return true if the plugin is up-to-date, false otherwise.
-   */
   public boolean isLatestVersion() {
     if (latestVersion == null) {
-      return true; // Assume up-to-date if version check failed
+      return true;
     }
     return !CURRENT_VERSION.isOlderThan(latestVersion);
   }
 
-  /**
-   * Get the latest version of the plugin from GitHub
-   *
-   * @return the latest version of the plugin
-   */
   public PluginVersion getLatestVersion() {
     return latestVersion;
   }
 
-  /**
-   * Get the current version of the plugin
-   *
-   * @return the current version of the plugin
-   */
   public PluginVersion getCurrentVersion() {
     return CURRENT_VERSION;
   }
@@ -460,10 +561,30 @@ public class TownsAndNations extends JavaPlugin {
     return databaseHealthCheck;
   }
 
-  /**
-   * Reset the singleton instance of the plugin. Used for testing purposes only. Remove it in a
-   * future version to replace singletons by dependency injection.
-   */
+  public JedisManager getRedisClient() {
+    return redisClient;
+  }
+
+  public RedisSyncManager getRedisSyncManager() {
+    return redisSyncManager;
+  }
+
+  public RedisServerConfig getRedisServerConfig() {
+    return redisServerConfig;
+  }
+
+  public RedisServerRegistry getRedisServerRegistry() {
+    return redisServerRegistry;
+  }
+
+  public TownSyncService getTownSyncService() {
+    return townSyncService;
+  }
+
+  public TownSyncHandler getTownSyncHandler() {
+    return townSyncHandler;
+  }
+
   public void resetSingletonForTests() {
     RegionDataStorage.getInstance().reset();
     PlayerDataStorage.getInstance().reset();

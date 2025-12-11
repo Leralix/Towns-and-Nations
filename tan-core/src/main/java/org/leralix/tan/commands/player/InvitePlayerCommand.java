@@ -36,7 +36,7 @@ public class InvitePlayerCommand extends PlayerSubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tan invite <playerName>";
+    return "/coconation invite <playerName>";
   }
 
   @Override
@@ -52,7 +52,6 @@ public class InvitePlayerCommand extends PlayerSubCommand {
 
   @Override
   public void perform(Player player, String[] args) {
-    // Validate argument count
     if (!CommandExceptionHandler.validateArgCount((CommandSender) player, args, 2, getSyntax())) {
       return;
     }
@@ -77,14 +76,12 @@ public class InvitePlayerCommand extends PlayerSubCommand {
       return;
     }
 
-    // Find and validate player
     Optional<OfflinePlayer> offlinePlayerOpt =
         CommandExceptionHandler.findPlayer((CommandSender) player, playerToInvite);
     if (offlinePlayerOpt.isEmpty()) {
       return;
     }
 
-    // Check if player is online
     Player invite = offlinePlayerOpt.get().getPlayer();
     if (invite == null) {
       TanChatUtils.message(player, Lang.PLAYER_NOT_FOUND.get(langType));

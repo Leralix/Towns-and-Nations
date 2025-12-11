@@ -34,7 +34,7 @@ public class UnclaimCommand extends PlayerSubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tan unclaim";
+    return "/coconation unclaim";
   }
 
   public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
@@ -47,7 +47,6 @@ public class UnclaimCommand extends PlayerSubCommand {
     ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
     LangType langType = tanPlayer.getLang();
 
-    // Validate argument count (1 or 4 arguments)
     if (args.length != 1 && args.length != 4) {
       TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
       TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
@@ -59,7 +58,6 @@ public class UnclaimCommand extends PlayerSubCommand {
       if (args.length == 1) {
         chunk = player.getLocation().getChunk();
       } else {
-        // Parse coordinates with error handling
         Optional<Integer> xOpt = CommandExceptionHandler.parseInt(player, args[2], "x coordinate");
         Optional<Integer> yOpt = CommandExceptionHandler.parseInt(player, args[3], "y coordinate");
 
@@ -70,17 +68,14 @@ public class UnclaimCommand extends PlayerSubCommand {
         chunk = player.getLocation().getWorld().getChunkAt(xOpt.get(), yOpt.get());
       }
 
-      // Validate chunk is claimed
       if (!NewClaimedChunkStorage.getInstance().isChunkClaimed(chunk)) {
         TanChatUtils.message(player, Lang.CHUNK_NOT_CLAIMED.get(langType));
         return;
       }
 
-      // Unclaim the chunk
       ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
       executeUnclaimChunk(claimedChunk, player);
 
-      // Open map if coordinates were provided
       if (args.length == 4) {
         MapCommand.openMap(player, new MapSettings(args[0], args[1]));
       }
@@ -90,13 +85,6 @@ public class UnclaimCommand extends PlayerSubCommand {
     }
   }
 
-  /**
-   * Executes the chunk unclaim operation.
-   *
-   * @param claimedChunk The claimed chunk to unclaim
-   * @param player The player executing the unclaim
-   * @throws TerritoryException If the unclaim operation fails
-   */
   private void executeUnclaimChunk(ClaimedChunk2 claimedChunk, Player player)
       throws TerritoryException {
     try {

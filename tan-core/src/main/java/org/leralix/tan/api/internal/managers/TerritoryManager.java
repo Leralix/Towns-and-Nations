@@ -10,11 +10,6 @@ import org.tan.api.getters.TanTerritoryManager;
 import org.tan.api.interfaces.TanRegion;
 import org.tan.api.interfaces.TanTown;
 
-/**
- * Placeholder for TanTerritoryManager <br>
- * This allows a single entry point for all territory related operations, It stores the instance of
- * both the {@link TownDataStorage} and {@link RegionDataStorage}
- */
 public class TerritoryManager implements TanTerritoryManager {
   private final TownDataStorage townDataStorageInstance;
   private final RegionDataStorage regionDataStorageInstance;

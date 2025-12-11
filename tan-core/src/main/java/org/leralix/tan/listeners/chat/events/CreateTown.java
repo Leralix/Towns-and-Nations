@@ -5,8 +5,6 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TownCreatedInternalEvent;
@@ -55,18 +53,26 @@ public class CreateTown extends ChatListenerEvent {
   }
 
   public void createTown(Player player, String message) {
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
-    TownData newTown = TownDataStorage.getInstance().newTown(message, tanPlayer).join();
-    EconomyUtil.removeFromBalance(player, cost);
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              TownDataStorage.getInstance()
+                  .newTown(message, tanPlayer)
+                  .thenAccept(
+                      newTown -> {
+                        EconomyUtil.removeFromBalance(player, cost);
+                        EventManager.getInstance()
+                            .callEvent(new TownCreatedInternalEvent(newTown, tanPlayer));
+                        FileUtil.addLineToHistory(
+                            Lang.TOWN_CREATED_NEWSLETTER.get(player.getName(), newTown.getName()));
 
-    ITanPlayer playerData = PlayerDataStorage.getInstance().getSync(player);
-    EventManager.getInstance().callEvent(new TownCreatedInternalEvent(newTown, playerData));
-    FileUtil.addLineToHistory(
-        Lang.TOWN_CREATED_NEWSLETTER.get(player.getName(), newTown.getName()));
+                        org.leralix.tan.utils.FoliaScheduler.runTask(
+                            TownsAndNations.getPlugin(),
+                            () -> TeamUtils.setIndividualScoreBoard(player));
 
-    org.leralix.tan.utils.FoliaScheduler.runTask(
-        TownsAndNations.getPlugin(), () -> TeamUtils.setIndividualScoreBoard(player));
-
-    openGui(p -> newTown.openMainMenu(player), player);
+                        openGui(p -> newTown.openMainMenu(player), player);
+                      });
+            });
   }
 }

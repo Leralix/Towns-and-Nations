@@ -21,11 +21,9 @@ public class ChunkSettingsMenu extends BasicGui {
 
   private final TerritoryData territoryData;
 
-  public ChunkSettingsMenu(Player player, ITanPlayer tanPlayer, TerritoryData territoryData) {
+  private ChunkSettingsMenu(Player player, ITanPlayer tanPlayer, TerritoryData territoryData) {
     super(player, tanPlayer, Lang.HEADER_TOWN_MENU.get(player, territoryData.getName()), 3);
     this.territoryData = territoryData;
-    // open() doit être appelé explicitement après la construction pour respecter le modèle
-    // asynchrone
   }
 
   public static void open(Player player, TerritoryData territoryData) {

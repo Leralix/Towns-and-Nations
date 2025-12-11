@@ -11,7 +11,6 @@ import org.leralix.tan.upgrade.rewards.AggregatableStat;
 
 public class PropertyCap extends NumericStat implements AggregatableStat<PropertyCap> {
 
-  /** Default constructor Needed to create an empty stat. Do not remove */
   @SuppressWarnings("unused")
   public PropertyCap() {
     super(0, false);

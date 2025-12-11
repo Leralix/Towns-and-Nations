@@ -33,7 +33,7 @@ public class SetMoney extends SubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tanadmin setmoney <player> <amount>";
+    return "/coconationadmin setmoney <player> <amount>";
   }
 
   public List<String> getTabCompleteSuggestions(
@@ -43,18 +43,15 @@ public class SetMoney extends SubCommand {
 
   @Override
   public void perform(CommandSender player, String[] args) {
-    // Validate argument count
     if (!CommandExceptionHandler.validateArgCount(player, args, 3, getSyntax())) {
       return;
     }
 
-    // Find the target player
     Optional<OfflinePlayer> offlinePlayerOpt = CommandExceptionHandler.findPlayer(player, args[1]);
     if (offlinePlayerOpt.isEmpty()) {
       return;
     }
 
-    // Get TAN player data
     Optional<ITanPlayer> targetOpt =
         CommandExceptionHandler.getTanPlayer(player, offlinePlayerOpt.get());
     if (targetOpt.isEmpty()) {
@@ -65,7 +62,6 @@ public class SetMoney extends SubCommand {
   }
 
   static void setMoney(CommandSender commandSender, String[] args, ITanPlayer target) {
-    // Parse amount with error handling
     Optional<Double> amountOpt =
         CommandExceptionHandler.parseDouble(commandSender, args[2], "amount");
     if (amountOpt.isEmpty()) {
@@ -89,13 +85,6 @@ public class SetMoney extends SubCommand {
     }
   }
 
-  /**
-   * Executes the set money operation.
-   *
-   * @param target The player to set money for
-   * @param amount The amount to set
-   * @throws EconomyException If the economy operation fails
-   */
   private static void executeSetMoney(ITanPlayer target, double amount) throws EconomyException {
     try {
       EconomyUtil.setBalance(target, amount);

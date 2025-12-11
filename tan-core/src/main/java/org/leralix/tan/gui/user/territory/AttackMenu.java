@@ -38,16 +38,14 @@ public class AttackMenu extends IteratorGUI {
 
   @Override
   public void open() {
-    // Show immediate loading screen with cached data
     iterator(cachedAttacks, territoryData::openMainMenu);
     gui.open(player);
 
-    // Load data asynchronously if not already loaded
     if (!isLoaded) {
       AsyncGuiHelper.loadAsync(
           player,
-          () -> getWars(tanPlayer), // Async supplier - loads attack data
-          items -> { // Main thread consumer - updates GUI
+          () -> getWars(tanPlayer),
+          items -> {
             cachedAttacks = items;
             isLoaded = true;
             iterator(items, territoryData::openMainMenu);

@@ -44,19 +44,10 @@ public class AddPlayerForChunkPermission extends IteratorGUI {
     this.playersData = playersData;
   }
 
-  /**
-   * Opens the add player permission menu asynchronously.
-   *
-   * @param player The player viewing the menu
-   * @param territoryData The territory to manage permissions for
-   * @param type The type of chunk permission
-   * @param backMenu The menu to return to
-   */
   public static void open(
       Player player, TerritoryData territoryData, ChunkPermissionType type, BasicGui backMenu) {
     PlayerDataStorage storage = PlayerDataStorage.getInstance();
 
-    // Load viewer data and all online players data
     storage
         .get(player)
         .thenCompose(

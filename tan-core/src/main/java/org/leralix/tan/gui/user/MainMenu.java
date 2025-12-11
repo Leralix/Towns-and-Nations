@@ -40,17 +40,11 @@ public class MainMenu extends BasicGui {
     this.regionData = regionData;
   }
 
-  /**
-   * Opens the main menu asynchronously.
-   *
-   * @param player The player viewing the menu
-   */
   public static void open(Player player) {
     PlayerDataStorage.getInstance()
         .get(player)
         .thenCompose(
             tanPlayer -> {
-              // Pre-load town and region data if player has them
               CompletableFuture<TownData> townFuture =
                   tanPlayer.hasTown()
                       ? tanPlayer.getTown()
@@ -61,7 +55,6 @@ public class MainMenu extends BasicGui {
                       ? tanPlayer.getRegion()
                       : CompletableFuture.completedFuture(null);
 
-              // Wait for both to complete
               return CompletableFuture.allOf(townFuture, regionFuture)
                   .thenApply(v -> new Object[] {tanPlayer, townFuture.join(), regionFuture.join()});
             })
@@ -153,8 +146,6 @@ public class MainMenu extends BasicGui {
         .setDescription(description)
         .setAction(
             action -> {
-              // TODO: Replace with proper region menu navigation after PlayerGUI migration
-              // Original: PlayerGUI.dispatchPlayerRegion(player)
               if (regionData != null) {
                 regionData.openMainMenu(player);
               } else {
@@ -181,8 +172,6 @@ public class MainMenu extends BasicGui {
         .setDescription(description)
         .setAction(
             action -> {
-              // TODO: Replace with proper town menu navigation after PlayerGUI migration
-              // Original: PlayerGUI.dispatchPlayerTown(player)
               if (townData != null) {
                 townData.openMainMenu(player);
               } else {

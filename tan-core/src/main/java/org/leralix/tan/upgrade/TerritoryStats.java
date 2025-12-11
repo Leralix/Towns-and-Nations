@@ -28,7 +28,7 @@ public class TerritoryStats {
   public TerritoryStats(StatsType statsType) {
     this.mainLevel = 1;
     this.level = new HashMap<>();
-    this.level.put("CITY_HALL", 1); // Default upgrade
+    this.level.put("CITY_HALL", 1);
     this.statsType = statsType;
   }
 
@@ -92,7 +92,6 @@ public class TerritoryStats {
     List<IndividualStat> allStats = new ArrayList<>();
     allStats.add(getStat(ChunkCap.class));
     allStats.add(getStat(ChunkCost.class));
-    // Town only stats.
     if (statsType == StatsType.TOWN) {
       allStats.add(getStat(LandmarkCap.class));
       allStats.add(getStat(PropertyCap.class));

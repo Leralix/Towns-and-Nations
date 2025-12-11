@@ -12,7 +12,6 @@ import org.leralix.tan.lang.LangType;
 
 public abstract class WarGoal {
 
-  /** Used for serialization */
   private final String type;
 
   protected WarGoal() {

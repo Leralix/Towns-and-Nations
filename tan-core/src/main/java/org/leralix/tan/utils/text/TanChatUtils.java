@@ -7,7 +7,6 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 
-/** This class is used for chat related utilities. */
 public class TanChatUtils {
 
   private TanChatUtils() {

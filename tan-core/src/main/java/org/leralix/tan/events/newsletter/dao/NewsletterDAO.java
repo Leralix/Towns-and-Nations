@@ -21,7 +21,6 @@ public class NewsletterDAO {
     this.dataSource = dataSource;
     createTableIfNotExists();
 
-    // Initialiser les sous-DAO
     subDaos.put(NewsletterType.TOWN_CREATED, new PlayerCreateTownDAO(dataSource));
     subDaos.put(NewsletterType.TOWN_DELETED, new PlayerDeleteTownDAO(dataSource));
     subDaos.put(NewsletterType.PLAYER_APPLICATION, new PlayerApplicationDAO(dataSource));
@@ -46,23 +45,62 @@ public class NewsletterDAO {
   }
 
   private void createTableIfNotExists() {
-    String sql1 =
-        "CREATE TABLE IF NOT EXISTS newsletter ("
-            + "id VARCHAR(36) PRIMARY KEY, "
-            + "type VARCHAR(255) NOT NULL, "
-            + "date_created TIMESTAMP NOT NULL)";
-    String sql2 =
-        "CREATE TABLE IF NOT EXISTS newsletter_read ("
-            + "newsletter_id VARCHAR(36) NOT NULL, "
-            + "player_id VARCHAR(36) NOT NULL, "
-            + "PRIMARY KEY (newsletter_id, player_id))";
+    boolean isMySQL = isDatabaseMySQL();
+
+    String sql1, sql2;
+
+    if (isMySQL) {
+      sql1 =
+          "CREATE TABLE IF NOT EXISTS newsletter ("
+              + "id VARCHAR(36) PRIMARY KEY, "
+              + "type VARCHAR(255) NOT NULL, "
+              + "date_created TIMESTAMP NOT NULL, "
+              + "INDEX idx_type (type), "
+              + "INDEX idx_date (date_created)"
+              + ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+      sql2 =
+          "CREATE TABLE IF NOT EXISTS newsletter_read ("
+              + "newsletter_id VARCHAR(36) NOT NULL, "
+              + "player_id VARCHAR(36) NOT NULL, "
+              + "PRIMARY KEY (newsletter_id, player_id), "
+              + "INDEX idx_player (player_id)"
+              + ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+    } else {
+      sql1 =
+          "CREATE TABLE IF NOT EXISTS newsletter ("
+              + "id VARCHAR(36) PRIMARY KEY, "
+              + "type VARCHAR(255) NOT NULL, "
+              + "date_created TIMESTAMP NOT NULL)";
+      sql2 =
+          "CREATE TABLE IF NOT EXISTS newsletter_read ("
+              + "newsletter_id VARCHAR(36) NOT NULL, "
+              + "player_id VARCHAR(36) NOT NULL, "
+              + "PRIMARY KEY (newsletter_id, player_id))";
+    }
 
     try (Connection conn = dataSource.getConnection();
         Statement stmt = conn.createStatement()) {
+      TownsAndNations.getPlugin().getLogger().info("[TaN-DB] Creating newsletter tables...");
       stmt.executeUpdate(sql1);
+      TownsAndNations.getPlugin().getLogger().info("[TaN-DB] Table 'newsletter' created/verified");
       stmt.executeUpdate(sql2);
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .info("[TaN-DB] Table 'newsletter_read' created/verified");
     } catch (SQLException e) {
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .severe("[TaN-DB] FAILED to create newsletter tables: " + e.getMessage());
       throw new RuntimeException("Failed to create newsletter tables", e);
+    }
+  }
+
+  private boolean isDatabaseMySQL() {
+    try (Connection conn = dataSource.getConnection()) {
+      String dbProductName = conn.getMetaData().getDatabaseProductName().toLowerCase();
+      return dbProductName.contains("mysql") || dbProductName.contains("mariadb");
+    } catch (SQLException e) {
+      return false;
     }
   }
 
@@ -85,8 +123,13 @@ public class NewsletterDAO {
   }
 
   public void markAsRead(UUID newsletterId, UUID playerId) {
-    // Use MySQL/MariaDB compatible syntax (INSERT IGNORE)
-    String sql = "INSERT IGNORE INTO newsletter_read (newsletter_id, player_id) VALUES (?, ?)";
+    String sql;
+    if (isDatabaseMySQL()) {
+      sql = "INSERT IGNORE INTO newsletter_read (newsletter_id, player_id) VALUES (?, ?)";
+    } else {
+      sql = "INSERT OR IGNORE INTO newsletter_read (newsletter_id, player_id) VALUES (?, ?)";
+    }
+
     try (Connection conn = dataSource.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql)) {
       ps.setString(1, newsletterId.toString());

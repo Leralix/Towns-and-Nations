@@ -37,7 +37,7 @@ public class DynamicLang {
       ConfigUtil.saveAndUpdateResource(
           TownsAndNations.getPlugin(),
           "lang/" + langType.getCode() + "/upgrades.yml",
-          Collections.singletonList("customLang")); // blacklist the entire file
+          Collections.singletonList("customLang"));
 
       YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 

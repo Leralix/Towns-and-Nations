@@ -15,12 +15,9 @@ public class SecondTask {
     FoliaScheduler.runTaskTimer(
         TownsAndNations.getPlugin(),
         () -> {
-          // Update capture status (global operation, OK for GlobalRegionScheduler)
           for (CurrentAttack currentAttack : CurrentAttacksStorage.getAll()) {
             CaptureManager.getInstance().updateCapture(currentAttack.getAttackData());
           }
-          // For each player, schedule the display task on their specific entity scheduler
-          // This ensures thread-safety on Folia where players may be on different regions
           for (Player player : Bukkit.getOnlinePlayers()) {
             FoliaScheduler.runEntityTask(
                 TownsAndNations.getPlugin(),

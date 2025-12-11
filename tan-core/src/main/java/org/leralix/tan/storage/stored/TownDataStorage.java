@@ -9,7 +9,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
@@ -32,6 +34,10 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
   private static TownDataStorage instance;
 
   private int newTownId;
+
+  private final Set<String> pendingSaves = ConcurrentHashMap.newKeySet();
+  private final Map<String, Long> lastSaveTime = new ConcurrentHashMap<>();
+  private static final long SAVE_DEBOUNCE_MS = 500;
 
   private TownDataStorage() {
     super(
@@ -70,9 +76,12 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
 
     try (Connection conn = getDatabase().getDataSource().getConnection();
         Statement stmt = conn.createStatement()) {
+      TownsAndNations.getPlugin().getLogger().info("[TaN-DB] Creating table: " + TABLE_NAME);
       stmt.execute(createTableSQL);
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .info("[TaN-DB] Table " + TABLE_NAME + " created/verified successfully");
 
-      // Migration: Add town_name column if it doesn't exist
       try (ResultSet rs = conn.getMetaData().getColumns(null, null, TABLE_NAME, "town_name")) {
         if (!rs.next()) {
           stmt.executeUpdate(
@@ -81,7 +90,6 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
         }
       }
 
-      // P3.5: Add creator_uuid column if it doesn't exist (UUID of town creator)
       try (ResultSet rs = conn.getMetaData().getColumns(null, null, TABLE_NAME, "creator_uuid")) {
         if (!rs.next()) {
           stmt.executeUpdate(
@@ -92,7 +100,6 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
         }
       }
 
-      // P3.5: Add creator_name column if it doesn't exist (Player name of town creator)
       try (ResultSet rs = conn.getMetaData().getColumns(null, null, TABLE_NAME, "creator_name")) {
         if (!rs.next()) {
           stmt.executeUpdate(
@@ -103,7 +110,6 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
         }
       }
 
-      // P3.5: Add creation_date column if it doesn't exist (timestamp for admin tracking)
       try (ResultSet rs = conn.getMetaData().getColumns(null, null, TABLE_NAME, "creation_date")) {
         if (!rs.next()) {
           if (getDatabase().isMySQL()) {
@@ -130,7 +136,6 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
 
   @Override
   protected void createIndexes() {
-    // P3.3: Add indexes for frequently queried columns (performance optimization)
     String createNameIndexSQL =
         "CREATE INDEX IF NOT EXISTS idx_town_name ON " + TABLE_NAME + " (town_name)";
     String createCreatorUuidIndexSQL =
@@ -157,8 +162,30 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
       return;
     }
 
+    long now = System.currentTimeMillis();
+    Long lastSave = lastSaveTime.get(id);
+    if (lastSave != null && (now - lastSave) < SAVE_DEBOUNCE_MS) {
+      if (!pendingSaves.contains(id)) {
+        pendingSaves.add(id);
+        FoliaScheduler.runTaskLaterAsynchronously(
+            TownsAndNations.getPlugin(),
+            () -> {
+              pendingSaves.remove(id);
+              put(id, obj);
+            },
+            SAVE_DEBOUNCE_MS / 50);
+      }
+      return;
+    }
+
+    if (pendingSaves.contains(id)) {
+      return;
+    }
+
+    pendingSaves.add(id);
+    lastSaveTime.put(id, now);
+
     String jsonData = gson.toJson(obj, typeToken);
-    // P3.5: Include human-readable columns (town_name, creator_uuid, creator_name)
     String upsertSQL;
     if (getDatabase().isMySQL()) {
       upsertSQL =
@@ -180,22 +207,24 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
               PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
 
             ps.setString(1, id);
-            ps.setString(2, obj.getName()); // Set town_name
-            ps.setString(3, obj.getLeaderID()); // Set creator_uuid (leader is creator)
+            ps.setString(2, obj.getName());
+            ps.setString(3, obj.getLeaderID());
             ITanPlayer leaderData = obj.getLeaderData();
             String leaderName = (leaderData != null) ? leaderData.getNameStored() : null;
-            ps.setString(4, leaderName); // Set creator_name (leader name)
+            ps.setString(4, leaderName);
             ps.setString(5, jsonData);
             ps.executeUpdate();
 
-            // Update cache
             if (cacheEnabled && cache != null) {
               synchronized (cache) {
                 cache.put(id, obj);
               }
             }
 
+            pendingSaves.remove(id);
+
           } catch (SQLException e) {
+            pendingSaves.remove(id);
             TownsAndNations.getPlugin()
                 .getLogger()
                 .severe(
@@ -228,6 +257,23 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
     TownData newTown = new TownData(townId, townName, tanPlayer);
 
     put(townId, newTown);
+
+    try {
+      org.leralix.tan.redis.RedisSyncManager syncManager =
+          TownsAndNations.getPlugin().getRedisSyncManager();
+      if (syncManager != null) {
+        com.google.gson.JsonObject payload = new com.google.gson.JsonObject();
+        payload.addProperty("territoryId", townId);
+        payload.addProperty("type", "town");
+        syncManager.publishTerritoryDataChange(
+            org.leralix.tan.redis.RedisSyncManager.SyncType.TERRITORY_CREATED, payload.toString());
+      }
+    } catch (Exception ex) {
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .warning("Failed to publish town creation event: " + ex.getMessage());
+    }
+
     return CompletableFuture.completedFuture(newTown);
   }
 
@@ -248,7 +294,37 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
   }
 
   public void deleteTown(TownData townData) {
-    delete(townData.getID());
+    deleteAsync(townData.getID());
+
+    try {
+      org.leralix.tan.redis.RedisSyncManager syncManager =
+          TownsAndNations.getPlugin().getRedisSyncManager();
+      if (syncManager != null) {
+        com.google.gson.JsonObject payload = new com.google.gson.JsonObject();
+        payload.addProperty("territoryId", townData.getID());
+        syncManager.publishTerritoryDataChange(
+            org.leralix.tan.redis.RedisSyncManager.SyncType.TERRITORY_DELETED, payload.toString());
+      }
+    } catch (Exception ex) {
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .warning("Failed to publish town deletion event: " + ex.getMessage());
+    }
+
+    try {
+      org.leralix.tan.redis.RedisSyncManager syncManager =
+          TownsAndNations.getPlugin().getRedisSyncManager();
+      if (syncManager != null) {
+        com.google.gson.JsonObject payload = new com.google.gson.JsonObject();
+        payload.addProperty("territoryId", townData.getID());
+        syncManager.publishTerritoryDataChange(
+            org.leralix.tan.redis.RedisSyncManager.SyncType.TERRITORY_DELETED, payload.toString());
+      }
+    } catch (Exception ex) {
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .warning("Failed to publish town deletion event: " + ex.getMessage());
+    }
   }
 
   public CompletableFuture<TownData> get(ITanPlayer tanPlayer) {
@@ -276,9 +352,7 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
       return false;
     }
 
-    // Optimized: scan JSON data for name instead of deserializing all objects
-    String selectSQL =
-        "SELECT 1 FROM " + TABLE_NAME + " WHERE json_extract(data, '$.name') = ? LIMIT 1";
+    String selectSQL = "SELECT 1 FROM " + TABLE_NAME + " WHERE town_name = ? LIMIT 1";
 
     try (Connection conn = getDatabase().getDataSource().getConnection();
         PreparedStatement ps = conn.prepareStatement(selectSQL)) {
@@ -289,12 +363,13 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
         return rs.next();
       }
     } catch (SQLException e) {
-      // Fallback to the old method if json_extract is not supported
       TownsAndNations.getPlugin()
           .getLogger()
-          .warning("json_extract not supported, falling back to full scan: " + e.getMessage());
+          .warning(
+              "SQL query failed for town name check, falling back to full scan: " + e.getMessage());
 
-      for (TownData town : getAll().values()) {
+      Map<String, TownData> allTowns = getAllSync();
+      for (TownData town : allTowns.values()) {
         if (townName.equals(town.getName())) return true;
       }
     }
@@ -302,15 +377,7 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
     return false;
   }
 
-  /**
-   * Synchronous get method for backward compatibility WARNING: This blocks the current thread. Use
-   * get() with thenAccept() for async operations.
-   *
-   * @param id The ID of the town
-   * @return The town data, or null if not found
-   */
   public TownData getSync(String id) {
-    // PERFORMANCE FIX: Use cache-only access to prevent server freezing
     if (cacheEnabled && cache != null) {
       TownData cached = cache.get(id);
       if (cached != null) {
@@ -318,7 +385,6 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
       }
     }
 
-    // Not in cache - trigger async load in background but return immediately
     get(id)
         .thenAccept(
             town -> {
@@ -335,7 +401,7 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
   }
 
   public TownData getSync(Player player) {
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player).join();
     return getSync(tanPlayer.getTownId());
   }
 }

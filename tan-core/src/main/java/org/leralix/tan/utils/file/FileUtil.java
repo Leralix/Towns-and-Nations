@@ -10,7 +10,6 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.lang.FilledLang;
 
-/** This static class manage the archive txt for admins. */
 public class FileUtil {
   private static final String ERROR_MESSAGE = "Could not create history file!";
 

@@ -67,8 +67,6 @@ public abstract class ClaimedChunk2 {
 
   public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
 
-    // If worldguard is enabled and a chunk type is ok, add a worldguard check to the default tan's
-    // check.
     var worldGuardManager = WorldGuardManager.getInstance();
     if (worldGuardManager.isEnabled()
         && Constants.isWorldGuardEnabledFor(getType())

@@ -28,7 +28,7 @@ public class OpenGuiCommand extends PlayerSubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tan gui";
+    return "/coconation gui";
   }
 
   @Override
@@ -43,7 +43,6 @@ public class OpenGuiCommand extends PlayerSubCommand {
       getOpeningGui(player);
     } else if (args.length > 1) {
       ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
-      // CRITICAL: Player interactions must run on main thread
       org.leralix.tan.utils.FoliaScheduler.runTask(
           org.leralix.tan.TownsAndNations.getPlugin(),
           () -> {

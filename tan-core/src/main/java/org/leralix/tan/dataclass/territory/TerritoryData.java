@@ -52,6 +52,7 @@ import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlannedAttackStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.upgrade.TerritoryStats;
 import org.leralix.tan.upgrade.Upgrade;
 import org.leralix.tan.upgrade.rewards.StatsType;
@@ -194,6 +195,15 @@ public abstract class TerritoryData {
 
   public void setDescription(String newDescription) {
     this.description = newDescription;
+
+    if (this instanceof TownData) {
+      var syncService = TownsAndNations.getPlugin().getTownSyncService();
+      if (syncService != null) {
+        syncService.publishSettingsUpdated(this.id);
+      }
+
+      TownDataStorage.getInstance().put(this.id, (TownData) this);
+    }
   }
 
   public ItemStack getIcon() {
@@ -225,9 +235,6 @@ public abstract class TerritoryData {
     return getPlayerIDList().contains(playerID);
   }
 
-  /**
-   * @deprecated Use getOrderedPlayerIDListSync() for synchronous operations
-   */
   @Deprecated
   public CompletableFuture<Collection<String>> getOrderedPlayerIDList() {
     return CompletableFuture.supplyAsync(() -> getOrderedPlayerIDListSync());
@@ -309,13 +316,6 @@ public abstract class TerritoryData {
     return getDiplomacyProposals().values();
   }
 
-  /**
-   * Get the worst relation a territory may have with a all the territory a player is part of (town,
-   * region...)
-   *
-   * @param player The player to check
-   * @return The worst relation
-   */
   public CompletableFuture<TownRelation> getWorstRelationWith(ITanPlayer player) {
     return player
         .getAllTerritoriesPlayerIsIn()
@@ -444,11 +444,41 @@ public abstract class TerritoryData {
   }
 
   public void addToBalance(double balance) {
+    addToBalance(balance, true);
+  }
+
+  public void addToBalance(double balance, boolean syncAndSave) {
     this.treasury += balance;
+
+    if (!syncAndSave) return;
+
+    if (this instanceof TownData) {
+      var syncService = TownsAndNations.getPlugin().getTownSyncService();
+      if (syncService != null) {
+        syncService.publishTreasuryDeposit(this.id, balance, "SYSTEM");
+      }
+
+      TownDataStorage.getInstance().put(this.id, (TownData) this);
+    }
   }
 
   public void removeFromBalance(double balance) {
+    removeFromBalance(balance, true);
+  }
+
+  public void removeFromBalance(double balance, boolean syncAndSave) {
     this.treasury -= balance;
+
+    if (!syncAndSave) return;
+
+    if (this instanceof TownData) {
+      var syncService = TownsAndNations.getPlugin().getTownSyncService();
+      if (syncService != null) {
+        syncService.publishTreasuryWithdraw(this.id, balance, "SYSTEM");
+      }
+
+      TownDataStorage.getInstance().put(this.id, (TownData) this);
+    }
   }
 
   public void setOverlord(TerritoryData overlord) {
@@ -472,9 +502,6 @@ public abstract class TerritoryData {
     return Optional.of(overlord);
   }
 
-  /**
-   * @return All potential overlords of this territory (Kingdom and region)
-   */
   protected abstract Collection<TerritoryData> getOverlords();
 
   public void removeOverlord() {
@@ -544,35 +571,14 @@ public abstract class TerritoryData {
       getAvailableEnemyClaims().remove(territoryID);
   }
 
-  /**
-   * Claim the chunk for the territory. The chunk used will be the one where the player stands
-   *
-   * @param player The player wishing to claim a chunk
-   * @return True if the chunk has been claimed successfully, false otherwise
-   */
   public boolean claimChunk(Player player) {
     return claimChunk(player, player.getLocation().getChunk());
   }
 
-  /**
-   * Claim the chunk for the territory. The chunk used will be the one where the player stands
-   *
-   * @param player The player wishing to claim a chunk
-   * @param chunk The chunk to claim
-   * @return True if the chunk has been claimed successfully, false otherwise
-   */
   public boolean claimChunk(Player player, Chunk chunk) {
     return claimChunk(player, chunk, Constants.allowNonAdjacentChunksFor(this));
   }
 
-  /**
-   * Claim the chunk for the territory
-   *
-   * @param player The player wishing to claim a chunk
-   * @param chunk The chunk to claim
-   * @param ignoreAdjacent Defines whether the chunk to claim should respect adjacent claiming
-   * @return True if the chunk has been claimed successfully, false otherwise
-   */
   public boolean claimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
     if (!canClaimChunkSync(player, chunk, ignoreAdjacent)) {
       return false;
@@ -598,13 +604,6 @@ public abstract class TerritoryData {
     return true;
   }
 
-  /**
-   * Claim the chunk for the territory
-   *
-   * @param player The player wishing to claim a chunk
-   * @param chunk The chunk to claim
-   * @param ignoreAdjacent Defines if the chunk to claim should respect adjacent claiming
-   */
   protected abstract void abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent);
 
   public boolean canClaimChunkSync(Player player, Chunk chunk, boolean ignoreAdjacent) {
@@ -651,7 +650,6 @@ public abstract class TerritoryData {
       return true;
     }
 
-    // If first claim of the territory and in a buffer zone of another territory, deny the claim
     if (getNumberOfClaimedChunk() == 0) {
 
       if (ChunkUtil.isInBufferZone(chunkData, this)) {
@@ -678,8 +676,7 @@ public abstract class TerritoryData {
   }
 
   public synchronized void delete() {
-    NewClaimedChunkStorage.getInstance()
-        .unclaimAllChunksFromTerritory(this); // Unclaim all chunk from town
+    NewClaimedChunkStorage.getInstance().unclaimAllChunksFromTerritory(this);
 
     applyToAllOnlinePlayer(Player::closeInventory);
 
@@ -695,8 +692,7 @@ public abstract class TerritoryData {
       FortStorage.getInstance().delete(ownedFort);
     }
 
-    getRelations()
-        .cleanAll(this); // Cancel all Relation between the deleted territory and other territories
+    getRelations().cleanAll(this);
     PlannedAttackStorage.getInstance().territoryDeleted(this);
   }
 
@@ -821,15 +817,9 @@ public abstract class TerritoryData {
                           Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(
                               this.getBaseColoredName(), proposalOverlord.getName()),
                           SoundEnum.GOOD);
-                      // TEMPORARY FIX: Disabled while legacy GUIs migrated
-                      // TODO: Re-enable after Sprint 2 GUI async migration
-                      // PlayerGUI.openHierarchyMenu(player, this);
                     }
                     if (event.isRightClick()) {
                       getOverlordsProposals().remove(proposalID);
-                      // TEMPORARY FIX: Disabled while legacy GUIs migrated
-                      // TODO: Re-enable after Sprint 2 GUI async migration
-                      // PlayerGUI.openChooseOverlordMenu(player, this, page);
                     }
                   });
       proposals.add(acceptInvitation);
@@ -894,11 +884,7 @@ public abstract class TerritoryData {
 
   public int getDefaultRankID() {
     if (defaultRankID == null) {
-      defaultRankID =
-          getAllRanks()
-              .iterator()
-              .next()
-              .getID(); // If no default rank is set, we take the first one
+      defaultRankID = getAllRanks().iterator().next().getID();
     }
     return defaultRankID;
   }
@@ -967,11 +953,37 @@ public abstract class TerritoryData {
   }
 
   public void setTax(double newTax) {
+    setTax(newTax, true);
+  }
+
+  public void setTax(double newTax, boolean syncAndSave) {
     baseTax = newTax;
+
+    if (!syncAndSave) return;
+
+    if (this instanceof TownData) {
+      var syncService = TownsAndNations.getPlugin().getTownSyncService();
+      if (syncService != null) {
+        syncService.publishTaxChanged(this.id, newTax);
+      }
+
+      TownDataStorage.getInstance().put(this.id, (TownData) this);
+    }
   }
 
   public void addToTax(double i) {
     setTax(getTax() + i);
+  }
+
+  public void forceSyncAndSave() {
+    if (this instanceof TownData) {
+      var syncService = TownsAndNations.getPlugin().getTownSyncService();
+      if (syncService != null) {
+        syncService.publishSettingsUpdated(this.id);
+      }
+
+      TownDataStorage.getInstance().put(this.id, (TownData) this);
+    }
   }
 
   public void executeTasks() {
@@ -1044,7 +1056,7 @@ public abstract class TerritoryData {
   protected abstract void collectTaxes();
 
   public double getTaxOnRentingProperty() {
-    if (propertyRentTax > 1) propertyRentTax = 1; // Convert to percentage
+    if (propertyRentTax > 1) propertyRentTax = 1;
     return propertyRentTax;
   }
 
@@ -1053,7 +1065,7 @@ public abstract class TerritoryData {
   }
 
   public double getTaxOnBuyingProperty() {
-    if (propertyBuyTax > 1) propertyBuyTax = 1; // Convert to percentage
+    if (propertyBuyTax > 1) propertyBuyTax = 1;
     return propertyBuyTax;
   }
 
@@ -1148,25 +1160,14 @@ public abstract class TerritoryData {
     getOccupiedFortIds().add(fortID);
   }
 
-  /**
-   * @return All forts owned by this territory, should they be occupied or not.
-   */
   public List<Fort> getOwnedForts() {
     return FortStorage.getInstance().getOwnedFort(this);
   }
 
-  /**
-   * @return All foreign forts occupied by this territory. Not including forts owned by the
-   *     territory
-   */
   public List<Fort> getOccupiedForts() {
     return FortStorage.getInstance().getOccupiedFort(this);
   }
 
-  /**
-   * @return All forts occupied by this territory, including forts owned by this territory and
-   *     excluding owned forts occupied by other territories
-   */
   public List<Fort> getAllControlledFort() {
     return FortStorage.getInstance().getAllControlledFort(this);
   }
@@ -1216,13 +1217,6 @@ public abstract class TerritoryData {
     return playerList;
   }
 
-  /**
-   * Defines if a territory can claim next to an already claimed chunk. If the chunk is owned by the
-   * territory itself or by its overlord, it can claim
-   *
-   * @param territoryChunk The chunk to check
-   * @return True if the territory can claim next to the chunk, false otherwise
-   */
   public boolean canAccessBufferZone(TerritoryChunk territoryChunk) {
     String ownerID = territoryChunk.getOwnerID();
     if (ownerID.equals(id)) {
@@ -1239,7 +1233,6 @@ public abstract class TerritoryData {
 
   public TerritoryStats getNewLevel() {
     if (this.upgradesStatus == null) {
-      // Migrate old data if exists
       if (this instanceof TownData) {
         this.upgradesStatus = new TerritoryStats(StatsType.TOWN);
       } else {
@@ -1251,5 +1244,43 @@ public abstract class TerritoryData {
 
   public void upgradeTown(Upgrade upgrade) {
     getNewLevel().levelUp(upgrade);
+
+    if (this instanceof TownData) {
+      var syncService = TownsAndNations.getPlugin().getTownSyncService();
+      if (syncService != null) {
+        syncService.publishUpgradePurchased(this.id, upgrade.getID());
+      }
+
+      TownDataStorage.getInstance().put(this.id, (TownData) this);
+    }
+  }
+
+  public void upgradeTownLevel() {
+    int oldLevel = getNewLevel().getMainLevel();
+    getNewLevel().levelUpMain();
+    int newLevel = getNewLevel().getMainLevel();
+
+    if (this instanceof TownData) {
+      TownData townData = (TownData) this;
+      
+      // Sauvegarde locale
+      TownDataStorage.getInstance().put(this.id, townData);
+      
+      // Synchronisation Redis
+      var syncService = TownsAndNations.getPlugin().getTownSyncService();
+      if (syncService != null) {
+        // 1. Publier l'événement de level up
+        syncService.publishTownLevelUp(this.id, oldLevel, newLevel);
+        
+        // 2. Forcer la synchronisation des données complètes du town
+        syncService.publishFullTownDataSync(townData);
+      }
+      
+      // Invalider le cache pour forcer les autres serveurs à recharger
+      var syncManager = TownsAndNations.getPlugin().getRedisSyncManager();
+      if (syncManager != null) {
+        syncManager.publishCacheInvalidation("tan:town:" + this.id);
+      }
+    }
   }
 }

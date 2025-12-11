@@ -52,7 +52,6 @@ public class TownClaimedChunk extends TerritoryChunk {
       Player player, ChunkPermissionType permissionType, Location location) {
     ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
 
-    // Location is in a property and players owns or rent it
     TownData ownerTown = getTown();
     PropertyData property = ownerTown.getProperty(location);
     if (property != null) {
@@ -64,7 +63,6 @@ public class TownClaimedChunk extends TerritoryChunk {
       }
     }
 
-    // Player is at war with the town
     for (CurrentAttack currentAttacks : ownerTown.getCurrentAttacks()) {
       if (currentAttacks.containsPlayer(tanPlayer)) return true;
     }
@@ -127,7 +125,6 @@ public class TownClaimedChunk extends TerritoryChunk {
 
     ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
 
-    // BUGFIX: Convert Adventure Component to legacy text properly
     String coloredName =
         displayTerritoryColor
             ? LegacyComponentSerializer.legacySection().serialize(townTo.getCustomColoredName())
@@ -135,7 +132,6 @@ public class TownClaimedChunk extends TerritoryChunk {
 
     String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(tanPlayer.getPlayer(), coloredName);
 
-    // Use Adventure API for title
     player.showTitle(
         Title.title(
             Component.empty(),

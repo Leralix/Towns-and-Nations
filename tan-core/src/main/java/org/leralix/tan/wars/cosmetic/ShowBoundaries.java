@@ -96,7 +96,6 @@ public class ShowBoundaries {
       if (centerChunk instanceof TerritoryChunk territoryChunk) {
         Vector2D centerChunkPosition = centerChunk.getVector2D();
 
-        // NORTH
         ClaimedChunk2 northChunk =
             NewClaimedChunkStorage.getInstance()
                 .get(
@@ -107,7 +106,6 @@ public class ShowBoundaries {
           res.add(getChunkLine(centerChunkPosition, CardinalPoint.NORTH));
         }
 
-        // SOUTH
         ClaimedChunk2 southChunk =
             NewClaimedChunkStorage.getInstance()
                 .get(
@@ -118,7 +116,6 @@ public class ShowBoundaries {
           res.add(getChunkLine(centerChunkPosition, CardinalPoint.SOUTH));
         }
 
-        // EAST
         ClaimedChunk2 eastChunk =
             NewClaimedChunkStorage.getInstance()
                 .get(
@@ -129,7 +126,6 @@ public class ShowBoundaries {
           res.add(getChunkLine(centerChunkPosition, CardinalPoint.EAST));
         }
 
-        // WEST
         ClaimedChunk2 westChunk =
             NewClaimedChunkStorage.getInstance()
                 .get(
@@ -185,8 +181,6 @@ public class ShowBoundaries {
     TerritoryData occupier = centerChunk.getOccupier();
 
     for (CurrentAttack attackData : attacks) {
-      // If chunk is at war, a frontline apprears if the other chunk is not occupied by the same
-      // town
       if (attackData.getAttackData().getWar().isMainDefender(occupier)) {
         if (chunkToCompare instanceof TerritoryChunk territoryChunk
             && territoryChunk.getOccupierID().equals(occupier.getID())) {

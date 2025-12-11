@@ -16,11 +16,9 @@ public class RegionMenu extends TerritoryMenu {
 
   private final RegionData regionData;
 
-  public RegionMenu(Player player, ITanPlayer tanPlayer, RegionData regionData) {
+  private RegionMenu(Player player, ITanPlayer tanPlayer, RegionData regionData) {
     super(player, tanPlayer, Lang.HEADER_REGION_MENU.get(player, regionData.getName()), regionData);
     this.regionData = regionData;
-    // open() doit être appelé explicitement après la construction pour respecter le modèle
-    // asynchrone
   }
 
   public static void open(Player player, RegionData regionData) {

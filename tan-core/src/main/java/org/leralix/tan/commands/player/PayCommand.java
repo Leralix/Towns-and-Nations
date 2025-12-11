@@ -35,7 +35,7 @@ public class PayCommand extends PlayerSubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tan pay <player> <amount>";
+    return "/coconation pay <player> <amount>";
   }
 
   public int getArguments() {
@@ -52,12 +52,10 @@ public class PayCommand extends PlayerSubCommand {
     ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
     LangType langType = tanPlayer.getLang();
 
-    // Validate argument count
     if (!CommandExceptionHandler.validateArgCount(player, args, 3, getSyntax())) {
       return;
     }
 
-    // Find receiver
     Player receiver = Bukkit.getServer().getPlayer(args[1]);
     if (receiver == null) {
       TanChatUtils.message(player, Lang.PLAYER_NOT_FOUND.get(langType));
@@ -68,7 +66,6 @@ public class PayCommand extends PlayerSubCommand {
       return;
     }
 
-    // Validate distance
     try {
       Location senderLocation = player.getLocation();
       Location receiverLocation = receiver.getLocation();
@@ -86,7 +83,6 @@ public class PayCommand extends PlayerSubCommand {
       return;
     }
 
-    // Parse amount with error handling
     Optional<Integer> amountOpt = CommandExceptionHandler.parseInt(player, args[2], "amount");
     if (amountOpt.isEmpty()) {
       return;
@@ -98,7 +94,6 @@ public class PayCommand extends PlayerSubCommand {
       return;
     }
 
-    // Validate balance
     if (EconomyUtil.getBalance(player) < amount) {
       TanChatUtils.message(
           player,
@@ -107,25 +102,14 @@ public class PayCommand extends PlayerSubCommand {
       return;
     }
 
-    // Execute transaction with typed exception handling
     try {
       executePayment(player, receiver, amount, langType);
     } catch (EconomyException e) {
-      // Economy-specific error (transaction failed, etc.)
       TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY.get(langType));
       CommandExceptionHandler.logCommandExecution(player, "pay", args);
     }
   }
 
-  /**
-   * Executes the payment transaction between two players.
-   *
-   * @param sender The player sending money
-   * @param receiver The player receiving money
-   * @param amount The amount to transfer
-   * @param langType The language type for messages
-   * @throws EconomyException If the transaction fails (insufficient funds, etc.)
-   */
   private void executePayment(Player sender, Player receiver, int amount, LangType langType)
       throws EconomyException {
     try {
@@ -139,7 +123,6 @@ public class PayCommand extends PlayerSubCommand {
           receiver,
           Lang.PAY_CONFIRMED_RECEIVER.get(receiver, Integer.toString(amount), sender.getName()));
     } catch (Exception e) {
-      // Wrap generic exceptions into typed EconomyException
       throw new EconomyException("Payment transaction failed: " + e.getMessage(), e);
     }
   }

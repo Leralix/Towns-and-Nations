@@ -99,7 +99,7 @@ public class TerritoryDataWrapper implements TanTerritory {
 
     Player player = Bukkit.getPlayer(tanPlayer.getUUID());
     if (player == null) {
-      return false; // Player is not online
+      return false;
     }
     RolePermission playerPermission = RolePermission.valueOf(permission.name());
 

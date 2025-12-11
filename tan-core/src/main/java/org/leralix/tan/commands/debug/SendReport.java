@@ -27,7 +27,7 @@ public class SendReport extends SubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tandebug report";
+    return "/coconationdebug report";
   }
 
   public List<String> getTabCompleteSuggestions(

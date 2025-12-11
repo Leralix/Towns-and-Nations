@@ -30,7 +30,7 @@ public class CreateFortEvent extends RightClickListenerEvent {
   public ListenerState execute(PlayerInteractEvent event) {
 
     Player player = event.getPlayer();
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player).join();
 
     Block block = event.getClickedBlock();
     if (block == null) {
@@ -57,16 +57,13 @@ public class CreateFortEvent extends RightClickListenerEvent {
 
     ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(upBlock.getChunk());
 
-    // If outposts are enabled and chunk is not claimed
     if (Constants.enableFortOutpost() && claimedChunk instanceof WildernessChunk) {
       boolean wasAbleToClaim = tanTerritory.claimChunk(player, upBlock.getChunk(), true);
 
       if (!wasAbleToClaim) {
         return ListenerState.FAILURE;
       }
-    }
-    // Else, only create a fort if created inside a claimed chunk
-    else {
+    } else {
       if (!tanTerritory.getID().equals(claimedChunk.getOwnerID())) {
         TanChatUtils.message(player, Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(tanPlayer));
         return ListenerState.FAILURE;

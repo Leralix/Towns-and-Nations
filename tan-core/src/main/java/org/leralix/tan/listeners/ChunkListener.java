@@ -37,20 +37,16 @@ public class ChunkListener implements Listener {
     Block breakedBlock = event.getBlock();
     Location loc = breakedBlock.getLocation();
 
-    // Check if the block is a property sign
     if (breakedBlock.hasMetadata("propertySign")) {
       event.setCancelled(true);
       return;
     }
 
-    // Check if the block is a property sign
     if (breakedBlock.hasMetadata("fortFlag")) {
       event.setCancelled(true);
       return;
     }
 
-    // CRITICAL: Event cancellation must happen synchronously before handler returns
-    // We must block here because event handling cannot be async
     try {
       boolean canDo =
           permissionService.canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK).join();
@@ -58,7 +54,6 @@ public class ChunkListener implements Listener {
         event.setCancelled(true);
       }
     } catch (Exception e) {
-      // If error occurs, deny action for safety
       event.setCancelled(true);
       org.leralix.tan.TownsAndNations.getPlugin()
           .getLogger()
@@ -117,7 +112,6 @@ public class ChunkListener implements Listener {
 
     Location loc = block.getLocation();
 
-    // Check if the block is a property sign
     if (block.getType() == Material.OAK_SIGN) {
       Sign sign = (Sign) block.getState();
       if (sign.hasMetadata("propertySign")) {

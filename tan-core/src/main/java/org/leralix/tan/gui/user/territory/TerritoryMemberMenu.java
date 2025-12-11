@@ -20,7 +20,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
 
   private final TerritoryData territoryData;
 
-  public TerritoryMemberMenu(Player player, ITanPlayer tanPlayer, TerritoryData territoryData) {
+  private TerritoryMemberMenu(Player player, ITanPlayer tanPlayer, TerritoryData territoryData) {
     super(player, tanPlayer, Lang.HEADER_TOWN_MEMBERS.get(player), 6);
     this.territoryData = territoryData;
   }

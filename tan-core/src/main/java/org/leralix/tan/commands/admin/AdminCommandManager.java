@@ -19,6 +19,6 @@ public class AdminCommandManager extends CommandManager {
 
   @Override
   public String getName() {
-    return "tanadmin";
+    return "coconationadmin";
   }
 }

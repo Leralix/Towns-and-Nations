@@ -3,6 +3,7 @@ package org.leralix.tan.lang;
 import java.io.File;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -10,8 +11,8 @@ import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
+import org.tan_java.performance.PlayerLangCache;
 
 public enum Lang {
   WELCOME,
@@ -1184,11 +1185,19 @@ public enum Lang {
     return new FilledLang(this);
   }
 
+  @Deprecated
   public String get(Player player) {
     if (player == null) {
       return get(serverLang);
     }
-    return get(PlayerDataStorage.getInstance().getSync(player));
+    return get(org.tan_java.performance.PlayerLangCache.getInstance().getLang(player).join());
+  }
+
+  public CompletableFuture<String> getAsync(Player player) {
+    if (player == null) {
+      return CompletableFuture.completedFuture(get(serverLang));
+    }
+    return PlayerLangCache.getInstance().getLang(player).thenApply(this::get);
   }
 
   public String get(ITanPlayer tanPlayer) {
@@ -1215,8 +1224,18 @@ public enum Lang {
     return new FilledLang(this, placeholders);
   }
 
+  @Deprecated
   public String get(Player player, String... placeholders) {
-    return get(PlayerDataStorage.getInstance().getSync(player), placeholders);
+    return get(
+        org.tan_java.performance.PlayerLangCache.getInstance().getLang(player).join(),
+        placeholders);
+  }
+
+  public CompletableFuture<String> getAsync(Player player, String... placeholders) {
+    if (player == null) {
+      return CompletableFuture.completedFuture(get(serverLang, placeholders));
+    }
+    return PlayerLangCache.getInstance().getLang(player).thenApply(lang -> get(lang, placeholders));
   }
 
   public String get(ITanPlayer tanPlayer, String... placeholders) {

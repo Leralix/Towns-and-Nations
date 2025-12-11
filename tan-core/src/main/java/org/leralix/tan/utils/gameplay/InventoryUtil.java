@@ -7,9 +7,7 @@ import org.leralix.tan.gui.service.requirements.model.ItemScope;
 
 public class InventoryUtil {
 
-  private InventoryUtil() {
-    // Utility class
-  }
+  private InventoryUtil() {}
 
   public static boolean playerEnoughItem(Player player, ItemScope itemScope, int amount) {
     return getItemsNumberInInventory(player, itemScope) >= amount;

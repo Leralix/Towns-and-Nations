@@ -32,10 +32,8 @@ public class PlayerEnterChunkListener implements Listener {
   private final NewClaimedChunkStorage newClaimedChunkStorage;
   private final PlayerDataStorage playerDataStorage;
 
-  // OPTIMIZATION #1: Cache player's last chunk to detect chunk changes
   private final Map<UUID, Chunk> playerLastChunk = new ConcurrentHashMap<>();
 
-  // OPTIMIZATION #2: Cache player's last territory to detect territory changes
   private final Map<UUID, String> playerLastTerritory = new ConcurrentHashMap<>();
 
   public PlayerEnterChunkListener() {
@@ -52,33 +50,27 @@ public class PlayerEnterChunkListener implements Listener {
     Player player = event.getPlayer();
     UUID playerUuid = player.getUniqueId();
 
-    // OPTIMIZATION #1: Early exit if player is in same chunk
-    // This covers ~80% of move events and avoids all expensive checks
     Chunk lastChunk = playerLastChunk.get(playerUuid);
     if (nextChunk.equals(lastChunk)) {
       return;
     }
     playerLastChunk.put(playerUuid, nextChunk);
 
-    // Single lookup instead of checking from chunk
     ClaimedChunk2 nextClaimedChunk = newClaimedChunkStorage.get(nextChunk);
 
-    // Handle wilderness
     if (nextClaimedChunk == null) {
       handleWilderness(event, nextChunk, player, playerUuid);
       return;
     }
 
-    // OPTIMIZATION #2: Cache territory info to avoid redundant checks
     String nextTerritory = nextClaimedChunk.getOwnerID();
     String lastTerritory = playerLastTerritory.get(playerUuid);
 
     if (nextTerritory.equals(lastTerritory)) {
-      return; // Same owner, skip expensive relation checks
+      return;
     }
     playerLastTerritory.put(playerUuid, nextTerritory);
 
-    // Handle territory chunk with relation checks
     if (nextClaimedChunk instanceof TerritoryChunk territoryChunk) {
       handleTerritoryChunk(event, territoryChunk, player, playerUuid);
     } else {
@@ -91,29 +83,20 @@ public class PlayerEnterChunkListener implements Listener {
     }
   }
 
-  /**
-   * Handle territory chunk access with relation checks. OPTIMIZATION #3: Use sync check first,
-   * async fallback for better performance
-   */
   private void handleTerritoryChunk(
       final @NotNull PlayerMoveEvent event,
       final @NotNull TerritoryChunk territoryChunk,
       final @NotNull Player player,
       final @NotNull UUID playerUuid) {
 
-    // Try sync check first for connected players
-    ITanPlayer cachedPlayer = playerDataStorage.getSync(playerUuid.toString());
-    if (cachedPlayer != null) {
-      checkRelationAndExecute(event, territoryChunk, cachedPlayer, player);
-    } else {
-      // Fallback to async for uncached players
-      playerDataStorage
-          .get(player)
-          .thenAccept(
-              tanPlayer -> {
+    playerDataStorage
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              if (tanPlayer != null) {
                 checkRelationAndExecute(event, territoryChunk, tanPlayer, player);
-              });
-    }
+              }
+            });
   }
 
   private void checkRelationAndExecute(
@@ -161,7 +144,6 @@ public class PlayerEnterChunkListener implements Listener {
     }
   }
 
-  /** Clean up player cache on quit to prevent memory leaks */
   @EventHandler
   public void onPlayerQuit(final @NotNull PlayerQuitEvent event) {
     UUID uuid = event.getPlayer().getUniqueId();
@@ -174,23 +156,32 @@ public class PlayerEnterChunkListener implements Listener {
       final @NotNull Chunk nextChunk,
       final @NotNull Player player) {
     ChunkType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
-    ITanPlayer playerStat =
-        PlayerDataStorage.getInstance().getSync(player.getUniqueId().toString());
 
-    if (chunkType == ChunkType.TOWN) {
-      if (!playerStat.hasTown()) {
-        TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(player));
-        return;
-      }
-      playerStat
-          .getTown()
-          .thenAccept(
-              townData -> {
-                if (townData != null) {
-                  townData.claimChunk(player, nextChunk);
+    playerDataStorage
+        .get(player.getUniqueId().toString())
+        .thenAccept(
+            playerStat -> {
+              if (playerStat == null) {
+                return;
+              }
+
+              if (chunkType == ChunkType.TOWN) {
+                if (!playerStat.hasTown()) {
+                  org.leralix.tan.utils.FoliaScheduler.runTask(
+                      org.leralix.tan.TownsAndNations.getPlugin(),
+                      () -> TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(player)));
+                  return;
                 }
-              });
-    }
+                playerStat
+                    .getTown()
+                    .thenAccept(
+                        townData -> {
+                          if (townData != null) {
+                            townData.claimChunk(player, nextChunk);
+                          }
+                        });
+              }
+            });
   }
 
   public static boolean sameOwner(final ClaimedChunk2 a, final ClaimedChunk2 b) {

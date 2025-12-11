@@ -17,6 +17,6 @@ public class ServerCommandManager extends CommandManager {
 
   @Override
   public String getName() {
-    return "tanserver";
+    return "coconationserver";
   }
 }

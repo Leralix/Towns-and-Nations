@@ -35,7 +35,7 @@ public class ReloadCommand extends SubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tanadmin reload";
+    return "/coconationadmin reload";
   }
 
   @Override

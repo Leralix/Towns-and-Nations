@@ -28,7 +28,6 @@ public class EnableTownSpawn extends BooleanStat implements AggregatableStat<Ena
 
   @Override
   public EnableTownSpawn scale(int factor) {
-    // Upgrade is not bought
     if (factor == 0) {
       return new EnableTownSpawn(false);
     }

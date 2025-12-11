@@ -114,9 +114,6 @@ public interface ITanPlayer {
 
   RankData getRank(TerritoryData territoryData);
 
-  /**
-   * @return A list of all territory a player is in, starting from the lowest level.
-   */
   CompletableFuture<List<TerritoryData>> getAllTerritoriesPlayerIsIn();
 
   default List<TerritoryData> getAllTerritoriesPlayerIsInSync() {

@@ -18,16 +18,12 @@ public class PermissionService {
   public CompletableFuture<Boolean> canPlayerDoAction(
       Location location, Player player, ChunkPermissionType permissionType) {
 
-    // Admins disabled the specific permission
     if (EnabledPermissions.getInstance().isPermissionDisabled(permissionType)) {
       return CompletableFuture.completedFuture(true);
     }
 
-    // Player in admin mode
     if (SudoPlayerStorage.isSudoPlayer(player)) return CompletableFuture.completedFuture(true);
 
-    // PERFORMANCE FIX: Use cache-only lookup to avoid blocking DB calls
-    // Chunks should be preloaded in cache, so this is almost always instant
     ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
 
     return PlayerDataStorage.getInstance()
@@ -41,6 +37,27 @@ public class PermissionService {
             });
   }
 
+  public CompletableFuture<Boolean> canPvpHappenAsync(Player player1, Player player2) {
+    if (!NewClaimedChunkStorage.getInstance()
+        .get(player2.getLocation().getChunk())
+        .canPVPHappen()) {
+      return CompletableFuture.completedFuture(false);
+    }
+
+    CompletableFuture<ITanPlayer> tanPlayer1Future = PlayerDataStorage.getInstance().get(player1);
+    CompletableFuture<ITanPlayer> tanPlayer2Future = PlayerDataStorage.getInstance().get(player2);
+
+    return CompletableFuture.allOf(tanPlayer1Future, tanPlayer2Future)
+        .thenApply(
+            v -> {
+              ITanPlayer tanPlayer = tanPlayer1Future.join();
+              ITanPlayer tanPlayer2 = tanPlayer2Future.join();
+              TownRelation relation = tanPlayer.getRelationWithPlayerSync(tanPlayer2);
+              return Constants.getRelationConstants(relation).canPvP();
+            });
+  }
+
+  @Deprecated
   public boolean canPvpHappen(Player player1, Player player2) {
     if (!NewClaimedChunkStorage.getInstance()
         .get(player2.getLocation().getChunk())
@@ -48,8 +65,8 @@ public class PermissionService {
       return false;
     }
 
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player1);
-    ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().getSync(player2);
+    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player1).join();
+    ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(player2).join();
     TownRelation relation = tanPlayer.getRelationWithPlayerSync(tanPlayer2);
 
     return Constants.getRelationConstants(relation).canPvP();

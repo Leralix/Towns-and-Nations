@@ -13,8 +13,6 @@ public class TeleportationPosition {
   }
 
   public void teleport(Player player) {
-    // Use async teleport for Folia/Paper compatibility
-    // This method is thread-safe and works across regions
     player.teleportAsync(position.getLocation());
   }
 }

@@ -7,94 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-/**
- * AMÉLIORATION #5: Event Sourcing Manager
- *
- * <p>Implements event sourcing pattern for audit trail and 10x faster write operations.
- *
- * <p><b>Event Sourcing Concept:</b>
- *
- * <ul>
- *   <li>Store all changes as immutable events (append-only)
- *   <li>Current state is derived from event history
- *   <li>Complete audit trail of all changes
- *   <li>Ability to replay events and reconstruct state
- * </ul>
- *
- * <p><b>Performance Benefits:</b>
- *
- * <ul>
- *   <li>INSERT is 10x faster than UPDATE (no row locking)
- *   <li>No transaction conflicts on high write volume
- *   <li>Parallel writes possible
- *   <li>Historical data always preserved
- * </ul>
- *
- * <p><b>Event Types Tracked:</b>
- *
- * <ul>
- *   <li>BALANCE_UPDATED: Territory balance changes
- *   <li>TERRITORY_CLAIMED: New territory claimed
- *   <li>TERRITORY_UNCLAIMED: Territory released
- *   <li>TRANSACTION_CREATED: New transaction
- *   <li>PLAYER_JOINED: Player joined town
- *   <li>PLAYER_LEFT: Player left town
- * </ul>
- *
- * <p><b>Database Schema:</b>
- *
- * <pre>
- * CREATE TABLE transaction_events (
- *     event_id BIGINT AUTO_INCREMENT PRIMARY KEY,
- *     aggregate_id VARCHAR(36) NOT NULL,        -- Territory/Town/Player ID
- *     event_type VARCHAR(50) NOT NULL,
- *     event_data JSON NOT NULL,
- *     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
- *     INDEX idx_aggregate (aggregate_id),
- *     INDEX idx_type (event_type),
- *     INDEX idx_created (created_at)
- * );
- * </pre>
- *
- * <p><b>Configuration (config.yml):</b>
- *
- * <pre>
- * event-sourcing:
- *   enabled: true
- *   retention-days: 90        # Keep events for 90 days
- *   purge-schedule: "0 0 * * 0"  # Weekly cleanup
- * </pre>
- *
- * <p><b>Usage Examples:</b>
- *
- * <pre>
- * // Record balance update event
- * EventSourcingManager.createEvent(
- *     territoryId,
- *     "BALANCE_UPDATED",
- *     "{\"amount\": 1000, \"reason\": \"tax_collection\"}"
- * );
- *
- * // Get event history for audit
- * List&lt;Event&gt; events = EventSourcingManager.getEvents(territoryId);
- *
- * // Replay events to reconstruct state
- * EventSourcingManager.replayEvents(territoryId, (event) -> {
- *     // Apply event to rebuild state
- * });
- * </pre>
- *
- * @author Leralix (with AI assistance)
- * @version 0.16.0
- * @since 2025-11-12
- */
 public class EventSourcingManager {
 
   private static final Logger logger = Logger.getLogger(EventSourcingManager.class.getName());
 
   private final HikariDataSource dataSource;
 
-  /** Represents an immutable event in the event store. */
   public static class Event {
     private final long eventId;
     private final String aggregateId;
@@ -132,31 +50,40 @@ public class EventSourcingManager {
     }
   }
 
-  /**
-   * Creates a new EventSourcingManager.
-   *
-   * @param dataSource The database connection pool
-   */
   public EventSourcingManager(HikariDataSource dataSource) {
     this.dataSource = dataSource;
     initializeSchema();
   }
 
-  /** Initializes the event sourcing schema if it doesn't exist. */
   private void initializeSchema() {
-    String createTableSql =
-        """
+    String createTableSql;
+
+    if (isDatabaseMySQL()) {
+      createTableSql =
+          """
             CREATE TABLE IF NOT EXISTS transaction_events (
                 event_id BIGINT AUTO_INCREMENT PRIMARY KEY,
                 aggregate_id VARCHAR(36) NOT NULL,
                 event_type VARCHAR(50) NOT NULL,
-                event_data JSON NOT NULL,
+                event_data TEXT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 INDEX idx_aggregate (aggregate_id),
                 INDEX idx_type (event_type),
                 INDEX idx_created (created_at)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             """;
+    } else {
+      createTableSql =
+          """
+            CREATE TABLE IF NOT EXISTS transaction_events (
+                event_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                aggregate_id VARCHAR(36) NOT NULL,
+                event_type VARCHAR(50) NOT NULL,
+                event_data TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            """;
+    }
 
     try (Connection conn = dataSource.getConnection();
         Statement stmt = conn.createStatement()) {
@@ -169,23 +96,15 @@ public class EventSourcingManager {
     }
   }
 
-  /**
-   * Creates a new event (append-only).
-   *
-   * <p><b>Performance:</b> ~10x faster than UPDATE because:
-   *
-   * <ul>
-   *   <li>No row locking
-   *   <li>No WHERE clause lookup
-   *   <li>Pure append operation
-   * </ul>
-   *
-   * @param aggregateId The entity ID (territory, town, player)
-   * @param eventType The type of event (e.g., "BALANCE_UPDATED")
-   * @param eventData JSON data describing the event
-   * @return The generated event ID
-   * @throws SQLException if the insert fails
-   */
+  private boolean isDatabaseMySQL() {
+    try (Connection conn = dataSource.getConnection()) {
+      String dbProductName = conn.getMetaData().getDatabaseProductName().toLowerCase();
+      return dbProductName.contains("mysql") || dbProductName.contains("mariadb");
+    } catch (SQLException e) {
+      return false;
+    }
+  }
+
   public long createEvent(String aggregateId, String eventType, String eventData)
       throws SQLException {
 
@@ -219,21 +138,6 @@ public class EventSourcingManager {
     throw new SQLException("Failed to create event - no ID generated");
   }
 
-  /**
-   * Gets all events for an aggregate (entity).
-   *
-   * <p>Useful for:
-   *
-   * <ul>
-   *   <li>Audit trails
-   *   <li>Transaction history
-   *   <li>Debugging state issues
-   * </ul>
-   *
-   * @param aggregateId The entity ID
-   * @return List of events in chronological order
-   * @throws SQLException if the query fails
-   */
   public List<Event> getEvents(String aggregateId) throws SQLException {
     String sql =
         "SELECT event_id, aggregate_id, event_type, event_data, created_at "
@@ -264,16 +168,6 @@ public class EventSourcingManager {
     return events;
   }
 
-  /**
-   * Gets events by type.
-   *
-   * <p>Useful for analyzing specific types of changes across all entities.
-   *
-   * @param eventType The type of event (e.g., "BALANCE_UPDATED")
-   * @param limit Maximum number of events to return
-   * @return List of events
-   * @throws SQLException if the query fails
-   */
   public List<Event> getEventsByType(String eventType, int limit) throws SQLException {
     String sql =
         "SELECT event_id, aggregate_id, event_type, event_data, created_at "
@@ -304,15 +198,6 @@ public class EventSourcingManager {
     return events;
   }
 
-  /**
-   * Gets events within a time range.
-   *
-   * @param aggregateId The entity ID
-   * @param startTime Start timestamp
-   * @param endTime End timestamp
-   * @return List of events in the time range
-   * @throws SQLException if the query fails
-   */
   public List<Event> getEventsInTimeRange(String aggregateId, Instant startTime, Instant endTime)
       throws SQLException {
 
@@ -347,15 +232,6 @@ public class EventSourcingManager {
     return events;
   }
 
-  /**
-   * Purges old events based on retention policy.
-   *
-   * <p>Should be run periodically (e.g., weekly) to prevent unbounded growth.
-   *
-   * @param retentionDays Number of days to keep events
-   * @return Number of events deleted
-   * @throws SQLException if the delete fails
-   */
   public int purgeOldEvents(int retentionDays) throws SQLException {
     String sql =
         "DELETE FROM transaction_events WHERE created_at < DATE_SUB(NOW(), INTERVAL ? DAY)";
@@ -377,11 +253,6 @@ public class EventSourcingManager {
     }
   }
 
-  /**
-   * Gets statistics about the event store.
-   *
-   * @return A formatted string with statistics
-   */
   public String getStats() throws SQLException {
     String sql =
         """

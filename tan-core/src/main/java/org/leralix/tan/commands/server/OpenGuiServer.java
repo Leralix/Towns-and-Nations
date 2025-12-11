@@ -29,7 +29,7 @@ class OpenGuiServer extends SubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tanserver gui <player_username>";
+    return "/coconationserver gui <player_username>";
   }
 
   @Override

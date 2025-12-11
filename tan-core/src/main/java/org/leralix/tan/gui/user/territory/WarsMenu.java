@@ -39,17 +39,15 @@ public class WarsMenu extends IteratorGUI {
 
   @Override
   public void open() {
-    // Show immediate loading screen with cached data
     iterator(cachedWars, p -> territoryData.openMainMenu(player));
     gui.setItem(4, 4, getAttackButton(territoryData));
     gui.open(player);
 
-    // Load data asynchronously if not already loaded
     if (!isLoaded) {
       AsyncGuiHelper.loadAsync(
           player,
-          () -> getWars(territoryData), // Async supplier - loads war data
-          items -> { // Main thread consumer - updates GUI
+          () -> getWars(territoryData),
+          items -> {
             cachedWars = items;
             isLoaded = true;
             iterator(items, p -> territoryData.openMainMenu(player));

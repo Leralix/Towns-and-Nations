@@ -11,7 +11,6 @@ public class MobChunkSpawnStorage {
   private static final Map<String, MobChunkSpawnEnum> mobSpawnStorage = new HashMap<>();
 
   public static void init() {
-    // Only load the enum values if they have been written in the config file
     for (MobChunkSpawnEnum mob : MobChunkSpawnEnum.values()) {
 
       if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).get("CancelMobSpawnInTown." + mob.name())

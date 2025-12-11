@@ -22,9 +22,7 @@ public class NoPlayerData implements ITanPlayer {
   }
 
   @Override
-  public void setUuid(String uuid) {
-    // singleton class, no need to set uuid
-  }
+  public void setUuid(String uuid) {}
 
   @Override
   public String getNameStored() {
@@ -32,14 +30,10 @@ public class NoPlayerData implements ITanPlayer {
   }
 
   @Override
-  public void setNameStored(String name) {
-    // singleton class, no need to set name
-  }
+  public void setNameStored(String name) {}
 
   @Override
-  public void clearName() {
-    // singleton class, no need to set name
-  }
+  public void clearName() {}
 
   @Override
   public double getBalance() {
@@ -47,9 +41,7 @@ public class NoPlayerData implements ITanPlayer {
   }
 
   @Override
-  public void setBalance(double balance) {
-    // singleton class, no need to set name
-  }
+  public void setBalance(double balance) {}
 
   @Override
   public String getTownId() {
@@ -87,14 +79,10 @@ public class NoPlayerData implements ITanPlayer {
   }
 
   @Override
-  public void addToBalance(double amount) {
-    // singleton class, no need to set name
-  }
+  public void addToBalance(double amount) {}
 
   @Override
-  public void removeFromBalance(double amount) {
-    // singleton class, no need to set name
-  }
+  public void removeFromBalance(double amount) {}
 
   @Override
   public boolean hasRegion() {
@@ -117,19 +105,13 @@ public class NoPlayerData implements ITanPlayer {
   }
 
   @Override
-  public void joinTown(TownData townData) {
-    // singleton class, no need to set name
-  }
+  public void joinTown(TownData townData) {}
 
   @Override
-  public void leaveTown() {
-    // singleton class, no need to set name
-  }
+  public void leaveTown() {}
 
   @Override
-  public void setTownRankID(int townRankID) {
-    // singleton class, no need to set name
-  }
+  public void setTownRankID(int townRankID) {}
 
   @Override
   public Integer getTownRankID() {
@@ -142,9 +124,7 @@ public class NoPlayerData implements ITanPlayer {
   }
 
   @Override
-  public void addProperty(PropertyData propertyData) {
-    // singleton class, no need to set name
-  }
+  public void addProperty(PropertyData propertyData) {}
 
   @Override
   public List<PropertyData> getProperties() {
@@ -152,9 +132,7 @@ public class NoPlayerData implements ITanPlayer {
   }
 
   @Override
-  public void removeProperty(PropertyData propertyData) {
-    // singleton class, no need to set name
-  }
+  public void removeProperty(PropertyData propertyData) {}
 
   @Override
   public Player getPlayer() {
@@ -167,14 +145,10 @@ public class NoPlayerData implements ITanPlayer {
   }
 
   @Override
-  public void addWar(CurrentAttack currentAttacks) {
-    // singleton class, no need to set name
-  }
+  public void addWar(CurrentAttack currentAttacks) {}
 
   @Override
-  public void updateCurrentAttack() {
-    // singleton class, no need to set name
-  }
+  public void updateCurrentAttack() {}
 
   @Override
   public boolean isAtWarWith(TerritoryData territoryData) {
@@ -182,9 +156,7 @@ public class NoPlayerData implements ITanPlayer {
   }
 
   @Override
-  public void removeWar(@NotNull CurrentAttack currentAttacks) {
-    // singleton class, no need to set name
-  }
+  public void removeWar(@NotNull CurrentAttack currentAttacks) {}
 
   @Override
   public CompletableFuture<TownRelation> getRelationWithPlayer(ITanPlayer otherPlayer) {
@@ -207,9 +179,7 @@ public class NoPlayerData implements ITanPlayer {
   }
 
   @Override
-  public void setRegionRankID(Integer rankID) {
-    // singleton class, no need to set name
-  }
+  public void setRegionRankID(Integer rankID) {}
 
   @Override
   public Integer getRankID(TerritoryData territoryData) {
@@ -237,19 +207,13 @@ public class NoPlayerData implements ITanPlayer {
   }
 
   @Override
-  public void setLang(LangType lang) {
-    // singleton class, no need to set name
-  }
+  public void setLang(LangType lang) {}
 
   @Override
-  public void clearAllTownApplications() {
-    // singleton class, no need to set name
-  }
+  public void clearAllTownApplications() {}
 
   @Override
-  public void setRankID(TerritoryData territoryData, Integer defaultRankID) {
-    // singleton class, no need to set name
-  }
+  public void setRankID(TerritoryData territoryData, Integer defaultRankID) {}
 
   @Override
   public TimeZoneEnum getTimeZone() {
@@ -257,9 +221,7 @@ public class NoPlayerData implements ITanPlayer {
   }
 
   @Override
-  public void setTimeZone(TimeZoneEnum timeZone) {
-    // singleton class, no need to set name
-  }
+  public void setTimeZone(TimeZoneEnum timeZone) {}
 
   @Override
   public CompletableFuture<List<CurrentAttack>> getCurrentAttacks() {

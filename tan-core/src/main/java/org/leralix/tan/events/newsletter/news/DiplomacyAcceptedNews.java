@@ -21,6 +21,7 @@ import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.enums.EDiplomacyState;
 import org.tan.api.interfaces.TanTerritory;
+import org.tan_java.performance.PlayerLangCache;
 
 public class DiplomacyAcceptedNews extends Newsletter {
   private final String proposingTerritoryID;
@@ -82,9 +83,8 @@ public class DiplomacyAcceptedNews extends Newsletter {
     TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
     if (receivingTerritory == null) return;
 
-    LangType lang = PlayerDataStorage.getInstance().getSync(player).getLang();
+    LangType lang = PlayerLangCache.getInstance().getLang(player).join();
 
-    // BUGFIX: Convert Adventure Component to legacy text properly
     if (isRelationWorse) {
       TanChatUtils.message(
           player,
@@ -118,7 +118,6 @@ public class DiplomacyAcceptedNews extends Newsletter {
     TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
     if (receivingTerritory == null) return null;
 
-    // BUGFIX: Convert Adventure Component to legacy text properly
     ItemStack itemStack =
         HeadUtils.makeSkullURL(
             Lang.DIPLOMACY_ACCEPT_NEWSLETTER_TITLE.get(lang),

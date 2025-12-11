@@ -11,7 +11,6 @@ public class PlayerHeadIconType extends IconType {
 
   @Override
   protected ItemStack getItemStack(Player player) {
-    // Use cache to prevent rate limiting even for online players
     PlayerProfile playerProfile = PlayerProfileCache.getInstance().getProfileSync(player);
     return createSkull(playerProfile);
   }

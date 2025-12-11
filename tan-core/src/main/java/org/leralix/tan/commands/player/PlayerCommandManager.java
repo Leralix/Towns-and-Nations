@@ -26,6 +26,6 @@ public class PlayerCommandManager extends CommandManager {
 
   @Override
   public String getName() {
-    return "tan";
+    return "coconation";
   }
 }

@@ -28,7 +28,6 @@ public class EnableMobBan extends BooleanStat implements AggregatableStat<Enable
 
   @Override
   public EnableMobBan scale(int factor) {
-    // Upgrade is not bought
     if (factor == 0) {
       return new EnableMobBan(false);
     }

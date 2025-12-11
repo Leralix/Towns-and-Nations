@@ -20,6 +20,6 @@ public class DebugCommandManager extends CommandManager {
 
   @Override
   public String getName() {
-    return "tandebug";
+    return "coconationdebug";
   }
 }

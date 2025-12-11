@@ -27,7 +27,7 @@ public class LandmarkSetStoredLimitServer extends SubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tanserver landmarkSetStoredLimit <id> <value>";
+    return "/coconationserver landmarkSetStoredLimit <id> <value>";
   }
 
   @Override

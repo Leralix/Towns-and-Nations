@@ -50,12 +50,16 @@ public class RegionDeletedNews extends Newsletter {
 
   @Override
   public void broadcast(Player player) {
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
-    if (tanPlayer == null) return;
-    TanChatUtils.message(
-        player,
-        Lang.REGION_DELETED_NEWSLETTER.get(player, tanPlayer.getNameStored(), regionName),
-        SoundEnum.GOOD);
+    PlayerDataStorage.getInstance()
+        .get(playerID)
+        .thenAccept(
+            tanPlayer -> {
+              if (tanPlayer == null) return;
+              TanChatUtils.message(
+                  player,
+                  Lang.REGION_DELETED_NEWSLETTER.get(player, tanPlayer.getNameStored(), regionName),
+                  SoundEnum.GOOD);
+            });
   }
 
   @Override

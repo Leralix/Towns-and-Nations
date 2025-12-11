@@ -36,7 +36,11 @@ public class LandmarkStorage extends DatabaseStorage<Landmark> {
 
     try (Connection conn = getDatabase().getDataSource().getConnection();
         Statement stmt = conn.createStatement()) {
+      TownsAndNations.getPlugin().getLogger().info("[TaN-DB] Creating table: " + TABLE_NAME);
       stmt.execute(createTableSQL);
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .info("[TaN-DB] Table " + TABLE_NAME + " created/verified successfully");
     } catch (SQLException e) {
       TownsAndNations.getPlugin()
           .getLogger()

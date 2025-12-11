@@ -45,12 +45,10 @@ public class RegionClaimedChunk extends TerritoryChunk {
 
     RegionData ownerRegion = getRegion();
 
-    // Player is at war with the region
     for (CurrentAttack currentAttacks : ownerRegion.getCurrentAttacks()) {
       if (currentAttacks.containsPlayer(tanPlayer)) return true;
     }
 
-    // Player have the right to do the action
     ChunkPermission chunkPermission = ownerRegion.getPermission(permissionType);
     if (chunkPermission.isAllowed(ownerRegion, tanPlayer)) return true;
 
@@ -103,7 +101,6 @@ public class RegionClaimedChunk extends TerritoryChunk {
   public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
     RegionData regionData = getRegion();
 
-    // BUGFIX: Convert Adventure Component to legacy text properly
     String coloredName =
         displayTerritoryColor
             ? LegacyComponentSerializer.legacySection().serialize(regionData.getCustomColoredName())
@@ -111,7 +108,6 @@ public class RegionClaimedChunk extends TerritoryChunk {
 
     String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(player, coloredName);
 
-    // Use Adventure API for title
     player.showTitle(
         Title.title(
             Component.empty(),
@@ -136,7 +132,6 @@ public class RegionClaimedChunk extends TerritoryChunk {
   public boolean canTerritoryClaim(TerritoryData territoryData) {
     if (territoryData.canConquerChunk(this)) return true;
 
-    // if the town is part of this specific region, they can claim
     return getRegion().getSubjects().contains(territoryData);
   }
 
@@ -151,7 +146,5 @@ public class RegionClaimedChunk extends TerritoryChunk {
   }
 
   @Override
-  public void notifyUpdate() {
-    // TODO : Unclaim chunks if no longer linked to fort
-  }
+  public void notifyUpdate() {}
 }

@@ -84,9 +84,19 @@ public class LandmarkClaimedNewsletter extends Newsletter {
 
   @Override
   public void broadcast(Player player) {
-    TerritoryData newOwner = TerritoryUtil.getTerritory(newOwnerID);
-    Landmark landmark = LandmarkStorage.getInstance().getSync(landmarkID);
-    Lang.LANDMARK_CLAIMED_NEWSLETTER.get(player, newOwner.getColoredName(), landmark.getName());
+    TerritoryUtil.getTerritoryAsync(newOwnerID)
+        .thenAccept(
+            newOwner -> {
+              if (newOwner == null) return;
+              LandmarkStorage.getInstance()
+                  .get(landmarkID)
+                  .thenAccept(
+                      landmark -> {
+                        if (landmark == null) return;
+                        Lang.LANDMARK_CLAIMED_NEWSLETTER.get(
+                            player, newOwner.getColoredName(), landmark.getName());
+                      });
+            });
   }
 
   @Override

@@ -30,7 +30,7 @@ public class SudoPlayer extends SubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tanadmin sudo <optional - player> ";
+    return "/coconationadmin sudo <optional - player> ";
   }
 
   public List<String> getTabCompleteSuggestions(

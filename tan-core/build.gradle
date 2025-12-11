@@ -5,7 +5,7 @@ plugins {
 }
 
 tasks.shadowJar {
-    archiveBaseName.set('TownsAndNations')
+    archiveBaseName.set('Coconation')
     archiveClassifier.set('')
     relocate("dev.triumphteam.gui", "dev.triumphteam.gui")
     relocate 'net.objecthunter.exp4j', 'org.leralix.tan.libs.exp4j'
@@ -75,7 +75,7 @@ dependencies {
     compileOnly 'org.slf4j:slf4j-api:2.0.17'
     implementation 'ch.qos.logback:logback-classic:1.5.20'
 
-    compileOnly 'io.github.leralix:sphere-lib:0.6.0'
+    compileOnly 'org.coco:CocoNationLib:0.1'
     compileOnly 'dev.folia:folia-api:1.20.1-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:4.0.43'
     compileOnly 'net.luckperms:api:5.4'
@@ -93,8 +93,8 @@ dependencies {
     // JSON parsing (for head textures parsing). Ensure recent Gson for JsonParser.parseString
     implementation 'com.google.code.gson:gson:2.11.0'
 
-    // IMPROVEMENT #1: Redis Clustering
-    implementation 'org.redisson:redisson:3.24.0'
+    // Redis client - Jedis (plus léger que Redisson)
+    implementation 'redis.clients:jedis:5.2.0'
     
     // IMPROVEMENT #4: Circuit Breaker
     implementation 'io.github.resilience4j:resilience4j-circuitbreaker:2.1.0'
@@ -105,7 +105,7 @@ dependencies {
     implementation 'io.prometheus:simpleclient_httpserver:0.16.0'
     implementation 'io.prometheus:simpleclient_hotspot:0.16.0'
 
-    testImplementation 'io.github.leralix:sphere-lib:0.6.0'
+    testImplementation 'org.coco:CocoNationLib:0.1'
     testImplementation 'com.github.MockBukkit:MockBukkit:v4.72.9'
     testImplementation 'io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'

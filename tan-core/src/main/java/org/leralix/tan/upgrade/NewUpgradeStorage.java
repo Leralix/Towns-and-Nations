@@ -44,7 +44,6 @@ public class NewUpgradeStorage {
         Material icon = Material.valueOf(itemCode.toUpperCase());
         int maxLevel = upgradesSection.getInt(key + ".maxLevel");
 
-        // Prerequisites
         List<UpgradeRequirement> newPrerequisites = new ArrayList<>();
 
         List<Integer> cost = upgradesSection.getIntegerList(key + ".cost");
@@ -86,7 +85,6 @@ public class NewUpgradeStorage {
           }
         }
 
-        // Benefits
         ConfigurationSection benefitsSection =
             upgradesSection.getConfigurationSection(key + ".benefits");
         List<IndividualStat> rewards = new ArrayList<>();
@@ -140,11 +138,10 @@ public class NewUpgradeStorage {
 
     raw = raw.trim().toLowerCase();
     if (raw.equals("infinity") || raw.equals("inf") || raw.equals("∞") || raw.equals("unlimited")) {
-      return 0; // valeur ignorée, on gère via isUnlimited = true
+      return 0;
     }
 
     try {
-      // On supporte aussi les valeurs écrites comme "+3"
       return Integer.parseInt(raw.replace("+", ""));
     } catch (NumberFormatException e) {
       return 0;

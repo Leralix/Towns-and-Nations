@@ -15,7 +15,6 @@ public class ChatScopeListener implements Listener {
     Player player = event.getPlayer();
     String playerUUID = player.getUniqueId().toString();
 
-    // If player has better commands to do
     if (PlayerChatListenerStorage.contains(player)) return;
 
     if (!LocalChatStorage.isPlayerInChatScope(playerUUID)) return;

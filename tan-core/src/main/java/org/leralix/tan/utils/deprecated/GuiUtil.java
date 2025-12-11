@@ -126,7 +126,7 @@ public class GuiUtil {
     }
     GuiItem panel =
         ItemBuilder.from(decorativeGlassPane).asGuiItem(event -> event.setCancelled(true));
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player).join();
     ItemStack previousPageButton =
         HeadUtils.makeSkullB64(
             Lang.GUI_PREVIOUS_PAGE.get(tanPlayer),

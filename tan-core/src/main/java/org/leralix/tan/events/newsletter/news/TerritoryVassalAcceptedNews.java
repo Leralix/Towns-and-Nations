@@ -43,7 +43,6 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
     TerritoryData town = TerritoryUtil.getTerritory(townID);
     if (town == null) return null;
 
-    // BUGFIX: Convert Adventure Component to legacy text properly
     ItemStack itemStack =
         HeadUtils.makeSkullB64(
             Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER_TITLE.get(lang),
@@ -93,7 +92,6 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
     TerritoryData receivingTerritory = TerritoryUtil.getTerritory(townID);
     if (receivingTerritory == null) return;
 
-    // BUGFIX: Convert Adventure Component to legacy text properly
     TanChatUtils.message(
         player,
         Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER.get(

@@ -33,7 +33,7 @@ public class JoinTownCommand extends PlayerSubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tan join <Town ID>";
+    return "/coconation join <Town ID>";
   }
 
   @Override
@@ -47,7 +47,6 @@ public class JoinTownCommand extends PlayerSubCommand {
 
   @Override
   public void perform(Player player, String[] args) {
-    // Validate argument count
     if (!CommandExceptionHandler.validateArgCount((CommandSender) player, args, 2, getSyntax())) {
       return;
     }
@@ -69,8 +68,7 @@ public class JoinTownCommand extends PlayerSubCommand {
 
     TownData townData = TownDataStorage.getInstance().getSync(townID);
     if (townData == null) {
-      TanChatUtils.message(
-          player, Lang.TOWN_NOT_FOUND.get(lang)); // Assuming a new Lang entry for town not found
+      TanChatUtils.message(player, Lang.TOWN_NOT_FOUND.get(lang));
       return;
     }
 

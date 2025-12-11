@@ -42,18 +42,15 @@ public class DailyTasks {
           }
         },
         1L,
-        1200L); // Execute every 1200 ticks (1 minute)
+        1200L);
   }
 
   public static void executeMidnightTasks() {
-    // PERFORMANCE FIX: Run tasks asynchronously to avoid blocking server at midnight
-    // Previously caused massive lag spikes when processing thousands of towns/regions
     FoliaScheduler.runTaskAsynchronously(
         TownsAndNations.getPlugin(),
         () -> {
           propertyRent();
 
-          // Process towns in batches to avoid loading everything at once
           TownDataStorage.getInstance()
               .processBatches(
                   100,
@@ -64,7 +61,6 @@ public class DailyTasks {
                   })
               .join();
 
-          // Process regions in batches
           RegionDataStorage.getInstance()
               .processBatches(
                   100,
@@ -90,7 +86,6 @@ public class DailyTasks {
   }
 
   private static void updatePlayerUsernames() {
-    // PERFORMANCE FIX: Use batch processing instead of deprecated getAll()
     PlayerDataStorage.getInstance()
         .processBatches(
             200,
@@ -103,7 +98,6 @@ public class DailyTasks {
   }
 
   private static void propertyRent() {
-    // PERFORMANCE FIX: Use batch processing instead of deprecated getAll()
     TownDataStorage.getInstance()
         .processBatches(
             100,

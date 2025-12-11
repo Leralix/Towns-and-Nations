@@ -27,7 +27,7 @@ public class LandmarkUpdateServer extends SubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tanserver landmarkUpdate <id?>";
+    return "/coconationserver landmarkUpdate <id?>";
   }
 
   @Override
@@ -53,9 +53,7 @@ public class LandmarkUpdateServer extends SubCommand {
           .thenAccept(
               landmark -> {
                 if (landmark == null) {
-                  TanChatUtils.message(
-                      commandSender,
-                      Lang.LANDMARK_NOT_FOUND); // Assuming a new Lang entry for landmark not found
+                  TanChatUtils.message(commandSender, Lang.LANDMARK_NOT_FOUND);
                   return;
                 }
                 landmark.generateResources();

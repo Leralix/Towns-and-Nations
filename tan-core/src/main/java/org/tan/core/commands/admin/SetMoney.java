@@ -42,18 +42,15 @@ public class SetMoney extends SubCommand {
 
   @Override
   public void perform(CommandSender player, String[] args) {
-    // Validate argument count
     if (!CommandExceptionHandler.validateArgCount(player, args, 3, getSyntax())) {
       return;
     }
 
-    // Find the target player
     Optional<OfflinePlayer> offlinePlayerOpt = CommandExceptionHandler.findPlayer(player, args[1]);
     if (offlinePlayerOpt.isEmpty()) {
       return;
     }
 
-    // Get TAN player data
     Optional<ITanPlayer> targetOpt =
         CommandExceptionHandler.getTanPlayer(player, offlinePlayerOpt.get());
     if (targetOpt.isEmpty()) {
@@ -64,7 +61,6 @@ public class SetMoney extends SubCommand {
   }
 
   static void setMoney(CommandSender commandSender, String[] args, ITanPlayer target) {
-    // Parse amount with error handling
     Optional<Double> amountOpt =
         CommandExceptionHandler.parseDouble(commandSender, args[2], "amount");
     if (amountOpt.isEmpty()) {

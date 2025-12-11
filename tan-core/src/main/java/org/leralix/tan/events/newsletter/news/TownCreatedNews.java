@@ -95,16 +95,23 @@ public class TownCreatedNews extends Newsletter {
 
   @Override
   public void broadcast(Player player) {
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
-    if (tanPlayer == null) return;
-
-    TownData townData = TownDataStorage.getInstance().getSync(townID);
-    if (townData == null) return;
-    TanChatUtils.message(
-        player,
-        Lang.TOWN_CREATED_NEWSLETTER.get(
-            player, tanPlayer.getNameStored(), townData.getBaseColoredName()),
-        SoundEnum.GOOD);
+    PlayerDataStorage.getInstance()
+        .get(playerID)
+        .thenAccept(
+            tanPlayer -> {
+              if (tanPlayer == null) return;
+              TownDataStorage.getInstance()
+                  .get(townID)
+                  .thenAccept(
+                      townData -> {
+                        if (townData == null) return;
+                        TanChatUtils.message(
+                            player,
+                            Lang.TOWN_CREATED_NEWSLETTER.get(
+                                player, tanPlayer.getNameStored(), townData.getBaseColoredName()),
+                            SoundEnum.GOOD);
+                      });
+            });
   }
 
   @Override

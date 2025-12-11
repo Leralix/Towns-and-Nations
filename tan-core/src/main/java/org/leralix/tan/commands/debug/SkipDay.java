@@ -28,7 +28,7 @@ public class SkipDay extends SubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tandebug skipday";
+    return "/coconationdebug skipday";
   }
 
   public List<String> getTabCompleteSuggestions(

@@ -27,7 +27,7 @@ public class CreateBackup extends SubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tandebug createBackup";
+    return "/coconationdebug createBackup";
   }
 
   public List<String> getTabCompleteSuggestions(

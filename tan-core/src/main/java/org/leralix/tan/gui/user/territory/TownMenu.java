@@ -75,8 +75,6 @@ public class TownMenu extends TerritoryMenu {
         .setDescription(Lang.ADMIN_GUI_LANDMARK_DESC1.get())
         .setAction(
             event -> {
-              // TODO: Implement owned landmark GUI after PlayerGUI migration
-              // Original: PlayerGUI.openOwnedLandmark(player, townData, 0)
               TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer.getLang()));
             })
         .asGuiItem(player, langType);

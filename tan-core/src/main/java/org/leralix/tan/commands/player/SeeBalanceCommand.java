@@ -28,7 +28,7 @@ public class SeeBalanceCommand extends PlayerSubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tan balance";
+    return "/coconation balance";
   }
 
   public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {

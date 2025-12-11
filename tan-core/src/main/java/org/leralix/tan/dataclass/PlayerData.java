@@ -91,8 +91,6 @@ public class PlayerData implements ITanPlayer {
   @Override
   public String getTownName() {
     if (hasTown()) {
-      // Bloquant ici, mais getName() est une opération rapide sur l'objet TownData
-      // Idéalement, getTownName() devrait aussi retourner CompletableFuture<String>
       return getTown().join().getName();
     }
     return null;
@@ -111,35 +109,59 @@ public class PlayerData implements ITanPlayer {
 
   public boolean isTownOverlord() {
     if (!hasTown()) return false;
-    // Bloquant ici, mais isLeader() est une opération rapide sur l'objet TownData
     return getTown().join().isLeader(this.uuid);
   }
 
   public RankData getTownRank() {
     if (!hasTown()) return null;
-    // Bloquant ici, mais getRank() est une opération rapide sur l'objet TownData
     return getTown().join().getRank(getTownRankID());
   }
 
   public RankData getRegionRank() {
     if (!hasRegion()) return null;
-    // Bloquant ici, mais getRank() est une opération rapide sur l'objet RegionData
     return getRegion().join().getRank(getRegionRankID());
   }
 
   public void addToBalance(double amount) {
     this.Balance = this.Balance + amount;
+
+    try {
+      org.leralix.tan.redis.RedisSyncManager syncManager =
+          org.leralix.tan.TownsAndNations.getPlugin().getRedisSyncManager();
+      if (syncManager != null) {
+        com.google.gson.JsonObject payload = new com.google.gson.JsonObject();
+        payload.addProperty("playerId", getID());
+        payload.addProperty("balance", this.Balance);
+        syncManager.publishPlayerDataChange(
+            org.leralix.tan.redis.RedisSyncManager.SyncType.PLAYER_BALANCE_UPDATE,
+            payload.toString());
+      }
+    } catch (Exception ex) {
+    }
   }
 
   public void removeFromBalance(double amount) {
     this.Balance = this.Balance - amount;
+
+    try {
+      org.leralix.tan.redis.RedisSyncManager syncManager =
+          org.leralix.tan.TownsAndNations.getPlugin().getRedisSyncManager();
+      if (syncManager != null) {
+        com.google.gson.JsonObject payload = new com.google.gson.JsonObject();
+        payload.addProperty("playerId", getID());
+        payload.addProperty("balance", this.Balance);
+        syncManager.publishPlayerDataChange(
+            org.leralix.tan.redis.RedisSyncManager.SyncType.PLAYER_BALANCE_UPDATE,
+            payload.toString());
+      }
+    } catch (Exception ex) {
+    }
   }
 
   public boolean hasRegion() {
     if (!this.hasTown()) {
       return false;
     }
-    // Bloquant ici, mais haveOverlord() est une opération rapide sur l'objet TownData
     return getTown().join().haveOverlord();
   }
 
@@ -157,8 +179,6 @@ public class PlayerData implements ITanPlayer {
   @Override
   public String getNationName() {
     if (hasRegion()) {
-      // Bloquant ici, mais getName() est une opération rapide sur l'objet RegionData
-      // Idéalement, getNationName() devrait aussi retourner CompletableFuture<String>
       return getRegion().join().getName();
     }
     return null;
@@ -203,7 +223,6 @@ public class PlayerData implements ITanPlayer {
       String tID = parts[0];
       String pID = parts[1];
 
-      // Bloquant ici, mais nécessaire pour construire la liste de PropertyData
       PropertyData nextProperty = TownDataStorage.getInstance().getSync(tID).getProperty(pID);
 
       propertyDataList.add(nextProperty);
@@ -303,9 +322,7 @@ public class PlayerData implements ITanPlayer {
     if (!hasRegion()) {
       return null;
     }
-    if (regionRankID == null)
-      // Bloquant ici, mais getDefaultRankID() est une opération rapide sur l'objet RegionData
-      regionRankID = getRegion().join().getDefaultRankID();
+    if (regionRankID == null) regionRankID = getRegion().join().getDefaultRankID();
     return regionRankID;
   }
 
@@ -362,9 +379,9 @@ public class PlayerData implements ITanPlayer {
   }
 
   public void clearAllTownApplications() {
-    TownInviteDataStorage.removeInvitation(uuid); // Remove town invitation
+    TownInviteDataStorage.removeInvitation(uuid);
     for (TownData allTown : TownDataStorage.getInstance().getAllSync().values()) {
-      allTown.removePlayerJoinRequest(uuid); // Remove applications
+      allTown.removePlayerJoinRequest(uuid);
     }
   }
 

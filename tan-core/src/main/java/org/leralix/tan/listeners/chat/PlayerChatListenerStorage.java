@@ -7,9 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
+import org.tan_java.performance.PlayerLangCache;
 
 public class PlayerChatListenerStorage {
 
@@ -17,9 +16,14 @@ public class PlayerChatListenerStorage {
 
   public static void register(Player player, ChatListenerEvent category) {
     chatStorage.put(player, category);
-    LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
-    TanChatUtils.message(
-        player, Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)));
+    PlayerLangCache.getInstance()
+        .getLang(player)
+        .thenAccept(
+            langType -> {
+              TanChatUtils.message(
+                  player,
+                  Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)));
+            });
     SoundUtil.playSound(player, SoundEnum.WRITE);
     player.closeInventory();
   }
@@ -43,9 +47,14 @@ public class PlayerChatListenerStorage {
     if (success) {
       chatStorage.remove(player);
     } else {
-      LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
-      TanChatUtils.message(
-          player, Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)));
+      PlayerLangCache.getInstance()
+          .getLang(player)
+          .thenAccept(
+              langType -> {
+                TanChatUtils.message(
+                    player,
+                    Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)));
+              });
     }
   }
 }

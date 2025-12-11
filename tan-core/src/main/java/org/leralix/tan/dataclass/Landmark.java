@@ -187,7 +187,6 @@ public class Landmark {
   public void setReward(ItemStack itemOnCursor) {
     this.amount = itemOnCursor.getAmount();
     this.materialName = itemOnCursor.getType().name();
-    // Save this landmark to database (DatabaseStorage auto-saves on put)
     LandmarkStorage.getInstance().putAsync(this.ID, this).join();
   }
 
@@ -201,7 +200,7 @@ public class Landmark {
     boolean isEncircled = true;
     for (int x = -1; x <= 1; x++) {
       for (int z = -1; z <= 1; z++) {
-        if (x == 0 && z == 0) continue; // Skip the center chunk
+        if (x == 0 && z == 0) continue;
         Chunk neighborChunk = chunk.getWorld().getChunkAt(chunk.getX() + x, chunk.getZ() + z);
         ClaimedChunk2 neighborClaimedChunk =
             NewClaimedChunkStorage.getInstance().get(neighborChunk);

@@ -19,6 +19,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.CreateFortEvent;
 import org.leralix.tan.listeners.interact.events.property.CreateTerritoryPropertyEvent;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.upgrade.rewards.numeric.PropertyCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -28,20 +29,26 @@ public class BuildingMenu extends IteratorGUI {
   private final BasicGui previousMenu;
   private final TerritoryData territoryData;
 
-  public BuildingMenu(
+  private BuildingMenu(
       Player player, ITanPlayer tanPlayer, TerritoryData territoryData, BasicGui previousMenu) {
     super(player, tanPlayer, Lang.HEADER_BUILDING_MENU.get(player), 4);
     this.territoryData = territoryData;
     this.previousMenu = previousMenu;
-    // open() doit être appelé explicitement après la construction pour respecter le modèle
-    // asynchrone
+  }
+
+  public static void open(Player player, TerritoryData territoryData, BasicGui previousMenu) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              new BuildingMenu(player, tanPlayer, territoryData, previousMenu).open();
+            });
   }
 
   @Override
   public void open() {
     iterator(getBuildings(), p -> previousMenu.open());
 
-    // For now, only towns can have properties
     if (territoryData instanceof TownData townData) {
       gui.setItem(4, 4, getCreatePublicPropertyButton(townData));
     }

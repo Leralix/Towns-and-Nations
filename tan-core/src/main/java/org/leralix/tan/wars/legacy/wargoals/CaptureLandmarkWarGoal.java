@@ -22,7 +22,7 @@ public class CaptureLandmarkWarGoal extends WarGoal {
   }
 
   private Landmark getLandmark() {
-    return LandmarkStorage.getInstance().getSync(landmarkToCaptureID);
+    return LandmarkStorage.getInstance().get(landmarkToCaptureID).join();
   }
 
   @Override

@@ -11,7 +11,6 @@ import org.leralix.tan.upgrade.rewards.AggregatableStat;
 
 public class LandmarkCap extends NumericStat implements AggregatableStat<LandmarkCap> {
 
-  /** Default constructor Needed to create an empty stat. Do not remove */
   @SuppressWarnings("unused")
   public LandmarkCap() {
     super(0, false);

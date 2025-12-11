@@ -32,7 +32,6 @@ public class ChunkGeneralSettingsMenu extends BasicGui {
 
   @Override
   public void open() {
-    // Add all general chunk settings
     int slot = 11;
     for (GeneralChunkSetting setting : GeneralChunkSetting.values()) {
       gui.setItem(slot++, getSettingButton(setting));

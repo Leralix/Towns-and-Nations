@@ -40,18 +40,11 @@ public class LandmarkNoOwnerMenu extends BasicGui {
     this.playerTown = playerTown;
   }
 
-  /**
-   * Opens the landmark no owner menu asynchronously.
-   *
-   * @param player The player viewing the menu
-   * @param landmark The landmark without an owner
-   */
   public static void open(Player player, Landmark landmark) {
     PlayerDataStorage.getInstance()
         .get(player)
         .thenCompose(
             tanPlayer -> {
-              // Pre-load player's town if they have one
               if (tanPlayer.hasTown()) {
                 return tanPlayer.getTown().thenApply(town -> new Object[] {tanPlayer, town});
               } else {

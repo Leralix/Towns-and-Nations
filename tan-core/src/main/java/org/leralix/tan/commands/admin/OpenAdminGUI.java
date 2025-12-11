@@ -26,7 +26,7 @@ public class OpenAdminGUI extends PlayerSubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tanadmin gui";
+    return "/coconationadmin gui";
   }
 
   @Override

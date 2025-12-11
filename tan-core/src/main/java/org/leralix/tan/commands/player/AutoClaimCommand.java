@@ -31,7 +31,7 @@ public class AutoClaimCommand extends PlayerSubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tan autoclaim <chunk type>";
+    return "/coconation autoclaim <chunk type>";
   }
 
   @Override
@@ -48,7 +48,6 @@ public class AutoClaimCommand extends PlayerSubCommand {
 
   @Override
   public void perform(Player player, String[] args) {
-    // Validate argument count
     if (!CommandExceptionHandler.validateArgCount((CommandSender) player, args, 2, getSyntax())) {
       return;
     }

@@ -8,7 +8,6 @@ import org.leralix.tan.upgrade.rewards.AggregatableStat;
 
 public class TownPlayerCap extends NumericStat implements AggregatableStat<TownPlayerCap> {
 
-  /** Default constructor Needed to create an empty stat. Do not remove */
   @SuppressWarnings("unused")
   public TownPlayerCap() {
     super(0, false);

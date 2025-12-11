@@ -34,8 +34,8 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
 
   protected CreatePropertyEvent(Player player) {
     this.player = player;
-    this.townData = TownDataStorage.getInstance().getSync(player);
-    this.tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+    this.townData = TownDataStorage.getInstance().get(player).join();
+    this.tanPlayer = PlayerDataStorage.getInstance().get(player).join();
   }
 
   @Override

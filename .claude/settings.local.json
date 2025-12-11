@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gradle clean build:*)",
+      "Bash(gradle :tan-core:clean :tan-core:build:*)",
+      "Bash(gradle projects:*)",
+      "Bash(gradle build:*)",
+      "Bash(gradle spotlessApply:*)",
+      "Bash(gradle test:*)",
+      "Bash(gradle compileJava:*)",
+      "Bash(./gradlew spotlessApply:*)",
+      "Bash(chmod:*)",
+      "Bash(git commit:*)",
+      "Bash(git add:*)",
+      "Bash(gradle :tan-core:compileJava:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

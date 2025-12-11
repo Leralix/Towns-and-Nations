@@ -25,7 +25,7 @@ public class LogLevelCommand extends SubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tandebug loglevel <level>";
+    return "/coconationdebug loglevel <level>";
   }
 
   public List<String> getTabCompleteSuggestions(

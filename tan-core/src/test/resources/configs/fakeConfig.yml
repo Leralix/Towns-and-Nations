@@ -55,7 +55,7 @@ moneyIcon: "✦"
 #If TownsAndNations economy is used, set the number of digits (0,1,2,3...)
 DecimalDigits: 2
 
-#Max distance between 2 players to be able to trade (/tan pay)
+#Max distance between 2 players to be able to trade (/coconation pay)
 maxPayDistance: 15
 
 #The amount of money a player starts with (only works if no external economy plugin is used)
@@ -168,7 +168,7 @@ RankNameSize: 25
 #Enable war
 EnableWar: true
 
-#Admin need to approve every war. Admins need to use /tan admin gui to approve or deny a war
+#Admin need to approve every war. Admins need to use /coconationadmin gui to approve or deny a war
 AdminApproval: false
 
 #The duration of a war in minutes

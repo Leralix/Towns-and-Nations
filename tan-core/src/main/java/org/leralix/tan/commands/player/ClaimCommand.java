@@ -33,7 +33,7 @@ public class ClaimCommand extends PlayerSubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tan claim <town/region>";
+    return "/coconation claim <town/region>";
   }
 
   @Override
@@ -51,12 +51,10 @@ public class ClaimCommand extends PlayerSubCommand {
 
     LangType langType = LangType.of(player);
 
-    // Validate argument count
     if (!CommandExceptionHandler.validateArgCountRange(player, args, 2, 4, getSyntax())) {
       return;
     }
 
-    // Determine territory type (town or region)
     TerritoryData territoryData;
 
     if (args[1].equals("town")) {
@@ -68,7 +66,6 @@ public class ClaimCommand extends PlayerSubCommand {
       return;
     }
 
-    // Check if territory exists
     if (territoryData == null) {
       if (args[1].equals("town")) {
         TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get().getDefault());
@@ -78,9 +75,7 @@ public class ClaimCommand extends PlayerSubCommand {
       return;
     }
 
-    // Handle chunk coordinates if provided
     if (args.length == 4) {
-      // Parse coordinates with error handling
       Optional<Integer> xOpt = CommandExceptionHandler.parseInt(player, args[2], "x coordinate");
       Optional<Integer> zOpt = CommandExceptionHandler.parseInt(player, args[3], "z coordinate");
 
@@ -97,7 +92,6 @@ public class ClaimCommand extends PlayerSubCommand {
         CommandExceptionHandler.logCommandExecution(player, "claim", args);
       }
     } else {
-      // Claim current chunk
       try {
         executeClaimChunk(territoryData, player);
       } catch (TerritoryException e) {
@@ -107,13 +101,6 @@ public class ClaimCommand extends PlayerSubCommand {
     }
   }
 
-  /**
-   * Executes the chunk claim operation.
-   *
-   * @param territory The territory claiming the chunk
-   * @param player The player executing the claim
-   * @throws TerritoryException If the claim operation fails
-   */
   private void executeClaimChunk(TerritoryData territory, Player player) throws TerritoryException {
     try {
       territory.claimChunk(player);
@@ -122,14 +109,6 @@ public class ClaimCommand extends PlayerSubCommand {
     }
   }
 
-  /**
-   * Executes the chunk claim operation at specific coordinates.
-   *
-   * @param territory The territory claiming the chunk
-   * @param player The player executing the claim
-   * @param chunk The chunk to claim
-   * @throws TerritoryException If the claim operation fails
-   */
   private void executeClaimChunk(TerritoryData territory, Player player, Chunk chunk)
       throws TerritoryException {
     try {

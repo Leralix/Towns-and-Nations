@@ -13,7 +13,6 @@ import org.leralix.tan.wars.fort.Fort;
 
 public class CaptureChunk {
 
-  /** The ID of the war related to this capture. */
   private final String warID;
 
   private final TerritoryChunk territoryChunk;
@@ -139,7 +138,6 @@ public class CaptureChunk {
     this.defenders.clear();
   }
 
-  /** If the war is over, restitute the chunk to its original owner. */
   public void warOver() {
     resetPlayers();
     territoryChunk.liberate();

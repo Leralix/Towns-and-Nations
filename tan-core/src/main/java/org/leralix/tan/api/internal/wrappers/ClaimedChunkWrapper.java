@@ -98,7 +98,7 @@ public class ClaimedChunkWrapper implements TanClaimedChunk {
       TanPlayer tanPlayer, EChunkPermission permission, Location location) {
     Player player = Bukkit.getPlayer(tanPlayer.getUUID());
     if (player == null) {
-      return false; // Player is not online
+      return false;
     }
     ChunkPermissionType chunkPermissionType = ChunkPermissionType.valueOf(permission.name());
     return claimedChunk.canPlayerDo(player, chunkPermissionType, location);

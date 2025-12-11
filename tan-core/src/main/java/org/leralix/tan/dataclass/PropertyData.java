@@ -52,17 +52,11 @@ import org.leralix.tan.utils.text.TanChatUtils;
 public class PropertyData extends Building {
   private final String ID;
 
-  /**
-   * Old storage method for the owner of the property. Replaced by owner field. Keep until 0.17.0 to
-   * ensure retro-compatibility. Migration handled by PropertyDataDeserializer.
-   */
   @Deprecated(since = "0.15.6")
   private String owningPlayerID;
 
-  /** */
   private AbstractOwner owner;
 
-  /** ID of the renter. Can be null if not rented. */
   private String rentingPlayerID;
 
   private PermissionManager permissionManager;
@@ -485,7 +479,6 @@ public class PropertyData extends Building {
       OfflinePlayer exOwnerOffline = Bukkit.getOfflinePlayer(exOwnerID);
       Player exOwner = exOwnerOffline.getPlayer();
 
-      // Only send message if player is online
       if (exOwner != null) {
         TanChatUtils.message(
             exOwner,
@@ -575,7 +568,6 @@ public class PropertyData extends Building {
   }
 
   public void createPropertySign(Player player, Block block, BlockFace blockFace) {
-    // Calcul de la position de la pancarte
     Location selectedSignLocation = block.getRelative(blockFace).getLocation();
     selectedSignLocation
         .getBlock()
@@ -584,7 +576,6 @@ public class PropertyData extends Building {
     BlockState blockState = selectedSignLocation.getBlock().getState();
     Sign sign = (Sign) blockState;
 
-    // Gestion de l'orientation pour les pancartes murales
     if (blockFace != BlockFace.UP) {
       BlockFace direction =
           CreatePropertyEvent.getTopDirection(block.getLocation(), player.getLocation());
@@ -602,7 +593,6 @@ public class PropertyData extends Building {
 
     sign.update();
 
-    // Ajout des métadonnées aux blocs
     block.setMetadata(
         "propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), getTotalID()));
     sign.getBlock()

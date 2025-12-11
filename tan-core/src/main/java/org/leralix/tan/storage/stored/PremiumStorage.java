@@ -44,7 +44,6 @@ public class PremiumStorage extends DatabaseStorage<Boolean> {
   }
 
   public static PremiumStorage getInstance() {
-    // Double-checked locking without initial synchronization (fast path)
     if (instance == null) {
       synchronized (PremiumStorage.class) {
         if (instance == null) {
@@ -81,7 +80,6 @@ public class PremiumStorage extends DatabaseStorage<Boolean> {
 
     HttpURLConnection connection = null;
     try {
-      // P4.1: Use URI.toURL() instead of deprecated URL constructor
       URL url =
           java.net
               .URI

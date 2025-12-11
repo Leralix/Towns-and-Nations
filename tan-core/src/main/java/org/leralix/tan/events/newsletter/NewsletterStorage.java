@@ -13,7 +13,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.events.newsletter.dao.NewsletterDAO;
 import org.leralix.tan.events.newsletter.news.Newsletter;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.tan_java.performance.PlayerLangCache;
 
 public class NewsletterStorage {
 
@@ -76,7 +76,7 @@ public class NewsletterStorage {
       Player player, NewsletterScope scope, Consumer<Player> onClick) {
     List<GuiItem> newsletters = new ArrayList<>();
 
-    LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
+    LangType langType = PlayerLangCache.getInstance().getLang(player).join();
 
     for (Newsletter newsletter : getNewsletters()) {
 

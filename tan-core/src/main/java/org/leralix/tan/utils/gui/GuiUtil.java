@@ -11,10 +11,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.item.HeadUtils;
+import org.leralix.tan.utils.text.ComponentUtil;
 
 public class GuiUtil {
 
@@ -40,7 +40,7 @@ public class GuiUtil {
   public static GuiItem getUnnamedItem(Material material) {
     ItemStack item = new ItemStack(material);
     ItemMeta itemMeta = item.getItemMeta();
-    itemMeta.setDisplayName(" ");
+    ComponentUtil.setDisplayName(itemMeta, " ");
     item.setItemMeta(itemMeta);
     return ItemBuilder.from(item).asGuiItem(event -> event.setCancelled(true));
   }
@@ -77,7 +77,7 @@ public class GuiUtil {
 
     ItemStack decorativeGlassPane = new ItemStack(decorativeMaterial);
     ItemMeta itemMeta = decorativeGlassPane.getItemMeta();
-    itemMeta.setDisplayName("");
+    ComponentUtil.setDisplayName(itemMeta, "");
     decorativeGlassPane.setItemMeta(itemMeta);
     createIterator(
         gui,
@@ -126,14 +126,14 @@ public class GuiUtil {
     }
     GuiItem panel =
         ItemBuilder.from(decorativeGlassPane).asGuiItem(event -> event.setCancelled(true));
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+
     ItemStack previousPageButton =
         HeadUtils.makeSkullB64(
-            Lang.GUI_PREVIOUS_PAGE.get(tanPlayer),
+            Lang.GUI_PREVIOUS_PAGE.get(LangType.ENGLISH),
             "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQyZmRlOGI4MmU4YzFiOGMyMmIyMjY3OTk4M2ZlMzVjYjc2YTc5Nzc4NDI5YmRhZGFiYzM5N2ZkMTUwNjEifX19");
     ItemStack nextPageButton =
         HeadUtils.makeSkullB64(
-            Lang.GUI_NEXT_PAGE.get(tanPlayer),
+            Lang.GUI_NEXT_PAGE.get(LangType.ENGLISH),
             "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA2MjYyYWYxZDVmNDE0YzU5NzA1NWMyMmUzOWNjZTE0OGU1ZWRiZWM0NTU1OWEyZDZiODhjOGQ2N2I5MmVhNiJ9fX0=");
 
     GuiItem previousButton =

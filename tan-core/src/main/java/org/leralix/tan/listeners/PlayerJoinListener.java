@@ -31,7 +31,6 @@ public class PlayerJoinListener implements Listener {
         .get(player)
         .thenAccept(
             tanPlayer -> {
-              // Null check for tanPlayer
               if (tanPlayer == null) {
                 TownsAndNations.getPlugin()
                     .getLogger()
@@ -39,7 +38,6 @@ public class PlayerJoinListener implements Listener {
                 return;
               }
 
-              // All player interactions MUST run on the main thread (Folia global region scheduler)
               org.leralix.tan.utils.FoliaScheduler.runTask(
                   TownsAndNations.getPlugin(),
                   () -> {
@@ -79,7 +77,6 @@ public class PlayerJoinListener implements Listener {
                       player.sendMessage(message);
                     }
 
-                    // Check premium status asynchronously (non-blocking)
                     org.leralix.tan.utils.FoliaScheduler.runTaskAsynchronously(
                         TownsAndNations.getPlugin(),
                         () -> {

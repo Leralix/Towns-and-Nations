@@ -74,7 +74,7 @@ public class PlayerMenu extends BasicGui {
     return IconManager.getInstance()
         .get(IconKey.NEWSLETTER_ICON)
         .setName(Lang.GUI_PLAYER_NEWSLETTER.get(tanPlayer))
-        .setDescription(Lang.GUI_PLAYER_NEWSLETTER_DESC1.get("?")) // Count loaded async
+        .setDescription(Lang.GUI_PLAYER_NEWSLETTER_DESC1.get("?"))
         .setAction(event -> NewsletterMenu.open(player))
         .asGuiItem(player, langType);
   }

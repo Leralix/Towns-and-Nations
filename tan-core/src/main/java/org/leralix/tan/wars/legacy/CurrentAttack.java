@@ -20,10 +20,8 @@ public class CurrentAttack {
   private final PlannedAttack attackData;
   private boolean end;
 
-  /** total time, in tick */
   private final long totalTime;
 
-  /** Remaning time, in tick */
   private long remaining;
 
   private final BossBar bossBar;
@@ -35,7 +33,6 @@ public class CurrentAttack {
 
     this.end = false;
 
-    // Conversion from ms to ticks
     this.totalTime = (endTime - startTime) / 50;
     this.remaining = totalTime;
 
@@ -95,7 +92,7 @@ public class CurrentAttack {
           }
         },
         1,
-        1); // Execute every tick (20/s)
+        1);
   }
 
   public void end() {
@@ -127,7 +124,7 @@ public class CurrentAttack {
             territoryData.removeCurrentAttack(CurrentAttack.this);
           }
         },
-        20L * 20); // Still showing the boss bar for 20s
+        20L * 20);
   }
 
   public boolean containsPlayer(ITanPlayer tanPlayer) {

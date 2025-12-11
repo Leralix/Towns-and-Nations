@@ -30,7 +30,7 @@ public class TownSpawnCommand extends PlayerSubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tan spawn";
+    return "/coconation spawn";
   }
 
   @Override
@@ -43,13 +43,11 @@ public class TownSpawnCommand extends PlayerSubCommand {
 
     ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
     LangType langType = tanPlayer.getLang();
-    // Incorrect syntax
     if (args.length != 1) {
       TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
       return;
     }
 
-    // No town
     if (!tanPlayer.hasTown()) {
       TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
       return;
@@ -57,19 +55,16 @@ public class TownSpawnCommand extends PlayerSubCommand {
 
     TownData townData = tanPlayer.getTownSync();
     if (townData == null) {
-      TanChatUtils.message(
-          player, Lang.PLAYER_NO_TOWN.get(langType)); // Should not happen if hasTown() is true
+      TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
       return;
     }
 
     EnableTownSpawn enableTownSpawn = townData.getNewLevel().getStat(EnableTownSpawn.class);
-    // Spawn Unlocked
     if (!enableTownSpawn.isEnabled()) {
       TanChatUtils.message(player, Lang.SPAWN_NOT_UNLOCKED.get(langType));
       return;
     }
 
-    // Spawn set
     if (!townData.isSpawnSet()) {
       TanChatUtils.message(player, Lang.SPAWN_NOT_SET.get(langType));
       return;

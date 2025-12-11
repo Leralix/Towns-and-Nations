@@ -29,7 +29,7 @@ public class OpenNewsletterCommand extends PlayerSubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tan newsletter";
+    return "/coconation newsletter";
   }
 
   @Override

@@ -40,7 +40,7 @@ public class MapCommand extends PlayerSubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tan map";
+    return "/coconation map";
   }
 
   @Override
@@ -76,7 +76,6 @@ public class MapCommand extends PlayerSubCommand {
     Component actionButton = settings.getClaimTypeButton(langType);
     text.put(-2, actionButton);
 
-    // Envoi de l'en-tête
     player.sendMessage("╭─────────⟢⟐⟣─────────╮");
     for (int dz = -radius; dz <= radius; dz++) {
       Component newLine = Component.text("   ");
@@ -99,22 +98,12 @@ public class MapCommand extends PlayerSubCommand {
             icon =
                 icon.hoverEvent(icon.hoverEvent())
                     .clickEvent(icon.clickEvent())
-                    .replaceText(
-                        builder ->
-                            builder
-                                .matchLiteral("🟧")
-                                .replacement("🟠")); // Hashed orange square emoji
+                    .replaceText(builder -> builder.matchLiteral("🟧").replacement("🟠"));
           } else {
             icon =
                 icon.hoverEvent(icon.hoverEvent())
                     .clickEvent(icon.clickEvent())
-                    .replaceText(
-                        builder ->
-                            builder
-                                .match("⬛|⬜|✖")
-                                .replacement(
-                                    "🌑")); // For some reason, the only round emoji with the same
-            // size as ⬛ is this emoji
+                    .replaceText(builder -> builder.match("⬛|⬜|✖").replacement("🌑"));
           }
         }
 
@@ -123,7 +112,7 @@ public class MapCommand extends PlayerSubCommand {
         icon =
             icon.clickEvent(
                 ClickEvent.runCommand(
-                    "/tan "
+                    "/coconation "
                         + claimAction.toString().toLowerCase()
                         + " "
                         + mapType.toString().toLowerCase()

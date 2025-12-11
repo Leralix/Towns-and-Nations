@@ -13,18 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 import org.leralix.tan.TownsAndNations;
 
-/** Utility class to migrate data from JSON files to database */
 public class JsonToDatabaseMigration {
 
   private static final String STORAGE_FOLDER = "storage/json";
 
-  /**
-   * Migrate a single JSON file to database table
-   *
-   * @param jsonFileName The JSON file name (e.g., "TAN - Players.json")
-   * @param tableName The target database table name
-   * @return Number of records migrated
-   */
   public static int migrateJsonToDatabase(String jsonFileName, String tableName) {
     File pluginFolder = TownsAndNations.getPlugin().getDataFolder();
     File jsonFile = new File(new File(pluginFolder, STORAGE_FOLDER), jsonFileName);
@@ -44,14 +36,12 @@ public class JsonToDatabaseMigration {
       JsonObject rootObject = JsonParser.parseReader(reader).getAsJsonObject();
       Map<String, String> dataMap = new HashMap<>();
 
-      // Parse JSON into id -> jsonData map
       for (Map.Entry<String, com.google.gson.JsonElement> entry : rootObject.entrySet()) {
         String key = entry.getKey();
         String jsonData = gson.toJson(entry.getValue());
         dataMap.put(key, jsonData);
       }
 
-      // Batch insert into database
       String insertSQL = TownsAndNations.getPlugin().getDatabaseHandler().getUpsertSQL(tableName);
 
       try {
@@ -123,7 +113,6 @@ public class JsonToDatabaseMigration {
     return migrated;
   }
 
-  /** Migrate all standard JSON files to database */
   public static void migrateAllJsonToDatabase() {
     TownsAndNations.getPlugin().getLogger().info("Starting JSON to Database migration...");
 
@@ -144,7 +133,6 @@ public class JsonToDatabaseMigration {
         .info("Migration complete! Total records migrated: " + totalMigrated);
   }
 
-  /** Backup JSON files after successful migration */
   public static void backupJsonFiles() {
     File pluginFolder = TownsAndNations.getPlugin().getDataFolder();
     File jsonFolder = new File(pluginFolder, STORAGE_FOLDER);

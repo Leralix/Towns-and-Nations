@@ -20,22 +20,15 @@ public class Constants {
     throw new AssertionError("Static class");
   }
 
-  // Config
   private static boolean onlineMode;
   private static DatabaseConstants databaseConstants;
   private static int dailyTaskHour;
   private static int dailyTaskMinute;
-  // Economy
   private static boolean useStandaloneEconomy;
   private static double startingBalance;
   private static double maxPayRange;
   private static int nbDigits;
 
-  // Cosmetic
-  /**
-   * If Enabled, player username will have a 3 letter prefix of their town name. This option cannot
-   * be enabled with allowColorCodes.
-   */
   private static boolean allowTownTag;
 
   private static boolean allowColorCode;
@@ -43,7 +36,6 @@ public class Constants {
   private static boolean showCurrency;
   private static int prefixSize;
 
-  // Territory
   private static int townCost;
   private static int regionCost;
   private static double townChunkUpkeepCost;
@@ -62,19 +54,16 @@ public class Constants {
   private static boolean worldGuardOverrideRegion;
   private static boolean worldGuardOverrideLandmark;
 
-  // Buildings
   private static double fortCost;
   private static double fortProtectionRadius;
   private static double fortCaptureRadius;
   private static boolean useAsOutpost;
 
-  // Properties
   private static int maxPropertySignMargin;
   private static int maxPropertySize;
   private static Particle propertyBoundaryParticles;
   private static boolean payRentAtStart;
 
-  // Wars
   private static WarTimeSlot warTimeSlot;
   private static double warBoundaryRadius;
   private static Particle warBoundaryParticle;
@@ -92,7 +81,6 @@ public class Constants {
   private static List<String> perPlayerStartCommands;
   private static List<String> perPlayerEndCommands;
 
-  // Claims
   private static GeneralChunkSettings generalChunkSettings;
   private static WildernessRules wildernessRules;
 
@@ -104,13 +92,11 @@ public class Constants {
   private static int landmarkStorageCapacity;
   private static int landmarkMaxNameSize;
 
-  // Teleportation
   private static int timeBeforeTeleport;
   private static boolean cancelTeleportOnMoveHead;
   private static boolean cancelTeleportOnMovePosition;
   private static boolean cancelTeleportOnDamage;
 
-  // Upgrades
   private static NewUpgradeStorage upgradeStorage;
 
   private static final String ALWAYS = "ALWAYS";
@@ -122,17 +108,14 @@ public class Constants {
     dailyTaskHour = config.getInt("taxHourTime", 0);
     dailyTaskMinute = config.getInt("taxMinuteTime", 0);
 
-    // Economy
     useStandaloneEconomy = config.getBoolean("UseTanEconomy", false);
     startingBalance = config.getDouble("StartingMoney", 100.0);
     maxPayRange = config.getDouble("maxPayDistance", 15);
-    // Cosmetic
     allowTownTag = config.getBoolean("EnablePlayerPrefix", false);
     allowColorCode = config.getBoolean("EnablePlayerColorCode", false);
     baseCurrencyChar = config.getString("moneyIcon", "$");
     showCurrency = config.getBoolean("showCurrency", true);
     prefixSize = config.getInt("prefixSize", 3);
-    // Territory
     townCost = config.getInt("townCost", 1000);
     regionCost = config.getInt("regionCost", 7500);
     townChunkUpkeepCost = config.getDouble("TownChunkUpkeepCost", 0);
@@ -159,7 +142,6 @@ public class Constants {
 
     landmarkClaimRequiresEncirclement = config.getBoolean("landmarkEncircleToCapture", true);
 
-    // forts
     ConfigurationSection fortsSection = config.getConfigurationSection("Forts");
     if (fortsSection != null) {
       fortCost = fortsSection.getDouble("fortCost", 1000.0);
@@ -172,8 +154,6 @@ public class Constants {
     maxPropertySize = config.getInt("MaxPropertySize", 50000);
     payRentAtStart = config.getBoolean("payRentAtStart", true);
     propertyBoundaryParticles = Particle.valueOf(config.getString("propertyBoundaryParticles"));
-
-    // Attacks
 
     warTimeSlot = new WarTimeSlot(config.getStringList("allowedTimeSlotsWar"));
     warBoundaryRadius = config.getDouble("warBoundaryRadius", 16);
@@ -209,7 +189,6 @@ public class Constants {
     perPlayerStartCommands = config.getStringList("commandToExecutePerPlayerWhenAttackStart");
     perPlayerEndCommands = config.getStringList("commandToExecutePerPlayerWhenAttackEnd");
 
-    // Claims
     generalChunkSettings =
         new GeneralChunkSettings(config.getConfigurationSection("chunkGeneralSettings"));
     wildernessRules = new WildernessRules(config.getConfigurationSection("wildernessRules"));
@@ -217,17 +196,14 @@ public class Constants {
     allowNonAdjacentChunksForRegion = config.getBoolean("RegionAllowNonAdjacentChunks", false);
     allowNonAdjacentChunksForTown = config.getBoolean("TownAllowNonAdjacentChunks", false);
 
-    // Landmarks
     landmarkStorageCapacity = config.getInt("landmarkStorageCapacity", 7);
     landmarkMaxNameSize = config.getInt("landmarkNameMaxSize", 25);
 
-    // Teleportation
     timeBeforeTeleport = config.getInt("timeBeforeTeleport", 5);
     cancelTeleportOnMoveHead = config.getBoolean("cancelTeleportOnMoveHead", false);
     cancelTeleportOnMovePosition = config.getBoolean("cancelTeleportOnMovePosition", true);
     cancelTeleportOnDamage = config.getBoolean("cancelTeleportOnDamage", true);
 
-    // Upgrade
     upgradeStorage = new NewUpgradeStorage();
   }
 

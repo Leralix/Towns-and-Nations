@@ -63,9 +63,12 @@ public class RegionDataStorage extends DatabaseStorage<RegionData> {
 
     try (Connection conn = getDatabase().getDataSource().getConnection();
         Statement stmt = conn.createStatement()) {
+      TownsAndNations.getPlugin().getLogger().info("[TaN-DB] Creating table: " + TABLE_NAME);
       stmt.execute(createTableSQL);
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .info("[TaN-DB] Table " + TABLE_NAME + " created/verified successfully");
 
-      // Migration: Add region_name column if it doesn't exist
       try (ResultSet rs = conn.getMetaData().getColumns(null, null, TABLE_NAME, "region_name")) {
         if (!rs.next()) {
           stmt.executeUpdate(
@@ -83,7 +86,6 @@ public class RegionDataStorage extends DatabaseStorage<RegionData> {
 
   @Override
   protected void createIndexes() {
-    // PERFORMANCE FIX: Add index for frequently queried region_name column
     String createNameIndexSQL =
         "CREATE INDEX IF NOT EXISTS idx_region_name ON " + TABLE_NAME + " (region_name)";
 
@@ -125,11 +127,10 @@ public class RegionDataStorage extends DatabaseStorage<RegionData> {
               PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
 
             ps.setString(1, id);
-            ps.setString(2, obj.getName()); // Set region_name
+            ps.setString(2, obj.getName());
             ps.setString(3, jsonData);
             ps.executeUpdate();
 
-            // Update cache
             if (cacheEnabled && cache != null) {
               synchronized (cache) {
                 cache.put(id, obj);
@@ -198,7 +199,6 @@ public class RegionDataStorage extends DatabaseStorage<RegionData> {
       return false;
     }
 
-    // Optimized: scan JSON data for name instead of deserializing all objects
     String selectSQL =
         "SELECT 1 FROM " + TABLE_NAME + " WHERE json_extract(data, '$.name') = ? LIMIT 1";
 
@@ -211,7 +211,6 @@ public class RegionDataStorage extends DatabaseStorage<RegionData> {
         return rs.next();
       }
     } catch (SQLException e) {
-      // Fallback to the old method if json_extract is not supported
       TownsAndNations.getPlugin()
           .getLogger()
           .warning("json_extract not supported, falling back to full scan: " + e.getMessage());
@@ -225,7 +224,7 @@ public class RegionDataStorage extends DatabaseStorage<RegionData> {
   }
 
   public RegionData getSync(Player player) {
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player).join();
     if (tanPlayer == null) return null;
     return getSync(tanPlayer);
   }
@@ -235,15 +234,7 @@ public class RegionDataStorage extends DatabaseStorage<RegionData> {
     instance = null;
   }
 
-  /**
-   * Synchronous get method for backward compatibility WARNING: This blocks the current thread. Use
-   * get() with thenAccept() for async operations.
-   *
-   * @param id The ID of the region
-   * @return The region data, or null if not found
-   */
   public RegionData getSync(String id) {
-    // PERFORMANCE FIX: Use cache-only access to prevent server freezing
     if (cacheEnabled && cache != null) {
       RegionData cached = cache.get(id);
       if (cached != null) {
@@ -251,7 +242,6 @@ public class RegionDataStorage extends DatabaseStorage<RegionData> {
       }
     }
 
-    // Not in cache - trigger async load in background but return immediately
     get(id)
         .thenAccept(
             region -> {
@@ -264,8 +254,6 @@ public class RegionDataStorage extends DatabaseStorage<RegionData> {
   }
 
   public RegionData getSync(ITanPlayer tanPlayer) {
-    // NOTE: This still uses blocking call via get(tanPlayer).join()
-    // but at least getSync(String) is now cache-only
     try {
       return get(tanPlayer).join();
     } catch (Exception e) {

@@ -30,11 +30,9 @@ public class UrlHeadIconType extends IconType {
 
   private URL getUrl() {
     try {
-      // P4.1: Use URI.toURL() instead of deprecated URL constructor
       return java.net.URI.create(headUrl).toURL();
     } catch (Exception e) {
       try {
-        // P4.1: Use URI.toURL() instead of deprecated URL constructor
         return java.net
             .URI
             .create(

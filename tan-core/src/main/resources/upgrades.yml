@@ -23,7 +23,7 @@
 # - CHUNK_COST : cost to claim one chunk [-1,0,1,2...]
 # - PROPERTY_CAP: maximum number of property per town [-1,0,1,2... or infinity]
 # - LANDMARKS_CAP: maximum number of owned landmarks per town [-1,0,1,2... or infinity]
-# - UNLOCK_TOWN_SPAWN: unlock /tan spawn [level 0 -> locked, level 1 -> unlock]
+# - UNLOCK_TOWN_SPAWN: unlock /coconation spawn [level 0 -> locked, level 1 -> unlock]
 # - UNLOCK_MOB_BAN: unlock the mob ban tab [level 0 -> locked, level 1 -> unlock]
 # - LANDMARK_BONUS: percentage of bonus on landmarks (ex 50 = 50%) [10 = 10%]
 # - AUTHORIZED_BIOMES: allowed biomes for claiming [level 0 -> locked, level 1 -> unlock]

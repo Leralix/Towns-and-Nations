@@ -51,14 +51,24 @@ public class RegionCreationNews extends Newsletter {
 
   @Override
   public void broadcast(Player player) {
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
-    if (tanPlayer == null) return;
-    RegionData regionData = RegionDataStorage.getInstance().getSync(regionID);
-    if (regionData == null) return;
-    TanChatUtils.message(
-        player,
-        Lang.REGION_CREATED_NEWSLETTER.get(
-            player, tanPlayer.getNameStored(), regionData.getBaseColoredName()));
+    PlayerDataStorage.getInstance()
+        .get(playerID)
+        .thenAccept(
+            tanPlayer -> {
+              if (tanPlayer == null) return;
+              RegionDataStorage.getInstance()
+                  .get(regionID)
+                  .thenAccept(
+                      regionData -> {
+                        if (regionData == null) return;
+                        TanChatUtils.message(
+                            player,
+                            Lang.REGION_CREATED_NEWSLETTER.get(
+                                player,
+                                tanPlayer.getNameStored(),
+                                regionData.getBaseColoredName()));
+                      });
+            });
   }
 
   @Override

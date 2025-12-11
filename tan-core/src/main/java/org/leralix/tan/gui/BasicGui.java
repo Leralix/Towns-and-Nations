@@ -17,10 +17,6 @@ public abstract class BasicGui {
   protected final LangType langType;
   protected final IconManager iconManager;
 
-  /**
-   * Non-blocking constructor that accepts pre-fetched player data Use this constructor when player
-   * data is already available
-   */
   protected BasicGui(Player player, ITanPlayer tanPlayer, String title, int rows) {
     this.gui = Gui.gui().title(Component.text(title)).type(GuiType.CHEST).rows(rows).create();
     this.player = player;

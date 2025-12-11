@@ -8,7 +8,6 @@ import org.leralix.tan.upgrade.rewards.AggregatableStat;
 
 public class ChunkCap extends NumericStat implements AggregatableStat<ChunkCap> {
 
-  /** Default constructor Needed to create an empty stat. Do not remove */
   @SuppressWarnings("unused")
   public ChunkCap() {
     super(0, false);

@@ -22,8 +22,6 @@ public class NoRegionMenu extends BasicGui {
 
   private NoRegionMenu(Player player, ITanPlayer tanPlayer) {
     super(player, tanPlayer, Lang.HEADER_NO_REGION.get(player), 3);
-    // open() doit être appelé explicitement après la construction pour respecter le modèle
-    // asynchrone
   }
 
   public static void open(Player player) {
@@ -66,7 +64,6 @@ public class NoRegionMenu extends BasicGui {
                 TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer), NOT_ALLOWED);
                 return;
               }
-              // OPTIMIZATION: Use async to avoid blocking on player click
               tanPlayer
                   .getTown()
                   .thenAccept(
@@ -100,10 +97,7 @@ public class NoRegionMenu extends BasicGui {
             Lang.GUI_REGION_BROWSE_DESC2.get())
         .setAction(
             action -> {
-              BrowseTerritoryMenu browseMenu =
-                  new BrowseTerritoryMenu(
-                      player, tanPlayer, null, BrowseScope.REGIONS, p -> open());
-              browseMenu.open();
+              BrowseTerritoryMenu.open(player, null, BrowseScope.REGIONS, p -> open());
             })
         .asGuiItem(player, langType);
   }

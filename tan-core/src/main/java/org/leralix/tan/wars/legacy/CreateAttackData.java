@@ -5,13 +5,10 @@ import org.leralix.tan.wars.War;
 
 public class CreateAttackData {
 
-  /** The minimum time, in minutes */
   private final int minTime;
 
-  /** The maximum time, in minutes */
   private final int maxTime;
 
-  /** The selected time, in minutes */
   private int selectedTime;
 
   private final War war;

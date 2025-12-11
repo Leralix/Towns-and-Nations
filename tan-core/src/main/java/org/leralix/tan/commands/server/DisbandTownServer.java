@@ -31,7 +31,7 @@ class DisbandTownServer extends SubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tanserver disbandtown <player_username>";
+    return "/coconationserver disbandtown <player_username>";
   }
 
   @Override
@@ -42,26 +42,22 @@ class DisbandTownServer extends SubCommand {
 
   @Override
   public void perform(CommandSender commandSender, String[] args) {
-    // Validate argument count
     if (!CommandExceptionHandler.validateArgCount(commandSender, args, 2, getSyntax())) {
       return;
     }
 
-    // Find the target player
     Optional<OfflinePlayer> offlinePlayerOpt =
         CommandExceptionHandler.findPlayer(commandSender, args[1]);
     if (offlinePlayerOpt.isEmpty()) {
       return;
     }
 
-    // Check if player is online
     Player player = offlinePlayerOpt.get().getPlayer();
     if (player == null) {
       TanChatUtils.message(commandSender, Lang.PLAYER_NOT_FOUND);
       return;
     }
 
-    // Async: Get player data and town, then delete
     PlayerDataStorage.getInstance()
         .get(player)
         .thenAccept(

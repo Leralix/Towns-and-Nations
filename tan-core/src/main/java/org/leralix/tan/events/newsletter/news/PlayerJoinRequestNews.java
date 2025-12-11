@@ -9,7 +9,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.user.territory.PlayerApplicationMenu;
@@ -59,15 +58,23 @@ public class PlayerJoinRequestNews extends Newsletter {
 
   @Override
   public void broadcast(Player player) {
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
-    if (tanPlayer == null) return;
-    TownData townData = TownDataStorage.getInstance().getSync(townID);
-    if (townData == null) return;
-    TanChatUtils.message(
-        player,
-        Lang.PLAYER_APPLICATION_NEWSLETTER.get(
-            player, tanPlayer.getNameStored(), townData.getBaseColoredName()),
-        SoundEnum.MINOR_GOOD);
+    PlayerDataStorage.getInstance()
+        .get(playerID)
+        .thenAccept(
+            tanPlayer -> {
+              if (tanPlayer == null) return;
+              TownDataStorage.getInstance()
+                  .get(townID)
+                  .thenAccept(
+                      townData -> {
+                        if (townData == null) return;
+                        TanChatUtils.message(
+                            player,
+                            Lang.PLAYER_APPLICATION_NEWSLETTER.get(
+                                player, tanPlayer.getNameStored(), townData.getBaseColoredName()),
+                            SoundEnum.MINOR_GOOD);
+                      });
+            });
   }
 
   @Override

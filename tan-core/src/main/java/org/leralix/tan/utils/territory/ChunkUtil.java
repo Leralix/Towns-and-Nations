@@ -85,16 +85,15 @@ public class ChunkUtil {
       visited.add(key);
 
       if (!(current instanceof TerritoryChunk territoryChunk)) {
-        continue; // Ignore wilderness or other non-territory chunks
+        continue;
       }
 
       if (!territoryChunk.getOwnerID().equals(ownerID)) {
-        continue; // Belongs to another territory
+        continue;
       }
 
       result.add(current);
 
-      // Get adjacent chunks (4 directions)
       List<ClaimedChunk2> adjacentChunks = claimedChunkStorage.getFourAjacentChunks(current);
       for (ClaimedChunk2 adj : adjacentChunks) {
         if (adj != null
@@ -141,50 +140,18 @@ public class ChunkUtil {
     return false;
   }
 
-  /**
-   * Get all claimed chunks in a radius around a center chunk The radius is in chunks and is
-   * circular.
-   *
-   * @param center The chunk at the center of the radius
-   * @param radius The radius in chunks
-   * @return A list of claimed chunks in the radius
-   */
   public static List<ClaimedChunk2> getChunksInRadius(Chunk center, double radius) {
     return getChunksInRadius(center, (int) Math.ceil(radius));
   }
 
-  /**
-   * Get all claimed chunks in a radius around a center chunk The radius is in chunks and is
-   * circular.
-   *
-   * @param center The chunk at the center of the radius
-   * @param radius The radius in chunks
-   * @return A list of claimed chunks in the radius
-   */
   public static List<ClaimedChunk2> getChunksInRadius(Chunk center, int radius) {
     return getChunksInRadius(NewClaimedChunkStorage.getInstance().get(center), radius);
   }
 
-  /**
-   * Get all claimed chunks in a radius around a center chunk The radius is in chunks and is
-   * circular.
-   *
-   * @param center The chunk at the center of the radius
-   * @param radius The radius in chunks
-   * @return A list of claimed chunks in the radius
-   */
   public static List<ClaimedChunk2> getChunksInRadius(ClaimedChunk2 center, double radius) {
     return getChunksInRadius(center, (int) Math.ceil(radius));
   }
 
-  /**
-   * Get all claimed chunks in a radius around a center chunk The radius is in chunks and is
-   * circular.
-   *
-   * @param center The chunk at the center of the radius
-   * @param radius The radius in chunks
-   * @return A list of claimed chunks in the radius
-   */
   public static List<ClaimedChunk2> getChunksInRadius(ClaimedChunk2 center, int radius) {
     List<ClaimedChunk2> chunksInRadius = new ArrayList<>();
     int centerX = center.getX();

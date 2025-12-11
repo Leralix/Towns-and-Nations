@@ -37,7 +37,6 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 public class TownData extends TerritoryData {
 
-  // This is all that should be kept after the transition to the parent class
   private String uuidLeader;
   private String townTag;
   private boolean isRecruiting;
@@ -81,7 +80,8 @@ public class TownData extends TerritoryData {
     getTownDefaultRank().addPlayer(tanNewPlayer);
     tanNewPlayer.joinTown(this);
 
-    // All player interactions MUST run on main thread
+    PlayerDataStorage.getInstance().putSync(tanNewPlayer.getID(), tanNewPlayer);
+
     org.leralix.tan.utils.FoliaScheduler.runTask(
         org.leralix.tan.TownsAndNations.getPlugin(),
         () -> {
@@ -102,12 +102,16 @@ public class TownData extends TerritoryData {
           PrefixUtil.updatePrefix(tanNewPlayer.getPlayer());
         });
 
-    // Save this town to database (DatabaseStorage auto-saves on put)
     TownDataStorage.getInstance().putSync(getID(), this);
+
+    var syncService = org.leralix.tan.TownsAndNations.getPlugin().getTownSyncService();
+    if (syncService != null) {
+      syncService.publishSettingsUpdated(getID());
+    }
   }
 
   public void removePlayer(String tanPlayerID) {
-    removePlayer(PlayerDataStorage.getInstance().getSync(tanPlayerID));
+    removePlayer(PlayerDataStorage.getInstance().get(tanPlayerID).join());
   }
 
   public void removePlayer(ITanPlayer tanPlayer) {
@@ -118,9 +122,16 @@ public class TownData extends TerritoryData {
     getRank(tanPlayer).removePlayer(tanPlayer);
     townPlayerListId.remove(tanPlayer.getID());
     tanPlayer.leaveTown();
-    // Save this town to database (DatabaseStorage auto-saves on put)
+
+    PlayerDataStorage.getInstance().putSync(tanPlayer.getID(), tanPlayer);
+
     TownDataStorage.getInstance().putSync(getID(), this);
     PrefixUtil.updatePrefix(tanPlayer.getPlayer());
+
+    var syncService = org.leralix.tan.TownsAndNations.getPlugin().getTownSyncService();
+    if (syncService != null) {
+      syncService.publishSettingsUpdated(getID());
+    }
   }
 
   @Override
@@ -132,7 +143,7 @@ public class TownData extends TerritoryData {
   public Collection<ITanPlayer> getITanPlayerList() {
     List<ITanPlayer> players = new ArrayList<>();
     for (String playerID : getPlayerIDList()) {
-      ITanPlayer player = PlayerDataStorage.getInstance().getSync(playerID);
+      ITanPlayer player = PlayerDataStorage.getInstance().get(playerID).join();
       if (player != null) {
         players.add(player);
       }
@@ -190,11 +201,9 @@ public class TownData extends TerritoryData {
   public String getLeaderID() {
     if (this.uuidLeader == null) {
       if (townPlayerListId.isEmpty()) {
-        return null; // No leader and no players in the list
+        return null;
       }
-      return townPlayerListId
-          .iterator()
-          .next(); // If the leader is null, the first player in the list is the leader
+      return townPlayerListId.iterator().next();
     }
     return this.uuidLeader;
   }
@@ -210,7 +219,13 @@ public class TownData extends TerritoryData {
 
   @Override
   public void setLeaderID(String leaderID) {
+    String oldLeader = this.uuidLeader;
     this.uuidLeader = leaderID;
+
+    var syncService = org.leralix.tan.TownsAndNations.getPlugin().getTownSyncService();
+    if (syncService != null) {
+      syncService.publishLeaderChanged(getID(), oldLeader, leaderID);
+    }
   }
 
   @Override
@@ -223,7 +238,7 @@ public class TownData extends TerritoryData {
     List<TerritoryData> overlords = new ArrayList<>();
 
     if (haveOverlord()) {
-      RegionData regionData = RegionDataStorage.getInstance().getSync(this.overlordID);
+      RegionData regionData = RegionDataStorage.getInstance().get(this.overlordID).join();
       if (regionData != null) {
         overlords.add(regionData);
         regionData.getOverlord().ifPresent(overlords::add);
@@ -273,7 +288,7 @@ public class TownData extends TerritoryData {
   }
 
   public void addPlayerJoinRequest(Player player) {
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player).join();
     EventManager.getInstance().callEvent(new PlayerJoinTownRequestInternalEvent(tanPlayer, this));
     addPlayerJoinRequest(tanPlayer.getID());
   }
@@ -316,7 +331,6 @@ public class TownData extends TerritoryData {
     for (ITanPlayer tanPlayer : tanPlayers) {
       OfflinePlayer offlinePlayer = tanPlayer.getOfflinePlayer();
 
-      // Bloquant ici pour getRank, mais c'est une opération rapide sur l'objet ITanPlayer
       if (!getRank(tanPlayer).isPayingTaxes()) continue;
 
       double tax = getTax();
@@ -356,7 +370,6 @@ public class TownData extends TerritoryData {
 
     ClaimedChunk2 chunkClaimed =
         NewClaimedChunkStorage.getInstance().claimTownChunk(chunk, getID());
-    // If this was the first claimed chunk, set the capital.
     if (getNumberOfClaimedChunk() == 1) {
       setCapitalLocation(chunkClaimed.getVector2D());
     }
@@ -371,7 +384,7 @@ public class TownData extends TerritoryData {
   }
 
   public RegionData getRegionSync() {
-    return RegionDataStorage.getInstance().getSync(this.overlordID);
+    return RegionDataStorage.getInstance().get(this.overlordID).join();
   }
 
   @Override
@@ -387,14 +400,10 @@ public class TownData extends TerritoryData {
   }
 
   @Override
-  protected void addVassalPrivate(TerritoryData vassal) {
-    // town have no vassals
-  }
+  protected void addVassalPrivate(TerritoryData vassal) {}
 
   @Override
-  protected void removeVassal(TerritoryData vassal) {
-    // Town have no vassals
-  }
+  protected void removeVassal(TerritoryData vassal) {}
 
   @Override
   public TerritoryData getCapital() {
@@ -409,7 +418,7 @@ public class TownData extends TerritoryData {
 
     for (String playerUUID : getOrderedPlayerIDListSync()) {
       OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
-      ITanPlayer playerIterateData = PlayerDataStorage.getInstance().getSync(playerUUID);
+      ITanPlayer playerIterateData = PlayerDataStorage.getInstance().get(playerUUID).join();
       ItemStack playerHead =
           HeadUtils.getPlayerHead(
               playerIterate,
@@ -429,9 +438,9 @@ public class TownData extends TerritoryData {
                     if (event.getClick() == ClickType.RIGHT) {
 
                       ITanPlayer kickedPlayer =
-                          PlayerDataStorage.getInstance().getSync(playerIterate);
+                          PlayerDataStorage.getInstance().get(playerIterate).join();
                       TownData townData =
-                          TownDataStorage.getInstance().getSync(tanPlayer.getTownId());
+                          TownDataStorage.getInstance().get(tanPlayer.getTownId()).join();
 
                       if (!doesPlayerHavePermission(tanPlayer, RolePermission.KICK_PLAYER)) {
                         TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType));
@@ -455,7 +464,6 @@ public class TownData extends TerritoryData {
                         return;
                       }
 
-                      // Open confirmation menu for kicking player
                       ConfirmMenu.open(
                           player,
                           Lang.CONFIRM_PLAYER_KICKED.get(playerIterate.getName()),
@@ -507,7 +515,6 @@ public class TownData extends TerritoryData {
     for (PropertyData propertyData : getPropertyDataMap().values()) {
       try {
         String totalID = propertyData.getTotalID();
-        // Assuming totalID format is always "TownID_P<number>"
         String[] parts = totalID.split("P");
         if (parts.length > 1) {
           int currentID = Integer.parseInt(parts[1]);
@@ -516,8 +523,6 @@ public class TownData extends TerritoryData {
           }
         }
       } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-        // Log the error or handle it as appropriate for your application
-        // For now, we'll just skip this property if its ID is malformed
         System.err.println(
             "Warning: Malformed property ID encountered: " + propertyData.getTotalID());
       }
@@ -583,7 +588,7 @@ public class TownData extends TerritoryData {
   }
 
   public void kickPlayer(OfflinePlayer kickedPlayer) {
-    ITanPlayer kickedITanPlayer = PlayerDataStorage.getInstance().getSync(kickedPlayer);
+    ITanPlayer kickedITanPlayer = PlayerDataStorage.getInstance().get(kickedPlayer).join();
     removePlayer(kickedITanPlayer);
 
     broadcastMessageWithSound(
@@ -614,14 +619,14 @@ public class TownData extends TerritoryData {
     super.delete();
 
     if (haveOverlord()) {
-      RegionData regionData = RegionDataStorage.getInstance().getSync(this.overlordID);
+      RegionData regionData = RegionDataStorage.getInstance().get(this.overlordID).join();
       if (regionData != null) {
         regionData.removeVassal(this);
       }
     }
 
-    removeAllLandmark(); // Remove all Landmark from the deleted town
-    removeAllProperty(); // Remove all Property from the deleted town
+    removeAllLandmark();
+    removeAllProperty();
 
     List<String> playersToRemove = new ArrayList<>(getPlayerIDList());
     for (String playerID : playersToRemove) {

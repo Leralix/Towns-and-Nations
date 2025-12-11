@@ -10,14 +10,10 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.exceptions.DatabaseNotReadyException;
+import org.leralix.tan.storage.sync.SyncedEntity;
+import org.leralix.tan.redis.QueryCacheManager;
+import org.leralix.tan.redis.RedisSyncManager;
 
-/**
- * Base class for database-backed storage with optional caching. Each get() retrieves data from the
- * database or cache, each set() writes to the database. Includes LRU cache for frequently accessed
- * data to reduce DB queries.
- *
- * @param <T> The type of object being stored
- */
 public abstract class DatabaseStorage<T> {
 
   protected final Gson gson;
@@ -25,7 +21,6 @@ public abstract class DatabaseStorage<T> {
   protected final Class<T> typeClass;
   protected final Type typeToken;
 
-  // Optional LRU cache for frequently accessed objects (max 100 entries)
   protected final Map<String, T> cache;
   protected final int cacheSize;
   protected final boolean cacheEnabled;
@@ -36,7 +31,6 @@ public abstract class DatabaseStorage<T> {
 
   protected DatabaseStorage(
       String tableName, Class<T> typeClass, Type typeToken, Gson gson, boolean enableCache) {
-    // PERFORMANCE FIX: Default cache size increased from 100 to 1000
     this(
         tableName,
         typeClass,
@@ -58,8 +52,6 @@ public abstract class DatabaseStorage<T> {
     this.typeToken = typeToken;
     this.gson = gson;
     this.cacheEnabled = enableCache;
-    // PERFORMANCE FIX: Increased default from 100 to 1000 for better cache hit rate on busy servers
-    // For large servers, configure higher in config.yml: cache.<table_name>: 5000
     this.cacheSize = cacheSize;
     this.cache =
         enableCache
@@ -71,54 +63,59 @@ public abstract class DatabaseStorage<T> {
                   }
                 })
             : null;
-    createTable();
-    createIndexes();
+    ensureTableCreated();
   }
 
-  /** Get the database handler */
   protected DatabaseHandler getDatabase() {
     return TownsAndNations.getPlugin().getDatabaseHandler();
   }
 
-  /** Create the table if it doesn't exist */
-  protected abstract void createTable();
+  private void ensureTableCreated() {
+    DatabaseHandler db = getDatabase();
+    if (db == null || db.getDataSource() == null) {
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .severe(
+              "[TaN-DB-ERROR] Cannot create table " + tableName + " - Database not initialized!");
+      return;
+    }
 
-  /** Create indexes for better performance Override this method to add custom indexes */
-  protected void createIndexes() {
-    // Default: create index on id (usually already primary key, but good for lookups)
-    // Subclasses can override to add more indexes
+    try {
+      createTable();
+      createIndexes();
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .info("[TaN-DB] Table " + tableName + " initialization complete");
+    } catch (Exception e) {
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .severe("[TaN-DB-ERROR] Failed to create table " + tableName + ": " + e.getMessage());
+      e.printStackTrace();
+    }
   }
 
-  /** Clear the cache */
+  protected abstract void createTable();
+
+  protected void createIndexes() {}
+
   protected void clearCache() {
     if (cacheEnabled && cache != null) {
       cache.clear();
     }
   }
 
-  /** Remove an entry from cache */
   protected void invalidateCache(String id) {
     if (cacheEnabled && cache != null) {
       cache.remove(id);
     }
   }
 
-  /**
-   * Invalidate cache entries by matching a condition (e.g., by owner ID) More efficient than
-   * clearing entire cache
-   */
   protected void invalidateCacheIf(java.util.function.Predicate<T> condition) {
     if (cacheEnabled && cache != null) {
       cache.entrySet().removeIf(entry -> condition.test(entry.getValue()));
     }
   }
 
-  /**
-   * Get an object by ID from the database or cache
-   *
-   * @param id The ID of the object
-   * @return The object, or null if not found
-   */
   public CompletableFuture<T> get(String id) {
     CompletableFuture<T> future = new CompletableFuture<>();
     if (id == null) {
@@ -126,16 +123,20 @@ public abstract class DatabaseStorage<T> {
       return future;
     }
 
-    // Check cache first
     if (cacheEnabled && cache != null) {
       T cached = cache.get(id);
       if (cached != null) {
+        TownsAndNations.getPlugin()
+            .getLogger()
+            .info(
+                String.format(
+                    "[TaN-MySQL-READ] Table: %s | ID: %s | Type: %s | Cache: HIT",
+                    tableName, id, typeClass.getSimpleName()));
         future.complete(cached);
         return future;
       }
     }
 
-    // Load from database asynchronously
     runAsync(
         () -> {
           try {
@@ -145,10 +146,8 @@ public abstract class DatabaseStorage<T> {
             }
             future.complete(object);
           } catch (DatabaseNotReadyException e) {
-            // Propagate exception - caller should handle retry logic
             future.completeExceptionally(e);
           } catch (Exception e) {
-            // Any other exception - propagate it
             future.completeExceptionally(e);
           }
         });
@@ -156,32 +155,18 @@ public abstract class DatabaseStorage<T> {
     return future;
   }
 
-  /** Helper method to run a task asynchronously, detecting Folia/Paper environment. */
   private void runAsync(Runnable task) {
     try {
-      // Check if FoliaScheduler is available (e.g., by trying to call a Folia-specific method)
-      // This is a placeholder for actual Folia detection logic.
-      // For now, we'll just use FoliaScheduler directly as it's already imported in other files.
       org.leralix.tan.utils.FoliaScheduler.runTaskAsynchronously(TownsAndNations.getPlugin(), task);
     } catch (NoClassDefFoundError | NoSuchMethodError e) {
-      // Fallback for Paper/Spigot
       org.bukkit.Bukkit.getScheduler().runTaskAsynchronously(TownsAndNations.getPlugin(), task);
     }
   }
 
-  /**
-   * Load an object from the database (internal method, not cached)
-   *
-   * @param id The ID of the object
-   * @return The object if found, null if not found in database
-   * @throws DatabaseNotReadyException if database connection is not available (recoverable error -
-   *     retry recommended)
-   */
   private T loadFromDatabase(String id) {
     String selectSQL = "SELECT data FROM " + tableName + " WHERE id = ?";
 
     try (Connection conn = getDatabase().getDataSource().getConnection()) {
-      // Validate connection - throw exception instead of returning null
       if (conn == null || conn.isClosed()) {
         String errorMsg = "Database connection is null or closed for " + typeClass.getSimpleName();
         TownsAndNations.getPlugin().getLogger().severe(errorMsg);
@@ -191,9 +176,19 @@ public abstract class DatabaseStorage<T> {
       try (PreparedStatement ps = conn.prepareStatement(selectSQL)) {
         ps.setString(1, id);
 
+        long startTime = System.currentTimeMillis();
         try (ResultSet rs = ps.executeQuery()) {
+          long duration = System.currentTimeMillis() - startTime;
+
           if (rs.next()) {
             String jsonData = rs.getString("data");
+
+            TownsAndNations.getPlugin()
+                .getLogger()
+                .info(
+                    String.format(
+                        "[TaN-MySQL-READ] Table: %s | ID: %s | Type: %s | Size: %d bytes | Time: %dms | Cache: MISS",
+                        tableName, id, typeClass.getSimpleName(), jsonData.length(), duration));
 
             if (typeToken.equals(ITanPlayer.class)) {
               com.google.gson.JsonElement jsonElement =
@@ -207,12 +202,10 @@ public abstract class DatabaseStorage<T> {
 
             return gson.fromJson(jsonData, typeToken);
           }
-          // Player not found in database - return null (not an error, just not found)
           return null;
         }
       }
     } catch (SQLException e) {
-      // SQL errors might indicate temporary database issues - throw DatabaseNotReadyException
       String errorMsg =
           "SQL error retrieving "
               + typeClass.getSimpleName()
@@ -223,7 +216,6 @@ public abstract class DatabaseStorage<T> {
       TownsAndNations.getPlugin().getLogger().severe(errorMsg);
       throw new DatabaseNotReadyException(errorMsg, e);
     } catch (JsonSyntaxException e) {
-      // JSON parsing errors indicate corrupted data - this is NOT recoverable
       String errorMsg =
           "JSON parsing error for "
               + typeClass.getSimpleName()
@@ -236,26 +228,11 @@ public abstract class DatabaseStorage<T> {
     }
   }
 
-  /**
-   * Get all objects from the database synchronously WARNING: This can be expensive for large
-   * tables. Consider using pagination or specific queries.
-   *
-   * @deprecated Use getAllAsync() for background operations or getAllSync() for explicit
-   *     synchronous needs
-   * @return A map of ID to object
-   */
   @Deprecated
   public Map<String, T> getAll() {
     return getAllSync();
   }
 
-  /**
-   * Get all objects from the database synchronously (blocks current thread) Use this method when
-   * you explicitly need synchronous access (e.g., in GUI menus). For background operations, prefer
-   * getAllAsync() or processBatches(). WARNING: This can be expensive for large tables.
-   *
-   * @return A map of ID to object
-   */
   public Map<String, T> getAllSync() {
     Map<String, T> result = new LinkedHashMap<>();
     String selectSQL = "SELECT id, data FROM " + tableName;
@@ -294,12 +271,6 @@ public abstract class DatabaseStorage<T> {
     return result;
   }
 
-  /**
-   * Get all objects from the database asynchronously (non-blocking) WARNING: This can be expensive
-   * for large tables. Consider using pagination or specific queries.
-   *
-   * @return CompletableFuture with a map of ID to object
-   */
   public CompletableFuture<Map<String, T>> getAllAsync() {
     CompletableFuture<Map<String, T>> future = new CompletableFuture<>();
 
@@ -350,11 +321,6 @@ public abstract class DatabaseStorage<T> {
     return future;
   }
 
-  /**
-   * Get all IDs from the database (faster than getAll() when you only need IDs)
-   *
-   * @return A list of IDs
-   */
   public List<String> getAllIds() {
     List<String> result = new ArrayList<>();
     String selectSQL = "SELECT id FROM " + tableName;
@@ -376,27 +342,11 @@ public abstract class DatabaseStorage<T> {
     return result;
   }
 
-  /**
-   * Put an object in the database synchronously (blocks current thread)
-   *
-   * @deprecated Use putAsync() for background operations or putSync() for explicit synchronous
-   *     needs
-   * @param id The ID of the object
-   * @param obj The object to store
-   */
   @Deprecated
   public void put(String id, T obj) {
     putSync(id, obj);
   }
 
-  /**
-   * Put an object in the database synchronously (blocks current thread) Use this method when you
-   * explicitly need synchronous write (e.g., critical saves). For most operations, prefer
-   * putAsync() for better performance.
-   *
-   * @param id The ID of the object
-   * @param obj The object to store
-   */
   public void putSync(String id, T obj) {
     if (id == null || obj == null) {
       return;
@@ -410,9 +360,17 @@ public abstract class DatabaseStorage<T> {
 
       ps.setString(1, id);
       ps.setString(2, jsonData);
+      long startTime = System.currentTimeMillis();
       ps.executeUpdate();
+      long duration = System.currentTimeMillis() - startTime;
 
-      // Update cache
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .info(
+              String.format(
+                  "[TaN-MySQL-WRITE] Table: %s | ID: %s | Type: %s | Size: %d bytes | Time: %dms",
+                  tableName, id, typeClass.getSimpleName(), jsonData.length(), duration));
+
       if (cacheEnabled && cache != null) {
         synchronized (cache) {
           cache.put(id, obj);
@@ -432,19 +390,11 @@ public abstract class DatabaseStorage<T> {
     }
   }
 
-  /**
-   * Put an object in the database asynchronously (non-blocking)
-   *
-   * @param id The ID of the object
-   * @param obj The object to store
-   * @return CompletableFuture that completes when the operation is done
-   */
   public CompletableFuture<Void> putAsync(String id, T obj) {
     if (id == null || obj == null) {
       return CompletableFuture.completedFuture(null);
     }
 
-    // Update cache immediately (optimistic update)
     if (cacheEnabled && cache != null) {
       cache.put(id, obj);
     }
@@ -460,7 +410,16 @@ public abstract class DatabaseStorage<T> {
 
             ps.setString(1, id);
             ps.setString(2, jsonData);
+            long startTime = System.currentTimeMillis();
             ps.executeUpdate();
+            long duration = System.currentTimeMillis() - startTime;
+
+            TownsAndNations.getPlugin()
+                .getLogger()
+                .info(
+                    String.format(
+                        "[TaN-MySQL-WRITE-ASYNC] Table: %s | ID: %s | Type: %s | Size: %d bytes | Time: %dms",
+                        tableName, id, typeClass.getSimpleName(), jsonData.length(), duration));
 
             future.complete(null);
 
@@ -482,10 +441,87 @@ public abstract class DatabaseStorage<T> {
   }
 
   /**
-   * Batch insert/update multiple objects (more efficient than multiple put() calls)
+   * Stores entity with full cache invalidation (L1 local + L2 Redis) and cross-server sync.
+   * <p><b>RECOMMENDED:</b> Use this instead of deprecated {@link #put(String, Object)}.
    *
-   * @param objects Map of ID to object
+   * <p>This method guarantees:
+   * <ul>
+   *   <li>MySQL write-through (source of truth)</li>
+   *   <li>Local cache (L1) update</li>
+   *   <li>Redis query cache (L2) invalidation</li>
+   *   <li>Cross-server cache invalidation broadcast</li>
+   *   <li>Optimistic locking for {@link SyncedEntity} implementations</li>
+   * </ul>
+   *
+   * <p><b>Example usage:</b>
+   * <pre>{@code
+   * TownData town = storage.get(townId).join();
+   * town.setBalance(newBalance);
+   * town.touch(); // Update version/timestamp
+   * storage.putWithInvalidation(townId, town).join();
+   * }</pre>
+   *
+   * @param id unique entity identifier
+   * @param obj entity to persist
+   * @return CompletableFuture that completes when all operations finish
+   * @throws SyncedEntity.StaleDataException if optimistic locking detects conflict
+   * @since 0.18.0
    */
+  public CompletableFuture<Void> putWithInvalidation(String id, T obj) {
+    if (id == null || obj == null) {
+      return CompletableFuture.completedFuture(null);
+    }
+
+    // Optimistic locking check for SyncedEntity
+    if (obj instanceof SyncedEntity) {
+      SyncedEntity syncedObj = (SyncedEntity) obj;
+      syncedObj.touch(); // Update version + timestamp
+    }
+
+    // Write to MySQL + L1 cache
+    return putAsync(id, obj)
+        .thenRun(
+            () -> {
+              // Invalidate Redis L2 cache
+              String cacheKey = "tan:cache:" + tableName.toLowerCase() + ":" + id;
+              QueryCacheManager.invalidateTerritory(id);
+
+              // Broadcast cache invalidation to other servers
+              RedisSyncManager syncManager = TownsAndNations.getPlugin().getRedisSyncManager();
+              if (syncManager != null) {
+                syncManager.publishCacheInvalidation(cacheKey);
+                TownsAndNations.getPlugin()
+                    .getLogger()
+                    .fine(
+                        String.format(
+                            "[TaN-SYNC] Cache invalidation broadcast: %s | Table: %s | ID: %s",
+                            cacheKey, tableName, id));
+              }
+            })
+        .exceptionally(
+            throwable -> {
+              TownsAndNations.getPlugin()
+                  .getLogger()
+                  .severe(
+                      String.format(
+                          "[TaN-SYNC-ERROR] Failed putWithInvalidation: Table=%s, ID=%s, Error=%s",
+                          tableName, id, throwable.getMessage()));
+              return null;
+            });
+  }
+
+  /**
+   * Stores entity synchronously with full cache invalidation.
+   * <p><b>WARNING:</b> Blocks thread. Prefer {@link #putWithInvalidation(String, Object)} for async.
+   *
+   * @param id unique entity identifier
+   * @param obj entity to persist
+   * @since 0.18.0
+   */
+  public void putSyncWithInvalidation(String id, T obj) {
+    putWithInvalidation(id, obj).join();
+  }
+
   public void putAll(Map<String, T> objects) {
     if (objects == null || objects.isEmpty()) {
       return;
@@ -514,7 +550,6 @@ public abstract class DatabaseStorage<T> {
         ps.executeBatch();
         conn.commit();
 
-        // Update cache
         if (cacheEnabled && cache != null) {
           cache.putAll(objects);
         }
@@ -558,12 +593,6 @@ public abstract class DatabaseStorage<T> {
     }
   }
 
-  /**
-   * Delete an object from the database synchronously (blocks current thread)
-   *
-   * @deprecated Use deleteAsync() instead for non-blocking operations
-   * @param id The ID of the object
-   */
   @Deprecated
   public void delete(String id) {
     if (id == null) {
@@ -576,9 +605,17 @@ public abstract class DatabaseStorage<T> {
         PreparedStatement ps = conn.prepareStatement(deleteSQL)) {
 
       ps.setString(1, id);
+      long startTime = System.currentTimeMillis();
       ps.executeUpdate();
+      long duration = System.currentTimeMillis() - startTime;
 
-      // Remove from cache
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .info(
+              String.format(
+                  "[TaN-MySQL-DELETE] Table: %s | ID: %s | Type: %s | Time: %dms",
+                  tableName, id, typeClass.getSimpleName(), duration));
+
       invalidateCache(id);
 
     } catch (SQLException e) {
@@ -594,18 +631,11 @@ public abstract class DatabaseStorage<T> {
     }
   }
 
-  /**
-   * Delete an object from the database asynchronously (non-blocking)
-   *
-   * @param id The ID of the object
-   * @return CompletableFuture that completes when the operation is done
-   */
   public CompletableFuture<Void> deleteAsync(String id) {
     if (id == null) {
       return CompletableFuture.completedFuture(null);
     }
 
-    // Remove from cache immediately (optimistic delete)
     invalidateCache(id);
 
     CompletableFuture<Void> future = new CompletableFuture<>();
@@ -617,7 +647,16 @@ public abstract class DatabaseStorage<T> {
               PreparedStatement ps = conn.prepareStatement(deleteSQL)) {
 
             ps.setString(1, id);
+            long startTime = System.currentTimeMillis();
             ps.executeUpdate();
+            long duration = System.currentTimeMillis() - startTime;
+
+            TownsAndNations.getPlugin()
+                .getLogger()
+                .info(
+                    String.format(
+                        "[TaN-MySQL-DELETE-ASYNC] Table: %s | ID: %s | Type: %s | Time: %dms",
+                        tableName, id, typeClass.getSimpleName(), duration));
 
             future.complete(null);
 
@@ -639,10 +678,57 @@ public abstract class DatabaseStorage<T> {
   }
 
   /**
-   * Batch delete multiple objects (more efficient than multiple delete() calls)
+   * Deletes entity with full cache invalidation (L1 local + L2 Redis) and cross-server sync.
+   * <p><b>RECOMMENDED:</b> Use this instead of deprecated {@link #delete(String)}.
    *
-   * @param ids List of IDs to delete
+   * <p>This method guarantees:
+   * <ul>
+   *   <li>MySQL deletion</li>
+   *   <li>Local cache (L1) invalidation</li>
+   *   <li>Redis query cache (L2) invalidation</li>
+   *   <li>Cross-server cache invalidation broadcast</li>
+   * </ul>
+   *
+   * @param id unique entity identifier to delete
+   * @return CompletableFuture that completes when deletion finishes
+   * @since 0.18.0
    */
+  public CompletableFuture<Void> deleteWithInvalidation(String id) {
+    if (id == null) {
+      return CompletableFuture.completedFuture(null);
+    }
+
+    return deleteAsync(id)
+        .thenRun(
+            () -> {
+              // Invalidate Redis L2 cache
+              String cacheKey = "tan:cache:" + tableName.toLowerCase() + ":" + id;
+              QueryCacheManager.invalidateTerritory(id);
+
+              // Broadcast cache invalidation to other servers
+              RedisSyncManager syncManager = TownsAndNations.getPlugin().getRedisSyncManager();
+              if (syncManager != null) {
+                syncManager.publishCacheInvalidation(cacheKey);
+                TownsAndNations.getPlugin()
+                    .getLogger()
+                    .fine(
+                        String.format(
+                            "[TaN-SYNC] Delete cache invalidation: %s | Table: %s | ID: %s",
+                            cacheKey, tableName, id));
+              }
+            })
+        .exceptionally(
+            throwable -> {
+              TownsAndNations.getPlugin()
+                  .getLogger()
+                  .severe(
+                      String.format(
+                          "[TaN-SYNC-ERROR] Failed deleteWithInvalidation: Table=%s, ID=%s, Error=%s",
+                          tableName, id, throwable.getMessage()));
+              return null;
+            });
+  }
+
   public void deleteAll(Collection<String> ids) {
     if (ids == null || ids.isEmpty()) {
       return;
@@ -666,7 +752,6 @@ public abstract class DatabaseStorage<T> {
         ps.executeBatch();
         conn.commit();
 
-        // Invalidate cache only after successful commit
         for (String id : ids) {
           if (id != null) {
             invalidateCache(id);
@@ -712,14 +797,7 @@ public abstract class DatabaseStorage<T> {
     }
   }
 
-  /**
-   * Check if an ID exists in the database
-   *
-   * @param id The ID to check
-   * @return true if exists, false otherwise
-   */
   public boolean exists(String id) {
-    // OPTIMIZATION: Check cache first
     if (cacheEnabled && cache != null) {
       synchronized (cache) {
         if (cache.containsKey(id)) {
@@ -753,11 +831,6 @@ public abstract class DatabaseStorage<T> {
     return false;
   }
 
-  /**
-   * Get the count of objects in the database
-   *
-   * @return The count
-   */
   public int count() {
     String countSQL = "SELECT COUNT(*) FROM " + tableName;
 
@@ -777,14 +850,6 @@ public abstract class DatabaseStorage<T> {
     return 0;
   }
 
-  /**
-   * Get a paginated list of objects from the database (async) PERFORMANCE: Use this instead of
-   * getAll() for large tables to avoid loading everything at once
-   *
-   * @param offset Starting position (0-indexed)
-   * @param limit Maximum number of objects to retrieve
-   * @return CompletableFuture with a map of ID to object
-   */
   public CompletableFuture<Map<String, T>> getPaginated(int offset, int limit) {
     CompletableFuture<Map<String, T>> future = new CompletableFuture<>();
 
@@ -807,7 +872,6 @@ public abstract class DatabaseStorage<T> {
                   T object = gson.fromJson(jsonData, typeToken);
                   if (object != null) {
                     result.put(id, object);
-                    // Update cache
                     if (cacheEnabled && cache != null) {
                       cache.put(id, object);
                     }
@@ -843,14 +907,6 @@ public abstract class DatabaseStorage<T> {
     return future;
   }
 
-  /**
-   * Process all objects in batches using a consumer function PERFORMANCE: Use this for processing
-   * large tables to avoid memory issues
-   *
-   * @param batchSize Number of objects to process per batch
-   * @param consumer Function to process each batch
-   * @return CompletableFuture that completes when all batches are processed
-   */
   public CompletableFuture<Void> processBatches(
       int batchSize, java.util.function.Consumer<Map<String, T>> consumer) {
     CompletableFuture<Void> future = new CompletableFuture<>();
@@ -861,7 +917,6 @@ public abstract class DatabaseStorage<T> {
             int offset = 0;
             boolean hasMore = true;
 
-            // Process batches without counting total (avoids blocking count() call)
             while (hasMore) {
               Map<String, T> batch = getPaginated(offset, batchSize).join();
               if (batch.isEmpty()) {
@@ -889,6 +944,5 @@ public abstract class DatabaseStorage<T> {
     return future;
   }
 
-  /** Reset the storage (for testing purposes) */
   public abstract void reset();
 }

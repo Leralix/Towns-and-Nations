@@ -35,7 +35,6 @@ public class EnumMapDeserializer<E extends Enum<E>, V> implements JsonDeserializ
         continue;
       }
 
-      // Désérialise la valeur associée
       V value = context.deserialize(entry.getValue(), valueType);
       resultMap.put(enumValue, value);
     }

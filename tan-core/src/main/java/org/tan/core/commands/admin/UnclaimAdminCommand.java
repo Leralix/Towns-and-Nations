@@ -43,7 +43,6 @@ public class UnclaimAdminCommand extends PlayerSubCommand {
 
   @Override
   public void perform(Player player, String[] args) {
-    // Validate argument count (expects exactly 1 - just the command)
     if (!CommandExceptionHandler.validateArgCount((CommandSender) player, args, 1, getSyntax())) {
       return;
     }

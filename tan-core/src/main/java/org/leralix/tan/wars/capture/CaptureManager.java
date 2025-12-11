@@ -140,15 +140,6 @@ public class CaptureManager {
     }
   }
 
-  /**
-   * Check if the claimed chunk can be claimed by the main defender of the current attack. A claim
-   * can be captured only if the claimed chunk is owned by the main defender and is adjacent to
-   * another claimed chunk of the same territory.
-   *
-   * @param territoryChunk The claimed chunk to check
-   * @param mainDefender The main defender of the current attack
-   * @return True if the claimed chunk can be captured, false otherwise
-   */
   private boolean canBeCaptured(
       TerritoryChunk territoryChunk, TerritoryData mainAttacker, TerritoryData mainDefender) {
     String ownerID = territoryChunk.getOwnerID();
@@ -172,11 +163,6 @@ public class CaptureManager {
     return !surroundedBySame;
   }
 
-  /**
-   * When a planned attack is removed, all captures related to it should be removed.
-   *
-   * @param plannedAttack the planned attack to remove captures for
-   */
   public void removeCapture(PlannedAttack plannedAttack) {
     String warID = plannedAttack.getID();
 

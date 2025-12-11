@@ -34,7 +34,6 @@ public class AdminWarsMenu extends IteratorGUI {
 
   @Override
   public void open() {
-    // Show immediate loading screen with cached data
     GuiUtil.createIterator(
         gui,
         cachedWars,
@@ -45,12 +44,11 @@ public class AdminWarsMenu extends IteratorGUI {
         p -> previousPage());
     gui.open(player);
 
-    // Load data asynchronously if not already loaded
     if (!isLoaded) {
       AsyncGuiHelper.loadAsync(
           player,
-          this::getAllWars, // Async supplier - loads war data
-          items -> { // Main thread consumer - updates GUI
+          this::getAllWars,
+          items -> {
             cachedWars = items;
             isLoaded = true;
             GuiUtil.createIterator(

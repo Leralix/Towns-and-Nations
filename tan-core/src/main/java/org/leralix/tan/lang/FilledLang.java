@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 public class FilledLang {
 
@@ -34,6 +33,8 @@ public class FilledLang {
   }
 
   public String get(Player player) {
-    return lang.get(PlayerDataStorage.getInstance().getSync(player).getLang(), placeholders);
+    return lang.get(
+        org.tan_java.performance.PlayerLangCache.getInstance().getLang(player).join(),
+        placeholders);
   }
 }

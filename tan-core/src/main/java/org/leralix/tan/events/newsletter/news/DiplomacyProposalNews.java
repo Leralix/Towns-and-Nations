@@ -24,6 +24,7 @@ import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.enums.EDiplomacyState;
 import org.tan.api.interfaces.TanTerritory;
+import org.tan_java.performance.PlayerLangCache;
 
 public class DiplomacyProposalNews extends Newsletter {
   private final String proposingTerritoryID;
@@ -75,18 +76,21 @@ public class DiplomacyProposalNews extends Newsletter {
     if (proposingTerritory == null) return;
     TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
     if (receivingTerritory == null) return;
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
-    // BUGFIX: Convert Adventure Component to legacy text properly
-    TanChatUtils.message(
-        player,
-        Lang.DIPLOMACY_PROPOSAL_NEWSLETTER.get(
-            player,
-            LegacyComponentSerializer.legacySection()
-                .serialize(proposingTerritory.getCustomColoredName()),
-            LegacyComponentSerializer.legacySection()
-                .serialize(receivingTerritory.getCustomColoredName()),
-            wantedRelation.getColoredName(tanPlayer.getLang())),
-        SoundEnum.MINOR_GOOD);
+    PlayerLangCache.getInstance()
+        .getLang(player)
+        .thenAccept(
+            langType -> {
+              TanChatUtils.message(
+                  player,
+                  Lang.DIPLOMACY_PROPOSAL_NEWSLETTER.get(
+                      player,
+                      LegacyComponentSerializer.legacySection()
+                          .serialize(proposingTerritory.getCustomColoredName()),
+                      LegacyComponentSerializer.legacySection()
+                          .serialize(receivingTerritory.getCustomColoredName()),
+                      wantedRelation.getColoredName(langType)),
+                  SoundEnum.MINOR_GOOD);
+            });
   }
 
   @Override

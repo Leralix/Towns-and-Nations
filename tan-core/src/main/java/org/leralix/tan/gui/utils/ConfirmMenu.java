@@ -10,11 +10,6 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
-/**
- * Generic confirmation menu to replace PlayerGUI.openConfirmMenu().
- *
- * <p>Usage: ConfirmMenu.open(player, "Are you sure?", p -> doAction(), p -> cancelAction());
- */
 public class ConfirmMenu extends BasicGui {
 
   private final FilledLang message;
@@ -33,14 +28,6 @@ public class ConfirmMenu extends BasicGui {
     this.onCancel = onCancel;
   }
 
-  /**
-   * Opens a confirmation menu for the player.
-   *
-   * @param player The player
-   * @param message The confirmation message to display
-   * @param onConfirm Action to execute when confirmed
-   * @param onCancel Action to execute when canceled
-   */
   public static void open(
       Player player, FilledLang message, Consumer<Player> onConfirm, Consumer<Player> onCancel) {
     PlayerDataStorage.getInstance()
@@ -53,12 +40,10 @@ public class ConfirmMenu extends BasicGui {
 
   @Override
   public void open() {
-    // Display message in center
     GuiItem messageItem =
         iconManager.get(Material.PAPER).setName(message.get(langType)).asGuiItem(player, langType);
     gui.setItem(2, 5, messageItem);
 
-    // Confirm button (green emerald)
     GuiItem confirmButton =
         iconManager
             .get(Material.EMERALD)
@@ -73,7 +58,6 @@ public class ConfirmMenu extends BasicGui {
             .asGuiItem(player, langType);
     gui.setItem(3, 3, confirmButton);
 
-    // Cancel button (red redstone)
     GuiItem cancelButton =
         iconManager
             .get(Material.REDSTONE)

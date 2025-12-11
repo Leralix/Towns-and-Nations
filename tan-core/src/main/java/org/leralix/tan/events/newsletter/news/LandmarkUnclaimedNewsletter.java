@@ -85,9 +85,19 @@ public class LandmarkUnclaimedNewsletter extends Newsletter {
 
   @Override
   public void broadcast(Player player) {
-    TerritoryData oldOwner = TerritoryUtil.getTerritory(oldOwnerID);
-    Landmark landmark = LandmarkStorage.getInstance().getSync(landmarkID);
-    Lang.LANDMARK_UNCLAIMED_NEWSLETTER.get(player, oldOwner.getColoredName(), landmark.getName());
+    TerritoryUtil.getTerritoryAsync(oldOwnerID)
+        .thenAccept(
+            oldOwner -> {
+              if (oldOwner == null) return;
+              LandmarkStorage.getInstance()
+                  .get(landmarkID)
+                  .thenAccept(
+                      landmark -> {
+                        if (landmark == null) return;
+                        Lang.LANDMARK_UNCLAIMED_NEWSLETTER.get(
+                            player, oldOwner.getColoredName(), landmark.getName());
+                      });
+            });
   }
 
   @Override

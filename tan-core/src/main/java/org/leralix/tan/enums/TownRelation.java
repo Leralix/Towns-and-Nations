@@ -57,7 +57,7 @@ public enum TownRelation {
       case NEUTRAL -> EDiplomacyState.NEUTRAL;
       case EMBARGO -> EDiplomacyState.EMBARGO;
       case WAR -> EDiplomacyState.WAR;
-      default -> EDiplomacyState.NEUTRAL; // SELF, OVERLORD, VASSAL
+      default -> EDiplomacyState.NEUTRAL;
     };
   }
 
@@ -68,7 +68,7 @@ public enum TownRelation {
       case NEUTRAL -> NEUTRAL;
       case EMBARGO -> EMBARGO;
       case WAR -> WAR;
-      default -> NEUTRAL; // SELF, OVERLORD, VASSAL
+      default -> NEUTRAL;
     };
   }
 

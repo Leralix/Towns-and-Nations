@@ -36,7 +36,6 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
           res.addAll(Arrays.asList(Biome.values()));
         } catch (IncompatibleClassChangeError ignored) {
           res.add(Biome.PLAINS);
-          // Error with MockBukkit. This allows for tests to run.
         }
         break;
       }
@@ -48,7 +47,6 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
         try {
           res.add(Biome.valueOf(key));
         } catch (IllegalArgumentException ignored2) {
-          // Ignore invalid biome keys
         }
       }
     }
@@ -69,7 +67,7 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
     if (factor > 0) {
       return this;
     } else {
-      return new BiomeStat(); // Level 0 => No biomes unlocked.
+      return new BiomeStat();
     }
   }
 

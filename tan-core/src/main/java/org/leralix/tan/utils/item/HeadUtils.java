@@ -25,22 +25,15 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.StringUtil;
 
-/** The class used to manage every head related commands */
 public class HeadUtils {
   private HeadUtils() {
     throw new IllegalStateException("Utility class");
   }
 
-  /**
-   * Return the player head with information on balance, town name and rank name
-   *
-   * @param offlinePlayer The offline player to copy the head
-   * @return The head of the player as an {@link ItemStack}
-   */
   public static @NotNull ItemStack getPlayerHeadInformation(
       final @NotNull OfflinePlayer offlinePlayer) {
     ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(offlinePlayer);
+    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(offlinePlayer).join();
     SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
 
     if (skullMeta == null) {
@@ -59,14 +52,6 @@ public class HeadUtils {
     return head;
   }
 
-  /**
-   * Create a player head {@link ItemStack}.
-   *
-   * @param headName The name of the new created {@link ItemStack}.
-   * @param offlinePlayer The player to extract the head from.
-   * @param lore The lore of the new created {@link ItemStack}.
-   * @return The head of the player as an {@link ItemStack}.
-   */
   public static @NotNull ItemStack getPlayerHead(
       String headName, OfflinePlayer offlinePlayer, List<String> lore) {
     ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
@@ -81,63 +66,25 @@ public class HeadUtils {
     return playerHead;
   }
 
-  /**
-   * Create a player head {@link ItemStack}.
-   *
-   * @param headName The name of the new created {@link ItemStack}.
-   * @param offlinePlayer The player to extract the head from.
-   * @param loreLines The lore of the new created {@link ItemStack}.
-   * @return The head of the player as an {@link ItemStack}.
-   */
   public static @NotNull ItemStack getPlayerHead(
       String headName, OfflinePlayer offlinePlayer, String... loreLines) {
     List<String> lore = List.of(loreLines);
     return getPlayerHead(headName, offlinePlayer, lore);
   }
 
-  /**
-   * Create a player head {@link ItemStack}.
-   *
-   * @param offlinePlayer The player to extract the head from.
-   * @param loreLines The lore of the new created {@link ItemStack}.
-   * @return The head of the player as an {@link ItemStack}.
-   */
   public static @NotNull ItemStack getPlayerHead(OfflinePlayer offlinePlayer, String... loreLines) {
     List<String> lore = List.of(loreLines);
     return getPlayerHead(offlinePlayer.getName(), offlinePlayer, lore);
   }
 
-  /**
-   * Create a player head {@link ItemStack}.
-   *
-   * @param headName The name of the new created {@link ItemStack}.
-   * @param offlinePlayer The player to extract the head from.
-   * @return The head of the player as an {@link ItemStack}.
-   */
   public static @NotNull ItemStack getPlayerHead(String headName, OfflinePlayer offlinePlayer) {
     return getPlayerHead(headName, offlinePlayer, (List<String>) null);
   }
 
-  /**
-   * Create a player head with the player name as name of the {@link ItemStack}
-   *
-   * @param offlinePlayer The name of the new created {@link ItemStack}.
-   * @return The head of the player as an {@link ItemStack}.
-   */
   public static @NotNull ItemStack getPlayerHead(OfflinePlayer offlinePlayer) {
     return getPlayerHead(offlinePlayer.getName(), offlinePlayer);
   }
 
-  /**
-   * Create a head from base64 encoded string This method is called when loading custom heads from
-   * the internet Check <a href="https://minecraft-heads.com/">minecraft-heads.com</a> for more
-   * heads. This method calls an unsafe bukkit methods but no other methods have been found
-   *
-   * @param name The name of the new created head.
-   * @param base64EncodedString The base64 encoded String of the new head.
-   * @param lore The lore of the new created head.
-   * @return The {@link ItemStack} with custom texture.
-   */
   public static @NotNull ItemStack makeSkullB64(
       final @NotNull String name, final @NotNull String base64EncodedString, List<String> lore) {
     return makeSkullURL(name, getUrlFromBase64(base64EncodedString), lore);
@@ -176,9 +123,7 @@ public class HeadUtils {
     return skull;
   }
 
-  private static final UUID RANDOM_UUID =
-      UUID.fromString(
-          "92864445-51c5-4c3b-9039-517c9927d1b4"); // We reuse the same "random" UUID all the time
+  private static final UUID RANDOM_UUID = UUID.fromString("92864445-51c5-4c3b-9039-517c9927d1b4");
 
   private static PlayerProfile getProfile(URL url) {
     PlayerProfile profile = Bukkit.createPlayerProfile(RANDOM_UUID);
@@ -197,11 +142,9 @@ public class HeadUtils {
 
   private static URL createURL(String url) {
     try {
-      // P4.1: Use URI.toURL() instead of deprecated URL constructor
       return java.net.URI.create(url).toURL();
     } catch (Exception e) {
       try {
-        // P4.1: Use URI.toURL() instead of deprecated URL constructor
         return java.net
             .URI
             .create(
@@ -213,47 +156,17 @@ public class HeadUtils {
     }
   }
 
-  /**
-   * Create a head from base64 encoded string This method is called when loading custom heads from
-   * the internet Check <a href="https://minecraft-heads.com/">minecraft-heads.com</a> for more
-   * heads. This method calls an unsafe bukkit methods but no other methods have been found
-   *
-   * @param name The name of the new created head.
-   * @param base64EncodedString The base64 encoded String of the new head.
-   * @return The {@link ItemStack} with custom texture.
-   */
   public static @NotNull ItemStack makeSkullB64(
       final @NotNull String name, final @NotNull String base64EncodedString) {
     return makeSkullB64(name, base64EncodedString, (List<String>) null);
   }
 
-  /**
-   * Create a head from base64 encoded string This method is called when loading custom heads from
-   * the internet Check <a href="https://minecraft-heads.com/">minecraft-heads.com</a> for more
-   * heads. This method calls an unsafe bukkit methods but no other methods have been found
-   *
-   * @param name The name of the new created head.
-   * @param base64EncodedString The base64 encoded String of the new head.
-   * @param loreLines The lore of the new created head.
-   * @return The {@link ItemStack} with custom texture.
-   */
   public static @NotNull ItemStack makeSkullB64(
       final @NotNull String name, final @NotNull String base64EncodedString, String... loreLines) {
     List<String> lore = List.of(loreLines);
     return makeSkullB64(name, base64EncodedString, lore);
   }
 
-  /**
-   * Create a head from base64 encoded string This method is called when loading custom heads from
-   * the internet Check <a href="https://minecraft-heads.com/">minecraft-heads.com</a> for more
-   * heads. This method calls an unsafe bukkit methods but no other methods have been found
-   *
-   * @param name The name of the new created head.
-   * @param base64EncodedString The base64 encoded String of the new head.
-   * @param lore The lore of the new created head.
-   * @param loreLines Additional lore.
-   * @return The {@link ItemStack} with custom texture.
-   */
   public static @NotNull ItemStack makeSkullB64(
       final @NotNull String name,
       final @NotNull String base64EncodedString,
@@ -264,12 +177,6 @@ public class HeadUtils {
     return makeSkullB64(name, base64EncodedString, lore);
   }
 
-  /**
-   * Create a player head displaying a town with his information
-   *
-   * @param regionData The data of the region to display
-   * @return The ItemStack displaying the town
-   */
   public static ItemStack getRegionIcon(RegionData regionData, LangType langType) {
     ItemStack icon = regionData.getIcon();
 
@@ -296,29 +203,12 @@ public class HeadUtils {
     return icon;
   }
 
-  /**
-   * Create an {@link ItemStack} with custom Lore
-   *
-   * @param itemMaterial The data of the region to display
-   * @param itemName The display name of the item
-   * @param loreLines The lore of the item
-   * @return The ItemStack displaying the town
-   */
   public static ItemStack createCustomItemStack(
       Material itemMaterial, String itemName, String... loreLines) {
     List<String> lore = List.of(loreLines);
     return createCustomItemStack(itemMaterial, itemName, lore);
   }
 
-  /**
-   * Create an {@link ItemStack} with custom Lore.
-   *
-   * @param itemMaterial The data of the region to display.
-   * @param itemName The display name of the item.
-   * @param lore The lore of the item.
-   * @param loreLines Additional lore.
-   * @return The ItemStack displaying the town.
-   */
   public static ItemStack createCustomItemStack(
       Material itemMaterial, String itemName, List<String> lore, String... loreLines) {
     List<String> lore2 = List.of(loreLines);
@@ -326,14 +216,6 @@ public class HeadUtils {
     return createCustomItemStack(itemMaterial, itemName, lore2);
   }
 
-  /**
-   * Create an {@link ItemStack} with custom Lore.
-   *
-   * @param itemMaterial The data of the region to display.
-   * @param itemName The display name of the item.
-   * @param lore The lore of the item.
-   * @return The ItemStack displaying the town.
-   */
   public static ItemStack createCustomItemStack(
       Material itemMaterial, String itemName, List<String> lore) {
     ItemStack item = new ItemStack(itemMaterial);
@@ -351,24 +233,10 @@ public class HeadUtils {
     return item;
   }
 
-  /**
-   * Create an {@link ItemStack} with custom Lore.
-   *
-   * @param item The Itemstack to use.
-   * @param itemName The display name of the item.
-   * @param lore The lore of the item.
-   * @return The ItemStack displaying the town.
-   */
   public static ItemStack createCustomItemStack(ItemStack item, String itemName, String... lore) {
     return createCustomItemStack(item, itemName, List.of(lore));
   }
 
-  /**
-   * Set the lore of an {@link ItemStack}
-   *
-   * @param itemStack The item stack to set the lore
-   * @param lore The lore to set
-   */
   public static void setLore(ItemStack itemStack, List<String> lore) {
     ItemMeta itemMeta = itemStack.getItemMeta();
     if (itemMeta != null) {
@@ -377,36 +245,17 @@ public class HeadUtils {
     }
   }
 
-  /**
-   * Set the lore of an {@link ItemStack}
-   *
-   * @param itemStack The item stack to set the lore
-   * @param loreLines The lore to set
-   */
   public static void setLore(ItemStack itemStack, String... loreLines) {
     List<String> lore = List.of(loreLines);
     setLore(itemStack, lore);
   }
 
-  /**
-   * Set the lore of an {@link ItemStack}
-   *
-   * @param itemStack The item stack to set the lore
-   * @param lore The lore to set
-   * @param loreLines Additional lore
-   */
   public static void setLore(ItemStack itemStack, List<String> lore, String... loreLines) {
     List<String> lore2 = List.of(loreLines);
     lore.addAll(lore2);
     setLore(itemStack, lore);
   }
 
-  /**
-   * Add lore to an {@link ItemStack}
-   *
-   * @param itemStack The item stack to add the lore
-   * @param loreLines The lore to add
-   */
   public static void addLore(ItemStack itemStack, String... loreLines) {
     ItemMeta itemMeta = itemStack.getItemMeta();
     if (itemMeta != null) {

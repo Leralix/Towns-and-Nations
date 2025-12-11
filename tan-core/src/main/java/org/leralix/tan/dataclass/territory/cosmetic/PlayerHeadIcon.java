@@ -39,8 +39,6 @@ public class PlayerHeadIcon implements ICustomIcon {
       return icon;
     }
 
-    // Use PlayerProfileCache to prevent Mojang API rate limiting (429 errors)
-    // This fetches from cache or creates a basic profile without network request
     PlayerProfile profile = PlayerProfileCache.getInstance().getProfileSync(offlinePlayer);
     skullMeta.setOwnerProfile(profile);
     icon.setItemMeta(skullMeta);

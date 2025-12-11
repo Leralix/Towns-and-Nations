@@ -2,10 +2,11 @@ package org.leralix.tan.lang;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.tan_java.performance.PlayerLangCache;
 
 public enum LangType {
   AFRIKAANS(
@@ -118,8 +119,13 @@ public enum LangType {
     this.url = url;
   }
 
+  @Deprecated
   public static LangType of(Player player) {
-    return PlayerDataStorage.getInstance().getSync(player).getLang();
+    return org.tan_java.performance.PlayerLangCache.getInstance().getLang(player).join();
+  }
+
+  public static CompletableFuture<LangType> ofAsync(Player player) {
+    return PlayerLangCache.getInstance().getLang(player);
   }
 
   public String getCode() {

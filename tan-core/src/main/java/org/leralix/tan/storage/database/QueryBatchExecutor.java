@@ -12,20 +12,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Batch query executor to reduce database load for high-player servers.
- *
- * <p>Instead of executing 5000+ individual queries per second from 800 players, this groups queries
- * into batches of 50, reducing to ~100 queries/sec.
- *
- * <p>Usage: Wrap database calls in {@link #queueQuery(Query)} which returns a CompletableFuture
- * that completes when the batch is executed.
- *
- * <p>Performance: ~95% reduction in query count for high-load scenarios.
- *
- * @author Auto-generated optimization
- * @since 0.16.0
- */
 public class QueryBatchExecutor {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(QueryBatchExecutor.class);
@@ -49,12 +35,6 @@ public class QueryBatchExecutor {
             });
   }
 
-  /**
-   * Queue a query for batch execution.
-   *
-   * @param query The database query to execute
-   * @return CompletableFuture that completes when batch executes
-   */
   public <T> CompletableFuture<T> queueQuery(Query<T> query) {
     CompletableFuture<T> future = new CompletableFuture<>();
     BatchedQuery<T> batchedQuery = new BatchedQuery<>(query, future);
@@ -62,12 +42,9 @@ public class QueryBatchExecutor {
     synchronized (batchQueue) {
       batchQueue.offer(batchedQuery);
 
-      // Execute immediately if batch is full
       if (batchQueue.size() >= BATCH_SIZE) {
         flushBatch();
-      }
-      // Schedule flush if this is the first item
-      else if (batchQueue.size() == 1) {
+      } else if (batchQueue.size() == 1) {
         scheduleBatchFlush();
       }
     }
@@ -75,7 +52,6 @@ public class QueryBatchExecutor {
     return future;
   }
 
-  /** Flush the current batch. */
   private void flushBatch() {
     List<BatchedQuery<?>> batch = new ArrayList<>();
     synchronized (batchQueue) {
@@ -90,19 +66,16 @@ public class QueryBatchExecutor {
     }
   }
 
-  /** Schedule a batch flush for later. */
   private void scheduleBatchFlush() {
     if (flushScheduled.compareAndSet(false, true)) {
       scheduler.schedule(this::flushBatch, BATCH_DELAY_MS, TimeUnit.MILLISECONDS);
     }
   }
 
-  /** Execute a batch of queries. */
   private void executeBatch(List<BatchedQuery<?>> batch) {
     long startTime = System.currentTimeMillis();
 
     try {
-      // Execute all queries in the batch
       for (BatchedQuery<?> batchedQuery : batch) {
         try {
           Object result = batchedQuery.query.execute();
@@ -124,7 +97,6 @@ public class QueryBatchExecutor {
     }
   }
 
-  /** Shutdown the batch executor. */
   public void shutdown() {
     scheduler.shutdown();
     try {
@@ -137,12 +109,10 @@ public class QueryBatchExecutor {
     }
   }
 
-  /** Generic query interface for batching. */
   public interface Query<T> {
     T execute() throws Exception;
   }
 
-  /** Internal container for batched queries. */
   private static class BatchedQuery<T> {
     Query<T> query;
     CompletableFuture<Object> future;

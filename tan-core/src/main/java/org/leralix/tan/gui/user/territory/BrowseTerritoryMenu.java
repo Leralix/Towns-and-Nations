@@ -13,6 +13,7 @@ import org.leralix.tan.enums.BrowseScope;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -23,7 +24,7 @@ public class BrowseTerritoryMenu extends IteratorGUI {
   private BrowseScope scope;
   private final Consumer<Player> exitMenu;
 
-  public BrowseTerritoryMenu(
+  private BrowseTerritoryMenu(
       Player player,
       ITanPlayer tanPlayer,
       TerritoryData territoryData,
@@ -33,8 +34,18 @@ public class BrowseTerritoryMenu extends IteratorGUI {
     this.territoryData = territoryData;
     this.scope = scope;
     this.exitMenu = exitMenu;
-    // open() doit être appelé explicitement après la construction pour respecter le modèle
-    // asynchrone
+  }
+
+  public static void open(
+      Player player, TerritoryData territoryData, BrowseScope scope, Consumer<Player> exitMenu) {
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              BrowseTerritoryMenu menu =
+                  new BrowseTerritoryMenu(player, tanPlayer, territoryData, scope, exitMenu);
+              menu.open();
+            });
   }
 
   public void setScope(BrowseScope newScope) {

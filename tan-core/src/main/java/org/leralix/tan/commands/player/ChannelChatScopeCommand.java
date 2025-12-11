@@ -44,7 +44,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tan chat <global|alliance|region|town> [message]";
+    return "/coconation chat <global|alliance|region|town> [message]";
   }
 
   @Override
@@ -141,7 +141,6 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
 
     switch (channelName.toLowerCase()) {
       case "global":
-        // Send message to global chat by broadcasting it with Adventure API
         if (LocalChatStorage.isPlayerInChatScope(player.getUniqueId().toString())) {
           ChatScope prevScope = LocalChatStorage.getPlayerChatScope(player);
           LocalChatStorage.removePlayerChatScope(player);

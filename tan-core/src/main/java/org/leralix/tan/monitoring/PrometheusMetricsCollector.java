@@ -8,22 +8,10 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Prometheus metrics collector for Towns & Nations plugin.
- *
- * <p>Collects key performance metrics for monitoring: - Database query count and duration - Redis
- * cache operations - Active wars and territories - Player counts
- *
- * <p>Metrics exposed on HTTP port 9090 at /metrics endpoint.
- *
- * @author Auto-generated optimization
- * @since 0.16.0
- */
 public class PrometheusMetricsCollector {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(PrometheusMetricsCollector.class);
 
-  // Counters
   private static final Counter queriesTotal =
       Counter.build()
           .name("tan_database_queries_total")
@@ -45,7 +33,6 @@ public class PrometheusMetricsCollector {
           .labelNames("type")
           .register();
 
-  // Histograms (latency)
   private static final Histogram queryDuration =
       Histogram.build()
           .name("tan_database_query_duration_seconds")
@@ -62,7 +49,6 @@ public class PrometheusMetricsCollector {
           .buckets(0.001, 0.005, 0.01, 0.05, 0.1)
           .register();
 
-  // Gauges
   private static final Gauge cachedTerritories =
       Gauge.build().name("tan_cached_territories").help("Number of cached territories").register();
 
@@ -89,7 +75,6 @@ public class PrometheusMetricsCollector {
 
   private HTTPServer httpServer;
 
-  /** Start Prometheus HTTP server on specified port. */
   public void startServer(int port) {
     try {
       httpServer = new HTTPServer(port);
@@ -100,8 +85,7 @@ public class PrometheusMetricsCollector {
     }
   }
 
-  /** Stop Prometheus HTTP server. */
-  @SuppressWarnings("deprecation") // HTTPServer.stop() is deprecated but necessary
+  @SuppressWarnings("deprecation")
   public void stopServer() {
     if (httpServer != null) {
       httpServer.stop();
@@ -109,14 +93,10 @@ public class PrometheusMetricsCollector {
     }
   }
 
-  // ===== QUERY METRICS =====
-
   public static void recordQueryExecution(String type, long durationMs, boolean success) {
     queriesTotal.labels(type, success ? "success" : "failed").inc();
     queryDuration.labels(type).observe(durationMs / 1000.0);
   }
-
-  // ===== CACHE METRICS =====
 
   public static void recordCacheHit(String type, long latencyMs) {
     cacheHits.labels(type).inc();
@@ -127,8 +107,6 @@ public class PrometheusMetricsCollector {
     cacheMisses.labels(type).inc();
     cacheLatency.labels(type).observe(latencyMs / 1000.0);
   }
-
-  // ===== GAUGE SETTERS =====
 
   public static void setCachedTerritories(int count) {
     cachedTerritories.set(count);

@@ -32,7 +32,7 @@ public class ApplyTownServer extends SubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tanserver apply <town ID> <player username>";
+    return "/coconationserver apply <town ID> <player username>";
   }
 
   @Override
@@ -43,28 +43,24 @@ public class ApplyTownServer extends SubCommand {
 
   @Override
   public void perform(CommandSender commandSender, String[] args) {
-    // Validate argument count
     if (!CommandExceptionHandler.validateMinArgCount(commandSender, args, 3, getSyntax())) {
       return;
     }
 
     String townID = args[1];
 
-    // Find and validate player
     Optional<OfflinePlayer> offlinePlayerOpt =
         CommandExceptionHandler.findPlayer(commandSender, args[2]);
     if (offlinePlayerOpt.isEmpty()) {
       return;
     }
 
-    // Check if player is online
     Player p = offlinePlayerOpt.get().getPlayer();
     if (p == null) {
       TanChatUtils.message(commandSender, Lang.PLAYER_NOT_FOUND);
       return;
     }
 
-    // Async: Get player data and add join request
     PlayerDataStorage.getInstance()
         .get(p.getUniqueId().toString())
         .thenAccept(
@@ -78,9 +74,7 @@ public class ApplyTownServer extends SubCommand {
                   .thenAccept(
                       townData -> {
                         if (townData == null) {
-                          TanChatUtils.message(
-                              commandSender,
-                              Lang.TOWN_NOT_FOUND); // Assuming a new Lang entry for town not found
+                          TanChatUtils.message(commandSender, Lang.TOWN_NOT_FOUND);
                           return;
                         }
                         townData.addPlayerJoinRequest(p);

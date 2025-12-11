@@ -1,10 +1,5 @@
 package org.leralix.tan.exception;
 
-/**
- * Exception thrown when a storage operation fails.
- *
- * <p>This includes database operations, file I/O, caching errors, etc.
- */
 public class StorageException extends TanException {
 
   public StorageException(String message) {

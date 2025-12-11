@@ -14,22 +14,14 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
-/** This class is used to register players that are teleporting to a location. */
 public class TeleportationRegister {
 
   private TeleportationRegister() {
     throw new IllegalStateException("Utility class");
   }
 
-  /** This HashMap contains the player's ID and the TeleportationData object. */
   private static final HashMap<String, TeleportationData> spawnRegister = new HashMap<>();
 
-  /**
-   * This method is used to register a player to teleport to a town.
-   *
-   * @param player The player that is teleporting.
-   * @param town The town the player is teleporting to.
-   */
   public static void registerSpawn(ITanPlayer player, TownData town) {
     spawnRegister.put(player.getID(), new TeleportationData(town.getSpawn()));
   }

@@ -40,9 +40,7 @@ public class WildernessChunk extends ClaimedChunk2 {
   }
 
   @Override
-  public void unclaimChunk(Player player) {
-    // No need to unclaim wilderness chunks
-  }
+  public void unclaimChunk(Player player) {}
 
   @Override
   public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
@@ -127,7 +125,5 @@ public class WildernessChunk extends ClaimedChunk2 {
   }
 
   @Override
-  public void notifyUpdate() {
-    // Wilderness chunks do not need to notify updates
-  }
+  public void notifyUpdate() {}
 }

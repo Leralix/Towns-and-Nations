@@ -26,7 +26,7 @@ public class PlaySound extends PlayerSubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tandebug playsound";
+    return "/coconationdebug playsound";
   }
 
   public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {

@@ -43,18 +43,15 @@ public class AddVassalMenu extends IteratorGUI {
     List<TownData> allTowns = new ArrayList<>(TownDataStorage.getInstance().getAllSync().values());
 
     for (TownData town : allTowns) {
-      // Skip if already a vassal or is the overlord itself
       if (overlordTerritory.getID().equals(town.getID())
           || overlordTerritory.getVassals().contains(town)) {
         continue;
       }
 
-      // Skip if town already has an overlord
       if (town.haveOverlord()) {
         continue;
       }
 
-      // Skip if proposal already sent
       if (town.containsVassalisationProposal(overlordTerritory)) {
         continue;
       }

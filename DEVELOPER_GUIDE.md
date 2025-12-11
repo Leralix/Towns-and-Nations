@@ -300,6 +300,105 @@ try {
 }
 ```
 
+### 5. **Creating Async GUIs (v0.16.0+)**
+
+All new GUIs MUST use the async loading pattern for Folia compatibility.
+
+❌ **BAD** (Old pattern - deprecated):
+```java
+public class MyMenu extends BasicGui {
+    public MyMenu(Player player) {
+        super(player, Lang.TITLE, 3);
+        // This blocks to load player data!
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+    }
+}
+
+// Usage (blocks thread!)
+MyMenu menu = new MyMenu(player);
+menu.open();
+```
+
+✅ **GOOD** (New async pattern):
+```java
+public class MyMenu extends BasicGui {
+    
+    // Private constructor with pre-loaded data
+    private MyMenu(Player player, ITanPlayer tanPlayer, TownData townData) {
+        super(player, tanPlayer, Lang.TITLE.get(tanPlayer.getLang()), 3);
+        this.townData = townData;
+    }
+    
+    /**
+     * Opens the menu asynchronously.
+     *
+     * @param player The player viewing the menu
+     * @param townData The town data
+     */
+    public static void open(Player player, TownData townData) {
+        PlayerDataStorage.getInstance()
+            .get(player)
+            .thenAccept(tanPlayer -> {
+                FoliaScheduler.runTask(
+                    TownsAndNations.getPlugin(),
+                    player.getLocation(),
+                    () -> {
+                        MyMenu menu = new MyMenu(player, tanPlayer, townData);
+                        menu.open();
+                    });
+            })
+            .exceptionally(throwable -> {
+                player.sendMessage("§cError loading menu");
+                plugin.getLogger().severe("Failed to open menu: " + throwable.getMessage());
+                return null;
+            });
+    }
+    
+    @Override
+    public void open() {
+        // Build GUI with pre-loaded data
+        gui.setItem(1, 1, getTownIcon());
+        gui.open(player);
+    }
+}
+
+// Usage (non-blocking!)
+MyMenu.open(player, townData);
+```
+
+**Key Points:**
+- ✅ Constructor is **private** and takes pre-loaded `ITanPlayer`
+- ✅ Static `open()` method loads data asynchronously
+- ✅ No blocking `getSync()` calls
+- ✅ Proper error handling with `exceptionally()`
+- ✅ Uses `FoliaScheduler` for thread safety
+- ✅ Fast GUI opening (<10ms vs 50-200ms)
+
+**For GUIs with heavy data loading:**
+```java
+@Override
+public void open() {
+    // Show loading screen immediately
+    iterator(cachedItems, p -> previousMenu.open());
+    gui.open(player);
+    
+    // Load data asynchronously in background
+    if (!isLoaded) {
+        AsyncGuiHelper.loadAsync(
+            player,
+            () -> loadHeavyData(), // Runs async
+            items -> { // Runs on main thread
+                cachedItems = items;
+                isLoaded = true;
+                iterator(items, p -> previousMenu.open());
+                gui.update();
+            });
+    }
+}
+```
+
+See [GUI_MIGRATION_STATUS.md](GUI_MIGRATION_STATUS.md) for complete migration guide.
+
 ### 5. **GUI Creation (Folia-Safe)**
 
 ✅ **RECOMMENDED**:

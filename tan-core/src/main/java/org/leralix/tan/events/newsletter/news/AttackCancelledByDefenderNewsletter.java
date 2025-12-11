@@ -12,12 +12,12 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanTerritory;
+import org.tan_java.performance.PlayerLangCache;
 
 public class AttackCancelledByDefenderNewsletter extends Newsletter {
 
@@ -52,7 +52,7 @@ public class AttackCancelledByDefenderNewsletter extends Newsletter {
     TerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
     if (attackingTerritory == null || defendingTerritory == null) return null;
 
-    LangType langType = PlayerDataStorage.getInstance().getSync(player).getLang();
+    LangType langType = PlayerLangCache.getInstance().getLang(player).join();
 
     ItemStack icon =
         HeadUtils.createCustomItemStack(

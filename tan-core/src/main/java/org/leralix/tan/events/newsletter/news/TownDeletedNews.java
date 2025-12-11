@@ -85,13 +85,16 @@ public class TownDeletedNews extends Newsletter {
 
   @Override
   public void broadcast(Player player) {
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
-    if (tanPlayer == null) return;
-
-    TanChatUtils.message(
-        player,
-        Lang.TOWN_DELETED_NEWSLETTER.get(player, tanPlayer.getNameStored(), oldTownName),
-        SoundEnum.BAD);
+    PlayerDataStorage.getInstance()
+        .get(playerID)
+        .thenAccept(
+            tanPlayer -> {
+              if (tanPlayer == null) return;
+              TanChatUtils.message(
+                  player,
+                  Lang.TOWN_DELETED_NEWSLETTER.get(player, tanPlayer.getNameStored(), oldTownName),
+                  SoundEnum.BAD);
+            });
   }
 
   @Override

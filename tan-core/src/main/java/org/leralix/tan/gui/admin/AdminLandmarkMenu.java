@@ -38,7 +38,6 @@ public class AdminLandmarkMenu extends IteratorGUI {
 
   @Override
   public void open() {
-    // Show immediate loading screen with cached data
     GuiUtil.createIterator(
         gui,
         cachedLandmarks,
@@ -49,12 +48,11 @@ public class AdminLandmarkMenu extends IteratorGUI {
         p -> previousPage());
     gui.open(player);
 
-    // Load data asynchronously if not already loaded
     if (!isLoaded) {
       AsyncGuiHelper.loadAsync(
           player,
-          this::getAllLandmarks, // Async supplier - loads landmark data
-          items -> { // Main thread consumer - updates GUI
+          this::getAllLandmarks,
+          items -> {
             cachedLandmarks = items;
             isLoaded = true;
             GuiUtil.createIterator(
@@ -78,7 +76,7 @@ public class AdminLandmarkMenu extends IteratorGUI {
       String ownerName = "No Owner";
       TownData owner = null;
       if (landmark.isOwned() && landmark.getOwnerID() != null) {
-        owner = TownDataStorage.getInstance().getSync(landmark.getOwnerID());
+        owner = TownDataStorage.getInstance().get(landmark.getOwnerID()).join();
         if (owner != null) {
           ownerName = owner.getColoredName();
         }

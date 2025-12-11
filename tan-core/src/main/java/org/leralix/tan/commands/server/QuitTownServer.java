@@ -31,7 +31,7 @@ class QuitTownServer extends SubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tanserver quittown <player_username>";
+    return "/coconationserver quittown <player_username>";
   }
 
   @Override
@@ -42,26 +42,22 @@ class QuitTownServer extends SubCommand {
 
   @Override
   public void perform(CommandSender commandSender, String[] args) {
-    // Validate argument count
     if (!CommandExceptionHandler.validateArgCount(commandSender, args, 2, getSyntax())) {
       return;
     }
 
-    // Find and validate player
     Optional<OfflinePlayer> offlinePlayerOpt =
         CommandExceptionHandler.findPlayer(commandSender, args[1]);
     if (offlinePlayerOpt.isEmpty()) {
       return;
     }
 
-    // Check if player is online
     Player p = offlinePlayerOpt.get().getPlayer();
     if (p == null) {
       TanChatUtils.message(commandSender, Lang.PLAYER_NOT_FOUND);
       return;
     }
 
-    // Async: Get player data and remove from town
     PlayerDataStorage.getInstance()
         .get(p)
         .thenAccept(

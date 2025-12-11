@@ -20,6 +20,7 @@ import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanTerritory;
+import org.tan_java.performance.PlayerLangCache;
 
 public class TerritoryVassalProposalNews extends Newsletter {
   String proposingTerritoryID;
@@ -94,10 +95,12 @@ public class TerritoryVassalProposalNews extends Newsletter {
             event -> {
               event.setCancelled(true);
               if (event.isLeftClick()) {
-                // TODO: Implement choose overlord menu after PlayerGUI migration
-                // Original: PlayerGUI.openChooseOverlordMenu(player, receivingTerritory, 0);
-                ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
-                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                PlayerLangCache.getInstance()
+                    .getLang(player)
+                    .thenAccept(
+                        langType -> {
+                          TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType));
+                        });
               }
               if (event.isRightClick()) {
                 markAsRead(player);

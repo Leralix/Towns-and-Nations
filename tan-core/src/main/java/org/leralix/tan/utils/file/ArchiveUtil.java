@@ -16,10 +16,6 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
 
-/**
- * This class is used to archive local data every day to avoid data loss. Archived files are stored
- * in the archive folder.
- */
 public class ArchiveUtil {
   private ArchiveUtil() {
     throw new IllegalStateException("Utility class");
@@ -33,10 +29,6 @@ public class ArchiveUtil {
     archiveFiles(fileCollections, "archive", dateStr);
   }
 
-  /**
-   * Main method to archive files. Every data file will be copied and stored in a zip file with the
-   * current date as the name.
-   */
   public static void archiveFiles(
       Collection<File> filesToArchive, String archiveFolderPath, String name) {
     File dataFolder = TownsAndNations.getPlugin().getDataFolder();
@@ -79,13 +71,6 @@ public class ArchiveUtil {
     }
   }
 
-  /**
-   * Add a single file to the daily Zip File.
-   *
-   * @param zipOutputStream the zip file to add the file to
-   * @param file the file to add
-   * @throws IOException if an error occurs while reading the file
-   */
   private static void addFileToZip(
       final @NotNull ZipOutputStream zipOutputStream, final @NotNull File file) throws IOException {
     try (FileInputStream fis = new FileInputStream(file)) {

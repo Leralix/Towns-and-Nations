@@ -55,7 +55,6 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
         .get(player)
         .thenCompose(
             tanPlayer -> {
-              // Load all online players data in parallel
               List<CompletableFuture<ITanPlayer>> playerFutures = new ArrayList<>();
               for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                 playerFutures.add(storage.get(onlinePlayer));
@@ -106,7 +105,6 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
 
       ITanPlayer playerToAddData = playersData.get(playerToAdd.getUniqueId().toString());
       ChunkPermission permission = permissionManager.get(chunkPermission);
-      // Check with town since only town can have territories
       if (permission.isAllowed(tanPlayer.getTownSync(), playerToAddData)) continue;
 
       ItemStack icon =

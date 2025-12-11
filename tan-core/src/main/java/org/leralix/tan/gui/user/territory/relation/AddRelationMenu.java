@@ -57,7 +57,6 @@ public class AddRelationMenu extends IteratorGUI {
         .get(player)
         .thenCompose(
             tanPlayer -> {
-              // Load all online players data in parallel
               List<String> playerIDs = new ArrayList<>();
               playerIDs.addAll(
                   TownDataStorage.getInstance().getAllSync().values().stream()
@@ -116,8 +115,8 @@ public class AddRelationMenu extends IteratorGUI {
     territories.addAll(TownDataStorage.getInstance().getAllSync().keySet());
     territories.addAll(RegionDataStorage.getInstance().getAllSync().keySet());
 
-    territories.removeAll(relationListID); // Territory already have this relation
-    territories.remove(territoryData.getID()); // Remove itself
+    territories.removeAll(relationListID);
+    territories.remove(territoryData.getID());
 
     for (String otherTownUUID : territories) {
       TerritoryData otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
@@ -152,8 +151,6 @@ public class AddRelationMenu extends IteratorGUI {
                       RelationConstant relationConstant =
                           Constants.getRelationConstants(actualRelation);
                       int trucePeriod = relationConstant.trucePeriod();
-                      // If actual relation has a truce, it cannot be switched to a negative
-                      // relation instantly
                       if (wantedRelation.isNegative()) {
                         if (trucePeriod > 0) {
                           TanChatUtils.message(
@@ -178,8 +175,6 @@ public class AddRelationMenu extends IteratorGUI {
                         }
                       }
 
-                      // Successfully switched to a new relation. If old relation required a truce,
-                      // apply it.
                       ActiveTruce activeTruce =
                           new ActiveTruce(territoryData, otherTerritory, trucePeriod);
                       TruceStorage.getInstance().add(activeTruce);

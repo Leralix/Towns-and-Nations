@@ -72,7 +72,6 @@ public class WarMenu extends BasicGui {
       description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(goal.getCurrentDesc(langType)));
     }
 
-    // If no goals are set, add a message
     if (description.size() == 1) {
       description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST_NO_WAR_GOAL_SET.get());
     }
@@ -102,7 +101,6 @@ public class WarMenu extends BasicGui {
       description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(goal.getCurrentDesc(langType)));
     }
 
-    // If no goals are set, add a message
     if (description.size() == 1) {
       description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST_NO_WAR_GOAL_SET.get());
     }

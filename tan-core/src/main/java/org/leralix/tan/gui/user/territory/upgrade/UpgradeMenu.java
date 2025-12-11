@@ -31,12 +31,11 @@ public class UpgradeMenu extends BasicGui {
   private int scrollIndex;
   private final int maxLevel;
 
-  public UpgradeMenu(Player player, ITanPlayer tanPlayer, TerritoryData territoryData) {
+  private UpgradeMenu(Player player, ITanPlayer tanPlayer, TerritoryData territoryData) {
     super(player, tanPlayer, Lang.HEADER_TOWN_UPGRADE.get(player), 6);
     this.territoryData = territoryData;
     this.scrollIndex = 0;
     this.maxLevel = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownMaxLevel", 10);
-    open();
   }
 
   public static void open(Player player, TerritoryData territoryData) {
@@ -63,7 +62,6 @@ public class UpgradeMenu extends BasicGui {
 
     TerritoryStats territoryStats = territoryData.getNewLevel();
     int townLevel = territoryStats.getMainLevel();
-    // Fill the 5 rows of colored due to town level.
 
     var unlockedFiller = GuiUtil.getUnnamedItem(Material.LIME_STAINED_GLASS_PANE);
     var unlockedLevels = iconManager.get(Material.GREEN_STAINED_GLASS_PANE);
@@ -189,7 +187,7 @@ public class UpgradeMenu extends BasicGui {
         .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
         .setAction(
             action -> {
-              territoryData.getNewLevel().levelUpMain();
+              territoryData.upgradeTownLevel();
               TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
               open();
             })

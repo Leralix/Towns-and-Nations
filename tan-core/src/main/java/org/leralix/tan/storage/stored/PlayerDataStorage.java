@@ -23,9 +23,8 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
   private static final String ERROR_MESSAGE = "Error while creating player storage";
   private static final String TABLE_NAME = "tan_players";
 
-  // Retry configuration for database errors
   private static final int MAX_RETRY_ATTEMPTS = 3;
-  private static final long RETRY_DELAY_MS = 500; // 500ms between retries
+  private static final long RETRY_DELAY_MS = 500;
 
   private static volatile PlayerDataStorage instance;
 
@@ -42,7 +41,6 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
   }
 
   public static PlayerDataStorage getInstance() {
-    // Double-checked locking without initial synchronization (fast path)
     if (instance == null) {
       synchronized (PlayerDataStorage.class) {
         if (instance == null) {
@@ -67,9 +65,12 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
 
     try (Connection conn = getDatabase().getDataSource().getConnection();
         Statement stmt = conn.createStatement()) {
+      TownsAndNations.getPlugin().getLogger().info("[TaN-DB] Creating table: " + TABLE_NAME);
       stmt.execute(createTableSQL);
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .info("[TaN-DB] Table " + TABLE_NAME + " created/verified successfully");
 
-      // Migration: Add player_name column if it doesn't exist
       try (ResultSet rs = conn.getMetaData().getColumns(null, null, TABLE_NAME, "player_name")) {
         if (!rs.next()) {
           stmt.executeUpdate(
@@ -78,7 +79,6 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
         }
       }
 
-      // Migration: Add town_name column if it doesn't exist
       try (ResultSet rs = conn.getMetaData().getColumns(null, null, TABLE_NAME, "town_name")) {
         if (!rs.next()) {
           stmt.executeUpdate(
@@ -87,7 +87,6 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
         }
       }
 
-      // Migration: Add nation_name column if it doesn't exist
       try (ResultSet rs = conn.getMetaData().getColumns(null, null, TABLE_NAME, "nation_name")) {
         if (!rs.next()) {
           stmt.executeUpdate(
@@ -96,7 +95,6 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
         }
       }
 
-      // P3.5: Add last_seen column if it doesn't exist (timestamp for admin tracking)
       try (ResultSet rs = conn.getMetaData().getColumns(null, null, TABLE_NAME, "last_seen")) {
         if (!rs.next()) {
           if (getDatabase().isMySQL()) {
@@ -121,7 +119,6 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
 
   @Override
   protected void createIndexes() {
-    // PERFORMANCE FIX: Add indexes for frequently queried columns
     String createPlayerNameIndexSQL =
         "CREATE INDEX IF NOT EXISTS idx_player_name ON " + TABLE_NAME + " (player_name)";
     String createTownNameIndexSQL =
@@ -169,13 +166,12 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
               PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
 
             ps.setString(1, id);
-            ps.setString(2, obj.getNameStored()); // Set player_name
-            ps.setString(3, obj.getTownName()); // Set town_name
-            ps.setString(4, obj.getNationName()); // Set nation_name
+            ps.setString(2, obj.getNameStored());
+            ps.setString(3, obj.getTownName());
+            ps.setString(4, obj.getNationName());
             ps.setString(5, jsonData);
             ps.executeUpdate();
 
-            // Update cache
             if (cacheEnabled && cache != null) {
               synchronized (cache) {
                 cache.put(id, obj);
@@ -204,8 +200,7 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
   CompletableFuture<ITanPlayer> register(ITanPlayer p) {
     CompletableFuture<ITanPlayer> future = new CompletableFuture<>();
     put(p.getID(), p);
-    future.complete(
-        p); // Assuming put() will eventually complete the storage. This is a simplification.
+    future.complete(p);
     return future;
   }
 
@@ -229,37 +224,24 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
       return future;
     }
 
-    // Start with attempt 1
     getWithRetry(id, 1, future);
     return future;
   }
 
-  /**
-   * Recursive retry method for database operations
-   *
-   * @param id Player UUID as string
-   * @param attemptNumber Current attempt number (1-indexed)
-   * @param future The future to complete with the result
-   */
   private void getWithRetry(String id, int attemptNumber, CompletableFuture<ITanPlayer> future) {
     super.get(id)
         .thenAccept(
             res -> {
               if (res != null) {
-                // Player found in database - success!
                 future.complete(res);
               } else {
-                // Player NOT found in database (null result, no exception)
-                // This means the player is truly new - create a new profile
                 createNewPlayerProfile(id, future);
               }
             })
         .exceptionally(
             ex -> {
-              // Check if it's a DatabaseNotReadyException (recoverable)
               if (ex.getCause() instanceof DatabaseNotReadyException) {
                 if (attemptNumber < MAX_RETRY_ATTEMPTS) {
-                  // Log retry attempt
                   TownsAndNations.getPlugin()
                       .getLogger()
                       .warning(
@@ -267,13 +249,11 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
                               "[TaN] Database not ready for player %s (attempt %d/%d). Retrying in %dms...",
                               id, attemptNumber, MAX_RETRY_ATTEMPTS, RETRY_DELAY_MS));
 
-                  // Schedule retry after delay
                   FoliaScheduler.runTaskLaterAsynchronously(
                       TownsAndNations.getPlugin(),
                       () -> getWithRetry(id, attemptNumber + 1, future),
-                      RETRY_DELAY_MS / 50); // Convert ms to ticks (50ms = 1 tick)
+                      RETRY_DELAY_MS / 50);
                 } else {
-                  // Max retries reached - log error and fail
                   TownsAndNations.getPlugin()
                       .getLogger()
                       .severe(
@@ -285,7 +265,6 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
                           "Failed to load player after " + MAX_RETRY_ATTEMPTS + " attempts", ex));
                 }
               } else {
-                // Non-recoverable error (e.g., JSON parsing error)
                 TownsAndNations.getPlugin()
                     .getLogger()
                     .severe(
@@ -298,14 +277,7 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
             });
   }
 
-  /**
-   * Create a new player profile when player is not found in database
-   *
-   * @param id Player UUID as string
-   * @param future The future to complete with the new player
-   */
   private void createNewPlayerProfile(String id, CompletableFuture<ITanPlayer> future) {
-    // MUST execute Bukkit.getPlayer() on the main thread (Folia/Paper requirement)
     FoliaScheduler.runTask(
         TownsAndNations.getPlugin(),
         () -> {
@@ -317,9 +289,7 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
                     String.format(
                         "[TaN] Creating new player profile for %s (%s)", newPlayer.getName(), id));
 
-            // Create PlayerData and register it
             ITanPlayer newTanPlayer = new PlayerData(newPlayer);
-            // Register asynchronously
             register(newTanPlayer)
                 .thenAccept(
                     registeredPlayer -> {
@@ -331,7 +301,6 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
                       return null;
                     });
           } else {
-            // Player not found in DB and not online - this is an error
             future.completeExceptionally(
                 new RuntimeException("Error: Player ID [" + id + "] has not been found"));
           }
@@ -343,16 +312,7 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
     instance = null;
   }
 
-  /**
-   * Synchronous get method for backward compatibility WARNING: This blocks the current thread. Use
-   * get() with thenAccept() for async operations.
-   *
-   * @param id The ID of the player
-   * @return The player data, or NO_PLAYER if not found
-   */
   public ITanPlayer getSync(String id) {
-    // PERFORMANCE FIX: Use cache-only access to prevent server freezing
-    // If not in cache, return NO_PLAYER and trigger async load in background
     if (cacheEnabled && cache != null) {
       ITanPlayer cached = (ITanPlayer) cache.get(id);
       if (cached != null) {
@@ -360,7 +320,6 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
       }
     }
 
-    // Not in cache - trigger async load in background but return immediately
     get(id)
         .thenAccept(
             player -> {

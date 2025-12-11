@@ -28,11 +28,14 @@ database:
     enabled: false
     require: false
     verify-server-certificate: false
-  pool-size: 200
-  min-idle: 50
+  pool-size: 50
+  min-idle: 10
   connection-timeout: 10000
   idle-timeout: 300000
   max-lifetime: 900000
+  
+  # Transaction history limit (prevent OOM on large territories)
+  max-transaction-history: 1000
   
   # MySQL Replication (for high availability)
   replication:
@@ -58,13 +61,64 @@ database:
 #Redis cluster for distributed caching and real-time synchronization
 redis:
   enabled: true
-  mode: "cluster" # standalone, sentinel, or cluster
-  
-  # Standalone mode
-  host: "localhost"
-  port: 6379
+  mode: "single" # single, sentinel, or cluster
+
+  # SERVER IDENTIFICATION - IMPORTANT: Must be unique per server!
+  # Examples: "survival-1", "survival-2", "lobby", "creative", etc.
+  server-id: "survival-1"
+
+  # Single server settings
+  single:
+    host: "localhost"
+    port: 6379
+
+  # Auth and database index
+  # IMPORTANT: Redis ACL Authentication (Redis 6.0+)
+  #   - username: Redis ACL username (e.g., "default" for default user)
+  #   - password: Redis password
+  #   - If Redis doesn't use ACL, comment out username or leave empty
+  # 
+  # Examples for Redis 6.0+ with ACL:
+  #   username: "default"    <- Default Redis user (most common)
+  #   username: "admin"      <- Custom Redis user
+  #   password: "mypass123"  <- Redis password
+  # 
+  # Examples for Redis < 6.0 (no ACL):
+  #   # username: ""         <- Comment out or leave empty
+  #   password: "mypass123"  <- Only password needed
+  # 
+  # No authentication:
+  #   # username: ""         <- Commented out
+  #   # password: ""         <- Commented out
+  username: ""
   password: ""
   database: 0
+  
+  # Connection parameters (Redisson tuning)
+  connection:
+    timeout: 3000                           # Connection timeout (ms)
+    retry-attempts: 3                       # Number of retry attempts
+    retry-interval: 1500                    # Interval between retries (ms)
+    subscription-timeout: 5000              # Pub/Sub subscription timeout (ms)
+    subscription-connection-pool-size: 50   # Pub/Sub connection pool
+    subscriptions-per-connection: 5         # Topics per connection
+    connection-pool-size: 64                # Main connection pool
+    connection-minimum-idle-size: 10        # Minimum idle connections
+    keep-alive: true                        # Keep connections alive
+    ping-interval: 30000                    # Ping interval (ms)
+  
+  # Communication channels
+  channels:
+    global: "tan:global"                    # Global channel (all servers)
+    server-events: "tan:server-events"      # Server connect/disconnect events
+    town-sync: "tan:town-sync"              # Town synchronization
+    player-sync: "tan:player-sync"          # Player synchronization
+  
+  # Server heartbeat (for health monitoring)
+  heartbeat:
+    enabled: true
+    interval: 30                            # Send heartbeat every 30s
+    timeout: 60                             # Consider offline after 60s
   
   # Cluster mode (requires mode: cluster)
   cluster:
@@ -89,16 +143,16 @@ redis:
   
   # Connection pool
   pool:
-    max-total: 512
-    max-idle: 256
-    min-idle: 128
+    max-total: 128
+    max-idle: 64
+    min-idle: 32
   
   # Timeouts - OPTIMIZED FOR HIGH-LOAD SERVERS
-  timeout: 2000 # Connection timeout in ms (reduced for faster failover)
-  socket-timeout: 3000 # Socket timeout in ms - prevents hanging connections
+  timeout: 5000 # Connection timeout in ms (increased for stability)
+  socket-timeout: 5000 # Socket timeout in ms - prevents hanging connections
   socket-keep-alive: true # Keeps connections alive
-  retry-attempts: 3 # Reduced from 5 to fail faster
-  retry-interval: 500 # Faster retry for failover
+  retry-attempts: 3 # Number of retry attempts
+  retry-interval: 1000 # 1 second between retries (more stable)
 
 ########################
 ##    Query Cache     ##
@@ -115,8 +169,8 @@ cache:
   query-cache:
     enabled: true
     local-size: 5000 # Caffeine local cache size
-    ttl-seconds: 600 # Time-to-live for cached queries (10 min)
-    negative-ttl: 120 # TTL for null/empty results
+    ttl-seconds: 120 # Time-to-live for cached queries (2 min for better sync)
+    negative-ttl: 30 # TTL for null/empty results (30s)
   
   # Territory lazy loading
   lazy-loading:
@@ -152,8 +206,24 @@ monitoring:
     flush-interval: 2000 # ms (more frequent flush for 800 players)
 
 ########################
+## Batch Write System ##
+########################
+
+# BatchWriteOptimizer - reduces DB operations from 800/sec to ~16/sec
+batch-write:
+  enabled: true
+  batch-size: 50 # Number of writes to batch together
+  flush-interval: 1000 # Auto-flush every 1000ms
+  max-queue-size: 10000 # Maximum queued writes before blocking
+  async-execution: true # Execute batches asynchronously
+
+########################
 ##      General       ##
 ########################
+
+# Unique server identifier for multi-server sync logs
+server:
+  name: "server-1"
 
 # Online mode
 # If true, only premium (online-mode) players are allowed; their custom heads can be used as town icons.
@@ -219,7 +289,7 @@ showCurrency: true
 #If TownsAndNations economy is used, set the number of digits (0,1,2,3...)
 DecimalDigits: 2
 
-#Max distance between 2 players to be able to trade (/tan pay)
+#Max distance between 2 players to be able to trade (/coconation pay)
 maxPayDistance: 15
 
 #The amount of money a player starts with (only works if no external economy plugin is used)
@@ -343,12 +413,12 @@ relationConstants:
     enablePvP: true
     canInteractWithProperty: false
     canAccessTerritory: true
-    blockedCommands: [ "/tpa %PLAYER%", "/tan pay %PLAYER%", "/pay %PLAYER% " ]
+    blockedCommands: [ "/tpa %PLAYER%", "/coconation pay %PLAYER%", "/pay %PLAYER% " ]
   war:
     enablePvP: true
     canInteractWithProperty: false
     canAccessTerritory: true
-    blockedCommands: [ "/tpa %PLAYER%", "/tan pay %PLAYER%", "/pay %PLAYER%" ]
+    blockedCommands: [ "/tpa %PLAYER%", "/coconation pay %PLAYER%", "/pay %PLAYER%" ]
 
 
 ########################
@@ -457,7 +527,7 @@ EnableWar: true
 #Authorized ranges
 allowedTimeSlotsWar: [ "08:00-10:00", "12:00-20:30" ]
 
-#Admin needs to approve every war. Admins need to use /tan admin gui to approve or deny a war
+#Admin needs to approve every war. Admins need to use /coconationadmin gui to approve or deny a war
 AdminApproval: false
 
 #The duration of an attack in minutes
@@ -485,9 +555,9 @@ commandToExecutePerPlayerWhenAttackEnd: [ ] #eg : ["pvp %PLAYER% off", "..."]
 #Commands blocked during attacks
 #Example : ["command 1", "command 1"]
 #You can use separated command if needed :
-#"/tan pay" WILL NOT block "/tan gui", "/tan claim"
+#"/coconation pay" WILL NOT block "/coconation gui", "/coconation claim"
 #"/tp"      WILL     block "/tp @r", "/tp <playerName>"...
-BlacklistedCommandsDuringAttacks: [ "/tan pay", "/tp" ]
+BlacklistedCommandsDuringAttacks: [ "/coconation pay", "/tp" ]
 
 
 ## Forts
@@ -568,7 +638,7 @@ cancelTeleportOnDamage: true
 ########################
 ##      Landmarks     ##
 ########################
-#Creating a landmark and modifying the reward is done in-game with /tanadmin gui
+#Creating a landmark and modifying the reward is done in-game with /coconationadmin gui
 
 #Max size of a landmark name
 landmarkNameMaxSize: 25

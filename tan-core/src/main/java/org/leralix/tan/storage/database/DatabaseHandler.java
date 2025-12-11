@@ -16,19 +16,14 @@ public abstract class DatabaseHandler {
 
   protected DataSource dataSource;
 
-  // OPTIMIZATION: Query batch executor to reduce database load for high-player servers
   protected QueryBatchExecutor queryBatchExecutor;
+
+  protected BatchWriteOptimizer batchWriteOptimizer;
 
   public abstract void connect() throws SQLException;
 
-  /** Close the database connection and clean up resources Called during plugin shutdown */
   public abstract void close();
 
-  /**
-   * Check if the database connection is valid
-   *
-   * @return true if connection is valid, false otherwise
-   */
   public boolean isConnectionValid() {
     try {
       if (dataSource == null) {
@@ -72,21 +67,25 @@ public abstract class DatabaseHandler {
 
   public List<List<TransactionHistory>> getTransactionHistory(
       TerritoryData territoryData, TransactionHistoryEnum type) {
+    int maxTransactions =
+        TownsAndNations.getPlugin().getConfig().getInt("database.max-transaction-history", 1000);
+
     String selectSQL =
         """
         SELECT date, type, territoryDataID, transactionParty, amount
         FROM territoryTransactionHistory
         WHERE territoryDataID = ? AND type = ?
-        ORDER BY date
+        ORDER BY date DESC
+        LIMIT ?
     """;
 
-    // Map pour regrouper les transactions par date
     Map<String, List<TransactionHistory>> groupedByDate = new HashMap<>();
 
     try (Connection conn = dataSource.getConnection();
         PreparedStatement preparedStatement = conn.prepareStatement(selectSQL)) {
       preparedStatement.setString(1, territoryData.getID());
       preparedStatement.setString(2, type.toString());
+      preparedStatement.setInt(3, maxTransactions);
 
       try (ResultSet resultSet = preparedStatement.executeQuery()) {
         while (resultSet.next()) {
@@ -105,19 +104,13 @@ public abstract class DatabaseHandler {
         }
       }
     } catch (SQLException e) {
-      TownsAndNations.getPlugin().getLogger().severe("Error while getting transaction history");
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .severe("Error while getting transaction history: " + e.getMessage());
     }
     return new ArrayList<>(groupedByDate.values());
   }
 
-  /**
-   * Get transaction history asynchronously P3.6: Async transaction history for non-blocking GUI
-   * loading
-   *
-   * @param territoryData The territory data
-   * @param type The transaction type
-   * @return CompletableFuture that completes with the transaction history list
-   */
   public CompletableFuture<List<List<TransactionHistory>>> getTransactionHistoryAsync(
       TerritoryData territoryData, TransactionHistoryEnum type) {
     return CompletableFuture.supplyAsync(() -> getTransactionHistory(territoryData, type));
@@ -155,9 +148,22 @@ public abstract class DatabaseHandler {
   }
 
   protected void checkIfHistoryDbExists() {
-    try (Connection conn = dataSource.getConnection();
-        Statement statement = conn.createStatement()) {
-      statement.execute(
+    String createTableSQL;
+    if (isMySQL()) {
+      createTableSQL =
+          """
+                CREATE TABLE IF NOT EXISTS territoryTransactionHistory (
+                date VARCHAR(255),
+                type VARCHAR(100),
+                territoryDataID VARCHAR(255),
+                transactionParty VARCHAR(255),
+                amount DOUBLE,
+                INDEX idx_territory_type_date (territoryDataID, type, date),
+                INDEX idx_date (date)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            """;
+    } else {
+      createTableSQL =
           """
                 CREATE TABLE IF NOT EXISTS territoryTransactionHistory (
                 date TEXT,
@@ -166,7 +172,25 @@ public abstract class DatabaseHandler {
                 transactionParty TEXT,
                 amount DOUBLE
             )
-            """);
+            """;
+    }
+
+    try (Connection conn = dataSource.getConnection();
+        Statement statement = conn.createStatement()) {
+      statement.execute(createTableSQL);
+
+      if (!isMySQL()) {
+        try {
+          statement.execute(
+              "CREATE INDEX IF NOT EXISTS idx_territory_type_date ON territoryTransactionHistory (territoryDataID, type, date)");
+          statement.execute(
+              "CREATE INDEX IF NOT EXISTS idx_date ON territoryTransactionHistory (date)");
+        } catch (SQLException e) {
+          TownsAndNations.getPlugin()
+              .getLogger()
+              .fine("Indexes already exist on territoryTransactionHistory: " + e.getMessage());
+        }
+      }
     } catch (SQLException e) {
       TownsAndNations.getPlugin()
           .getLogger()
@@ -192,33 +216,14 @@ public abstract class DatabaseHandler {
     return dataSource;
   }
 
-  /**
-   * Check if the database is MySQL
-   *
-   * @return true if MySQL, false if SQLite
-   */
   public boolean isMySQL() {
     return this instanceof MySqlHandler;
   }
 
-  /**
-   * Validate table name to prevent SQL injection
-   *
-   * @param tableName The table name to validate
-   * @return true if valid, false otherwise
-   */
   private boolean isValidTableName(String tableName) {
-    // Table names should only contain alphanumeric characters and underscores
     return tableName != null && tableName.matches("^[a-zA-Z0-9_]+$");
   }
 
-  /**
-   * Get the appropriate UPSERT SQL statement based on database type
-   *
-   * @param tableName The table name
-   * @return The UPSERT SQL statement
-   * @throws IllegalArgumentException if table name is invalid
-   */
   public String getUpsertSQL(String tableName) {
     if (!isValidTableName(tableName)) {
       throw new IllegalArgumentException("Invalid table name: " + tableName);
@@ -232,12 +237,6 @@ public abstract class DatabaseHandler {
     }
   }
 
-  /**
-   * Initialize the query batch executor. Call this during database connection setup.
-   *
-   * @param batchSize Number of queries to batch together (default: 50)
-   * @param delayMs Maximum delay before flushing a batch in milliseconds (default: 100)
-   */
   public void initializeQueryBatcher(int batchSize, int delayMs) {
     this.queryBatchExecutor = new QueryBatchExecutor(batchSize, delayMs);
     TownsAndNations.getPlugin()
@@ -250,24 +249,49 @@ public abstract class DatabaseHandler {
                 + "ms");
   }
 
-  /**
-   * Get the query batch executor (if initialized).
-   *
-   * @return QueryBatchExecutor or null if not initialized
-   */
   public QueryBatchExecutor getQueryBatchExecutor() {
     return queryBatchExecutor;
   }
 
-  /**
-   * Shutdown the query batch executor. Call this during plugin shutdown to cleanly shut down the
-   * batch executor thread.
-   */
+  public BatchWriteOptimizer getBatchWriteOptimizer() {
+    return batchWriteOptimizer;
+  }
+
+  public void initializeBatchWriter(int batchSize, long flushIntervalMs) {
+    if (batchWriteOptimizer != null) {
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .warning("[TaN] Batch write optimizer already initialized");
+      return;
+    }
+
+    this.batchWriteOptimizer =
+        new BatchWriteOptimizer(
+            TownsAndNations.getPlugin(), dataSource, batchSize, flushIntervalMs);
+
+    TownsAndNations.getPlugin()
+        .getLogger()
+        .info(
+            "[TaN] Batch write optimizer initialized (Folia-compatible): batch="
+                + batchSize
+                + ", flush="
+                + flushIntervalMs
+                + "ms");
+  }
+
   public void shutdownQueryBatcher() {
     if (queryBatchExecutor != null) {
       queryBatchExecutor.shutdown();
       queryBatchExecutor = null;
       TownsAndNations.getPlugin().getLogger().info("[TaN] Query batch executor shutdown");
+    }
+  }
+
+  public void shutdownBatchWriter() {
+    if (batchWriteOptimizer != null) {
+      batchWriteOptimizer.shutdown();
+      batchWriteOptimizer = null;
+      TownsAndNations.getPlugin().getLogger().info("[TaN] Batch write optimizer shutdown");
     }
   }
 }

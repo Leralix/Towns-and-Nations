@@ -39,8 +39,6 @@ public class OpenPlayerListForChunkPermission extends IteratorGUI {
     this.territoryData = territoryData;
     this.chunkPermissionType = type;
     this.backMenu = backMenu;
-    // open() doit être appelé explicitement après la construction pour respecter le modèle
-    // asynchrone
   }
 
   public static void open(
@@ -79,7 +77,6 @@ public class OpenPlayerListForChunkPermission extends IteratorGUI {
                 TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
                 return;
               }
-              // Use static factory method instead of constructor
               AddPlayerForChunkPermission.open(player, territoryData, chunkPermissionType, this);
             });
   }

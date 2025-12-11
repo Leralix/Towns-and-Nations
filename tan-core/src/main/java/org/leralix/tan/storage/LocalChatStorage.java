@@ -6,9 +6,6 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.ChatScope;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.FilledLang;
@@ -48,62 +45,103 @@ public class LocalChatStorage {
   }
 
   public static void broadcastInScope(Player player, String message) {
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(player);
+    PlayerDataStorage.getInstance()
+        .get(player)
+        .thenAccept(
+            tanPlayer -> {
+              if (tanPlayer == null || !tanPlayer.hasTown()) {
+                return;
+              }
 
-    if (!tanPlayer.hasTown()) {
-      return;
-    }
+              ChatScope scope = getPlayerChatScope(player);
+              boolean sendLogsToConsole =
+                  ConfigUtil.getCustomConfig(ConfigTag.MAIN)
+                      .getBoolean("sendPrivateMessagesToConsole", false);
 
-    ChatScope scope = getPlayerChatScope(player);
-    boolean sendLogsToConsole =
-        ConfigUtil.getCustomConfig(ConfigTag.MAIN)
-            .getBoolean("sendPrivateMessagesToConsole", false);
+              if (scope == ChatScope.CITY) {
+                tanPlayer
+                    .getTown()
+                    .thenAccept(
+                        townData -> {
+                          if (townData == null) return;
 
-    if (scope == ChatScope.CITY) {
-      TownData townData = tanPlayer.getTownSync();
+                          FilledLang messageFormat =
+                              Lang.CHAT_SCOPE_TOWN_MESSAGE.get(
+                                  townData.getName(), player.getName(), message);
 
-      FilledLang messageFormat =
-          Lang.CHAT_SCOPE_TOWN_MESSAGE.get(townData.getName(), player.getName(), message);
+                          townData.broadCastMessage(messageFormat);
+                          if (sendLogsToConsole)
+                            TownsAndNations.getPlugin()
+                                .getLogger()
+                                .info(messageFormat.getDefault());
+                        });
 
-      townData.broadCastMessage(messageFormat);
-      if (sendLogsToConsole)
-        TownsAndNations.getPlugin().getLogger().info(messageFormat.getDefault());
+              } else if (scope == ChatScope.REGION) {
 
-    } else if (scope == ChatScope.REGION) {
+                if (!tanPlayer.hasRegion()) {
+                  tanPlayer
+                      .getTown()
+                      .thenAccept(
+                          town -> {
+                            TanChatUtils.message(
+                                player,
+                                Lang.NO_REGION.get(tanPlayer.getLang()),
+                                SoundEnum.NOT_ALLOWED);
+                          });
+                  return;
+                }
 
-      if (!tanPlayer.hasRegion()) {
-        TanChatUtils.message(
-            player, Lang.NO_REGION.get(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
-        return;
-      }
+                tanPlayer
+                    .getRegion()
+                    .thenAccept(
+                        regionData -> {
+                          if (regionData == null) return;
 
-      RegionData regionData = tanPlayer.getRegionSync();
+                          FilledLang messageFormat =
+                              Lang.CHAT_SCOPE_REGION_MESSAGE.get(
+                                  regionData.getName(), player.getName(), message);
 
-      FilledLang messageFormat =
-          Lang.CHAT_SCOPE_REGION_MESSAGE.get(regionData.getName(), player.getName(), message);
+                          regionData.broadCastMessage(messageFormat);
+                          if (sendLogsToConsole)
+                            TownsAndNations.getPlugin()
+                                .getLogger()
+                                .info(messageFormat.getDefault());
+                        });
+              } else if (scope == ChatScope.ALLIANCE) {
+                tanPlayer
+                    .getTown()
+                    .thenAccept(
+                        playerTown -> {
+                          if (playerTown == null) return;
 
-      regionData.broadCastMessage(messageFormat);
-      if (sendLogsToConsole)
-        TownsAndNations.getPlugin().getLogger().info(messageFormat.getDefault());
-    } else if (scope == ChatScope.ALLIANCE) {
-      TownData playerTown = tanPlayer.getTownSync();
+                          FilledLang messageFormat =
+                              Lang.CHAT_SCOPE_TOWN_MESSAGE.get(
+                                  playerTown.getName(), player.getName(), message);
 
-      FilledLang messageFormat =
-          Lang.CHAT_SCOPE_TOWN_MESSAGE.get(playerTown.getName(), player.getName(), message);
+                          playerTown.broadCastMessage(messageFormat);
+                          playerTown
+                              .getRelations()
+                              .getTerritoriesIDWithRelation(TownRelation.ALLIANCE)
+                              .forEach(
+                                  territoryID ->
+                                      TerritoryUtil.getTerritoryAsync(territoryID)
+                                          .thenAccept(
+                                              territory -> {
+                                                if (territory != null) {
+                                                  territory.broadCastMessage(
+                                                      Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(
+                                                          playerTown.getName(),
+                                                          player.getName(),
+                                                          message));
+                                                }
+                                              }));
 
-      playerTown.broadCastMessage(messageFormat);
-      playerTown
-          .getRelations()
-          .getTerritoriesIDWithRelation(TownRelation.ALLIANCE)
-          .forEach(
-              territoryID ->
-                  TerritoryUtil.getTerritory(territoryID)
-                      .broadCastMessage(
-                          Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(
-                              playerTown.getName(), player.getName(), message)));
-
-      if (sendLogsToConsole)
-        TownsAndNations.getPlugin().getLogger().info(messageFormat.getDefault());
-    }
+                          if (sendLogsToConsole)
+                            TownsAndNations.getPlugin()
+                                .getLogger()
+                                .info(messageFormat.getDefault());
+                        });
+              }
+            });
   }
 }

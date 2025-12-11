@@ -5,8 +5,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TownCreatedInternalEvent;
 import org.leralix.tan.lang.Lang;
@@ -39,14 +37,21 @@ public class CreateEmptyTown extends ChatListenerEvent {
       return false;
     }
 
-    TownData newTown = TownDataStorage.getInstance().newTown(townName).join();
-
-    ITanPlayer playerData = PlayerDataStorage.getInstance().getSync(player);
-    EventManager.getInstance().callEvent(new TownCreatedInternalEvent(newTown, playerData));
-    FileUtil.addLineToHistory(
-        Lang.TOWN_CREATED_NEWSLETTER.get(player.getName(), newTown.getName()));
-
-    openGui(guiCallback, player);
+    TownDataStorage.getInstance()
+        .newTown(townName)
+        .thenAccept(
+            newTown -> {
+              PlayerDataStorage.getInstance()
+                  .get(player)
+                  .thenAccept(
+                      playerData -> {
+                        EventManager.getInstance()
+                            .callEvent(new TownCreatedInternalEvent(newTown, playerData));
+                        FileUtil.addLineToHistory(
+                            Lang.TOWN_CREATED_NEWSLETTER.get(player.getName(), newTown.getName()));
+                        openGui(guiCallback, player);
+                      });
+            });
     return true;
   }
 }

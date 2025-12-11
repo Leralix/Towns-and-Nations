@@ -10,10 +10,6 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.upgrade.rewards.AggregatableStat;
 import org.leralix.tan.upgrade.rewards.IndividualStat;
 
-/**
- * A stat representing a list of strings, such as permissions or commands. For now, it is only used
- * to represent permissions unlocked by an upgrade.
- */
 public class PermissionList extends IndividualStat implements AggregatableStat<PermissionList> {
 
   private final List<String> values;
@@ -44,7 +40,7 @@ public class PermissionList extends IndividualStat implements AggregatableStat<P
     if (factor > 0) {
       return this;
     } else {
-      return new PermissionList(); // Level 0 => No values unlocked.
+      return new PermissionList();
     }
   }
 

@@ -37,10 +37,8 @@ public class PlannedAttack {
   private final Collection<String> defendersID;
   private final Collection<String> attackersID;
 
-  /** The start time of the war, in milliseconds since January 1, 1970 */
   final long startTime;
 
-  /** The end time of the war, in milliseconds since January 1, 1970 */
   private final long endTime;
 
   private final War war;
@@ -51,12 +49,6 @@ public class PlannedAttack {
 
   boolean isAdminApproved;
 
-  /**
-   * Constructor for a Planned attack
-   *
-   * @param id The ID of the attack
-   * @param createAttackData Data related to the attack and its war.
-   */
   public PlannedAttack(String id, CreateAttackData createAttackData) {
     this.ID = id;
 
@@ -146,10 +138,9 @@ public class PlannedAttack {
 
   public void setUpStartOfAttack() {
 
-    // Convesion to ticks
     long currentTime = new Date().getTime();
     long timeLeftBeforeStart = (long) ((startTime - currentTime) * 0.02);
-    long timeLeftBeforeWarning = timeLeftBeforeStart - 1200; // Warning 1 minute before
+    long timeLeftBeforeWarning = timeLeftBeforeStart - 1200;
 
     if (timeLeftBeforeStart <= 0) {
       startWar(startTime - timeLeftBeforeStart);
@@ -264,7 +255,6 @@ public class PlannedAttack {
       warWarningTask.cancel();
     }
 
-    // All chunks captured due to the war are now released
     CaptureManager.getInstance().removeCapture(this);
 
     CurrentAttack currentAttack = CurrentAttacksStorage.get(ID);
@@ -310,7 +300,6 @@ public class PlannedAttack {
 
   public void removeBelligerent(TerritoryData territory) {
     String territoryID = territory.getID();
-    // no need to check, it only removes if it is a part of it
     attackersID.remove(territoryID);
     defendersID.remove(territoryID);
   }

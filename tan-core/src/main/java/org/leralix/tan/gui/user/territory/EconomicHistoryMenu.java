@@ -49,16 +49,14 @@ public class EconomicHistoryMenu extends IteratorGUI {
 
   @Override
   public void open() {
-    // Show immediate loading screen with cached data
     iterator(cachedHistory, p -> TreasuryMenu.open(player, territoryData));
     gui.open(player);
 
-    // Load data asynchronously if not already loaded
     if (!isLoaded) {
       AsyncGuiHelper.loadAsync(
           player,
-          () -> getEconomicsHistory(), // Async supplier - loads from database
-          items -> { // Main thread consumer - updates GUI
+          () -> getEconomicsHistory(),
+          items -> {
             cachedHistory = items;
             isLoaded = true;
             iterator(items, p -> TreasuryMenu.open(player, territoryData));
@@ -84,7 +82,7 @@ public class EconomicHistoryMenu extends IteratorGUI {
       guiItems.add(ItemBuilder.from(transactionIcon).asGuiItem(event -> event.setCancelled(true)));
     }
 
-    Collections.reverse(guiItems); // newer first
+    Collections.reverse(guiItems);
     return guiItems;
   }
 }

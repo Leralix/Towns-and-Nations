@@ -27,7 +27,7 @@ public class SaveData extends SubCommand {
 
   @Override
   public String getSyntax() {
-    return "/tandebug saveall";
+    return "/coconationdebug saveall";
   }
 
   public List<String> getTabCompleteSuggestions(

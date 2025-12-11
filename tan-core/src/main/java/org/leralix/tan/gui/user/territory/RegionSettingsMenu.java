@@ -25,11 +25,9 @@ public class RegionSettingsMenu extends SettingsMenus {
 
   private final RegionData regionData;
 
-  public RegionSettingsMenu(Player player, ITanPlayer tanPlayer, RegionData regionData) {
+  private RegionSettingsMenu(Player player, ITanPlayer tanPlayer, RegionData regionData) {
     super(player, tanPlayer, Lang.HEADER_SETTINGS.get(player), regionData, 3);
     this.regionData = regionData;
-    // open() doit être appelé explicitement après la construction pour respecter le modèle
-    // asynchrone
   }
 
   public static void open(Player player, RegionData regionData) {
@@ -72,8 +70,6 @@ public class RegionSettingsMenu extends SettingsMenus {
                 TanChatUtils.message(player, Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
                 return;
               }
-              // TODO: Implement region change ownership GUI after PlayerGUI migration
-              // Original: PlayerGUI.openRegionChangeOwnership(player, 0)
               TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
             })
         .asGuiItem(player, langType);

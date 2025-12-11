@@ -30,17 +30,14 @@ public abstract class JsonStorage<T> {
   static @NotNull File getFile(String fileName) {
     File pluginFolder = TownsAndNations.getPlugin().getDataFolder();
 
-    // Old path
     File oldFile = new File(pluginFolder, fileName);
 
-    // New Path
     File newFolder = new File(pluginFolder, NEW_FILE_FOLDER);
     File newFile = new File(newFolder, fileName);
 
-    // Use to migrate to the new destination
     if (oldFile.exists() && !newFile.exists()) {
       try {
-        Files.createDirectories(newFolder.toPath()); // Création des dossiers nécessaires
+        Files.createDirectories(newFolder.toPath());
         Files.move(oldFile.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         Bukkit.getLogger()
             .info("Moved " + fileName + " to new storage location: " + newFile.getAbsolutePath());
@@ -84,8 +81,7 @@ public abstract class JsonStorage<T> {
           tempFile.toPath(),
           file.toPath(),
           StandardCopyOption.REPLACE_EXISTING,
-          StandardCopyOption.ATOMIC_MOVE // si supporté
-          );
+          StandardCopyOption.ATOMIC_MOVE);
     } catch (IOException e) {
       Bukkit.getLogger()
           .severe(

@@ -4,7 +4,6 @@ import org.leralix.tan.dataclass.ITanPlayer;
 
 public abstract class AbstractOwner {
 
-  /** Used for serialisation */
   protected final OwnerType type;
 
   protected AbstractOwner(OwnerType type) {

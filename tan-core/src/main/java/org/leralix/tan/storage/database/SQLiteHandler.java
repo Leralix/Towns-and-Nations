@@ -37,16 +37,13 @@ public class SQLiteHandler extends DatabaseHandler {
     config.setJdbcUrl("jdbc:sqlite:" + databasePath + "?journal_mode=WAL");
     config.setPoolName("TownsAndNations-SQLite-Pool");
 
-    // Connection pool configuration for SQLite with WAL mode
-    // WAL mode allows multiple concurrent readers (but still only 1 writer)
-    config.setMaximumPoolSize(10); // Increased to allow concurrent reads
-    config.setMinimumIdle(2); // Keep some connections ready
-    config.setConnectionTimeout(120000); // Increased from 30s to 120s
+    config.setMaximumPoolSize(10);
+    config.setMinimumIdle(2);
+    config.setConnectionTimeout(120000);
     config.setIdleTimeout(600000);
     config.setMaxLifetime(1800000);
-    config.setLeakDetectionThreshold(60000); // Warn if connection held > 60s
+    config.setLeakDetectionThreshold(60000);
 
-    // SQLite-specific optimizations
     config.addDataSourceProperty("cachePrepStmts", "true");
     config.addDataSourceProperty("prepStmtCacheSize", "250");
     config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
@@ -89,7 +86,6 @@ public class SQLiteHandler extends DatabaseHandler {
         }
       }
     } catch (SQLException | NumberFormatException e) {
-      // Ignore, we'll insert the default value
     }
     return 1;
   }
@@ -120,7 +116,6 @@ public class SQLiteHandler extends DatabaseHandler {
         }
       }
     } catch (SQLException | NumberFormatException e) {
-      // Ignore, we'll insert the default value
     }
     return 1;
   }
@@ -140,10 +135,6 @@ public class SQLiteHandler extends DatabaseHandler {
     }
   }
 
-  /**
-   * Close the HikariCP connection pool and clean up resources P3.2: Proper resource cleanup
-   * implementation
-   */
   @Override
   public void close() {
     if (hikariDataSource != null && !hikariDataSource.isClosed()) {

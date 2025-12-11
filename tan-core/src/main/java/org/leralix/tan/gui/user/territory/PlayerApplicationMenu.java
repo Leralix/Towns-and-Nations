@@ -40,27 +40,18 @@ public class PlayerApplicationMenu extends IteratorGUI {
     this.applicantsData = applicantsData;
   }
 
-  /**
-   * Opens the player application menu asynchronously.
-   *
-   * @param player The player viewing the menu
-   * @param townData The town data containing applications
-   */
   public static void open(Player player, TownData townData) {
     PlayerDataStorage storage = PlayerDataStorage.getInstance();
 
-    // Load viewer data
     storage
         .get(player)
         .thenCompose(
             tanPlayer -> {
-              // Load all applicants data in parallel
               List<CompletableFuture<ITanPlayer>> applicantFutures = new ArrayList<>();
               for (String playerUUID : townData.getPlayerJoinRequestSet()) {
                 applicantFutures.add(storage.get(playerUUID));
               }
 
-              // Wait for all applicants to load
               return CompletableFuture.allOf(applicantFutures.toArray(new CompletableFuture[0]))
                   .thenApply(
                       v -> {

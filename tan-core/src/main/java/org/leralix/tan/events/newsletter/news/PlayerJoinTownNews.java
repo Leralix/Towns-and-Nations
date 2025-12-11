@@ -54,25 +54,44 @@ public class PlayerJoinTownNews extends Newsletter {
 
   @Override
   public void broadcast(Player player) {
-    ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
-    if (tanPlayer == null) return;
-    TownData townData = TownDataStorage.getInstance().getSync(townID);
-    if (townData == null) return;
-    TanChatUtils.message(
-        player,
-        Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(
-            player, tanPlayer.getNameStored(), townData.getBaseColoredName()),
-        SoundEnum.MINOR_GOOD);
+    PlayerDataStorage.getInstance()
+        .get(playerID)
+        .thenAccept(
+            tanPlayer -> {
+              if (tanPlayer == null) return;
+              TownDataStorage.getInstance()
+                  .get(townID)
+                  .thenAccept(
+                      townData -> {
+                        if (townData == null) return;
+                        TanChatUtils.message(
+                            player,
+                            Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(
+                                player, tanPlayer.getNameStored(), townData.getBaseColoredName()),
+                            SoundEnum.MINOR_GOOD);
+                      });
+            });
   }
 
   @Override
   public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+    PlayerDataStorage.getInstance()
+        .get(playerID)
+        .thenAccept(
+            tanPlayer -> {
+              if (tanPlayer == null) return;
+              TownDataStorage.getInstance()
+                  .get(townID)
+                  .thenAccept(
+                      townData -> {
+                        if (townData == null) return;
+                      });
+            });
     ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getSync(playerID);
     if (tanPlayer == null) return null;
     TownData townData = TownDataStorage.getInstance().getSync(townID);
     if (townData == null) return null;
 
-    // BUGFIX: Convert Adventure Component to legacy text properly
     ItemStack itemStack =
         HeadUtils.makeSkullURL(
             Lang.PLAYER_JOINED_TOWN_NEWSLETTER_TITLE.get(lang),
