@@ -141,55 +141,13 @@ public class PlayerDataStorage extends DatabaseStorage<ITanPlayer> {
 
   @Override
   public void put(String id, ITanPlayer obj) {
-    if (id == null || obj == null) {
-      return;
-    }
-
-    String jsonData = gson.toJson(obj, typeToken);
-    String upsertSQL;
-    if (getDatabase().isMySQL()) {
-      upsertSQL =
-          "INSERT INTO "
-              + tableName
-              + " (id, player_name, town_name, nation_name, data) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE player_name = VALUES(player_name), town_name = VALUES(town_name), nation_name = VALUES(nation_name), data = VALUES(data)";
-    } else {
-      upsertSQL =
-          "INSERT OR REPLACE INTO "
-              + tableName
-              + " (id, player_name, town_name, nation_name, data) VALUES (?, ?, ?, ?, ?)";
-    }
-
-    FoliaScheduler.runTaskAsynchronously(
-        TownsAndNations.getPlugin(),
-        () -> {
-          try (Connection conn = getDatabase().getDataSource().getConnection();
-              PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
-
-            ps.setString(1, id);
-            ps.setString(2, obj.getNameStored());
-            ps.setString(3, obj.getTownName());
-            ps.setString(4, obj.getNationName());
-            ps.setString(5, jsonData);
-            ps.executeUpdate();
-
-            if (cacheEnabled && cache != null) {
-              synchronized (cache) {
-                cache.put(id, obj);
-              }
-            }
-
-          } catch (SQLException e) {
-            TownsAndNations.getPlugin()
-                .getLogger()
-                .severe(
-                    "Error storing "
-                        + typeClass.getSimpleName()
-                        + " with ID "
-                        + id
-                        + ": "
-                        + e.getMessage());
-          }
-        });
+    // ✅ SYNC-FIX: Delegate to putWithInvalidation for cache invalidation + broadcast
+    putWithInvalidation(id, obj).exceptionally(throwable -> {
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .severe("Error in PlayerDataStorage.put() delegation: " + throwable.getMessage());
+      return null;
+    });
   }
 
   public CompletableFuture<ITanPlayer> register(Player p) {

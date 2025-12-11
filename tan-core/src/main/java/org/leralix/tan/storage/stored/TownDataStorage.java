@@ -162,6 +162,7 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
       return;
     }
 
+    // ✅ SYNC-FIX: Debounce logic preserved, but delegate to putWithInvalidation
     long now = System.currentTimeMillis();
     Long lastSave = lastSaveTime.get(id);
     if (lastSave != null && (now - lastSave) < SAVE_DEBOUNCE_MS) {
@@ -171,7 +172,7 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
             TownsAndNations.getPlugin(),
             () -> {
               pendingSaves.remove(id);
-              put(id, obj);
+              put(id, obj); // Recursive call after debounce
             },
             SAVE_DEBOUNCE_MS / 50);
       }
@@ -185,56 +186,15 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
     pendingSaves.add(id);
     lastSaveTime.put(id, now);
 
-    String jsonData = gson.toJson(obj, typeToken);
-    String upsertSQL;
-    if (getDatabase().isMySQL()) {
-      upsertSQL =
-          "INSERT INTO "
-              + tableName
-              + " (id, town_name, creator_uuid, creator_name, data) VALUES (?, ?, ?, ?, ?) "
-              + "ON DUPLICATE KEY UPDATE town_name = VALUES(town_name), data = VALUES(data)";
-    } else {
-      upsertSQL =
-          "INSERT OR REPLACE INTO "
-              + tableName
-              + " (id, town_name, creator_uuid, creator_name, data) VALUES (?, ?, ?, ?, ?)";
-    }
-
-    FoliaScheduler.runTaskAsynchronously(
-        TownsAndNations.getPlugin(),
-        () -> {
-          try (Connection conn = getDatabase().getDataSource().getConnection();
-              PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
-
-            ps.setString(1, id);
-            ps.setString(2, obj.getName());
-            ps.setString(3, obj.getLeaderID());
-            ITanPlayer leaderData = obj.getLeaderData();
-            String leaderName = (leaderData != null) ? leaderData.getNameStored() : null;
-            ps.setString(4, leaderName);
-            ps.setString(5, jsonData);
-            ps.executeUpdate();
-
-            if (cacheEnabled && cache != null) {
-              synchronized (cache) {
-                cache.put(id, obj);
-              }
-            }
-
-            pendingSaves.remove(id);
-
-          } catch (SQLException e) {
-            pendingSaves.remove(id);
-            TownsAndNations.getPlugin()
-                .getLogger()
-                .severe(
-                    "Error storing "
-                        + typeClass.getSimpleName()
-                        + " with ID "
-                        + id
-                        + ": "
-                        + e.getMessage());
-          }
+    // ✅ SYNC-FIX: Use putWithInvalidation for cache invalidation + broadcast
+    putWithInvalidation(id, obj)
+        .thenRun(() -> pendingSaves.remove(id))
+        .exceptionally(throwable -> {
+          pendingSaves.remove(id);
+          TownsAndNations.getPlugin()
+              .getLogger()
+              .severe("Error in TownDataStorage.put() delegation: " + throwable.getMessage());
+          return null;
         });
   }
 
@@ -256,7 +216,7 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
     String townId = getNextTownID();
     TownData newTown = new TownData(townId, townName, tanPlayer);
 
-    put(townId, newTown);
+    putWithInvalidation(townId, newTown).join(); // ✅ SYNC-FIX: Use putWithInvalidation
 
     try {
       org.leralix.tan.redis.RedisSyncManager syncManager =
@@ -289,7 +249,7 @@ public class TownDataStorage extends DatabaseStorage<TownData> {
 
     TownData newTown = new TownData(townId, townName, null);
 
-    put(townId, newTown);
+    putWithInvalidation(townId, newTown).join(); // ✅ SYNC-FIX: Use putWithInvalidation
     return CompletableFuture.completedFuture(newTown);
   }
 

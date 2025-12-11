@@ -62,14 +62,14 @@ public class TruceStorage extends DatabaseStorage<HashMap<String, ActiveTruce>> 
       map1 = new HashMap<>();
     }
     map1.put(id2, activeTruce);
-    put(id1, map1);
+    putWithInvalidation(id1, map1).join(); // ✅ SYNC-FIX: Use putWithInvalidation
 
     HashMap<String, ActiveTruce> map2 = get(id2).join();
     if (map2 == null) {
       map2 = new HashMap<>();
     }
     map2.put(id1, activeTruce);
-    put(id2, map2);
+    putWithInvalidation(id2, map2).join(); // ✅ SYNC-FIX: Use putWithInvalidation
   }
 
   public long getRemainingTruce(TerritoryData territoryData1, TerritoryData territoryData2) {

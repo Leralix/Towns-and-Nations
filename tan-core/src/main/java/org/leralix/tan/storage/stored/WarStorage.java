@@ -66,11 +66,11 @@ public class WarStorage extends DatabaseStorage<War> {
   }
 
   private void add(War plannedAttack) {
-    put(plannedAttack.getID(), plannedAttack);
+    putWithInvalidation(plannedAttack.getID(), plannedAttack).join(); // ✅ SYNC-FIX
   }
 
   public void remove(War plannedAttack) {
-    delete(plannedAttack.getID());
+    deleteWithInvalidation(plannedAttack.getID()).join(); // ✅ SYNC-FIX: Use deleteWithInvalidation
   }
 
   private String getNewID() {

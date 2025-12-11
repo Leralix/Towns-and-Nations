@@ -83,7 +83,7 @@ public class LandmarkStorage extends DatabaseStorage<Landmark> {
     Vector3D vector3D = new Vector3D(position);
     String landmarkID = "L" + newLandmarkID;
     Landmark landmark = new Landmark(landmarkID, vector3D);
-    put(landmarkID, landmark);
+    putWithInvalidation(landmarkID, landmark).join(); // ✅ SYNC-FIX: Use putWithInvalidation for cache invalidation
     newLandmarkID++;
     NewClaimedChunkStorage.getInstance().claimLandmarkChunk(position.getChunk(), landmarkID);
     return landmark;

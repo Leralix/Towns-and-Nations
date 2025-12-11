@@ -104,51 +104,13 @@ public class RegionDataStorage extends DatabaseStorage<RegionData> {
 
   @Override
   public void put(String id, RegionData obj) {
-    if (id == null || obj == null) {
-      return;
-    }
-
-    String jsonData = gson.toJson(obj, typeToken);
-    String upsertSQL;
-    if (getDatabase().isMySQL()) {
-      upsertSQL =
-          "INSERT INTO "
-              + tableName
-              + " (id, region_name, data) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE region_name = VALUES(region_name), data = VALUES(data)";
-    } else {
-      upsertSQL =
-          "INSERT OR REPLACE INTO " + tableName + " (id, region_name, data) VALUES (?, ?, ?)";
-    }
-
-    FoliaScheduler.runTaskAsynchronously(
-        TownsAndNations.getPlugin(),
-        () -> {
-          try (Connection conn = getDatabase().getDataSource().getConnection();
-              PreparedStatement ps = conn.prepareStatement(upsertSQL)) {
-
-            ps.setString(1, id);
-            ps.setString(2, obj.getName());
-            ps.setString(3, jsonData);
-            ps.executeUpdate();
-
-            if (cacheEnabled && cache != null) {
-              synchronized (cache) {
-                cache.put(id, obj);
-              }
-            }
-
-          } catch (SQLException e) {
-            TownsAndNations.getPlugin()
-                .getLogger()
-                .severe(
-                    "Error storing "
-                        + typeClass.getSimpleName()
-                        + " with ID "
-                        + id
-                        + ": "
-                        + e.getMessage());
-          }
-        });
+    // ✅ SYNC-FIX: Delegate to putWithInvalidation for cache invalidation + broadcast
+    putWithInvalidation(id, obj).exceptionally(throwable -> {
+      TownsAndNations.getPlugin()
+          .getLogger()
+          .severe("Error in RegionDataStorage.put() delegation: " + throwable.getMessage());
+      return null;
+    });
   }
 
   private void loadNextID() {
@@ -191,7 +153,7 @@ public class RegionDataStorage extends DatabaseStorage<RegionData> {
   }
 
   public void deleteRegion(RegionData region) {
-    delete(region.getID());
+    deleteWithInvalidation(region.getID()).join(); // ✅ SYNC-FIX: Use deleteWithInvalidation
   }
 
   public boolean isNameUsed(String name) {
