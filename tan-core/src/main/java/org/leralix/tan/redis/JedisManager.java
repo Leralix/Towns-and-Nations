@@ -1,6 +1,12 @@
 package org.leralix.tan.redis;
 
 import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -8,6 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.leralix.tan.utils.CocoLogger;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -26,6 +33,7 @@ public class JedisManager {
   private final JedisPool jedisPool;
   private final ExecutorService pubSubExecutor;
   private final Map<String, JedisPubSub> activeSubscriptions;
+  private final Map<String, String> luaScriptShas; // SHA-1 cache for EVALSHA optimization
 
   public JedisManager(
       String host, int port, String username, String password, int database, int poolSize) {
@@ -60,6 +68,11 @@ public class JedisManager {
             });
 
     this.activeSubscriptions = new ConcurrentHashMap<>();
+    this.luaScriptShas = new ConcurrentHashMap<>();
+    
+    // Load and cache Lua scripts on startup
+    loadLuaScripts();
+    
     logger.info(CocoLogger.success("✓ JedisPool initialisé (pool: " + poolSize + ")"));
   }
 
@@ -346,5 +359,143 @@ public class JedisManager {
   /** Obtient le pool Jedis pour les opérations avancées */
   public JedisPool getPool() {
     return jedisPool;
+  }
+
+  // ============ Lua Script Support ============
+
+  /**
+   * Loads Lua scripts from resources and caches their SHA-1 hashes.
+   * Scripts are loaded via SCRIPT LOAD for EVALSHA optimization.
+   */
+  private void loadLuaScripts() {
+    String[] scripts = {
+      "redis-lua/atomic_cache_publish.lua",
+      "redis-lua/atomic_multi_invalidate.lua",
+      "redis-lua/atomic_invalidate_publish.lua"
+    };
+
+    try (Jedis jedis = jedisPool.getResource()) {
+      for (String scriptPath : scripts) {
+        try {
+          String scriptContent = loadLuaScriptFromResource(scriptPath);
+          String sha = jedis.scriptLoad(scriptContent);
+          luaScriptShas.put(scriptPath, sha);
+          logger.info(
+              CocoLogger.success("✓ Loaded Lua script: " + scriptPath + " (SHA: " + sha + ")"));
+        } catch (Exception e) {
+          logger.severe(
+              CocoLogger.error("Failed to load Lua script: " + scriptPath + " - " + e.getMessage()));
+        }
+      }
+    }
+  }
+
+  /**
+   * Loads Lua script content from JAR resources.
+   */
+  private String loadLuaScriptFromResource(String resourcePath) throws Exception {
+    try (InputStream is = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+      if (is == null) {
+        throw new IllegalArgumentException("Lua script not found: " + resourcePath);
+      }
+      try (BufferedReader reader =
+          new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+        return reader.lines().collect(Collectors.joining("\n"));
+      }
+    }
+  }
+
+  /**
+   * Executes Lua script atomically using EVALSHA (cached SHA-1).
+   * Falls back to EVAL if script not found on Redis server.
+   * 
+   * @param scriptPath Path to script in resources (e.g., "redis-lua/atomic_cache_publish.lua")
+   * @param keys Redis KEYS[] array
+   * @param args Redis ARGV[] array
+   * @return Script return value
+   */
+  public Object evalLua(String scriptPath, List<String> keys, List<String> args) {
+    String sha = luaScriptShas.get(scriptPath);
+    if (sha == null) {
+      throw new IllegalArgumentException("Lua script not loaded: " + scriptPath);
+    }
+
+    try (Jedis jedis = jedisPool.getResource()) {
+      try {
+        // Try EVALSHA first (fastest - no script transfer)
+        return jedis.evalsha(sha, keys, args);
+      } catch (redis.clients.jedis.exceptions.JedisNoScriptException e) {
+        // Script not in Redis cache - reload and retry
+        logger.warning(
+            CocoLogger.warning("Lua script SHA not found on Redis, reloading: " + scriptPath));
+        String scriptContent = loadLuaScriptFromResource(scriptPath);
+        sha = jedis.scriptLoad(scriptContent);
+        luaScriptShas.put(scriptPath, sha);
+        return jedis.evalsha(sha, keys, args);
+      }
+    } catch (Exception e) {
+      logger.severe(
+          CocoLogger.error("Lua script execution failed: " + scriptPath + " - " + e.getMessage()));
+      throw new RuntimeException("Lua script error", e);
+    }
+  }
+
+  /**
+   * Atomic: Cache write + Pub/Sub broadcast (HSET + EXPIRE + PUBLISH).
+   * Guarantees consistency - either all operations succeed or all fail.
+   * 
+   * @param hashName Redis hash name (e.g., "tan:query_cache")
+   * @param channel Pub/Sub channel (e.g., "tan:sync:cache_invalidation")
+   * @param cacheKey Hash field (e.g., "tan:cache:territory:abc123")
+   * @param cacheValue JSON data to cache
+   * @param ttlSeconds TTL for hash
+   * @param pubSubMessage JSON message to broadcast
+   * @return "OK" on success
+   */
+  public String atomicCachePublish(
+      String hashName,
+      String channel,
+      String cacheKey,
+      String cacheValue,
+      int ttlSeconds,
+      String pubSubMessage) {
+    List<String> keys = List.of(hashName, channel);
+    List<String> args = List.of(cacheKey, cacheValue, String.valueOf(ttlSeconds), pubSubMessage);
+    return (String) evalLua("redis-lua/atomic_cache_publish.lua", keys, args);
+  }
+
+  /**
+   * Atomic: Multi-key invalidation (HDEL).
+   * Guarantees all cache keys are deleted together.
+   * 
+   * @param hashName Redis hash name (e.g., "tan:query_cache")
+   * @param cacheKeys Array of cache keys to delete
+   * @return Number of keys deleted
+   */
+  public long atomicMultiInvalidate(String hashName, String... cacheKeys) {
+    List<String> keys = List.of(hashName);
+    List<String> args = List.of(cacheKeys);
+    return (Long) evalLua("redis-lua/atomic_multi_invalidate.lua", keys, args);
+  }
+
+  /**
+   * Atomic: Multi-key invalidation + Pub/Sub broadcast (HDEL + PUBLISH).
+   * Guarantees cache deletion and sync message are consistent.
+   * 
+   * @param hashName Redis hash name (e.g., "tan:query_cache")
+   * @param channel Pub/Sub channel (e.g., "tan:sync:cache_invalidation")
+   * @param pubSubMessage JSON message to broadcast
+   * @param cacheKeys Array of cache keys to delete
+   * @return Number of keys deleted
+   */
+  public long atomicInvalidatePublish(
+      String hashName, String channel, String pubSubMessage, String... cacheKeys) {
+    List<String> keys = List.of(hashName, channel);
+    List<String> args = new ArrayList<>();
+    args.add(pubSubMessage);
+    for (String key : cacheKeys) {
+      args.add(key);
+    }
+    return (Long) evalLua("redis-lua/atomic_invalidate_publish.lua", keys, args);
   }
 }

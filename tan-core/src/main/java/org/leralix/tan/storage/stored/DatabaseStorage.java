@@ -13,6 +13,8 @@ import org.leralix.tan.storage.exceptions.DatabaseNotReadyException;
 import org.leralix.tan.storage.sync.SyncedEntity;
 import org.leralix.tan.redis.QueryCacheManager;
 import org.leralix.tan.redis.RedisSyncManager;
+import org.leralix.tan.redis.JedisManager;
+import org.leralix.tan.redis.RedisCircuitBreaker;
 
 public abstract class DatabaseStorage<T> {
 
@@ -523,25 +525,48 @@ public abstract class DatabaseStorage<T> {
 
   /**
    * Internal helper: performs MySQL write + cache invalidation + broadcast.
+   * Uses atomic Lua script to guarantee consistency between cache invalidation and broadcast.
    */
   private CompletableFuture<Void> performWriteWithInvalidation(String id, T obj) {
     return putAsync(id, obj)
         .thenRun(
             () -> {
-              // Invalidate Redis L2 cache
               String cacheKey = "tan:cache:" + tableName.toLowerCase() + ":" + id;
+              
+              // Step 1: Invalidate local L1 cache (always synchronous)
               QueryCacheManager.invalidateTerritory(id);
 
-              // Broadcast cache invalidation to other servers
+              // Step 2: Atomic L2 cache invalidation + broadcast via Lua script
               RedisSyncManager syncManager = TownsAndNations.getPlugin().getRedisSyncManager();
               if (syncManager != null) {
-                syncManager.publishCacheInvalidation(cacheKey);
-                TownsAndNations.getPlugin()
-                    .getLogger()
-                    .fine(
-                        String.format(
-                            "[TaN-SYNC] Cache invalidation broadcast: %s | Table: %s | ID: %s",
-                            cacheKey, tableName, id));
+                JedisManager jedisManager = syncManager.getJedisManager();
+                
+                // Prepare sync message for cross-server broadcast
+                String syncMessage = String.format(
+                    "{\"serverName\":\"%s\",\"type\":\"CACHE_INVALIDATE\",\"data\":\"%s\",\"timestamp\":%d}",
+                    syncManager.getServerName(), cacheKey, System.currentTimeMillis());
+                
+                // Execute atomic Lua script: HDEL + PUBLISH in one operation
+                // This guarantees both cache invalidation and broadcast happen together
+                RedisCircuitBreaker.executeVoid(
+                    () -> {
+                      Long deleted = jedisManager.atomicInvalidatePublish(
+                          "tan:query_cache",  // Redis hash containing cached data
+                          "tan:sync:cache_invalidation",  // Pub/Sub channel
+                          syncMessage,  // JSON message for cross-server sync
+                          cacheKey);  // Cache key to invalidate
+                      
+                      TownsAndNations.getPlugin()
+                          .getLogger()
+                          .fine(
+                              String.format(
+                                  "[TaN-SYNC] Atomic cache invalidation: %s | Table: %s | ID: %s | Deleted: %d",
+                                  cacheKey, tableName, id, deleted));
+                    },
+                    () -> TownsAndNations.getPlugin()
+                        .getLogger()
+                        .fine("[TaN-SYNC] Redis circuit OPEN - skipping L2 atomic invalidation")
+                );
               }
             })
         .exceptionally(

@@ -99,6 +99,22 @@ public class RedisSyncManager {
     logger.info(CocoLogger.network("⇄ Sync Redis initialisé (serveur: " + serverName + ")"));
   }
 
+  /**
+   * Get the JedisManager instance for direct Redis operations.
+   * Used by DatabaseStorage for atomic Lua script execution.
+   */
+  public JedisManager getJedisManager() {
+    return jedisManager;
+  }
+
+  /**
+   * Get the server name identifier for this instance.
+   * Used for cross-server sync message routing.
+   */
+  public String getServerName() {
+    return serverName;
+  }
+
   private void initializeTopics() {
     jedisManager.subscribe(
         PLAYER_DATA_CHANNEL,

@@ -75,14 +75,25 @@ public class QueryCacheManager {
           if (redisClient != null) {
             int ttlMinutes = transactionType.equals("TAXATION") ? 30 : 5;
             String jsonValue = gson.toJson(result);
+            int ttlSeconds = ttlMinutes * 60;
 
-            // Circuit breaker protects against Redis failures
+            // Use atomic Lua script: HSET + EXPIRE + PUBLISH in one operation
+            // This guarantees cache write, TTL, and cross-server broadcast are consistent
             RedisCircuitBreaker.executeVoid(
                 () -> {
-                  redisClient.hashSet("tan:query_cache", cacheKey, jsonValue);
-                  redisClient.expire("tan:query_cache", ttlMinutes * 60);
+                  String syncMessage = String.format(
+                      "{\"type\":\"CACHE_UPDATE\",\"key\":\"%s\",\"timestamp\":%d}",
+                      cacheKey, System.currentTimeMillis());
+                  
+                  redisClient.atomicCachePublish(
+                      "tan:query_cache",  // Redis hash
+                      "tan:sync:cache_invalidation",  // Pub/Sub channel
+                      cacheKey,  // Hash field
+                      jsonValue,  // Cached value
+                      ttlSeconds,  // TTL in seconds
+                      syncMessage);  // Sync message
                 },
-                () -> logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping L2 cache write")
+                () -> logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping atomic L2 cache write")
             );
           }
 
@@ -122,12 +133,23 @@ public class QueryCacheManager {
 
     if (redisClient != null) {
       String jsonValue = gson.toJson(balance);
+      
+      // Use atomic Lua script: HSET + EXPIRE + PUBLISH in one operation
       RedisCircuitBreaker.executeVoid(
           () -> {
-            redisClient.hashSet("tan:query_cache", cacheKey, jsonValue);
-            redisClient.expire("tan:query_cache", 60);
+            String syncMessage = String.format(
+                "{\"type\":\"BALANCE_UPDATE\",\"playerUUID\":\"%s\",\"timestamp\":%d}",
+                playerUUID, System.currentTimeMillis());
+            
+            redisClient.atomicCachePublish(
+                "tan:query_cache",
+                "tan:sync:cache_invalidation",
+                cacheKey,
+                jsonValue,
+                60,  // TTL: 60 seconds
+                syncMessage);
           },
-          () -> logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping L2 write for balance")
+          () -> logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping atomic L2 write for balance")
       );
     }
 
@@ -168,12 +190,23 @@ public class QueryCacheManager {
 
     if (redisClient != null) {
       String jsonValue = gson.toJson(territory);
+      
+      // Use atomic Lua script: HSET + EXPIRE + PUBLISH in one operation
       RedisCircuitBreaker.executeVoid(
           () -> {
-            redisClient.hashSet("tan:query_cache", cacheKey, jsonValue);
-            redisClient.expire("tan:query_cache", 600);
+            String syncMessage = String.format(
+                "{\"type\":\"TERRITORY_UPDATE\",\"territoryId\":\"%s\",\"timestamp\":%d}",
+                territoryId, System.currentTimeMillis());
+            
+            redisClient.atomicCachePublish(
+                "tan:query_cache",
+                "tan:sync:cache_invalidation",
+                cacheKey,
+                jsonValue,
+                600,  // TTL: 10 minutes
+                syncMessage);
           },
-          () -> logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping L2 write for territory")
+          () -> logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping atomic L2 write for territory")
       );
     }
 
