@@ -29,6 +29,10 @@ public class QueryCacheManager {
             .expireAfterWrite(3, TimeUnit.MINUTES)
             .recordStats()
             .build();
+
+    // Initialize circuit breaker for Redis fault tolerance
+    RedisCircuitBreaker.initialize();
+    logger.info("[TaN-QueryCache] Initialized with circuit breaker protection");
   }
 
   public static CompletableFuture<List<Object>> getTransactionHistoryCached(
@@ -47,17 +51,20 @@ public class QueryCacheManager {
           }
 
           if (redisClient != null) {
-            try {
-              String jsonValue = redisClient.hashGet("tan:query_cache", cacheKey);
-              if (jsonValue != null) {
-                @SuppressWarnings("unchecked")
-                List<Object> redisCached = (List<Object>) gson.fromJson(jsonValue, List.class);
-                cached = redisCached;
-                localCache.put(cacheKey, cached);
-                return cached;
-              }
-            } catch (Exception e) {
-              logger.warning("[TaN-QueryCache] Redis read error: " + e.getMessage());
+            // Circuit breaker protects against Redis failures
+            String jsonValue = RedisCircuitBreaker.execute(
+                () -> redisClient.hashGet("tan:query_cache", cacheKey),
+                () -> {
+                  logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping L2 cache read");
+                  return null; // Fallback: skip Redis, fetch from MySQL
+                });
+
+            if (jsonValue != null) {
+              @SuppressWarnings("unchecked")
+              List<Object> redisCached = (List<Object>) gson.fromJson(jsonValue, List.class);
+              cached = redisCached;
+              localCache.put(cacheKey, cached);
+              return cached;
             }
           }
 
@@ -66,14 +73,17 @@ public class QueryCacheManager {
           localCache.put(cacheKey, result);
 
           if (redisClient != null) {
-            try {
-              int ttlMinutes = transactionType.equals("TAXATION") ? 30 : 5;
-              String jsonValue = gson.toJson(result);
-              redisClient.hashSet("tan:query_cache", cacheKey, jsonValue);
-              redisClient.expire("tan:query_cache", ttlMinutes * 60);
-            } catch (Exception e) {
-              logger.warning("[TaN-QueryCache] Redis write error: " + e.getMessage());
-            }
+            int ttlMinutes = transactionType.equals("TAXATION") ? 30 : 5;
+            String jsonValue = gson.toJson(result);
+
+            // Circuit breaker protects against Redis failures
+            RedisCircuitBreaker.executeVoid(
+                () -> {
+                  redisClient.hashSet("tan:query_cache", cacheKey, jsonValue);
+                  redisClient.expire("tan:query_cache", ttlMinutes * 60);
+                },
+                () -> logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping L2 cache write")
+            );
           }
 
           return result;
@@ -90,15 +100,18 @@ public class QueryCacheManager {
     }
 
     if (redisClient != null) {
-      try {
-        String jsonValue = redisClient.hashGet("tan:query_cache", cacheKey);
-        if (jsonValue != null) {
-          cached = gson.fromJson(jsonValue, Integer.class);
-          logger.fine("[TaN-QueryCache] L2 HIT: " + cacheKey);
-          localCache.put(cacheKey, cached);
-          return cached;
-        }
-      } catch (Exception e) {
+      String jsonValue = RedisCircuitBreaker.execute(
+          () -> redisClient.hashGet("tan:query_cache", cacheKey),
+          () -> {
+            logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping L2 read for balance");
+            return null;
+          });
+
+      if (jsonValue != null) {
+        cached = gson.fromJson(jsonValue, Integer.class);
+        logger.fine("[TaN-QueryCache] L2 HIT: " + cacheKey);
+        localCache.put(cacheKey, cached);
+        return cached;
       }
     }
 
@@ -108,12 +121,14 @@ public class QueryCacheManager {
     localCache.put(cacheKey, balance);
 
     if (redisClient != null) {
-      try {
-        String jsonValue = gson.toJson(balance);
-        redisClient.hashSet("tan:query_cache", cacheKey, jsonValue);
-        redisClient.expire("tan:query_cache", 60);
-      } catch (Exception e) {
-      }
+      String jsonValue = gson.toJson(balance);
+      RedisCircuitBreaker.executeVoid(
+          () -> {
+            redisClient.hashSet("tan:query_cache", cacheKey, jsonValue);
+            redisClient.expire("tan:query_cache", 60);
+          },
+          () -> logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping L2 write for balance")
+      );
     }
 
     return balance;
@@ -131,15 +146,18 @@ public class QueryCacheManager {
     }
 
     if (redisClient != null) {
-      try {
-        String jsonValue = redisClient.hashGet("tan:query_cache", cacheKey);
-        if (jsonValue != null) {
-          cached = gson.fromJson(jsonValue, TerritoryData.class);
-          logger.fine("[TaN-QueryCache] L2 HIT: " + cacheKey);
-          localCache.put(cacheKey, cached);
-          return cached;
-        }
-      } catch (Exception e) {
+      String jsonValue = RedisCircuitBreaker.execute(
+          () -> redisClient.hashGet("tan:query_cache", cacheKey),
+          () -> {
+            logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping L2 read for territory");
+            return null;
+          });
+
+      if (jsonValue != null) {
+        cached = gson.fromJson(jsonValue, TerritoryData.class);
+        logger.fine("[TaN-QueryCache] L2 HIT: " + cacheKey);
+        localCache.put(cacheKey, cached);
+        return cached;
       }
     }
 
@@ -149,12 +167,14 @@ public class QueryCacheManager {
     localCache.put(cacheKey, territory);
 
     if (redisClient != null) {
-      try {
-        String jsonValue = gson.toJson(territory);
-        redisClient.hashSet("tan:query_cache", cacheKey, jsonValue);
-        redisClient.expire("tan:query_cache", 600);
-      } catch (Exception e) {
-      }
+      String jsonValue = gson.toJson(territory);
+      RedisCircuitBreaker.executeVoid(
+          () -> {
+            redisClient.hashSet("tan:query_cache", cacheKey, jsonValue);
+            redisClient.expire("tan:query_cache", 600);
+          },
+          () -> logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping L2 write for territory")
+      );
     }
 
     return territory;
@@ -169,17 +189,19 @@ public class QueryCacheManager {
     }
 
     if (redisClient != null) {
-      try {
-        var allFields = redisClient.hashGetAll("tan:query_cache");
-        var keysToDelete =
-            allFields.keySet().stream()
-                .filter(key -> key.startsWith("tan:cache:trans_history:" + territoryId))
-                .toArray(String[]::new);
-        if (keysToDelete.length > 0) {
-          redisClient.hashDelete("tan:query_cache", keysToDelete);
-        }
-      } catch (Exception e) {
-      }
+      RedisCircuitBreaker.executeVoid(
+          () -> {
+            var allFields = redisClient.hashGetAll("tan:query_cache");
+            var keysToDelete =
+                allFields.keySet().stream()
+                    .filter(key -> key.startsWith("tan:cache:trans_history:" + territoryId))
+                    .toArray(String[]::new);
+            if (keysToDelete.length > 0) {
+              redisClient.hashDelete("tan:query_cache", keysToDelete);
+            }
+          },
+          () -> logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping L2 invalidation for transaction history")
+      );
     }
   }
 
@@ -195,13 +217,13 @@ public class QueryCacheManager {
     }
 
     if (redisClient != null) {
-      try {
-        String[] keysToDelete =
-            territoryIds.stream().map(id -> "tan:cache:territory:" + id).toArray(String[]::new);
-        if (keysToDelete.length > 0) {
-          redisClient.hashDelete("tan:query_cache", keysToDelete);
-        }
-      } catch (Exception e) {
+      String[] keysToDelete =
+          territoryIds.stream().map(id -> "tan:cache:territory:" + id).toArray(String[]::new);
+      if (keysToDelete.length > 0) {
+        RedisCircuitBreaker.executeVoid(
+            () -> redisClient.hashDelete("tan:query_cache", keysToDelete),
+            () -> logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping L2 batch invalidation for territories")
+        );
       }
     }
   }
@@ -214,10 +236,10 @@ public class QueryCacheManager {
     }
 
     if (redisClient != null) {
-      try {
-        redisClient.hashDelete("tan:query_cache", cacheKey);
-      } catch (Exception e) {
-      }
+      RedisCircuitBreaker.executeVoid(
+          () -> redisClient.hashDelete("tan:query_cache", cacheKey),
+          () -> logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping L2 invalidation for balance")
+      );
     }
   }
 
@@ -229,10 +251,10 @@ public class QueryCacheManager {
     }
 
     if (redisClient != null) {
-      try {
-        redisClient.hashDelete("tan:query_cache", cacheKey);
-      } catch (Exception e) {
-      }
+      RedisCircuitBreaker.executeVoid(
+          () -> redisClient.hashDelete("tan:query_cache", cacheKey),
+          () -> logger.fine("[TaN-QueryCache] Redis circuit OPEN - skipping L2 invalidation for territory")
+      );
     }
   }
 
