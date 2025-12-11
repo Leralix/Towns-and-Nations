@@ -71,8 +71,9 @@ import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.wars.PlannedAttack;
 import org.leralix.tan.wars.fort.Fort;
 import org.leralix.tan.wars.legacy.CurrentAttack;
+import org.leralix.tan.storage.sync.BaseSyncedEntity;
 
-public abstract class TerritoryData {
+public abstract class TerritoryData extends BaseSyncedEntity {
 
   protected String id;
   protected String name;
@@ -128,6 +129,11 @@ public abstract class TerritoryData {
   }
 
   protected abstract void initUpgradesStatus();
+
+  @Override
+  public String getEntityId() {
+    return this.id;
+  }
 
   public String getID() {
     return id;

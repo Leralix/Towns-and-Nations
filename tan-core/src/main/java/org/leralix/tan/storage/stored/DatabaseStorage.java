@@ -475,10 +475,56 @@ public abstract class DatabaseStorage<T> {
     // Optimistic locking check for SyncedEntity
     if (obj instanceof SyncedEntity) {
       SyncedEntity syncedObj = (SyncedEntity) obj;
-      syncedObj.touch(); // Update version + timestamp
+
+      // Check for version conflict with existing data
+      return get(id)
+          .thenCompose(
+              existingObj -> {
+                if (existingObj != null && existingObj instanceof SyncedEntity) {
+                  SyncedEntity existingSynced = (SyncedEntity) existingObj;
+
+                  // Detect concurrent modification (version mismatch within time window)
+                  if (syncedObj.hasVersionConflict(existingSynced)) {
+                    TownsAndNations.getPlugin()
+                        .getLogger()
+                        .warning(
+                            String.format(
+                                "[TaN-SYNC-CONFLICT] Version conflict detected: Table=%s, ID=%s, "
+                                    + "Current version=%d (last modified=%d), Incoming version=%d (last modified=%d)",
+                                tableName,
+                                id,
+                                existingSynced.getVersion(),
+                                existingSynced.getLastModified(),
+                                syncedObj.getVersion(),
+                                syncedObj.getLastModified()));
+
+                    // Throw exception - caller must handle conflict resolution
+                    CompletableFuture<Void> failedFuture = new CompletableFuture<>();
+                    failedFuture.completeExceptionally(
+                        new SyncedEntity.StaleDataException(
+                            id,
+                            syncedObj.getVersion(),
+                            existingSynced.getVersion(),
+                            syncedObj.getLastModified(),
+                            existingSynced.getLastModified()));
+                    return failedFuture;
+                  }
+                }
+
+                // No conflict - proceed with touch() and write
+                syncedObj.touch();
+                return performWriteWithInvalidation(id, obj);
+              });
     }
 
-    // Write to MySQL + L1 cache
+    // Non-SyncedEntity - direct write
+    return performWriteWithInvalidation(id, obj);
+  }
+
+  /**
+   * Internal helper: performs MySQL write + cache invalidation + broadcast.
+   */
+  private CompletableFuture<Void> performWriteWithInvalidation(String id, T obj) {
     return putAsync(id, obj)
         .thenRun(
             () -> {

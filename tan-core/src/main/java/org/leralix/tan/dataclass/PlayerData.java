@@ -24,8 +24,9 @@ import org.leralix.tan.timezone.TimeZoneEnum;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.wars.legacy.CurrentAttack;
+import org.leralix.tan.storage.sync.BaseSyncedEntity;
 
-public class PlayerData implements ITanPlayer {
+public class PlayerData extends BaseSyncedEntity implements ITanPlayer {
 
   private String uuid;
   private String storedName;
@@ -47,6 +48,11 @@ public class PlayerData implements ITanPlayer {
     this.regionRankID = null;
     this.propertiesListID = new ArrayList<>();
     this.attackInvolvedIn = new ArrayList<>();
+  }
+
+  @Override
+  public String getEntityId() {
+    return this.uuid;
   }
 
   public String getID() {
