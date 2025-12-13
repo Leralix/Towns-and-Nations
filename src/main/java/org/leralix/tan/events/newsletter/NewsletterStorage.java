@@ -41,7 +41,7 @@ public class NewsletterStorage {
 
     public void register(Newsletter newsletter) {
 
-        EventScope scope = newsletter.getType().getBroadcastGlobal();
+        EventScope scope = Constants.getNewsletterScopeConfig().getConfig().get(newsletter.getType()).broadcast();
         if (scope != EventScope.NONE) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 try {
@@ -75,7 +75,7 @@ public class NewsletterStorage {
 
         for (Newsletter newsletter : newsletters) {
 
-            EventScope eventScope = newsletter.getType().getNewsletterScope();
+            EventScope eventScope = Constants.getNewsletterScopeConfig().getConfig().get(newsletter.getType()).newsletter();
 
             if (eventScope == EventScope.NONE) {
                 continue;
