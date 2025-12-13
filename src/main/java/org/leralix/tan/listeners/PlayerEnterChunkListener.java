@@ -6,8 +6,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
@@ -29,7 +27,7 @@ public class PlayerEnterChunkListener implements Listener {
     private final PlayerDataStorage playerDataStorage;
 
     public PlayerEnterChunkListener() {
-        displayTerritoryNamewithColor = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("displayTerritoryNameWithOwnColor");
+        displayTerritoryNamewithColor = Constants.displayTerritoryColor();
         newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
         playerDataStorage = PlayerDataStorage.getInstance();
     }

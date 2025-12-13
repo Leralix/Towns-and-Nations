@@ -5,8 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.service.requirements.model.*;
@@ -28,12 +26,11 @@ public class NewUpgradeStorage {
     private final Map<String, Upgrade> regionUpgrades;
 
 
-    public NewUpgradeStorage() {
+    public NewUpgradeStorage(FileConfiguration upgradeConfig) {
 
         this.townUpgrades = new HashMap<>();
         this.regionUpgrades = new HashMap<>();
 
-        FileConfiguration upgradeConfig = ConfigUtil.getCustomConfig(ConfigTag.UPGRADE);
         setUpUpgrades(townUpgrades, upgradeConfig.getConfigurationSection("upgrades"));
         setUpUpgrades(regionUpgrades, upgradeConfig.getConfigurationSection("region_upgrades"));
 

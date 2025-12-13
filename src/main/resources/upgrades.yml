@@ -63,6 +63,7 @@ regionLevelExpression:
   base: 200.0
 
 # Town upgrades
+TownMaxLevel: 10
 upgrades:
 
   CITY_HALL: #"City hall" tag is already unlocked when creating a town. Use it to store default values of yur towns
@@ -218,7 +219,7 @@ upgrades:
       PROPERTY_CAP: +3
       CHUNK_CAP: +50
 
-
+RegionMaxLevel: 10
 region_upgrades:
 
   CITY_HALL: #"City hall" tag is already unlocked when creating a town. Use it to store default values of yur towns

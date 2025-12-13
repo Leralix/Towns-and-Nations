@@ -1,8 +1,5 @@
 package org.leralix.tan.events.newsletter;
 
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
-
 public enum NewsletterType {
 
     TOWN_CREATED("player_create_town_newsletter"),
@@ -28,25 +25,6 @@ public enum NewsletterType {
 
     NewsletterType(String databaseName){
         this.databaseName = databaseName;
-    }
-
-    private EventScope newsletter;
-    private EventScope broadcast;
-
-
-    public static void init(){
-        for (NewsletterType type : values()) {
-            type.newsletter = EventScope.valueOf(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("events." +  type.name() + ".BROADCAST", "NONE"));
-            type.broadcast =  EventScope.valueOf(ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("events." +  type.name() + ".NEWSLETTER", "NONE"));
-        }
-    }
-
-    public EventScope getNewsletterScope() {
-        return newsletter;
-    }
-
-    public EventScope getBroadcastGlobal() {
-        return broadcast;
     }
 
     public static boolean isValidEnumValue(String value) {

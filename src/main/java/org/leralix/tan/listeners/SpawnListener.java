@@ -6,12 +6,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.TeleportationRegister;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class SpawnListener implements Listener {
@@ -20,9 +19,9 @@ public class SpawnListener implements Listener {
     public void onPlayerHit(EntityDamageByEntityEvent event) {
         if (event.getEntity() instanceof Player player &&
                 TeleportationRegister.isPlayerRegistered(player.getUniqueId().toString()) &&
-                !TeleportationRegister.getTeleportationData(player).isCancelled() &&
-                ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnDamage", true)) {
-
+                Constants.isCancelTeleportOnDamage() &&
+                !TeleportationRegister.getTeleportationData(player).isCancelled()
+        ) {
             ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
             TeleportationRegister.getTeleportationData(tanPlayer).setCancelled(true);
             TanChatUtils.message(player, Lang.TELEPORTATION_CANCELLED.get(player));
@@ -40,12 +39,12 @@ public class SpawnListener implements Listener {
 
             //If player moves only his head
             if (locationFrom.getBlockX() == locationTo.getBlockX() && locationFrom.getBlockZ() == locationTo.getBlockZ()) {
-                if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnMoveHead", false)) {
+                if (Constants.isCancelTeleportOnMoveHead()) {
                     cancelTeleportation(player);
                 }
             } else {
                 //If player moves to a different position
-                if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("cancelTeleportOnMovePosition", true)) {
+                if (Constants.isCancelTeleportOnMovePosition()) {
                     cancelTeleportation(player);
                 }
             }

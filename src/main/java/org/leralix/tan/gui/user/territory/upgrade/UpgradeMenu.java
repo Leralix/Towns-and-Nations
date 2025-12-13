@@ -6,8 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -34,7 +32,7 @@ public class UpgradeMenu extends BasicGui {
         super(player, Lang.HEADER_TOWN_UPGRADE, 6);
         this.territoryData = territoryData;
         this.scrollIndex = 0;
-        this.maxLevel = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownMaxLevel", 10);
+        this.maxLevel = Constants.getTerritoryMaxLevel(territoryData);
         open();
     }
 

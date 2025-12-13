@@ -3,13 +3,12 @@ package org.leralix.tan.events.newsletter;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.events.newsletter.dao.NewsletterDAO;
 import org.leralix.tan.events.newsletter.news.Newsletter;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -105,8 +104,7 @@ public class NewsletterStorage {
     }
 
     public void clearOldNewsletters() {
-        int nbDays = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingNewsletter");
-        newsletterDAO.deleteOldNewsletters(nbDays);
+        newsletterDAO.deleteOldNewsletters(Constants.getNbDaysBeforeClearningNewsletter());
     }
 
 

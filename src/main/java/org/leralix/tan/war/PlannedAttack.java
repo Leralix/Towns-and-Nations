@@ -8,8 +8,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -84,7 +82,7 @@ public class PlannedAttack {
                 getWar().getMainDefender().getName()
         );
 
-        this.isAdminApproved = !ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("AdminApproval", false);
+        this.isAdminApproved = !Constants.adminApprovalForStartOfAttack();
 
         this.attackersID = new ArrayList<>();
         this.attackersID.add(getWar().getMainAttackerID());

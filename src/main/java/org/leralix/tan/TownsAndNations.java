@@ -24,7 +24,6 @@ import org.leralix.tan.economy.VaultManager;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.newsletter.NewsletterEvents;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
-import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
@@ -159,10 +158,9 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Loading Configs");
 
-        Constants.init(ConfigUtil.getCustomConfig(ConfigTag.MAIN));
+        Constants.init(ConfigUtil.getCustomConfig(ConfigTag.MAIN), ConfigUtil.getCustomConfig(ConfigTag.UPGRADE));
         MobChunkSpawnStorage.init();
         ClaimBlacklistStorage.init();
-        NewsletterType.init();
         IconManager.getInstance();
         NumberUtil.init();
         FortStorage.init(new FortDataStorage());

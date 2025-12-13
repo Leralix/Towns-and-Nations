@@ -83,6 +83,6 @@ public class DailyTasks {
 
 
     public static void clearOldTransaction() {
-        TransactionManager.getInstance().deleteOldTransactions(Constants.getNbDaysBeforeTransactionDeletion());
+        TransactionManager.getInstance().deleteOldTransactions(Constants.getNbDaysBeforeClearningTransactions());
     }
 }

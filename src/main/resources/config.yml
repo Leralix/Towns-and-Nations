@@ -124,9 +124,6 @@ TownAllowNonAdjacentChunks: false
 #Notify if a player from an enemy town enters
 notifyEnemyEnterTown: true
 
-#Town max level
-TownMaxLevel: 10
-
 ########################
 ##      Relations     ##
 ########################
@@ -256,8 +253,8 @@ maxPropertyMargin: 3
 payRentAtStart: true
 
 #The max size of names
-PropertyNameSize: 16
-PropertyDescSize: 40
+maxPropertyNameSize: 16
+maxPropertyDescriptionSize: 40
 
 #Max size of a property (length x width x height)
 MaxPropertySize: 50000

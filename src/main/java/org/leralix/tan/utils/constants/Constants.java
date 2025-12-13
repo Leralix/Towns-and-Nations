@@ -3,6 +3,8 @@ package org.leralix.tan.utils.constants;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.leralix.lib.utils.config.ConfigTag;
+import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.Range;
 import org.leralix.tan.dataclass.chunk.ChunkType;
@@ -28,7 +30,9 @@ public class Constants {
     private static DatabaseConstants databaseConstants;
     private static int dailyTaskHour;
     private static int dailyTaskMinute;
-    private static int nbDaysBeforeTransactionDeletion;
+    private static int nbDaysBeforeClearningTransactions;
+    private static int nbDaysBeforeClearningNewsletter;
+    private static NewsletterScopeConfig newsletterScopeConfig;
     //Economy
     private static boolean useStandaloneEconomy;
     private static double startingBalance;
@@ -77,6 +81,8 @@ public class Constants {
     private static boolean claimAllIfCaptured;
 
     //Properties
+    private static int maxPropertyNameSize;
+    private static int maxPropertyDescriptionSize;
     private static int maxPropertySignMargin;
     private static int maxPropertySize;
     private static Particle propertyBoundaryParticles;
@@ -89,6 +95,7 @@ public class Constants {
     private static boolean notifyWhenEnemyEnterTerritory;
     private static Map<TownRelation, RelationConstant> relationsConstants;
     private static Set<String> allRelationBlacklistedCommands;
+    private static boolean adminApprovalForStartOfAttack;
 
     private static long attackDuration;
     private static int minTimeBeforeAttack;
@@ -123,16 +130,19 @@ public class Constants {
 
     //Upgrades
     private static NewUpgradeStorage upgradeStorage;
+    private static int townMaxLevel;
+    private static int regionMaxLevel;
 
-    public static void init(FileConfiguration config) {
+    public static void init(FileConfiguration config, FileConfiguration upgradeConfig) {
 
 
         onlineMode = config.getBoolean("onlineMode", true);
         databaseConstants = new DatabaseConstants(config.getConfigurationSection("database"));
         dailyTaskHour = config.getInt("taxHourTime", 0);
         dailyTaskMinute = config.getInt("taxMinuteTime", 0);
-        nbDaysBeforeTransactionDeletion = config.getInt("nbDaysBeforeTransactionDeletion", 90);
-
+        nbDaysBeforeClearningTransactions = config.getInt("nbDaysBeforeTransactionDeletion", 90);
+        nbDaysBeforeClearningNewsletter = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingNewsletter");
+        newsletterScopeConfig = new NewsletterScopeConfig(config.getConfigurationSection("events"));
         //Economy
         useStandaloneEconomy = config.getBoolean("UseTanEconomy", false);
         startingBalance = config.getDouble("StartingMoney", 100.0);
@@ -189,6 +199,9 @@ public class Constants {
             claimAllIfCaptured = fortsSection.getBoolean("claimAllIfCaptured", true);
         }
 
+        maxPropertyNameSize = config.getInt("PropertyNameSize", 16);
+        maxPropertyDescriptionSize = config.getInt("PropertyDescSize", 48);
+
         maxPropertySignMargin = config.getInt("maxPropertyMargin", 3);
         maxPropertySize = config.getInt("MaxPropertySize", 50000);
         payRentAtStart = config.getBoolean("payRentAtStart", true);
@@ -216,6 +229,7 @@ public class Constants {
                 }
             }
         }
+        adminApprovalForStartOfAttack = config.getBoolean("AdminApproval", false);
 
         attackDuration = config.getLong("WarDuration", 30);
         minTimeBeforeAttack = config.getInt("MinimumTimeBeforeAttack", 120);
@@ -252,7 +266,10 @@ public class Constants {
         cancelTeleportOnDamage = config.getBoolean("cancelTeleportOnDamage", true);
 
         //Upgrade
-        upgradeStorage = new NewUpgradeStorage();
+        upgradeStorage = new NewUpgradeStorage(upgradeConfig);
+        townMaxLevel = upgradeConfig.getInt("TownMaxLevel", 10);
+        regionMaxLevel = upgradeConfig.getInt("RegionMaxLevel", 10);
+
     }
 
     /**
@@ -291,8 +308,16 @@ public class Constants {
         return dailyTaskMinute;
     }
 
-    public static int getNbDaysBeforeTransactionDeletion() {
-        return nbDaysBeforeTransactionDeletion;
+    public static int getNbDaysBeforeClearningTransactions() {
+        return nbDaysBeforeClearningTransactions;
+    }
+
+    public static int getNbDaysBeforeClearningNewsletter() {
+        return nbDaysBeforeClearningNewsletter;
+    }
+
+    public static NewsletterScopeConfig getNewsletterScopeConfig() {
+        return newsletterScopeConfig;
     }
 
     public static boolean displayTerritoryColor() {
@@ -376,6 +401,14 @@ public class Constants {
 
     public static boolean isClaimAllIfCaptured() {
         return claimAllIfCaptured;
+    }
+
+    public static int getMaxPropertyNameSize() {
+        return maxPropertyNameSize;
+    }
+
+    public static int getMaxPropertyDescriptionSize() {
+        return maxPropertyDescriptionSize;
     }
 
     public static int getMaxPropertySignMargin() {
@@ -535,6 +568,10 @@ public class Constants {
         return allRelationBlacklistedCommands;
     }
 
+    public static boolean adminApprovalForStartOfAttack() {
+        return adminApprovalForStartOfAttack;
+    }
+
     public static List<String> getPerPlayerEndCommands() {
         return perPlayerEndCommands;
     }
@@ -565,6 +602,13 @@ public class Constants {
 
     public static NewUpgradeStorage getUpgradeStorage() {
         return upgradeStorage;
+    }
+
+    public static int getTerritoryMaxLevel(TerritoryData territoryData){
+        if(territoryData instanceof TownData){
+            return townMaxLevel;
+        }
+        return regionMaxLevel;
     }
 
     public static boolean isCancelTeleportOnMovePosition() {
