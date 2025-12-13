@@ -42,7 +42,7 @@ public class OpenPlayerListForChunkPermission extends IteratorGUI {
     public void open() {
         iterator(getAuthorizedPlayer(), p -> backMenu.open());
 
-        gui.setItem(6, 4, getAddButton());
+        gui.setItem(3, 4, getAddButton());
 
         gui.open(player);
     }
