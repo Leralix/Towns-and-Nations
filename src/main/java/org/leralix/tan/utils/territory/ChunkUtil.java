@@ -218,8 +218,8 @@ public class ChunkUtil {
      */
     public static List<ClaimedChunk2> getChunksInRadius(ClaimedChunk2 center, int radius, Predicate<ClaimedChunk2> filter) {
         List<ClaimedChunk2> chunksInRadius = new ArrayList<>();
-        int centerX = center.getX() / 16;
-        int centerZ = center.getZ() / 16;
+        int centerX = center.getX();
+        int centerZ = center.getZ();
         String worldUUID = center.getWorldUUID();
 
         Vector2D centerPos = new Vector2D(centerX, centerZ, worldUUID);

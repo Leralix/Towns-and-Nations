@@ -69,7 +69,7 @@ public abstract class Fort extends Building {
         }
 
         var chunks = ChunkUtil.getChunksInRadius(
-                getPosition().getLocation().getWorld().getChunkAt(getPosition().getX(), getPosition().getZ()),
+                getPosition().getLocation().getWorld().getChunkAt(getPosition().getX() / 16, getPosition().getZ() / 16),
                 Constants.getFortProtectionRadius() / 16,
                 claimedChunk2 -> claimedChunk2 instanceof TerritoryChunk territoryChunk &&
                         !territoryChunk.isOccupied() &&
@@ -92,7 +92,7 @@ public abstract class Fort extends Building {
         }
 
         var chunks = ChunkUtil.getChunksInRadius(
-                getPosition().getChunk(),
+                getPosition().getLocation().getWorld().getChunkAt(getPosition().getX() / 16, getPosition().getZ() / 16),
                 Constants.getFortProtectionRadius() / 16,
                 claimedChunk2 -> claimedChunk2 instanceof TerritoryChunk territoryChunk &&
                             territoryChunk.isOccupied() &&
