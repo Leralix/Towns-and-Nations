@@ -16,7 +16,8 @@ public abstract class PapiEntry {
 
     protected static final String TRUE = "TRUE";
     protected static final String FALSE = "FALSE";
-    protected static final String PLAYER_NOT_FOUND = "[TAN] Player data not found";
+    protected static final String PLAYER_NOT_FOUND = "Player not found";
+    protected static final String PROPERTY_NOT_FOUND = "Property not found";
 
     private final String identifier;
 

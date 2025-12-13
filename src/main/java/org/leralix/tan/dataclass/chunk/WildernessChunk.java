@@ -47,12 +47,12 @@ public class WildernessChunk extends ClaimedChunk2 {
 
     @Override
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.WILDERNESS.getDefault()));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.WILDERNESS.get(player)));
     }
 
     @Override
     public String getName() {
-        return null;
+        return Lang.WILDERNESS.getDefault();
     }
 
     @Override

@@ -75,6 +75,14 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
         registerEntry(new TerritoryWithIdExist());
         registerEntry(new TerritoryWithNameExist());
         registerEntry(new TerritoryWithNameLeaderName());
+        registerEntry(new PlayerRegionResidentQuantity());
+
+        registerEntry(new PlayerLocationChunkName());
+        registerEntry(new PlayerLocationChunkTypeName());
+        registerEntry(new PlayerLocationPropertyExist());
+        registerEntry(new PlayerLocationPropertyIsOwner());
+        registerEntry(new PlayerLocationPropertyName());
+        registerEntry(new PlayerLocationPvpEnabled());
     }
 
     void registerEntry(PapiEntry playerBalance) {
