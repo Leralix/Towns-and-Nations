@@ -13,7 +13,7 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 public class PlayerLocationPropertyIsOwner extends PapiEntry{
 
     public PlayerLocationPropertyIsOwner() {
-        super("tan_player_location_property_is_owner");
+        super("player_location_property_is_owner");
     }
 
     @Override
