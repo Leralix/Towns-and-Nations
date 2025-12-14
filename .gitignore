@@ -83,4 +83,5 @@ nb-configuration.xml
 ## OS X
 ##############################
 .DS_Store
-src/test/resources/database/main.db
+TownsAndNations-Common/src/test/resources/database/main.db
+gradle.properties
