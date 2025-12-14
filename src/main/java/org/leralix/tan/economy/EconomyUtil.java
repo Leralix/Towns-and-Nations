@@ -12,6 +12,10 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
  */
 public class EconomyUtil {
 
+    private EconomyUtil(){
+        throw new AssertionError("Static class");
+    }
+
     private static AbstractTanEcon econ;
 
     public static void register(AbstractTanEcon newEcon) {

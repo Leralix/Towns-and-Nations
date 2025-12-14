@@ -5,11 +5,11 @@ import org.bukkit.Chunk;
 import java.util.List;
 
 public class BlackListZone implements IBlackList{
-    String worldName;
-    int xMin;
-    int zMin;
-    int xMax;
-    int zMax;
+    private final String worldName;
+    private final int xMin;
+    private final int zMin;
+    private final int xMax;
+    private final int zMax;
 
     public BlackListZone(String name, List<Integer> coordinates) {
         worldName = name;

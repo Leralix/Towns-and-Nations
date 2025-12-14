@@ -19,7 +19,7 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 public abstract class ClaimedChunk2 {
 
-    private Vector2D vector2D;
+    private final Vector2D vector2D;
     protected final String ownerID;
 
     protected ClaimedChunk2(Chunk chunk, String owner) {

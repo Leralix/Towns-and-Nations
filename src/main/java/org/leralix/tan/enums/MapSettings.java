@@ -9,8 +9,8 @@ import org.leralix.tan.lang.LangType;
 
 public class MapSettings {
 
-    ClaimAction claimAction;
-    ClaimType claimType;
+    private final ClaimAction claimAction;
+    private final ClaimType claimType;
 
 
     public MapSettings(){

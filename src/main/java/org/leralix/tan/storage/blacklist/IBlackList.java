@@ -4,5 +4,5 @@ import org.bukkit.Chunk;
 
 public interface IBlackList {
 
-    public boolean isChunkInArea(Chunk chunk);
+    boolean isChunkInArea(Chunk chunk);
 }
