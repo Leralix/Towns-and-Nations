@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'org.leralix.tan-api'
-version = '0.6.0'
+version = '0.6.2'
 
 
 mavenPublishing {

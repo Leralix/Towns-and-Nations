@@ -5,7 +5,7 @@ import org.tan.api.interfaces.war.wargoals.TanWargoal;
 
 import java.util.List;
 
-public interface WarEndEvent {
+public interface WarEndEvent extends TanEvent {
 
     TanTerritory getWinner();
 
