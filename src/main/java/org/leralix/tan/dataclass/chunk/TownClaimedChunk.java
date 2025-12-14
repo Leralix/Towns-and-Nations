@@ -12,7 +12,6 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
@@ -25,7 +24,6 @@ import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.leralix.tan.war.legacy.CurrentAttack;
 
 public class TownClaimedChunk extends TerritoryChunk {
     public TownClaimedChunk(Chunk chunk, String owner) {
@@ -48,7 +46,7 @@ public class TownClaimedChunk extends TerritoryChunk {
     protected boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
-        //Location is in a property and players owns or rent it
+        //Location is in a property, and players own or rent it
         TownData ownerTown = getTown();
         PropertyData property = ownerTown.getProperty(location);
         if (property != null) {
@@ -60,25 +58,7 @@ public class TownClaimedChunk extends TerritoryChunk {
             }
         }
 
-        //Player is at war with the town
-        for (CurrentAttack currentAttacks : ownerTown.getCurrentAttacks()) {
-            if (currentAttacks.containsPlayer(tanPlayer))
-                return true;
-        }
-
-        //If the permission is locked by admins, only shows default value.
-        var defaultPermission = Constants.getChunkPermissionConfig().getTownPermission(permissionType);
-
-        if(defaultPermission.isLocked()){
-            return defaultPermission.defaultRelation().isAllowed(ownerTown, tanPlayer);
-        }
-
-        ChunkPermission chunkPermission = ownerTown.getChunkSettings().getChunkPermissions().get(permissionType);
-        if (chunkPermission.isAllowed(ownerTown, tanPlayer))
-            return true;
-
-        playerCantPerformAction(player);
-        return false;
+        return commonTerritoryCanPlayerDo(player, permissionType, tanPlayer);
     }
 
 

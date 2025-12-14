@@ -4,13 +4,18 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Chunk;
+import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
+import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.war.fort.Fort;
+import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.Optional;
 
@@ -114,4 +119,28 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
     public boolean isOccupied() {
         return !ownerID.equals(occupierID);
     }
+
+    protected boolean commonTerritoryCanPlayerDo(Player player, ChunkPermissionType permissionType, ITanPlayer tanPlayer) {
+
+        TerritoryData territoryOfChunk = getOwner();
+        //Player is at war with the town
+        for (CurrentAttack currentAttacks : territoryOfChunk.getCurrentAttacks()) {
+            if (currentAttacks.containsPlayer(tanPlayer))
+                return true;
+        }
+
+        //If the permission is locked by admins, only shows default value.
+        var defaultPermission = Constants.getChunkPermissionConfig().getTownPermission(permissionType);
+        if(defaultPermission.isLocked()){
+            return defaultPermission.defaultRelation().isAllowed(territoryOfChunk, tanPlayer);
+        }
+
+        ChunkPermission chunkPermission = territoryOfChunk.getChunkSettings().getChunkPermissions().get(permissionType);
+        if (chunkPermission.isAllowed(territoryOfChunk, tanPlayer))
+            return true;
+
+        playerCantPerformAction(player);
+        return false;
+    }
+
 }

@@ -11,7 +11,6 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
@@ -19,9 +18,7 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
-import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.leralix.tan.war.legacy.CurrentAttack;
 
 public class RegionClaimedChunk extends TerritoryChunk {
 
@@ -41,28 +38,7 @@ public class RegionClaimedChunk extends TerritoryChunk {
     @Override
     protected boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-
-        RegionData ownerRegion = getRegion();
-
-        //Player is at war with the region
-        for (CurrentAttack currentAttacks : ownerRegion.getCurrentAttacks()) {
-            if (currentAttacks.containsPlayer(tanPlayer))
-                return true;
-        }
-
-        //If the permission is locked by admins, only shows default value.
-        var defaultPermission = Constants.getChunkPermissionConfig().getRegionPermission(permissionType);
-        if(defaultPermission.isLocked()){
-            return defaultPermission.defaultRelation().isAllowed(ownerRegion, tanPlayer);
-        }
-
-        //Player have the right to do the action
-        ChunkPermission chunkPermission = ownerRegion.getChunkSettings().getChunkPermissions().get(permissionType);
-        if (chunkPermission.isAllowed(ownerRegion, tanPlayer))
-            return true;
-
-        playerCantPerformAction(player);
-        return false;
+        return commonTerritoryCanPlayerDo(player, permissionType, tanPlayer);
     }
 
     public RegionData getRegion() {
