@@ -7,11 +7,12 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.tan.api.interfaces.war.wargoals.TanLiberateWargoal;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LiberateWarGoal extends WarGoal {
+public class LiberateWarGoal extends WarGoal implements TanLiberateWargoal {
 
     private final String territoryToLiberateID;
 
@@ -40,11 +41,6 @@ public class LiberateWarGoal extends WarGoal {
             return;
         }
         getTerritoryToLiberate().removeOverlord();
-    }
-
-    @Override
-    public boolean isCompleted() {
-        return getTerritoryToLiberate() != null;
     }
 
     @Override

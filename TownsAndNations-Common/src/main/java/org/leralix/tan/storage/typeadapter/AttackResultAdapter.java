@@ -5,7 +5,6 @@ import org.leralix.tan.war.info.AttackNotYetStarted;
 import org.leralix.tan.war.info.AttackResult;
 import org.leralix.tan.war.info.AttackResultCancelled;
 import org.leralix.tan.war.info.AttackResultCompleted;
-import org.leralix.tan.war.legacy.wargoals.*;
 
 import java.lang.reflect.Type;
 

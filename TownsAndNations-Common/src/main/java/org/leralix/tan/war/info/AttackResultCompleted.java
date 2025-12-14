@@ -5,6 +5,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.timezone.TimeZoneEnum;
 import org.leralix.tan.timezone.TimeZoneManager;
+import org.tan.api.interfaces.war.TanAttackResults;
 
 import java.time.Instant;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * Represents the completed result of an attack, including statistics such as deaths and captures.
  * "Attacker" refers to the attacking territory during the assault (it can be the defender counter-attacking).
  */
-public class AttackResultCompleted extends AttackResult {
+public class AttackResultCompleted extends AttackResult implements TanAttackResults {
 
     /**
      * End of the attack, in epoch milliseconds
@@ -63,5 +64,25 @@ public class AttackResultCompleted extends AttackResult {
                 Lang.ATTACK_ICON_FINISHED_NB_CHUNK_CAPTURED.get(Integer.toString(nbFortsCaptured)),
                 Lang.ATTACK_ICON_FINISHED_NB_FORTS_CAPTURED.get(Integer.toString(nbChunkCaptured))
         );
+    }
+
+    @Override
+    public int getNbDeathsAttacker() {
+        return nbDeathsAttacker;
+    }
+
+    @Override
+    public int getNbDeathsDefender() {
+        return nbDeathsDefender;
+    }
+
+    @Override
+    public int getNbFortsCaptured() {
+        return nbFortsCaptured;
+    }
+
+    @Override
+    public int getNbChunkCaptured() {
+        return nbChunkCaptured;
     }
 }

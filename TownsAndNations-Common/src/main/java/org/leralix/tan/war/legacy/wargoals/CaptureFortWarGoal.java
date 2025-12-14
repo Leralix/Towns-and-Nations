@@ -8,11 +8,12 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.impl.FortDataStorage;
 import org.leralix.tan.war.fort.Fort;
+import org.tan.api.interfaces.war.wargoals.TanCaptureFortWargoal;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CaptureFortWarGoal extends WarGoal {
+public class CaptureFortWarGoal extends WarGoal implements TanCaptureFortWargoal {
 
     private final String fortToCaptureID;
 
@@ -47,11 +48,6 @@ public class CaptureFortWarGoal extends WarGoal {
         fort.setOwner(winner);
         winner.addOwnedFort(fort);
         looser.removeOwnedFort(fort);
-    }
-
-    @Override
-    public boolean isCompleted() {
-        return true;
     }
 
     @Override

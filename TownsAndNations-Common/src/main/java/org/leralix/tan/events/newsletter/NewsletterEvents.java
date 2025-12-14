@@ -17,12 +17,17 @@ public class NewsletterEvents implements TanListener {
     }
 
     @EventHandler
+    public void onAttackEnded(AttackEndedEvent event){
+        newsletterStorage.register(new AttackEndedNewsletter(event.getAttackerTerritory(), event.getAttackerTerritory()));
+    }
+
+    @EventHandler
     public void onAttackWonByAttacker(AttackWonByAttackerEvent event) {
         newsletterStorage.register(new AttackWonByAttackerNewsletter(event.getAttackerTerritory(), event.getDefenderTerritory()));
     }
 
     @EventHandler
-    public void onAttackWonByDefender(AttackWonByAttackerEvent event) {
+    public void onAttackWonByDefender(AttackWonByDefenderEvent event) {
         newsletterStorage.register(new AttackWonByDefenderNewsletter(event.getAttackerTerritory(), event.getDefenderTerritory()));
     }
 

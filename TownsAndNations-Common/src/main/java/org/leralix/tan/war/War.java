@@ -4,6 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.events.WarEndInternalEvent;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -83,9 +85,13 @@ public class War {
         TerritoryData looser = getTerritory(looserTerritory);
         TerritoryData winner = getTerritory(looserTerritory.opposite());
 
-        for (WarGoal goal : getGoals(looserTerritory.opposite())) {
+        List<WarGoal> goals = getGoals(looserTerritory.opposite());
+
+        for (WarGoal goal : goals) {
             goal.applyWarGoal(winner, looser);
         }
+
+        EventManager.getInstance().callEvent(new WarEndInternalEvent(winner, looser, goals));
 
         endWar();
     }

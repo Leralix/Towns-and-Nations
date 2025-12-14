@@ -9,10 +9,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.events.AttackEndedInternalEvent;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.utils.gameplay.CommandExecutor;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.cosmetic.ShowBoundaries;
+import org.leralix.tan.war.info.AttackResultCompleted;
 import org.leralix.tan.war.info.AttackResultCounter;
 
 /**
@@ -132,15 +135,23 @@ public class CurrentAttack {
 
     public void end() {
 
-        //If Current attack already ended, do not repeat end logic.
+        //If the current attack already ended, do not repeat end logic.
         if(end){
             return;
         }
 
         CommandExecutor.applyEndWarCommands(getAttackData());
         end = true;
+        AttackResultCompleted result = attackResultCounter.buildResult();
+        attackData.end(result);
 
-        attackData.end(attackResultCounter.buildResult());
+        EventManager.getInstance().callEvent(
+                new AttackEndedInternalEvent(
+                        getAttackData().getWar().getMainAttacker(),
+                        getAttackData().getWar().getMainDefender(),
+                        result
+                )
+        );
 
         new BukkitRunnable() {
             @Override

@@ -9,11 +9,12 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.tan.api.interfaces.war.wargoals.TanCaptureLandmarkWargoal;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CaptureLandmarkWarGoal extends WarGoal {
+public class CaptureLandmarkWarGoal extends WarGoal implements TanCaptureLandmarkWargoal {
 
     private final String landmarkToCaptureID;
 
@@ -52,11 +53,6 @@ public class CaptureLandmarkWarGoal extends WarGoal {
             landmark.removeOwnership();
             landmark.setOwner(winnerTown);
         }
-    }
-
-    @Override
-    public boolean isCompleted() {
-        return true;
     }
 
     @Override
