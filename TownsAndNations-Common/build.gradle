@@ -65,6 +65,7 @@ repositories {
 }
 
 dependencies {
+    //Compile only
     compileOnly 'io.github.leralix:sphere-lib:0.6.0'
     compileOnly 'io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:4.0.43'
@@ -72,7 +73,11 @@ dependencies {
     compileOnly "com.github.MilkBowl:VaultAPI:1.7.1"
     compileOnly 'me.clip:placeholderapi:2.11.5'
     compileOnly 'com.sk89q.worldguard:worldguard-bukkit:7.0.9'
-    implementation 'io.github.leralix:tan-api:0.6.1'
+
+    //Implementations
+    implementation(project(":TownsAndNations-API"))
+
+    //Implementations
     implementation 'org.bstats:bstats-bukkit:3.1.0'
     implementation 'net.objecthunter:exp4j:0.4.8'
     implementation("dev.triumphteam:triumph-gui:3.1.11")
@@ -80,6 +85,7 @@ dependencies {
     implementation 'com.mysql:mysql-connector-j:8.4.0'
     implementation 'org.xerial:sqlite-jdbc:3.43.2.0'
 
+    //Tests
     testImplementation 'io.github.leralix:sphere-lib:0.6.0'
     testImplementation 'com.github.MockBukkit:MockBukkit:v4.72.9'
     testImplementation 'io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT'

@@ -1,0 +1,76 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
+plugins {
+    id 'java'
+    id 'java-library'
+    id "com.vanniktech.maven.publish" version "0.31.0"
+}
+
+group = 'org.leralix.tan-api'
+version = '0.6.0'
+
+
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, true)
+    signAllPublications()
+}
+
+signing {
+    useGpgCmd()
+    sign(publishing.publications)
+}
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+    maven {
+        name = "spigot-repo"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+    maven {
+        name = "local"
+        url = uri("${rootDir}/../SphereLib/build/repo")
+    }
+
+}
+
+javadoc {
+    options.overview = "src/main/javadoc/overview.html"
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
+    compileOnly 'io.github.leralix:sphere-lib:0.4.6'
+}
+
+
+
+mavenPublishing {
+    coordinates("io.github.leralix", "tan-api", version)
+
+    pom {
+        name = "Towns and Nations API"
+        description = "Public API for Towns and Nations plugin"
+        inceptionYear = "2025"
+        url = "https://github.com/Leralix/Towns-and-Nations"
+        licenses {
+            license {
+                name = "GNU General Public License v3.0"
+                url = "https://www.gnu.org/licenses/gpl-3.0.html"
+                distribution = "https://www.gnu.org/licenses/gpl-3.0.html"
+            }
+        }
+        developers {
+            developer {
+                id = '78090544'
+                name = 'Leralix'
+                email = 'leralix98@gmail.com'
+            }
+        }
+        scm {
+            connection = 'scm:git:git://github.com/Leralix/Towns-and-Nations.git'
+            developerConnection = 'scm:git:ssh://github.com/Leralix/Towns-and-Nations.git'
+            url = 'https://github.com/Leralix/Towns-and-Nations'
+        }
+    }
+}
