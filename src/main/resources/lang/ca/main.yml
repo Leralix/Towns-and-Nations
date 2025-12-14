@@ -1,5 +1,4 @@
 language:
-  WELCOME: "§fBenvingut"
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] Llengua Catalana carregada amb èxit"
   PLUGIN_STRING: "§6[TaN]§f "
   PLUGIN_DEBUG_STRING: "§c[TaN - Debug]§f "
@@ -23,7 +22,6 @@ language:
   PLAYER_ALREADY_IN_SCOPE: "§cJa estàs registrat"
   PLAYER_PROPERTY_CAP_REACHED: "§cHas arribat al límit de propietats per la teva localitat. Puja de nivell per aconseguir-ne més"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cNecessites ser a la teva localitat per poder posar una propietat"
-  MESSAGE_NOT_RIGHT_SIZE: "§cEl missatge ha de ser exactament de {0} caràcters"
   NO_TRADE_ALLOWED_EMBARGO: "§cNo pots comerciar amb una localitat sota embargament"
   NO_LEADER: "§cNo líder"
   TOWN_HAVE_NO_LEADER: "§cLa localitat no té líder"
@@ -82,8 +80,6 @@ language:
   ATTACK_ICON_DESC_2: "§fDefensor principal : {0}"
   ATTACK_ICON_DESC_3: "§fNombre d'atacans : §9{0}"
   ATTACK_ICON_DESC_4: "§fNombre de defensors : §9{0}"
-  ATTACK_ICON_DESC_6: "§fLa guerra començarà en : §6{0} §f(§7{1}§f)"
-  ATTACK_ICON_DESC_7: "§fLa guerra durarà : §6{0}"
   ATTACK_ICON_DESC_8: "§fPosició del territori : §a{0}"
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§aAquest atac ha estat aprovat per un admin"
   ATTACK_ICON_DESC_ADMIN_NOT_APPROVED: "§cAquest atac no ha estat aprovat per un admin"
@@ -167,4 +163,3 @@ language:
   RELATIVE_TIME_DAY: "§fFa §e{0}§f dia(es)"
   RELATIVE_TIME_MONTH: "§fFa §e{0}§f mes(os)"
   RELATIVE_TIME_YEAR: "§e{0}§f any(s) enrere"
-

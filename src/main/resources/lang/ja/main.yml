@@ -9,4 +9,3 @@ language:
   TOWN_ALREADY_HAVE_OVERLORD: "§cこの町には既に支配者がいます"
   PLAYER_NO_PERMISSION: "このコマンドを実行する権限がありません"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cあなたはあなたと同等以上のランクでこのアクションを実行する権限がありません"
-

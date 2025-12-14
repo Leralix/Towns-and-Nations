@@ -1,5 +1,4 @@
 language:
-  WELCOME: "§fЛаскаво просимо"
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] Англійська мова успішно завантажена"
   PLUGIN_STRING: "§6[TaN]§f "
   PLUGIN_DEBUG_STRING: "§c[TaN - Налагодження]§f "
@@ -23,7 +22,6 @@ language:
   PLAYER_ALREADY_IN_SCOPE: "§cВи вже зареєстровані"
   PLAYER_PROPERTY_CAP_REACHED: "§cВи досягли максимальної кількості ділянок для вашого міста. Покращіть своє місто, щоб отримати більше"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cВи повинні бути в вашому місті, щоб налаштувати власний регіон"
-  MESSAGE_NOT_RIGHT_SIZE: "§cПовідомлення має бути рівно {0}"
   NO_TRADE_ALLOWED_EMBARGO: "§cВи не можете торгувати з містом під ембарго"
   NO_LEADER: "§cНемає Лідера"
   TOWN_HAVE_NO_LEADER: "§cМісто не має лідера"
@@ -203,7 +201,6 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "У вас недостатньо грошей, щоб виконати цю дію"
   LEADER_NOT_ONLINE: "§cЛідер міста не в мережі"
-  PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cУ вас недостатньо грошей. Вам потрібно ще {0}"
   NAME_ALREADY_USED: "§4Це ім'я вже використовується"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Напишіть назву міста в чаті."
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Напишіть кількість у чаті"
@@ -267,7 +264,6 @@ language:
   GUI_PLAYER_MENU_ICON: "§aВаш профіль"
   #Player manu
   GUI_PLAYER_ICON: "§a{0}"
-  GUI_YOUR_BALANCE: "§aВаш баланс"
   GUI_YOUR_BALANCE_DESC1: "§fБаланс: §6{0}{MONEY_CHAR}"
   GUI_PLAYER_MANAGE_PROPERTIES: "§aДілянки"
   GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§fСтворити, видалити або керувати своїми ділянками"
@@ -282,10 +278,6 @@ language:
   #Newsletter menu
   OPEN_NEWSLETTER_DESC: "Отримати останні новини"
   MARK_ALL_AS_READ: "§aПозначити все як прочитане"
-  NEWSLETTER_SCOPE_ICON: "§aОбсяг новинної розсилки"
-  NEWSLETTER_SCOPE_ICON_DESC1: "§fПоточний обсяг: §e{0}"
-  NEWSLETTER_SHOW_ALL: "§9Показати всі новини"
-  NEWSLETTER_SHOW_ONLY_UNREAD: "§9Показати тільки непрочитані новини"
   #Town menu - no town
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aСтворити нове місто"
   GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fВартість : §6{0}{MONEY_CHAR}"
@@ -359,7 +351,6 @@ language:
   GUI_PROPERTY_AUTHORIZE_PLAYER: "§aАвторизувати гравця"
   PLAYER_REMOVED_FROM_PROPERTY: "§c{0} було видалено з ділянки"
   PLAYER_ADDED_TO_PROPERTY: "§a{0} було додано до ділянки"
-  GUI_PROPERTY_PLAYER_LIST: "§aСписок авторизованих гравців"
   GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER: "§cПКМ, щоб вигнати орендаря"
   PROPERTY_RENTER_EXPELLED_OWNER_SIDE: "§cОрендаря було видалено"
   PROPERTY_RENTER_EXPELLED_RENTER_SIDE: "§cВас було вигнано з ділянки: §9{0}"
@@ -557,7 +548,6 @@ language:
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nПередумови:"
   GUI_TOWN_LEVEL_UP_UNI_DESC3_1: "§f- {0}: §a{1}/{2}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3_2: "§f- {0}: §c{1}/{2}"
-  GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§nПокращити нагороди:"
   GUI_TOWN_LEVEL_UP_UNI_DESC4_1: "§f- {0}: §a+{1}"
   GUI_TOWN_LEVEL_UP_UNI_DESC4_2: "§f- {0}: §c{1}"
   GUI_TOWN_LEVEL_UP_UNI_DESC5: "§f§nЗагалом:"
@@ -707,7 +697,6 @@ language:
   GUI_REGION_KICK_TOWN_DESC1: "§fЛКМ, щоб видалити це місто з регіону"
   #Landmarks
   GUI_COLLECT_LANDMARK: "§aЗібрати ресурси"
-  GUI_COLLECT_LANDMARK_DESC1: "§fЛКМ, щоб зібрати ресурси"
   GUI_COLLECT_LANDMARK_DESC2: "§fПрибуток: §6{0}"
   GUI_LANDMARK_REWARD_COLLECTED: "§aРесурси зібрані"
   GUI_REMOVE_LANDMARK: "§cВилучити орієнтир"
@@ -715,7 +704,6 @@ language:
   SPECIFIC_LANDMARK_ICON_DESC1: "§fВиробництво: §6{0}§e{1}"
   SPECIFIC_LANDMARK_ICON_DESC2_OWNER: "§fКонтрольується: §9{0}"
   SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER: "§fНе захоплено"
-  SPECIFIC_LANDMARK_ICON_SWITCH_REWARD: "§fПеретягніть предмет, щоб змінити нагороду"
   ADMIN_GUI_LANDMARK_REWARD_SET: "§aНагорода була встановлена на §6{0}§e{1}"
   ##Admin GUI
   ADMIN_GUI_REGION_DESC: "§fClick для керування областями"
@@ -733,11 +721,8 @@ language:
   ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1: "§fПоточний лідер: §3{0}"
   ADMIN_GUI_CREATE_TOWN: "§aСтворити місто"
   ADMIN_GUI_CREATE_TOWN_DESC1: "§fЛКМ, щоб створити порожнє місто"
-  ADMIN_GUI_DELETE_TOWN: "§aВидалити місто"
-  ADMIN_GUI_DELETE_TOWN_DESC1: "§cВидалити місто: §9{0}"
   ADMIN_GUI_TOWN_PLAYER_TOWN: "§fПоточне місто гравця: §e{0}"
   ADMIN_GUI_CANT_DELETE_REGIONAL_CAPITAL: "§cВи не можете видалити регіональну столицю"
-  ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1: "§fЛКМ, щоб вигнати гравця з міста"
   ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2: "§cВи не можете вигнати лідера міста"
   ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS: "§3{0}§c покинув місто §3{1}"
   ADMIN_GUI_LANDMARK_ICON: "§aОрієнтири"
@@ -798,9 +783,6 @@ language:
   CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§cВи не можете видалити місто, якщо ви не лідер"
   CHAT_PLAYER_LEFT_THE_TOWN: "§fВи покинули місто"
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cМісто {0}§c, з яким у вас були стосунки: {1}§c, було видалено"
-  #Chunk permissions
-  TOWN_PERMISSION: "Місто"
-  ALLIANCE_PERMISSION: "Регіон"
   EVERYONE_PERMISSION: "Всi"
   SELECTED_ONLY_PERMISSION: "Тільки обрані"
   #Custom Item
@@ -857,8 +839,6 @@ language:
   ATTACK_ICON_DESC_2: "§fГоловний захисник : {0}"
   ATTACK_ICON_DESC_3: "§fКількість нападників: §9{0}"
   ATTACK_ICON_DESC_4: "§fКількість захисників: §9{0}"
-  ATTACK_ICON_DESC_6: "§fВійна розпочнеться через: §6{0} §f(§7{1}§f)"
-  ATTACK_ICON_DESC_7: "§fВійна триватиме : §6{0}"
   ATTACK_ICON_DESC_8: "§fПозиція території : §a{0}"
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§aЦя атака була схвалена адміністратором"
   ATTACK_ICON_DESC_ADMIN_NOT_APPROVED: "§cЦя атака не була схвалена адміністратором"
@@ -928,10 +908,7 @@ language:
   GUI_JOIN_DEFENDING_SIDE: "§aПриєднатися до сторони захисту"
   GUI_JOIN_DEFENDING_SIDE_DESC1: "{0}§f приєднується до сторони захисту проти :"
   GUI_WAR_GOAL_INFO: "{0}"
-  BROWSE_SCOPE: "§fОбласть дії: {0}"
-  BROWSE_ALL_NAME: "§aВсі"
-  BROWSE_TOWNS_NAME: "§9Міста"
-  BROWSE_REGIONS_NAME: "§bРегіони"
+  #War menu
   MAIN_ATTACKER_NAME: "Головний нападник"
   MAIN_DEFENDER_NAME: "Головний захисник"
   OTHER_ATTACKER_NAME: "Інші атакуючі"
@@ -1036,4 +1013,3 @@ language:
   RELATIVE_TIME_DAY: "§e{0}§f днів тому"
   RELATIVE_TIME_MONTH: "§e{0}§f місяці(ів) тому"
   RELATIVE_TIME_YEAR: "§e{0}§f роки тому"
-

@@ -1,5 +1,4 @@
 language:
-  WELCOME: "§fBenvenuto"
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] Lingua italiana caricata con successo"
   PLUGIN_STRING: ""
   PLUGIN_DEBUG_STRING: ""
@@ -23,7 +22,6 @@ language:
   PLAYER_ALREADY_IN_SCOPE: "§cSei già registrato"
   PLAYER_PROPERTY_CAP_REACHED: "§cHai raggiunto il numero massimo di proprietà per la tua città. Migliorala per ottenerne di più"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cDevi essere all'interno della tua città per creare una posizione di proprietà"
-  MESSAGE_NOT_RIGHT_SIZE: "§cIl messaggio deve essere lungo esattamente {0}"
   NO_TRADE_ALLOWED_EMBARGO: "§cNon puoi commerciare con una città sotto embargo"
   NO_LEADER: "§cNessun leader"
   TOWN_HAVE_NO_LEADER: "§cLa città non ha un leader"
@@ -202,7 +200,6 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cNon hai abbastanza soldi per eseguire quest'azione"
   LEADER_NOT_ONLINE: "§cIl capo città non è online"
-  PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cNon hai abbastanza soldi. Hai bisogno di {0} in più"
   NAME_ALREADY_USED: "§cQuesto nome è già utilizzato"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Scrivi il nome della città nella chat."
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Scrivi la quantità nella chat"
@@ -216,4 +213,3 @@ language:
   PLAYER_PLACE_SIGN: "Fare clic con il tasto destro per posizionare un cartello sul blocco"
   #Newsletter menu
   OPEN_NEWSLETTER_DESC: "Ricevi le ultime notizie"
-

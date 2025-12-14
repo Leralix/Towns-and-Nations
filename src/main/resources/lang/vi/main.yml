@@ -1,5 +1,4 @@
 language:
-  WELCOME: "§fChào mừng"
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] Ngôn ngữ tiếng Việt đã tải thành công"
   PLUGIN_STRING: "§6[TaN]§f "
   PLUGIN_DEBUG_STRING: "§c[TaN - Gỡ lỗi]§f "
@@ -23,7 +22,6 @@ language:
   PLAYER_ALREADY_IN_SCOPE: "§cBạn đã đăng ký rồi"
   PLAYER_PROPERTY_CAP_REACHED: "§cBạn đã đạt đến số lượng tài sản tối đa cho thị trấn của mình. Nâng cấp thị trấn của bạn để có thêm"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cBạn cần phải ở trong thị trấn của mình để thiết lập vị trí tài sản"
-  MESSAGE_NOT_RIGHT_SIZE: "§cTin nhắn phải dài chính xác {0}"
   NO_TRADE_ALLOWED_EMBARGO: "§cBạn không thể giao dịch với một thị trấn bị cấm vận"
   NO_LEADER: "§cKhông có thủ lĩnh"
   TOWN_HAVE_NO_LEADER: "§cThị trấn không có thủ lĩnh"
@@ -203,7 +201,6 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cBạn không có đủ tiền để thực hiện hành động này"
   LEADER_NOT_ONLINE: "§cThủ lĩnh thị trấn không trực tuyến"
-  PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cBạn không có đủ tiền. Bạn cần thêm {0}"
   NAME_ALREADY_USED: "§cTên này đã được sử dụng"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Viết tên thị trấn trong cuộc trò chuyện."
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Viết số lượng trong cuộc trò chuyện"
@@ -262,7 +259,6 @@ language:
   GUI_PLAYER_MENU_ICON: "§aHồ sơ của bạn"
   #Player manu
   GUI_PLAYER_ICON: "§a{0}"
-  GUI_YOUR_BALANCE: "§aSố dư của bạn"
   GUI_YOUR_BALANCE_DESC1: "§fSố dư : §6{0}{MONEY_CHAR}"
   GUI_PLAYER_MANAGE_PROPERTIES: "§aCủa cải"
   GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§fTạo, xóa hoặc quản lý tài sản của bạn"
@@ -274,10 +270,6 @@ language:
   #Newsletter menu
   OPEN_NEWSLETTER_DESC: "Nhận tin tức mới nhất"
   MARK_ALL_AS_READ: "§fĐánh dấu tất cả là đã đọc"
-  NEWSLETTER_SCOPE_ICON: "§aphạm vi bản tin"
-  NEWSLETTER_SCOPE_ICON_DESC1: "§fTrạng thái hiện tại: §e{0}"
-  NEWSLETTER_SHOW_ALL: "§fHiển thị tất cả tin tức"
-  NEWSLETTER_SHOW_ONLY_UNREAD: "§fChỉ hiển thị tin tức chưa đọc"
   #Town menu - no town
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aTạo một thị trấn mới"
   GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fChi phí : §6{0}{MONEY_CHAR}"
@@ -351,7 +343,6 @@ language:
   GUI_PROPERTY_AUTHORIZE_PLAYER: "§aỦy quyền cho người chơi"
   PLAYER_REMOVED_FROM_PROPERTY: "§c{0} đã bị xóa khỏi tài sản"
   PLAYER_ADDED_TO_PROPERTY: "§a{0} đã được thêm vào tài sản"
-  GUI_PROPERTY_PLAYER_LIST: "§aDanh sách người chơi được ủy quyền"
   GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER: "§cNhấp chuột phải để trục xuất người thuê"
   PROPERTY_RENTER_EXPELLED_OWNER_SIDE: "§cNgười thuê đã bị trục xuất"
   PROPERTY_RENTER_EXPELLED_RENTER_SIDE: "§cBạn đã bị trục xuất khỏi tài sản: §9{0}"
@@ -544,7 +535,6 @@ language:
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nĐiều kiện tiên quyết:"
   GUI_TOWN_LEVEL_UP_UNI_DESC3_1: "§f- {0}: §a{1}/{2}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3_2: "§f- {0}: §c{1}/{2}"
-  GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§nPhần thưởng nâng cấp:"
   GUI_TOWN_LEVEL_UP_UNI_DESC4_1: "§f- {0}: §a+{1}"
   GUI_TOWN_LEVEL_UP_UNI_DESC4_2: "§f- {0}: §c{1}"
   GUI_TOWN_LEVEL_UP_UNI_DESC5: "§f§nTổng cộng:"
@@ -694,7 +684,6 @@ language:
   GUI_REGION_KICK_TOWN_DESC1: "§fNhấp chuột trái để đuổi thị trấn này khỏi vùng"
   #Landmarks
   GUI_COLLECT_LANDMARK: "§aThu thập tài nguyên"
-  GUI_COLLECT_LANDMARK_DESC1: "§fNhấp chuột trái để thu thập tài nguyên"
   GUI_COLLECT_LANDMARK_DESC2: "§fThu nhập: §6{0}"
   GUI_LANDMARK_REWARD_COLLECTED: "§aĐã thu thập tài nguyên"
   GUI_REMOVE_LANDMARK: "§cHủy tuyên bố địa danh"
@@ -702,7 +691,6 @@ language:
   SPECIFIC_LANDMARK_ICON_DESC1: "§fSản xuất : §6{0}x §e{1}"
   SPECIFIC_LANDMARK_ICON_DESC2_OWNER: "§fKiểm soát bởi : §9{0}"
   SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER: "§fChưa được tuyên bố"
-  SPECIFIC_LANDMARK_ICON_SWITCH_REWARD: "§fKéo và thả một vật phẩm để thay đổi phần thưởng"
   ADMIN_GUI_LANDMARK_REWARD_SET: "§aPhần thưởng đã được đặt thành §6{0}x §e{1}"
   ##Admin GUI
   ADMIN_GUI_REGION_DESC: "§fNhấp để quản lý các vùng"
@@ -720,11 +708,8 @@ language:
   ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1: "§fThủ lĩnh hiện tại: §3{0}"
   ADMIN_GUI_CREATE_TOWN: "§aTạo một thị trấn"
   ADMIN_GUI_CREATE_TOWN_DESC1: "§fNhấp chuột trái để tạo một thị trấn trống"
-  ADMIN_GUI_DELETE_TOWN: "§aXóa thị trấn"
-  ADMIN_GUI_DELETE_TOWN_DESC1: "§cXóa thị trấn: §9{0}"
   ADMIN_GUI_TOWN_PLAYER_TOWN: "§fThị trấn hiện tại của người chơi: §e{0}"
   ADMIN_GUI_CANT_DELETE_REGIONAL_CAPITAL: "§cBạn không thể xóa thủ phủ vùng"
-  ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1: "§fNhấp chuột trái để đuổi người chơi khỏi thị trấn"
   ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2: "§cBạn không thể đuổi thủ lĩnh thị trấn"
   ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS: "§3{0}§f đã rời thị trấn của mình §3{1}"
   ADMIN_GUI_LANDMARK_ICON: "§aĐịa danh"
@@ -780,9 +765,6 @@ language:
   CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§cBạn không thể xóa một thị trấn nếu bạn không phải là thủ lĩnh"
   CHAT_PLAYER_LEFT_THE_TOWN: "§fBạn đã rời thị trấn"
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cThị trấn {0}§c, mà bạn có quan hệ: {1}§c đã bị xóa"
-  #Chunk permissions
-  TOWN_PERMISSION: "Thị trấn"
-  ALLIANCE_PERMISSION: "Vùng"
   EVERYONE_PERMISSION: "Mọi người"
   SELECTED_ONLY_PERMISSION: "Chỉ những người được chọn"
   #Custom Item
@@ -839,7 +821,6 @@ language:
   ATTACK_ICON_DESC_2: "§fNgười bảo vệ chính : {0}"
   ATTACK_ICON_DESC_3: "§fSố lượng kẻ tấn công : §9{0}"
   ATTACK_ICON_DESC_4: "§fSố lượng người bảo vệ : §9{0}"
-  ATTACK_ICON_DESC_7: "§fChiến tranh sẽ kéo dài : §6{0}"
   ATTACK_ICON_DESC_8: "§fVị trí lãnh thổ : §a{0}"
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§aCuộc tấn công này đã được quản trị viên phê duyệt"
   ATTACK_ICON_DESC_ADMIN_NOT_APPROVED: "§cCuộc tấn công này chưa được quản trị viên phê duyệt"
@@ -908,10 +889,7 @@ language:
   GUI_JOIN_DEFENDING_SIDE: "§aTham gia phe phòng thủ"
   GUI_JOIN_DEFENDING_SIDE_DESC1: "{0}§f tham gia phe phòng thủ chống lại :"
   GUI_WAR_GOAL_INFO: "{0}"
-  BROWSE_SCOPE: "§fPhạm vi : {0}"
-  BROWSE_ALL_NAME: "§aTất cả"
-  BROWSE_TOWNS_NAME: "§9thị trấn"
-  BROWSE_REGIONS_NAME: "§bVùng"
+  #War menu
   MAIN_ATTACKER_NAME: "Kẻ tấn công chính"
   MAIN_DEFENDER_NAME: "Người bảo vệ chính"
   OTHER_ATTACKER_NAME: "Các kẻ tấn công khác"
@@ -981,4 +959,3 @@ language:
   JOIN_REGION_PROPOSAL_NEWSLETTER: "{0}§f đã đề xuất tham gia vùng {1}"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cBạn không thể tuyên bố khối này"
-

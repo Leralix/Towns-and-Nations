@@ -1,5 +1,4 @@
 language:
-  WELCOME: "مرحباً"
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] تم تحميل اللغة الإنجليزية بنجاح"
   NEWSLETTER_STRING: "النشرة الإخبارية"
   #Common errors
@@ -21,4 +20,3 @@ language:
   INVALID_NAME: "اسم غير صالح"
   INVALID_TERRITORY: "منطقة غير صالحة"
   INVALID_PLAYER_NAME: "اسم اللاعب غير صالح"
-

@@ -1,5 +1,4 @@
 language:
-  WELCOME: "§fยินดีต้อนรับ"
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] โหลดภาษาไทยสำเร็จแล้ว"
   #Common errors
   PLAYER_NO_TOWN: "§cคุณไม่มีเมือง"
@@ -19,7 +18,6 @@ language:
   PLAYER_ALREADY_IN_SCOPE: "§cคุณได้ลงทะเบียนแล้ว"
   PLAYER_PROPERTY_CAP_REACHED: "§cคุณถึงขีดจำกัดจำนวนทรัพย์สินสำหรับเมืองของคุณแล้ว อัปเกรดเมืองเพื่อเพิ่มเติม"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cคุณต้องอยู่ในเมืองของคุณเพื่อตั้งค่าตำแหน่งทรัพย์สิน"
-  MESSAGE_NOT_RIGHT_SIZE: "§cข้อความต้องมีความยาว {0} พอดี"
   NO_TRADE_ALLOWED_EMBARGO: "§cคุณไม่สามารถค้าขายกับเมืองที่ถูกคว่ำบาตรได้"
   NO_LEADER: "§cไม่มีผู้นำ"
   TOWN_HAVE_NO_LEADER: "§cเมืองนี้ไม่มีผู้นำ"
@@ -178,7 +176,6 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cคุณมีเงินไม่เพียงพอที่จะดำเนินการนี้"
   LEADER_NOT_ONLINE: "§cผู้นำเมืองไม่ออนไลน์"
-  PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cคุณมีเงินไม่เพียงพอ คุณต้องการอีก {0}"
   NAME_ALREADY_USED: "§cชื่อนี้ถูกใช้แล้ว"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "พิมพ์ชื่อเมืองในแชท"
   PLAYER_WRITE_QUANTITY_IN_CHAT: "พิมพ์จำนวนในแชท"
@@ -223,7 +220,6 @@ language:
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§fเข้าร่วมหรือสร้างเมืองของคุณเอง"
   GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fเมืองปัจจุบัน: {0}"
   GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§fอันดับเมือง: {0}"
-  GUI_YOUR_BALANCE: "§aยอดเงินของคุณ"
   GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§fสร้าง ลบ หรือจัดการทรัพย์สินของคุณ"
   GUI_PLAYER_NEWSLETTER: "§aจดหมายข่าว"
   #Newsletter menu
@@ -261,7 +257,6 @@ language:
   GUI_PROPERTY_AUTHORIZE_PLAYER: "§aอนุญาตผู้เล่น"
   PLAYER_REMOVED_FROM_PROPERTY: "§c{0} ถูกนำออกจากทรัพย์สิน"
   PLAYER_ADDED_TO_PROPERTY: "§a{0} ถูกเพิ่มเข้าไปในทรัพย์สิน"
-  GUI_PROPERTY_PLAYER_LIST: "§aรายการผู้เล่นที่ได้รับอนุญาต"
   GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER: "§cคลิกขวาเพื่อไล่ผู้เช่า"
   PROPERTY_RENTER_EXPELLED_OWNER_SIDE: "§cผู้เช่าถูกไล่ออก"
   PROPERTY_RENTER_EXPELLED_RENTER_SIDE: "§cคุณถูกไล่ออกจากทรัพย์สิน: §9{0}"
@@ -425,7 +420,6 @@ language:
   GUI_TOWN_LEVEL_UP_UNI_DESC2: "§fอัปเกรดระดับ §a{0}§f ค่าใช้จ่าย: §6{1}{MONEY_CHAR}"
   GUI_TOWN_LEVEL_UP_UNI_DESC2_MAX_LEVEL: "§6ถึงระดับสูงสุดแล้ว"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nเงื่อนไข:"
-  GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§nรางวัลอัปเกรด:"
   GUI_TOWN_LEVEL_UP_UNI_DESC5: "§f§nรวม:"
   TOWN_LEVEL_BONUS_RECAP: "§f§nสถิติเมืองปัจจุบัน:"
   TOWN_UPGRADE_MAX_LEVEL: "§cคุณถึงระดับสูงสุดของการอัปเกรดแล้ว"
@@ -571,7 +565,6 @@ language:
   GUI_REGION_KICK_TOWN_DESC1: "§fคลิกซ้ายเพื่อไล่เมืองนี้ออกจากภูมิภาค"
   #Landmarks
   GUI_COLLECT_LANDMARK: "§aเก็บทรัพยากร"
-  GUI_COLLECT_LANDMARK_DESC1: "§fคลิกซ้ายเพื่อเก็บทรัพยากร"
   GUI_COLLECT_LANDMARK_DESC2: "§fรายได้: §6{0}"
   GUI_LANDMARK_REWARD_COLLECTED: "§aเก็บทรัพยากรสำเร็จ"
   GUI_REMOVE_LANDMARK: "§cยกเลิกการอ้างสิทธิ์สถานที่สำคัญ"
@@ -579,7 +572,6 @@ language:
   SPECIFIC_LANDMARK_ICON_DESC1: "§fผลิต : §6{0}x §e{1}"
   SPECIFIC_LANDMARK_ICON_DESC2_OWNER: "§fควบคุมโดย : §9{0}"
   SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER: "§fไม่ได้อ้างสิทธิ์"
-  SPECIFIC_LANDMARK_ICON_SWITCH_REWARD: "§fลากและวางไอเทมเพื่อเปลี่ยนรางวัล"
   ADMIN_GUI_LANDMARK_REWARD_SET: "§aตั้งรางวัลเป็น §6{0}x §e{1}"
   ##Admin GUI
   ADMIN_GUI_REGION_DESC: "§fคลิกเพื่อจัดการภูมิภาค"
@@ -597,11 +589,8 @@ language:
   ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1: "§fผู้นำปัจจุบัน: §3{0}"
   ADMIN_GUI_CREATE_TOWN: "§aสร้างเมือง"
   ADMIN_GUI_CREATE_TOWN_DESC1: "§fคลิกซ้ายเพื่อสร้างเมืองเปล่า"
-  ADMIN_GUI_DELETE_TOWN: "§aลบเมือง"
-  ADMIN_GUI_DELETE_TOWN_DESC1: "§cลบเมือง: §9{0}"
   ADMIN_GUI_TOWN_PLAYER_TOWN: "§fเมืองปัจจุบันของผู้เล่น: §e{0}"
   ADMIN_GUI_CANT_DELETE_REGIONAL_CAPITAL: "§cคุณไม่สามารถลบเมืองหลวงภูมิภาคได้"
-  ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1: "§fคลิกซ้ายเพื่อไล่ผู้เล่นออกจากเมือง"
   ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2: "§cคุณไม่สามารถไล่ผู้นำเมืองได้"
   ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS: "§3{0}§f ออกจากเมือง §3{1}"
   ADMIN_GUI_LANDMARK_ICON: "§aสถานที่สำคัญ"
@@ -698,7 +687,6 @@ language:
   ATTACK_ICON_DESC_2: "§fผู้ป้องกันหลัก : {0}"
   ATTACK_ICON_DESC_3: "§fจำนวนผู้โจมตี : §9{0}"
   ATTACK_ICON_DESC_4: "§fจำนวนผู้ป้องกัน : §9{0}"
-  ATTACK_ICON_DESC_7: "§fสงครามจะใช้เวลา : §6{0}"
   ATTACK_ICON_DESC_8: "§fตำแหน่งอาณาเขต : §a{0}"
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§aการโจมตีนี้ได้รับการอนุมัติจากผู้ดูแล"
   ATTACK_ICON_DESC_ADMIN_NOT_APPROVED: "§cการโจมตีนี้ไม่ได้รับการอนุมัติจากผู้ดูแล"
@@ -765,6 +753,7 @@ language:
   GUI_JOIN_ATTACKING_SIDE_DESC1: "{0}§f เข้าร่วมฝ่ายโจมตีและต่อสู้เพื่อ :"
   GUI_JOIN_DEFENDING_SIDE: "§aเข้าร่วมฝ่ายป้องกัน"
   GUI_JOIN_DEFENDING_SIDE_DESC1: "{0}§f เข้าร่วมฝ่ายป้องกันต่อสู้กับ :"
+  #War menu
   MAIN_ATTACKER_NAME: "ผู้โจมตีหลัก"
   MAIN_DEFENDER_NAME: "ผู้ป้องกันหลัก"
   OTHER_ATTACKER_NAME: "ผู้โจมตีอื่นๆ"
@@ -805,4 +794,3 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fคลิกซ้ายเพื่อเข้าถึงข้อเสนอ"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cคุณไม่สามารถอ้างสิทธิ์ชังก์นี้ได้"
-

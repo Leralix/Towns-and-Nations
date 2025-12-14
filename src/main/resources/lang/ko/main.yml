@@ -1,5 +1,4 @@
 language:
-  WELCOME: "§f환영합니다"
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] 한국어가 성공적으로 로드되었습니다"
   PLUGIN_DEBUG_STRING: "§c[TaN - 디버그]§f "
   NEWSLETTER_STRING: "§6[TaN - 뉴스레터]§f "
@@ -19,7 +18,6 @@ language:
   PLAYER_ALREADY_IN_SCOPE: "§c이미 등록되어 있습니다"
   PLAYER_PROPERTY_CAP_REACHED: "§c당신의 마을이 소유할 수 있는 최대 부동산 수에 도달했습니다. 더 많은 부동산을 얻으려면 마을을 업그레이드하세요"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§c부동산 위치를 설정하려면 자신의 마을에 있어야 합니다"
-  MESSAGE_NOT_RIGHT_SIZE: "§c메시지는 정확히 {0} 길이여야 합니다"
   NO_TRADE_ALLOWED_EMBARGO: "§c금수조치가 있는 마을과 거래할 수 없습니다"
   NO_LEADER: "§c리더 없음"
   TOWN_HAVE_NO_LEADER: "§c마을에 리더가 없습니다"
@@ -128,7 +126,6 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§c이 작업을 수행할 충분한 돈이 없습니다"
   LEADER_NOT_ONLINE: "§c마을 리더가 온라인 상태가 아닙니다"
-  PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§c돈이 부족합니다. §6{0}✦§c 더 필요합니다"
   NAME_ALREADY_USED: "§c이 이름은 이미 사용 중입니다"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "채팅에 마을 이름을 입력하세요."
   PLAYER_WRITE_QUANTITY_IN_CHAT: "채팅에 수량을 입력하세요"
@@ -160,7 +157,6 @@ language:
   GUI_REGION_ICON_DESC1_NO_REGION: "§f지역을 생성하거나 확인하세요"
   GUI_TOWN_ICON: "§a마을"
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§f마을을 생성하거나 가입하세요"
-  GUI_YOUR_BALANCE: "§a잔액"
   GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§f재산을 생성, 삭제 또는 관리하세요"
   #Town menu - no town
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§a새로운 마을 생성"
@@ -192,7 +188,6 @@ language:
   GUI_PROPERTY_AUTHORIZE_PLAYER: "§a플레이어 권한 부여"
   PLAYER_REMOVED_FROM_PROPERTY: "§c{0}이(가) 재산에서 제거되었습니다"
   PLAYER_ADDED_TO_PROPERTY: "§a{0}이(가) 재산에 추가되었습니다"
-  GUI_PROPERTY_PLAYER_LIST: "§a권한이 부여된 플레이어 목록"
   GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER: "§c우클릭하여 임차인을 내보냅니다"
   PROPERTY_RENTER_EXPELLED_OWNER_SIDE: "§c임차인이 내보내졌습니다"
   PROPERTY_RENTER_EXPELLED_RENTER_SIDE: "§c당신은 재산에서 내보내졌습니다: §9{0}"
@@ -266,7 +261,6 @@ language:
   GUI_TOWN_LEVEL_UP_UNI_DESC1: "§f현재 레벨: §e{0}"
   GUI_TOWN_LEVEL_UP_UNI_DESC2_MAX_LEVEL: "§6최고 레벨에 도달했습니다"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§n필수 조건:"
-  GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§n업그레이드 보상:"
   GUI_TOWN_LEVEL_UP_UNI_DESC5: "§f§n총합:"
   TOWN_LEVEL_BONUS_RECAP: "§f§n현재 마을 통계:"
   TOWN_UPGRADE_MAX_LEVEL: "§c업그레이드의 최대 레벨에 도달했습니다"
@@ -388,14 +382,12 @@ language:
   GUI_REGION_KICK_TOWN_DESC1: "§f좌클릭하여 이 마을을 지역에서 추방합니다"
   #Landmarks
   GUI_COLLECT_LANDMARK: "§a자원 수집"
-  GUI_COLLECT_LANDMARK_DESC1: "§f좌클릭하여 자원을 수집합니다"
   GUI_COLLECT_LANDMARK_DESC2: "§f수익: §6{0}"
   GUI_LANDMARK_REWARD_COLLECTED: "§a자원이 수집되었습니다"
   GUI_REMOVE_LANDMARK: "§c랜드마크 포기"
   SPECIFIC_LANDMARK_ICON_DESC1: "§f생산 중: §6{0}x §e{1}"
   SPECIFIC_LANDMARK_ICON_DESC2_OWNER: "§f소유자: §9{0}"
   SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER: "§f소유되지 않음"
-  SPECIFIC_LANDMARK_ICON_SWITCH_REWARD: "§f보상을 변경하려면 아이템을 드래그 앤 드롭하세요"
   ADMIN_GUI_LANDMARK_REWARD_SET: "§a보상이 §6{0}x §e{1}§f으로 설정되었습니다"
   ##Admin GUI
   ADMIN_GUI_REGION_DESC: "§f지역을 관리하려면 클릭하세요"
@@ -413,11 +405,8 @@ language:
   ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1: "§f현재 리더: §3{0}"
   ADMIN_GUI_CREATE_TOWN: "§a새 마을 생성"
   ADMIN_GUI_CREATE_TOWN_DESC1: "§f좌클릭하여 빈 마을을 생성하세요"
-  ADMIN_GUI_DELETE_TOWN: "§a마을 삭제"
-  ADMIN_GUI_DELETE_TOWN_DESC1: "§c마을 삭제: §9{0}"
   ADMIN_GUI_TOWN_PLAYER_TOWN: "§f플레이어 현재 마을: §e{0}"
   ADMIN_GUI_CANT_DELETE_REGIONAL_CAPITAL: "§c지역 수도는 삭제할 수 없습니다"
-  ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1: "§f좌클릭하여 플레이어를 마을에서 추방하세요"
   ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2: "§c마을 리더는 추방할 수 없습니다"
   ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS: "§3{0}§f가(이) 자신의 마을 §3{1}§f을(를) 떠났습니다"
   ADMIN_GUI_LANDMARK_ICON: "§a랜드마크"
@@ -491,4 +480,3 @@ language:
   CONFIRM_PLAYER_KICKED: "§3{0}§f이(가) 마을에서 추방됩니다"
   GUI_CONFIRM_DELETE_REGION: "§f지역 §b{0}§f이(가) 삭제됩니다"
   GUI_CONFIRM_CHANGE_LEADER: "§3{0}§f이(가) 지역의 새로운 리더가 됩니다"
-

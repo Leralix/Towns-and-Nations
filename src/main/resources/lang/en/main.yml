@@ -1,6 +1,5 @@
 language:
   STRING: "§f{0}"
-  EMPTY: ""
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] English language successfully loaded"
   PLUGIN_STRING: "§6[TaN]§f "
   PLUGIN_DEBUG_STRING: "§c[TaN - Debug]§f "
@@ -375,14 +374,12 @@ language:
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fPlayers that are invited to the town automatically join the default rank"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2: "§7▶ Click to mark this role as default"
   GUI_TOWN_MEMBERS_ROLE_DELETE: "§aDelete the rank"
-
-  # Permissions
+  #Permissions
   GUI_ADD_PLAYER_WITH_PERMISSION_ALREADY_HAS_PERMISSION_DESCRIPTION: "§eThis player already have permission due to his rank or territory"
   GUI_ADD_PLAYER_WITH_PERMISSION_DESCRIPTION: "§fThis player currently does not have this permission"
-  GUI_ADD_RANK_CURRENT_STATUS : "§fCurrent status: §e{0}"
+  GUI_ADD_RANK_CURRENT_STATUS: "§fCurrent status: §e{0}"
   GUI_ADD_RANK_ALLOWED_PERMISSION: "§aAllowed"
   GUI_ADD_RANK_NEUTRAL_PERMISSION: "§7Neutral"
-
   #Properties menu
   GUI_PROPERTY_CHANGE_NAME: "§aChange property name"
   GUI_PROPERTY_CHANGE_NAME_DESC1: "§fCurrent name: §9{0}"
@@ -1095,8 +1092,6 @@ language:
   WARGOAL_CONQUER_SUCCESS_LOOSING_SIDE: "{0}§c can now claim {1}§c chunks from {2}"
   WARGOAL_CAPTURE_LANDMARK_SUCCESS_WINNING_SIDE: "§aYou have captured the landmark {0}"
   WARGOAL_CAPTURE_LANDMARK_SUCCESS_LOOSING_SIDE: "{0}§c has captured the landmark {1}"
-  ALL_ATTACK_SCOPE: "All attacks"
-  UNFINISHED_ATTACK_SCOPE: "Unfinished only"
   GUI_CANCEL_ATTACK: "§cCancel attack"
   GUI_RENAME_ATTACK: "§aRename attack"
   GUI_QUIT_WAR: "§aLeave the attack"
@@ -1128,7 +1123,7 @@ language:
   TERRITORY_CHUNK_UPKEEP_TRANSACTION_SCOPE: "Territory chunk upkeep"
   SALARY_TRANSACTION_SCOPE: "Salaries"
   CREATE_PROPERTY_TRANSACTION_SCOPE: "Properties creation"
-  SELL_PROPERTY_TRANSACTION_SCOPE: "Properties selling"
+  SELL_PROPERTY_TRANSACTION_SCOPE: "Properties creation"
   RENT_PROPERTY_TRANSACTION_SCOPE: "Properties renting"
   CHANGE_TERRITORY_NAME_TRANSACTION_SCOPE: "Change name"
   UPGRADE_TRANSACTION_SCOPE: "Territory upgrades"
@@ -1162,7 +1157,7 @@ language:
   NEUTRAL_NAME: "Neutral"
   GUI_ATTACKING_SIDE_ICON: "§aAttackers"
   GUI_ATTACKING_SIDE_ICON_DESC1: "§fList of every attackers :"
-  GUI_DEFENDING_SIDE_ICON: "§aAttackers"
+  GUI_DEFENDING_SIDE_ICON: "§aDefenders"
   GUI_DEFENDING_SIDE_ICON_DESC1: "§fList of every defenders :"
   GUI_ICON_LIST: "§f- {0}"
   #Map

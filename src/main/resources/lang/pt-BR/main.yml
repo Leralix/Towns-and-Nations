@@ -1,5 +1,4 @@
 language:
-  WELCOME: "§fBem-vindo\n"
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] Idioma português carregado com sucesso."
   PLUGIN_STRING: "§6[TaN]§f "
   PLUGIN_DEBUG_STRING: "§c[TaN - Debug]§f "
@@ -27,7 +26,6 @@ language:
   PLAYER_ALREADY_IN_SCOPE: "§cVocê já está registrado"
   PLAYER_PROPERTY_CAP_REACHED: "§cVocê atingiu o número máximo de propriedades para sua cidade. Melhore sua cidade para obter mais"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cVocê precisa estar na sua cidade para definir a posição de uma propriedade"
-  MESSAGE_NOT_RIGHT_SIZE: "§cA mensagem deve ter exatamente {0} caracteres de comprimento"
   NO_TRADE_ALLOWED_EMBARGO: "§cVocê não pode negociar com uma cidade sob embargo"
   NO_LEADER: "§cSem Líder"
   TOWN_HAVE_NO_LEADER: "§cEssa cidade não tem um líder"
@@ -212,7 +210,6 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cVocê não tem dinheiro suficiente para realizar esta ação"
   LEADER_NOT_ONLINE: "§cO líder da cidade não está online"
-  PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cVocê não tem dinheiro suficiente. Você precisa de {0} a mais"
   NAME_ALREADY_USED: "§cEste nome já está sendo utilizado"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Escreva o nome da cidade no chat"
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Escreva a quantidade no chat"
@@ -287,7 +284,6 @@ language:
   GUI_PLAYER_MENU_ICON: "§aSeu perfil"
   #Player manu
   GUI_PLAYER_ICON: "§a{0}"
-  GUI_YOUR_BALANCE: "§aSeu Saldo"
   GUI_YOUR_BALANCE_DESC1: "§fSaldo: §6{0}{MONEY_CHAR}"
   GUI_PLAYER_MANAGE_PROPERTIES: "§aPropriedades"
   GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§fCrie, exclua ou gerencie suas propriedades"
@@ -302,10 +298,6 @@ language:
   #Newsletter menu
   OPEN_NEWSLETTER_DESC: "Obtenha as últimas notícias"
   MARK_ALL_AS_READ: "§aMarcar tudo como lido"
-  NEWSLETTER_SCOPE_ICON: "§aEscopo do Boletim"
-  NEWSLETTER_SCOPE_ICON_DESC1: "§fEscopo atual: §e{0}"
-  NEWSLETTER_SHOW_ALL: "§9Mostrar todas as notícias"
-  NEWSLETTER_SHOW_ONLY_UNREAD: "§fMostrar apenas notícias não lidas"
   #Town menu - no town
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aCriar uma nova cidade"
   GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCusto : §6{0}{MONEY_CHAR}"
@@ -379,7 +371,6 @@ language:
   GUI_PROPERTY_AUTHORIZE_PLAYER: "§aAutorizar jogador"
   PLAYER_REMOVED_FROM_PROPERTY: "§c{0} foi removido da propriedade"
   PLAYER_ADDED_TO_PROPERTY: "§a{0} foi adicionado à propriedade"
-  GUI_PROPERTY_PLAYER_LIST: "aLista de jogadores autorizados"
   CANNOT_MANAGE_AUTHORIZED_PLAYER_IF_PROPERTY_IS_RENTED: "§cVocê não pode gerenciar jogadores autorizados se a propriedade estiver alugada atualmente"
   GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER: "§cClique direito para expulsar o inquilino"
   PROPERTY_RENTER_EXPELLED_OWNER_SIDE: "§cO inquilino foi expulso"
@@ -602,7 +593,6 @@ language:
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nPré requisitos:"
   GUI_TOWN_LEVEL_UP_UNI_DESC3_1: "§f- {0}: §a{1}/{2}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3_2: "§f- {0}: §c{1}/{2}"
-  GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§nRecompensas de melhoria:"
   GUI_TOWN_LEVEL_UP_UNI_DESC4_1: "§f- {0}: §a+{1}"
   GUI_TOWN_LEVEL_UP_UNI_DESC4_2: "§f- {0}: §c{1}"
   GUI_TOWN_LEVEL_UP_UNI_DESC5: "§f§nTotal:"
@@ -761,7 +751,6 @@ language:
   GUI_REGION_KICK_TOWN_DESC1: "§fClique esquerdo para expulsar esta cidade da região"
   #Landmarks
   GUI_COLLECT_LANDMARK: "§aColetar recursos"
-  GUI_COLLECT_LANDMARK_DESC1: "§fClique esquerdo para coletar recursos"
   GUI_COLLECT_LANDMARK_DESC2: "§fGanhos: §6{0}"
   GUI_LANDMARK_REWARD_COLLECTED: "§aRecursos coletados"
   GUI_REMOVE_LANDMARK: "§cDesclaimar ponto de referência"
@@ -769,7 +758,6 @@ language:
   SPECIFIC_LANDMARK_ICON_DESC1: "§fProduzindo : §6{0}x §e{1}"
   SPECIFIC_LANDMARK_ICON_DESC2_OWNER: "§fControlado por : §9{0}"
   SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER: "§fNão claimado"
-  SPECIFIC_LANDMARK_ICON_SWITCH_REWARD: "§fArraste e solte um item para mudar a recompensa"
   ADMIN_GUI_LANDMARK_REWARD_SET: "§aA Recompensa definida como §6{0}x §e{1}"
   ##Admin GUI
   ADMIN_GUI_REGION_DESC: "§fClique para gerenciar regiões"
@@ -787,11 +775,8 @@ language:
   ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1: "§fLíder atual: §3{0}"
   ADMIN_GUI_CREATE_TOWN: "§aCriar uma cidade"
   ADMIN_GUI_CREATE_TOWN_DESC1: "§fClique esquerdo para criar uma cidade vazia"
-  ADMIN_GUI_DELETE_TOWN: "§aExcluir cidade"
-  ADMIN_GUI_DELETE_TOWN_DESC1: "cExcluir a cidade: §9{0}"
   ADMIN_GUI_TOWN_PLAYER_TOWN: "§fCidade atual do jogador: §e{0}"
   ADMIN_GUI_CANT_DELETE_REGIONAL_CAPITAL: "§cVocê não pode deletar a capital regional"
-  ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1: "§fClique esquerdo para expulsar este jogador da cidade"
   ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2: "§cVocê não pode expulsar o líder da cidade"
   ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS: "§3{0}§f deixou a sua cidade §3{1}"
   ADMIN_GUI_LANDMARK_ICON: "§aPontos de referência"
@@ -853,9 +838,6 @@ language:
   CHAT_CANT_DISBAND_TOWN_IF_NOT_LEADER: "§fVocê não pode excluir uma cidade se não for o líder"
   CHAT_PLAYER_LEFT_THE_TOWN: "§fVocê deixou a cidade"
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cA cidade {0}§c, com a qual você tinha uma relação: {1}§c foi dissolvida"
-  #Chunk permissions
-  TOWN_PERMISSION: "Cidade"
-  ALLIANCE_PERMISSION: "Região"
   EVERYONE_PERMISSION: "Todos"
   SELECTED_ONLY_PERMISSION: "Apenas selecionado"
   #Custom Item
@@ -915,8 +897,6 @@ language:
   ATTACK_ICON_DESC_2: "§fDefensor principal : {0}"
   ATTACK_ICON_DESC_3: "§fNúmero de atacantes: §9{0}"
   ATTACK_ICON_DESC_4: "§fNúmero de defensores : §9{0}"
-  ATTACK_ICON_DESC_6: "§fA Guerra começará em : §6{0} §f(§7{1}§f)"
-  ATTACK_ICON_DESC_7: "§fA guerra durará: §6{0}"
   ATTACK_ICON_DESC_8: "§fPosição do território: §a{0}"
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§aEste ataque foi aprovado por um admin"
   ATTACK_ICON_DESC_ADMIN_NOT_APPROVED: "§cEste ataque não foi aprovado por um admin"
@@ -992,10 +972,7 @@ language:
   GUI_JOIN_DEFENDING_SIDE: "§aJunte-se ao lado defensor"
   GUI_JOIN_DEFENDING_SIDE_DESC1: "{0}§f se junta ao lado defensor contra :"
   GUI_WAR_GOAL_INFO: "{0}"
-  BROWSE_SCOPE: "§fEscopo : {0}"
-  BROWSE_ALL_NAME: "§aTodos"
-  BROWSE_TOWNS_NAME: "§9Cidades"
-  BROWSE_REGIONS_NAME: "§bRegiões"
+  #War menu
   MAIN_ATTACKER_NAME: "Atacante principal"
   MAIN_DEFENDER_NAME: "Defensor principal"
   OTHER_ATTACKER_NAME: "Outros atacantes"
@@ -1119,4 +1096,3 @@ language:
   WAR_INFO_CONTESTED: "§6🌑§f Contestado (§e{0}%§f) - §f[Atk : §e{1}§f, Def : §e{2}§f]"
   WAR_INFO_CHUNK_CAPTURED: "§4🌑§f Capturado por {0}§f - [Atk : §e{1}§f, Def : §e{2}§f]"
   WAR_INFO_FORT_STATUS: "{0} - (Atk: §e{1}§f / Def: §e{2}§f)"
-

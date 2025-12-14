@@ -1,5 +1,5 @@
 language:
-  WELCOME: "§f欢迎"
+  STRING: "§f{0}"
   LANGUAGE_SUCCESSFULLY_LOADED: "[城镇] 中文语言加载成功"
   PLUGIN_STRING: "§6[城镇]§f "
   PLUGIN_DEBUG_STRING: "§c[城镇 - 调试]§f "
@@ -7,12 +7,16 @@ language:
   #Common errors
   PLAYER_NO_TOWN: "§c你没有一个城镇"
   PLAYER_NO_REGION: "§c你没有地区"
+  VALUE_EXCEED_MAXIMUM_ERROR: "§c该值超过了最大授权数量({0})"
+  VALUE_CANNOT_BE_NEGATIVE_ERROR: "§c值不能为负数"
   TOWN_NO_REGION: "§c你的城镇不属于任何联盟"
   PLAYER_NOT_LEADER_OF_REGION: "§c你需要是该联盟的领导才能执行此操作"
   LEADER_CANNOT_QUIT_TOWN: "§c领主无法离开城镇."
   TOWN_ALREADY_HAVE_OVERLORD: "§c这个城镇已经有领主了"
   PLAYER_NO_PERMISSION: "§c你没有权限执行此命令"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§c你没有权限对排名高于或等于你的人执行此操作"
+  CANNOT_CAST_COMMAND_DURING_ATTACK: "§c你不能在攻击时使用此命令"
+  CANNOT_CAST_COMMAND_ON_PLAYER_WITH_SPECIFIC_RELATION: "§c你不能在 §e{0}§c 上使用此命令，因为你分享了一个关系: {1}"
   PLAYER_ACTION_NO_PERMISSION: "§c你没有权限执行此操作"
   PLAYER_NOT_FOUND: "§c无效的名字，或玩家未连接"
   TOWN_NOT_ENOUGH_LEVEL: "§c你的城镇没有达到所需等级: §a{0}"
@@ -23,7 +27,6 @@ language:
   PLAYER_ALREADY_IN_SCOPE: "§c你已注册"
   PLAYER_PROPERTY_CAP_REACHED: "§c你已达到城镇的最大财产数量。升级你的城镇以获得更多"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§c你需要在自己的城镇内设置财产位置"
-  MESSAGE_NOT_RIGHT_SIZE: "§c消息必须正好为 {0} 字长"
   NO_TRADE_ALLOWED_EMBARGO: "§c你不能与受禁运的城镇进行交易"
   NO_LEADER: "§c无领导"
   TOWN_HAVE_NO_LEADER: "§c该城镇没有领导"
@@ -34,7 +37,10 @@ language:
   INTERACTION_TOO_FAR_ERROR: "§c你距离太远，无法执行此操作"
   CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§c此区块不属于 {0}"
   CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§c无法删除此领地，因为它是 {0} 的领导者"
+  ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§c您无法与此权限交互，因为您的等级不具备此权限"
   TOWN_NOT_FOUND: "§c城镇未找到"
+  UPGRADE_NOT_FOUND: "§c升级未找到"
+  PROPERTY_NOT_FOUND: "§c房源未找到"
   TERRITORY_NOT_FOUND: "§c领土未找到"
   INVALID_ARGUMENTS: "§c无效参数"
   PLAYER_ALREADY_HAVE_TOWN: "§c这个玩家已经有一个城镇了"
@@ -50,6 +56,17 @@ language:
   INVALID_PLAYER_NAME: "无效的玩家名称"
   #Common uses
   DISPLAY_COORDINATES: "§f坐标: §d[{0}, {1}, {2}]"
+  DISPLAY_2D_COORDINATES: "§d[x: {0}, z : {1}]"
+  GUI_BASIC_NAME: "§a{0}"
+  CURRENT_STATE: "§f当前状态: §a{0}"
+  ENABLED: "§a已启用"
+  DISABLED: "§c已禁用"
+  ENTER_NEW_VALUE: "在聊天中写下新消息或值"
+  #Common default messages
+  DEFAULT_DESCRIPTION: "默认描述"
+  #Chat scope
+  CHAT_SCOPE_TOWN_MESSAGE: "§9[{0}]§f <{1}> {2}"
+  CHAT_SCOPE_REGION_MESSAGE: "§b[{0}]§f <{1}> {2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[联盟 - {0}]§3 {1}: §f{2}"
   #Update needed
   NEW_VERSION_AVAILABLE: "§c有一个新版本可用: §f{0}"
@@ -93,6 +110,7 @@ language:
   CLAIM_CHUNK_COMMAND_DESC: "占领一个区块"
   CHUNK_ALREADY_CLAIMED_WARNING: "§c此区块已被: §9{0} 占领"
   CANNOT_CLAIM_LANDMARK: "§c你不能占领资源点区块"
+  CHUNK_BIOME_NOT_ALLOWED: "§c你不能在这个生物群落中占领区块。"
   MAX_CHUNK_LIMIT_REACHED: "§c你已达到占领区块的最大数量，升级你的城镇以获得更多可用区块"
   CHUNK_NOT_ADJACENT: "§c此区块不邻接你的城镇"
   #Sell rare item command
@@ -185,7 +203,6 @@ language:
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§f加入或创建你自己的城镇"
   GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§f当前城镇: {0}"
   GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§f城镇等级: {0}"
-  GUI_YOUR_BALANCE: "§a你的余额"
   GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§f创建、删除或管理你的财产"
   GUI_PLAYER_NEWSLETTER: "§a通讯"
   #Newsletter menu
@@ -223,7 +240,6 @@ language:
   GUI_PROPERTY_AUTHORIZE_PLAYER: "§a授权玩家"
   PLAYER_REMOVED_FROM_PROPERTY: "§c{0} 已从该房屋地产移除"
   PLAYER_ADDED_TO_PROPERTY: "§a{0} 已被添加到该房屋地产"
-  GUI_PROPERTY_PLAYER_LIST: "§a授权玩家列表"
   GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER: "§c右键点击以驱逐租赁者"
   PROPERTY_RENTER_EXPELLED_OWNER_SIDE: "§c租赁者已被驱逐"
   PROPERTY_RENTER_EXPELLED_RENTER_SIDE: "§c您已被驱逐出房屋地产: §9{0}"
@@ -317,7 +333,6 @@ language:
   GUI_TOWN_LEVEL_UP_UNI_DESC2: "§fLevel §a{0}§f 升级花费: §6{1}游戏币"
   GUI_TOWN_LEVEL_UP_UNI_DESC2_MAX_LEVEL: "§6已达最大等级"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§n升级要求:"
-  GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§n升级奖励:"
   GUI_TOWN_LEVEL_UP_UNI_DESC5: "§f§n总计:"
   TOWN_LEVEL_BONUS_RECAP: "§f§n当前城镇状态："
   TOWN_UPGRADE_MAX_LEVEL: "§c您已达到升级的最大级别"
@@ -456,7 +471,6 @@ language:
   GUI_REGION_KICK_TOWN_DESC1: "§f左键点击以将此城镇踢出联盟"
   #Landmarks
   GUI_COLLECT_LANDMARK: "§a收集资源"
-  GUI_COLLECT_LANDMARK_DESC1: "§f左键点击以收集资源"
   GUI_COLLECT_LANDMARK_DESC2: "§f收益: §6{0}"
   GUI_LANDMARK_REWARD_COLLECTED: "§a资源已收集"
   GUI_REMOVE_LANDMARK: "§c取消标志"
@@ -464,7 +478,6 @@ language:
   SPECIFIC_LANDMARK_ICON_DESC1: "§f生产: §6{0}x §e{1}"
   SPECIFIC_LANDMARK_ICON_DESC2_OWNER: "§f控制者: §9{0}"
   SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER: "§f未被认领"
-  SPECIFIC_LANDMARK_ICON_SWITCH_REWARD: "§f拖放物品以更改奖励"
   ADMIN_GUI_LANDMARK_REWARD_SET: "§a奖励已设置为 §6{0}x §e{1}"
   ##Admin GUI
   ADMIN_GUI_REGION_DESC: "§f点击管理联盟"
@@ -482,11 +495,8 @@ language:
   ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1: "§f当前领袖: §3{0}"
   ADMIN_GUI_CREATE_TOWN: "§a创建城镇"
   ADMIN_GUI_CREATE_TOWN_DESC1: "§f左键点击以创建一个空城镇"
-  ADMIN_GUI_DELETE_TOWN: "§a删除城镇"
-  ADMIN_GUI_DELETE_TOWN_DESC1: "§c删除城镇: §9{0}"
   ADMIN_GUI_TOWN_PLAYER_TOWN: "§f玩家当前城镇: §e{0}"
   ADMIN_GUI_CANT_DELETE_REGIONAL_CAPITAL: "§c您不能删除联盟首都"
-  ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1: "§f左键点击以将玩家踢出城镇"
   ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2: "§c您不能踢出城镇领袖"
   ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS: "§3{0}§f 已离开他的城镇 §3{1}"
   ADMIN_GUI_LANDMARK_ICON: "§a资源点"
@@ -581,7 +591,6 @@ language:
   ATTACK_ICON_DESC_2: "§f主要防守者：{0}"
   ATTACK_ICON_DESC_3: "§f攻击者数量：§9{0}"
   ATTACK_ICON_DESC_4: "§f防守者数量：§9{0}"
-  ATTACK_ICON_DESC_7: "§f战争将持续：§6{0}"
   ATTACK_ICON_DESC_8: "§f领土位置：§a{0}"
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§a此攻击已获得管理员批准"
   ATTACK_ICON_DESC_ADMIN_NOT_APPROVED: "§c此攻击未获得管理员批准"
@@ -633,6 +642,7 @@ language:
   GUI_JOIN_ATTACKING_SIDE_DESC1: "{0}§f 加入攻击方并为其作战："
   GUI_JOIN_DEFENDING_SIDE: "§a加入防守方"
   GUI_JOIN_DEFENDING_SIDE_DESC1: "{0}§f 加入防守方对抗："
+  #War menu
   MAIN_ATTACKER_NAME: "主要攻击者"
   MAIN_DEFENDER_NAME: "主要防守者"
   OTHER_ATTACKER_NAME: "其他攻击者"
@@ -671,4 +681,3 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§f左键点击查看 提案"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§c你无法占领此区块"
-

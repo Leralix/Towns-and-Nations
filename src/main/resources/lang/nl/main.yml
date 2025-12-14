@@ -1,5 +1,4 @@
 language:
-  WELCOME: "welkom"
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] Engelse taal succesvol geladen"
   PLUGIN_STRING: "§6[TaN]§f "
   PLUGIN_DEBUG_STRING: "§c[TaN - Debug]§f "
@@ -20,7 +19,6 @@ language:
   CANT_KICK_REGIONAL_CAPITAL: "§cU kunt de provinciale hoofdstad niet uit de provincie weghalen"
   PLAYER_ALREADY_IN_SCOPE: "§cU bent al geregistreerd"
   PLAYER_PROPERTY_CAP_REACHED: "§cJe hebt het maximum aantal landgoeden voor je stad bereikt. Upgrade je stad om meer landgoeden te kunnen verkrijgen"
-  MESSAGE_NOT_RIGHT_SIZE: "§cBericht moet exact {0} lang zijn"
   NO_TRADE_ALLOWED_EMBARGO: "§cJe kunt niet handelen met een stad onder een embargo"
   NO_LEADER: "§cGeen Leider"
   TOWN_HAVE_NO_LEADER: "§cDe stad heeft geen leider"
@@ -113,4 +111,3 @@ language:
   LEADER_NOT_ONLINE: "§cDe burgermeester is niet online"
   #Newsletter menu
   OPEN_NEWSLETTER_DESC: "Ontvang het laatste nieuws"
-

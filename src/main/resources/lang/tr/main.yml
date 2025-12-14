@@ -1,5 +1,4 @@
 language:
-  WELCOME: "§fHoş geldin"
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] Türkçe dili başarıyla yüklendi"
   PLUGIN_STRING: "§6[TaN]§f "
   PLUGIN_DEBUG_STRING: "§c[TaN - Hata Ayıklama]§f "
@@ -23,7 +22,6 @@ language:
   PLAYER_ALREADY_IN_SCOPE: "§cZaten kayıtlısın"
   PLAYER_PROPERTY_CAP_REACHED: "§cKasaban için maksimum mülk sayısına ulaştın. Daha fazla almak için kasaba seviyeni yükselt"
   POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cBir mülk konumu belirlemek için kasabanda olmalısın"
-  MESSAGE_NOT_RIGHT_SIZE: "§cMesaj tam olarak {0} karakter olmalı"
   NO_TRADE_ALLOWED_EMBARGO: "§cAmbargo altındaki bir kasaba ile takas yapamazsın"
   NO_LEADER: "§cLider yok"
   TOWN_HAVE_NO_LEADER: "§cBu kasabanın bir lideri yok"
@@ -203,7 +201,6 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cBu işlemi yapmak için yeterli paran yok"
   LEADER_NOT_ONLINE: "§cKasaba lideri çevrimiçi değil"
-  PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cYeterli paran yok. §f{0} daha gerekli"
   NAME_ALREADY_USED: "§cBu isim zaten kullanılıyor"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Sohbete kasabanın adını yaz"
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Sohbete miktarı yaz"
@@ -248,7 +245,6 @@ language:
   GUI_TOWN_ICON_DESC1_NO_TOWN: "§fKendi kasabanı kur veya birine katıl"
   GUI_TOWN_ICON_DESC1_HAVE_TOWN: "§fMevcut kasaba: {0}"
   GUI_TOWN_ICON_DESC2_HAVE_TOWN: "§fKasaba rütbesi: {0}"
-  GUI_YOUR_BALANCE: "§aBakiyen"
   GUI_PLAYER_MANAGE_PROPERTIES_DESC1: "§fMülk oluştur, sil ya da düzenle"
   GUI_PLAYER_NEWSLETTER: "§aGazete"
   #Newsletter menu
@@ -288,7 +284,6 @@ language:
   GUI_PROPERTY_AUTHORIZE_PLAYER: "§aOyuncuyu yetkilendir"
   PLAYER_REMOVED_FROM_PROPERTY: "§c{0} mülkten çıkarıldı"
   PLAYER_ADDED_TO_PROPERTY: "§a{0} mülke eklendi"
-  GUI_PROPERTY_PLAYER_LIST: "§aYetkilendirilmiş oyuncular listesi"
   GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER: "§cKiracıyı kovmak için sağ tıklayın"
   PROPERTY_RENTER_EXPELLED_OWNER_SIDE: "§cKiracı kovuldu"
   PROPERTY_RENTER_EXPELLED_RENTER_SIDE: "§c{0} mülkten çıkarıldı: §9{1}"
@@ -458,7 +453,6 @@ language:
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nGereksinimler:"
   GUI_TOWN_LEVEL_UP_UNI_DESC3_1: "§f- {0}: §a{1}/{2}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3_2: "§f- {0}: §c{1}/{2}"
-  GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§nYükseltme ödülleri:"
   GUI_TOWN_LEVEL_UP_UNI_DESC4_1: "§f- {0}: §a+{1}"
   GUI_TOWN_LEVEL_UP_UNI_DESC4_2: "§f- {0}: §c{1}"
   GUI_TOWN_LEVEL_UP_UNI_DESC5: "§f§nToplam:"
@@ -608,7 +602,6 @@ language:
   GUI_REGION_KICK_TOWN_DESC1: "§fBu kasabayı bölgeden atmak için sol tıklayın"
   #Landmarks
   GUI_COLLECT_LANDMARK: "§aKaynakları topla"
-  GUI_COLLECT_LANDMARK_DESC1: "§fKaynakları toplamak için sol tıklayın"
   GUI_COLLECT_LANDMARK_DESC2: "§fKazanç: §6{0}"
   GUI_LANDMARK_REWARD_COLLECTED: "§aKaynaklar toplandı"
   GUI_REMOVE_LANDMARK: "§cAnıt'ın claimini kaldır"
@@ -616,7 +609,6 @@ language:
   SPECIFIC_LANDMARK_ICON_DESC1: "§fÜretim: §6{0}x §e{1}"
   SPECIFIC_LANDMARK_ICON_DESC2_OWNER: "§fKontrol eden: §9{0}"
   SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER: "§fClaimlenmemiş"
-  SPECIFIC_LANDMARK_ICON_SWITCH_REWARD: "§fÖdülü değiştirmek için bir öğe sürükleyip bırakın"
   ADMIN_GUI_LANDMARK_REWARD_SET: "§aÖdül §6{0}x §e{1} olarak belirlendi"
   ##Admin GUI
   ADMIN_GUI_REGION_DESC: "§fBölgeleri yönetmek için tıklayın"
@@ -634,11 +626,8 @@ language:
   ADMIN_GUI_CHANGE_TOWN_LEADER_DESC1: "§fMevcut lider: §3{0}"
   ADMIN_GUI_CREATE_TOWN: "§aBir kasaba oluştur"
   ADMIN_GUI_CREATE_TOWN_DESC1: "§fBoş bir kasaba oluşturmak için sol tıklayın"
-  ADMIN_GUI_DELETE_TOWN: "§aKasabayı sil"
-  ADMIN_GUI_DELETE_TOWN_DESC1: "§cKasaba sil: §9{0}"
   ADMIN_GUI_TOWN_PLAYER_TOWN: "§fOyuncunun mevcut kasabası: §e{0}"
   ADMIN_GUI_CANT_DELETE_REGIONAL_CAPITAL: "§cBölge başkentini silemezsiniz"
-  ADMIN_GUI_TOWN_PLAYER_TOWN_DESC1: "§fOyuncuyu kasabadan atmak için sol tıklayın"
   ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2: "§cKasaba liderini atamazsınız"
   ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS: "§3{0}§f §3{1}§f kasabasını terk etti"
   ADMIN_GUI_LANDMARK_ICON: "§aAnıt'lar"
@@ -744,7 +733,6 @@ language:
   ATTACK_ICON_DESC_2: "§fAna savunmacı: {0}"
   ATTACK_ICON_DESC_3: "§fSaldıranların sayısı: §9{0}"
   ATTACK_ICON_DESC_4: "§fSavunanların sayısı: §9{0}"
-  ATTACK_ICON_DESC_7: "§fSavaş süresi: §6{0}"
   ATTACK_ICON_DESC_8: "§fBölge konumu: §a{0}"
   ATTACK_ICON_DESC_ADMIN_APPROVED: "§aBu saldırı bir yönetici tarafından onaylandı"
   ATTACK_ICON_DESC_ADMIN_NOT_APPROVED: "§cBu saldırı bir yönetici tarafından onaylanmadı"
@@ -813,6 +801,7 @@ language:
   GUI_JOIN_DEFENDING_SIDE: "§aSavunan tarafı katıl"
   GUI_JOIN_DEFENDING_SIDE_DESC1: "{0}§f savunan tarafa katıldı ve şunlara karşı savaşıyor:"
   GUI_WAR_GOAL_INFO: "{0}"
+  #War menu
   MAIN_ATTACKER_NAME: "Ana saldırgan"
   MAIN_DEFENDER_NAME: "Ana savunucu"
   OTHER_ATTACKER_NAME: "Diğer saldırganlar"
@@ -854,4 +843,3 @@ language:
   NEWSLETTER_SUBJUGATE_PROPOSAL_DESC2: "§fTeklife erişmek için sol tıklayın"
   #Chunk blacklist
   CHUNK_IS_BLACKLISTED: "§cBu araziyi claimleyemezsiniz"
-

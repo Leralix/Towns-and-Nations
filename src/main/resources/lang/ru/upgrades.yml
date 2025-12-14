@@ -1,0 +1,25 @@
+#Upgrades.yml is used to define the names of upgrades and their benefits in the game.
+#To add a name to a new upgrade, add it to the customLang section.
+customLang:
+  #Names
+  CITY_HALL: "Ратуша"
+  BARRACKS: "Бараки"
+  ADMINISTRATION: "Администрация"
+  WATCHTOWER: "Вышка"
+  PORTAL: "Портал"
+  GUARDS: "Стража"
+  COUNCIL_CHAMBER: "Залы заседаний"
+  NOTARY_HOUSE: "Нотариальный дом"
+  EXTRACTION_TEAM: "Группа эвакуации"
+  BETTER_TOOLS: "Улучшенные инструменты"
+  #Prerequisites
+  TOWN_LEVEL: "Уровень города"
+  #Benefits
+  PLAYER_CAP: "Кол-во игроков"
+  CHUNK_CAP: "Кол-во чанков"
+  PROPERTY_CAP: "Кол-во собственностей"
+  UNLOCK_TOWN_SPAWN: "Разблокировать спавн к городу"
+  UNLOCK_MOB_BAN: "Разблокировать исключения мобов"
+  UNLOCK_REGION_CREATION: "Разблокировать создание региона"
+  MAX_LANDMARKS: "Разблокировать настройку региона"
+  LANDMARK_BONUS: "% добычи месторождений"
