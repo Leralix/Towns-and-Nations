@@ -97,8 +97,6 @@ public class OpenRelationMenu extends IteratorGUI {
                         return;
                     }
 
-                    territoryData.broadcastMessageWithSound(Lang.GUI_WAR_DECLARED.get(territoryData.getColoredName(), otherTerritory.getColoredName()), SoundEnum.WAR);
-                    otherTerritory.broadcastMessageWithSound(Lang.GUI_WAR_DECLARED.get(territoryData.getColoredName(), otherTerritory.getColoredName()), SoundEnum.WAR);
                     War newWar = warStorage.newWar(territoryData, otherTerritory);
                     new WarMenu(player, territoryData, newWar);
                 }

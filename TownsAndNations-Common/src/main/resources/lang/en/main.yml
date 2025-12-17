@@ -1012,7 +1012,6 @@ language:
   NO_REGION: "No region"
   NO_KINGDOM: "No kingdom"
   #Wars
-  GUI_WAR_DECLARED: "§fWar has been declared between {0}§f and {1}"
   BASIC_ATTACK_NAME: "§aWar of {0} against {1}"
   ATTACK_ICON_DESC_1: "§fMain attacker : {0}"
   ATTACK_ICON_DESC_2: "§fMain defender : {0}"
@@ -1218,6 +1217,10 @@ language:
   ATTACK_START_NOW: "{0} has started."
   ATTACK_ENDED_TITLE: "Attack ended"
   ATTACK_ENDED: "§fAn attack has been finished by {0}§f against {1}"
+  WAR_DECLARED_TITLE: "War declared"
+  WAR_DECLARED: "§fWar has been declared by {0}§f against {1}"
+  WAR_ENDED_TITLE: "War ended"
+  WAR_ENDED: "{0} has won against {1}§f. §e{2}§f war goals has been applied."
   ATTACK_WON_BY_ATTACKER_TITLE: "Attackers won"
   ATTACK_WON_BY_ATTACKER: "§fThe battle between {0}§f and {1}§f has been won by {2}"
   ATTACK_WON_BY_DEFENDER_TITLE: "Defenders won"

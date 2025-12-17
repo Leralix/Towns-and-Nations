@@ -20,19 +20,18 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 
-
-public class AttackWonByAttackerNewsletter extends Newsletter {
+public class WarDeclaredNewsletter extends Newsletter {
 
     private final String attackingTerritoryID;
     private final String defendingTerritoryID;
 
-    public AttackWonByAttackerNewsletter(TanTerritory defendingTerritoryID, TanTerritory attackingTerritoryID) {
+    public WarDeclaredNewsletter(TanTerritory defendingTerritoryID, TanTerritory attackingTerritoryID) {
         super();
         this.defendingTerritoryID = defendingTerritoryID.getID();
         this.attackingTerritoryID = attackingTerritoryID.getID();
     }
 
-    public AttackWonByAttackerNewsletter(UUID id, long date, String attackingTerritoryID, String defendingTerritoryID) {
+    public WarDeclaredNewsletter(UUID id, long date, String attackingTerritoryID, String defendingTerritoryID) {
         super(id, date);
         this.attackingTerritoryID = attackingTerritoryID;
         this.defendingTerritoryID = defendingTerritoryID;
@@ -54,10 +53,10 @@ public class AttackWonByAttackerNewsletter extends Newsletter {
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
-                Lang.ATTACK_WON_BY_ATTACKER_TITLE.get(lang),
+                Lang.WAR_DECLARED_TITLE.get(lang),
                 Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.ATTACK_WON_BY_ATTACKER.get(lang, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName(), attackingTerritory.getBaseColoredName()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
+                Lang.WAR_DECLARED.get(lang, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.getDefault());
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
@@ -86,7 +85,7 @@ public class AttackWonByAttackerNewsletter extends Newsletter {
 
     @Override
     public NewsletterType getType() {
-        return NewsletterType.ATTACK_WON_BY_ATTACKER;
+        return NewsletterType.WAR_DECLARED;
     }
 
     @Override
@@ -96,7 +95,7 @@ public class AttackWonByAttackerNewsletter extends Newsletter {
         if(attackingTerritory == null || defendingTerritory == null)
             return;
 
-        TanChatUtils.message(player, Lang.ATTACK_WON_BY_ATTACKER.get(player, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName(), attackingTerritory.getBaseColoredName()), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player, Lang.WAR_DECLARED.get(player, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()), SoundEnum.WAR);
     }
 
     @Override

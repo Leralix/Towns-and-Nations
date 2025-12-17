@@ -12,26 +12,6 @@ public class NewsletterEvents implements TanListener {
     }
 
     @EventHandler
-    public void onAttackDeclared(AttackDeclaredEvent event) {
-        newsletterStorage.register(new AttackDeclaredNewsletter(event.getDefenderTerritory(), event.getAttackerTerritory()));
-    }
-
-    @EventHandler
-    public void onAttackEnded(AttackEndedEvent event){
-        newsletterStorage.register(new AttackEndedNewsletter(event.getAttackerTerritory(), event.getAttackerTerritory()));
-    }
-
-    @EventHandler
-    public void onAttackWonByAttacker(AttackWonByAttackerEvent event) {
-        newsletterStorage.register(new AttackWonByAttackerNewsletter(event.getAttackerTerritory(), event.getDefenderTerritory()));
-    }
-
-    @EventHandler
-    public void onAttackWonByDefender(AttackWonByDefenderEvent event) {
-        newsletterStorage.register(new AttackWonByDefenderNewsletter(event.getAttackerTerritory(), event.getDefenderTerritory()));
-    }
-
-    @EventHandler
     public void onDefenderAcceptDemands(AttackCancelledByDefenderEvent event) {
         newsletterStorage.register(new AttackCancelledByDefenderNewsletter(event.getDefenderTerritory(), event.getAttackerTerritory()));
     }
@@ -115,4 +95,24 @@ public class NewsletterEvents implements TanListener {
     public void onLandmarkUnclaimed(LandmarkUnclaimedEvent event) {
         newsletterStorage.register(new LandmarkUnclaimedNewsletter(event.getLandmark(), event.getOldOwner()));
     }
+
+    @EventHandler
+    public void onWarDeclared(WarStartEvent event) {
+        newsletterStorage.register(new WarDeclaredNewsletter(event.getAttacker(), event.getDefender()));
+    }
+
+    public void onWarEnd(WarEndEvent event) {
+        newsletterStorage.register(new WarEndedNewsletter(event.getWinner(), event.getDefeated(), event.getAppliedWargoals().size()));
+    }
+
+    @EventHandler
+    public void onAttackDeclared(AttackDeclaredEvent event) {
+        newsletterStorage.register(new AttackDeclaredNewsletter(event.getDefenderTerritory(), event.getAttackerTerritory()));
+    }
+
+    @EventHandler
+    public void onAttackEnded(AttackEndedEvent event){
+        newsletterStorage.register(new AttackEndedNewsletter(event.getAttackerTerritory(), event.getAttackerTerritory()));
+    }
+
 }

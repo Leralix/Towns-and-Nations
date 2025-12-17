@@ -1,20 +1,19 @@
 package org.leralix.tan.events.newsletter.dao;
 
-import org.leralix.tan.events.newsletter.news.AttackWonByAttackerNewsletter;
+import org.leralix.tan.events.newsletter.news.WarDeclaredNewsletter;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class AttackWonByAttackerDAO extends NewsletterSubDAO<AttackWonByAttackerNewsletter> {
+public class WarDeclaredDAO extends NewsletterSubDAO<WarDeclaredNewsletter> {
 
-    private static final String TABLE_NAME = "attack_won_by_attackers_newsletter";
+    private static final String TABLE_NAME = "war_declared_newsletter";
 
-    public AttackWonByAttackerDAO(DataSource dataSource) {
-        super(dataSource);
+    public WarDeclaredDAO(DataSource connection) {
+        super(connection);
     }
 
     @Override
@@ -26,7 +25,7 @@ public class AttackWonByAttackerDAO extends NewsletterSubDAO<AttackWonByAttacker
                 ")";
 
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             var ps = conn.prepareStatement(sql)) {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to create player diplomacy accepted newsletter table", e);
@@ -34,10 +33,10 @@ public class AttackWonByAttackerDAO extends NewsletterSubDAO<AttackWonByAttacker
     }
 
     @Override
-    public void save(AttackWonByAttackerNewsletter newsletter, Connection conn) {
+    public void save(WarDeclaredNewsletter newsletter, Connection conn) {
         String sql = "INSERT INTO " + TABLE_NAME + " (id, attackingTerritoryID, defendingTerritoryID) VALUES (?, ?, ?)";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (var ps = conn.prepareStatement(sql)) {
             ps.setObject(1, newsletter.getId());
             ps.setString(2, newsletter.getAttackingTerritoryID());
             ps.setString(3, newsletter.getDefendingTerritoryID());
@@ -47,17 +46,18 @@ public class AttackWonByAttackerDAO extends NewsletterSubDAO<AttackWonByAttacker
         }
     }
 
+
     @Override
-    public AttackWonByAttackerNewsletter load(UUID id, long date, Connection conn) {
+    public WarDeclaredNewsletter load(UUID id, long date, Connection conn) {
         String sql = "SELECT attackingTerritoryID, defendingTerritoryID FROM " + TABLE_NAME + " WHERE id = ?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (var ps = conn.prepareStatement(sql)) {
             ps.setObject(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
+            try (var rs = ps.executeQuery()) {
                 if (rs.next()) {
                     String attackingTerritoryID = rs.getString("attackingTerritoryID");
                     String defendingTerritoryID = rs.getString("defendingTerritoryID");
-                    return new AttackWonByAttackerNewsletter(id, date, attackingTerritoryID, defendingTerritoryID);
+                    return new WarDeclaredNewsletter(id, date, attackingTerritoryID, defendingTerritoryID);
                 }
             }
         } catch (SQLException e) {
@@ -70,7 +70,7 @@ public class AttackWonByAttackerDAO extends NewsletterSubDAO<AttackWonByAttacker
     public void delete(UUID id) {
         String sql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+            PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {

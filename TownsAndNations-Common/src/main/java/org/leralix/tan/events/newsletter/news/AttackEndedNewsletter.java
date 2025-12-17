@@ -53,7 +53,7 @@ public class AttackEndedNewsletter extends Newsletter {
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.SHIELD,
-                Lang.ATTACK_ENDED_TITLE.getDefault(),
+                Lang.ATTACK_ENDED_TITLE.get(lang),
                 Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
                 Lang.ATTACK_ENDED.get(lang, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.getDefault());
@@ -85,7 +85,7 @@ public class AttackEndedNewsletter extends Newsletter {
 
     @Override
     public NewsletterType getType() {
-        return NewsletterType.ATTACK_DECLARED;
+        return NewsletterType.ATTACK_ENDED;
     }
 
     @Override
