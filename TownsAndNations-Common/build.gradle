@@ -7,6 +7,10 @@ jar {
     archiveBaseName = 'TownsAndNations'
 }
 
+shadowJar {
+    archiveBaseName = "TownsAndNations"
+}
+
 tasks.shadowJar {
     archiveClassifier.set('')
     relocate("dev.triumphteam.gui", "dev.triumphteam.gui")
