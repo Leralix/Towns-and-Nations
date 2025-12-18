@@ -208,4 +208,11 @@ public class CurrentAttack {
         }
     }
 
+    public void attackerKilled() {
+        attackResultCounter.incrementAttackersKilled();
+    }
+
+    public void defenderKilled() {
+        attackResultCounter.incrementDefendersKilled();
+    }
 }

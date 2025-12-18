@@ -313,7 +313,7 @@ public class TownsAndNations extends JavaPlugin {
         pluginManager.registerEvents(new LandmarkChestListener(), this);
         pluginManager.registerEvents(new EconomyInitialiser(), this);
         pluginManager.registerEvents(new CommandBlocker(), this);
-
+        pluginManager.registerEvents(new AttackListener(PlayerDataStorage.getInstance()), this);
         pluginManager.registerEvents(new RightClickListener(), this);
     }
 

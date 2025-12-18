@@ -1,8 +1,9 @@
 package org.leralix.tan.storage;
 
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.legacy.CurrentAttack;
-import org.tan.api.interfaces.TanPlayer;
+import org.leralix.tan.war.legacy.WarRole;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -27,10 +28,16 @@ public class CurrentAttacksStorage {
         return attackStatusMap.values();
     }
 
-    public static void notifyPlayerDeath(TanPlayer tanPlayer) {
+    public static void notifyPlayerDeath(ITanPlayer tanPlayer) {
         for (CurrentAttack currentAttack : attackStatusMap.values()) {
-            if (currentAttack.isPlayerInvolved(tanPlayer)) {
-                currentAttack.handlePlayerDeath(tanPlayer);
+            if (currentAttack.containsPlayer(tanPlayer)) {
+                var role = currentAttack.getAttackData().getRole(tanPlayer);
+                if(role == WarRole.MAIN_ATTACKER || role == WarRole.OTHER_ATTACKER) {
+                    currentAttack.attackerKilled();
+                }
+                else if (role == WarRole.MAIN_DEFENDER || role == WarRole.OTHER_DEFENDER) {
+                    currentAttack.defenderKilled();
+                }
             }
         }
     }
