@@ -314,6 +314,8 @@ language:
   #Newsletter menu
   OPEN_NEWSLETTER_DESC: "Získat nejnovější zprávy"
   MARK_ALL_AS_READ: "§aOznačit vše jako přečtené"
+  NEWSLETTER_SHOW_ALL: "Zobrazit všechny novinky"
+  NEWSLETTER_SHOW_ONLY_UNREAD: "Zobrazit pouze nepřečtené zprávy"
   #Town menu - no town
   GUI_NO_TOWN_CREATE_NEW_TOWN: "§aVytvořit nové město"
   GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1: "§fCena : §6{0}{MONEY_CHAR}"
@@ -367,6 +369,7 @@ language:
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT1: "§fHráči, kteří jsou pozváni do města, se automaticky připojují k výchozí roli"
   GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2: "§7▶ Klikni pro nastavení této hodnosti jako výchozí"
   GUI_TOWN_MEMBERS_ROLE_DELETE: "§aOdstranit rank"
+  GUI_ADD_RANK_NEUTRAL_PERMISSION: "§7Neutrální"
   #Properties menu
   GUI_PROPERTY_CHANGE_NAME: "§aZměnit název nemovitosti"
   GUI_PROPERTY_CHANGE_NAME_DESC1: "§fAktuální název: §9{0}"
@@ -387,6 +390,7 @@ language:
   GUI_PROPERTY_AUTHORIZE_PLAYER: "§aAutorizovat hráče"
   PLAYER_REMOVED_FROM_PROPERTY: "§c{0} byl odebrán z nemovitosti"
   PLAYER_ADDED_TO_PROPERTY: "§a{0} byl přidán k nemovitosti"
+  GUI_PROPERTY_PLAYER_LIST: "§aSpravovat oprávnění"
   CANNOT_MANAGE_AUTHORIZED_PLAYER_IF_PROPERTY_IS_RENTED: "§cNemůžeš spravovat autorizované hráče, pokud je nemovitost aktuálně pronajata"
   GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER: "§cPravým klikem vyhoďte nájemníka"
   PROPERTY_RENTER_EXPELLED_OWNER_SIDE: "§cNájemník byl vyhozen"
@@ -425,6 +429,8 @@ language:
   GUI_ATTACK_SET_TO_START_IN: "§aÚtok začne za §6{0}"
   AUTHORIZED_ATTACK_TIME_SLOT_TITLE: "§aAutorizovaný čas útoku :"
   AUTHORIZED_ATTACK_TIME_SLOT_SINGLE: "§7▶ {0}:{1}-{2}:{3}"
+  WAR_TIME_SLOT_DAYS_ENABLED_TITLE: "§aAutorizované dny :"
+  WAR_TIME_SLOT_DAYS_ENABLED_ITERATOR: "§7▶ {0}"
   GUI_CONFIRM_ATTACK: "§aPotvrdit útok"
   GUI_CONFIRM_ATTACK_DESC1: "§fPotvrďte útok na §6{0}"
   #Property GUI
@@ -469,6 +475,7 @@ language:
   GUI_TOWN_CHUNK_MOB: "§aSpawn mobů"
   #Player chunk settings
   GUI_RIGHT_CLICK_TO_ADD_SPECIFIC_PLAYER: "§7▶ Pravý klik pro přidání konkrétního hráče"
+  GUI_SHIFT_RIGHT_CLICK_TO_ADD_SPECIFIC_RANK: "§7▶ Shift + pravý klik pro přidání specifické hodnosti"
   #Building menu
   GUI_BUILDING_MENU: "§aBudování"
   GUI_BUILDING_MENU_DESC1: "§fVytváření a správa budov"
@@ -500,15 +507,11 @@ language:
   HEADER_PLAYER_SPECIFIC_PROPERTY: "Vlastnost: {0}"
   HEADER_TOWN_SPECIFIC_PROPERTY: "Vlastnost: {0}"
   HEADER_NO_TOWN_MENU: "Město"
-  HEADER_TOWN_LIST: "Seznam měst | strana {0}"
   HEADER_TOWN_MENU: "Město: {0}"
   HEADER_SELECT_ICON: "Vyberte novou ikonu"
-  HEADER_WARS_MENU: "Války | stránka {0}"
   HEADER_WAR_MANAGER: "Spravovat válku"
   HEADER_CREATE_WAR_MANAGER: "Vyhlásit útok na {0}"
   HEADER_SELECT_WARGOAL: "Vyberte cíl války"
-  HEADER_TOWN_OWNED_LANDMARK: "Mezníky v rámci města | strana {0}"
-  HEADER_TERRITORY_LIST: "Seznam území | strana {0}"
   HEADER_TOWN_MEMBERS: "Členové"
   HEADER_TOWN_APPLICATIONS: "Žádosti"
   HEADER_TERRITORY_RANKS: "Hodnosti"
@@ -524,13 +527,11 @@ language:
   HEADER_RELATION_WITH: "Vztah : {0}"
   HEADER_SELECT_ADD_TERRITORY_RELATION: "Přidat do {0}"
   HEADER_SELECT_REMOVE_TERRITORY_RELATION: "Odebrat z {0}"
-  HEADER_MOB_SETTINGS: "Nastavení mobů | stránka {0}"
   HEADER_CHUNK_PERMISSION: "Oprávnění chunku"
   HEADER_CHUNK_GENERAL_SETTINGS: "Obecná nastavení"
   HEADER_AUTHORIZE_PLAYER: "Autorizovat hráče"
   HEADER_NO_REGION: "Regiony"
   HEADER_REGION_MENU: "Oblast: {0}"
-  HEADER_VASSALS: "Vazalové | page {0}"
   HEADER_LANDMARK_UNCLAIMED: "Mezník | odebrán"
   HEADER_LANDMARK_CLAIMED: "Mezník | {0}"
   HEADER_CONFIRMATION: "Potvrzení"
@@ -717,6 +718,7 @@ language:
   ENABLE_FIRE_GRIEF_SETTING: "§aPovolit griefing ohně"
   ENABLE_TNT_GRIEF_SETTING: "§aPovolit griefing výbuchů"
   GUI_TOWN_CLAIM_SETTINGS_DESC1: "§fAktuální oprávnění: §e{0}"
+  GUI_TOWN_CLAIM_SETTINGS_LOCKED: "§c🔒§f Uzamčeno"
   GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_ACTIVATED: "§fAktuální spawn:§a povolen"
   GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_DEACTIVATED: "§fAktuální spawn:§c zakázán"
   GUI_TOWN_CHUNK_MOB_SETTINGS_STATUS_LOCKED: "§fAktuální spawn: §cUzamčen"
@@ -977,7 +979,6 @@ language:
   NO_REGION: "Žádný region"
   NO_KINGDOM: "Žádné království"
   #Wars
-  GUI_WAR_DECLARED: "§fVálka byla vyhlášena mezi {0}§fa {1}"
   BASIC_ATTACK_NAME: "§aVálka mezi {0} a {1}"
   ATTACK_ICON_DESC_1: "§fHlavní útočník: {0}"
   ATTACK_ICON_DESC_2: "§fHlavní obránce: {0}"
@@ -1096,6 +1097,7 @@ language:
   TRANSACTION_AMOUNT: "§fČástka : §6{0}{MONEY_CHAR}"
   TRANSACTION_TAX: "§fDaň : §9{0}%§f (§6{1}{MONEY_CHAR}§f)"
   TRANSACTION_UPGRADE: "§fVylepšení : §a{0}§f (úr {1})"
+  TRANSACTION_FAILED_NOT_ENOUGH_MONEY: "§cTransakce selhala: není dostatek peněz"
   TRANSACTION_DATE: "§fDatum : {0}"
   #War menu
   MAIN_ATTACKER_NAME: "Hlavní útočník"
@@ -1219,6 +1221,9 @@ language:
   CANNOT_CREATE_FORT_IF_ABOVE_BLOCKED: "§cNemůžeš vytvořit pevnost, pokud blok nad není vzduch"
   DEFAULT_FORT_NAME: "Pevnost č.{0}"
   RIGHT_CLICK_TO_PLACE_FORT: "§fPravým klikem umísti vlajku pevnosti"
+  #Capital
+  CHANGE_CAPITAL_NOT_OWNED_TOWN_CHUNK: "§cTento chunk je vlastněn {0}"
+  CHANGE_CAPITAL_NOT_TOWN_CHUNK: "§cTento chunk není chunk města"
   #Wars
   WAR_INFO_CHUNK_PROTECTED: "§f🌑§f Chráněno ({0}) - §f[Úto : §e{1}§f, Obr : §e{2}§f]"
   WAR_INFO_CHUNK_OWNED: "§a🌑§f Vlastněno - §f[Úto : §e{0}§f, Obr : §e{1}§f]"

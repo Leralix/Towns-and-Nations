@@ -463,6 +463,7 @@ language:
   NO_TOWN: "마을 없음"
   NO_REGION: "지역 없음"
   NO_KINGDOM: "왕국 없음"
+  #Wars
   BASIC_ATTACK_NAME: "§a{0}와(과) {1}의 전쟁"
   GUI_TOWN_ATTACK_ALREADY_ATTACKING: "§c이미 이 마을을 공격 중입니다"
   PLAYER_WON_ATTACK: "§a공격이 성공했습니다!"

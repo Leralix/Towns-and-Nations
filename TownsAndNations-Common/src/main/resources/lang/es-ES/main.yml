@@ -252,7 +252,6 @@ language:
   GUI_PREVIOUS_PAGE: "Anterior"
   LEFT_CLICK_TO_CLAIM: "§fClick izquiero para reclamar"
   GUI_DECREASE_10_DESC: ""
-  HEADER_TOWN_LIST: "Lista de pueblos | página {0}"
   HEADER_TOWN_MENU: "Pueblo : {0}"
   HEADER_SELECT_ICON: ""
   HEADER_RANK_ADD_PLAYER: "Asignar un jugador a {0}"
@@ -526,6 +525,7 @@ language:
   NO_TOWN: "Sin pueblo"
   NO_REGION: "Sin región"
   NO_KINGDOM: "Sin reino"
+  #Wars
   BASIC_ATTACK_NAME: "§aGuerra de {0} contra {1}"
   ATTACK_ICON_DESC_1: "§fAtacante principal: {0}"
   ATTACK_ICON_DESC_2: "§fDefensor principal: {0}"

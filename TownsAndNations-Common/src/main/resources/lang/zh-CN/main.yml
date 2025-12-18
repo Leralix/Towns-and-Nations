@@ -586,6 +586,7 @@ language:
   NO_TOWN: "没有城镇"
   NO_REGION: "没有联盟"
   NO_KINGDOM: "没有王国"
+  #Wars
   BASIC_ATTACK_NAME: "§a{0} 对 {1} 的战争"
   ATTACK_ICON_DESC_1: "§f主要进攻者：{0}"
   ATTACK_ICON_DESC_2: "§f主要防守者：{0}"

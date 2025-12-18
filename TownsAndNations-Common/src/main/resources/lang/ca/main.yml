@@ -75,6 +75,7 @@ language:
   NO_TOWN: "No localitat"
   NO_REGION: "No regió"
   NO_KINGDOM: "No regne"
+  #Wars
   BASIC_ATTACK_NAME: "§aGuerra de {0} contra {1}"
   ATTACK_ICON_DESC_1: "§fAtacant principal : {0}"
   ATTACK_ICON_DESC_2: "§fDefensor principal : {0}"
