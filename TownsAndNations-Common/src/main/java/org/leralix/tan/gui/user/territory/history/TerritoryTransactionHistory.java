@@ -5,7 +5,12 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.storage.database.transactions.AbstractTransaction;
 import org.leralix.tan.storage.database.transactions.EntityScope;
 import org.leralix.tan.storage.database.transactions.TransactionType;
-import org.leralix.tan.storage.database.transactions.instance.*;
+import org.leralix.tan.storage.database.transactions.instance.PlayerTaxTransaction;
+import org.leralix.tan.storage.database.transactions.instance.SalaryTransaction;
+import org.leralix.tan.storage.database.transactions.instance.TerritoryTaxTransaction;
+import org.leralix.tan.storage.database.transactions.instance.daily.DailyPlayerTaxTransaction;
+import org.leralix.tan.storage.database.transactions.instance.daily.DailySalaryTransaction;
+import org.leralix.tan.storage.database.transactions.instance.daily.DailyTerritoryTaxTransaction;
 
 import java.sql.Date;
 import java.time.LocalDate;

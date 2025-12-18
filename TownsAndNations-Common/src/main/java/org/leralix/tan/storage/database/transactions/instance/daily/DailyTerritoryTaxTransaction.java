@@ -1,4 +1,4 @@
-package org.leralix.tan.storage.database.transactions.instance;
+package org.leralix.tan.storage.database.transactions.instance.daily;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
@@ -7,58 +7,47 @@ import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.database.transactions.AbstractTransaction;
 import org.leralix.tan.storage.database.transactions.TransactionType;
+import org.leralix.tan.storage.database.transactions.instance.TerritoryTaxTransaction;
 import org.leralix.tan.utils.text.DateUtil;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
-public class DailySalaryTransaction extends AbstractTransaction {
+public class DailyTerritoryTaxTransaction extends AbstractDailyTransaction {
 
-    private final List<SalaryTransaction> transactions;
+    private final List<TerritoryTaxTransaction> transactions;
     private final double totalAmount;
 
-    public DailySalaryTransaction(List<SalaryTransaction> transactions) {
+    public DailyTerritoryTaxTransaction(List<TerritoryTaxTransaction> transactions) {
         super(transactions.getFirst().getDate());
         this.transactions = transactions;
-        this.totalAmount = transactions.stream().mapToDouble(SalaryTransaction::getAmount).sum();
+        this.totalAmount = transactions.stream().mapToDouble(TerritoryTaxTransaction::getAmount).sum();
     }
 
     @Override
     public TransactionType getType() {
-        return TransactionType.SALARY;
+        return TransactionType.TERRITORY_TAX;
     }
 
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
-        IconBuilder icon = iconManager.get(IconKey.SALARY_TRANSACTION)
-                .setName(Lang.SALARY_TRANSACTION_NAME.get(langType))
+        IconBuilder icon = iconManager.get(IconKey.TERRITORY_TAX_ICON)
+                .setName(Lang.PLAYER_TAX_TRANSACTION.get(langType))
                 .setDescription(
                         Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate())),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(totalAmount))
                 );
-        for(SalaryTransaction transaction : transactions) {
+        for(TerritoryTaxTransaction transaction : getPartTransactionlistIfNecessary(transactions)) {
             icon.addDescription(transaction.getDailyLine(langType));
         }
         return icon.asGuiItem(player, langType);
     }
 
-    @Override
-    public String getInsertSQL() {
-        return null;
-    }
-
-    @Override
-    public void fillInsertStatement(PreparedStatement ps) throws SQLException {
-
-    }
-
-    @Override
-    public Set<String> getConcerned() {
-        return Collections.emptySet();
+    private Collection<TerritoryTaxTransaction> getPartTransactionlistIfNecessary(List<TerritoryTaxTransaction> transactions) {
+        if(transactions.size() > 15) {
+            return transactions.subList(0, 15);
+        }
+        return transactions;
     }
 }
