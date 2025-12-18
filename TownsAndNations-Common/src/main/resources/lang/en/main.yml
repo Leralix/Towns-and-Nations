@@ -504,6 +504,7 @@ language:
   WAR_SURRENDER: "§cSurrender"
   WAR_SURRENDER_DESC1: "§fSurrender to the enemy and end the war"
   WAR_SURRENDER_DESC2: "§fThe following war goals will be applied:"
+  WAR_CANNOT_VIEW_STARTED_ATTACK: "§cThe attack has already started"
   #War goals menu
   GUI_ADD_WAR_GOAL: "§aAdd a war goal"
   #GUI

@@ -2,15 +2,16 @@ package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.BrowseAttackScope;
 import org.leralix.tan.gui.IteratorGUI;
-import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.war.PlannedAttackMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.PlannedAttack;
 
 import java.util.ArrayList;
@@ -54,11 +55,19 @@ public class AttackMenu extends IteratorGUI {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for (PlannedAttack plannedAttack : WarStorage.getInstance().getAllAttacks()) {
 
-            if(scope.allowAttack(plannedAttack)){
+            if (scope.allowAttack(plannedAttack)) {
                 guiItems.add(
                         plannedAttack.getIcon(iconManager, tanPlayer.getLang(), tanPlayer.getTimeZone(), territoryData)
-                        .setAction(action -> new PlannedAttackMenu(player, territoryData, plannedAttack))
-                        .asGuiItem(player, langType)
+                                .setAction(action -> {
+                                    if(plannedAttack.isNotStarted()){
+                                        new PlannedAttackMenu(player, territoryData, plannedAttack);
+                                    }
+                                    else {
+                                        TanChatUtils.message(player, Lang.WAR_CANNOT_VIEW_STARTED_ATTACK.get(langType), SoundEnum.NOT_ALLOWED);
+                                    }
+
+                                })
+                                .asGuiItem(player, langType)
                 );
             }
         }

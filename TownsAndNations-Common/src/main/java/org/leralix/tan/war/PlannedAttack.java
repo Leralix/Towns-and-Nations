@@ -229,8 +229,8 @@ public class PlannedAttack {
         return iconManager.get(Material.IRON_SWORD)
                 .setName(ChatColor.GREEN + name)
                 .setDescription(
-                        Lang.ATTACK_ICON_DESC_1.get(getWar().getMainAttacker().getName()),
-                        Lang.ATTACK_ICON_DESC_2.get(getWar().getMainDefender().getName()),
+                        Lang.ATTACK_ICON_DESC_1.get(getWar().getMainAttacker().getColoredName()),
+                        Lang.ATTACK_ICON_DESC_2.get(getWar().getMainDefender().getColoredName()),
                         Lang.ATTACK_ICON_DESC_3.get(Integer.toString(getNumberOfAttackers())),
                         Lang.ATTACK_ICON_DESC_4.get(Integer.toString(getNumberOfDefenders()))
                 )
@@ -379,6 +379,13 @@ public class PlannedAttack {
     }
 
     /**
+     * @return true if the attack has not yet started
+     */
+    public boolean isNotStarted() {
+        return System.currentTimeMillis() < startTime;
+    }
+
+    /**
      * Update the status of the attack, starting or ending it if necessary
      */
     public void updateStatus() {
@@ -389,4 +396,6 @@ public class PlannedAttack {
             end(new AttackResultCancelled());
         }
     }
+
+
 }
