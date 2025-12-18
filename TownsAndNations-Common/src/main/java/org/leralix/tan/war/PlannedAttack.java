@@ -89,7 +89,7 @@ public class PlannedAttack {
         this.defendersID = new ArrayList<>();
         this.defendersID.add(getWar().getMainDefenderID());
 
-        this.startTime = new Date().getTime() + (long) createAttackData.getSelectedTime() * 60 * 1000;
+        this.startTime = System.currentTimeMillis() + (long) createAttackData.getSelectedTime() * 60 * 1000;
         this.endTime = this.startTime + Constants.getAttackDuration() * 60 * 1000;
 
         this.attackResult = new AttackNotYetStarted(startTime);
@@ -172,14 +172,14 @@ public class PlannedAttack {
 
 
         if (timeLeftBeforeStart <= 0) {
-            startWar(startTime - timeLeftBeforeStart);
+            startWar();
             return;
         }
 
         warStartTask = new BukkitRunnable() {
             @Override
             public void run() {
-                startWar(startTime);
+                startWar();
             }
         };
         warStartTask.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeStart);
@@ -195,9 +195,9 @@ public class PlannedAttack {
         }
     }
 
-    void startWar(long startTime) {
+    public void startWar() {
         broadCastMessageWithSound(Lang.ATTACK_START_NOW.get(name), SoundEnum.WAR);
-        CurrentAttacksStorage.startAttack(this, startTime, endTime);
+        CurrentAttacksStorage.startAttack(this, endTime);
     }
 
     public void addDefender(TerritoryData territory) {
@@ -362,8 +362,31 @@ public class PlannedAttack {
         return getAllOfflinePlayers().stream().map(OfflinePlayer::getPlayer).filter(Objects::nonNull).toList();
     }
 
+    /**
+     * Check if the attack is finished
+     * @return true if the attack is finished
+     */
     public boolean isFinished(){
         return System.currentTimeMillis() > endTime;
     }
 
+    /**
+     * Check if the attack is in progress by checking the current time
+     * @return true if the attack is in progress
+     */
+    public boolean isInProgress() {
+        return System.currentTimeMillis() >= startTime && !isFinished();
+    }
+
+    /**
+     * Update the status of the attack, starting or ending it if necessary
+     */
+    public void updateStatus() {
+        if(isInProgress()){
+            startWar();
+        }
+        else if(isFinished() && attackResult instanceof AttackNotYetStarted){
+            end(new AttackResultCancelled());
+        }
+    }
 }

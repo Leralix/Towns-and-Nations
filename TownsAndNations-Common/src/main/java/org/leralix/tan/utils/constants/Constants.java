@@ -97,7 +97,7 @@ public class Constants {
     private static Set<String> allRelationBlacklistedCommands;
     private static boolean adminApprovalForStartOfAttack;
 
-    private static long attackDuration;
+    private static int attackDuration;
     private static int minTimeBeforeAttack;
     private static int maxTimeBeforeAttack;
     private static int chunkCaptureTime;
@@ -231,7 +231,7 @@ public class Constants {
         }
         adminApprovalForStartOfAttack = config.getBoolean("AdminApproval", false);
 
-        attackDuration = config.getLong("WarDuration", 30);
+        attackDuration = config.getInt("WarDuration", 30);
         minTimeBeforeAttack = config.getInt("MinimumTimeBeforeAttack", 120);
         maxTimeBeforeAttack = config.getInt("MaximumTimeBeforeAttack", 4320);
 
@@ -446,7 +446,7 @@ public class Constants {
     /**
      * @return Attack duration, in minutes
      */
-    public static long getAttackDuration() {
+    public static int getAttackDuration() {
         return attackDuration;
     }
 

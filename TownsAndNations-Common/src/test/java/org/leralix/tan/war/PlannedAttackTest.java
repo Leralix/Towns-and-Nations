@@ -20,7 +20,7 @@ class PlannedAttackTest extends BasicTest {
         CreateAttackData createAttackData = new CreateAttackData(war, WarRole.MAIN_ATTACKER);
         createAttackData.addDeltaDateTime(-createAttackData.getSelectedTime());
         PlannedAttack plannedAttack = new PlannedAttack("0", createAttackData);
-        plannedAttack.startWar(plannedAttack.startTime);
+        plannedAttack.startWar();
 
     }
 }

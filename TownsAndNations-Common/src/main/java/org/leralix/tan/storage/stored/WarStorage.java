@@ -33,6 +33,18 @@ public class WarStorage extends JsonStorage<War>{
         );
     }
 
+    /**
+     * Since planned attacks have a start date, it is necessary to check if any should
+     * have started while the server was offline.
+     */
+    void updateAttacks() {
+        for (War war : dataMap.values()){
+            for (PlannedAttack plannedAttack : war.getPlannedAttacks()) {
+                plannedAttack.updateStatus();
+            }
+        }
+    }
+
     public War newWar(TerritoryData attackingTerritory, TerritoryData defendingTerritory) {
         String newID = getNewID();
         War newWar = new War(newID, attackingTerritory, defendingTerritory);
@@ -44,6 +56,7 @@ public class WarStorage extends JsonStorage<War>{
     public static WarStorage getInstance() {
         if(instance == null) {
             instance = new WarStorage();
+            instance.updateAttacks();
         }
         return instance;
     }
