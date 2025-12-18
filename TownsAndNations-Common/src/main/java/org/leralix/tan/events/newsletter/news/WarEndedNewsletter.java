@@ -38,6 +38,18 @@ public class WarEndedNewsletter extends Newsletter {
         this.nbAppliedWargoals = nbAppliedWargoals;
     }
 
+    public String getWinningTerritoryID() {
+        return winningTerritoryID;
+    }
+
+    public String getDefeatedTerritoryID() {
+        return defeatedTerritoryID;
+    }
+
+    public int getNbAppliedWargoals() {
+        return nbAppliedWargoals;
+    }
+
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         TerritoryData winningTerritory = TerritoryUtil.getTerritory(winningTerritoryID);

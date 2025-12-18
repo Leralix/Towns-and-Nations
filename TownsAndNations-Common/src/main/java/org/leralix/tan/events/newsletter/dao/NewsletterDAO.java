@@ -40,6 +40,8 @@ public class NewsletterDAO {
         subDaos.put(NewsletterType.WAR_DECLARED, new WarDeclaredDAO(dataSource));
         subDaos.put(NewsletterType.ATTACK_DECLARED, new AttackDeclaredDAO(dataSource));
         subDaos.put(NewsletterType.ATTACK_CANCELLED, new AttackCancelledDAO(dataSource));
+        subDaos.put(NewsletterType.ATTACK_ENDED, new AttackEndedDAO(dataSource));
+        subDaos.put(NewsletterType.WAR_ENDED, new WarEndedDAO(dataSource));
     }
 
     private void createTableIfNotExists() {
