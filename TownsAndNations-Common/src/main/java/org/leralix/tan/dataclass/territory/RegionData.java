@@ -25,9 +25,7 @@ import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class RegionData extends TerritoryData {
 
@@ -35,7 +33,7 @@ public class RegionData extends TerritoryData {
     private String leaderID;
     private String capitalID;
     private String nationID;
-    private final List<String> townsInRegion;
+    private final Set<String> townsInRegion;
 
     public RegionData(String id, String name, ITanPlayer owner) {
         super(id, name, owner);
@@ -44,7 +42,7 @@ public class RegionData extends TerritoryData {
         this.capitalID = ownerTown.getID();
         this.nationID = null;
 
-        this.townsInRegion = new ArrayList<>();
+        this.townsInRegion = new HashSet<>();
     }
 
     public int getHierarchyRank() {
@@ -257,7 +255,7 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public List<String> getVassalsID() {
+    public Set<String> getVassalsID() {
         return townsInRegion;
     }
 

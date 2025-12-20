@@ -489,8 +489,8 @@ public class TownData extends TerritoryData {
     }
 
     @Override
-    public List<String> getVassalsID() {
-        return Collections.emptyList();
+    public Set<String> getVassalsID() {
+        return Collections.emptySet();
     }
 
     @Override

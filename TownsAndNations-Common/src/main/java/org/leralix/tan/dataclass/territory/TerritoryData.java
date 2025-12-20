@@ -649,7 +649,7 @@ public abstract class TerritoryData {
 
     public abstract boolean canHaveOverlord();
 
-    public abstract List<String> getVassalsID();
+    public abstract Set<String> getVassalsID();
 
     public List<TerritoryData> getVassals() {
         List<TerritoryData> res = new ArrayList<>();
