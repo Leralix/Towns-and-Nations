@@ -9,6 +9,7 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.service.requirements.MoneyRequirement;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.upgrade.TerritoryStats;
@@ -159,6 +160,7 @@ public class UpgradeMenu extends BasicGui {
                         Lang.GUI_TOWN_LEVEL_UP_DESC2.get(Integer.toString(currentLevel + 1), Integer.toString(nextLevelPrice))
                 )
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
+                .setRequirements(new MoneyRequirement(territoryData, nextLevelPrice))
                 .setAction( action -> {
                     territoryData.getNewLevel().levelUpMain();
                     TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
