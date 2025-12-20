@@ -40,6 +40,30 @@ public class StringUtil {
         return  (red << 16) | (green << 8) | blue;
     }
 
+    public static int setBaseRegionColor(int rgbColor) {
+        int r = (rgbColor >> 16) & 0xFF;
+        int g = (rgbColor >> 8) & 0xFF;
+        int b = rgbColor & 0xFF;
+
+
+
+        r = randomizeColor(r);
+        g = randomizeColor(g);
+        b = randomizeColor(b);
+
+        return (r << 16) | (g << 8) | b;
+    }
+
+    private static int randomizeColor(int color) {
+
+        int maxDifference = 25;
+        if(color > 128){
+            maxDifference *=-1;
+        }
+
+        return Math.clamp(color + maxDifference, 0, 255);
+    }
+
     public static String getColoredMoney(double money){
         String formatedMoney = formatMoney(money);
         if(money > 0){

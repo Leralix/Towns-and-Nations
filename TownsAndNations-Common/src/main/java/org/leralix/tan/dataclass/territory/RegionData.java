@@ -24,6 +24,7 @@ import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
+import org.leralix.tan.utils.text.StringUtil;
 
 import java.util.*;
 
@@ -43,6 +44,8 @@ public class RegionData extends TerritoryData {
         this.nationID = null;
 
         this.townsInRegion = new HashSet<>();
+
+        setChunkColor(StringUtil.setBaseRegionColor(ownerTown.getChunkColorCode()));
     }
 
     public int getHierarchyRank() {
