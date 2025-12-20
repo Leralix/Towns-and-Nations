@@ -90,7 +90,8 @@ public enum TransactionType implements DisplayableEnum {
             timestamp TIMESTAMP NOT NULL,
             territory_id BIGINT NOT NULL,
             property_id VARCHAR(32) NOT NULL,
-            player_id BIGINT NOT NULL,
+            seller_id VARCHAR(32) NOT NULL,
+            buyer_id VARCHAR(32) NOT NULL,
             amount DOUBLE PRECISION NOT NULL,
             tax_percentage DOUBLE PRECISION NOT NULL
         );
