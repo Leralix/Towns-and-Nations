@@ -567,9 +567,9 @@ public abstract class TerritoryData {
 
         // If first claim of the territory and in a buffer zone of another territory, deny the claim
         if (getNumberOfClaimedChunk() == 0) {
-
-            if (ChunkUtil.isInBufferZone(chunkData, this)) {
-                TanChatUtils.message(player, Lang.CHUNK_IN_BUFFER_ZONE.get(player, Integer.toString(Constants.territoryClaimBufferZone())));
+            int bufferZone = Constants.territoryClaimBufferZone();
+            if (ChunkUtil.isInBufferZone(chunkData, this, bufferZone)) {
+                TanChatUtils.message(player, Lang.CHUNK_IN_BUFFER_ZONE.get(player, Integer.toString(bufferZone)));
                 return false;
             }
             return true;
@@ -1082,27 +1082,6 @@ public abstract class TerritoryData {
             }
         }
         return playerList;
-    }
-
-    /**
-     * Defines if a territory can claim next to an already claimed chunk.
-     * If the chunk is owned by the territory itself or by its overlord, it can claim
-     *
-     * @param territoryChunk The chunk to check
-     * @return True if the territory can claim next to the chunk, false otherwise
-     */
-    public boolean canAccessBufferZone(TerritoryChunk territoryChunk) {
-        String ownerID = territoryChunk.getOwnerID();
-        if (ownerID.equals(id)) {
-            return true;
-        }
-        Optional<TerritoryData> optCapital = getOverlord();
-
-        if (optCapital.isPresent()) {
-            TerritoryData capital = optCapital.get();
-            return ownerID.equals(capital.getID());
-        }
-        return false;
     }
 
     public TerritoryStats getNewLevel() {

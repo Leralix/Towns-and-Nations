@@ -117,7 +117,7 @@ language:
   CHUNK_BIOME_NOT_ALLOWED: "§cYou cannot claim chunks in this biome."
   CHUNK_IN_BUFFER_ZONE: "§cYou cannot claim a first chunk too close to another territory (minimum §e{0}§c chunks away)"
   MAX_CHUNK_LIMIT_REACHED: "§cYou reached the maximum number of chunks claimed, upgrade your town to get more available chunks"
-  CHUNK_NOT_ADJACENT: "§cThis chunk is not adjacent to your town"
+  CHUNK_NOT_ADJACENT: "§cThis chunk is not adjacent to your territory"
   CHUNK_CLAIMED_SUCCESS_UNLIMITED: "Chunk claimed for {0}"
   CHUNK_CLAIMED_SUCCESS_LIMITED: "Chunk claimed for {0} §f(§2{1}/{2}♦§f)"
   #Sell rare item command

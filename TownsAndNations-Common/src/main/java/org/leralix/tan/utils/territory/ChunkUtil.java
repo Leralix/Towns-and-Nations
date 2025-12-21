@@ -8,7 +8,6 @@ import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.utils.constants.Constants;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -241,17 +240,16 @@ public class ChunkUtil {
         return chunksInRadius;
     }
 
+    public static boolean isInBufferZone(ClaimedChunk2 chunkToAnalyse, TerritoryData territoryToAllow, int bufferZone) {
 
-    public static boolean isInBufferZone(ClaimedChunk2 chunkToAnalyse, TerritoryData territoryToAllow) {
+        List<ClaimedChunk2> claimedChunkToAnalyse = getChunksInRadius(
+                chunkToAnalyse,
+                bufferZone,
+                chunkToWatch ->
+                    chunkToWatch instanceof TerritoryChunk territoryChunk &&
+                            !territoryChunk.canBypassBufferZone(territoryToAllow)
+                );
 
-        List<ClaimedChunk2> claimedChunkToAnalyse = getChunksInRadius(chunkToAnalyse, Constants.territoryClaimBufferZone());
-
-        for (ClaimedChunk2 claimedChunk2 : claimedChunkToAnalyse) {
-            if (claimedChunk2 instanceof TerritoryChunk territoryChunk
-                    && !territoryToAllow.canAccessBufferZone(territoryChunk)) {
-                return true;
-            }
-        }
-        return false;
+        return !claimedChunkToAnalyse.isEmpty();
     }
 }

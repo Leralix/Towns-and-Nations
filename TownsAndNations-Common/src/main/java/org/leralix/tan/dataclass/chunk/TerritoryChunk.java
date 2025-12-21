@@ -143,4 +143,20 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
         return false;
     }
 
+    /**
+     * Defines if this territory can bypass buffer zone restrictions and claim a chunk in the radius of the buffer zone
+      * @param territoryToAllow The territory wishing to claim a chunk in the buffer zone
+     * @return True if the territory can bypass buffer zone restrictions, false otherwise
+     */
+    public boolean canBypassBufferZone(TerritoryData territoryToAllow) {
+
+        String ownerID = getOwnerID();
+        // This chunks is held by the same territory
+        if(ownerID.equals(territoryToAllow.getID())){
+            return true;
+        }
+
+        //This chunk is held by a vassal of the territory
+        return territoryToAllow.getVassalsID().contains(ownerID);
+    }
 }
