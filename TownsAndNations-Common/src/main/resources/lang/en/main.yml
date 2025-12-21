@@ -186,6 +186,7 @@ language:
   UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cThis chunk is claimed by another region: §b{0}"
   PROPERTY_IN_CHUNK: "§cThis chunk contains a property §f({0})"
   BUILDINGS_OR_CAPITAL_IN_CHUNK: "§cThis chunk contains at least one building or is a capital chunk"
+  CHUNK_OCCUPIED_CANT_UNCLAIM: "§cThis chunk is currently occupied and cannot be unclaimed"
   #Map command
   MAP_COMMAND_DESC: "Open the map of chunks around the player"
   #Debug commands

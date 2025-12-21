@@ -3,8 +3,6 @@ package org.leralix.tan.utils.constants;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.Range;
 import org.leralix.tan.dataclass.chunk.ChunkType;
@@ -13,6 +11,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
+import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.upgrade.NewUpgradeStorage;
 import org.leralix.tan.war.WarTimeSlot;
 import org.leralix.tan.war.legacy.InteractionStatus;
@@ -62,6 +61,7 @@ public class Constants {
     private static int territoryClaimBufferZone;
     private static int minimumNumberOfChunksUnclaimed;
     private static double percentageOfChunksUnclaimed;
+    private static MobChunkSpawnStorage mobChunkSpawnStorage;
 
     private static boolean enableNation;
     private static boolean enableRegion;
@@ -141,7 +141,7 @@ public class Constants {
         dailyTaskHour = config.getInt("taxHourTime", 0);
         dailyTaskMinute = config.getInt("taxMinuteTime", 0);
         nbDaysBeforeClearningTransactions = config.getInt("nbDaysBeforeTransactionDeletion", 90);
-        nbDaysBeforeClearningNewsletter = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TimeBeforeClearingNewsletter");
+        nbDaysBeforeClearningNewsletter = config.getInt("TimeBeforeClearingNewsletter");
         newsletterScopeConfig = new NewsletterScopeConfig(config.getConfigurationSection("events"));
         //Economy
         useStandaloneEconomy = config.getBoolean("UseTanEconomy", false);
@@ -170,6 +170,7 @@ public class Constants {
         territoryClaimBufferZone = config.getInt("TerritoryClaimBufferZone", 2);
         minimumNumberOfChunksUnclaimed = config.getInt("minimumNumberOfChunksUnclaimed", 5);
         percentageOfChunksUnclaimed = config.getDouble("percentageOfChunksUnclaimed", 10) / 100;
+        mobChunkSpawnStorage = new MobChunkSpawnStorage(config.getConfigurationSection("CancelMobSpawnInTown"));
 
         enableNation = config.getBoolean("EnableKingdom", true);
         enableRegion = config.getBoolean("EnableRegion", true);
@@ -334,6 +335,10 @@ public class Constants {
 
     public static double getPercentageOfChunksUnclaimed() {
         return percentageOfChunksUnclaimed;
+    }
+
+    public static MobChunkSpawnStorage getMobChunkSpawnStorage() {
+        return mobChunkSpawnStorage;
     }
 
     public static Range getPrefixSize() {

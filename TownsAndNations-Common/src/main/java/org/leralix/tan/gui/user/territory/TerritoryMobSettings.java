@@ -13,10 +13,10 @@ import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static org.leralix.lib.data.SoundEnum.ADD;
@@ -42,12 +42,13 @@ public class TerritoryMobSettings extends IteratorGUI {
 
         ArrayList<GuiItem> guiLists = new ArrayList<>();
         ClaimedChunkSettings chunkSettings = territoryData.getChunkSettings();
-        Collection<MobChunkSpawnEnum> mobCollection = MobChunkSpawnStorage.getMobSpawnStorage().values();
 
-        for (MobChunkSpawnEnum mobEnum : mobCollection) {
+        MobChunkSpawnStorage spawnStorage = Constants.getMobChunkSpawnStorage();
+
+        for (MobChunkSpawnEnum mobEnum : MobChunkSpawnEnum.values()) {
 
             UpgradeStatus upgradeStatus = chunkSettings.getSpawnControl(mobEnum);
-            int cost = MobChunkSpawnStorage.getMobSpawnCost(mobEnum);
+            int cost = spawnStorage.getMobSpawnCost(mobEnum);
             List<FilledLang> status = generateDescription(upgradeStatus, cost);
 
             boolean upgradeBought = upgradeStatus.isUnlocked();

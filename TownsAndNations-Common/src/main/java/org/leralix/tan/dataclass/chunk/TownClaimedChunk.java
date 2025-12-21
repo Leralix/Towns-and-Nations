@@ -71,7 +71,7 @@ public class TownClaimedChunk extends TerritoryChunk {
         for(TerritoryData territoryData : playerStat.getAllTerritoriesPlayerIsIn()){
             if(territoryData.canConquerChunk(this)){
                 NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
-                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(getTown().getColoredName()), SoundEnum.MINOR_GOOD);
+                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(langType, getTown().getColoredName()), SoundEnum.MINOR_GOOD);
                 return;
             }
         }
@@ -104,16 +104,21 @@ public class TownClaimedChunk extends TerritoryChunk {
             return;
         }
 
+        if(isOccupied()){
+            TanChatUtils.message(player, Lang.CHUNK_OCCUPIED_CANT_UNCLAIM.get(langType));
+            return;
+        }
+
         NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
 
         ChunkCap chunkCap = playerTown.getNewLevel().getStat(ChunkCap.class);
         if(chunkCap.isUnlimited()){
-            Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(player, playerTown.getColoredName());
+            TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(player, playerTown.getColoredName()));
         }
         else {
             String currentChunks = Integer.toString(playerTown.getNumberOfClaimedChunk());
             String maxChunks = Integer.toString(chunkCap.getMaxAmount());
-            Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(player, playerTown.getColoredName(), currentChunks, maxChunks);
+            TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(player, playerTown.getColoredName(), currentChunks, maxChunks));
         }
     }
 
