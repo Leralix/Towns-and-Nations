@@ -189,6 +189,10 @@ GUI_REMOVE_TERRITORY_ICON: "https://textures.minecraft.net/texture/4e4b8b8d2362c
 GUI_ADD_TERRITORY_ICON: "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1"
 
 #Wars
+
+# Wars menu
+DECLARE_WAR_ICON: "minecraft:DIAMOND_SWORD"
+
 #War settings menu
 REMOVE_WAR_START_TIME_ICON: "https://textures.minecraft.net/texture/da56dab53d4ea1a79a8e5ed6322c2d56cb714dd35edf478763ad1a84a8310"
 ADD_WAR_START_TIME_ICON: "https://textures.minecraft.net/texture/632fff163e235632f4047f4841592d46f85cbbfde89fc3df68771bff69a662"

@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.IteratorGUI;
+import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.war.WarMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.WarStorage;
@@ -27,11 +28,23 @@ public class WarsMenu extends IteratorGUI {
 
     @Override
     public void open() {
-        iterator(getWars(territoryData), p -> territoryData.openMainMenu(player));
+        iterator(getWars(), p -> territoryData.openMainMenu(player));
+        gui.setItem(4, 4, getAttackButton());
+        gui.setItem(4, 5, getDeclareWarButton());
         gui.open(player);
     }
 
-    public List<GuiItem> getWars(TerritoryData territoryData) {
+    private GuiItem getDeclareWarButton() {
+        return iconManager.get(IconKey.DECLARE_WAR_ICON)
+                .setName(Lang.DECLARE_WAR_BUTTON.get(langType))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_OPEN)
+                .setAction(
+                        action -> new DeclareWarMenu(player, territoryData, this)
+                )
+                .asGuiItem(player, langType);
+    }
+
+    public List<GuiItem> getWars() {
 
         List<War> wars = WarStorage.getInstance().getWarsOfTerritory(territoryData);
 
@@ -48,13 +61,12 @@ public class WarsMenu extends IteratorGUI {
                     .asGuiItem(player, langType));
         }
 
-        gui.setItem(4, 4, getAttackButton(territoryData));
         return guiItems;
     }
 
-    private @NotNull GuiItem getAttackButton(TerritoryData territoryData) {
+    private @NotNull GuiItem getAttackButton() {
         return iconManager.get(new ItemStack(Material.BOW))
-                .setName("Open Attacks")
+                .setName(Lang.OPEN_ATTACK_BUTTON.get(langType))
                 .setAction(p -> new AttackMenu(player, territoryData))
                 .asGuiItem(player, langType);
     }

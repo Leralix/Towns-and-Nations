@@ -2,21 +2,17 @@ package org.leralix.tan.gui.user.territory.relation;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
-import org.leralix.tan.gui.user.war.WarMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.leralix.tan.war.War;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,27 +76,8 @@ public class OpenRelationMenu extends IteratorGUI {
             if(otherTerritory == null){
                 continue;
             }
-            IconBuilder icon = otherTerritory.getIconWithInformationAndRelation(territoryData, tanPlayer.getLang());
 
-            if (relation == TownRelation.WAR) {
-                icon.addDescription(Lang.GUI_TOWN_ATTACK_TOWN_DESC1.get());
-            }
-
-            icon.setAction(event -> {
-                event.setCancelled(true);
-
-                if (relation == TownRelation.WAR && event.isRightClick()) {
-                    WarStorage warStorage = WarStorage.getInstance();
-                    if (warStorage.isTerritoryAtWarWith(territoryData, otherTerritory)) {
-                        TanChatUtils.message(player, Lang.GUI_TOWN_ATTACK_ALREADY_ATTACKING.get(tanPlayer));
-                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
-                        return;
-                    }
-
-                    War newWar = warStorage.newWar(territoryData, otherTerritory);
-                    new WarMenu(player, territoryData, newWar);
-                }
-            });
+            IconBuilder icon = otherTerritory.getIconWithInformationAndRelation(territoryData, langType);
             guiItems.add(icon.asGuiItem(player, langType));
         }
         return guiItems;

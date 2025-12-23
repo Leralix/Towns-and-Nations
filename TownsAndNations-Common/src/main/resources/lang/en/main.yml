@@ -495,6 +495,10 @@ language:
   CREATE_PUBLIC_PROPERTY_COST: "§fCost : §eFree"
   CREATE_FORT_ICON: "§aCreate a new fort"
   CREATE_FORT_DESC1: "§fCost : §e{0}{MONEY_CHAR}"
+  #Wars menu
+  GUI_TOWN_ATTACK_TOWN_DESC1: "§cClick to declare war"
+  DECLARE_WAR_BUTTON: "§aDeclare a war"
+  OPEN_ATTACK_BUTTON: "§aOpen attacks"
   #War menu
   WAR_GOAL_LIST_BUTTON: "§aWar goals"
   WAR_GOAL_LIST_BUTTON_DESC1: "§fCurrent war goals: "
@@ -718,7 +722,6 @@ language:
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aRemove town"
   BROADCAST_RELATION_IMPROVE: "§fRelation between {0}§f and {1}§f has improved to: {2}"
   BROADCAST_RELATION_WORSEN: "§fRelation between {0}§f and {1}§f has worsen to: {2}"
-  GUI_TOWN_ATTACK_TOWN_DESC1: "§cRight click to declare war"
   GUI_TOWN_ATTACK_FINISHED: "§cThe attack against {0} has ended !"
   GUI_TOWN_CLAIM_SETTINGS_DOOR: "§aManage door access"
   GUI_TOWN_CLAIM_SETTINGS_CHEST: "§aManage chest access"
