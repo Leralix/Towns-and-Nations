@@ -25,16 +25,23 @@ public class War {
     private final String mainDefenderID;
     private final String mainAttackerID;
 
+    private Collection<String> allDefendersID;
+    private Collection<String> allAttackersID;
+
     private final List<WarGoal> attackGoals;
     private final List<WarGoal> defenseGoals;
 
     private HashMap<String, PlannedAttack> plannedAttacks;
 
-    public War(String id, TerritoryData mainAttacker, TerritoryData mainDefender) {
+    public War(String id, TerritoryData mainAttacker, TerritoryData mainDefender, List<String> otherDefendersID) {
         this.ID = id;
         this.name = "War " + id;
         this.mainDefenderID = mainDefender.getID();
         this.mainAttackerID = mainAttacker.getID();
+        this.allDefendersID = new ArrayList<>(otherDefendersID);
+        this.allDefendersID.add(mainDefenderID);
+        this.allAttackersID = new ArrayList<>();
+        this.allAttackersID.add(mainAttackerID);
         this.attackGoals = new ArrayList<>();
         this.defenseGoals = new ArrayList<>();
         this.plannedAttacks = new HashMap<>();
@@ -180,5 +187,82 @@ public class War {
             ID++;
         }
         return getID() + "_" + ID;
+    }
+
+    public Collection<String> getDefendersID() {
+        if (allDefendersID == null) {
+            allDefendersID = new ArrayList<>();
+            allDefendersID.add(mainDefenderID);
+        }
+        return allDefendersID;
+    }
+
+    public Collection<String> getAttackersID() {
+        if (allAttackersID == null) {
+            allAttackersID = new ArrayList<>();
+            allDefendersID.add(mainAttackerID);
+        }
+        return allAttackersID;
+    }
+
+    public WarRole getTerritoryRole(TerritoryData territory) {
+        if (isMainAttacker(territory))
+            return WarRole.MAIN_ATTACKER;
+        if (isMainDefender(territory))
+            return WarRole.MAIN_DEFENDER;
+        if (isAttacker(territory))
+            return WarRole.OTHER_ATTACKER;
+        if (isDefender(territory))
+            return WarRole.OTHER_DEFENDER;
+        return WarRole.NEUTRAL;
+    }
+
+    private boolean isAttacker(TerritoryData territoryConcerned) {
+        return allAttackersID.contains(territoryConcerned.getID());
+    }
+
+    private boolean isDefender(TerritoryData territoryConcerned) {
+        return allDefendersID.contains(territoryConcerned.getID());
+    }
+
+    /**
+     * Remove a territory from the war.
+     * If the territory is the main one, nothing will happen
+     *
+     * @param territory The territory to remove
+     */
+    public void removeBelligerent(TerritoryData territory) {
+        // Do not remove the leader of one side of a war : If they leave they must surrender and stop the whole war.
+        if (isMainAttacker(territory) || isMainDefender(territory)) {
+            return;
+        }
+        String territoryID = territory.getID();
+        //no need to check, it only removes if it is a part of it
+        allAttackersID.remove(territoryID);
+        allDefendersID.remove(territoryID);
+    }
+
+    public void addAttacker(TerritoryData territoryData) {
+        allAttackersID.add(territoryData.getID());
+    }
+
+    public void addDefender(TerritoryData territoryData) {
+        allDefendersID.add(territoryData.getID());
+    }
+
+    public Collection<TerritoryData> getDefendingTerritories() {
+        Collection<TerritoryData> defenders = new ArrayList<>();
+        for (String defenderID : getDefendersID()) {
+            defenders.add(TerritoryUtil.getTerritory(defenderID));
+        }
+        return defenders;
+    }
+
+    public Collection<TerritoryData> getAttackingTerritories() {
+        Collection<TerritoryData> attackers = new ArrayList<>();
+        for (String attackerID : getAttackersID()) {
+            attackers.add(TerritoryUtil.getTerritory(attackerID));
+        }
+        return attackers;
     }
 }

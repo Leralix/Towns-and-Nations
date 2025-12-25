@@ -3,6 +3,7 @@ package org.leralix.tan.storage.stored;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.WarStartInternalEvent;
 import org.leralix.tan.storage.typeadapter.AttackResultAdapter;
@@ -47,7 +48,12 @@ public class WarStorage extends JsonStorage<War>{
 
     public War newWar(TerritoryData attackingTerritory, TerritoryData defendingTerritory) {
         String newID = getNewID();
-        War newWar = new War(newID, attackingTerritory, defendingTerritory);
+        War newWar = new War(
+                newID,
+                attackingTerritory,
+                defendingTerritory,
+                defendingTerritory.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE)
+        );
         add(newWar);
         EventManager.getInstance().callEvent(new WarStartInternalEvent(attackingTerritory, defendingTerritory));
         return newWar;

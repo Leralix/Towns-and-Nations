@@ -35,16 +35,13 @@ public class PlannedAttackMenu extends BasicGui {
         super(player, Lang.HEADER_WAR_MANAGER, 3);
         this.territoryData = territoryData;
         this.plannedAttack = plannedAttack;
-        this.warRole = plannedAttack.getTerritoryRole(territoryData);
+        this.warRole = plannedAttack.getWar().getTerritoryRole(territoryData);
         open();
     }
 
     @Override
     public void open() {
         gui.setItem(1, 5, getAttackIcon());
-
-        gui.setItem(2, 2, getAttackingSideSidePanel());
-        gui.setItem(2, 4, getDefendingSidePanel());
 
 
         if (warRole == WarRole.MAIN_ATTACKER) {
@@ -86,7 +83,7 @@ public class PlannedAttackMenu extends BasicGui {
                     .setName(Lang.GUI_QUIT_WAR.get(langType))
                     .setDescription(Lang.GUI_QUIT_WAR_DESC1.get())
                     .setAction(event -> {
-                        plannedAttack.removeBelligerent(territoryData);
+                        plannedAttack.getWar().removeBelligerent(territoryData);
                         territoryData.broadcastMessageWithSound(Lang.TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE.get(plannedAttack.getWar().getMainDefender().getName()), MINOR_GOOD);
                         new AttackMenu(player, territoryData);
                     })
@@ -102,7 +99,7 @@ public class PlannedAttackMenu extends BasicGui {
                     .setName(Lang.GUI_JOIN_ATTACKING_SIDE.get(langType))
                     .setDescription(description)
                     .setAction(event -> {
-                        plannedAttack.addAttacker(territoryData);
+                        plannedAttack.getWar().addAttacker(territoryData);
                         open();
                     })
                     .asGuiItem(player, langType)
@@ -112,7 +109,7 @@ public class PlannedAttackMenu extends BasicGui {
                     .setName(Lang.GUI_JOIN_DEFENDING_SIDE.get(tanPlayer))
                     .setDescription(Lang.GUI_JOIN_DEFENDING_SIDE_DESC1.get(territoryData.getBaseColoredName()))
                     .setAction(event -> {
-                        plannedAttack.addDefender(territoryData);
+                        plannedAttack.getWar().addDefender(territoryData);
                         open();
                     })
                     .asGuiItem(player, langType));
@@ -120,14 +117,6 @@ public class PlannedAttackMenu extends BasicGui {
 
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AttackMenu(player, territoryData)));
         gui.open(player);
-    }
-
-    private @NotNull GuiItem getDefendingSidePanel() {
-        return ItemBuilder.from(plannedAttack.getDefendingIcon(langType)).asGuiItem();
-    }
-
-    private @NotNull GuiItem getAttackingSideSidePanel() {
-        return ItemBuilder.from(plannedAttack.getAttackingIcon(langType)).asGuiItem();
     }
 
     private @NotNull GuiItem getAttackIcon() {

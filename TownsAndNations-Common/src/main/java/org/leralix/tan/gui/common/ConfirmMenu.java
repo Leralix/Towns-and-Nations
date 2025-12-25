@@ -40,6 +40,7 @@ public class ConfirmMenu extends BasicGui {
     private @NotNull GuiItem getCancelButton() {
         return iconManager.get(IconKey.CANCEL_ICON)
                 .setName(Lang.GENERIC_CANCEL_ACTION.get(tanPlayer))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> cancelAction.run())
                 .asGuiItem(player, langType);
     }
@@ -48,6 +49,7 @@ public class ConfirmMenu extends BasicGui {
         return iconManager.get(IconKey.CONFIRM_ICON)
                 .setName(Lang.GENERIC_CONFIRM_ACTION.get(tanPlayer))
                 .setDescription(confirmDescription)
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> confirmAction.run())
                 .asGuiItem(player, langType);
     }

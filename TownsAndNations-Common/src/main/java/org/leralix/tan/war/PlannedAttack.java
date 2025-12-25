@@ -37,8 +37,6 @@ public class PlannedAttack {
 
     private final String ID;
     private String name;
-    private final Collection<String> defendersID;
-    private final Collection<String> attackersID;
     private AttackResult attackResult;
 
     /**
@@ -84,11 +82,6 @@ public class PlannedAttack {
 
         this.isAdminApproved = !Constants.adminApprovalForStartOfAttack();
 
-        this.attackersID = new ArrayList<>();
-        this.attackersID.add(getWar().getMainAttackerID());
-        this.defendersID = new ArrayList<>();
-        this.defendersID.add(getWar().getMainDefenderID());
-
         this.startTime = System.currentTimeMillis() + (long) createAttackData.getSelectedTime() * 60 * 1000;
         this.endTime = this.startTime + Constants.getAttackDuration() * 60 * 1000;
 
@@ -125,7 +118,7 @@ public class PlannedAttack {
 
     public Collection<ITanPlayer> getDefendingPlayers() {
         Collection<ITanPlayer> defenders = new ArrayList<>();
-        for (TerritoryData defendingTerritory : getDefendingTerritories()) {
+        for (TerritoryData defendingTerritory : war.getDefendingTerritories()) {
             defenders.addAll(defendingTerritory.getITanPlayerList());
         }
         return defenders;
@@ -133,31 +126,15 @@ public class PlannedAttack {
 
     public Collection<ITanPlayer> getAttackersPlayers() {
         Collection<ITanPlayer> defenders = new ArrayList<>();
-        for (TerritoryData attackingTerritory : getAttackingTerritories()) {
+        for (TerritoryData attackingTerritory : war.getAttackingTerritories()) {
             defenders.addAll(attackingTerritory.getITanPlayerList());
         }
         return defenders;
     }
 
-    public Collection<TerritoryData> getDefendingTerritories() {
-        Collection<TerritoryData> defenders = new ArrayList<>();
-        for (String defenderID : defendersID) {
-            defenders.add(TerritoryUtil.getTerritory(defenderID));
-        }
-        return defenders;
-    }
-
-    public Collection<TerritoryData> getAttackingTerritories() {
-        Collection<TerritoryData> attackers = new ArrayList<>();
-        for (String attackerID : attackersID) {
-            attackers.add(TerritoryUtil.getTerritory(attackerID));
-        }
-        return attackers;
-    }
-
     public void broadCastMessageWithSound(FilledLang message, SoundEnum soundEnum) {
-        Collection<TerritoryData> territoryData = getAttackingTerritories();
-        territoryData.addAll(getDefendingTerritories());
+        Collection<TerritoryData> territoryData = war.getAttackingTerritories();
+        territoryData.addAll(war.getDefendingTerritories());
         for (TerritoryData territory : territoryData) {
             territory.broadcastMessageWithSound(message, soundEnum);
         }
@@ -165,7 +142,7 @@ public class PlannedAttack {
 
     public void setUpStartOfAttack() {
 
-        //Convesion to ticks
+        //Conversion seconds -> ticks
         long currentTime = new Date().getTime();
         long timeLeftBeforeStart = (long) ((startTime - currentTime) * 0.02);
         long timeLeftBeforeWarning = timeLeftBeforeStart - 1200; //Warning 1 minute before
@@ -200,14 +177,6 @@ public class PlannedAttack {
         CurrentAttacksStorage.startAttack(this, endTime);
     }
 
-    public void addDefender(TerritoryData territory) {
-        defendersID.add(territory.getID());
-    }
-
-    public void addAttacker(TerritoryData territoryData) {
-        attackersID.add(territoryData.getID());
-    }
-
     public IconBuilder getAdminIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZoneEnum) {
 
         IconBuilder iconBuilder = getIcon(iconManager, langType, timeZoneEnum);
@@ -231,23 +200,15 @@ public class PlannedAttack {
                 .setDescription(
                         Lang.ATTACK_ICON_DESC_1.get(getWar().getMainAttacker().getColoredName()),
                         Lang.ATTACK_ICON_DESC_2.get(getWar().getMainDefender().getColoredName()),
-                        Lang.ATTACK_ICON_DESC_3.get(Integer.toString(getNumberOfAttackers())),
-                        Lang.ATTACK_ICON_DESC_4.get(Integer.toString(getNumberOfDefenders()))
+                        Lang.ATTACK_ICON_DESC_3.get(Integer.toString(war.getAttackersID().size())),
+                        Lang.ATTACK_ICON_DESC_4.get(Integer.toString(war.getDefendersID().size()))
                 )
                 .addDescription(attackResult.getResultLines(langType, timeZone));
     }
 
     public IconBuilder getIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZone, TerritoryData territoryConcerned) {
         return getIcon(iconManager, langType, timeZone)
-                .addDescription(Lang.ATTACK_ICON_DESC_8.get(getTerritoryRole(territoryConcerned).getName(langType)));
-    }
-
-    private int getNumberOfAttackers() {
-        return attackersID.size();
-    }
-
-    private int getNumberOfDefenders() {
-        return defendersID.size();
+                .addDescription(Lang.ATTACK_ICON_DESC_8.get(war.getTerritoryRole(territoryConcerned).getName(langType)));
     }
 
     public void end(AttackResult attackResult) {
@@ -268,26 +229,17 @@ public class PlannedAttack {
         if (currentAttack != null) {
             currentAttack.end();
         }
-        for (TerritoryData territory : getAttackingTerritories()) {
+        for (TerritoryData territory : war.getAttackingTerritories()) {
             territory.removePlannedAttack(this);
         }
-        for (TerritoryData territory : getDefendingTerritories()) {
+        for (TerritoryData territory : war.getDefendingTerritories()) {
             territory.removePlannedAttack(this);
         }
-    }
-
-
-    private boolean isSecondaryAttacker(TerritoryData territoryConcerned) {
-        return attackersID.contains(territoryConcerned.getID());
-    }
-
-    private boolean isSecondaryDefender(TerritoryData territoryConcerned) {
-        return defendersID.contains(territoryConcerned.getID());
     }
 
     public WarRole getRole(ITanPlayer player) {
         for (TerritoryData territoryData : player.getAllTerritoriesPlayerIsIn()) {
-            WarRole role = getTerritoryRole(territoryData);
+            WarRole role = war.getTerritoryRole(territoryData);
             if (role != WarRole.NEUTRAL) {
                 return role;
             }
@@ -295,57 +247,10 @@ public class PlannedAttack {
         return WarRole.NEUTRAL;
     }
 
-    public WarRole getTerritoryRole(TerritoryData territory) {
-        if (getWar().isMainAttacker(territory))
-            return WarRole.MAIN_ATTACKER;
-        if (getWar().isMainDefender(territory))
-            return WarRole.MAIN_DEFENDER;
-        if (isSecondaryAttacker(territory))
-            return WarRole.OTHER_ATTACKER;
-        if (isSecondaryDefender(territory))
-            return WarRole.OTHER_DEFENDER;
-        return WarRole.NEUTRAL;
-    }
-
-    public void removeBelligerent(TerritoryData territory) {
-        String territoryID = territory.getID();
-        //no need to check, it only removes if it is a part of it
-        attackersID.remove(territoryID);
-        defendersID.remove(territoryID);
-    }
-
     public void territorySurrendered() {
         EventManager.getInstance().callEvent(new DefenderAcceptDemandsBeforeWarInternalEvent(getWar().getMainDefender(), getWar().getMainAttacker()));
         getWar().territorySurrender(warRole);
         end(new AttackResultCancelled());
-    }
-
-    public ItemStack getAttackingIcon(LangType langType) {
-        ItemStack itemStack = new ItemStack(Material.IRON_HELMET);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        List<String> lore = new ArrayList<>();
-        itemMeta.setDisplayName(Lang.GUI_ATTACKING_SIDE_ICON.get(langType));
-        lore.add(Lang.GUI_ATTACKING_SIDE_ICON_DESC1.get(langType));
-        for (TerritoryData territoryData : getAttackingTerritories()) {
-            lore.add(Lang.GUI_ICON_LIST.get(langType, territoryData.getBaseColoredName()));
-        }
-        itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
-    }
-
-    public ItemStack getDefendingIcon(LangType langType) {
-        ItemStack itemStack = new ItemStack(Material.DIAMOND_HELMET);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        List<String> lore = new ArrayList<>();
-        itemMeta.setDisplayName(Lang.GUI_DEFENDING_SIDE_ICON.get(langType));
-        lore.add(Lang.GUI_DEFENDING_SIDE_ICON_DESC1.get(langType));
-        for (TerritoryData territoryData : getDefendingTerritories()) {
-            lore.add(Lang.GUI_ICON_LIST.get(langType, territoryData.getBaseColoredName()));
-        }
-        itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
     }
 
     public void rename(String message) {

@@ -497,6 +497,8 @@ language:
   CREATE_FORT_DESC1: "§fCost : §e{0}{MONEY_CHAR}"
   #Wars menu
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cClick to declare war"
+  DECLARE_WAR_CONFIRM_MESSAGE: "{0}§f will start a war against {1}"
+  DECLARE_WAR_NUMBER_OF_ALLIES: "{0}§f has §9{1}§f allies"
   DECLARE_WAR_BUTTON: "§aDeclare a war"
   OPEN_ATTACK_BUTTON: "§aOpen attacks"
   #War menu
@@ -528,6 +530,7 @@ language:
   HEADER_TOWN_MENU: "Town : {0}"
   HEADER_SELECT_ICON: "Select the new icon"
   HEADER_WARS_MENU: "Wars"
+  HEADER_DECLARE_WAR: "Declare war"
   HEADER_WAR_MANAGER: "Manage war"
   HEADER_CREATE_WAR_MANAGER: "Declare an attack on {0}"
   HEADER_SELECT_WARGOAL: "Select war goal"

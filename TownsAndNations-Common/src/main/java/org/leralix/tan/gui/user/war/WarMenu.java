@@ -1,5 +1,6 @@
 package org.leralix.tan.gui.user.war;
 
+import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -36,10 +37,16 @@ public class WarMenu extends BasicGui {
     @Override
     public void open() {
         gui.setItem(1, 5, getWarIcon());
-        gui.setItem(2, 3, getWargoalsButton());
+
+
+        gui.setItem(2, 2, getAttackingSideSidePanel());
+        gui.setItem(2, 3, getDefendingSidePanel());
         gui.setItem(2, 4, getAttackButton());
-        gui.setItem(2, 6, getEnemyWargoalsIcon());
-        gui.setItem(2, 7, getSurrenderButton());
+
+        gui.setItem(2, 6, getWargoalsButton());
+        gui.setItem(2, 7, getEnemyWargoalsIcon());
+        gui.setItem(2, 8, getSurrenderButton());
+
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new WarsMenu(player, territoryData)));
         gui.open(player);
     }
@@ -124,6 +131,32 @@ public class WarMenu extends BasicGui {
                     war.territorySurrender(warRole);
                     new WarsMenu(player, territoryData);
                 })
+                .asGuiItem(player, langType);
+    }
+
+    private @NotNull GuiItem getDefendingSidePanel() {
+        List<FilledLang> description = new ArrayList<>();
+        description.add(Lang.GUI_DEFENDING_SIDE_ICON_DESC1.get());
+        for (TerritoryData territoryData : war.getDefendingTerritories()) {
+            description.add(Lang.GUI_ICON_LIST.get(territoryData.getBaseColoredName()));
+        }
+
+        return iconManager.get(IconKey.WAR_DEFENDER_SIDE_ICON)
+                .setName(Lang.GUI_ATTACKING_SIDE_ICON.get(langType))
+                .setDescription(description)
+                .asGuiItem(player, langType);
+    }
+
+    private @NotNull GuiItem getAttackingSideSidePanel() {
+        List<FilledLang> description = new ArrayList<>();
+        description.add(Lang.GUI_ATTACKING_SIDE_ICON_DESC1.get());
+        for (TerritoryData territoryData : war.getAttackingTerritories()) {
+            description.add(Lang.GUI_ICON_LIST.get(territoryData.getBaseColoredName()));
+        }
+
+        return iconManager.get(IconKey.WAR_ATTACKER_SIDE_ICON)
+                .setName(Lang.GUI_ATTACKING_SIDE_ICON.get(langType))
+                .setDescription(description)
                 .asGuiItem(player, langType);
     }
 }

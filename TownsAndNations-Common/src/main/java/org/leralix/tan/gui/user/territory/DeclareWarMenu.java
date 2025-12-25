@@ -8,7 +8,9 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
+import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.user.war.WarMenu;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
@@ -39,26 +41,49 @@ public class DeclareWarMenu extends IteratorGUI {
 
     private List<GuiItem> getTerritoryToDeclareOn() {
         List<GuiItem> res = new ArrayList<>();
+        WarStorage warStorage = WarStorage.getInstance();
+
         for (String TerritoryID : territoryData.getRelations().getTerritoriesIDWithRelation(TownRelation.WAR)) {
             TerritoryData iterateTerritory = TerritoryUtil.getTerritory(TerritoryID);
 
-            res.add(
-                    iterateTerritory.getIconWithInformationAndRelation(territoryData, langType)
-                            .setClickToAcceptMessage(Lang.GUI_TOWN_ATTACK_TOWN_DESC1)
-                            .setAction(action -> {
-                                WarStorage warStorage = WarStorage.getInstance();
-                                if (warStorage.isTerritoryAtWarWith(territoryData, iterateTerritory)) {
-                                    TanChatUtils.message(player, Lang.GUI_TOWN_ATTACK_ALREADY_ATTACKING.get(tanPlayer));
-                                    SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
-                                    return;
-                                }
-
-                                War newWar = warStorage.newWar(territoryData, iterateTerritory);
-                                new WarMenu(player, territoryData, newWar);
-                            })
-                            .asGuiItem(player, langType)
-            );
+            res.add(getDeclareWarButton(iterateTerritory, warStorage));
         }
         return res;
+    }
+
+    private GuiItem getDeclareWarButton(TerritoryData iterateTerritory, WarStorage warStorage) {
+        return iterateTerritory.getIconWithInformationAndRelation(territoryData, langType)
+                .setClickToAcceptMessage(Lang.GUI_TOWN_ATTACK_TOWN_DESC1)
+                .setAction(action -> {
+                    if (warStorage.isTerritoryAtWarWith(territoryData, iterateTerritory)) {
+                        TanChatUtils.message(player, Lang.GUI_TOWN_ATTACK_ALREADY_ATTACKING.get(tanPlayer));
+                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                        return;
+                    }
+
+                    int nbAllies = iterateTerritory.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE).size();
+
+                    List<FilledLang> confirmDescription = List.of(
+                            Lang.DECLARE_WAR_CONFIRM_MESSAGE.get(
+                                    territoryData.getColoredName(),
+                                    iterateTerritory.getColoredName()
+                            ),
+                            Lang.DECLARE_WAR_NUMBER_OF_ALLIES.get(
+                                    iterateTerritory.getColoredName(),
+                                    Integer.toString(nbAllies)
+                            )
+                    );
+
+                    new ConfirmMenu(
+                            player,
+                            confirmDescription,
+                            () -> {
+                                War newWar = warStorage.newWar(territoryData, iterateTerritory);
+                                new WarMenu(player, territoryData, newWar);
+                            },
+                            this::open
+                    );
+                })
+                .asGuiItem(player, langType);
     }
 }

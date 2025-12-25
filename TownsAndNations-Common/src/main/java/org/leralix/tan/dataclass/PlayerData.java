@@ -227,7 +227,7 @@ public class PlayerData implements ITanPlayer {
                 getAttackInvolvedIn().remove(attackID);
                 continue;
             }
-            if (currentAttack.getAttackData().getDefendingTerritories().contains(territoryData)) {
+            if (currentAttack.getAttackData().getWar().getDefendingTerritories().contains(territoryData)) {
                 return true;
             }
         }
