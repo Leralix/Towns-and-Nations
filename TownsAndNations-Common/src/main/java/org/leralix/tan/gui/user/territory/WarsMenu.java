@@ -8,10 +8,13 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.user.war.NeutralWarMenu;
+import org.leralix.tan.gui.user.war.SecondaryWarMenu;
 import org.leralix.tan.gui.user.war.WarMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.war.War;
+import org.leralix.tan.war.legacy.WarRole;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,13 +55,26 @@ public class WarsMenu extends IteratorGUI {
         List<GuiItem> guiItems = new ArrayList<>();
         for(War war : wars) {
             guiItems.add(iconManager.get(war.getIcon())
-                    .setName(war.getName())
-                     .setDescription(
-                             Lang.ATTACK_ICON_DESC_1.get(war.getMainAttacker().getColoredName()),
-                             Lang.ATTACK_ICON_DESC_2.get(war.getMainDefender().getColoredName())
-                     )
-                    .setAction(event -> new WarMenu(player, territoryData, war))
-                    .asGuiItem(player, langType));
+                .setName(war.getName())
+                 .setDescription(
+                         Lang.ATTACK_ICON_DESC_1.get(war.getMainAttacker().getColoredName()),
+                         Lang.ATTACK_ICON_DESC_2.get(war.getMainDefender().getColoredName())
+                 )
+                .setAction(event -> {
+
+                    WarRole warRole = war.getTerritoryRole(territoryData);
+
+                    if(warRole.isMain()){
+                        new WarMenu(player, territoryData, war);
+                    }
+                    else if(warRole.isSecondary()) {
+                        new SecondaryWarMenu(player, territoryData, war);
+                    }
+                    else {
+                        new NeutralWarMenu(player, territoryData, war);
+                    }
+                })
+                .asGuiItem(player, langType));
         }
 
         return guiItems;

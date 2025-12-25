@@ -290,4 +290,7 @@ public class PlannedAttack {
     }
 
 
+    public boolean isCancelled() {
+        return attackResult instanceof AttackResultCancelled;
+    }
 }

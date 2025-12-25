@@ -31,18 +31,18 @@ import static org.leralix.lib.data.SoundEnum.REMOVE;
 public class CreateAttackMenu extends BasicGui {
 
     private final CreateAttackData attackData;
-    private final TerritoryData territoryData;
     private final War war;
     private final WarRole warRole;
     private final WarTimeSlot warTimeSlot;
+    private final BasicGui returnGui;
 
-    public CreateAttackMenu(Player player, TerritoryData territoryData, War war, WarRole warRole) {
+    public CreateAttackMenu(Player player, TerritoryData territoryData, War war, WarRole warRole, BasicGui returnGui) {
         super(player, Lang.HEADER_CREATE_WAR_MANAGER.get(war.getMainDefender().getName()), 3);
-        this.territoryData = territoryData;
         this.war = war;
         this.warRole = warRole;
         this.attackData = new CreateAttackData(war, warRole);
         this.warTimeSlot = Constants.getWarTimeSlot();
+        this.returnGui = returnGui;
         open();
     }
 
@@ -53,7 +53,7 @@ public class CreateAttackMenu extends BasicGui {
         gui.setItem(2, 4, getAddTimeButton());
 
         gui.setItem(2, 8, getConfirmButton());
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, e -> new WarMenu(player, territoryData, war)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, e -> returnGui.open()));
 
         gui.open(player);
     }

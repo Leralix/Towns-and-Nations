@@ -30,4 +30,18 @@ public enum WarRole {
             case NEUTRAL -> NEUTRAL;
         };
     }
+
+    public boolean isMain() {
+        return switch (this){
+            case MAIN_ATTACKER, MAIN_DEFENDER -> true;
+            case OTHER_ATTACKER, OTHER_DEFENDER, NEUTRAL -> false;
+        };
+    }
+
+    public boolean isSecondary() {
+        return switch (this){
+            case OTHER_ATTACKER, OTHER_DEFENDER -> true;
+            case MAIN_ATTACKER, MAIN_DEFENDER, NEUTRAL -> false;
+        };
+    }
 }

@@ -4,7 +4,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.SelectWarGoals;
 import org.leralix.tan.gui.user.territory.WarsMenu;
@@ -21,16 +20,14 @@ import org.leralix.tan.war.legacy.wargoals.WarGoal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WarMenu extends BasicGui {
+public class WarMenu extends AbstractWarMenu {
 
     private final TerritoryData territoryData;
-    private final War war;
     private final WarRole warRole;
 
     public WarMenu(Player player, TerritoryData territoryData, War war) {
-        super(player, Lang.HEADER_WARS_MENU, 3);
+        super(player, Lang.HEADER_WARS_MENU, 3, war);
         this.territoryData = territoryData;
-        this.war = war;
         this.warRole = war.isMainAttacker(territoryData) ? WarRole.MAIN_ATTACKER : WarRole.MAIN_DEFENDER;
         open();
     }
@@ -40,9 +37,8 @@ public class WarMenu extends BasicGui {
     public void open() {
         gui.setItem(1, 5, getWarIcon());
 
-
-        gui.setItem(2, 2, getAttackingSidePanel());
-        gui.setItem(2, 3, getDefendingSidePanel());
+        gui.setItem(2, 2, getAttackingSideInfo());
+        gui.setItem(2, 3, getDefendingSideInfo());
         gui.setItem(2, 4, getAttackButton());
         gui.setItem(2, 5, getRenameWarButton());
         gui.setItem(2, 6, getWargoalsButton());
@@ -55,10 +51,8 @@ public class WarMenu extends BasicGui {
 
     private GuiItem getRenameWarButton() {
         return iconManager.get(IconKey.RENAME_WAR_ICON)
-                .setName(Lang.GUI_RENAME_ATTACK.get(tanPlayer))
-                .setDescription(
-                        Lang.GUI_GENERIC_CLICK_TO_RENAME.get()
-                )
+                .setName(Lang.GUI_RENAME_WAR.get(tanPlayer))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_RENAME)
                 .setAction(action -> {
                     TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangeWarName(war, p -> open()));
@@ -105,7 +99,7 @@ public class WarMenu extends BasicGui {
         return iconManager.get(IconKey.WAR_CREATE_ATTACK_ICON)
                 .setName(Lang.WAR_CREATE_ATTACK.get(langType))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
-                .setAction(action -> new CreateAttackMenu(player, territoryData, war, warRole))
+                .setAction(action -> new CreateAttackMenu(player, territoryData, war, warRole, this))
                 .asGuiItem(player, langType);
     }
 
@@ -145,32 +139,6 @@ public class WarMenu extends BasicGui {
                     war.territorySurrender(warRole);
                     new WarsMenu(player, territoryData);
                 })
-                .asGuiItem(player, langType);
-    }
-
-    private @NotNull GuiItem getDefendingSidePanel() {
-        List<FilledLang> description = new ArrayList<>();
-        description.add(Lang.GUI_DEFENDING_SIDE_ICON_DESC1.get());
-        for (TerritoryData territoryData : war.getDefendingTerritories()) {
-            description.add(Lang.GUI_ICON_LIST.get(territoryData.getBaseColoredName()));
-        }
-
-        return iconManager.get(IconKey.WAR_DEFENDER_SIDE_ICON)
-                .setName(Lang.GUI_ATTACKING_SIDE_ICON.get(langType))
-                .setDescription(description)
-                .asGuiItem(player, langType);
-    }
-
-    private @NotNull GuiItem getAttackingSidePanel() {
-        List<FilledLang> description = new ArrayList<>();
-        description.add(Lang.GUI_ATTACKING_SIDE_ICON_DESC1.get());
-        for (TerritoryData territoryData : war.getAttackingTerritories()) {
-            description.add(Lang.GUI_ICON_LIST.get(territoryData.getBaseColoredName()));
-        }
-
-        return iconManager.get(IconKey.WAR_ATTACKER_SIDE_ICON)
-                .setName(Lang.GUI_ATTACKING_SIDE_ICON.get(langType))
-                .setDescription(description)
                 .asGuiItem(player, langType);
     }
 }

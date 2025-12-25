@@ -2,20 +2,21 @@ package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.BrowseAttackScope;
 import org.leralix.tan.gui.IteratorGUI;
-import org.leralix.tan.gui.user.war.PlannedAttackMenu;
+import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.PlannedAttack;
+import org.leralix.tan.war.info.AttackResultCancelled;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
 
 public class AttackMenu extends IteratorGUI {
 
@@ -33,7 +34,7 @@ public class AttackMenu extends IteratorGUI {
     @Override
     public void open() {
 
-        iterator(getWars(tanPlayer), p -> new WarsMenu(player, territoryData));
+        iterator(getAttacks(tanPlayer), p -> new WarsMenu(player, territoryData));
 
         gui.setItem(6, 6, browseAttackButton());
         gui.open(player);
@@ -51,24 +52,28 @@ public class AttackMenu extends IteratorGUI {
     }
 
 
-    private List<GuiItem> getWars(ITanPlayer tanPlayer) {
+    private List<GuiItem> getAttacks(ITanPlayer tanPlayer) {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for (PlannedAttack plannedAttack : WarStorage.getInstance().getAllAttacks()) {
-
             if (scope.allowAttack(plannedAttack)) {
-                guiItems.add(
-                        plannedAttack.getIcon(iconManager, tanPlayer.getLang(), tanPlayer.getTimeZone(), territoryData)
-                                .setAction(action -> {
-                                    if(plannedAttack.isNotStarted()){
-                                        new PlannedAttackMenu(player, territoryData, plannedAttack);
-                                    }
-                                    else {
-                                        TanChatUtils.message(player, Lang.WAR_CANNOT_VIEW_STARTED_ATTACK.get(langType), SoundEnum.NOT_ALLOWED);
-                                    }
 
-                                })
-                                .asGuiItem(player, langType)
-                );
+                boolean isMainAttacker = plannedAttack.getWar().isMainAttacker(territoryData);
+
+                IconBuilder builder = plannedAttack.getIcon(iconManager, tanPlayer.getLang(), tanPlayer.getTimeZone(), territoryData);
+
+                if (isMainAttacker && plannedAttack.isNotStarted() && !plannedAttack.isCancelled()) {
+
+                    builder.setClickToAcceptMessage(Lang.GUI_GENERIC_RIGHT_CLICK_TO_CANCEL)
+                            .setAction(action -> {
+                                if (action.isRightClick()) {
+                                    plannedAttack.end(new AttackResultCancelled());
+                                    territoryData.broadcastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(plannedAttack.getWar().getMainDefender().getName()), MINOR_GOOD);
+                                    open();
+                                }
+                            });
+                }
+
+                guiItems.add(builder.asGuiItem(player, langType));
             }
         }
         return guiItems;
