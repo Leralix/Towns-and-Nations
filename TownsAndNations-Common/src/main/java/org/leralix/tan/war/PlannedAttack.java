@@ -36,7 +36,6 @@ import java.util.*;
 public class PlannedAttack {
 
     private final String ID;
-    private String name;
     private AttackResult attackResult;
 
     /**
@@ -74,11 +73,7 @@ public class PlannedAttack {
         this.warID = war.getID();
         this.warRole = createAttackData.getAttackingSide();
 
-        this.name = Lang.BASIC_ATTACK_NAME.get(
-                Lang.getServerLang(),
-                getWar().getMainAttacker().getName(),
-                getWar().getMainDefender().getName()
-        );
+
 
         this.isAdminApproved = !Constants.adminApprovalForStartOfAttack();
 
@@ -95,10 +90,6 @@ public class PlannedAttack {
 
     public String getID() {
         return ID;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public War getWar() {
@@ -165,7 +156,7 @@ public class PlannedAttack {
             warWarningTask = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    broadCastMessageWithSound(Lang.ATTACK_START_IN_1_MINUTES.get(name), SoundEnum.WAR);
+                    broadCastMessageWithSound(Lang.ATTACK_START_IN_1_MINUTES.get(war.getName()), SoundEnum.WAR);
                 }
             };
             warWarningTask.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeWarning);
@@ -173,7 +164,7 @@ public class PlannedAttack {
     }
 
     public void startWar() {
-        broadCastMessageWithSound(Lang.ATTACK_START_NOW.get(name), SoundEnum.WAR);
+        broadCastMessageWithSound(Lang.ATTACK_START_NOW.get(war.getName()), SoundEnum.WAR);
         CurrentAttacksStorage.startAttack(this, endTime);
     }
 
@@ -196,7 +187,7 @@ public class PlannedAttack {
 
     public IconBuilder getIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZone) {
         return iconManager.get(Material.IRON_SWORD)
-                .setName(ChatColor.GREEN + name)
+                .setName(ChatColor.GREEN + war.getName())
                 .setDescription(
                         Lang.ATTACK_ICON_DESC_1.get(getWar().getMainAttacker().getColoredName()),
                         Lang.ATTACK_ICON_DESC_2.get(getWar().getMainDefender().getColoredName()),
@@ -251,10 +242,6 @@ public class PlannedAttack {
         EventManager.getInstance().callEvent(new DefenderAcceptDemandsBeforeWarInternalEvent(getWar().getMainDefender(), getWar().getMainAttacker()));
         getWar().territorySurrender(warRole);
         end(new AttackResultCancelled());
-    }
-
-    public void rename(String message) {
-        this.name = message;
     }
 
     public List<OfflinePlayer> getAllOfflinePlayers() {

@@ -1,6 +1,5 @@
 package org.leralix.tan.gui.user.war;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +10,10 @@ import org.leralix.tan.gui.user.territory.SelectWarGoals;
 import org.leralix.tan.gui.user.territory.WarsMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.listeners.chat.events.ChangeWarName;
 import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.WarRole;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
@@ -39,10 +41,10 @@ public class WarMenu extends BasicGui {
         gui.setItem(1, 5, getWarIcon());
 
 
-        gui.setItem(2, 2, getAttackingSideSidePanel());
+        gui.setItem(2, 2, getAttackingSidePanel());
         gui.setItem(2, 3, getDefendingSidePanel());
         gui.setItem(2, 4, getAttackButton());
-
+        gui.setItem(2, 5, getRenameWarButton());
         gui.setItem(2, 6, getWargoalsButton());
         gui.setItem(2, 7, getEnemyWargoalsIcon());
         gui.setItem(2, 8, getSurrenderButton());
@@ -51,6 +53,18 @@ public class WarMenu extends BasicGui {
         gui.open(player);
     }
 
+    private GuiItem getRenameWarButton() {
+        return iconManager.get(IconKey.RENAME_WAR_ICON)
+                .setName(Lang.GUI_RENAME_ATTACK.get(tanPlayer))
+                .setDescription(
+                        Lang.GUI_GENERIC_CLICK_TO_RENAME.get()
+                )
+                .setAction(action -> {
+                    TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(tanPlayer));
+                    PlayerChatListenerStorage.register(player, new ChangeWarName(war, p -> open()));
+                })
+                .asGuiItem(player, langType);
+    }
 
 
     private GuiItem getWarIcon() {
@@ -147,7 +161,7 @@ public class WarMenu extends BasicGui {
                 .asGuiItem(player, langType);
     }
 
-    private @NotNull GuiItem getAttackingSideSidePanel() {
+    private @NotNull GuiItem getAttackingSidePanel() {
         List<FilledLang> description = new ArrayList<>();
         description.add(Lang.GUI_ATTACKING_SIDE_ICON_DESC1.get());
         for (TerritoryData territoryData : war.getAttackingTerritories()) {

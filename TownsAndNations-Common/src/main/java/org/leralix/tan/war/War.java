@@ -35,7 +35,11 @@ public class War {
 
     public War(String id, TerritoryData mainAttacker, TerritoryData mainDefender, List<String> otherDefendersID) {
         this.ID = id;
-        this.name = "War " + id;
+        this.name = Lang.BASIC_ATTACK_NAME.get(
+                Lang.getServerLang(),
+                mainAttacker.getName(),
+                getMainDefender().getName()
+        );
         this.mainDefenderID = mainDefender.getID();
         this.mainAttackerID = mainAttacker.getID();
         this.allDefendersID = new ArrayList<>(otherDefendersID);

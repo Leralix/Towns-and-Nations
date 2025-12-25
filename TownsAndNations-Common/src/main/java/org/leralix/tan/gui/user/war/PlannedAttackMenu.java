@@ -12,7 +12,7 @@ import org.leralix.tan.gui.user.territory.AttackMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.listeners.chat.events.ChangeAttackName;
+import org.leralix.tan.listeners.chat.events.ChangeWarName;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -46,37 +46,13 @@ public class PlannedAttackMenu extends BasicGui {
 
         if (warRole == WarRole.MAIN_ATTACKER) {
             ItemStack cancelAttack = HeadUtils.createCustomItemStack(Material.BARRIER, Lang.GUI_CANCEL_ATTACK.get(tanPlayer), Lang.GUI_GENERIC_CLICK_TO_DELETE.get(tanPlayer));
-            ItemStack renameAttack = HeadUtils.createCustomItemStack(Material.NAME_TAG, Lang.GUI_RENAME_ATTACK.get(tanPlayer), Lang.GUI_GENERIC_CLICK_TO_RENAME.get(tanPlayer));
             GuiItem cancelButton = ItemBuilder.from(cancelAttack).asGuiItem(event -> {
                 plannedAttack.end(new AttackResultCancelled());
                 territoryData.broadcastMessageWithSound(Lang.ATTACK_SUCCESSFULLY_CANCELLED.get(plannedAttack.getWar().getMainDefender().getName()), MINOR_GOOD);
                 new AttackMenu(player, territoryData);
             });
 
-            GuiItem renameButton = ItemBuilder.from(renameAttack).asGuiItem(event -> {
-                event.setCancelled(true);
-                TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(tanPlayer));
-                PlayerChatListenerStorage.register(player, new ChangeAttackName(plannedAttack, p -> open()));
-            });
-
-            gui.setItem(2, 6, renameButton);
             gui.setItem(2, 8, cancelButton);
-        }
-        else if (warRole == WarRole.MAIN_DEFENDER) {
-
-            List<FilledLang> submitDescription = new ArrayList<>();
-            submitDescription.add(Lang.SUBMIT_TO_REQUEST_DESC1.get());
-            submitDescription.addAll(plannedAttack.getWar().generateWarGoalsDesciption(warRole, langType));
-
-            gui.setItem(2, 7, iconManager.get(Material.SOUL_LANTERN)
-                    .setName(Lang.SUBMIT_TO_REQUESTS.get(langType))
-                    .setDescription(submitDescription)
-                    .setAction(
-                            event -> {
-                                plannedAttack.territorySurrendered();
-                                new AttackMenu(player, territoryData);
-                            })
-                    .asGuiItem(player, langType));
         }
         else if (warRole == WarRole.OTHER_ATTACKER || warRole == WarRole.OTHER_DEFENDER) {
             gui.setItem(2, 7, iconManager.get(Material.DARK_OAK_DOOR)

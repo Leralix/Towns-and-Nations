@@ -8,10 +8,7 @@ import org.leralix.lib.SphereLib;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.War;
-import org.leralix.tan.war.legacy.CreateAttackData;
-import org.leralix.tan.war.legacy.WarRole;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 
@@ -19,7 +16,7 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ChangeAttackNameTest {
+class ChangeWarNameTest {
 
     private ServerMock server;
 
@@ -47,15 +44,12 @@ class ChangeAttackNameTest {
 
         War war = new War("W1", town1, town2, Collections.emptyList());
 
-        CreateAttackData createAttackData = new CreateAttackData(war, WarRole.MAIN_ATTACKER);
-        PlannedAttack plannedAttack = war.addAttack(createAttackData);
-
-        ChangeAttackName changeAttackName = new ChangeAttackName(plannedAttack, null);
+        ChangeWarName changeWarName = new ChangeWarName(war, null);
 
         String newName = "new war name";
-        changeAttackName.execute(player, newName);
+        changeWarName.execute(player, newName);
 
-        assertEquals(newName, plannedAttack.getName());
+        assertEquals(newName, war.getName());
 
     }
 
