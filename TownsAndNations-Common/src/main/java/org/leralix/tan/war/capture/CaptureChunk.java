@@ -110,14 +110,15 @@ public class CaptureChunk {
             score = 0;
             if(territoryChunk.isOccupied()){
                 territoryChunk.liberate();
-                currentAttack.getAttackResultCounter().incrementClaimsCaptured();
+                currentAttack.getAttackResultCounter().decrementClaimsCaptured();
             }
         }
         else if (score > Constants.getChunkCaptureTime()) {
             score = Constants.getChunkCaptureTime();
             if(!territoryChunk.isOccupied()){
                 territoryChunk.setOccupier(currentAttack.getAttackData().getWar().getMainAttacker());
-                currentAttack.getAttackResultCounter().decrementClaimsCaptured();
+                currentAttack.getAttackResultCounter().incrementClaimsCaptured();
+                territoryChunk.getOwner().checkIfShouldSurrender();
             }
         }
     }

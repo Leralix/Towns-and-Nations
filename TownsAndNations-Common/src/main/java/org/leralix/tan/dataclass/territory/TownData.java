@@ -7,6 +7,7 @@ import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.economy.*;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.events.EventManager;
@@ -495,6 +496,15 @@ public class TownData extends TerritoryData {
 
     @Override
     public boolean isVassal(String territoryID) {
+        return false;
+    }
+
+    public boolean isTownCapitalOccupied(){
+        var optCapital = getCapitalLocation();
+        if(optCapital.isPresent()){
+            var claimedChunk = NewClaimedChunkStorage.getInstance().get(optCapital.get().getChunk());
+            return claimedChunk instanceof TerritoryChunk territoryChunk && territoryChunk.isOccupied();
+        }
         return false;
     }
 }

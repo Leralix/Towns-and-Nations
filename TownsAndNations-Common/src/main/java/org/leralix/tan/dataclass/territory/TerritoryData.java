@@ -46,6 +46,7 @@ import org.leralix.tan.storage.database.transactions.instance.TerritoryChunkUpke
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.upgrade.TerritoryStats;
 import org.leralix.tan.upgrade.rewards.StatsType;
 import org.leralix.tan.upgrade.rewards.list.BiomeStat;
@@ -61,6 +62,7 @@ import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.PlannedAttack;
+import org.leralix.tan.war.War;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
@@ -1094,5 +1096,48 @@ public abstract class TerritoryData {
             }
         }
         return upgradesStatus;
+    }
+
+    public int getNumberOfOccupiedChunk() {
+        int count = 0;
+        for(TerritoryChunk territoryChunk : NewClaimedChunkStorage.getInstance().getAllChunkFrom(this)){
+            if(territoryChunk.isOccupied()){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Called after a chunk has been captured by a foreign town.
+     * If surrender progress is superior to constants, territory will automatically surrender all involved wars
+     */
+    public void checkIfShouldSurrender(){
+        int totalChunk = getNumberOfClaimedChunk();
+        int occupiedChunk = getNumberOfOccupiedChunk();
+
+        int ratio;
+        if(totalChunk != 0){
+            ratio = occupiedChunk * 100 / totalChunk;
+        }
+        else {
+            ratio = 0;
+        }
+
+        boolean capitalExist = this instanceof TownData townData && townData.getCapitalLocation().isPresent();
+        boolean capitalCaptured = this instanceof TownData townData && townData.isTownCapitalOccupied();
+
+        if(capitalExist && capitalCaptured){
+            ratio += Constants.getCaptureCapitalBonusPercentage();
+        }
+
+        if(ratio > Constants.getCapturePercentageToSurrender()){
+            for(War war : WarStorage.getInstance().getWarsOfTerritory(this)){
+                if(war.isMainAttacker(this) || war.isMainDefender(this)){
+                    war.territorySurrender(this);
+                }
+            }
+        }
+
     }
 }

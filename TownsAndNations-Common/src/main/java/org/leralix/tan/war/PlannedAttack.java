@@ -4,15 +4,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.events.EventManager;
-import org.leralix.tan.events.events.DefenderAcceptDemandsBeforeWarInternalEvent;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
@@ -22,7 +18,6 @@ import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.timezone.TimeZoneEnum;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.war.capture.CaptureManager;
 import org.leralix.tan.war.info.AttackNotYetStarted;
 import org.leralix.tan.war.info.AttackResult;
@@ -236,12 +231,6 @@ public class PlannedAttack {
             }
         }
         return WarRole.NEUTRAL;
-    }
-
-    public void territorySurrendered() {
-        EventManager.getInstance().callEvent(new DefenderAcceptDemandsBeforeWarInternalEvent(getWar().getMainDefender(), getWar().getMainAttacker()));
-        getWar().territorySurrender(warRole);
-        end(new AttackResultCancelled());
     }
 
     public List<OfflinePlayer> getAllOfflinePlayers() {

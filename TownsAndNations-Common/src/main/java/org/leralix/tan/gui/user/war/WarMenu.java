@@ -1,9 +1,11 @@
 package org.leralix.tan.gui.user.war;
 
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.SelectWarGoals;
 import org.leralix.tan.gui.user.territory.WarsMenu;
@@ -11,7 +13,9 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeWarName;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
+import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.WarRole;
@@ -74,8 +78,6 @@ public class WarMenu extends AbstractWarMenu {
     }
 
     private @NotNull GuiItem getWargoalsButton() {
-
-
         List<FilledLang> description = new ArrayList<>();
         description.add(Lang.WAR_GOAL_LIST_BUTTON_DESC1.get());
         for(WarGoal goal : war.getGoals(warRole)) {
@@ -95,17 +97,7 @@ public class WarMenu extends AbstractWarMenu {
                 .asGuiItem(player, langType);
     }
 
-    private @NotNull GuiItem getAttackButton() {
-        return iconManager.get(IconKey.WAR_CREATE_ATTACK_ICON)
-                .setName(Lang.WAR_CREATE_ATTACK.get(langType))
-                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
-                .setAction(action -> new CreateAttackMenu(player, territoryData, war, warRole, this))
-                .asGuiItem(player, langType);
-    }
-
     private @NotNull GuiItem getEnemyWargoalsIcon() {
-
-
         List<FilledLang> description = new ArrayList<>();
         description.add(Lang.WAR_ENEMY_GOAL_LIST_DESC1.get());
         for(WarGoal goal : war.getGoals(warRole.opposite())) {
@@ -121,6 +113,14 @@ public class WarMenu extends AbstractWarMenu {
         return iconManager.get(IconKey.WAR_ENEMY_GOAL_LIST_ICON)
                 .setName(Lang.WAR_ENEMY_GOAL_LIST.get(langType))
                 .setDescription(description)
+                .asGuiItem(player, langType);
+    }
+
+    private @NotNull GuiItem getAttackButton() {
+        return iconManager.get(IconKey.WAR_CREATE_ATTACK_ICON)
+                .setName(Lang.WAR_CREATE_ATTACK.get(langType))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
+                .setAction(action -> new CreateAttackMenu(player, territoryData, war, warRole, this))
                 .asGuiItem(player, langType);
     }
 

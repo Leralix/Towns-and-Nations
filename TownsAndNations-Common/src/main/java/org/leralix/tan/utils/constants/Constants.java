@@ -96,6 +96,8 @@ public class Constants {
     private static Map<TownRelation, RelationConstant> relationsConstants;
     private static Set<String> allRelationBlacklistedCommands;
     private static boolean adminApprovalForStartOfAttack;
+    private static int capturePercentageToSurrender;
+    private static int CaptureCapitalBonusPercentage;
 
     private static int attackDuration;
     private static int minTimeBeforeAttack;
@@ -232,6 +234,8 @@ public class Constants {
         }
         adminApprovalForStartOfAttack = config.getBoolean("AdminApproval", false);
 
+        capturePercentageToSurrender = config.getInt("capturePercentageToSurrender");
+        CaptureCapitalBonusPercentage = config.getInt("captureCapitalBonusPercentage");
         attackDuration = config.getInt("WarDuration", 30);
         minTimeBeforeAttack = config.getInt("MinimumTimeBeforeAttack", 120);
         maxTimeBeforeAttack = config.getInt("MaximumTimeBeforeAttack", 4320);
@@ -575,6 +579,14 @@ public class Constants {
 
     public static boolean adminApprovalForStartOfAttack() {
         return adminApprovalForStartOfAttack;
+    }
+
+    public static int getCapturePercentageToSurrender() {
+        return capturePercentageToSurrender;
+    }
+
+    public static int getCaptureCapitalBonusPercentage() {
+        return CaptureCapitalBonusPercentage;
     }
 
     public static List<String> getPerPlayerEndCommands() {

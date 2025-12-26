@@ -66,8 +66,8 @@ public class BrowsePlayerWithPermissionMenu extends IteratorGUI {
             guiItems.add(
                     iconManager.get(authorizedPlayer)
                             .setName(authorizedPlayer.getName())
-                            .setDescription(
-                                    Lang.GUI_TOWN_MEMBER_DESC3.get()
+                            .setClickToAcceptMessage(
+                                    Lang.GUI_TOWN_MEMBER_DESC3
                             )
                             .setAction(action -> {
                                 action.setCancelled(true);

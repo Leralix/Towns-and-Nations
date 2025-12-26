@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import org.bukkit.Chunk;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.lib.position.Vector2D;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.chunk.*;
 import org.leralix.tan.dataclass.territory.TerritoryData;

@@ -61,8 +61,8 @@ public class AttackResultCompleted extends AttackResult implements TanAttackResu
                 Lang.ATTACK_ICON_FINISHED_DATE.get(exactTimeStart.get(langType)),
                 Lang.ATTACK_ICON_FINISHED_NB_DEATH_ATTACKERS.get(Integer.toString(nbDeathsAttacker)),
                 Lang.ATTACK_ICON_FINISHED_NB_DEATH_DEFENDERS.get(Integer.toString(nbDeathsDefender)),
-                Lang.ATTACK_ICON_FINISHED_NB_CHUNK_CAPTURED.get(Integer.toString(nbFortsCaptured)),
-                Lang.ATTACK_ICON_FINISHED_NB_FORTS_CAPTURED.get(Integer.toString(nbChunkCaptured))
+                Lang.ATTACK_ICON_FINISHED_NB_CHUNK_CAPTURED.get(Integer.toString(nbChunkCaptured)),
+                Lang.ATTACK_ICON_FINISHED_NB_FORTS_CAPTURED.get(Integer.toString(nbFortsCaptured))
         );
     }
 

@@ -81,6 +81,7 @@ public abstract class Fort extends Building {
                 territoryChunk.setOccupier(newOwner);
             }
         }
+        getOwner().checkIfShouldSurrender();
     }
 
     public void liberate() {
