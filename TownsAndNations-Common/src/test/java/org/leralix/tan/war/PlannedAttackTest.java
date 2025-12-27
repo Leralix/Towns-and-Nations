@@ -7,6 +7,8 @@ import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.WarRole;
 
+import java.util.Collections;
+
 class PlannedAttackTest extends BasicTest {
 
 
@@ -16,7 +18,7 @@ class PlannedAttackTest extends BasicTest {
         TownData town1 = TownDataStorage.getInstance().newTown("town1");
         TownData town2 = TownDataStorage.getInstance().newTown("town2");
 
-        War war = new War("0", town1, town2);
+        War war = new War("0", town1, town2, Collections.emptyList());
         CreateAttackData createAttackData = new CreateAttackData(war, WarRole.MAIN_ATTACKER);
         createAttackData.addDeltaDateTime(-createAttackData.getSelectedTime());
         PlannedAttack plannedAttack = new PlannedAttack("0", createAttackData);

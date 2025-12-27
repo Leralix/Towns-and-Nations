@@ -15,6 +15,7 @@ import org.leralix.tan.war.legacy.CurrentAttack;
 import org.leralix.tan.war.legacy.WarRole;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,7 +39,7 @@ class ShowBoundariesTest extends BasicTest {
         var townAttacker = TownDataStorage.getInstance().newTown("AttackerTown");
         var townDefender = TownDataStorage.getInstance().newTown("DefenderTown", tanDefender);
 
-        War war = new War("TestWar", townAttacker, townDefender);
+        War war = new War("TestWar", townAttacker, townDefender, Collections.emptyList());
         CreateAttackData createAttackData = new CreateAttackData(war, WarRole.MAIN_ATTACKER);
         PlannedAttack plannedAttack = new PlannedAttack("TetsWar", createAttackData);
         CurrentAttack currentAttack = new CurrentAttack(plannedAttack, 0, 0);
