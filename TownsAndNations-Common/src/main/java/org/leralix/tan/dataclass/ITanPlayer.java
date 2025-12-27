@@ -9,6 +9,7 @@ import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.timezone.TimeZoneEnum;
+import org.leralix.tan.war.info.SideStatus;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.List;
@@ -70,11 +71,14 @@ public interface ITanPlayer {
 
     List<String> getAttackInvolvedIn();
 
-    void addWar(CurrentAttack currentAttacks);
-
     void updateCurrentAttack();
 
-    boolean isAtWarWith(TerritoryData territoryData);
+    /**
+     * Check all wars between the player's territories and the selected territory.
+     * @param territoryData The territory to check
+     * @return The worst role the player has with the territory
+     */
+    SideStatus getWarSideWith(TerritoryData territoryData);
 
     void removeWar(@NotNull CurrentAttack currentAttacks);
 

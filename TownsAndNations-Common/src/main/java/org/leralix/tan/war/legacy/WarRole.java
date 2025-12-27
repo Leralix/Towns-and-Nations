@@ -44,4 +44,14 @@ public enum WarRole {
             case MAIN_ATTACKER, MAIN_DEFENDER, NEUTRAL -> false;
         };
     }
+
+    public boolean isOpposite(WarRole otherWarRole) {
+        return switch (this){
+            case OTHER_ATTACKER, OTHER_DEFENDER ->
+                    otherWarRole == WarRole.MAIN_ATTACKER || otherWarRole == WarRole.OTHER_ATTACKER;
+            case MAIN_ATTACKER, MAIN_DEFENDER ->
+                    otherWarRole == WarRole.OTHER_ATTACKER || otherWarRole == WarRole.OTHER_DEFENDER;
+            case NEUTRAL -> false;
+        };
+    }
 }

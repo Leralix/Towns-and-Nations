@@ -24,17 +24,20 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.FurnaceInventory;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.storage.SudoPlayerStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.war.info.SideStatus;
+import org.leralix.tan.war.legacy.WarRole;
 
 public class ChunkListener implements Listener {
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent event){
+    public void onBlockBreak(BlockBreakEvent event) {
 
         Player player = event.getPlayer();
         Block breakedBlock = event.getBlock();
@@ -52,31 +55,34 @@ public class ChunkListener implements Listener {
             return;
         }
 
-        if(!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK))
+        if (!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK))
             event.setCancelled(true);
     }
+
     @EventHandler
-    public void onBucketFillEvent(PlayerBucketFillEvent event){
+    public void onBucketFillEvent(PlayerBucketFillEvent event) {
         Player player = event.getPlayer();
         Location loc = event.getBlock().getLocation();
 
-        if(!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)){
+        if (!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)) {
             event.setCancelled(true);
         }
 
     }
+
     @EventHandler
-    public void onBucketEmptyEvent(PlayerBucketEmptyEvent event){
+    public void onBucketEmptyEvent(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
         Location loc = event.getBlock().getLocation();
 
-        if(!canPlayerDoAction(loc, player, ChunkPermissionType.PLACE_BLOCK)){
+        if (!canPlayerDoAction(loc, player, ChunkPermissionType.PLACE_BLOCK)) {
             event.setCancelled(true);
         }
 
     }
+
     @EventHandler
-    public void onPlayerInteractEvent(PlayerInteractEvent event){
+    public void onPlayerInteractEvent(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();
 
@@ -98,15 +104,13 @@ public class ChunkListener implements Listener {
             }
         }
 
-        if(Tag.BUTTONS.isTagged(materialType) ||
-                materialBlock == Material.LEVER){
+        if (Tag.BUTTONS.isTagged(materialType) ||
+                materialBlock == Material.LEVER) {
 
-            if(!canPlayerDoAction(loc, event.getPlayer(), ChunkPermissionType.INTERACT_BUTTON)){
+            if (!canPlayerDoAction(loc, event.getPlayer(), ChunkPermissionType.INTERACT_BUTTON)) {
                 event.setCancelled(true);
             }
-        }
-
-        else if(materialBlock == Material.CHEST ||
+        } else if (materialBlock == Material.CHEST ||
                 materialBlock == Material.TRAPPED_CHEST ||
                 materialBlock == Material.BARREL ||
                 materialBlock == Material.HOPPER ||
@@ -129,77 +133,64 @@ public class ChunkListener implements Listener {
                 materialBlock == Material.BROWN_SHULKER_BOX ||
                 materialBlock == Material.GREEN_SHULKER_BOX ||
                 materialBlock == Material.RED_SHULKER_BOX ||
-                materialBlock == Material.BLACK_SHULKER_BOX)
-        {
-            if(!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_CHEST)){
+                materialBlock == Material.BLACK_SHULKER_BOX) {
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_CHEST)) {
                 event.setCancelled(true);
             }
-        }
-        else if(
+        } else if (
                 Tag.DOORS.isTagged(materialType) ||
-                Tag.TRAPDOORS.isTagged(materialType) ||
-                Tag.FENCE_GATES.isTagged(materialType)){
-            if(!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_DOOR)){
+                        Tag.TRAPDOORS.isTagged(materialType) ||
+                        Tag.FENCE_GATES.isTagged(materialType)) {
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_DOOR)) {
                 event.setCancelled(true);
             }
-        }
-        else if (
+        } else if (
                 Tag.CANDLES.isTagged(materialType) ||
-                Tag.CANDLE_CAKES.isTagged(materialType) ||
-                Tag.FLOWER_POTS.isTagged(materialType) ||
-                Tag.CAULDRONS.isTagged(materialType) ||
-                materialBlock == Material.COMPOSTER ||
-                Tag.ALL_SIGNS.isTagged(materialType) ||
-                materialBlock == Material.CHISELED_BOOKSHELF ||
-                Tag.CAMPFIRES.isTagged(materialType) ||
-                materialBlock == Material.BEACON
+                        Tag.CANDLE_CAKES.isTagged(materialType) ||
+                        Tag.FLOWER_POTS.isTagged(materialType) ||
+                        Tag.CAULDRONS.isTagged(materialType) ||
+                        materialBlock == Material.COMPOSTER ||
+                        Tag.ALL_SIGNS.isTagged(materialType) ||
+                        materialBlock == Material.CHISELED_BOOKSHELF ||
+                        Tag.CAMPFIRES.isTagged(materialType) ||
+                        materialBlock == Material.BEACON
 
         ) {
-            if(!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_DECORATIVE_BLOCK)){
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_DECORATIVE_BLOCK)) {
                 event.setCancelled(true);
             }
-        }
-        else if (
+        } else if (
                 materialBlock == Material.JUKEBOX ||
-                materialBlock == Material.NOTE_BLOCK
+                        materialBlock == Material.NOTE_BLOCK
         ) {
-            if(!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_MUSIC_BLOCK)){
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_MUSIC_BLOCK)) {
                 event.setCancelled(true);
             }
-        }
-        else if (
+        } else if (
                 materialBlock == Material.REDSTONE_WIRE ||
-                materialBlock == Material.REPEATER ||
-                materialBlock == Material.COMPARATOR ||
-                materialBlock == Material.DAYLIGHT_DETECTOR) {
-            if(!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_REDSTONE)){
+                        materialBlock == Material.REPEATER ||
+                        materialBlock == Material.COMPARATOR ||
+                        materialBlock == Material.DAYLIGHT_DETECTOR) {
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_REDSTONE)) {
                 event.setCancelled(true);
             }
-        }
-
-        else if(event.getItem() != null && event.getItem().getType() == Material.BONE_MEAL){
-            if(!canPlayerDoAction(loc, player, ChunkPermissionType.USE_BONE_MEAL)){
+        } else if (event.getItem() != null && event.getItem().getType() == Material.BONE_MEAL) {
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.USE_BONE_MEAL)) {
                 event.setCancelled(true);
             }
-        }
-
-        else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.SWEET_BERRY_BUSH){
-            if(!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_BERRIES))
+        } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.SWEET_BERRY_BUSH) {
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_BERRIES))
                 event.setCancelled(true);
-        }
-        else if ((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && player.getItemInHand().getType() == Material.OAK_BOAT) {
-            if(!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_BOAT))
+        } else if ((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && player.getItemInHand().getType() == Material.OAK_BOAT) {
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_BOAT))
                 event.setCancelled(true);
-        }
-        else if((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && (player.getItemInHand().getType() == Material.MINECART)){
-            if(!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_MINECART))
+        } else if ((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && (player.getItemInHand().getType() == Material.MINECART)) {
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_MINECART))
                 event.setCancelled(true);
-        }
+        } else if (event.getAction() == Action.PHYSICAL &&
+                (event.getClickedBlock().getType() == Material.FARMLAND)) {
 
-        else if (event.getAction() == Action.PHYSICAL &&
-                (event.getClickedBlock().getType() == Material.FARMLAND )){
-
-            if(!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)){
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)) {
                 event.setCancelled(true);
             }
         }
@@ -207,89 +198,27 @@ public class ChunkListener implements Listener {
     }
 
     @EventHandler
-    public void onBlocPlaced(BlockPlaceEvent event){
+    public void onBlocPlaced(BlockPlaceEvent event) {
 
         Player player = event.getPlayer();
         Location loc = event.getBlock().getLocation();
 
 
-        if(!canPlayerDoAction(loc, player, ChunkPermissionType.PLACE_BLOCK)){
+        if (!canPlayerDoAction(loc, player, ChunkPermissionType.PLACE_BLOCK)) {
             event.setCancelled(true);
         }
 
     }
+
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 
-        if(event.getDamager() instanceof Player player) {
+        if (event.getDamager() instanceof Player player) {
             Entity entity = event.getEntity();
             Location loc = entity.getLocation();
 
 
-            if( entity instanceof Allay ||
-                entity instanceof Axolotl ||
-                entity instanceof Bat ||
-                entity instanceof Camel ||
-                entity instanceof Cat ||
-                entity instanceof Chicken ||
-                entity instanceof Cow ||
-                entity instanceof Donkey ||
-                entity instanceof Fox ||
-                entity instanceof Frog ||
-                entity instanceof Horse ||
-                entity instanceof Mule ||
-                entity instanceof Ocelot ||
-                entity instanceof Parrot ||
-                entity instanceof Pig ||
-                entity instanceof Rabbit ||
-                entity instanceof Sheep ||
-                entity instanceof SkeletonHorse ||
-                entity instanceof Sniffer ||
-                entity instanceof Snowman ||
-                entity instanceof Squid ||
-                entity instanceof Strider ||
-                entity instanceof Turtle ||
-                entity instanceof Villager ||
-                entity instanceof WanderingTrader ||
-                entity instanceof Fish ||
-                entity instanceof Bee ||
-                entity instanceof Dolphin ||
-                entity instanceof Goat ||
-                entity instanceof IronGolem ||
-                entity instanceof Llama ||
-                entity instanceof Panda ||
-                entity instanceof PolarBear ||
-                entity instanceof Wolf ||
-                entity instanceof ArmorStand
-            ) {
-                if(!canPlayerDoAction(loc, player, ChunkPermissionType.ATTACK_PASSIVE_MOB)){
-                    event.setCancelled(true);
-                }
-            }
-
-            else if(entity instanceof ItemFrame) {
-                if(!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_ITEM_FRAME)){
-                    event.setCancelled(true);
-                }
-            }
-
-            else if(entity instanceof EnderCrystal){
-                if(!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)){
-                    event.setCancelled(true);
-                }
-            }
-            else if(entity instanceof Player player2 && !canPvpHappen(player, player2)) {
-                event.setCancelled(true);
-            }
-        }
-
-        if(event.getDamager() instanceof Projectile projectile) {
-
-            if(projectile.getShooter() instanceof Player player){
-                Entity entity = event.getEntity();
-                Location loc = entity.getLocation();
-
-                if(entity instanceof Allay ||
+            if (entity instanceof Allay ||
                     entity instanceof Axolotl ||
                     entity instanceof Bat ||
                     entity instanceof Camel ||
@@ -323,23 +252,78 @@ public class ChunkListener implements Listener {
                     entity instanceof Panda ||
                     entity instanceof PolarBear ||
                     entity instanceof Wolf ||
-                    entity instanceof ArmorStand) {
+                    entity instanceof ArmorStand
+            ) {
+                if (!canPlayerDoAction(loc, player, ChunkPermissionType.ATTACK_PASSIVE_MOB)) {
+                    event.setCancelled(true);
+                }
+            } else if (entity instanceof ItemFrame) {
+                if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_ITEM_FRAME)) {
+                    event.setCancelled(true);
+                }
+            } else if (entity instanceof EnderCrystal) {
+                if (!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)) {
+                    event.setCancelled(true);
+                }
+            } else if (entity instanceof Player player2 && !canPvpHappen(player, player2)) {
+                event.setCancelled(true);
+            }
+        }
 
-                    if(!canPlayerDoAction(loc, player, ChunkPermissionType.ATTACK_PASSIVE_MOB)){
+        if (event.getDamager() instanceof Projectile projectile) {
+
+            if (projectile.getShooter() instanceof Player player) {
+                Entity entity = event.getEntity();
+                Location loc = entity.getLocation();
+
+                if (entity instanceof Allay ||
+                        entity instanceof Axolotl ||
+                        entity instanceof Bat ||
+                        entity instanceof Camel ||
+                        entity instanceof Cat ||
+                        entity instanceof Chicken ||
+                        entity instanceof Cow ||
+                        entity instanceof Donkey ||
+                        entity instanceof Fox ||
+                        entity instanceof Frog ||
+                        entity instanceof Horse ||
+                        entity instanceof Mule ||
+                        entity instanceof Ocelot ||
+                        entity instanceof Parrot ||
+                        entity instanceof Pig ||
+                        entity instanceof Rabbit ||
+                        entity instanceof Sheep ||
+                        entity instanceof SkeletonHorse ||
+                        entity instanceof Sniffer ||
+                        entity instanceof Snowman ||
+                        entity instanceof Squid ||
+                        entity instanceof Strider ||
+                        entity instanceof Turtle ||
+                        entity instanceof Villager ||
+                        entity instanceof WanderingTrader ||
+                        entity instanceof Fish ||
+                        entity instanceof Bee ||
+                        entity instanceof Dolphin ||
+                        entity instanceof Goat ||
+                        entity instanceof IronGolem ||
+                        entity instanceof Llama ||
+                        entity instanceof Panda ||
+                        entity instanceof PolarBear ||
+                        entity instanceof Wolf ||
+                        entity instanceof ArmorStand) {
+
+                    if (!canPlayerDoAction(loc, player, ChunkPermissionType.ATTACK_PASSIVE_MOB)) {
                         event.setCancelled(true);
                     }
-                }
-                else if(entity instanceof ItemFrame) {
-                    if(!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_ITEM_FRAME)){
+                } else if (entity instanceof ItemFrame) {
+                    if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_ITEM_FRAME)) {
                         event.setCancelled(true);
                     }
-                }
-                else if(entity instanceof EnderCrystal){
-                    if(!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)){
+                } else if (entity instanceof EnderCrystal) {
+                    if (!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)) {
                         event.setCancelled(true);
                     }
-                }
-                else if(entity instanceof Player player2 && !canPvpHappen(player, player2)) {
+                } else if (entity instanceof Player player2 && !canPvpHappen(player, player2)) {
                     event.setCancelled(true);
                 }
             }
@@ -347,7 +331,7 @@ public class ChunkListener implements Listener {
     }
 
     private boolean canPvpHappen(Player player1, Player player2) {
-        if(!NewClaimedChunkStorage.getInstance().get(player2.getLocation().getChunk()).canPVPHappen()){
+        if (!NewClaimedChunkStorage.getInstance().get(player2.getLocation().getChunk()).canPVPHappen()) {
             return false;
         }
 
@@ -360,48 +344,45 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
-        if(event.getPlayer() instanceof Player player &&
+        if (event.getPlayer() instanceof Player player &&
                 (event.getInventory() instanceof FurnaceInventory ||
                         event.getInventory() instanceof BlastFurnace ||
                         event.getInventory() instanceof Smoker)) {
 
-                Location loc = event.getInventory().getLocation();
-                if(loc == null)
-                    return;
-                if(!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_FURNACE)){
-                    event.setCancelled(true);
-                }
+            Location loc = event.getInventory().getLocation();
+            if (loc == null)
+                return;
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_FURNACE)) {
+                event.setCancelled(true);
             }
+        }
 
     }
+
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 
         Player player = event.getPlayer();
 
-        if(event.getRightClicked() instanceof ItemFrame itemFrame) {
+        if (event.getRightClicked() instanceof ItemFrame itemFrame) {
             Location loc = itemFrame.getLocation();
 
-            if(!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_ITEM_FRAME)){
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_ITEM_FRAME)) {
                 event.setCancelled(true);
             }
-        }
-
-        else if(event.getRightClicked() instanceof LeashHitch leashHitch) {
+        } else if (event.getRightClicked() instanceof LeashHitch leashHitch) {
             Location loc = leashHitch.getLocation();
 
 
-            if(!canPlayerDoAction(loc, player, ChunkPermissionType.USE_LEAD)){
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.USE_LEAD)) {
                 event.setCancelled(true);
             }
 
-        }
-
-        else if(event.getRightClicked() instanceof LivingEntity livingEntity) {
-            if(livingEntity.isLeashed()) {
+        } else if (event.getRightClicked() instanceof LivingEntity livingEntity) {
+            if (livingEntity.isLeashed()) {
                 Location loc = livingEntity.getLocation();
 
-                if(!canPlayerDoAction(loc, player, ChunkPermissionType.USE_LEAD)){
+                if (!canPlayerDoAction(loc, player, ChunkPermissionType.USE_LEAD)) {
                     event.setCancelled(true);
                 }
             }
@@ -410,11 +391,11 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
-        if(event.getRightClicked() instanceof ArmorStand armorStand) {
+        if (event.getRightClicked() instanceof ArmorStand armorStand) {
             Player player = event.getPlayer();
             Location loc = armorStand.getLocation();
 
-            if(!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_ARMOR_STAND)){
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_ARMOR_STAND)) {
                 event.setCancelled(true);
             }
         }
@@ -426,7 +407,7 @@ public class ChunkListener implements Listener {
         Entity entity = event.getEntity();
         Location loc = entity.getLocation();
 
-        if(!canPlayerDoAction(loc,player, ChunkPermissionType.USE_LEAD)){
+        if (!canPlayerDoAction(loc, player, ChunkPermissionType.USE_LEAD)) {
             event.setCancelled(true);
         }
 
@@ -434,33 +415,31 @@ public class ChunkListener implements Listener {
     }
 
     @EventHandler
-    public void onHangingBreakByEntityEvent(HangingBreakByEntityEvent event){
+    public void onHangingBreakByEntityEvent(HangingBreakByEntityEvent event) {
         Entity remover = event.getRemover();
-        if(remover instanceof Player player){
+        if (remover instanceof Player player) {
             Entity entity = event.getEntity();
             Location loc = entity.getLocation();
 
-            if(entity instanceof LeashHitch) {
+            if (entity instanceof LeashHitch) {
                 if (!canPlayerDoAction(loc, player, ChunkPermissionType.USE_LEAD)) {
                     event.setCancelled(true);
                 }
-            }
-            else{
+            } else {
                 if (!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)) {
                     event.setCancelled(true);
                 }
             }
         } else if (remover instanceof Projectile projectile) {
-            if(projectile.getShooter() instanceof Player player){
+            if (projectile.getShooter() instanceof Player player) {
                 Entity entity = event.getEntity();
                 Location loc = entity.getLocation();
 
-                if(entity instanceof LeashHitch) {
+                if (entity instanceof LeashHitch) {
                     if (!canPlayerDoAction(loc, player, ChunkPermissionType.USE_LEAD)) {
                         event.setCancelled(true);
                     }
-                }
-                else{
+                } else {
                     if (!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)) {
                         event.setCancelled(true);
                     }
@@ -470,84 +449,88 @@ public class ChunkListener implements Listener {
     }
 
     @EventHandler
-    public void onHangingPlaceEvent(HangingPlaceEvent event){
+    public void onHangingPlaceEvent(HangingPlaceEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
         Location loc = block.getLocation();
 
         Entity entity = event.getEntity();
-        if(entity instanceof LeashHitch){
-            if(!canPlayerDoAction(loc, player, ChunkPermissionType.USE_LEAD)){
+        if (entity instanceof LeashHitch) {
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.USE_LEAD)) {
                 event.setCancelled(true);
             }
         } else {
-            if(!canPlayerDoAction(loc, player, ChunkPermissionType.PLACE_BLOCK)){
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.PLACE_BLOCK)) {
                 event.setCancelled(true);
             }
         }
     }
 
     @EventHandler
-    public void onPlayerShearEntityEvent(PlayerShearEntityEvent event){
+    public void onPlayerShearEntityEvent(PlayerShearEntityEvent event) {
         Player player = event.getPlayer();
         Location loc = event.getEntity().getLocation();
 
-        if(!canPlayerDoAction(loc,player, ChunkPermissionType.USE_SHEARS)){
+        if (!canPlayerDoAction(loc, player, ChunkPermissionType.USE_SHEARS)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onExplosion(EntityExplodeEvent event){
+    public void onExplosion(EntityExplodeEvent event) {
         event.blockList().removeIf(block -> !NewClaimedChunkStorage.getInstance().get(block.getChunk()).canExplosionGrief());
     }
 
     @EventHandler
-    public void onBurning(BlockBurnEvent event){
+    public void onBurning(BlockBurnEvent event) {
         Chunk chunk = event.getBlock().getChunk();
 
-        if(!NewClaimedChunkStorage.getInstance().get(chunk).canFireGrief()){
+        if (!NewClaimedChunkStorage.getInstance().get(chunk).canFireGrief()) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onFireSpreading(BlockSpreadEvent event){
+    public void onFireSpreading(BlockSpreadEvent event) {
 
-        if(event.getSource().getType() == Material.FIRE){
+        if (event.getSource().getType() == Material.FIRE) {
             Chunk chunk = event.getBlock().getChunk();
-            if(!NewClaimedChunkStorage.getInstance().get(chunk).canFireGrief()){
+            if (!NewClaimedChunkStorage.getInstance().get(chunk).canFireGrief()) {
                 event.setCancelled(true);
             }
         }
     }
 
-    private boolean canPlayerDoAction(Location location, Player player, ChunkPermissionType permissionType){
+    @EventHandler
+    public void onWitherBlockBreak(EntityChangeBlockEvent event) {
+
+        Chunk chunk = event.getBlock().getChunk();
+
+        if (!NewClaimedChunkStorage.getInstance().get(chunk).canMobGrief()) {
+            event.setCancelled(true);
+        }
+    }
+
+    private boolean canPlayerDoAction(Location location, Player player, ChunkPermissionType permissionType) {
 
 
         //Player in admin mode
-        if(SudoPlayerStorage.isSudoPlayer(player))
+        if (SudoPlayerStorage.isSudoPlayer(player))
             return true;
 
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
-        if(tanPlayer.isAtWarWith(claimedChunk.getOwner()))
-            return true;
-
-
-        return claimedChunk.canPlayerDo(player, permissionType,location);
-
-    }
-
-    public void onWitherBlockBreak(EntityChangeBlockEvent event) {
-
-        Chunk chunk = event.getBlock().getChunk();
-
-        if(!NewClaimedChunkStorage.getInstance().get(chunk).canMobGrief()){
-            event.setCancelled(true);
+        // Check if player is involved in a war with this territory. Additional actions may be authorized
+        if (claimedChunk instanceof TerritoryChunk territoryChunk) {
+            SideStatus side = tanPlayer.getWarSideWith(territoryChunk.getOwner());
+            if (side == SideStatus.ALLY && Constants.getPermissionAtWars().canAllyDoAction(permissionType)) {
+                return true;
+            } else if (side == SideStatus.ENEMY && Constants.getPermissionAtWars().canEnemyDoAction(permissionType)) {
+                return true;
+            }
         }
+
+        return claimedChunk.canPlayerDo(player, permissionType, location);
     }
-
-
 }

@@ -349,6 +349,49 @@ warBoundaryRadius: 16.0
 #The type of particle used to display boundaries (https://minecraft.fandom.com/wiki/Particles#Types_of_particles)
 warBoundaryParticle : "DRAGON_BREATH"
 
+# Defines what permissions attackers get in chunk of territory at war
+# - when the chunk is held by defenders
+# - when the chunk is captured by attackers (all attackers from all current wars)
+attackersPermissions:
+  heldByAlly:
+    INTERACT_CHEST: true
+    INTERACT_DOOR: true
+    BREAK_BLOCK: true
+    PLACE_BLOCK: true
+    ATTACK_PASSIVE_MOB: true
+    INTERACT_BUTTON: true
+    INTERACT_REDSTONE: true
+    INTERACT_FURNACE: true
+    INTERACT_ITEM_FRAME: true
+    INTERACT_ARMOR_STAND: true
+    INTERACT_DECORATIVE_BLOCK: true
+    INTERACT_MUSIC_BLOCK: true
+    USE_LEAD: true
+    USE_SHEARS: true
+    INTERACT_BOAT: true
+    INTERACT_MINECART: true
+    USE_BONE_MEAL: true
+    INTERACT_BERRIES: true
+  heldByEnemy:
+    INTERACT_CHEST: false
+    INTERACT_DOOR: false
+    BREAK_BLOCK: true
+    PLACE_BLOCK: true
+    ATTACK_PASSIVE_MOB: true
+    INTERACT_BUTTON: true
+    INTERACT_REDSTONE: true
+    INTERACT_FURNACE: false
+    INTERACT_ITEM_FRAME: false
+    INTERACT_ARMOR_STAND: false
+    INTERACT_DECORATIVE_BLOCK: true
+    INTERACT_MUSIC_BLOCK: true
+    USE_LEAD: true
+    USE_SHEARS: true
+    INTERACT_BOAT: true
+    INTERACT_MINECART: true
+    USE_BONE_MEAL: true
+    INTERACT_BERRIES: true
+
 ########################
 ##  General settings  ##
 ########################

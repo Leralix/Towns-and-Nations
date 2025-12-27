@@ -10,6 +10,7 @@ import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.timezone.TimeZoneEnum;
+import org.leralix.tan.war.info.SideStatus;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.List;
@@ -151,20 +152,14 @@ public class NoPlayerData implements ITanPlayer {
         return List.of();
     }
 
-
-    @Override
-    public void addWar(CurrentAttack currentAttacks) {
-        // singleton class, no need to set name
-    }
-
     @Override
     public void updateCurrentAttack() {
         // singleton class, no need to set name
     }
 
     @Override
-    public boolean isAtWarWith(TerritoryData territoryData) {
-        return false;
+    public SideStatus getWarSideWith(TerritoryData territoryData) {
+        return SideStatus.NEUTRAL;
     }
 
     @Override

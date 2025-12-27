@@ -97,7 +97,8 @@ public class Constants {
     private static Set<String> allRelationBlacklistedCommands;
     private static boolean adminApprovalForStartOfAttack;
     private static int capturePercentageToSurrender;
-    private static int CaptureCapitalBonusPercentage;
+    private static int captureCapitalBonusPercentage;
+    private static PermissionAtWars permissionAtWars;
 
     private static int attackDuration;
     private static int minTimeBeforeAttack;
@@ -235,7 +236,8 @@ public class Constants {
         adminApprovalForStartOfAttack = config.getBoolean("AdminApproval", false);
 
         capturePercentageToSurrender = config.getInt("capturePercentageToSurrender");
-        CaptureCapitalBonusPercentage = config.getInt("captureCapitalBonusPercentage");
+        captureCapitalBonusPercentage = config.getInt("captureCapitalBonusPercentage");
+        permissionAtWars = new PermissionAtWars(config.getConfigurationSection("attackersPermissions"));
         attackDuration = config.getInt("WarDuration", 30);
         minTimeBeforeAttack = config.getInt("MinimumTimeBeforeAttack", 120);
         maxTimeBeforeAttack = config.getInt("MaximumTimeBeforeAttack", 4320);
@@ -586,7 +588,11 @@ public class Constants {
     }
 
     public static int getCaptureCapitalBonusPercentage() {
-        return CaptureCapitalBonusPercentage;
+        return captureCapitalBonusPercentage;
+    }
+
+    public static PermissionAtWars getPermissionAtWars() {
+        return permissionAtWars;
     }
 
     public static List<String> getPerPlayerEndCommands() {

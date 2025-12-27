@@ -80,7 +80,6 @@ public class CurrentAttack {
     private void applyBossBar(PlannedAttack plannedAttack) {
         for (TerritoryData territoryData : plannedAttack.getWar().getAttackingTerritories()) {
             for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                tanPlayer.addWar(this);
                 Player player = tanPlayer.getPlayer();
                 if (player != null) {
                     bossBar.addPlayer(player);
@@ -89,7 +88,6 @@ public class CurrentAttack {
         }
         for (TerritoryData territoryData : plannedAttack.getWar().getDefendingTerritories()) {
             for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                tanPlayer.addWar(this);
                 Player player = tanPlayer.getPlayer();
                 if (player != null) {
                     bossBar.addPlayer(player);

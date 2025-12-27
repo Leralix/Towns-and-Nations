@@ -14,10 +14,14 @@ import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.timezone.TimeZoneEnum;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.war.War;
+import org.leralix.tan.war.info.SideStatus;
 import org.leralix.tan.war.legacy.CurrentAttack;
+import org.leralix.tan.war.legacy.WarRole;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -197,13 +201,6 @@ public class PlayerData implements ITanPlayer {
         return attackInvolvedIn;
     }
 
-    public void addWar(CurrentAttack currentAttacks) {
-        if (getAttackInvolvedIn().contains(currentAttacks.getAttackData().getID())) {
-            return;
-        }
-        getAttackInvolvedIn().add(currentAttacks.getAttackData().getID());
-    }
-
     public void updateCurrentAttack() {
         Iterator<String> iterator = getAttackInvolvedIn().iterator();
         while (iterator.hasNext()) {
@@ -217,22 +214,32 @@ public class PlayerData implements ITanPlayer {
         }
     }
 
-    public boolean isAtWarWith(TerritoryData territoryData) {
-        if (territoryData == null) {
-            return false;
+    public SideStatus getWarSideWith(TerritoryData territoryToCheck) {
+        if (territoryToCheck == null) {
+            return SideStatus.NEUTRAL;
         }
-        for (String attackID : getAttackInvolvedIn()) {
-            CurrentAttack currentAttack = CurrentAttacksStorage.get(attackID);
-            if (currentAttack == null) {
-                getAttackInvolvedIn().remove(attackID);
-                continue;
-            }
-            if (currentAttack.getAttackData().getWar().getDefendingTerritories().contains(territoryData)) {
-                return true;
+
+        SideStatus status = SideStatus.NEUTRAL;
+
+        for (TerritoryData territoryOfPlayer : getAllTerritoriesPlayerIsIn()) {
+            for (War war : WarStorage.getInstance().getWarsOfTerritory(territoryOfPlayer)) {
+
+                WarRole role = war.getTerritoryRole(territoryToCheck);
+                if (role == WarRole.NEUTRAL) {
+                    continue;
+                }
+
+                WarRole playerRole = war.getTerritoryRole(territoryOfPlayer);
+                if (role.isOpposite(playerRole)) {
+                    return SideStatus.ENEMY;
+                }
+
+                status = SideStatus.ALLY;
             }
         }
-        return false;
+        return status;
     }
+
 
     public void removeWar(@NotNull CurrentAttack currentAttacks) {
         getAttackInvolvedIn().remove(currentAttacks.getAttackData().getID());
