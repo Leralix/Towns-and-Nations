@@ -113,7 +113,7 @@ public class CaptureChunk {
                 currentAttack.getAttackResultCounter().decrementClaimsCaptured();
             }
         }
-        else if (score > Constants.getChunkCaptureTime()) {
+        else if (score >= Constants.getChunkCaptureTime()) {
             score = Constants.getChunkCaptureTime();
             if(!territoryChunk.isOccupied()){
                 territoryChunk.setOccupier(currentAttack.getAttackData().getWar().getMainAttacker());

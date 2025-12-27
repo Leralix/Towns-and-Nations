@@ -8,14 +8,11 @@ import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.war.PlannedAttack;
+import org.leralix.tan.war.War;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 public class CaptureManager {
@@ -87,7 +84,6 @@ public class CaptureManager {
 
         Collection<ITanPlayer> attackers = attackData.getAttackersPlayers();
         Collection<ITanPlayer> defenders = attackData.getDefendingPlayers();
-        TerritoryData mainAttacker = attackData.getWar().getMainAttacker();
 
         for(ITanPlayer attacker : attackers) {
             Player player = attacker.getPlayer();
@@ -132,7 +128,7 @@ public class CaptureManager {
             }
         }
 
-        for(CaptureChunk captureChunk : captures.values()){
+        for (CaptureChunk captureChunk : new ArrayList<>(captures.values())) {
             captureChunk.update();
         }
     }
@@ -167,11 +163,11 @@ public class CaptureManager {
     }
 
     /**
-     * When a planned attack is removed, all captures related to it should be removed.
-     * @param plannedAttack the planned attack to remove captures for
+     * Method used to liberate all chunks and forts captured in a specific war
+     * @param warEnded the finished war
      */
-    public void removeCapture(PlannedAttack plannedAttack){
-        String warID = plannedAttack.getID();
+    public void removeCapture(War warEnded){
+        String warID = warEnded.getID();
 
         Iterator<CaptureChunk> captureChunkIterator = captures.values().iterator();
 
@@ -192,8 +188,8 @@ public class CaptureManager {
             }
         }
 
-        TerritoryData mainAttacker = plannedAttack.getWar().getMainAttacker();
-        TerritoryData mainDefender = plannedAttack.getWar().getMainDefender();
+        TerritoryData mainAttacker = warEnded.getMainAttacker();
+        TerritoryData mainDefender = warEnded.getMainDefender();
 
         for(TerritoryChunk territoryChunk : NewClaimedChunkStorage.getInstance().getAllChunkFrom(mainAttacker)){
             if(territoryChunk.isOccupied() && territoryChunk.getOccupierID().equals(mainDefender.getID())){

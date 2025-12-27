@@ -3,7 +3,6 @@ package org.leralix.tan.war;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.WarEndInternalEvent;
@@ -11,8 +10,8 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.WarStorage;
-import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.war.capture.CaptureManager;
 import org.leralix.tan.war.info.AttackResultCancelled;
 import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.WarRole;
@@ -93,28 +92,6 @@ public class War {
         return new ItemStack(Material.IRON_SWORD);
     }
 
-    /**
-     * Method used to check if a territory should be forced to surrender.
-     * This could happen if a certain amount of chunks is captured or if the capital is captured, depending
-     * on the server configuration
-     * Note : This method do not automatically call {@link War#territorySurrender(WarRole)}
-     *
-     * @param territoryData The territory to check on. Might be the attacker of the defender.
-     */
-    public boolean shouldTerritoryForceSurrender(TerritoryData territoryData) {
-
-        int totalChunk = territoryData.getNumberOfClaimedChunk();
-        int occupiedChunk = territoryData.getNumberOfOccupiedChunk();
-
-        int ratio = occupiedChunk * 100 / totalChunk;
-
-        if (territoryData instanceof TownData townData && townData.isTownCapitalOccupied()) {
-            ratio += Constants.getCaptureCapitalBonusPercentage();
-        }
-
-        return ratio > Constants.getCapturePercentageToSurrender();
-    }
-
     public void territorySurrender(TerritoryData looserTerritory) {
         territorySurrender(getTerritoryRole(looserTerritory));
     }
@@ -123,6 +100,9 @@ public class War {
 
         TerritoryData looser = getTerritory(looserTerritory);
         TerritoryData winner = getTerritory(looserTerritory.opposite());
+
+        // All chunks captured due to the war are now released
+        CaptureManager.getInstance().removeCapture(this);
 
         List<WarGoal> goals = getGoals(looserTerritory.opposite());
 

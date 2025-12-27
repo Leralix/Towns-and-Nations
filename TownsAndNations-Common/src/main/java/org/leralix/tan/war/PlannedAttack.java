@@ -197,6 +197,10 @@ public class PlannedAttack {
                 .addDescription(Lang.ATTACK_ICON_DESC_8.get(war.getTerritoryRole(territoryConcerned).getName(langType)));
     }
 
+    /**
+     * Called at the end of a planned attack
+     * @param attackResult The result of the attack
+     */
     public void end(AttackResult attackResult) {
 
         this.attackResult = attackResult;
@@ -207,9 +211,6 @@ public class PlannedAttack {
         if (warWarningTask != null) {
             warWarningTask.cancel();
         }
-
-        // All chunks captured due to the war are now released
-        CaptureManager.getInstance().removeCapture(this);
 
         CurrentAttack currentAttack = CurrentAttacksStorage.get(ID);
         if (currentAttack != null) {
