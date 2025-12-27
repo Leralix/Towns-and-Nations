@@ -47,10 +47,10 @@ public enum WarRole {
 
     public boolean isOpposite(WarRole otherWarRole) {
         return switch (this){
-            case OTHER_ATTACKER, OTHER_DEFENDER ->
+            case MAIN_ATTACKER, OTHER_ATTACKER ->
+                    otherWarRole == WarRole.MAIN_DEFENDER || otherWarRole == WarRole.OTHER_DEFENDER;
+            case MAIN_DEFENDER, OTHER_DEFENDER ->
                     otherWarRole == WarRole.MAIN_ATTACKER || otherWarRole == WarRole.OTHER_ATTACKER;
-            case MAIN_ATTACKER, MAIN_DEFENDER ->
-                    otherWarRole == WarRole.OTHER_ATTACKER || otherWarRole == WarRole.OTHER_DEFENDER;
             case NEUTRAL -> false;
         };
     }
