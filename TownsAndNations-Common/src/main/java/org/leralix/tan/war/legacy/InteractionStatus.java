@@ -14,8 +14,8 @@ public enum InteractionStatus {
     public boolean canGrief(TerritoryData territoryData, GeneralChunkSetting action){
         return switch (this) {
             case ALWAYS -> true;
-            case WAR_ONLY -> territoryData.isAtWar();
-            case PLAYER_CHOICE_AND_WAR -> territoryData.isAtWar() || territoryData.getChunkSettings().getChunkSetting().get(action);
+            case WAR_ONLY -> territoryData.attackInProgress();
+            case PLAYER_CHOICE_AND_WAR -> territoryData.attackInProgress() || territoryData.getChunkSettings().getChunkSetting().get(action);
             case PLAYER_CHOICE -> territoryData.getChunkSettings().getChunkSetting().get(action);
             case NEVER -> false;
         };

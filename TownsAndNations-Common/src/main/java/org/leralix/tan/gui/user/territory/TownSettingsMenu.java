@@ -86,10 +86,18 @@ public class TownSettingsMenu extends SettingsMenus {
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
                 .setClickToAcceptMessage(
                         capitalPresent ?
-                                Lang.GUI_GENERIC_CLICK_TO_MODIFY :
+                                territoryData.isAtWar() ?
+                                        Lang.CANNOT_MOVE_CAPITAL_WHILE_AT_WAR :
+                                        Lang.GUI_GENERIC_CLICK_TO_MODIFY :
                                 Lang.GUI_NO_CAPITAL_CHUNK
                 )
                 .setAction(action -> {
+
+                    if(territoryData.isAtWar()){
+                        TanChatUtils.message(player, Lang.CANNOT_MOVE_CAPITAL_WHILE_AT_WAR.get());
+                        return;
+                    }
+
                     RightClickListener.register(player, new ChangeCapital(townData, p -> open()));
                 })
                 .asGuiItem(player, langType);

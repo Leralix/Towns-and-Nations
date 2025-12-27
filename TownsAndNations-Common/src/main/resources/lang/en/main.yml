@@ -839,6 +839,7 @@ language:
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cInvalid color format"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§fModify town color: §9{0}§f -> §9{1}"
   GUI_CAPITAL_CHUNK_ACTUAL_POSITION: "§fCurrent capital chunk : §9{0}"
+  CANNOT_MOVE_CAPITAL_WHILE_AT_WAR: "§cCannot move capital while at war"
   GUI_NO_CAPITAL_CHUNK: "§cThe town does not have any claimed chunk"
   #Select language
   HELP_US_TRANSLATE: "§fHelp us translate the plugin in your language"

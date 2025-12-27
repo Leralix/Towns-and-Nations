@@ -951,10 +951,19 @@ public abstract class TerritoryData {
         propertyCreateTax = amount;
     }
 
-    public boolean isAtWar() {
+    /**
+     * @return true if the territory is involved in at least one attack currently undergoing.
+     */
+    public boolean attackInProgress() {
         return !getCurrentAttacks().isEmpty();
     }
 
+    /**
+     * @return true if the territory is involved in at least one war.
+     */
+    public boolean isAtWar(){
+        return !WarStorage.getInstance().getWarsOfTerritory(this).isEmpty();
+    }
 
     protected RankData getDefaultRank() {
         return getRank(getDefaultRankID());
