@@ -18,7 +18,6 @@ import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.timezone.TimeZoneEnum;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.war.capture.CaptureManager;
 import org.leralix.tan.war.info.AttackNotYetStarted;
 import org.leralix.tan.war.info.AttackResult;
 import org.leralix.tan.war.info.AttackResultCancelled;
@@ -104,7 +103,7 @@ public class PlannedAttack {
 
     public Collection<ITanPlayer> getDefendingPlayers() {
         Collection<ITanPlayer> defenders = new ArrayList<>();
-        for (TerritoryData defendingTerritory : war.getDefendingTerritories()) {
+        for (TerritoryData defendingTerritory : getWar().getDefendingTerritories()) {
             defenders.addAll(defendingTerritory.getITanPlayerList());
         }
         return defenders;
@@ -112,15 +111,15 @@ public class PlannedAttack {
 
     public Collection<ITanPlayer> getAttackersPlayers() {
         Collection<ITanPlayer> defenders = new ArrayList<>();
-        for (TerritoryData attackingTerritory : war.getAttackingTerritories()) {
+        for (TerritoryData attackingTerritory : getWar().getAttackingTerritories()) {
             defenders.addAll(attackingTerritory.getITanPlayerList());
         }
         return defenders;
     }
 
     public void broadCastMessageWithSound(FilledLang message, SoundEnum soundEnum) {
-        Collection<TerritoryData> territoryData = war.getAttackingTerritories();
-        territoryData.addAll(war.getDefendingTerritories());
+        Collection<TerritoryData> territoryData = getWar().getAttackingTerritories();
+        territoryData.addAll(getWar().getDefendingTerritories());
         for (TerritoryData territory : territoryData) {
             territory.broadcastMessageWithSound(message, soundEnum);
         }
@@ -151,7 +150,7 @@ public class PlannedAttack {
             warWarningTask = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    broadCastMessageWithSound(Lang.ATTACK_START_IN_1_MINUTES.get(war.getName()), SoundEnum.WAR);
+                    broadCastMessageWithSound(Lang.ATTACK_START_IN_1_MINUTES.get(getWar().getName()), SoundEnum.WAR);
                 }
             };
             warWarningTask.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeWarning);
@@ -159,7 +158,7 @@ public class PlannedAttack {
     }
 
     public void startWar() {
-        broadCastMessageWithSound(Lang.ATTACK_START_NOW.get(war.getName()), SoundEnum.WAR);
+        broadCastMessageWithSound(Lang.ATTACK_START_NOW.get(getWar().getName()), SoundEnum.WAR);
         CurrentAttacksStorage.startAttack(this, endTime);
     }
 
@@ -182,19 +181,19 @@ public class PlannedAttack {
 
     public IconBuilder getIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZone) {
         return iconManager.get(Material.IRON_SWORD)
-                .setName(ChatColor.GREEN + war.getName())
+                .setName(ChatColor.GREEN + getWar().getName())
                 .setDescription(
                         Lang.ATTACK_ICON_DESC_1.get(getWar().getMainAttacker().getColoredName()),
                         Lang.ATTACK_ICON_DESC_2.get(getWar().getMainDefender().getColoredName()),
-                        Lang.ATTACK_ICON_DESC_3.get(Integer.toString(war.getAttackersID().size())),
-                        Lang.ATTACK_ICON_DESC_4.get(Integer.toString(war.getDefendersID().size()))
+                        Lang.ATTACK_ICON_DESC_3.get(Integer.toString(getWar().getAttackersID().size())),
+                        Lang.ATTACK_ICON_DESC_4.get(Integer.toString(getWar().getDefendersID().size()))
                 )
                 .addDescription(attackResult.getResultLines(langType, timeZone));
     }
 
     public IconBuilder getIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZone, TerritoryData territoryConcerned) {
         return getIcon(iconManager, langType, timeZone)
-                .addDescription(Lang.ATTACK_ICON_DESC_8.get(war.getTerritoryRole(territoryConcerned).getName(langType)));
+                .addDescription(Lang.ATTACK_ICON_DESC_8.get(getWar().getTerritoryRole(territoryConcerned).getName(langType)));
     }
 
     /**
@@ -216,17 +215,17 @@ public class PlannedAttack {
         if (currentAttack != null) {
             currentAttack.end();
         }
-        for (TerritoryData territory : war.getAttackingTerritories()) {
+        for (TerritoryData territory : getWar().getAttackingTerritories()) {
             territory.removePlannedAttack(this);
         }
-        for (TerritoryData territory : war.getDefendingTerritories()) {
+        for (TerritoryData territory : getWar().getDefendingTerritories()) {
             territory.removePlannedAttack(this);
         }
     }
 
     public WarRole getRole(ITanPlayer player) {
         for (TerritoryData territoryData : player.getAllTerritoriesPlayerIsIn()) {
-            WarRole role = war.getTerritoryRole(territoryData);
+            WarRole role = getWar().getTerritoryRole(territoryData);
             if (role != WarRole.NEUTRAL) {
                 return role;
             }
