@@ -53,28 +53,21 @@ public class WarsMenu extends IteratorGUI {
 
 
         List<GuiItem> guiItems = new ArrayList<>();
-        for(War war : wars) {
-            guiItems.add(iconManager.get(war.getIcon())
-                .setName(war.getName())
-                 .setDescription(
-                         Lang.ATTACK_ICON_DESC_1.get(war.getMainAttacker().getColoredName()),
-                         Lang.ATTACK_ICON_DESC_2.get(war.getMainDefender().getColoredName())
-                 )
-                .setAction(event -> {
+        for (War war : wars) {
+            guiItems.add(war.getIcon()
+                    .setAction(event -> {
 
-                    WarRole warRole = war.getTerritoryRole(territoryData);
+                        WarRole warRole = war.getTerritoryRole(territoryData);
 
-                    if(warRole.isMain()){
-                        new WarMenu(player, territoryData, war);
-                    }
-                    else if(warRole.isSecondary()) {
-                        new SecondaryWarMenu(player, territoryData, war);
-                    }
-                    else {
-                        new NeutralWarMenu(player, territoryData, war);
-                    }
-                })
-                .asGuiItem(player, langType));
+                        if (warRole.isMain()) {
+                            new WarMenu(player, territoryData, war);
+                        } else if (warRole.isSecondary()) {
+                            new SecondaryWarMenu(player, territoryData, war);
+                        } else {
+                            new NeutralWarMenu(player, territoryData, war);
+                        }
+                    })
+                    .asGuiItem(player, langType));
         }
 
         return guiItems;

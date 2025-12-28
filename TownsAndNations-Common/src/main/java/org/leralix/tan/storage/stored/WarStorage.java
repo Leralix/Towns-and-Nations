@@ -111,4 +111,8 @@ public class WarStorage extends JsonStorage<War>{
         }
         return res;
     }
+
+    public Collection<War> getAllWars() {
+        return dataMap.values();
+    }
 }

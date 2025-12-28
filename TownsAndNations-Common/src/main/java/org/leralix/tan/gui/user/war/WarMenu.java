@@ -66,15 +66,7 @@ public class WarMenu extends AbstractWarMenu {
 
 
     private GuiItem getWarIcon() {
-
-        return iconManager.get(war.getIcon())
-                .setName(war.getName())
-                .setDescription(
-                        Lang.ATTACK_ICON_DESC_1.get(war.getMainAttacker().getColoredName()),
-                        Lang.ATTACK_ICON_DESC_2.get(war.getMainDefender().getColoredName())
-                )
-                .asGuiItem(player, langType);
-
+        return war.getIcon().asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getWargoalsButton() {

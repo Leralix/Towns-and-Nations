@@ -3,22 +3,19 @@ package org.leralix.tan.gui.admin;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.gui.IteratorGUI;
+import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.WarStorage;
-import org.leralix.tan.war.PlannedAttack;
+import org.leralix.tan.war.War;
 import org.leralix.tan.war.info.AttackResultCancelled;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class AdminWarMenu extends IteratorGUI {
 
-    private final Collection<PlannedAttack> plannedAttackList;
-
     public AdminWarMenu(Player player) {
         super(player, Lang.HEADER_ADMIN_WAR_MENU, 6);
-        plannedAttackList = WarStorage.getInstance().getAllAttacks();
         open();
     }
 
@@ -31,21 +28,32 @@ public class AdminWarMenu extends IteratorGUI {
 
     private List<GuiItem> getWars() {
         List<GuiItem> res = new ArrayList<>();
-        for (PlannedAttack plannedAttack : plannedAttackList) {
+        for (War war : WarStorage.getInstance().getAllWars()) {
 
-            res.add(plannedAttack.getAdminIcon(iconManager, langType, tanPlayer.getTimeZone())
-                    .setAction(action -> {
-                        if (!plannedAttack.isAdminApproved()) {
-                            if (action.isLeftClick()) {
-                                plannedAttack.setAdminApproved(true);
-                            } else if (action.isRightClick()) {
-                                plannedAttack.end(new AttackResultCancelled());
-                            }
-                        }
-                        open();
-                    })
-                    .asGuiItem(player, langType)
+            IconBuilder iconBuilder = war.getIcon();
+
+            int nbAttackToApprove = nbAttackToApprove(war);
+            if (nbAttackToApprove > 0) {
+                iconBuilder.addDescription(
+                        Lang.ADMIN_ATTACKS_NEED_APPROVALS.get(Integer.toString(nbAttackToApprove))
+                );
+            }
+
+            res.add(
+                    iconBuilder.setAction( action ->
+                            new AdminManageWarMenu(player, war, this)
+                    ).asGuiItem(player, langType)
             );
+        }
+        return res;
+    }
+
+    private int nbAttackToApprove(War war) {
+        int res = 0;
+        for (var attacks : war.getPlannedAttacks()) {
+            if (!attacks.isAdminApproved()) {
+                res++;
+            }
         }
         return res;
     }

@@ -166,16 +166,20 @@ public class PlannedAttack {
 
         IconBuilder iconBuilder = getIcon(iconManager, langType, timeZoneEnum);
 
-        if(isAdminApproved) {
-            return iconBuilder.addDescription(Lang.ATTACK_ICON_DESC_ADMIN_APPROVED.get());
-        }
-        else {
-            return iconBuilder.addDescription(
-                    Lang.ATTACK_ICON_DESC_ADMIN_NOT_APPROVED.get(),
-                    Lang.LEFT_CLICK_TO_AUTHORIZE.get(),
-                    Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE.get(),
-                    Lang.ATTACK_WILL_NOT_TRIGGER_IF_NOT_APPROVED.get()
-            );
+        if (isAdminApproved) {
+            return iconBuilder.setClickToAcceptMessage(Lang.ATTACK_ICON_DESC_ADMIN_APPROVED);
+        } else {
+
+
+            return iconBuilder
+                    .addDescription(
+                            Lang.ATTACK_ICON_DESC_ADMIN_NOT_APPROVED.get(),
+                            Lang.ATTACK_WILL_NOT_TRIGGER_IF_NOT_APPROVED.get()
+                    )
+                    .setClickToAcceptMessage(
+                            Lang.LEFT_CLICK_TO_AUTHORIZE,
+                            Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE
+                    );
         }
     }
 

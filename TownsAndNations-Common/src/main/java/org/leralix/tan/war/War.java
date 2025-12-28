@@ -6,6 +6,8 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.WarEndInternalEvent;
+import org.leralix.tan.gui.cosmetic.type.IconBuilder;
+import org.leralix.tan.gui.cosmetic.type.ItemIconBuilder;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -88,8 +90,13 @@ public class War {
         return territoryData.getID().equals(mainDefenderID);
     }
 
-    public ItemStack getIcon() {
-        return new ItemStack(Material.IRON_SWORD);
+    public IconBuilder getIcon() {
+        return new IconBuilder(new ItemIconBuilder(Material.IRON_SWORD))
+                .setName(getName())
+                .setDescription(
+                        Lang.ATTACK_ICON_DESC_1.get(getMainAttacker().getColoredName()),
+                        Lang.ATTACK_ICON_DESC_2.get(getMainDefender().getColoredName())
+                );
     }
 
     public void territorySurrender(TerritoryData looserTerritory) {
@@ -171,6 +178,12 @@ public class War {
         throw new IllegalArgumentException(warRole + " is not authorized");
     }
 
+    /**
+     * Generate war goals against one side.
+     * @param warRole   The role of the territory opening the menu. War goals used will be from the other side.
+     * @param langType  The lang
+     * @return          Description used to show war goals applied
+     */
     public Collection<FilledLang> generateWarGoalsDesciption(WarRole warRole, LangType langType) {
         List<WarGoal> goals = getGoals(warRole.opposite());
         List<FilledLang> goalsToString = new ArrayList<>();
