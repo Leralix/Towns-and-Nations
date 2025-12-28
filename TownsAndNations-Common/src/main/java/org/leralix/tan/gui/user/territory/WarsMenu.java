@@ -11,6 +11,7 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.war.NeutralWarMenu;
 import org.leralix.tan.gui.user.war.SecondaryWarMenu;
 import org.leralix.tan.gui.user.war.WarMenu;
+import org.leralix.tan.gui.user.war.WarMenuDispatch;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.war.War;
@@ -54,20 +55,11 @@ public class WarsMenu extends IteratorGUI {
 
         List<GuiItem> guiItems = new ArrayList<>();
         for (War war : wars) {
-            guiItems.add(war.getIcon()
-                    .setAction(event -> {
-
-                        WarRole warRole = war.getTerritoryRole(territoryData);
-
-                        if (warRole.isMain()) {
-                            new WarMenu(player, territoryData, war);
-                        } else if (warRole.isSecondary()) {
-                            new SecondaryWarMenu(player, territoryData, war);
-                        } else {
-                            new NeutralWarMenu(player, territoryData, war);
-                        }
-                    })
-                    .asGuiItem(player, langType));
+            guiItems.add(
+                    war.getIcon()
+                    .setAction(event -> WarMenuDispatch.openMenu(player, war, territoryData))
+                    .asGuiItem(player, langType)
+            );
         }
 
         return guiItems;

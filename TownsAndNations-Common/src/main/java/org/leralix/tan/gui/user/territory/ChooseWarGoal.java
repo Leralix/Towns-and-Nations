@@ -22,12 +22,14 @@ public class ChooseWarGoal extends BasicGui {
     private final TerritoryData territoryData;
     private final War war;
     private final WarRole warRole;
+    private final BasicGui returnGui;
 
-    public ChooseWarGoal(Player player, TerritoryData territoryData, War war, WarRole warRole) {
+    public ChooseWarGoal(Player player, TerritoryData territoryData, War war, WarRole warRole, BasicGui returnGui) {
         super(player, Lang.HEADER_SELECT_WARGOAL, 3);
         this.territoryData = territoryData;
         this.war = war;
         this.warRole = warRole;
+        this.returnGui = returnGui;
         open();
     }
 
@@ -41,7 +43,7 @@ public class ChooseWarGoal extends BasicGui {
         gui.setItem(2, 7, getSubjugateButton());
         gui.setItem(2, 8, getLiberateButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new SelectWarGoals(player, territoryData, war, warRole)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> returnGui.open()));
 
         gui.open(player);
     }
@@ -67,7 +69,7 @@ public class ChooseWarGoal extends BasicGui {
                                 return;
                             }
                             TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
-                            PlayerChatListenerStorage.register(player, new SelectNbChunksForConquer(war, warRole, new SelectWarGoals(player, territoryData, war, warRole)));
+                            PlayerChatListenerStorage.register(player, new SelectNbChunksForConquer(war, warRole, returnGui));
                         }
                 )
                 .asGuiItem(player, langType);
@@ -79,7 +81,7 @@ public class ChooseWarGoal extends BasicGui {
                 .setDescription(Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC.get())
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                 .setAction(
-                        action -> new SelectLandmarkForCapture(player, territoryData, war, warRole)
+                        action -> new SelectLandmarkForCapture(player, territoryData, war, warRole, returnGui)
                 )
                 .asGuiItem(player, langType);
     }
@@ -90,7 +92,7 @@ public class ChooseWarGoal extends BasicGui {
                 .setDescription(Lang.CAPTURE_FORT_WAR_GOAL_DESC.get())
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                 .setAction(
-                        action -> new SelectFortForCapture(player, territoryData, war, warRole)
+                        action -> new SelectFortForCapture(player, territoryData, war, warRole, returnGui)
                 )
                 .asGuiItem(player, langType);
     }
@@ -118,7 +120,7 @@ public class ChooseWarGoal extends BasicGui {
                             }
 
                             war.addGoal(warRole, new SubjugateWarGoal());
-                            new SelectWarGoals(player, territoryData, war, warRole);
+                            returnGui.open();
                         }
                 )
                 .asGuiItem(player, langType);
@@ -145,7 +147,7 @@ public class ChooseWarGoal extends BasicGui {
                                 return;
                             }
 
-                            new SelectTerritoryForLIberation(player, territoryData, war, warRole);
+                            new SelectTerritoryForLIberation(player, territoryData, war, warRole, returnGui);
                         }
                 )
                 .asGuiItem(player, langType);

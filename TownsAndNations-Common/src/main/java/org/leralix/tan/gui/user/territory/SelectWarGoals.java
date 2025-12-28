@@ -4,6 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.war.WarMenu;
@@ -20,19 +21,21 @@ public class SelectWarGoals extends IteratorGUI {
     private final TerritoryData territoryData;
     private final War war;
     private final WarRole warRole;
+    private final BasicGui returnGui;
 
-    public SelectWarGoals(Player player, TerritoryData territoryData, War war, WarRole warRole) {
+    public SelectWarGoals(Player player, TerritoryData territoryData, War war, WarRole warRole, BasicGui returnGui) {
         super(player, Lang.HEADER_SELECT_WARGOAL, 3);
         this.territoryData = territoryData;
         this.war = war;
         this.warRole = warRole;
+        this.returnGui = returnGui;
         open();
     }
 
 
     @Override
     public void open() {
-        iterator(getWarGoals(), p -> new WarMenu(player, territoryData, war));
+        iterator(getWarGoals(), p -> returnGui.open());
 
         gui.setItem(3, 5, getNewWarGoalButton());
 
@@ -43,7 +46,7 @@ public class SelectWarGoals extends IteratorGUI {
         return iconManager.get(IconKey.NEW_WAR_GOAL_ICON)
                 .setName(Lang.GUI_ADD_WAR_GOAL.get(langType))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
-                .setAction(action -> new ChooseWarGoal(player, territoryData, war, warRole))
+                .setAction(action -> new ChooseWarGoal(player, territoryData, war, warRole, this))
                 .asGuiItem(player, langType);
     }
 

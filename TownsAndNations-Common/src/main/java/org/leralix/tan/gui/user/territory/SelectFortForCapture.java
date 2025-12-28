@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.FortStorage;
@@ -18,25 +19,24 @@ import java.util.List;
 
 public class SelectFortForCapture extends IteratorGUI {
 
-
     private final WarRole warRole;
-    private final TerritoryData territoryData;
     private final War war;
+    private final BasicGui returnGui;
 
     private final TerritoryData enemyTerritoryData;
 
-    public SelectFortForCapture(Player player, TerritoryData territoryData, War war, WarRole warRole) {
+    public SelectFortForCapture(Player player, TerritoryData territoryData, War war, WarRole warRole, BasicGui returnGui) {
         super(player, Lang.HEADER_SELECT_WARGOAL, 3);
         this.warRole = warRole;
-        this.territoryData = territoryData;
         this.war = war;
         this.enemyTerritoryData = war.isMainAttacker(territoryData) ? war.getMainDefender() : war.getMainAttacker();
+        this.returnGui = returnGui;
         open();
     }
 
     @Override
     public void open() {
-        iterator(getForts(), p -> new ChooseWarGoal(player, territoryData, war, warRole));
+        iterator(getForts(), p -> returnGui.open());
         gui.open(player);
     }
 
@@ -50,12 +50,10 @@ public class SelectFortForCapture extends IteratorGUI {
                     .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                     .setAction(event -> {
                         war.addGoal(warRole, new CaptureFortWarGoal(fort));
-                        new SelectWarGoals(player, territoryData, war, warRole);
+                        returnGui.open();
                     })
                     .asGuiItem(player, langType));
         }
         return items;
     }
-
-
 }

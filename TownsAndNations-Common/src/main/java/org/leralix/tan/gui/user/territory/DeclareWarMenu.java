@@ -10,6 +10,7 @@ import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.user.war.WarMenu;
+import org.leralix.tan.gui.user.war.WarMenuDispatch;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.WarStorage;
@@ -79,7 +80,7 @@ public class DeclareWarMenu extends IteratorGUI {
                             confirmDescription,
                             () -> {
                                 War newWar = warStorage.newWar(territoryData, iterateTerritory);
-                                new WarMenu(player, territoryData, newWar);
+                                WarMenuDispatch.openMenu(player, newWar, territoryData);
                             },
                             this::open
                     );

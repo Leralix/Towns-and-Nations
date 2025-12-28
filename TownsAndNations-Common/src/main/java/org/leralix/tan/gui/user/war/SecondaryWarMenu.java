@@ -11,11 +11,14 @@ import org.leralix.tan.war.War;
 
 import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
 
+/**
+ * War menu show to secondary war participants
+ */
 public class SecondaryWarMenu extends AbstractWarMenu {
 
     private final TerritoryData territoryData;
 
-    public SecondaryWarMenu(Player player, TerritoryData territoryData, War war) {
+    SecondaryWarMenu(Player player, TerritoryData territoryData, War war) {
         super(player, Lang.HEADER_WARS_MENU, 3, war);
         this.territoryData = territoryData;
         open();

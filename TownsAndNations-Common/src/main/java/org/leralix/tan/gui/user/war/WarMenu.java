@@ -1,11 +1,9 @@
 package org.leralix.tan.gui.user.war;
 
 import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.SelectWarGoals;
 import org.leralix.tan.gui.user.territory.WarsMenu;
@@ -13,9 +11,7 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeWarName;
-import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
-import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.legacy.WarRole;
@@ -24,15 +20,18 @@ import org.leralix.tan.war.legacy.wargoals.WarGoal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * War menu show to main attacker and defender
+ */
 public class WarMenu extends AbstractWarMenu {
 
     private final TerritoryData territoryData;
     private final WarRole warRole;
 
-    public WarMenu(Player player, TerritoryData territoryData, War war) {
+    WarMenu(Player player, TerritoryData territoryData, War war) {
         super(player, Lang.HEADER_WARS_MENU, 3, war);
         this.territoryData = territoryData;
-        this.warRole = war.isMainAttacker(territoryData) ? WarRole.MAIN_ATTACKER : WarRole.MAIN_DEFENDER;
+        this.warRole = war.getTerritoryRole(territoryData);
         open();
     }
 
@@ -85,7 +84,7 @@ public class WarMenu extends AbstractWarMenu {
         return iconManager.get(IconKey.WAR_GOAL_LIST_ICON)
                 .setName(Lang.WAR_GOAL_LIST_BUTTON.get(langType))
                 .setDescription(description)
-                .setAction(action -> new SelectWarGoals(player, territoryData, war, warRole))
+                .setAction(action -> new SelectWarGoals(player, territoryData, war, warRole, this))
                 .asGuiItem(player, langType);
     }
 

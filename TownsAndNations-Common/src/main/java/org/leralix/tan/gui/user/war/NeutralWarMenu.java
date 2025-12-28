@@ -7,11 +7,14 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.war.War;
 
+/**
+ * War menu shown to neutral territories
+ */
 public class NeutralWarMenu extends AbstractWarMenu {
 
     private final TerritoryData territoryData;
 
-    public NeutralWarMenu(Player player, TerritoryData territoryData, War war) {
+    NeutralWarMenu(Player player, TerritoryData territoryData, War war) {
         super(player, Lang.HEADER_WARS_MENU, 3, war);
         this.territoryData = territoryData;
         open();
