@@ -68,16 +68,12 @@ public class PlannedAttack {
         this.warRole = createAttackData.getAttackingSide();
 
 
-
         this.isAdminApproved = !Constants.adminApprovalForStartOfAttack();
 
         this.startTime = System.currentTimeMillis() + (long) createAttackData.getSelectedTime() * 60 * 1000;
         this.endTime = this.startTime + Constants.getAttackDuration() * 60 * 1000;
 
         this.attackResult = new AttackNotYetStarted(startTime);
-
-        getWar().getMainDefender().addPlannedAttack(this);
-        getWar().getMainAttacker().addPlannedAttack(this);
 
         setUpStartOfAttack();
     }
@@ -218,12 +214,6 @@ public class PlannedAttack {
         CurrentAttack currentAttack = CurrentAttacksStorage.get(ID);
         if (currentAttack != null) {
             currentAttack.end();
-        }
-        for (TerritoryData territory : getWar().getAttackingTerritories()) {
-            territory.removePlannedAttack(this);
-        }
-        for (TerritoryData territory : getWar().getDefendingTerritories()) {
-            territory.removePlannedAttack(this);
         }
     }
 

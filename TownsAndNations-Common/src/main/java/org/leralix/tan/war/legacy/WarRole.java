@@ -45,6 +45,11 @@ public enum WarRole {
         };
     }
 
+    /**
+     * Check if two war role are against each other
+     * @param otherWarRole  The second war role to compare to
+     * @return  True if both are opposite, false otherwise. If one or two of them is neutral, return false.
+     */
     public boolean isOpposite(WarRole otherWarRole) {
         return switch (this){
             case MAIN_ATTACKER, OTHER_ATTACKER ->

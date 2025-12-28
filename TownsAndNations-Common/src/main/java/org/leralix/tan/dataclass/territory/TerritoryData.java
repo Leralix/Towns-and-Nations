@@ -61,10 +61,10 @@ import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
+import org.leralix.tan.war.legacy.WarRole;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -86,7 +86,6 @@ public abstract class TerritoryData {
     protected Integer color;
     protected Integer defaultRankID;
     protected Map<Integer, RankData> ranks;
-    private Collection<String> attackIncomingList;
     private HashMap<String, Integer> availableClaims;
     private Map<String, DiplomacyProposal> diplomacyProposals;
     private List<String> overlordsProposals;
@@ -113,7 +112,6 @@ public abstract class TerritoryData {
         RankData defaultRank = registerNewRank("default");
         setDefaultRank(defaultRank);
 
-        attackIncomingList = new ArrayList<>();
         availableClaims = new HashMap<>();
         diplomacyProposals = new HashMap<>();
         overlordsProposals = new ArrayList<>();
@@ -336,32 +334,17 @@ public abstract class TerritoryData {
         return icon.addDescription(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relation.getColoredName(langType)));
     }
 
-    public Collection<String> getAttacksInvolvedID() {
-        if (attackIncomingList == null) this.attackIncomingList = new ArrayList<>();
-        return attackIncomingList;
-    }
-
-    public void addPlannedAttack(PlannedAttack war) {
-        getAttacksInvolvedID().add(war.getID());
-    }
-
-    public void removePlannedAttack(PlannedAttack war) {
-        getAttacksInvolvedID().remove(war.getID());
-    }
-
+    /**
+     * @return all attacks currently ongoing where this territory takes part in.
+     */
     public Collection<CurrentAttack> getCurrentAttacks() {
         Collection<CurrentAttack> res = new ArrayList<>();
-        for (String attackID : getAttacksInvolvedID()) {
-            CurrentAttack attackInvolved = CurrentAttacksStorage.get(attackID);
-            if (attackInvolved != null) {
-                res.add(attackInvolved);
+        for (CurrentAttack currentAttack : CurrentAttacksStorage.getAll()) {
+            if (currentAttack.getAttackData().getWar().getTerritoryRole(this) != WarRole.NEUTRAL) {
+                res.add(currentAttack);
             }
         }
         return res;
-    }
-
-    public void removeCurrentAttack(CurrentAttack currentAttacks) {
-        getAttacksInvolvedID().remove(currentAttacks.getAttackData().getID());
     }
 
     public double getBalance() {

@@ -167,14 +167,6 @@ public class CurrentAttack {
 
                 bossBar.removeAll();
                 CurrentAttacksStorage.remove(CurrentAttack.this);
-
-                for (TerritoryData territoryData : attackData.getWar().getAttackingTerritories()) {
-                    territoryData.removeCurrentAttack(CurrentAttack.this);
-                }
-                for (TerritoryData territoryData : attackData.getWar().getDefendingTerritories()) {
-                    territoryData.removeCurrentAttack(CurrentAttack.this);
-                }
-
             }
         }.runTaskLater(TownsAndNations.getPlugin(), 20L * 20); //Still showing the boss bar for 20s
     }

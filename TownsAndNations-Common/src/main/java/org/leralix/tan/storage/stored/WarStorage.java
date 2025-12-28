@@ -11,6 +11,7 @@ import org.leralix.tan.storage.typeadapter.WargoalTypeAdapter;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.info.AttackResult;
+import org.leralix.tan.war.legacy.WarRole;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
 import java.util.ArrayList;
@@ -86,16 +87,27 @@ public class WarStorage extends JsonStorage<War>{
         return "W"+ID;
     }
 
-
+    /**
+     * Get all wars a specific territory takes part in.
+     * All wars will be shown, secondary or main role.
+     * @param territoryData The territory to get all related war
+     * @return The list of war the territory takes part in.
+     */
     public List<War> getWarsOfTerritory(TerritoryData territoryData) {
         return dataMap.values().stream()
-                .filter(war -> war.isMainAttacker(territoryData) || war.isMainDefender(territoryData))
+                .filter(war -> war.getTerritoryRole(territoryData) != WarRole.NEUTRAL)
                 .toList();
     }
 
+    /**
+     * Check if two territory are part of the same war in enemy side
+     * @param mainTerritory The first territory to check
+     * @param territoryData The second territory to check
+     * @return  True if both territory are against in at least a war. False otherwise
+     */
     public boolean isTerritoryAtWarWith(TerritoryData mainTerritory, TerritoryData territoryData) {
         for(War war : getWarsOfTerritory(mainTerritory)){
-            if(war.isMainAttacker(territoryData) || war.isMainDefender(territoryData)){
+            if(war.getTerritoryRole(mainTerritory).isOpposite(war.getTerritoryRole(territoryData))){
                 return true;
             }
         }
