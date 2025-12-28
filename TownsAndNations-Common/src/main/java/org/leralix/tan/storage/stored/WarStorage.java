@@ -54,7 +54,14 @@ public class WarStorage extends JsonStorage<War>{
                 defendingTerritory,
                 defendingTerritory.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE)
         );
-        add(newWar);
+        put(newID, newWar);
+
+        // All defender allies set their relation to war with attacking territory
+        List<TerritoryData> alliedTerritories = defendingTerritory.getRelations().getTerritoriesWithRelation(TownRelation.ALLIANCE);
+        for(var alliedTerritory : alliedTerritories){
+            alliedTerritory.setRelation(attackingTerritory, TownRelation.WAR);
+        }
+
         EventManager.getInstance().callEvent(new WarStartInternalEvent(attackingTerritory, defendingTerritory));
         return newWar;
     }
@@ -65,10 +72,6 @@ public class WarStorage extends JsonStorage<War>{
             instance.updateAttacks();
         }
         return instance;
-    }
-
-    private void add(War plannedAttack) {
-        put(plannedAttack.getID(), plannedAttack);
     }
 
     public void remove(War plannedAttack) {

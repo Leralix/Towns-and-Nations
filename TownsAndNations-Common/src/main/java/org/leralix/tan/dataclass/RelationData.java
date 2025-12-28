@@ -91,4 +91,12 @@ public class RelationData {
             territories.remove(townID);
         }
     }
+
+    public List<TerritoryData> getTerritoriesWithRelation(TownRelation townRelation) {
+        List<TerritoryData> res = new ArrayList<>();
+        for(String territoryID : getTerritoriesIDWithRelation(townRelation)){
+            res.add(TerritoryUtil.getTerritory(territoryID));
+        }
+        return res;
+    }
 }

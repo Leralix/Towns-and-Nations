@@ -239,6 +239,10 @@ public abstract class TerritoryData {
 
         TownRelation oldRelation = getRelationWith(otherTerritory);
 
+        if(oldRelation == newRelation) {
+            return;
+        }
+
         EventManager.getInstance().callEvent(new DiplomacyProposalAcceptedInternalEvent(otherTerritory, this, oldRelation, newRelation));
 
         this.getRelations().setRelation(newRelation, otherTerritory);
