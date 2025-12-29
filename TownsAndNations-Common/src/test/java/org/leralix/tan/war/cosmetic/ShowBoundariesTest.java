@@ -36,13 +36,7 @@ class ShowBoundariesTest extends BasicTest {
         ITanPlayer tanDefender = PlayerDataStorage.getInstance().get(defender);
         World world = server.addSimpleWorld("world");
 
-        var townAttacker = TownDataStorage.getInstance().newTown("AttackerTown");
         var townDefender = TownDataStorage.getInstance().newTown("DefenderTown", tanDefender);
-
-        War war = new War("TestWar", townAttacker, townDefender, Collections.emptyList());
-        CreateAttackData createAttackData = new CreateAttackData(war, WarRole.MAIN_ATTACKER);
-        PlannedAttack plannedAttack = new PlannedAttack("TetsWar", createAttackData);
-        CurrentAttack currentAttack = new CurrentAttack(plannedAttack, 0, 0);
 
         townDefender.claimChunk(defender, world.getChunkAt(0, 0));
         townDefender.claimChunk(defender, world.getChunkAt(0, 1));
@@ -50,7 +44,7 @@ class ShowBoundariesTest extends BasicTest {
 
         var list = ChunkUtil.getChunksInRadius(world.getChunkAt(0, 0), 1);
 
-        List<ChunkLine> chunkLines = ShowBoundaries.sortChunkLines(list, List.of(currentAttack));
+        List<ChunkLine> chunkLines = ShowBoundaries.sortChunkLines(list, tanDefender);
 
         // Two chunks -> 3 faces each
         assertEquals(6, chunkLines.size());

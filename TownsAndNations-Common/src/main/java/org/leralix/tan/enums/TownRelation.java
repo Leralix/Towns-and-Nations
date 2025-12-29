@@ -1,6 +1,7 @@
 package org.leralix.tan.enums;
 
 import org.bukkit.ChatColor;
+import org.leralix.tan.war.info.BoundaryType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.tan.api.enums.EDiplomacyState;
@@ -74,5 +75,13 @@ public enum TownRelation {
 
     public boolean isNegative() {
         return negative;
+    }
+
+    public BoundaryType getBoundaryType() {
+        return switch (this){
+            case ALLIANCE, NON_AGGRESSION, SELF, VASSAL, OVERLORD -> BoundaryType.ALLY;
+            case NEUTRAL -> BoundaryType.NEUTRAL;
+            case WAR, EMBARGO -> BoundaryType.ENEMY;
+        };
     }
 }

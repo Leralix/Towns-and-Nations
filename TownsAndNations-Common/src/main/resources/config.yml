@@ -73,6 +73,12 @@ StartingMoney: 100.0
 #Buffer is only checked if ...AllowNonAdjacentChunks is set to false
 TerritoryClaimBufferZone: 2
 
+# Particles shown to display territory boundaries
+boundaryParticles :
+  ALLY: COMPOSTER
+  NEUTRAL: SMOKE
+  ENEMY : FLAME
+
 ########################
 ##      Kingdoms      ##
 ########################

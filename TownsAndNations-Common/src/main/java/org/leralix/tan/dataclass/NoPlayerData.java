@@ -14,6 +14,7 @@ import org.leralix.tan.war.info.SideStatus;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class NoPlayerData implements ITanPlayer {
@@ -238,7 +239,7 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public List<CurrentAttack> getCurrentAttacks() {
-        return List.of();
+    public Set<CurrentAttack> getCurrentAttacks() {
+        return Set.of();
     }
 }

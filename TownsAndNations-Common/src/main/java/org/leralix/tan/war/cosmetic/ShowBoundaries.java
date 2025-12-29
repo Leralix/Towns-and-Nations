@@ -6,15 +6,15 @@ import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.particles.ParticleUtils;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.war.info.BoundaryType;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.territory.ChunkUtil;
-import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +24,11 @@ public class ShowBoundaries {
 
     public static void display(Player player) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-
-        List<CurrentAttack> attacks = tanPlayer.getCurrentAttacks();
-        if (attacks.isEmpty()) {
-            return;
-        }
         double radius = Constants.getWarBoundaryRadius();
         List<ClaimedChunk2> chunkInRange = ChunkUtil.getChunksInRadius(player.getChunk(), radius);
 
-        List<ChunkLine> lines = sortChunkLines(chunkInRange, attacks);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        List<ChunkLine> lines = sortChunkLines(chunkInRange, tanPlayer);
 
         drawLines(player, lines);
     }
@@ -47,50 +42,83 @@ public class ShowBoundaries {
                     new Vector3D(line.getPoint1().getX(), y, line.getPoint1().getZ(), line.getPoint1().getWorldID().toString()),
                     new Vector3D(line.getPoint2().getX(), y - 1, line.getPoint2().getZ(), line.getPoint2().getWorldID().toString()),
                     1,
-                    Constants.getWarBoundaryParticle());
+                    Constants.getBoundaryParticles().getParticle(line.getBoundaryType()));
         }
     }
 
-    static List<ChunkLine> sortChunkLines(List<ClaimedChunk2> chunkInRange, List<CurrentAttack> attacks) {
+    static List<ChunkLine> sortChunkLines(List<ClaimedChunk2> chunkInRange, ITanPlayer tanPlayer) {
         List<ChunkLine> res = new ArrayList<>();
 
         for (ClaimedChunk2 centerChunk : chunkInRange) {
-            if (centerChunk instanceof TerritoryChunk territoryChunk) {
+            if (centerChunk instanceof TerritoryChunk centerTerritoryChunk) {
+
+                TownRelation townRelation = centerTerritoryChunk.getOccupier().getWorstRelationWith(tanPlayer);
+                BoundaryType type = townRelation.getBoundaryType();
                 Vector2D centerChunkPosition = centerChunk.getVector2D();
 
+                var claimStorage = NewClaimedChunkStorage.getInstance();
+
                 // NORTH
-                ClaimedChunk2 northChunk = NewClaimedChunkStorage.getInstance()
-                        .get(centerChunkPosition.getX(), centerChunkPosition.getZ() - 1, centerChunkPosition.getWorldID().toString());
-                if (isFrontline(territoryChunk, northChunk, attacks)) {
-                    res.add(getChunkLine(centerChunkPosition, CardinalPoint.NORTH));
+                ClaimedChunk2 northChunk = claimStorage
+                        .get(
+                                centerChunkPosition.getX(),
+                                centerChunkPosition.getZ() - 1,
+                                centerChunkPosition.getWorldID().toString()
+                        );
+
+                if(isDifferentTerritory(centerTerritoryChunk, northChunk)){
+                    res.add(getChunkLine(centerChunkPosition, CardinalPoint.NORTH, type));
                 }
 
                 // SOUTH
-                ClaimedChunk2 southChunk = NewClaimedChunkStorage.getInstance()
-                        .get(centerChunkPosition.getX(), centerChunkPosition.getZ() + 1, centerChunkPosition.getWorldID().toString());
-                if (isFrontline(territoryChunk, southChunk, attacks)) {
-                    res.add(getChunkLine(centerChunkPosition, CardinalPoint.SOUTH));
+                ClaimedChunk2 southChunk = claimStorage
+                        .get(
+                                centerChunkPosition.getX(),
+                                centerChunkPosition.getZ() + 1,
+                                centerChunkPosition.getWorldID().toString()
+                        );
+                if(isDifferentTerritory(centerTerritoryChunk, southChunk)){
+                    res.add(getChunkLine(centerChunkPosition, CardinalPoint.SOUTH, type));
                 }
 
                 // EAST
                 ClaimedChunk2 eastChunk = NewClaimedChunkStorage.getInstance()
-                        .get(centerChunkPosition.getX() + 1, centerChunkPosition.getZ(), centerChunkPosition.getWorldID().toString());
-                if (isFrontline(territoryChunk, eastChunk, attacks)) {
-                    res.add(getChunkLine(centerChunkPosition, CardinalPoint.EAST));
+                        .get(
+                                centerChunkPosition.getX() + 1,
+                                centerChunkPosition.getZ(),
+                                centerChunkPosition.getWorldID().toString()
+                        );
+                if(isDifferentTerritory(centerTerritoryChunk, eastChunk)){
+                    res.add(getChunkLine(centerChunkPosition, CardinalPoint.EAST, type));
                 }
 
                 // WEST
                 ClaimedChunk2 westChunk = NewClaimedChunkStorage.getInstance()
-                        .get(centerChunkPosition.getX() - 1, centerChunkPosition.getZ(), centerChunkPosition.getWorldID().toString());
-                if (isFrontline(territoryChunk, westChunk, attacks)) {
-                    res.add(getChunkLine(centerChunkPosition, CardinalPoint.WEST));
+                        .get(
+                                centerChunkPosition.getX() - 1,
+                                centerChunkPosition.getZ(),
+                                centerChunkPosition.getWorldID().toString()
+                        );
+                if(isDifferentTerritory(centerTerritoryChunk, westChunk)){
+                    res.add(getChunkLine(centerChunkPosition, CardinalPoint.WEST, type));
                 }
             }
         }
         return res;
     }
 
-    static ChunkLine getChunkLine(Vector2D centerChunk, CardinalPoint dir) {
+    private static boolean isDifferentTerritory(TerritoryChunk centerChunk, ClaimedChunk2 otherChunk) {
+
+        if(otherChunk instanceof TerritoryChunk otherTerritoryChunk){
+            var centerTerritory = centerChunk.getOccupier();
+            var otherTerritory = otherTerritoryChunk.getOccupier();
+
+            return centerTerritory.getRelationWith(otherTerritory) != TownRelation.SELF;
+        }
+        return true;
+    }
+
+    static ChunkLine getChunkLine(Vector2D centerChunk, CardinalPoint dir, BoundaryType boundaryType) {
 
         int baseX = centerChunk.getX() * 16;
         int baseZ = centerChunk.getZ() * 16;
@@ -119,30 +147,6 @@ public class ShowBoundaries {
         }
 
 
-        return new ChunkLine(start, end);
+        return new ChunkLine(start, end, boundaryType);
     }
-
-
-    private static boolean isFrontline(TerritoryChunk centerChunk, ClaimedChunk2 chunkToCompare, List<CurrentAttack> attacks) {
-
-        if (chunkToCompare == null) {
-            return false;
-        }
-
-        TerritoryData occupier = centerChunk.getOccupier();
-
-        for (CurrentAttack attackData : attacks) {
-            // If chunk is at war, a frontline apprears if the other chunk is not occupied by the same town
-            if (attackData.getAttackData().getWar().isMainDefender(occupier)) {
-                if (chunkToCompare instanceof TerritoryChunk territoryChunk &&
-                        territoryChunk.getOccupierID().equals(occupier.getID())) {
-                    return false;
-                }
-                return true;
-            }
-        }
-
-        return false;
-    }
-
 }

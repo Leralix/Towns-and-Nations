@@ -13,6 +13,7 @@ import org.leralix.tan.war.info.SideStatus;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface ITanPlayer {
@@ -113,5 +114,5 @@ public interface ITanPlayer {
 
     void setTimeZone(TimeZoneEnum timeZone);
 
-    List<CurrentAttack> getCurrentAttacks();
+    Set<CurrentAttack> getCurrentAttacks();
 }

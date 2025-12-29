@@ -47,6 +47,7 @@ public class Constants {
     private static String baseCurrencyChar;
     private static boolean showCurrency;
     private static Range prefixSize;
+    private static BoundaryParticle boundaryParticles;
 
     //Territory
     private static int townCost;
@@ -91,7 +92,6 @@ public class Constants {
     //Wars
     private static WarTimeSlot warTimeSlot;
     private static double warBoundaryRadius;
-    private static Particle warBoundaryParticle;
     private static boolean notifyWhenEnemyEnterTerritory;
     private static Map<TownRelation, RelationConstant> relationsConstants;
     private static Set<String> allRelationBlacklistedCommands;
@@ -159,6 +159,7 @@ public class Constants {
                 config.getInt("prefixMinSize", 3),
                 config.getInt("prefixMaxSize", 4)
         );
+        boundaryParticles = new BoundaryParticle(config.getConfigurationSection("boundaryParticles"));
         //Territory
         townCost = config.getInt("townCost", 1000);
         townMaxNameSize = config.getInt("TownNameSize", 45);
@@ -218,7 +219,6 @@ public class Constants {
                 config.getIntegerList("allowedDays")
         );
         warBoundaryRadius = config.getDouble("warBoundaryRadius", 16);
-        warBoundaryParticle = getParticle(config, "warBoundaryParticle");
         notifyWhenEnemyEnterTerritory = config.getBoolean("notifyEnemyEnterTown", true);
 
         relationsConstants = new EnumMap<>(TownRelation.class);
@@ -351,6 +351,10 @@ public class Constants {
         return prefixSize;
     }
 
+    public static BoundaryParticle getBoundaryParticles() {
+        return boundaryParticles;
+    }
+
     public static boolean enableNation() {
         return enableNation;
     }
@@ -444,10 +448,6 @@ public class Constants {
 
     public static double getWarBoundaryRadius() {
         return warBoundaryRadius;
-    }
-
-    public static Particle getWarBoundaryParticle() {
-        return warBoundaryParticle;
     }
 
     public static boolean notifyWhenEnemyEnterTerritory() {

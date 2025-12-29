@@ -23,10 +23,7 @@ import org.leralix.tan.war.info.SideStatus;
 import org.leralix.tan.war.legacy.CurrentAttack;
 import org.leralix.tan.war.legacy.WarRole;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 public class PlayerData implements ITanPlayer {
@@ -341,8 +338,8 @@ public class PlayerData implements ITanPlayer {
     }
 
     @Override
-    public List<CurrentAttack> getCurrentAttacks() {
-        List<CurrentAttack> res = new ArrayList<>();
+    public Set<CurrentAttack> getCurrentAttacks() {
+        Set<CurrentAttack> res = new HashSet<>();
 
         for(TerritoryData territoryData : getAllTerritoriesPlayerIsIn()){
             res.addAll(territoryData.getCurrentAttacks());
