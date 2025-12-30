@@ -4,7 +4,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.AttackDeclaredInternalEvent;
 import org.leralix.tan.gui.BasicGui;
@@ -36,11 +35,11 @@ public class CreateAttackMenu extends BasicGui {
     private final WarTimeSlot warTimeSlot;
     private final BasicGui returnGui;
 
-    public CreateAttackMenu(Player player, TerritoryData territoryData, War war, WarRole warRole, BasicGui returnGui) {
+    public CreateAttackMenu(Player player, War war, WarRole warRole, BasicGui returnGui) {
         super(player, Lang.HEADER_CREATE_WAR_MANAGER.get(war.getMainDefender().getName()), 3);
         this.war = war;
         this.warRole = warRole;
-        this.attackData = new CreateAttackData(war, warRole);
+        this.attackData = new CreateAttackData(warRole);
         this.warTimeSlot = Constants.getWarTimeSlot();
         this.returnGui = returnGui;
         open();
@@ -82,7 +81,11 @@ public class CreateAttackMenu extends BasicGui {
 
                     EventManager.getInstance().callEvent(new AttackDeclaredInternalEvent(war.getTerritory(warRole.opposite()), war.getTerritory(warRole)));
 
-                    war.addAttack(attackData);
+                    war.createPlannedAttack(
+                            attackData.getAttackingSide(),
+                            attackData.getSelectedTime(),
+                            Constants.getAttackDuration()
+                    );
                     new AttackMenu(player, war.getTerritory(warRole));
                 })
                 .asGuiItem(player, langType);

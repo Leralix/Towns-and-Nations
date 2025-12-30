@@ -111,7 +111,7 @@ public class WarMenu extends AbstractWarMenu {
         return iconManager.get(IconKey.WAR_CREATE_ATTACK_ICON)
                 .setName(Lang.WAR_CREATE_ATTACK.get(langType))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
-                .setAction(action -> new CreateAttackMenu(player, territoryData, war, warRole, this))
+                .setAction(action -> new CreateAttackMenu(player, war, warRole, this))
                 .asGuiItem(player, langType);
     }
 

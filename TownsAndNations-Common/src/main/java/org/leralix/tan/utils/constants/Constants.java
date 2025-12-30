@@ -90,6 +90,7 @@ public class Constants {
     private static boolean payRentAtStart;
 
     //Wars
+    private static boolean simpleWarMode;
     private static WarTimeSlot warTimeSlot;
     private static double warBoundaryRadius;
     private static boolean notifyWhenEnemyEnterTerritory;
@@ -213,7 +214,7 @@ public class Constants {
         propertyBoundaryParticles = getParticle(config, "propertyBoundaryParticles");
 
         //Attacks
-
+        simpleWarMode = config.getBoolean("simpleWarMode");
         warTimeSlot = new WarTimeSlot(
                 config.getStringList("allowedTimeSlotsWar"),
                 config.getIntegerList("allowedDays")
@@ -440,6 +441,10 @@ public class Constants {
 
     public static boolean shouldPayRentAtStart() {
         return payRentAtStart;
+    }
+
+    public static boolean isSimpleWarMode() {
+        return simpleWarMode;
     }
 
     public static WarTimeSlot getWarTimeSlot() {

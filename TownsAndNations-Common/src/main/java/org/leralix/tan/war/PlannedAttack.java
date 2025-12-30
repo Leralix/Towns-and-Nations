@@ -21,7 +21,6 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.info.AttackNotYetStarted;
 import org.leralix.tan.war.info.AttackResult;
 import org.leralix.tan.war.info.AttackResultCancelled;
-import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.CurrentAttack;
 import org.leralix.tan.war.legacy.WarRole;
 
@@ -60,23 +59,34 @@ public class PlannedAttack {
     /**
      * Constructor for a Planned attack
      *
-     * @param id               The ID of the attack
-     * @param createAttackData Data related to the attack and its war.
+     * @param id                    The ID of the attack
+     * @param relatedWar            The war related to the attack
+     * @param roleOfAttacker        The role of the attacker in the war. Can be Main attacker or Main defender
+     * @param startTime             The delta time in minutes, starting in the current time.
+     * @param endTime               The delta time in minutes between start and end of the attack.
+     *                              If endTime is negative, attack will last forever
      */
-    public PlannedAttack(String id, CreateAttackData createAttackData) {
+    public PlannedAttack(String id, War relatedWar, WarRole roleOfAttacker, int startTime, int endTime) {
         this.ID = id;
 
-        this.war = createAttackData.getWar();
+        this.war = relatedWar;
         this.warID = war.getID();
-        this.warRole = createAttackData.getAttackingSide();
+        this.warRole = roleOfAttacker;
 
 
         this.isAdminApproved = !Constants.adminApprovalForStartOfAttack();
 
-        this.startTime = System.currentTimeMillis() + (long) createAttackData.getSelectedTime() * 60 * 1000;
-        this.endTime = this.startTime + Constants.getAttackDuration() * 60 * 1000;
+        this.startTime = System.currentTimeMillis() + startTime * 60 * 1000L;
 
-        this.attackResult = new AttackNotYetStarted(startTime);
+        // If negative time, attack will last indefinitely
+        if(endTime < 0){
+            this.endTime = -1;
+        }
+        else {
+            this.endTime = this.startTime + endTime * 60 * 1000L;
+        }
+
+        this.attackResult = new AttackNotYetStarted(this.startTime);
 
         setUpStartOfAttack();
     }

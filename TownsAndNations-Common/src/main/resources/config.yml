@@ -285,6 +285,11 @@ RankNameSize: 25
 #Enable war
 EnableWar: true
 
+# Simple war mode
+# If enabled, a war will not require attacks to capture chunks.
+# As soon as the war is declared, an attack will start and last until one side surrender.
+simpleWarMode : false
+
 # Capture percentage of a territory before forced surrender (default 70%)
 capturePercentageToSurrender: 70
 # If town capital chunk is captured, bonus capture percentage (default 20%)

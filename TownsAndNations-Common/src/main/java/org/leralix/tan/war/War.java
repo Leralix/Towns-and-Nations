@@ -1,7 +1,6 @@
 package org.leralix.tan.war;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
@@ -13,10 +12,10 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.WarStorage;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.war.capture.CaptureManager;
 import org.leralix.tan.war.info.AttackResultCancelled;
-import org.leralix.tan.war.legacy.CreateAttackData;
 import org.leralix.tan.war.legacy.WarRole;
 import org.leralix.tan.war.legacy.wargoals.WarGoal;
 
@@ -200,11 +199,16 @@ public class War {
 
     }
 
-    public PlannedAttack addAttack(CreateAttackData createAttackData) {
+    public void createPlannedAttack(WarRole roleOfAttacker, int startTime, int durationTime) {
         String newID = getNextID();
-        PlannedAttack newPlannedAttack = new PlannedAttack(newID, createAttackData);
+        PlannedAttack newPlannedAttack = new PlannedAttack(
+                newID,
+                this,
+                roleOfAttacker,
+                startTime,
+                durationTime
+        );
         getPlannedAttacksMap().put(newID, newPlannedAttack);
-        return newPlannedAttack;
     }
 
     private String getNextID() {

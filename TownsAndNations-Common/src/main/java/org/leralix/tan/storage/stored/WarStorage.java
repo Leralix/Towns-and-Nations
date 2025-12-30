@@ -8,6 +8,7 @@ import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.WarStartInternalEvent;
 import org.leralix.tan.storage.typeadapter.AttackResultAdapter;
 import org.leralix.tan.storage.typeadapter.WargoalTypeAdapter;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.info.AttackResult;
@@ -61,6 +62,11 @@ public class WarStorage extends JsonStorage<War>{
         List<TerritoryData> alliedTerritories = defendingTerritory.getRelations().getTerritoriesWithRelation(TownRelation.ALLIANCE);
         for(var alliedTerritory : alliedTerritories){
             alliedTerritory.setRelation(attackingTerritory, TownRelation.WAR);
+        }
+
+        // If simple war mode is enabled, start an attack as soon as the war is declared and don't stop it until surrender
+        if(Constants.isSimpleWarMode()){
+            newWar.createPlannedAttack(WarRole.MAIN_ATTACKER, 0, -1);
         }
 
         EventManager.getInstance().callEvent(new WarStartInternalEvent(attackingTerritory, defendingTerritory));

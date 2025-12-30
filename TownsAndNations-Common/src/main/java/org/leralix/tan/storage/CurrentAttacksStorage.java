@@ -3,6 +3,8 @@ package org.leralix.tan.storage;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.legacy.CurrentAttack;
+import org.leralix.tan.war.legacy.InfiniteCurrentAttack;
+import org.leralix.tan.war.legacy.TemporalCurrentAttack;
 import org.leralix.tan.war.legacy.WarRole;
 
 import java.util.Collection;
@@ -13,7 +15,13 @@ public class CurrentAttacksStorage {
     private static final Map<String, CurrentAttack> attackStatusMap = new HashMap<>();
 
     public static void startAttack(PlannedAttack plannedAttack, long endTime) {
-        attackStatusMap.put(plannedAttack.getID(), new CurrentAttack(plannedAttack, System.currentTimeMillis(), endTime));
+
+        if(endTime < 0 ){
+            attackStatusMap.put(plannedAttack.getID(), new InfiniteCurrentAttack(plannedAttack));
+        }
+        else {
+            attackStatusMap.put(plannedAttack.getID(), new TemporalCurrentAttack(plannedAttack, endTime));
+        }
     }
 
     public static void remove(CurrentAttack currentAttacks){

@@ -22,48 +22,35 @@ import org.leralix.tan.war.info.AttackResultCounter;
  * A currentAttack is created when a planned attack starts and is removed when it ends.
  * Data will be transferred to the PlannedAttack object when the attack ends to keep a record of the attack.
  */
-public class CurrentAttack {
+public abstract class CurrentAttack {
 
     /**
      *  Data of the planned attack related to this current attack
      */
-    private final PlannedAttack attackData;
+    protected final PlannedAttack attackData;
 
     /**
      * Indicates if the attack has ended
      */
-    private boolean end;
+    protected boolean end;
 
-    /**
-     * total time, in tick
-     */
-    private final long totalTime;
-    /**
-     * Remaining time, in tick
-     */
-    private long remaining;
+
     /**
      * Boss bar showing the remaining time
      */
-    private final BossBar bossBar;
+    protected final BossBar bossBar;
 
-    private final AttackResultCounter attackResultCounter;
+    protected final AttackResultCounter attackResultCounter;
 
     /**
      * Constructor of CurrentAttack
      * @param plannedAttack the planned attack data
-     * @param startTime     the start time in epoch milliseconds
-     * @param endTime       the end time in epoch milliseconds
      */
-    public CurrentAttack(PlannedAttack plannedAttack, long startTime, long endTime) {
+    public CurrentAttack(PlannedAttack plannedAttack) {
 
         this.attackData = plannedAttack;
         this.attackResultCounter = new AttackResultCounter();
         this.end = false;
-
-        //Conversion from ms to ticks
-        this.totalTime = (endTime - startTime) / 50;
-        this.remaining = totalTime;
 
         this.bossBar = Bukkit.createBossBar("", BarColor.RED, BarStyle.SOLID);
         applyBossBar(plannedAttack);
@@ -95,19 +82,11 @@ public class CurrentAttack {
         }
     }
 
-    private void updateBossBar() {
-        long hours = remaining / 72000;
-        long minutes = (remaining % 72000) / 1200;
-        long seconds = (remaining % 1200) / 20;
-        String timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds);
-
-        bossBar.setTitle(timeString);
-        bossBar.setProgress((double) (totalTime - remaining) / totalTime);
-    }
+    protected abstract void updateBossBar();
 
     public void addPlayer(ITanPlayer tanPlayer) {
         Player player = tanPlayer.getPlayer();
-        if (player != null && remaining > 0) {
+        if (player != null) {
             bossBar.addPlayer(player);
         }
     }
@@ -116,8 +95,7 @@ public class CurrentAttack {
         BukkitRunnable timerTask = new BukkitRunnable() {
             @Override
             public void run() {
-                if (remaining > 0 && !end) {
-                    remaining--;
+                if (shouldContinue() && !end) {
                     updateBossBar();
                 }
                 else {
@@ -128,6 +106,8 @@ public class CurrentAttack {
         };
         timerTask.runTaskTimer(TownsAndNations.getPlugin(), 0, 1); // Execute every tick (20/s)
     }
+
+    protected abstract boolean shouldContinue();
 
 
     public void end() {

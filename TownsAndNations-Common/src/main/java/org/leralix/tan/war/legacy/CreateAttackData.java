@@ -1,7 +1,6 @@
 package org.leralix.tan.war.legacy;
 
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.war.War;
 
 /**
  * Class used during {@link org.leralix.tan.gui.user.war.CreateAttackMenu}
@@ -22,21 +21,16 @@ public class CreateAttackData {
      */
     private int selectedTime;
     /**
-     * The war in which the created attack will take place
-     */
-    private final War war;
-    /**
      * The side declaring an attack.
      */
     private final WarRole attackingSide;
 
-    public CreateAttackData(War war, WarRole attackingSide){
+    public CreateAttackData(WarRole attackingSide){
 
         this.minTime = Constants.getMinTimeBeforeAttack();
         this.maxTime = Constants.getMaxTimeBeforeAttack();
 
         this.selectedTime = (minTime + maxTime) / 2;
-        this.war = war;
         this.attackingSide = attackingSide;
     }
 
@@ -52,10 +46,6 @@ public class CreateAttackData {
 
     public int getSelectedTime(){
         return selectedTime;
-    }
-
-    public War getWar() {
-        return war;
     }
 
     public WarRole getAttackingSide(){
