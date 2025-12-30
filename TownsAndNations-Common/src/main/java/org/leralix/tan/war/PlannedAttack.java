@@ -47,6 +47,9 @@ public class PlannedAttack {
     private final String warID;
     private transient War war;
 
+    /**
+     * The side declaring the war
+     */
     private final WarRole warRole;
 
     private transient BukkitRunnable warStartTask;
@@ -283,5 +286,9 @@ public class PlannedAttack {
 
     public boolean isCancelled() {
         return attackResult instanceof AttackResultCancelled;
+    }
+
+    public WarRole getSideDeclaring() {
+        return warRole;
     }
 }

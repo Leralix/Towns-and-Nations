@@ -57,11 +57,11 @@ public class AttackMenu extends IteratorGUI {
         for (PlannedAttack plannedAttack : WarStorage.getInstance().getAllAttacks()) {
             if (scope.allowAttack(plannedAttack)) {
 
-                boolean isMainAttacker = plannedAttack.getWar().isMainAttacker(territoryData);
+                boolean startedAttack = plannedAttack.getSideDeclaring() == plannedAttack.getWar().getTerritoryRole(territoryData);
 
                 IconBuilder builder = plannedAttack.getIcon(iconManager, tanPlayer.getLang(), tanPlayer.getTimeZone(), territoryData);
 
-                if (isMainAttacker && plannedAttack.isNotStarted() && !plannedAttack.isCancelled()) {
+                if (startedAttack && plannedAttack.isNotStarted() && !plannedAttack.isCancelled()) {
 
                     builder.setClickToAcceptMessage(Lang.GUI_GENERIC_RIGHT_CLICK_TO_CANCEL)
                             .setAction(action -> {
