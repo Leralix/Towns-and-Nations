@@ -3,14 +3,16 @@ package org.leralix.tan.war.capture;
 import org.bukkit.entity.Player;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
+import org.leralix.tan.war.legacy.WarRole;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -29,9 +31,24 @@ public class CaptureManager {
         return instance;
     }
 
-    public void updateCapture(CurrentAttack currentAttack){
-        handleFortCapture(currentAttack);
-        handleChunkCapture(currentAttack);
+    public void updateCapture(){
+
+        for(CaptureChunk captureChunk : captures.values()){
+            captureChunk.resetPlayers();
+        }
+
+        for (CurrentAttack currentAttack : CurrentAttacksStorage.getAll()) {
+            handleFortCapture(currentAttack);
+            handleChunkCapture(currentAttack);
+        }
+
+        // TODO : how to delete CaptureChunk when they are done ?
+        for (CaptureChunk captureChunk : new ArrayList<>(captures.values())) {
+            captureChunk.update();
+            if(captureChunk.isFinished()){
+                captures.remove(captureChunk.getTerritoryChunk());
+            }
+        }
     }
 
     private void handleFortCapture(CurrentAttack currentAttack) {
@@ -73,93 +90,71 @@ public class CaptureManager {
         }
     }
 
+    /**
+     * For one attack currently ongoing, update capture progress of chunks where players are
+     * @param currentAttack the attack to update
+     */
     private void handleChunkCapture(CurrentAttack currentAttack) {
 
         var attackData = currentAttack.getAttackData();
 
-        for(CaptureChunk captureChunk : captures.values()){
-            captureChunk.resetPlayers();
-        }
-
-
-        Collection<ITanPlayer> attackers = attackData.getAttackersPlayers();
-        Collection<ITanPlayer> defenders = attackData.getDefendingPlayers();
-
-        for(ITanPlayer attacker : attackers) {
-            Player player = attacker.getPlayer();
-            if (player == null || !player.isOnline()) {
-                continue;
-            }
-
-            ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getChunk());
+        War warRelatedToAttack = attackData.getWar();
+        for(Player player : attackData.getAllOnlinePlayers()){
+            var claimedChunk = NewClaimedChunkStorage.getInstance().get(player);
 
             if(claimedChunk instanceof TerritoryChunk territoryChunk){
-                if(!canBeCaptured(territoryChunk,
-                        attackData.getWar().getMainAttacker(),
-                        attackData.getWar().getMainDefender())){
+                //If chunk is surrounded by allied chunks, cannot be captured.
+                if(NewClaimedChunkStorage.getInstance().isAllAdjacentChunksClaimedBySameTerritory(territoryChunk.getChunk(), territoryChunk.getOccupierID())){
                     continue;
                 }
 
-                if(!captures.containsKey(territoryChunk)){
-                    captures.putIfAbsent(territoryChunk, new CaptureChunk(0, territoryChunk, currentAttack));
-                }
-                captures.get(territoryChunk).addAttacker(attacker.getPlayer());
-            }
-        }
+                ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
-        for(ITanPlayer defender : defenders) {
-            Player player = defender.getPlayer();
-            if (player == null || !player.isOnline()) {
-                continue;
-            }
-            ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getChunk());
-            if(claimedChunk instanceof TerritoryChunk territoryChunk){
-
-                if(!canBeCaptured(territoryChunk,
-                        attackData.getWar().getMainAttacker(),
-                        attackData.getWar().getMainDefender())  ){
+                var occupier = territoryChunk.getOccupier();
+                WarRole occupierRole = warRelatedToAttack.getTerritoryRole(occupier);
+                // If territory is neutral, then do not capture it
+                if(occupierRole == WarRole.NEUTRAL){
                     continue;
                 }
 
-                if(!captures.containsKey(territoryChunk)){
-                    captures.putIfAbsent(territoryChunk, new CaptureChunk(100, territoryChunk, currentAttack));
-                }
-                captures.get(territoryChunk).addDefender(defender.getPlayer());
-            }
-        }
+                WarRole playerRole = warRelatedToAttack.getPlayerRole(tanPlayer);
 
-        for (CaptureChunk captureChunk : new ArrayList<>(captures.values())) {
-            captureChunk.update();
+                addPlayer(territoryChunk, player, occupierRole, playerRole, currentAttack);
+            }
         }
     }
 
     /**
-     * Check if the claimed chunk can be claimed by the main defender of the current attack.
-     * A claim can be captured only if the claimed chunk is owned by the main defender
-     * and is adjacent to another claimed chunk of the same territory.
-     * @param territoryChunk  The claimed chunk to check
-     * @param mainDefender  The main defender of the current attack
-     * @return              True if the claimed chunk can be captured, false otherwise
+     * Register the current capture status of a territory chunk
+     * @param territoryChunk    The territory chunk being captured
+     * @param player            The player on the chunk
+     * @param occupierRole      The war role of the chunk occupier
+     * @param playerRole        The war role of the player
      */
-    private boolean canBeCaptured(TerritoryChunk territoryChunk, TerritoryData mainAttacker, TerritoryData mainDefender) {
-        String ownerID = territoryChunk.getOwnerID();
-        String occupierID = territoryChunk.getOccupierID();
+    private void addPlayer(
+            TerritoryChunk territoryChunk,
+            Player player,
+            WarRole occupierRole,
+            WarRole playerRole,
+            CurrentAttack currentAttack
+    ) {
+        boolean isPlayerEnemyOfOccupier = occupierRole.isOpposite(playerRole);
 
-        String defenderID = mainDefender.getID();
-        String attackerID = mainAttacker.getID();
-
-        if(ownerID.equals(attackerID) && occupierID.equals(defenderID)){
-            return true;
+        if(!captures.containsKey(territoryChunk)){
+            // If no captures are currently happening,
+            // no need to start listening while player and occupier are on the same side
+            if(!isPlayerEnemyOfOccupier){
+                return;
+            }
+            captures.put(territoryChunk, new CaptureChunk(territoryChunk, currentAttack));
         }
-
-        if (!ownerID.equals(defenderID)) {
-            return false;
+        CaptureChunk captureChunk = captures.get(territoryChunk);
+        if(isPlayerEnemyOfOccupier){
+            captureChunk.addAttacker(player);
         }
-
-        boolean surroundedBySame = NewClaimedChunkStorage.getInstance()
-                .isAllAdjacentChunksClaimedBySameTerritory(territoryChunk.getChunk(), defenderID);
-
-        return !surroundedBySame;
+        else {
+            captureChunk.addDefender(player);
+        }
     }
 
     /**

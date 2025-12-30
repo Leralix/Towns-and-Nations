@@ -186,11 +186,6 @@ public class TownsAndNations extends JavaPlugin {
 
 
         getLogger().log(Level.INFO, "[TaN] -Loading commands");
-        SaveStats.startSchedule();
-
-        DailyTasks dailyTasks = new DailyTasks(Constants.getDailyTaskHour(), Constants.getDailyTaskMinute());
-        dailyTasks.scheduleMidnightTask();
-
         enableEventList();
         getCommand("tan").setExecutor(new PlayerCommandManager());
         getCommand("tanadmin").setExecutor(new AdminCommandManager());
@@ -218,6 +213,10 @@ public class TownsAndNations extends JavaPlugin {
         initBStats();
 
         getLogger().log(Level.INFO, "[TaN] -Registering Tasks");
+        SaveStats.startSchedule();
+
+        DailyTasks dailyTasks = new DailyTasks(Constants.getDailyTaskHour(), Constants.getDailyTaskMinute());
+        dailyTasks.scheduleMidnightTask();
         SecondTask secondTask = new SecondTask();
         secondTask.startScheduler();
 

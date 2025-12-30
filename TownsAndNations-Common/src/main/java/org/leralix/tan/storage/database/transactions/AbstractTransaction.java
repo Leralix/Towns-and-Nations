@@ -28,7 +28,7 @@ public abstract class AbstractTransaction {
     protected long localDate;
 
     protected AbstractTransaction(){
-        this.localDate = new Date().getTime();
+        this.localDate = System.currentTimeMillis();
     }
 
     protected AbstractTransaction(long timestamp) {

@@ -124,20 +124,20 @@ public class PlannedAttack {
     public void setUpStartOfAttack() {
 
         //Conversion seconds -> ticks
-        long currentTime = new Date().getTime();
+        long currentTime = System.currentTimeMillis();
         long timeLeftBeforeStart = (long) ((startTime - currentTime) * 0.02);
         long timeLeftBeforeWarning = timeLeftBeforeStart - 1200; //Warning 1 minute before
 
 
         if (timeLeftBeforeStart <= 0) {
-            startWar();
+            startAttack();
             return;
         }
 
         warStartTask = new BukkitRunnable() {
             @Override
             public void run() {
-                startWar();
+                startAttack();
             }
         };
         warStartTask.runTaskLater(TownsAndNations.getPlugin(), timeLeftBeforeStart);
@@ -153,7 +153,7 @@ public class PlannedAttack {
         }
     }
 
-    public void startWar() {
+    public void startAttack() {
         broadCastMessageWithSound(Lang.ATTACK_START_NOW.get(getWar().getName()), SoundEnum.WAR);
         CurrentAttacksStorage.startAttack(this, endTime);
     }
@@ -264,11 +264,19 @@ public class PlannedAttack {
      * Update the status of the attack, starting or ending it if necessary
      */
     public void updateStatus() {
+        // If in progress, start the attack until the preselected end date
         if(isInProgress()){
-            startWar();
+            startAttack();
+            return;
         }
-        else if(isFinished() && attackResult instanceof AttackNotYetStarted){
+        // If the war finished while the server was offline and is still labeled "not started". Mark it as "cancelled"
+        if(isFinished() && attackResult instanceof AttackNotYetStarted){
             end(new AttackResultCancelled());
+            return;
+        }
+        // If attack has not yet started, start the countdown until start
+        if (System.currentTimeMillis() < startTime){
+            setUpStartOfAttack();
         }
     }
 

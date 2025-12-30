@@ -17,9 +17,9 @@ public class SecondTask {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (CurrentAttack currentAttack : CurrentAttacksStorage.getAll()) {
-                    CaptureManager.getInstance().updateCapture(currentAttack);
-                }
+
+                CaptureManager.getInstance().updateCapture();
+
                 for (Player player : Bukkit.getOnlinePlayers()){
                     ShowBoundaries.display(player);
                 }

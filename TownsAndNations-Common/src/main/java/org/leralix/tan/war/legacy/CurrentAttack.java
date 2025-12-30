@@ -14,7 +14,6 @@ import org.leralix.tan.events.events.AttackEndedInternalEvent;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.utils.gameplay.CommandExecutor;
 import org.leralix.tan.war.PlannedAttack;
-import org.leralix.tan.war.cosmetic.ShowBoundaries;
 import org.leralix.tan.war.info.AttackResultCompleted;
 import org.leralix.tan.war.info.AttackResultCounter;
 
@@ -188,14 +187,6 @@ public class CurrentAttack {
 
     public PlannedAttack getAttackData() {
         return attackData;
-    }
-
-    public void displayBoundaries() {
-        for (Player player : attackData.getAllOnlinePlayers()) {
-            if(player != null){
-                ShowBoundaries.display(player);
-            }
-        }
     }
 
     public void attackerKilled() {

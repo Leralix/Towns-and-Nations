@@ -4,46 +4,55 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
+import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.NumberUtil;
+import org.leralix.tan.war.War;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
+import org.leralix.tan.war.legacy.WarRole;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class CaptureChunk {
 
     /**
-     * The ID of the war related to this capture.
+     * The territoryChunk related to the capture process.
+     * The occupier of this chunk is used to defines if player are enemies or allies
      */
     private final TerritoryChunk territoryChunk;
     /**
+     * The current attack related to the capture
+     */
+    private final CurrentAttack currentAttack;
+
+    /**
      * The actual capture score of the chunk
-     * 0: held by owner
-     * max: held by occupier
+     * <ul>
+     *     <li>0: held by occupier</li>
+     *     <li>{@link Constants#getChunkCaptureTime()} : control switch side</li>
+     * </ul>
      */
     private int score;
-    private final CurrentAttack currentAttack;
-    private final List<Player> attackers;
-    private final List<Player> defenders;
 
-    public CaptureChunk(int initialScore, TerritoryChunk territoryChunk, CurrentAttack currentAttack) {
-        this.score = initialScore;
-        this.attackers = new ArrayList<>();
-        this.defenders = new ArrayList<>();
+    /**
+     * Defines if the attack on the chunk is completed : The attackers manage to capture the chunk, and it should
+     * be deleted from the attack storage.
+     */
+    private boolean isFinished;
+
+    private final Set<Player> attackers;
+    private final Set<Player> defenders;
+
+    public CaptureChunk(TerritoryChunk territoryChunk, CurrentAttack currentAttack) {
+        this.score = 0;
         this.territoryChunk = territoryChunk;
         this.currentAttack = currentAttack;
-    }
-
-    public boolean isCaptured() {
-        return score >= Constants.getChunkCaptureTime();
-    }
-
-    public boolean isLiberated() {
-        return score <= 0;
+        this.isFinished = false;
+        this.attackers = new HashSet<>();
+        this.defenders = new HashSet<>();
     }
 
     public void addAttacker(Player player) {
@@ -56,13 +65,14 @@ public class CaptureChunk {
 
     public void update() {
 
-        Optional<Fort> fortProtectingChunk =  territoryChunk.getFortProtecting();
+
+        Optional<Fort> fortProtectingChunk = territoryChunk.getFortProtecting();
 
         if (fortProtectingChunk.isEmpty()) {
             updateScore();
         }
 
-        String message = generateMessage(fortProtectingChunk);
+        FilledLang message = generateMessage(fortProtectingChunk);
         List<Player> allPlayers = new ArrayList<>(attackers);
         allPlayers.addAll(defenders);
 
@@ -70,7 +80,7 @@ public class CaptureChunk {
             if (player == null || !player.isOnline() || player.getPlayer() == null) {
                 continue;
             }
-            player.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
+            player.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message.get(player)));
         }
     }
 
@@ -78,25 +88,31 @@ public class CaptureChunk {
         return currentAttack.getAttackData().getWar().getID();
     }
 
-    private String generateMessage(Optional<Fort> fortProtectingChunk) {
+    private FilledLang generateMessage(Optional<Fort> fortProtectingChunk) {
 
-        String message;
         String nbDefenders = Integer.toString(defenders.size());
         String nbAttackers = Integer.toString(attackers.size());
 
         if (fortProtectingChunk.isPresent()) {
-            message = Lang.WAR_INFO_CHUNK_PROTECTED.get(Lang.getServerLang(), fortProtectingChunk.get().getPosition().toString(), nbAttackers, nbDefenders);
-        } else if (defenders.size() == attackers.size()) {
-            message = Lang.WAR_INFO_CONTESTED.get(Lang.getServerLang(), NumberUtil.getPercentage(score, Constants.getChunkCaptureTime()), nbAttackers, nbDefenders);
-        } else if (isCaptured()) {
-            message = Lang.WAR_INFO_CHUNK_CAPTURED.get(Lang.getServerLang(), territoryChunk.getOccupier().getColoredName(), nbAttackers, nbDefenders);
-        } else if (isLiberated()) {
-            message = Lang.WAR_INFO_CHUNK_OWNED.get(Lang.getServerLang(), nbAttackers, nbDefenders);
+            return Lang.WAR_INFO_CHUNK_PROTECTED.get(
+                    fortProtectingChunk.get().getPosition().toString(),
+                    nbAttackers,
+                    nbDefenders
+            );
+        } else if (score > 0) {
+            return Lang.WAR_INFO_CONTESTED.get(
+                    getAttackingTerritory().getColoredName(),
+                    NumberUtil.getPercentage(score, Constants.getChunkCaptureTime()),
+                    nbAttackers,
+                    nbDefenders)
+                    ;
         } else {
-            message = Lang.WAR_INFO_CONTESTED.get(Lang.getServerLang(), NumberUtil.getPercentage(score, Constants.getChunkCaptureTime()), nbAttackers, nbDefenders);
+            return Lang.WAR_INFO_CHUNK_OWNED.get(
+                    territoryChunk.getOccupier().getColoredName(),
+                    nbAttackers,
+                    nbDefenders
+            );
         }
-
-        return message;
     }
 
     private void updateScore() {
@@ -106,23 +122,19 @@ public class CaptureChunk {
             score -= 1;
         }
 
-        if (score < 0) {
-            score = 0;
-            if(territoryChunk.isOccupied()){
+        //Clamp the score between 0 and the chunk capture time
+        score = Math.clamp(score, 0, Constants.getChunkCaptureTime());
+
+        // If capture score is full, reverse the occupation of the chunk
+        if (score >= Constants.getChunkCaptureTime() && !isFinished) {
+            if (territoryChunk.isOccupied()) {
                 territoryChunk.liberate();
-                currentAttack.getAttackResultCounter().decrementClaimsCaptured();
+            } else {
+                territoryChunk.setOccupier(getAttackingTerritory());
             }
-        }
-        else if (score >= Constants.getChunkCaptureTime()) {
-            score = Constants.getChunkCaptureTime();
-            if(!territoryChunk.isOccupied()){
-                territoryChunk.setOccupier(currentAttack.getAttackData().getWar().getMainAttacker());
-                currentAttack.getAttackResultCounter().incrementClaimsCaptured();
-                territoryChunk.getOwner().checkIfShouldSurrender();
-            }
+            isFinished = true;
         }
     }
-
 
     public void resetPlayers() {
         this.attackers.clear();
@@ -135,5 +147,30 @@ public class CaptureChunk {
     public void warOver() {
         resetPlayers();
         territoryChunk.liberate();
+    }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public TerritoryChunk getTerritoryChunk() {
+        return territoryChunk;
+    }
+
+    /**
+     * Get the attack territory trying to capture the chunk.
+     * Depending on who owns the chunk, it will be the main defender or main attacker.
+     *
+     * @return The attacking territory
+     */
+    public TerritoryData getAttackingTerritory() {
+
+        War war = currentAttack.getAttackData().getWar();
+
+        WarRole warRole = war.getTerritoryRole(territoryChunk.getOccupier());
+        return switch (warRole) {
+            case MAIN_ATTACKER, OTHER_ATTACKER -> war.getMainDefender();
+            case MAIN_DEFENDER, OTHER_DEFENDER, NEUTRAL -> war.getMainAttacker();
+        };
     }
 }

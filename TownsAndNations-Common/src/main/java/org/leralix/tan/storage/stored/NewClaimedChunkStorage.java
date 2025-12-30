@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import org.bukkit.Chunk;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.tan.TownsAndNations;
@@ -189,6 +190,14 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
             return new WildernessChunk(x, z, worldID);
         }
         return claimedChunk;
+    }
+
+    /**
+     * @param player The player
+     * @return The chunk on the player current position
+     */
+    public @NotNull ClaimedChunk2 get(Player player){
+        return get(player.getLocation().getChunk());
     }
 
     public @NotNull ClaimedChunk2 get(Chunk chunk) {

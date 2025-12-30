@@ -98,7 +98,7 @@ public abstract class TerritoryData {
         this.id = id;
         this.name = name;
         this.description = Lang.DEFAULT_DESCRIPTION.getDefault();
-        this.dateTimeCreated = new Date().getTime();
+        this.dateTimeCreated = System.currentTimeMillis();
 
         this.customIcon = new PlayerHeadIcon(owner);
 

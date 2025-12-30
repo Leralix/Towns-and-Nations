@@ -1301,8 +1301,7 @@ language:
   CHANGE_CAPITAL_NOT_OWNED_TOWN_CHUNK: "§cThis chunk owned by {0}"
   CHANGE_CAPITAL_NOT_TOWN_CHUNK: "§cThis chunk is not a town chunk"
   #Wars
-  WAR_INFO_CHUNK_PROTECTED: "§f🌑§f Protected ({0}) - §f[Atk : §e{1}§f, Def : §e{2}§f]"
-  WAR_INFO_CHUNK_OWNED: "§a🌑§f Owned - §f[Atk : §e{0}§f, Def : §e{1}§f]"
-  WAR_INFO_CONTESTED: "§6🌑§f Contested (§e{0}%§f) - §f[Atk : §e{1}§f, Def : §e{2}§f]"
-  WAR_INFO_CHUNK_CAPTURED: "§4🌑§f Captured by {0}§f - [Atk : §e{1}§f, Def : §e{2}§f]"
-  WAR_INFO_FORT_STATUS: "{0} - (Atk: §e{1}§f / Def: §e{2}§f)"
+  WAR_INFO_CHUNK_PROTECTED: "§f🌑§f Protected ({0}§f) - [Atk : §e{1}§f, Def : §e{2}§f]"
+  WAR_INFO_CHUNK_OWNED: "§a🌑§f Owned by {0}§f - [Atk : §e{1}§f, Def : §e{2}§f]"
+  WAR_INFO_CONTESTED: "§6🌑§f Contested by {0}§f (§e{1}%§f) - [Atk : §e{2}§f, Def : §e{3}§f]"
+  WAR_INFO_FORT_STATUS: "{0}§f - (Atk: §e{1}§f / Def: §e{2}§f)"

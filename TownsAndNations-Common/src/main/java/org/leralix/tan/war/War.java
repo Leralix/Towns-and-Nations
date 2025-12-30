@@ -1,7 +1,8 @@
 package org.leralix.tan.war;
 
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.entity.Player;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.events.EventManager;
@@ -239,6 +240,22 @@ public class War {
             return WarRole.OTHER_ATTACKER;
         if (isDefender(territory))
             return WarRole.OTHER_DEFENDER;
+        return WarRole.NEUTRAL;
+    }
+
+    /**
+     * Get the player role in the war. If several of its territory have different relations in the war (not neutral),
+     * the lowest will be used
+     * @param player    The player to get the warRole
+     * @return  The warRole of the player.
+     */
+    public WarRole getPlayerRole(ITanPlayer player) {
+        for(TerritoryData territoryData : player.getAllTerritoriesPlayerIsIn()){
+            WarRole warRole = getTerritoryRole(territoryData);
+            if(warRole != WarRole.NEUTRAL){
+                return warRole;
+            }
+        }
         return WarRole.NEUTRAL;
     }
 
