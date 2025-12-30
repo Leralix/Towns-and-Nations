@@ -11,6 +11,7 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new InvitePlayerCommand());
         addSubCommand(new JoinTownCommand());
         addSubCommand(new ClaimCommand());
+        addSubCommand(new EnableBoundaryCommand());
         addSubCommand(new UnclaimCommand());
         addSubCommand(new MapCommand());
         addSubCommand(new SeeBalanceCommand());
