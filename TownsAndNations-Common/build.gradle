@@ -20,7 +20,7 @@ tasks.shadowJar {
 }
 
 group = 'org.tan'
-version = '0.16.6'
+version = '0.16.7'
 
 compileJava.options.encoding = 'UTF-8'
 
