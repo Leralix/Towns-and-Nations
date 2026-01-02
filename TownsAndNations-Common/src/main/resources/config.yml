@@ -28,15 +28,16 @@ taxMinuteTime: 0 #0-59
 #Only enable this if you are not using any other scoreboard plugin
 EnablePlayerColorCode: false
 
-#If the player color code is enable, you can add a 3 character prefix to the player name from their town
-EnablePlayerPrefix: false
 
-# Enable town prefix
+# Enable town tag
 # Players in a town will be shown with a prefix of their town name or tag
-EnableTownPrefix: true
-#If prefix enabled:
-prefixMinSize: 3
-prefixMaxSize: 4
+enableTownTag: true
+#If tag enabled:
+tagMinSize: 3
+tagMaxSize: 4
+# tag format
+# Minecraft color code : https://manacube.com/attachments/1575063877749-png.20438/
+townTagFormat: "&f[&l{townColor}{townTag}&r]"
 
 #Enable the version check
 CheckForUpdate: true

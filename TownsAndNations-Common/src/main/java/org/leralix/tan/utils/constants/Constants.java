@@ -43,10 +43,11 @@ public class Constants {
      * This option cannot be enabled with allowColorCodes.
      */
     private static boolean allowTownTag;
+    private static Range prefixSize;
+    private static String townTagFormat;
     private static boolean allowColorCode;
     private static String baseCurrencyChar;
     private static boolean showCurrency;
-    private static Range prefixSize;
     private static BoundaryParticle boundaryParticles;
 
     //Territory
@@ -152,14 +153,16 @@ public class Constants {
         startingBalance = config.getDouble("StartingMoney", 100.0);
         maxPayRange = config.getDouble("maxPayDistance", 15);
         //Cosmetic
-        allowTownTag = config.getBoolean("EnablePlayerPrefix", false);
+        allowTownTag = config.getBoolean("enableTownTag", false);
+        prefixSize = new Range(
+                config.getInt("tagMinSize", 3),
+                config.getInt("tagMaxSize", 4)
+        );
+        townTagFormat = config.getString("townTagFormat", "&f[&l{townColor}{townTag}&r]");
         allowColorCode = config.getBoolean("EnablePlayerColorCode", false);
         baseCurrencyChar = config.getString("moneyIcon", "$");
         showCurrency = config.getBoolean("showCurrency", true);
-        prefixSize = new Range(
-                config.getInt("prefixMinSize", 3),
-                config.getInt("prefixMaxSize", 4)
-        );
+
         boundaryParticles = new BoundaryParticle(config.getConfigurationSection("boundaryParticles"));
         //Territory
         townCost = config.getInt("townCost", 1000);
@@ -350,6 +353,10 @@ public class Constants {
 
     public static Range getPrefixSize() {
         return prefixSize;
+    }
+
+    public static String getTownTagFormat() {
+        return townTagFormat;
     }
 
     public static BoundaryParticle getBoundaryParticles() {

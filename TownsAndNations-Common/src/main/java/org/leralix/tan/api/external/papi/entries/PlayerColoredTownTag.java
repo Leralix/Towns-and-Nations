@@ -23,7 +23,7 @@ public class PlayerColoredTownTag extends PapiEntry {
 
 
         return tanPlayer.hasTown() ?
-                tanPlayer.getTown().getColoredTag() :
+                tanPlayer.getTown().getFormatedTag() :
                 Lang.NO_TOWN.get(tanPlayer);
     }
 }

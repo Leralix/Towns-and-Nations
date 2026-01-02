@@ -416,8 +416,11 @@ public class TownData extends TerritoryData {
         applyToAllOnlinePlayer(PrefixUtil::updatePrefix);
     }
 
-    public String getColoredTag() {
-        return getChunkColor() + "[" + getTownTag() + "]";
+    public String getFormatedTag() {
+        String tag = Constants.getTownTagFormat();
+        tag = tag.replace("{townColor}", getChunkColor().toString());
+        tag = tag.replace("{townTag}", getTownTag());
+        return ChatColor.translateAlternateColorCodes('&', tag);
     }
 
 

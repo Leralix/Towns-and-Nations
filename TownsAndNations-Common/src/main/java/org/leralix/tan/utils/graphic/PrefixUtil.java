@@ -25,7 +25,8 @@ public class PrefixUtil {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         if (tanPlayer.getTown() != null){
-            String prefix = tanPlayer.getTown().getColoredTag() + " ";
+
+            String prefix = tanPlayer.getTown().getFormatedTag();
 
             player.setPlayerListName(prefix + player.getName());
             player.setDisplayName(prefix + player.getName());

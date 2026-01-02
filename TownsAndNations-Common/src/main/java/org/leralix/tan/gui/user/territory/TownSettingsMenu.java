@@ -107,7 +107,7 @@ public class TownSettingsMenu extends SettingsMenus {
     private @NotNull GuiItem getChangeTagButton() {
         return iconManager.get(IconKey.CHANGE_TOWN_TAG_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TAG.get(langType))
-                .setDescription(Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1.get(townData.getColoredTag()))
+                .setDescription(Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1.get(townData.getFormatedTag()))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
                 .setAction(action -> {
