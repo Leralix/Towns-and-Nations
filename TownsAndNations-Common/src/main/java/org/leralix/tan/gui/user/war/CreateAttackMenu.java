@@ -16,6 +16,7 @@ import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.DateUtil;
+import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.WarTimeSlot;
 import org.leralix.tan.war.legacy.CreateAttackData;
@@ -60,21 +61,23 @@ public class CreateAttackMenu extends BasicGui {
     private @NotNull GuiItem getConfirmButton() {
 
         boolean isAuthorized = isStartDateAuthorized();
+        boolean isOverridingOtherAttack = isOverridingOtherAttack();
 
         IconKey iconKey = isAuthorized ? IconKey.CONFIRM_WAR_START_ICON : IconKey.CONFIRM_WAR_START_IMPOSSIBLE_ICON;
 
         return iconManager.get(iconKey)
                 .setName(Lang.GUI_CONFIRM_ATTACK.get(tanPlayer))
                 .setClickToAcceptMessage(
-                        isAuthorized ?
-                                Lang.GUI_GENERIC_CLICK_TO_PROCEED
-                                : Lang.GUI_WARGOAL_OUTSIDE_AUTHORIZED_SLOTS
-
+                        isOverridingOtherAttack ?
+                                Lang.GUI_ATTACK_ALREADY_PLANNED_IN_TIME :
+                                isAuthorized ?
+                                        Lang.GUI_GENERIC_CLICK_TO_PROCEED :
+                                        Lang.GUI_WARGOAL_OUTSIDE_AUTHORIZED_SLOTS
                 )
                 .setAction(event -> {
                     event.setCancelled(true);
 
-                    if (!isAuthorized) {
+                    if (!isAuthorized || isOverridingOtherAttack) {
                         SoundUtil.playSound(player, REMOVE);
                         return;
                     }
@@ -90,6 +93,18 @@ public class CreateAttackMenu extends BasicGui {
                 })
                 .asGuiItem(player, langType);
 
+    }
+
+    private boolean isOverridingOtherAttack() {
+        Instant warStart = Instant.now().plusSeconds(attackData.getSelectedTime() * 60L);
+        Instant warEnd = warStart.plusSeconds(Constants.getAttackDuration() * 60L);
+        for (PlannedAttack plannedAttack : war.getPlannedAttacks()) {
+            if (plannedAttack.isInstantInAttack(warStart.toEpochMilli()) ||
+                    plannedAttack.isInstantInAttack(warEnd.toEpochMilli())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isStartDateAuthorized() {

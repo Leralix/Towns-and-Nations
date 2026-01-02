@@ -1107,6 +1107,7 @@ language:
   GUI_SELECT_TERRITORY_TO_LIBERATE: "§aSelect the territory to liberate"
   GUI_SELECTED_TERRITORY_TO_LIBERATE: "§fSelected territory: §9{0}"
   GUI_WARGOAL_OUTSIDE_AUTHORIZED_SLOTS: "§cWar need to start in the authorized slots"
+  GUI_ATTACK_ALREADY_PLANNED_IN_TIME: "§cAn attack is already planned in this time slot"
   WARGOAL_SUBJUGATE_SUCCESS: "{0}§f has been subjugated to {1}"
   WARGOAL_LIBERATE_SUCCESS: "{0}§f has been liberated from {1}"
   WARGOAL_CONQUER_SUCCESS_WINNING_SIDE: "§aYou can now claim {0}§a chunks from {1}"

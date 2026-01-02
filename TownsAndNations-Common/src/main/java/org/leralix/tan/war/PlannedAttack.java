@@ -259,14 +259,6 @@ public class PlannedAttack {
     }
 
     /**
-     * Check if the attack is in progress by checking the current time
-     * @return true if the attack is in progress
-     */
-    public boolean isInProgress() {
-        return System.currentTimeMillis() >= startTime && !isFinished();
-    }
-
-    /**
      * @return true if the attack has not yet started
      */
     public boolean isNotStarted() {
@@ -278,7 +270,7 @@ public class PlannedAttack {
      */
     public void updateStatus() {
         // If in progress, start the attack until the preselected end date
-        if(isInProgress()){
+        if(isInstantInAttack(System.currentTimeMillis())){
             startAttack();
             return;
         }
@@ -300,5 +292,9 @@ public class PlannedAttack {
 
     public WarRole getSideDeclaring() {
         return warRole;
+    }
+
+    public boolean isInstantInAttack(long epochMilli) {
+        return epochMilli > startTime && epochMilli < endTime;
     }
 }
