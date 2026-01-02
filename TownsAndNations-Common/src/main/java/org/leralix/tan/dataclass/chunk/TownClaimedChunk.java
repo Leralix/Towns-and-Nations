@@ -60,68 +60,7 @@ public class TownClaimedChunk extends TerritoryChunk {
 
         return commonTerritoryCanPlayerDo(player, permissionType, tanPlayer);
     }
-
-
-    public void unclaimChunk(Player player) {
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player);
-        LangType langType = playerStat.getLang();
-        TownData playerTown = playerStat.getTown();
-
-        // Special case: one of the player's territories can conquer chunks due to a past war.
-        for(TerritoryData territoryData : playerStat.getAllTerritoriesPlayerIsIn()){
-            if(territoryData.canConquerChunk(this)){
-                NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
-                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(langType, getTown().getColoredName()), SoundEnum.MINOR_GOOD);
-                return;
-            }
-        }
-
-        if (playerTown == null) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
-            return;
-        }
-
-        if (!playerTown.doesPlayerHavePermission(playerStat, RolePermission.UNCLAIM_CHUNK)) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), SoundEnum.NOT_ALLOWED);
-            return;
-        }
-
-
-        if (!getOwner().equals(playerTown)) {
-            TanChatUtils.message(player, Lang.UNCLAIMED_CHUNK_NOT_RIGHT_TOWN.get(langType, getOwner().getName()));
-            return;
-        }
-
-        for (PropertyData propertyData : getTown().getProperties()) {
-            if (propertyData.isInChunk(this)) {
-                TanChatUtils.message(player, Lang.PROPERTY_IN_CHUNK.get(langType, propertyData.getName()));
-                return;
-            }
-        }
-
-        if (ChunkUtil.chunkContainsBuildings(this, playerTown)) {
-            TanChatUtils.message(player, Lang.BUILDINGS_OR_CAPITAL_IN_CHUNK.get(langType));
-            return;
-        }
-
-        if(isOccupied()){
-            TanChatUtils.message(player, Lang.CHUNK_OCCUPIED_CANT_UNCLAIM.get(langType));
-            return;
-        }
-
-        NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
-
-        ChunkCap chunkCap = playerTown.getNewLevel().getStat(ChunkCap.class);
-        if(chunkCap.isUnlimited()){
-            TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(player, playerTown.getColoredName()));
-        }
-        else {
-            String currentChunks = Integer.toString(playerTown.getNumberOfClaimedChunk());
-            String maxChunks = Integer.toString(chunkCap.getMaxAmount());
-            TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(player, playerTown.getColoredName(), currentChunks, maxChunks));
-        }
-    }
-
+    
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
         TownData townTo = getTown();
 

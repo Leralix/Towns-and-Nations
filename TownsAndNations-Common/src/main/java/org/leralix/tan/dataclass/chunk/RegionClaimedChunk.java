@@ -48,59 +48,6 @@ public class RegionClaimedChunk extends TerritoryChunk {
         return RegionDataStorage.getInstance().get(getOwnerID());
     }
 
-    public void unclaimChunk(Player player) {
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player);
-        LangType langType = playerStat.getLang();
-
-        // Special case: one of the player's territories can conquer chunks due to a past war.
-        for(TerritoryData territoryData : playerStat.getAllTerritoriesPlayerIsIn()){
-            if(territoryData.canConquerChunk(this)){
-                NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
-                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(langType, getRegion().getColoredName()), SoundEnum.MINOR_GOOD);
-                return;
-            }
-        }
-
-        if (!playerStat.hasTown()) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
-            return;
-        }
-
-        if (!playerStat.hasRegion()) {
-            TanChatUtils.message(player, Lang.TOWN_NO_REGION.get(langType));
-            return;
-        }
-
-        RegionData regionData = playerStat.getRegion();
-
-        if (!regionData.equals(getRegion())) {
-            TanChatUtils.message(player, Lang.UNCLAIMED_CHUNK_NOT_RIGHT_REGION.get(langType, getRegion().getName()));
-            return;
-        }
-
-        if (!regionData.doesPlayerHavePermission(playerStat, RolePermission.UNCLAIM_CHUNK)) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType));
-            return;
-        }
-
-        if(isOccupied()){
-            TanChatUtils.message(player, Lang.CHUNK_OCCUPIED_CANT_UNCLAIM.get(langType));
-            return;
-        }
-
-        NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
-
-        ChunkCap chunkCap = regionData.getNewLevel().getStat(ChunkCap.class);
-        if(chunkCap.isUnlimited()){
-            TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(player, regionData.getColoredName()));
-        }
-        else {
-            String currentChunks = Integer.toString(regionData.getNumberOfClaimedChunk());
-            String maxChunks = Integer.toString(chunkCap.getMaxAmount());
-            TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(player, regionData.getColoredName(), currentChunks, maxChunks));
-        }
-    }
-
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
         RegionData regionData = getRegion();
 

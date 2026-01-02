@@ -11,6 +11,7 @@ language:
   VALUE_EXCEED_MAXIMUM_ERROR: "§cThe value exceed the maximum authorized ({0})"
   VALUE_CANNOT_BE_NEGATIVE_ERROR: "§cThe value cannot be negative"
   TOWN_NO_REGION: "§cYour town does not belongs to a region"
+  PLAYER_NOT_IN_TERRITORY: "§cYou are not part of {0}"
   PLAYER_NOT_LEADER_OF_REGION: "§cYou need to be the leader of the region to execute this action"
   LEADER_CANNOT_QUIT_TOWN: "§cThe leader cannot quit a town"
   TOWN_ALREADY_HAVE_OVERLORD: "§cThis town already have an overlord"
@@ -291,7 +292,7 @@ language:
   LEFT_CLICK_TO_AUTHORIZE: "§7▶ Left click to authorize"
   LEFT_CLICK_TO_MODIFY: "§7▶ Left click to modify"
   GUI_GENERIC_LEFT_CLICK_TO_ACCEPT: "§7▶ Left click to accept"
-  RIGHT_CLICK_TO_REFUSE: "§fRight click to refuse"
+  RIGHT_CLICK_TO_REFUSE: "§7▶ Right click to refuse"
   GUI_GENERIC_NEW_BALANCE_MENU: "§fBalance evolution : §e{0}{MONEY_CHAR} §f→ §e{1}{MONEY_CHAR}"
   CANNOT_BE_MODIFIED: "§cThis cannot be modified"
   #Main menu

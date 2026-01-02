@@ -5,15 +5,24 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
+import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
+import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.territory.ChunkUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
 
@@ -62,6 +71,77 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
                 new Text(text)));
         return textComponent;
     }
+
+    /**
+     * Called when a player want to unclaim a chunk
+     * Will verify if the player is allowed to unclaim it, and if so, unclaim.
+     * @param player the player trying to unclaim this chunk
+     */
+    public void unclaimChunk(Player player) {
+
+        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player);
+        LangType langType = playerStat.getLang();
+
+        TerritoryData ownerTerritory = getOwner();
+
+        //If owner territory contains the player, regular check
+        if(ownerTerritory.isPlayerIn(player)){
+            if (!ownerTerritory.doesPlayerHavePermission(playerStat, RolePermission.UNCLAIM_CHUNK)) {
+                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), SoundEnum.NOT_ALLOWED);
+                return;
+            }
+
+            if(ownerTerritory instanceof TownData ownerTown){
+                for (PropertyData propertyData : ownerTown.getProperties()) {
+                    if (propertyData.isInChunk(this)) {
+                        TanChatUtils.message(player, Lang.PROPERTY_IN_CHUNK.get(langType, propertyData.getName()));
+                        return;
+                    }
+                }
+            }
+
+            if (ChunkUtil.chunkContainsBuildings(this, ownerTerritory)) {
+                TanChatUtils.message(player, Lang.BUILDINGS_OR_CAPITAL_IN_CHUNK.get(langType));
+                return;
+            }
+
+            if(isOccupied()){
+                TanChatUtils.message(player, Lang.CHUNK_OCCUPIED_CANT_UNCLAIM.get(langType));
+                return;
+            }
+
+            NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
+
+            ChunkCap chunkCap = ownerTerritory.getNewLevel().getStat(ChunkCap.class);
+            if(chunkCap.isUnlimited()){
+                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(player, ownerTerritory.getColoredName()));
+            }
+            else {
+                String currentChunks = Integer.toString(ownerTerritory.getNumberOfClaimedChunk());
+                String maxChunks = Integer.toString(chunkCap.getMaxAmount());
+                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(player, ownerTerritory.getColoredName(), currentChunks, maxChunks));
+            }
+        }
+        else {
+            // Special case: one of the player's territories can conquer chunks due to a past war.
+            for(TerritoryData territoryData : playerStat.getAllTerritoriesPlayerIsIn()){
+                if(territoryData.canConquerChunk(this)){
+
+                    if(isOccupied()){
+                        TanChatUtils.message(player, Lang.CHUNK_OCCUPIED_CANT_UNCLAIM.get(langType));
+                        return;
+                    }
+
+                    NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
+                    TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(langType, ownerTerritory.getColoredName()), SoundEnum.MINOR_GOOD);
+                    return;
+                }
+            }
+            // Player is not part of territory
+            TanChatUtils.message(player, Lang.PLAYER_NOT_IN_TERRITORY.get(langType, ownerTerritory.getColoredName()));
+        }
+    }
+
 
     public Optional<Fort> getFortProtecting() {
         for (Fort fort : getOccupier().getAllControlledFort()) {
