@@ -365,6 +365,11 @@ warBoundaryParticle : "DRAGON_BREATH"
 # Will be applied to normal unclaim and war goals unclaim
 preventUnclaimOrphanChunks: false
 
+# When a side surrenders and end the war, set the new relation between the two nations
+# Values : HOSTILE, EMBARGO, NEUTRAL, NON_AGGRESSION, ALLIANCE.
+# Default : NEUTRAL
+relationAfterSurrender : "NON_AGGRESSION"
+
 # Defines what permissions attackers get in chunk of territory at war
 # - when the chunk is held by defenders
 # - when the chunk is captured by attackers (all attackers from all current wars)

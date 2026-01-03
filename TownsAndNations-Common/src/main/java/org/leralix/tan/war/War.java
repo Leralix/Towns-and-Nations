@@ -123,7 +123,7 @@ public class War {
     }
 
     private void endWar() {
-        getMainAttacker().setRelation(getMainDefender(), TownRelation.NEUTRAL);
+        getMainAttacker().setRelation(getMainDefender(), Constants.getRelationAfterSurrender());
         for (PlannedAttack plannedAttack : getPlannedAttacks()) {
             plannedAttack.end(new AttackResultCancelled());
         }

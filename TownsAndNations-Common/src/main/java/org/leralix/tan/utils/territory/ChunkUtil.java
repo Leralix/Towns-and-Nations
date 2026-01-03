@@ -124,9 +124,6 @@ public class ChunkUtil {
                 continue; // Ignore wilderness or other non-territory chunks
             }
 
-            System.out.println(current);
-            System.out.println(blacklistedChunk);
-            System.out.println(current.equals(blacklistedChunk));
             if(current.equals(blacklistedChunk)){
                 continue; // Ignore blacklisted chunk
             }

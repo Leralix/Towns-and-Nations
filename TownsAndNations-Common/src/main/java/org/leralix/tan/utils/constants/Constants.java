@@ -3,6 +3,7 @@ package org.leralix.tan.utils.constants;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.jetbrains.annotations.Nullable;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.Range;
 import org.leralix.tan.dataclass.chunk.ChunkType;
@@ -64,6 +65,7 @@ public class Constants {
     private static int minimumNumberOfChunksUnclaimed;
     private static double percentageOfChunksUnclaimed;
     private static boolean preventOrphanChunks;
+    private static TownRelation relationAfterSurrender;
     private static MobChunkSpawnStorage mobChunkSpawnStorage;
 
     private static boolean enableNation;
@@ -180,6 +182,7 @@ public class Constants {
         minimumNumberOfChunksUnclaimed = config.getInt("minimumNumberOfChunksUnclaimed", 5);
         percentageOfChunksUnclaimed = config.getDouble("percentageOfChunksUnclaimed", 10) / 100;
         preventOrphanChunks = config.getBoolean("preventUnclaimOrphanChunks", false);
+        relationAfterSurrender = getRelation(config.getString("relationAfterSurrender","NEUTRAL"));
         mobChunkSpawnStorage = new MobChunkSpawnStorage(config.getConfigurationSection("CancelMobSpawnInTown"));
 
         enableNation = config.getBoolean("EnableKingdom", true);
@@ -285,6 +288,16 @@ public class Constants {
 
     }
 
+    private static TownRelation getRelation(String relationAfterSurrender) {
+        return switch (relationAfterSurrender.toUpperCase()){
+            case "ALLIANCE" -> TownRelation.ALLIANCE;
+            case "NON_AGGRESSION" -> TownRelation.NON_AGGRESSION;
+            case "EMBARGO" -> TownRelation.EMBARGO;
+            case "HOSTILE" -> TownRelation.WAR;
+            default -> TownRelation.NEUTRAL;
+        };
+    }
+
     /**
      * Depending on the config value, return the Particle enum.
      * In case the config is wrong or the particles does not exist in the used version of Minecraft,
@@ -351,6 +364,10 @@ public class Constants {
 
     public static boolean preventOrphanChunks() {
         return preventOrphanChunks;
+    }
+
+    public static TownRelation getRelationAfterSurrender() {
+        return relationAfterSurrender;
     }
 
     public static MobChunkSpawnStorage getMobChunkSpawnStorage() {
