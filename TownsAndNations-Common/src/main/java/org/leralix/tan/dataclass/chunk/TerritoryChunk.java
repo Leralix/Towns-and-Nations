@@ -109,6 +109,16 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
                 TanChatUtils.message(player, Lang.CHUNK_OCCUPIED_CANT_UNCLAIM.get(langType));
                 return;
             }
+            if(
+                    Constants.preventOrphanChunks() &&
+                    !Constants.allowNonAdjacentChunksForTown() && this instanceof TownClaimedChunk ||
+                    !Constants.allowNonAdjacentChunksForRegion() && this instanceof RegionClaimedChunk
+            ){
+                if(ChunkUtil.doesUnclaimCauseOrphan(this)){
+                    TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_BECAUSE_CREATE_ORPHAN.get(langType));
+                    return;
+                }
+            }
 
             NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
 
@@ -130,6 +140,17 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
                     if(isOccupied()){
                         TanChatUtils.message(player, Lang.CHUNK_OCCUPIED_CANT_UNCLAIM.get(langType));
                         return;
+                    }
+
+                    if(
+                            Constants.preventOrphanChunks() &&
+                            !Constants.allowNonAdjacentChunksForTown() && this instanceof TownClaimedChunk ||
+                            !Constants.allowNonAdjacentChunksForRegion() && this instanceof RegionClaimedChunk
+                    ){
+                        if(ChunkUtil.doesUnclaimCauseOrphan(this)){
+                            TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_BECAUSE_CREATE_ORPHAN.get(langType));
+                            return;
+                        }
                     }
 
                     NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);

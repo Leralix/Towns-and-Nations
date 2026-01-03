@@ -192,6 +192,7 @@ language:
   PROPERTY_IN_CHUNK: "§cThis chunk contains a property §f({0})"
   BUILDINGS_OR_CAPITAL_IN_CHUNK: "§cThis chunk contains at least one building or is a capital chunk"
   CHUNK_OCCUPIED_CANT_UNCLAIM: "§cThis chunk is currently occupied and cannot be unclaimed"
+  CANNOT_UNCLAIM_BECAUSE_CREATE_ORPHAN: "§cThis chunk cannot be deleted because it supplies other chunks"
   #Map command
   MAP_COMMAND_DESC: "Open the map of chunks around the player"
   #Debug commands

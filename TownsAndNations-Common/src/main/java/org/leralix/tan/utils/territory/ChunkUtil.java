@@ -43,6 +43,11 @@ public class ChunkUtil {
 
     }
 
+    /**
+     * This method iterate over all chunks around a newly unclaimed chunk and verify is they should be unclaimed.
+     *
+     * @param unclaimedChunk the newly unclaimed chunk
+     */
     public static void unclaimIfNoLongerSupplied(TerritoryChunk unclaimedChunk) {
 
         List<ChunkPolygon> polygonsAnalysed = new ArrayList<>();
@@ -64,7 +69,40 @@ public class ChunkUtil {
         }
     }
 
+    /**
+     * This method iterate over all chunks around a chunk to determine if unclaiming it will cause other chunks to
+     * be deleted.
+     * This check is only done if allowNonAdjacentChunksForTown/Region is enabled.
+     * @param chunkToPotentiallyUnclaim the chunk that should be unclaimed
+     * @return true if at least one chunk will be deleted in the chunk in parameters in deleted, false otherwise
+     */
+    public static boolean doesUnclaimCauseOrphan(TerritoryChunk chunkToPotentiallyUnclaim) {
+
+
+        for (ClaimedChunk2 claimedChunk2 : claimedChunkStorage.getEightAjacentChunks(chunkToPotentiallyUnclaim)) {
+
+            if (claimedChunk2 instanceof TerritoryChunk territoryChunk) {
+
+                ChunkPolygon chunkPolygon = ChunkUtil.getPolygon(territoryChunk, chunkToPotentiallyUnclaim);
+
+                if (!chunkPolygon.isSupplied()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private static ChunkPolygon getPolygon(TerritoryChunk startChunk) {
+        return getPolygon(startChunk, null);
+    }
+
+    /**
+     * @param startChunk        The chunk creating the polygon
+     * @param blacklistedChunk  A chunk that should not be counted while creating the polygon
+     * @return the polygon of all chunks linked to the start chunk. ignoring blacklisted chunk
+     */
+    private static ChunkPolygon getPolygon(TerritoryChunk startChunk, TerritoryChunk blacklistedChunk) {
 
         String ownerID = startChunk.getOwnerID();
         Set<String> visited = new HashSet<>();
@@ -84,6 +122,13 @@ public class ChunkUtil {
 
             if (!(current instanceof TerritoryChunk territoryChunk)) {
                 continue; // Ignore wilderness or other non-territory chunks
+            }
+
+            System.out.println(current);
+            System.out.println(blacklistedChunk);
+            System.out.println(current.equals(blacklistedChunk));
+            if(current.equals(blacklistedChunk)){
+                continue; // Ignore blacklisted chunk
             }
 
             if (!territoryChunk.getOwnerID().equals(ownerID)) {

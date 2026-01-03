@@ -63,6 +63,7 @@ public class Constants {
     private static int territoryClaimBufferZone;
     private static int minimumNumberOfChunksUnclaimed;
     private static double percentageOfChunksUnclaimed;
+    private static boolean preventOrphanChunks;
     private static MobChunkSpawnStorage mobChunkSpawnStorage;
 
     private static boolean enableNation;
@@ -178,6 +179,7 @@ public class Constants {
         territoryClaimBufferZone = config.getInt("TerritoryClaimBufferZone", 2);
         minimumNumberOfChunksUnclaimed = config.getInt("minimumNumberOfChunksUnclaimed", 5);
         percentageOfChunksUnclaimed = config.getDouble("percentageOfChunksUnclaimed", 10) / 100;
+        preventOrphanChunks = config.getBoolean("preventUnclaimOrphanChunks", false);
         mobChunkSpawnStorage = new MobChunkSpawnStorage(config.getConfigurationSection("CancelMobSpawnInTown"));
 
         enableNation = config.getBoolean("EnableKingdom", true);
@@ -345,6 +347,10 @@ public class Constants {
 
     public static double getPercentageOfChunksUnclaimed() {
         return percentageOfChunksUnclaimed;
+    }
+
+    public static boolean preventOrphanChunks() {
+        return preventOrphanChunks;
     }
 
     public static MobChunkSpawnStorage getMobChunkSpawnStorage() {

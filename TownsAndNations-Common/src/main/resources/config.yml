@@ -361,6 +361,10 @@ warBoundaryRadius: 16.0
 #The type of particle used to display boundaries (https://minecraft.fandom.com/wiki/Particles#Types_of_particles)
 warBoundaryParticle : "DRAGON_BREATH"
 
+# forbid/prevent splitting territory chunks in half if it means that one part will no longer be linked.
+# Will be applied to normal unclaim and war goals unclaim
+preventUnclaimOrphanChunks: false
+
 # Defines what permissions attackers get in chunk of territory at war
 # - when the chunk is held by defenders
 # - when the chunk is captured by attackers (all attackers from all current wars)
