@@ -506,7 +506,13 @@ public class ChunkListener implements Listener {
 
         Chunk chunk = event.getBlock().getChunk();
 
-        if (!NewClaimedChunkStorage.getInstance().get(chunk).canMobGrief()) {
+        if(event.getEntity() instanceof Player player){
+            if(!canPlayerDoAction(event.getBlock().getLocation(), player, ChunkPermissionType.BREAK_BLOCK)){
+                event.setCancelled(true);
+            }
+        }
+        // Wither & enderman grief
+        else if (!NewClaimedChunkStorage.getInstance().get(chunk).canMobGrief()) {
             event.setCancelled(true);
         }
     }
