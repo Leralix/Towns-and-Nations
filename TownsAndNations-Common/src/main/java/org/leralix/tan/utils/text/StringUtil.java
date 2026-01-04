@@ -56,7 +56,7 @@ public class StringUtil {
 
     private static int randomizeColor(int color) {
 
-        int maxDifference = 25;
+        long maxDifference = 25;
         if(color > 128){
             maxDifference *=-1;
         }
