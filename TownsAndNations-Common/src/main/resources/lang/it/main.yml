@@ -7,7 +7,6 @@ language:
   PLAYER_NO_TOWN: "§cNon fai parte di una città"
   PLAYER_NO_REGION: "§cNon fai parte di una regione"
   TOWN_NO_REGION: "§cLa tua città non appartiene a una regione"
-  PLAYER_NOT_LEADER_OF_REGION: "§cDevi essere il leader della regione per eseguire quest'azione"
   LEADER_CANNOT_QUIT_TOWN: "§cIl leader non può lasciare la città"
   TOWN_ALREADY_HAVE_OVERLORD: "§cQuesta città ha già un leader"
   PLAYER_NO_PERMISSION: "§cNon hai il permesso di eseguire questo comando"
@@ -15,22 +14,16 @@ language:
   PLAYER_ACTION_NO_PERMISSION: "§cNon hai il permesso di eseguire quest'azione"
   PLAYER_NOT_FOUND: "§cNome non valido o il giocatore non è connesso"
   TOWN_NOT_ENOUGH_LEVEL: "§cLa tua città non soddisfa il livello richiesto con: §a{0}"
-  PLAYER_NOT_ONLINE: "§cIl giocatore non è online"
   PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION: "§cSolo il leader della città può eseguire quest'azione"
   CHUNK_NOT_CLAIMED: "§cQuesto chunk non è reclamato"
   CANT_KICK_REGIONAL_CAPITAL: "§cNon puoi rimuovere la capitale regionale all'infuori della regione"
-  PLAYER_ALREADY_IN_SCOPE: "§cSei già registrato"
-  PLAYER_PROPERTY_CAP_REACHED: "§cHai raggiunto il numero massimo di proprietà per la tua città. Migliorala per ottenerne di più"
-  POSITION_NEED_TO_BE_IN_PLAYER_TOWN: "§cDevi essere all'interno della tua città per creare una posizione di proprietà"
   NO_TRADE_ALLOWED_EMBARGO: "§cNon puoi commerciare con una città sotto embargo"
   NO_LEADER: "§cNessun leader"
-  TOWN_HAVE_NO_LEADER: "§cLa città non ha un leader"
   TOWN_DIPLOMATIC_INVITATION_NO_LEADER: "§cLa città non ha un leader con il quale si possa interagire per relazioni diplomatiche"
   PLAYER_PROPERTY_TOO_BIG: "§cLa proprietà è troppo grande. La dimensione massima è di {0} blocchi"
   POSITION_NOT_IN_CLAIMED_CHUNK: "§cLa posizione deve essere in un chunk reclamato"
   LANDMARK_ALREADY_CLAIMED: "§cQuesto punto di riferimento è già reclamato da §9{0}"
   INTERACTION_TOO_FAR_ERROR: "§cSei troppo lontano per compiere questa azione"
-  CHUNK_DO_NOT_BELONG_TO_TERRITORY: "§cQuest'area non appartiene a {0}"
   CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§cQuesto territorio non può essere cancellato, è la capitale di {0}"
   TOWN_NOT_FOUND: "§cCittà non trovata"
   TERRITORY_NOT_FOUND: "§cTerritorio non trovato"
@@ -60,8 +53,6 @@ language:
   #Update needed
   NEW_VERSION_AVAILABLE: "§cÈ disponibile una nuova versione: §f{0}"
   NEW_VERSION_AVAILABLE_2: "§cScaricala su Spigot o GitHub"
-  #Database
-  DATABASE_SUCCESSFULLY_DELETED_OLD_ROWS: "{0} vecchie righe della cronologia sono state eliminate con successo"
   #Help command
   HELP_DESC: "Mostra una lista che spiega tutti i comandi"
   CLICK_TO_GO_NEXT_PAGE: "§fClicca per andare alla pagina successiva"
@@ -88,7 +79,6 @@ language:
   CANCEL_WORD: "Annulla" #The cancel word can be modified
   WRITE_CANCEL_TO_CANCEL: "§fScrivi §c{0}§f nella chat per annullare"
   #Ask to join a town
-  PLAYER_ASK_TO_JOIN_TOWN: "§3{0}§f ha chiesto di entrare nella città. Puoi trovare la domanda nel menu membri"
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Hai chiesto con successo di unirti alla città: §9{0}§f. Clicca col tasto destro sulla città per annullare"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Hai annullato la tua domanda"
   PLAYER_TOWN_NOT_RECRUITING: "§cQuesta città non sta reclutando"
@@ -100,13 +90,6 @@ language:
   CHUNK_ALREADY_CLAIMED_WARNING: "§cQuest'area è già reclamata da: §9{0}"
   CANNOT_CLAIM_LANDMARK: "§cNon puoi reclamare un luogo d'interesse"
   MAX_CHUNK_LIMIT_REACHED: "§cHai raggiunto il numero massimo di aree reclamabili, potenzia la tua città per reclamarne di più"
-  CHUNK_NOT_ADJACENT: "§cQuest'area non confina con la tua città"
-  #Sell rare item command
-  SELL_RARE_ITEM_COMMAND_DESC: "Vendi oggetti rari nella mano del giocatore"
-  NO_ITEM_IN_HAND: "§cDevi avere un oggetto raro in mano"
-  NOT_RARE_ITEM_IN_HAND: "§cQuesto oggetto non è raro"
-  #CustomVillager
-  CUSTOM_VILLAGER_CREATED_SUCCESS: "Villager creato"
   #Invite player to town command
   TOWN_INVITE_COMMAND_DESC: "Invita un giocatore nella città"
   INVITATION_TOWN_FULL: "§cLa città ha raggiunto la piena capacità, migliorala per ottenerne di più"
@@ -122,7 +105,6 @@ language:
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§c ha lasciato la città!"
   #Relation diplomatique
   DIPLOMATIC_INVITATION_SENT_SUCCESS: "Proposta inviata a {0}"
-  VASSALISATION_PROPOSAL_SENT_SUCCESS: "Proposta di vassalizzazione inviata a {0}"
   ACCEPTED_VASSALISATION_PROPOSAL_ALL: "{0}§f si è unito alla regione {1}"
   #Autoclaim command
   TOWN_AUTO_CLAIM_DESC: "Attiva reclamo automato delle aree"
@@ -157,8 +139,6 @@ language:
   UNCLAIMED_CHUNK_SUCCESS_REGION: "§cArea abbandonata! Possiedi: §2{0}/♦"
   DEBUG_UNCLAIMED_CHUNK_SUCCESS_TOWN: "§cArea abbandonata! Possiedi: §2{0}/{1}♦"
   DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION: "§cArea abbandonata! Possiedi: §9{0}/{1}♦"
-  UNCLAIMED_CHUNK_NOT_RIGHT_TOWN: "§cQuest'area è reclamata da un'altra città: §e{0}"
-  UNCLAIMED_CHUNK_NOT_RIGHT_REGION: "§cQuest'area è reclamata da un'altra regione: §b{0}"
   PROPERTY_IN_CHUNK: "§cQuest'area contiene una proprietà §f({0})"
   #Map command
   MAP_COMMAND_DESC: "Apri la mappa delle aree intorno al giocatore"
@@ -168,8 +148,6 @@ language:
   ##Admin commands
   ADMIN_ADD_MONEY_TO_PLAYER: "Aggiungi denaro a un giocatore"
   ADMIN_SET_PLAYER_MONEY_BALANCE: "Imposta il saldo del giocatore"
-  ADMIN_SPAWN_CUSTOM_VILLAGER: "Genera un villager personalizzato"
-  ADMIN_SPAWN_RARE_ITEM: "Genera un oggetto raro"
   ADMIN_UNCLAIM_DESC: "Elimina qualsiasi area"
   ADMIN_OPEN_GUI: "Apri interfaccia admin"
   ADMIN_RELOAD_COMMAND: "Ricarica il plugin"
@@ -177,7 +155,6 @@ language:
   ##Debug commands
   DEBUG_SAVE_ALL_DATA: "Salva tutte le statistiche"
   DEBUG_CREATE_BACKUP: "Crea un backup dei dati del plugin."
-  DEBUG_GET_COLOR_CODE: "Ottieni un esempio del codice colore del plugin"
   DEBUG_SKIP_DAY: "Raccogli ogni tassa e stipendio per un giorno"
   DEBUG_SEND_REPORT: "Crea un report da inviare allo sviluppatore per il debug"
   DEBUG_REPORT_CREATED: "Il report è stato creato. Puoi trovarlo in /plugins/TownsAndNations/reports"
@@ -199,7 +176,6 @@ language:
   LANDMARK_UPDATE_SERVER_DESC: "Aggiorna memoria luoghi d'interesse"
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cNon hai abbastanza soldi per eseguire quest'azione"
-  LEADER_NOT_ONLINE: "§cIl capo città non è online"
   NAME_ALREADY_USED: "§cQuesto nome è già utilizzato"
   PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Scrivi il nome della città nella chat."
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Scrivi la quantità nella chat"

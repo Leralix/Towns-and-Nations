@@ -1,6 +1,5 @@
 language:
   STRING: "§f{0}"
-  EMPTY: " "
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] English language successfully loaded"
   PLUGIN_STRING: "§6[TaN]§f "
   PLUGIN_DEBUG_STRING: "§c[TaN - Debug]§f "
@@ -144,7 +143,7 @@ language:
   REGION_SCOPE: "region"
   ALLIANCE_SCOPE: "alliance"
   GLOBAL_SCOPE: "global"
-  # See border command
+  #See border command
   SEE_BORDER_COMMAND_DESC: "Enable/Disable territory borders"
   ENABLE_BORDER_INFO: "Now showing borders"
   DISABLE_BORDER_INFO: "Now hiding borders"
@@ -944,16 +943,12 @@ language:
   CONQUER_WAR_GOAL_DESC1: "§fNumber of chunks : §2{0}§f chunks"
   GUI_ONLY_ONE_CONQUER_WAR_GOAL: "§cOnly one conquer war goal can be added"
   GUI_CONQUER_CHUNK_CURRENT_DESC: "§fConquer §2{0}§f chunks"
-
   CAPTURE_LANDMARK_WAR_GOAL: "§aCapture landmark"
   CAPTURE_LANDMARK_WAR_GOAL_DESC: "§fCapture a specific landmark from the enemy"
-
   GUI_CAPTURE_LANDMARK_CURRENT_DESC: "§fCapture the landmark §6{0}"
-
   CAPTURE_FORT_WAR_GOAL: "§aCapture fort"
   CAPTURE_FORT_WAR_GOAL_DESC: "§fCapture a specific fort from the enemy"
   CAPTURE_FORT_WAR_GOAL_DESC1: "§fCapture fort: §6{0}"
-
   GUI_WARGOAL_CAPTURE_LANDMARK_CANNOT_BE_USED: "§cOnly towns can capture landmarks"
   SUBJUGATE_WAR_GOAL: "§aSubjugate"
   SUBJUGATE_WAR_GOAL_DESC: "§fSubjugate the territory and make it a vassal"
@@ -969,8 +964,6 @@ language:
   ALL_ATTACK_SCOPE: "All attacks"
   UNFINISHED_ATTACK_SCOPE: "Ongoing attacks"
   GUI_RENAME_WAR: "§aRename war"
-  TERRITORY_CANNOT_LEAVE_WAR: "§cThe server does not allow territories to leave wars"
-  TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE: "{0}§f no longer takes part in the war \"{1}\""
   DEFENSIVE_SIDE_HAS_SURRENDER: "{0}§f has surrendered to {1}§f demands. The attack has been cancelled"
   #Brose scope
   BROWSE_SELECT: "§aSelect scope :"
