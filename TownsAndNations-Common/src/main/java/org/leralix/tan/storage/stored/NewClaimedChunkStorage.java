@@ -7,7 +7,6 @@ import com.google.gson.JsonObject;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.lib.position.Vector2D;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.chunk.*;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -251,5 +250,14 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
     @Override
     public void reset() {
         this.dataMap = new HashMap<>();
+    }
+
+    public void checkValidWorlds() {
+        for(ClaimedChunk2 chunk : new ArrayList<>(dataMap.values())) {
+            if(chunk.getWorld() == null){
+                unclaimChunk(chunk);
+                TownsAndNations.getPlugin().getLogger().warning("Deleted claimed chunk " + chunk.getX() + "," + chunk.getZ() + " due to invalid world.");
+            }
+        }
     }
 }

@@ -1,9 +1,11 @@
 package org.leralix.tan.storage.stored;
 
 import org.leralix.lib.position.Vector3D;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.war.fort.Fort;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class FortStorage {
@@ -46,4 +48,12 @@ public abstract class FortStorage {
 
     public abstract void save();
 
+    public void checkValidWorlds() {
+        for(Fort fort : new ArrayList<>(getForts())) {
+            if(fort.getPosition().getWorld() == null){
+                delete(fort);
+                TownsAndNations.getPlugin().getLogger().warning("Deleted fort " + fort.getID() + " due to invalid world.");
+            }
+        }
+    }
 }

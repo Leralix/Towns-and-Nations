@@ -4,7 +4,9 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.property.AbstractOwner;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
@@ -16,6 +18,7 @@ import org.leralix.tan.storage.typeadapter.EnumMapKeyValueDeserializer;
 import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.storage.typeadapter.OwnerDeserializer;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,5 +121,21 @@ public class TownDataStorage extends JsonStorage<TownData>{
                 return true;
         }
         return false;
+    }
+
+    public void checkValidWorlds() {
+        for (TownData town : new ArrayList<>(getAll().values())) {
+            for (PropertyData property : town.getProperties()) {
+                if (property.getPosition().getWorld() == null) {
+                    property.delete();
+                    TownsAndNations.getPlugin().getLogger().warning("Deleted property " + property.getName() + " due to invalid world.");
+                }
+            }
+            var optCapital = town.getCapitalLocation();
+            if (optCapital.isPresent() && optCapital.get().getWorld() == null) {
+                town.setCapitalLocation(null);
+                TownsAndNations.getPlugin().getLogger().warning("Removed capital location for town " + town.getName() + " due to invalid world.");
+            }
+        }
     }
 }

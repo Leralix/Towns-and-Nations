@@ -181,6 +181,10 @@ public class TownsAndNations extends JavaPlugin {
         EventManager.getInstance().registerEvents(new NewsletterEvents());
         TruceStorage.getInstance();
 
+        FortStorage.getInstance().checkValidWorlds();
+        TownDataStorage.getInstance().checkValidWorlds();
+        NewClaimedChunkStorage.getInstance().checkValidWorlds();
+
         getLogger().log(Level.INFO, "[TaN] -Loading blocks data");
         TANCustomNBT.setBlocsData();
 
