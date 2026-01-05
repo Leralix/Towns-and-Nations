@@ -3,7 +3,6 @@ package org.leralix.tan.war;
 import org.bukkit.Material;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.WarEndInternalEvent;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
@@ -212,11 +211,11 @@ public class War {
     }
 
     private String getNextID() {
-        int ID = 0;
-        while (getPlannedAttacksMap().containsKey(getID() + "_" + ID)) {
-            ID++;
+        int nextId = 0;
+        while (getPlannedAttacksMap().containsKey(getID() + "_" + nextId)) {
+            nextId++;
         }
-        return getID() + "_" + ID;
+        return getID() + "_" + nextId;
     }
 
     public Collection<String> getDefendersID() {
@@ -230,7 +229,7 @@ public class War {
     public Collection<String> getAttackersID() {
         if (allAttackersID == null) {
             allAttackersID = new ArrayList<>();
-            allDefendersID.add(mainAttackerID);
+            allAttackersID.add(mainAttackerID);
         }
         return allAttackersID;
     }
@@ -264,11 +263,11 @@ public class War {
     }
 
     private boolean isAttacker(TerritoryData territoryConcerned) {
-        return allAttackersID.contains(territoryConcerned.getID());
+        return getAttackersID().contains(territoryConcerned.getID());
     }
 
     private boolean isDefender(TerritoryData territoryConcerned) {
-        return allDefendersID.contains(territoryConcerned.getID());
+        return getDefendersID().contains(territoryConcerned.getID());
     }
 
     /**
@@ -284,16 +283,16 @@ public class War {
         }
         String territoryID = territory.getID();
         //no need to check, it only removes if it is a part of it
-        allAttackersID.remove(territoryID);
-        allDefendersID.remove(territoryID);
+        getAttackersID().remove(territoryID);
+        getDefendersID().remove(territoryID);
     }
 
     public void addAttacker(TerritoryData territoryData) {
-        allAttackersID.add(territoryData.getID());
+        getAttackersID().add(territoryData.getID());
     }
 
     public void addDefender(TerritoryData territoryData) {
-        allDefendersID.add(territoryData.getID());
+        getDefendersID().add(territoryData.getID());
     }
 
     public Collection<TerritoryData> getDefendingTerritories() {

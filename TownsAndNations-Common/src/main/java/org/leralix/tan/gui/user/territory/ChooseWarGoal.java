@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
@@ -76,12 +77,25 @@ public class ChooseWarGoal extends BasicGui {
     }
 
     private @NotNull GuiItem getcaptureLandmarkButton() {
+
+        boolean isTown = territoryData instanceof TownData;
+
         return iconManager.get(IconKey.WAR_GOAL_CAPTURE_LANDMARK_ICON)
                 .setName(Lang.CAPTURE_LANDMARK_WAR_GOAL.get(langType))
                 .setDescription(Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC.get())
-                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
+                .setClickToAcceptMessage(
+                        isTown ?
+                                Lang.GUI_GENERIC_CLICK_TO_SELECT :
+                                Lang.GUI_WARGOAL_CAPTURE_LANDMARK_CANNOT_BE_USED
+                )
                 .setAction(
-                        action -> new SelectLandmarkForCapture(player, territoryData, war, warRole, returnGui)
+                        action -> {
+                            if(!isTown){
+                                TanChatUtils.message(player, Lang.GUI_WARGOAL_CAPTURE_LANDMARK_CANNOT_BE_USED.get(langType));
+                                return;
+                            }
+                            new SelectLandmarkForCapture(player, territoryData, war, warRole, returnGui);
+                        }
                 )
                 .asGuiItem(player, langType);
     }

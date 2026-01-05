@@ -32,7 +32,7 @@ public class CaptureLandmarkWarGoal extends WarGoal implements TanCaptureLandmar
 
         List<FilledLang> description = new ArrayList<>();
         description.add(Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC.get());
-        description.add(Lang.GUI_SELECTED_LANDMARK_TO_CAPTURE.get(getLandmark().getName()));
+        description.add(Lang.GUI_CAPTURE_LANDMARK_CURRENT_DESC.get(getLandmark().getName()));
 
         return buildIcon(Material.DIAMOND, description, langType);
     }
@@ -57,7 +57,7 @@ public class CaptureLandmarkWarGoal extends WarGoal implements TanCaptureLandmar
 
     @Override
     public String getCurrentDesc(LangType langType) {
-        return Lang.GUI_CAPTURE_LANDMARK_CURRENT_DESC.get(Lang.getServerLang(), getLandmark().getName());
+        return Lang.GUI_CAPTURE_LANDMARK_CURRENT_DESC.get(langType, getLandmark().getName());
     }
 
 }

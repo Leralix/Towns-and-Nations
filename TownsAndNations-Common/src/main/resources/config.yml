@@ -37,7 +37,7 @@ tagMinSize: 3
 tagMaxSize: 4
 # tag format
 # Minecraft color code : https://manacube.com/attachments/1575063877749-png.20438/
-townTagFormat: "&f[&l{townColor}{townTag}&r]"
+townTagFormat: "&f[&l{townColor}{townTag}&r&f]"
 
 #Enable the version check
 CheckForUpdate: true

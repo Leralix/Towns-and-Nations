@@ -52,7 +52,7 @@ public class CaptureFortWarGoal extends WarGoal implements TanCaptureFortWargoal
 
     @Override
     public String getCurrentDesc(LangType langType) {
-        return Lang.GUI_CAPTURE_LANDMARK_CURRENT_DESC.get(langType, getFort().getName());
+        return Lang.CAPTURE_FORT_WAR_GOAL_DESC1.get(langType, getFort().getName());
     }
 
 }

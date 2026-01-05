@@ -118,7 +118,7 @@ public abstract class PropertyMenus extends BasicGui {
         return iconManager.get(iconKey)
                 .setName(name.get(langType))
                 .setDescription(
-                        Lang.GUI_BUYING_PRICE.get(Double.toString(total), Double.toString(price), Double.toString(taxPrice)),
+                        Lang.GUI_RENTING_PRICE.get(Double.toString(total), Double.toString(price), Double.toString(taxPrice)),
                         Lang.GUI_TOWN_RATE.get(String.format("%.2f", propertyData.getTown().getTaxOnRentingProperty() * 100))
                 )
                 .setClickToAcceptMessage(
