@@ -969,6 +969,8 @@ language:
   ALL_ATTACK_SCOPE: "All attacks"
   UNFINISHED_ATTACK_SCOPE: "Ongoing attacks"
   GUI_RENAME_WAR: "§aRename war"
+  TERRITORY_CANNOT_LEAVE_WAR: "§cThe server does not allow territories to leave wars"
+  TERRITORY_NO_LONGER_INVOLVED_IN_WAR_MESSAGE: "{0}§f no longer takes part in the war \"{1}\""
   DEFENSIVE_SIDE_HAS_SURRENDER: "{0}§f has surrendered to {1}§f demands. The attack has been cancelled"
   #Brose scope
   BROWSE_SELECT: "§aSelect scope :"

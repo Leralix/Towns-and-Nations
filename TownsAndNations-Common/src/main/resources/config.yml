@@ -288,8 +288,12 @@ EnableWar: true
 
 # Simple war mode
 # If enabled, a war will not require attacks to capture chunks.
-# As soon as the war is declared, an attack will start and last until one side surrender.
+# As soon as the war is declared, an attack will start and last until one side surrenders.
 simpleWarMode : false
+
+# Enable leaving wars
+# If enabled, territories joining existing wars can pull out of them.
+enableLeavingWars : true
 
 # Capture percentage of a territory before forced surrender (default 70%)
 capturePercentageToSurrender: 70
@@ -339,7 +343,7 @@ BlacklistedCommandsDuringAttacks: [ "/tan pay", "/tp" ]
 
 ## Forts
 Forts:
-  # If TownAllowNonAdjacentChunks : true, forts can be used as outposts
+  # If TownAllowNonAdjacentChunks : true, forts can be used as outposts to claims non-adjacent chunks
   useAsOutpost: true
   # The cost of creating a fort for towns
   fortCost: 1000.0
@@ -357,9 +361,6 @@ Forts:
 # Radius of the cylinder.
 warBoundaryRadius: 16.0
 # height of the cylinder is set to 1 as of 0.15.5+
-
-#The type of particle used to display boundaries (https://minecraft.fandom.com/wiki/Particles#Types_of_particles)
-warBoundaryParticle : "DRAGON_BREATH"
 
 # forbid/prevent splitting territory chunks in half if it means that one part will no longer be linked.
 # Will be applied to normal unclaim and war goals unclaim

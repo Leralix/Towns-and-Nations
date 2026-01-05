@@ -3,7 +3,6 @@ package org.leralix.tan.utils.constants;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.jetbrains.annotations.Nullable;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.Range;
 import org.leralix.tan.dataclass.chunk.ChunkType;
@@ -95,6 +94,7 @@ public class Constants {
 
     //Wars
     private static boolean simpleWarMode;
+    private static boolean enableLeavingWars;
     private static WarTimeSlot warTimeSlot;
     private static double warBoundaryRadius;
     private static boolean notifyWhenEnemyEnterTerritory;
@@ -223,6 +223,7 @@ public class Constants {
 
         //Attacks
         simpleWarMode = config.getBoolean("simpleWarMode");
+        enableLeavingWars = config.getBoolean("enableLeavingWars", true);
         warTimeSlot = new WarTimeSlot(
                 config.getStringList("allowedTimeSlotsWar"),
                 config.getIntegerList("allowedDays")
@@ -475,6 +476,10 @@ public class Constants {
 
     public static boolean isSimpleWarMode() {
         return simpleWarMode;
+    }
+
+    public static boolean canLeaveWars() {
+        return enableLeavingWars;
     }
 
     public static WarTimeSlot getWarTimeSlot() {
