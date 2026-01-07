@@ -67,7 +67,7 @@ public class CaptureFort {
             score = Constants.getFortCaptureTime();
             if(!fort.isOccupied()){
                 fort.setOccupier(currentAttack.getAttackData().getWar().getMainAttacker());
-                fort.updateFlag();
+
                 currentAttack.getAttackResultCounter().incrementFortsCaptured();
             }
 
@@ -75,7 +75,6 @@ public class CaptureFort {
             score = 0;
             if(fort.isOccupied()){
                 fort.liberate();
-                fort.updateFlag();
                 currentAttack.getAttackResultCounter().decrementFortsCaptured();
             }
         }

@@ -2,6 +2,7 @@ package org.leralix.tan.war.fort;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
+import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
@@ -11,6 +12,7 @@ import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.cosmetic.BannerBuilder;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -30,19 +32,18 @@ public abstract class Fort extends Building {
     public void updateFlag() {
         Vector3D flagPosition = getPosition();
         Block flagBlock = flagPosition.getLocation().add(0, 1, 0).getBlock();
-        if (isOccupied()) {
-            flagBlock.setType(Material.RED_BANNER);
-        }
-        if (!isOccupied()) {
-            flagBlock.setType(Material.GREEN_BANNER);
+
+        BannerBuilder bannerBuilder = getOccupier().getBanner();
+
+        flagBlock.setType(bannerBuilder.getBannerType());
+        if(flagBlock.getState() instanceof Banner banner){
+            banner.setPatterns(bannerBuilder.getPatterns());
+            banner.update();
         }
     }
 
     public void spawnFlag() {
-        Vector3D flagPosition = getPosition();
-        Block flagBlock = flagPosition.getLocation().add(0, 1, 0).getBlock();
-        flagBlock.setType(Material.GREEN_BANNER);
-
+        updateFlag();
         TANCustomNBT.setProtectedBlockData(this);
     }
 
@@ -82,6 +83,7 @@ public abstract class Fort extends Building {
             }
         }
         getOwner().checkIfShouldSurrender();
+        updateFlag();
     }
 
     public void liberate() {

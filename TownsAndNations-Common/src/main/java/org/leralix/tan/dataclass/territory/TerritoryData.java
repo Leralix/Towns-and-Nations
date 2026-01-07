@@ -7,6 +7,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
+import org.bukkit.block.banner.Pattern;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
@@ -17,6 +18,7 @@ import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
+import org.leralix.tan.dataclass.territory.cosmetic.BannerBuilder;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
@@ -93,6 +95,7 @@ public abstract class TerritoryData {
     private List<String> fortIds;
     private List<String> occupiedFortIds;
     protected TerritoryStats upgradesStatus;
+    protected BannerBuilder bannerBuilder;
 
     protected TerritoryData(String id, String name, ITanPlayer owner) {
         this.id = id;
@@ -101,6 +104,7 @@ public abstract class TerritoryData {
         this.dateTimeCreated = System.currentTimeMillis();
 
         this.customIcon = new PlayerHeadIcon(owner);
+        bannerBuilder = new BannerBuilder();
 
         this.treasury = 0.0;
         this.baseTax = 1.0;
@@ -1139,5 +1143,16 @@ public abstract class TerritoryData {
             }
         }
 
+    }
+
+    public void setBanner(Material material, List<Pattern> patterns) {
+        this.bannerBuilder = new BannerBuilder(material, patterns);
+    }
+
+    public BannerBuilder getBanner() {
+        if(bannerBuilder == null) {
+            bannerBuilder = new BannerBuilder();
+        }
+        return bannerBuilder;
     }
 }

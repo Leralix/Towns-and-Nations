@@ -761,6 +761,8 @@ language:
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fColor successfully changed"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cInvalid color format"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§fModify town color: §9{0}§f -> §9{1}"
+  GUI_TERRITORY_SETTINGS_SET_BANNER: "§aSet new banner"
+  GUI_SETTINGS_SET_FLAG_ACTION : "§7▶ Drag and drop a banner to set the new flag"
   GUI_CAPITAL_CHUNK_ACTUAL_POSITION: "§fCurrent capital chunk : §9{0}"
   CANNOT_MOVE_CAPITAL_WHILE_AT_WAR: "§cCannot move capital while at war"
   GUI_NO_CAPITAL_CHUNK: "§cThe town does not have any claimed chunk"

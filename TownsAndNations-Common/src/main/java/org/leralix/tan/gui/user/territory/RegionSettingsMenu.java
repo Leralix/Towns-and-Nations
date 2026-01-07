@@ -41,8 +41,10 @@ public class RegionSettingsMenu extends SettingsMenus {
         gui.setItem(2, 3, getChangeDescriptionButton());
         gui.setItem(2, 4, getChangeColorButton());
 
-        gui.setItem(2, 6, getChangeOwnershipButton());
-        gui.setItem(2, 7, getDeleteButton());
+        gui.setItem(2, 5, setBannerButton());
+
+        gui.setItem(2, 7, getChangeOwnershipButton());
+        gui.setItem(2, 8, getDeleteButton());
 
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new RegionMenu(player, regionData)));
 

@@ -53,9 +53,11 @@ public class TownSettingsMenu extends SettingsMenus {
         gui.setItem(2, 2, getRenameButton());
         gui.setItem(2, 3, getChangeDescriptionButton());
         gui.setItem(2, 4, getChangeColorButton());
+        gui.setItem(2, 5, setBannerButton());
 
         gui.setItem(3, 2, getChangeApplicationButton());
         gui.setItem(3, 3, getChangeCapitalChunkButton());
+
         if (Constants.enableTownTag()) {
             gui.setItem(3, 4, getChangeTagButton());
         }

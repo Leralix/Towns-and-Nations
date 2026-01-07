@@ -1,7 +1,12 @@
 package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.Tag;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BannerMeta;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
@@ -15,8 +20,10 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeColor;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
+import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
+import org.leralix.tan.war.fort.Fort;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +103,36 @@ public abstract class SettingsMenus extends BasicGui {
                     TanChatUtils.message(player, Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get(tanPlayer));
                     PlayerChatListenerStorage.register(player, new ChangeColor(territoryData, p -> open()));
                 })
+                .asGuiItem(player, langType);
+    }
+
+    protected GuiItem setBannerButton(){
+        return iconManager.get(territoryData.getBanner().buildItemStack())
+                .setName(Lang.GUI_TERRITORY_SETTINGS_SET_BANNER.get(tanPlayer))
+                .setRequirements(
+                        new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR)
+                )
+                .setClickToAcceptMessage(
+                        Lang.GUI_SETTINGS_SET_FLAG_ACTION
+                )
+                .setAction(
+                    action -> {
+
+                        if(action.getCursor() == null){
+                            return;
+                        }
+                        ItemStack itemMaterial = action.getCursor();
+
+                        if(Tag.BANNERS.isTagged(itemMaterial.getType())) {
+                            BannerMeta meta = (BannerMeta) itemMaterial.getItemMeta();
+                            territoryData.setBanner(itemMaterial.getType(), meta.getPatterns());
+                            FortStorage.getInstance().getOwnedFort(territoryData).forEach(Fort::updateFlag);
+                            SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+                            open();
+                        }
+                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                    }
+                )
                 .asGuiItem(player, langType);
     }
 }
