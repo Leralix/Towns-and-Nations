@@ -4,6 +4,9 @@
 # row: between 0 and max level
 # itemCode: the item that will be displayed in the GUI
 # maxLevel: the maximum level of the upgrade
+# description: description of the upgrade (Optional).
+#              Enter a key to be translated from upgrades.yml lang file, or write it directly here (no translation).
+#              Use "\n" for line breaks.
 # cost: the cost of each level upgrade.
 #       The last cost will be used if less values are registered than the max level.
 #
@@ -12,7 +15,7 @@
 #
 # - Other upgrades: you can set other upgrade levels as a prerequisite. Example: BARRACK : 1
 #
-# - Resources : you can set resources as prerequisite.
+# - resources : you can set resources as prerequisite.
 #   Some special resources exists:
 #      - ANY_WOOD : any type of wood
 #      - ANY_LOG : any type of log
@@ -42,8 +45,8 @@
 # - LANDMARK_BONUS: percentage of bonus on landmarks (ex 50 = 50%) [10 = 10%]
 # - AUTHORIZED_BIOMES: allowed biomes for claiming [level 0 -> locked, level 1 -> unlock]
 #                      You can either use standard biome names (OCEAN, DEEP_OCEAN, WARM_OCEAN, LUKEWARM_OCEAN...)
-#                      or use packages (ALL, OCEAN, PLAINS, DESERT, FOREST, MOUNTAIN, NETHER, END)
-#                      Work with custom chunks (terralith:yellowstone),
+#                      or use packages (ALL, OCEAN, PLAINS, DESERT, FOREST, MOUNTAIN, NETHER, END, CUSTOM_BIOMES)
+#                      Work with custom biomes (terralith:yellowstone, CLIFFTREE:DIORITE_SHORE...)
 
 # You can create custom upgrade names in lang/./upgrades.yml
 
@@ -63,7 +66,7 @@ regionLevelExpression:
   base: 200.0
 
 # Town upgrades
-TownMaxLevel: 10
+TownMaxLevel: 8
 upgrades:
 
   CITY_HALL: #"City hall" tag is already unlocked when creating a town. Use it to store default values of yur towns
@@ -74,157 +77,434 @@ upgrades:
     cost: [ '0' ]
     prerequisites:
       TOWN_LEVEL: 0
+    resources:
+      CAMPFIRE:
+        quantity : [1]
     benefits:
       PLAYER_CAP: +3
-      CHUNK_CAP: +100
-      CHUNK_COST: 0
-      AUTHORIZED_BIOMES: [ 'ALL' ]
-      CHUNK_UPKEEP_COST: 0.02
+      CHUNK_CAP: +50
+      CHUNK_COST: 1
+      CHUNK_UPKEEP_COST: 0.05
+      AUTHORIZED_BIOMES: [ 'All' ]
 
-  ADMINISTRATION:
+  # ===== COLUMN 0 =====
+
+  EARLY_SETTLEMENT:
     col: 0
     row: 0
-    itemCode: 'WRITABLE_BOOK'
-    maxLevel: 10
-    cost: [ '500', '590', '760', '1010', '1340', '1750', '2240', '2800', '3200', '3800', '4500' ]
+    itemCode: 'CAMPFIRE'
+    maxLevel: 3
+    cost: [ '60','90','120' ]
     prerequisites:
-      TOWN_LEVEL: 0
-    resources:
-      ANY_PLANK:
-        quantity : [16, 32, 48, 64] # Level beyond will have the cost of the last one
-    benefits:
-      CHUNK_CAP: +35
-
-  BARRACKS:
-    col: 0
-    row: 1
-    itemCode: 'IRON_SWORD'
-    maxLevel: 10
-    cost: [ '500', '590', '760', '1010', '1340', '1750', '2240', '2810', '3460', '4190', '5000' ]
-    prerequisites:
-      TOWN_LEVEL: 0
-    resources:
-      ANY_STONE:
-        quantity : [64]
-    benefits:
-      PLAYER_CAP: +3
-
-  WATCHTOWER:
-    col: 2
-    row: 2
-    itemCode: 'OAK_FENCE'
-    maxLevel: 5
-    cost: [ '700', '1000', '1350', '1700', '2200' ]
-    prerequisites:
-      TOWN_LEVEL: 2
-      BARRACKS: 1
+      TOWN_LEVEL: 1
     resources:
       ANY_LOG:
-        quantity : [64]
+        quantity : [8, 16, 32]
     benefits:
-      CHUNK_CAP: +75
-      PLAYER_CAP: -1
+      PLAYER_CAP: +1
+      CHUNK_CAP: +8
 
-  PORTAL:
-    col: 4
-    row: 3
-    itemCode: 'BEACON'
+  SMALL_TOWN:
+    col: 0
+    row: 1
+    itemCode: 'OAK_PLANKS'
+    maxLevel: 5
+    cost: [ '240','380','500','660','840' ]
+    prerequisites:
+      TOWN_LEVEL: 1
+    resources:
+      ANY_PLANK:
+        quantity: [ 64 ]
+    benefits:
+      PLAYER_CAP: +2
+
+  MOB_BAN:
+    col: 0
+    row: 2
+    itemCode: 'STONE_BRICK_WALL'
+    description: "MOB_BAN_DESC"
     maxLevel: 1
-    cost: [ '1500' ]
+    cost: [ '160' ]
+    prerequisites:
+      TOWN_LEVEL: 1
+    benefits:
+      UNLOCK_MOB_BAN: +1
+
+  NOVICE_EXTRACTION_TEAMS:
+    col: 0
+    row: 3
+    itemCode: 'STONE_SHOVEL'
+    maxLevel: 3
+    cost: [ '160','320','640' ]
+    resources:
+      STONE_SHOVEL:
+        quantity: [ 1 ]
+    prerequisites:
+      TOWN_LEVEL: 1
+    benefits:
+      LANDMARKS_CAP: +1
+
+  # ===== COLUMN 1 =====
+
+  ESTABLISH_PRIVATE_PROPERTY:
+    col: 1
+    row: 0
+    itemCode: 'PAPER'
+    maxLevel: 3
+    cost: [ '250','400','600' ]
+    prerequisites:
+      TOWN_LEVEL: 2
+      EARLY_SETTLEMENT: 3
+    benefits:
+      PLAYER_CAP: +1
+      PROPERTY_CAP: +1
+
+  DEVELOPING_TOWN:
+    col: 1
+    row: 1
+    itemCode: 'BRICKS'
+    maxLevel: 3
+    cost: [ '330','530','740' ]
+    prerequisites:
+      TOWN_LEVEL: 2
+      SMALL_TOWN: 5
+    resources:
+      BRICKS:
+        quantity: [ 16, 32, 64 ]
+    benefits:
+      PLAYER_CAP: +5
+      CHUNK_CAP: -2
+
+  RURALIZATION:
+    col: 1
+    row: 2
+    itemCode: 'FARMLAND'
+    maxLevel: 3
+    cost: [ '330','530','740' ]
+    prerequisites:
+      TOWN_LEVEL: 2
+      MOB_BAN: 1
+    benefits:
+      PLAYER_CAP: -2
+      CHUNK_CAP: +15
+
+  NOVICE_EXTRACTION_TOOLS:
+    col: 1
+    row: 3
+    itemCode: 'STONE_PICKAXE'
+    maxLevel: 10
+    cost: [ '400','600','800','1000','1200','1400','1600','1800','2000','2400' ]
+    resources:
+      STONE_PICKAXE:
+        quantity: [ 1 ]
+    prerequisites:
+      TOWN_LEVEL: 2
+      NOVICE_EXTRACTION_TEAMS: 3
+    benefits:
+      LANDMARK_BONUS: 1
+
+  # ===== COLUMN 2 =====
+
+  NOTARY_HOUSE:
+    col: 2
+    row: 0
+    itemCode: 'WRITABLE_BOOK'
+    maxLevel: 3
+    cost: [ '320','480','640' ]
+    prerequisites:
+      TOWN_LEVEL: 3
+      ESTABLISH_PRIVATE_PROPERTY: 3
+    resources:
+      WRITABLE_BOOK:
+        quantity: [ 1, 2, 3 ]
+    benefits:
+      PLAYER_CAP: +2
+      PROPERTY_CAP: +3
+
+  URBANIZATION:
+    col: 2
+    row: 1
+    itemCode: 'STONE_BRICKS'
+    maxLevel: 3
+    cost: [ '400','600','800' ]
+    prerequisites:
+      TOWN_LEVEL: 3
+      DEVELOPING_TOWN: 3
+    resources:
+      STONE_BRICKS:
+        quantity: [ 64, 64, 64 ]
+      IRON_BLOCK:
+        quantity: [ 3, 6, 9 ]
+    benefits:
+      CHUNK_CAP: -6
+      PLAYER_CAP: +5
+      PROPERTY_CAP: +1
+
+  DEURBANIZATION:
+    col: 2
+    row: 2
+    itemCode: 'CRACKED_STONE_BRICKS'
+    maxLevel: 3
+    cost: [ '400','600','800' ]
+    prerequisites:
+      TOWN_LEVEL: 3
+      RURALIZATION: 3
+    benefits:
+      PLAYER_CAP: -1
+      CHUNK_CAP: +15
+
+  INTERMEDIATE_EXTRACTION_TEAMS:
+    col: 2
+    row: 3
+    itemCode: 'GOLDEN_SHOVEL'
+    maxLevel: 3
+    cost: [ '640','1280','1740' ]
+    resources:
+      GOLDEN_SHOVEL:
+        quantity: [ 1 ]
+    prerequisites:
+      TOWN_LEVEL: 3
+      NOVICE_EXTRACTION_TOOLS: 10
+    benefits:
+      LANDMARKS_CAP: +1
+
+  # ===== COLUMN 3 =====
+
+  LARGE_TOWN:
+    col: 3
+    row: 1
+    itemCode: 'BELL'
+    maxLevel: 5
+    cost: [ '530','800','1060','1320','1580' ]
     prerequisites:
       TOWN_LEVEL: 4
-      BARRACKS: 1
-      ADMINISTRATION: 2
+      URBANIZATION: 3
     resources:
-      BEACON:
-        quantity : [1]
+      STONE_BRICKS:
+        quantity: [ 128, 128, 128 ]
+      IRON_BLOCK:
+        quantity: [ 3, 6, 9 ]
+      REDSTONE_BLOCK:
+        quantity: [ 5, 10, 15 ]
+    benefits:
+      CHUNK_CAP: -4
+      PLAYER_CAP: +5
+      PROPERTY_CAP: +1
+
+  VAST_EMPIRE:
+    col: 3
+    row: 2
+    itemCode: 'CROSSBOW'
+    maxLevel: 3
+    cost: [ '660','1060','1320' ]
+    resources:
+      DIAMOND_SWORD:
+        quantity: [ 1, 1, 1 ]
+      IRON_BLOCK:
+        quantity: [ 5, 10, 10 ]
+    prerequisites:
+      TOWN_LEVEL: 4
+      DEURBANIZATION: 3
+    benefits:
+      CHUNK_CAP: +22
+
+  INTERMEDIATE_EXTRACTION_TOOLS:
+    col: 3
+    row: 3
+    itemCode: 'GOLDEN_PICKAXE'
+    maxLevel: 10
+    cost: [ '1000','1400','1800','2200','2600','3000','3400','3800','4200','4800' ]
+    resources:
+      GOLDEN_PICKAXE:
+        quantity: [ 1, 2, 3, 4, 5 ]
+    prerequisites:
+      TOWN_LEVEL: 4
+      INTERMEDIATE_EXTRACTION_TEAMS: 3
+    benefits:
+      LANDMARK_BONUS: 1
+
+  # ===== COLUMN 4 =====
+
+  PORTAL_TECHNOLOGY:
+    col: 4
+    row: 0
+    itemCode: 'END_PORTAL_FRAME'
+    description: "PORTAL_TECHNOLOGY_DESC"
+    maxLevel: 1
+    cost: [ '2500' ]
+    prerequisites:
+      TOWN_LEVEL: 5
     benefits:
       UNLOCK_TOWN_SPAWN: +1
 
-  NOTARY_HOUSE:
-    col: 3
-    row: 0
-    itemCode: 'PAPER'
-    maxLevel: 5
-    cost: [ '500', '800', '1200' ]
+  METROPOLIS:
+    col: 4
+    row: 1
+    itemCode: 'LODESTONE'
+    maxLevel: 3
+    cost: [ '800','1060','1320' ]
     prerequisites:
-      TOWN_LEVEL: 3
-      ADMINISTRATION: 1
+      TOWN_LEVEL: 5
+      LARGE_TOWN: 5
     benefits:
-      PROPERTY_CAP: +3
+      CHUNK_CAP: -6
+      PLAYER_CAP: +10
+      PROPERTY_CAP: +1
 
-  EFFECTIVE_UPKEEP:
-    col: 3
+  REGIONAL_LOCALITIES:
+    col: 4
     row: 2
-    itemCode: 'IRON_HOE'
-    maxLevel: 5
-    cost: [ '500', '800', '1200' ]
-    prerequisites:
-      TOWN_LEVEL: 3
-      ADMINISTRATION: 1
-    benefits:
-      CHUNK_UPKEEP_COST: -0.002
-
-  GUARDS:
-    col: 5
-    row: 2
-    itemCode: 'COBBLESTONE_WALL'
+    itemCode: 'FURNACE'
     maxLevel: 1
-    cost: [ '1000' ]
+    cost: [ '3200' ]
     prerequisites:
       TOWN_LEVEL: 5
+      VAST_EMPIRE: 3
     benefits:
-      PLAYER_CAP: -2
-      UNLOCK_MOB_BAN: +1
+      CHUNK_UPKEEP_COST: -0.01
+      CHUNK_CAP: +22
+      PLAYER_CAP: +10
+      PROPERTY_CAP: +5
 
-  EXTRACTION_TEAM:
-    col: 5
-    row: 0
-    itemCode: 'CAULDRON'
-    maxLevel: 10
-    cost: [ '500', '1000', '1500', '1750', '2000', '2250', '2500', '2750', '3000', '3250' ]
+  ADVANCED_EXTRACTION_TEAMS:
+    col: 4
+    row: 3
+    itemCode: 'IRON_SHOVEL'
+    maxLevel: 3
+    cost: [ '640','960','1280' ]
+    resources:
+      IRON_SHOVEL:
+        quantity: [ 1, 2, 3 ]
     prerequisites:
       TOWN_LEVEL: 5
-      ADMINISTRATION: 1
+      INTERMEDIATE_EXTRACTION_TOOLS: 10
     benefits:
-      CHUNK_CAP: +5
       LANDMARKS_CAP: +1
 
-  BETTER_TOOLS:
-    col: 5
-    row: 0
-    itemCode: 'SMITHING_TABLE'
-    maxLevel: 6
-    cost: [ '2000' ]
-    prerequisites:
-      TOWN_LEVEL: 5
-    benefits:
-      LANDMARK_BONUS: +10
+  # ===== COLUMN 5 =====
 
-  EXTENDED_ADMINISTRATION:
+  ADVANCED_EXTRACTION_TOOLS:
+    col: 5
+    row: 3
+    itemCode: 'IRON_PICKAXE'
+    maxLevel: 10
+    cost: [ '1800','2200','2600','3000','3400','3800','4200','4800','5600','6400' ]
+    resources:
+      IRON_PICKAXE:
+        quantity: [ 1, 2, 3 ]
+    prerequisites:
+      TOWN_LEVEL: 6
+      ADVANCED_EXTRACTION_TEAMS: 3
+    benefits:
+      LANDMARK_BONUS: 2
+
+  URBAN_SPRAWL:
     col: 5
     row: 1
-    itemCode: 'LECTERN'
-    maxLevel: 6
-    cost: [ '3000', '4000', '5000', '6000', '7000' ]
+    itemCode: 'SCAFFOLDING'
+    maxLevel: 3
+    cost: [ '960','1280','1600' ]
     prerequisites:
-      TOWN_LEVEL: 5
-      ADMINISTRATION: 3
-    resources:
-      ANY_PLANK:
-        quantity : [64]
-      PAPER:
-        quantity : [32, 32, 32, 64]
+      TOWN_LEVEL: 6
+      METROPOLIS: 3
     benefits:
-      PROPERTY_CAP: +3
-      CHUNK_CAP: +50
+      CHUNK_CAP: +15
+      PLAYER_CAP: +15
+      PROPERTY_CAP: +5
+
+  EXPANSIONISM:
+    col: 5
+    row: 2
+    itemCode: 'BLAST_FURNACE'
+    maxLevel: 3
+    cost: [ '6000' ]
+    prerequisites:
+      REGIONAL_LOCALITIES: 1
+    benefits:
+      CHUNK_CAP: +30
+      CHUNK_COST: -0.5
+
+  # ===== COLUMN 6 =====
+
+  MEGALOPOLIS:
+    col: 6
+    row: 1
+    itemCode: 'BEACON'
+    maxLevel: 3
+    cost: [ '1600','1920','2240' ]
+    prerequisites:
+      TOWN_LEVEL: 7
+      URBAN_SPRAWL: 3
+    benefits:
+      CHUNK_CAP: +22
+      PLAYER_CAP: +15
+      PROPERTY_CAP: +5
+
+  MODERN_EXTRACTION_TEAMS:
+    col: 6
+    row: 3
+    itemCode: 'DIAMOND_SHOVEL'
+    maxLevel: 3
+    cost: [ '960','1280','1600' ]
+    resources:
+      DIAMOND_SHOVEL:
+        quantity: [ 1, 2, 3 ]
+    prerequisites:
+      TOWN_LEVEL: 7
+      ADVANCED_EXTRACTION_TOOLS: 10
+    benefits:
+      LANDMARKS_CAP: +1
+
+  # ===== COLUMN 7 =====
+
+  MODERN_EXTRACTION_TOOLS:
+    col: 7
+    row: 3
+    itemCode: 'DIAMOND_PICKAXE'
+    maxLevel: 10
+    cost: [ '640','720','800','880','960','1040','1120','1200','1680','1440' ]
+    resources:
+      DIAMOND_PICKAXE:
+        quantity: [ 1, 2, 3 ]
+    prerequisites:
+      TOWN_LEVEL: 8
+      MODERN_EXTRACTION_TEAMS: 3
+    benefits:
+      LANDMARK_BONUS: 3
+
+  BUREAUCRATIC_REFORMS:
+    col: 7
+    row: 1
+    itemCode: 'LECTERN'
+    maxLevel: 1
+    cost: [ '3840' ]
+    prerequisites:
+      TOWN_LEVEL: 8
+      MEGALOPOLIS: 3
+    benefits:
+      CHUNK_UPKEEP_COST: -0.02
+      CHUNK_CAP: +25
+
+  # ===== COLUMN 8 =====
+
+  ROBOTIC_MINERS:
+    col: 8
+    row: 3
+    itemCode: 'COMPARATOR'
+    maxLevel: 1
+    cost: [ '6000' ]
+    prerequisites:
+      TOWN_LEVEL: 9
+      BUREAUCRATIC_REFORMS: 1
+    benefits:
+      LANDMARK_BONUS: 50
 
 RegionMaxLevel: 10
 region_upgrades:
 
-  CITY_HALL: #"City hall" tag is already unlocked when creating a town. Use it to store default values of yur towns
-    col: -1 #Hidden
-    row: -1 #Hidden
+  CITY_HALL:
+    col: -1
+    row: -1
     itemCode: 'BELL'
     maxLevel: 1
     cost: [ '0' ]
@@ -232,6 +512,6 @@ region_upgrades:
       TOWN_LEVEL: 0
     benefits:
       CHUNK_CAP: infinity
-      CHUNK_COST: 5
+      CHUNK_COST: 0.5
       AUTHORIZED_BIOMES: [ 'ALL' ]
-      CHUNK_UPKEEP_COST: 0.01
+      CHUNK_UPKEEP_COST: 0.05

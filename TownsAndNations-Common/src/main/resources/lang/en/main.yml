@@ -1,5 +1,6 @@
 language:
   STRING: "§f{0}"
+  EMPTY: ""
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] English language successfully loaded"
   PLUGIN_STRING: "§6[TaN]§f "
   PLUGIN_DEBUG_STRING: "§c[TaN - Debug]§f "
@@ -615,6 +616,7 @@ language:
   REQUIREMENT_UPGRADE_NEGATIVE: "§c- {0} : Not unclocked"
   REQUIREMENT_UPGRADE_POSITIVE: "§a- {0} : Unlocked"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§cYou do not meet the prerequisites"
+  UPGRADE_DESCRIPTION: "§7§o{0}"
   #Upgrade rewards
   UPGRADE_CURRENT_LEVEL: "§fCurrent level: §e{0}/{1}"
   UPGRADE_LINE_INT: "§f- {0} : {1} §e{2}"

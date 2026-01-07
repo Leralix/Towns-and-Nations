@@ -41,8 +41,16 @@ public class NewUpgradeStorage {
             for (String key : upgradesSection.getKeys(false)) {
                 int col = upgradesSection.getInt(key + ".col");
                 int row = upgradesSection.getInt(key + ".row");
+                String descriptionKey = upgradesSection.getString(key + ".description");
                 String itemCode = upgradesSection.getString(key + ".itemCode", "BARRIER");
-                Material icon = Material.valueOf(itemCode.toUpperCase());
+
+                Material icon;
+                try {
+                    icon = Material.valueOf(itemCode.toUpperCase());
+                } catch (IllegalArgumentException e) {
+                    icon = Material.BARRIER;
+                }
+
                 int maxLevel = upgradesSection.getInt(key + ".maxLevel");
 
                 // Prerequisites
@@ -58,6 +66,7 @@ public class NewUpgradeStorage {
                                 row,
                                 col,
                                 key,
+                                descriptionKey,
                                 icon,
                                 maxLevel,
                                 prerequisites,

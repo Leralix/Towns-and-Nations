@@ -92,7 +92,13 @@ public class UpgradeMenu extends BasicGui {
             int levelOfUpgrade = territoryStats.getLevel(upgrade) ;
             int maxLevelOfUpgrade = upgrade.getMaxLevel();
 
+            List<FilledLang> upgradeDescription = upgrade.getDescription(langType);
+
             List<FilledLang> desc = new ArrayList<>();
+            if(!upgradeDescription.isEmpty()){
+                desc.addAll(upgradeDescription);
+                desc.add(Lang.EMPTY.get());
+            }
             desc.add(Lang.UPGRADE_CURRENT_LEVEL.get(Integer.toString(levelOfUpgrade), Integer.toString(maxLevelOfUpgrade)));
             desc.add(Lang.EMPTY.get());
             desc.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4.get());

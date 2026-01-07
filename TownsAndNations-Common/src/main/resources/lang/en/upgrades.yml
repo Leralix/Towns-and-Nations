@@ -1,19 +1,9 @@
 #Upgrades.yml is used to define the names of upgrades and their benefits in the game.
 #To add a name to a new upgrade, add it to the customLang section.
 customLang:
-  #Names
-  CITY_HALL: "City hall"
-  BARRACKS: "Barracks"
-  ADMINISTRATION: "Administration"
-  WATCHTOWER: "Watchtower"
-  PORTAL: "Portal"
-  GUARDS: "Guards"
-  COUNCIL_CHAMBER: "Council Chambers"
-  NOTARY_HOUSE: "Notary house"
-  EXTRACTION_TEAM: "Extraction team"
-  BETTER_TOOLS: "Better tools"
   #Prerequisites
   TOWN_LEVEL: "Town level"
+
   #Benefits
   PLAYER_CAP: "Player cap"
   CHUNK_CAP: "Chunk cap"
@@ -23,3 +13,44 @@ customLang:
   UNLOCK_REGION_CREATION: "Unlock Region Creation"
   MAX_LANDMARKS: "Unlock Region Flag"
   LANDMARK_BONUS: "% Landmark rewards"
+  CHUNK_COST: "Chunk claim cost"
+  CHUNK_UPKEEP_COST: "Chunk upkeep cost"
+  LANDMARKS_CAP: "Landmark cap"
+
+  # ===== ADDED UPGRADE NAMES =====
+  CITY_HALL: "Default upgrade"
+  EARLY_SETTLEMENT: "Early Settlement"
+  SMALL_TOWN: "Small Town"
+  DEVELOPING_TOWN: "Developing Town"
+  RURALIZATION: "Ruralization"
+  URBANIZATION: "Urbanization"
+  DEURBANIZATION: "Deurbanization"
+  ESTABLISH_PRIVATE_PROPERTY: "Establish Private Property"
+  NOTARY_HOUSE: "Notary house"
+
+  LARGE_TOWN: "Large Town"
+  METROPOLIS: "Metropolis"
+  MEGALOPOLIS: "Megalopolis"
+  VAST_EMPIRE: "Vast Empire"
+  URBAN_SPRAWL: "Urban Sprawl"
+  REGIONAL_LOCALITIES: "Regional Localities"
+  EXPANSIONISM: "Expansionism"
+  OCEAN_DEVELOPMENT: "Ocean Development"
+  DEEP_OCEAN_DEVELOPMENT: "Deep Ocean Development"
+
+  MOB_BAN: "Mob Ban"
+  MOB_BAN_DESC: "Enable mob ban menu to block\nmobs from spawning."
+  BUREAUCRATIC_REFORMS: "Bureaucratic Reforms"
+  PORTAL_TECHNOLOGY: "Portal Technology"
+  PORTAL_TECHNOLOGY_DESC: "Allows the use of /tan spawn."
+
+  # ===== EXTRACTION PROGRESSION =====
+  NOVICE_EXTRACTION_TEAMS: "Novice Extraction Teams"
+  NOVICE_EXTRACTION_TOOLS: "Novice Extraction Tools"
+  INTERMEDIATE_EXTRACTION_TEAMS: "Intermediate Extraction Teams"
+  INTERMEDIATE_EXTRACTION_TOOLS: "Intermediate Extraction Tools"
+  ADVANCED_EXTRACTION_TEAMS: "Advanced Extraction Teams"
+  ADVANCED_EXTRACTION_TOOLS: "Advanced Extraction Tools"
+  MODERN_EXTRACTION_TEAMS: "Modern Extraction Teams"
+  MODERN_EXTRACTION_TOOLS: "Modern Extraction Tools"
+  ROBOTIC_MINERS: "Robotic Miners"

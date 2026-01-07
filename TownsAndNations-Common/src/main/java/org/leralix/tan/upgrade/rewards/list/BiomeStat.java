@@ -180,7 +180,8 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
                 Biome.END_MIDLANDS,
                 Biome.END_HIGHLANDS,
                 Biome.END_BARRENS
-        ));
+        )),
+        CUSTOM_BIOMES(List.of());
 
         private final List<Biome> biomes;
 

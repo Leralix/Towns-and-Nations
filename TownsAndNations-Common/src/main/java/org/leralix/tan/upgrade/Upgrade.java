@@ -6,6 +6,8 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.service.requirements.IndividualRequirement;
 import org.leralix.tan.gui.service.requirements.upgrade.UpgradeRequirement;
 import org.leralix.tan.lang.DynamicLang;
+import org.leralix.tan.lang.FilledLang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.upgrade.rewards.IndividualStat;
 
@@ -15,19 +17,49 @@ import java.util.List;
 
 public class Upgrade {
 
+    /**
+     * The row position of the upgrade in the GUI.
+     * Min value: 0
+     */
     private final int row;
+    /**
+     * The column position of the upgrade in the GUI.
+     * Min value: 0
+     */
     private final int column;
+    /**
+     * The icon material representing the upgrade.
+     */
     private final Material iconMaterial;
+    /**
+     * The name key used for localization.
+     * Cannot be null
+     */
     private final String nameKey;
+    /**
+     * The description key used for localization.
+     * Can be null
+     */
+    private final String descriptionKey;
     private final int maxLevel;
     private final List<UpgradeRequirement> upgradeRequirements;
     private final List<IndividualStat> rewards;
 
 
-    public Upgrade(int row, int column, String nameKey, Material iconMaterial, int maxLevel, List<UpgradeRequirement> upgradeRequirements, List<IndividualStat> rewards){
+    public Upgrade(
+            int row,
+            int column,
+            String nameKey,
+            String descriptionKey,
+            Material iconMaterial,
+            int maxLevel,
+            List<UpgradeRequirement> upgradeRequirements,
+            List<IndividualStat> rewards
+    ){
         this.row = row;
         this.column = column;
         this.nameKey = nameKey;
+        this.descriptionKey = descriptionKey;
         this.iconMaterial = iconMaterial;
         this.maxLevel = maxLevel;
         this.upgradeRequirements = upgradeRequirements;
@@ -41,6 +73,10 @@ public class Upgrade {
 
     public String getID() {
         return nameKey;
+    }
+
+    public String getDescriptionKey() {
+        return descriptionKey;
     }
 
     public String getName(LangType langType) {
@@ -71,5 +107,17 @@ public class Upgrade {
 
     public Collection<IndividualStat> getRewards() {
         return rewards;
+    }
+
+    public List<FilledLang> getDescription(LangType langType) {
+        if(descriptionKey == null){
+            return List.of();
+        }
+        List<FilledLang> res = new ArrayList<>();
+        String[] descLines = DynamicLang.get(langType, descriptionKey).split("\n");
+        for (String descLine : descLines) {
+            res.add(Lang.UPGRADE_DESCRIPTION.get(descLine));
+        }
+        return res;
     }
 }
