@@ -32,7 +32,6 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.info.SideStatus;
-import org.leralix.tan.war.legacy.WarRole;
 
 public class ChunkListener implements Listener {
 
@@ -330,13 +329,18 @@ public class ChunkListener implements Listener {
         }
     }
 
-    private boolean canPvpHappen(Player player1, Player player2) {
-        if (!NewClaimedChunkStorage.getInstance().get(player2.getLocation().getChunk()).canPVPHappen()) {
+    private boolean canPvpHappen(Player aggressor, Player receiver) {
+
+        if (SudoPlayerStorage.isSudoPlayer(aggressor)){
+            return true;
+        }
+
+        if (!NewClaimedChunkStorage.getInstance().get(receiver.getLocation().getChunk()).canPVPHappen()) {
             return false;
         }
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player1);
-        ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(player2);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(aggressor);
+        ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(receiver);
         TownRelation relation = tanPlayer.getRelationWithPlayer(tanPlayer2);
 
         return Constants.getRelationConstants(relation).canPvP();
