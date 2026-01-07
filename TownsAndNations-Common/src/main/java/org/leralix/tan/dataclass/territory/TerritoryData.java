@@ -330,6 +330,10 @@ public abstract class TerritoryData {
     public IconBuilder getIconWithInformationAndRelation(TerritoryData territoryData, LangType langType) {
         IconBuilder icon = getIconWithInformations(langType);
 
+        if(territoryData == null){
+            return icon;
+        }
+
         TownRelation relation = getRelationWith(territoryData);
         return icon.addDescription(Lang.GUI_TOWN_INFO_TOWN_RELATION.get(relation.getColoredName(langType)));
     }
