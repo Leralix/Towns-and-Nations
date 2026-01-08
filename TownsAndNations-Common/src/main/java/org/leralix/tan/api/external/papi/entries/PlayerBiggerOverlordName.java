@@ -21,10 +21,12 @@ public class PlayerBiggerOverlordName extends PapiEntry{
             return PLAYER_NOT_FOUND;
         }
 
+        if(tanPlayer.hasKingdom())
+            return tanPlayer.getKingdom().getName();
         if(tanPlayer.hasRegion())
             return tanPlayer.getRegion().getName();
         if(tanPlayer.hasTown())
             return tanPlayer.getTown().getName();
-        return Lang.NO_TOWN.get(tanPlayer);
+        return Lang.NO_KINGDOM.get(tanPlayer);
     }
 }

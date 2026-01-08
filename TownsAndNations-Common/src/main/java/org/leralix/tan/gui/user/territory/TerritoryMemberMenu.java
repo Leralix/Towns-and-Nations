@@ -6,6 +6,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.territory.KingdomData;
+import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
@@ -29,7 +31,12 @@ public class TerritoryMemberMenu extends IteratorGUI {
     private final TerritoryData territoryData;
 
     public TerritoryMemberMenu(Player player, TerritoryData territoryData) {
-        super(player, Lang.HEADER_TOWN_MEMBERS, 6);
+        super(player,
+                territoryData instanceof TownData ? Lang.HEADER_TOWN_MEMBERS :
+                        territoryData instanceof RegionData ? Lang.HEADER_REGION_MEMBERS :
+                                territoryData instanceof KingdomData ? Lang.HEADER_KINGDOM_MEMBERS :
+                                        Lang.HEADER_TOWN_MEMBERS,
+                6);
         this.territoryData = territoryData;
     }
 

@@ -39,7 +39,7 @@ public class CaptureLandmarkWarGoal extends WarGoal implements TanCaptureLandmar
 
     @Override
     public String getDisplayName(LangType langType) {
-        return Lang.CONQUER_WAR_GOAL.get(langType);
+        return Lang.CAPTURE_LANDMARK_WAR_GOAL.get(langType);
     }
 
     @Override

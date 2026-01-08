@@ -83,6 +83,11 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
         save();
     }
 
+    public void claimKingdomChunk(Chunk chunk, String ownerID) {
+        dataMap.put(getChunkKey(chunk), new KingdomClaimedChunk(chunk, ownerID));
+        save();
+    }
+
     public void claimLandmarkChunk(Chunk chunk, String ownerID) {
         dataMap.put(getChunkKey(chunk), new LandmarkClaimedChunk(chunk, ownerID));
         save();
@@ -181,6 +186,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
                 iterator.remove();
             }
         }
+        save();
     }
 
     public @NotNull ClaimedChunk2 get(int x, int z, String worldID) {
@@ -236,6 +242,11 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
                         String occupierID = chunkData.has("occupierID") ? chunkData.get("occupierID").getAsString() : ownerID;
                         regionChunk.setOccupierID(occupierID);
                         dataMap.put(entry.getKey(), regionChunk);
+                    } else if (ownerID.startsWith("K")) {
+                        KingdomClaimedChunk kingdomChunk = new KingdomClaimedChunk(x, z, worldUUID, ownerID);
+                        String occupierID = chunkData.has("occupierID") ? chunkData.get("occupierID").getAsString() : ownerID;
+                        kingdomChunk.setOccupierID(occupierID);
+                        dataMap.put(entry.getKey(), kingdomChunk);
                     } else if (ownerID.startsWith("L")) {
                         LandmarkClaimedChunk landmarkClaimedChunk = new LandmarkClaimedChunk(x, z, worldUUID, ownerID);
                         dataMap.put(entry.getKey(), landmarkClaimedChunk);

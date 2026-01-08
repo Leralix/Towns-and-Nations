@@ -58,6 +58,16 @@ public class NewsletterEvents implements TanListener {
     }
 
     @EventHandler
+    public void onKingdomCreated(KingdomCreatedEvent event) {
+        newsletterStorage.register(new KingdomCreationNews(event.getKingdom(), event.getExecutor()));
+    }
+
+    @EventHandler
+    public void onKingdomDeleted(KingdomDeletedEvent event) {
+        newsletterStorage.register(new KingdomDeletedNews(event.getKingdom(), event.getExecutor()));
+    }
+
+    @EventHandler
     public void onTerritoryIndependence(TerritoryIndependenceEvent event) {
         newsletterStorage.register(new TerritoryIndependentNews(event.getTerritory(), event.getFormerOverlord()));
     }

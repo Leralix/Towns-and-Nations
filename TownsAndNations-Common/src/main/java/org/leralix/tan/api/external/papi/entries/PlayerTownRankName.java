@@ -10,7 +10,7 @@ public class PlayerTownRankName extends PapiEntry{
 
 
     public PlayerTownRankName() {
-        super("player_region_name");
+        super("player_town_rank_name");
     }
 
     @Override
@@ -22,6 +22,6 @@ public class PlayerTownRankName extends PapiEntry{
             return PLAYER_NOT_FOUND;
         }
 
-        return tanPlayer.hasRegion() ? tanPlayer.getRegion().getName() : Lang.NO_REGION.get(tanPlayer);
+        return tanPlayer.hasTown() ? tanPlayer.getTownRank().getName() : Lang.NO_TOWN.get(tanPlayer);
     }
 }

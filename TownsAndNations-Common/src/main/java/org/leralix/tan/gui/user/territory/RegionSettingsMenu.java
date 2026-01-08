@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.dataclass.territory.KingdomData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.RegionDeletednternalEvent;
@@ -20,6 +21,7 @@ import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.GOOD;
+import static org.leralix.lib.data.SoundEnum.BAD;
 import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 public class RegionSettingsMenu extends SettingsMenus {
@@ -43,12 +45,58 @@ public class RegionSettingsMenu extends SettingsMenus {
 
         gui.setItem(2, 5, setBannerButton());
 
+        regionData.getOverlord().ifPresent(overlord -> {
+            if (overlord instanceof KingdomData kingdomData) {
+                gui.setItem(2, 6, getLeaveKingdomButton(kingdomData));
+            }
+        });
+
         gui.setItem(2, 7, getChangeOwnershipButton());
         gui.setItem(2, 8, getDeleteButton());
 
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new RegionMenu(player, regionData)));
 
         gui.open(player);
+    }
+
+    private @NotNull GuiItem getLeaveKingdomButton(KingdomData kingdomData) {
+        return iconManager.get(IconKey.REGION_QUIT_REGION_ICON)
+                .setName(Lang.GUI_REGION_SETTINGS_LEAVE_KINGDOM.get(tanPlayer))
+                .setDescription(
+                        Lang.GUI_REGION_SETTINGS_LEAVE_KINGDOM_DESC1.get(kingdomData.getName()),
+                        Lang.GUI_REGION_SETTINGS_LEAVE_KINGDOM_DESC2.get()
+                )
+                .setAction(event -> {
+                    event.setCancelled(true);
+
+                    if (!player.hasPermission("tan.base.region.quit")) {
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
+                        return;
+                    }
+
+                    if (!regionData.haveOverlord()) {
+                        TanChatUtils.message(player, Lang.TERRITORY_NO_OVERLORD.get(tanPlayer), NOT_ALLOWED);
+                        return;
+                    }
+
+                    if (regionData.isCapital()) {
+                        TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_KINGDOM_CAPITAL.get(tanPlayer, regionData.getBaseColoredName()), NOT_ALLOWED);
+                        return;
+                    }
+
+                    new ConfirmMenu(
+                            player,
+                            Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(regionData.getBaseColoredName(), kingdomData.getBaseColoredName()),
+                            () -> {
+                                regionData.removeOverlord();
+                                regionData.broadcastMessageWithSound(Lang.REGION_BROADCAST_REGION_LEFT_KINGDOM.get(regionData.getName(), kingdomData.getName()), BAD);
+                                kingdomData.broadCastMessage(Lang.KINGDOM_BROADCAST_REGION_LEFT_KINGDOM.get(regionData.getName()));
+                                open();
+                            },
+                            this::open
+                    );
+                })
+                .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getChangeOwnershipButton() {

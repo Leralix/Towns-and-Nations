@@ -7,6 +7,7 @@ import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.territory.KingdomData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.ChatScope;
@@ -53,15 +54,14 @@ public class LocalChatStorage {
 
     public static void broadcastInScope(Player player, String message) {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-
-        if (!tanPlayer.hasTown()) {
-            return;
-        }
-
         ChatScope scope = getPlayerChatScope(player);
         boolean sendLogsToConsole = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("sendPrivateMessagesToConsole", false);
 
         if (scope == ChatScope.CITY) {
+            if (!tanPlayer.hasTown()) {
+                TanChatUtils.message(player, Lang.NO_TOWN.get(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
+                return;
+            }
             TownData townData = tanPlayer.getTown();
 
             FilledLang messageFormat = Lang.CHAT_SCOPE_TOWN_MESSAGE.get(townData.getName(), player.getName(), message);
@@ -84,7 +84,24 @@ public class LocalChatStorage {
             regionData.broadCastMessage(messageFormat);
             if (sendLogsToConsole)
                 TownsAndNations.getPlugin().getLogger().info(messageFormat.getDefault());
+        } else if (scope == ChatScope.KINGDOM) {
+
+            if (!tanPlayer.hasKingdom()) {
+                TanChatUtils.message(player, Lang.NO_KINGDOM.get(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
+                return;
+            }
+
+            KingdomData kingdomData = tanPlayer.getKingdom();
+            FilledLang messageFormat = Lang.CHAT_SCOPE_KINGDOM_MESSAGE.get(kingdomData.getName(), player.getName(), message);
+
+            kingdomData.broadCastMessage(messageFormat);
+            if (sendLogsToConsole)
+                TownsAndNations.getPlugin().getLogger().info(messageFormat.getDefault());
         } else if (scope == ChatScope.ALLIANCE) {
+            if (!tanPlayer.hasTown()) {
+                TanChatUtils.message(player, Lang.NO_TOWN.get(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
+                return;
+            }
             TownData playerTown = tanPlayer.getTown();
 
             FilledLang messageFormat = Lang.CHAT_SCOPE_TOWN_MESSAGE.get(playerTown.getName(), player.getName(), message);

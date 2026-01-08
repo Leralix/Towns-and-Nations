@@ -111,7 +111,7 @@ public class TownClaimedChunk extends TerritoryChunk {
 
     @Override
     public void notifyUpdate() {
-        if (!Constants.allowNonAdjacentChunksForTown()) {
+        if (!Constants.allowNonAdjacentChunksFor(getOwner())) {
             ChunkUtil.unclaimIfNoLongerSupplied(this);
         }
     }

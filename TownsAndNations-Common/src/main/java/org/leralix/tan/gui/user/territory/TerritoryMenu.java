@@ -4,8 +4,11 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.leralix.tan.dataclass.territory.KingdomData;
+import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
 import org.leralix.tan.enums.BrowseScope;
 import org.leralix.tan.enums.RolePermission;
@@ -40,9 +43,17 @@ public abstract class TerritoryMenu extends BasicGui {
         lore.add(Lang.GUI_TOWN_INFO_DESC1.get(territoryData.getLeaderName()));
         lore.add(Lang.GUI_TOWN_INFO_DESC2.get(Integer.toString(territoryData.getPlayerIDList().size())));
         lore.add(Lang.GUI_TOWN_INFO_DESC3.get(Integer.toString(territoryData.getNumberOfClaimedChunk())));
-        lore.add(territoryData.getOverlord().map(
-                        overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(overlord.getName()))
-                .orElseGet(Lang.GUI_TOWN_INFO_DESC5_NO_REGION::get));
+        if (territoryData instanceof TownData) {
+            lore.add(territoryData.getOverlord()
+                    .map(overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(overlord.getName()))
+                    .orElseGet(Lang.GUI_TOWN_INFO_DESC5_NO_REGION::get));
+        } else if (territoryData instanceof RegionData) {
+            lore.add(territoryData.getOverlord()
+                    .map(overlord -> Lang.GUI_REGION_INFO_DESC6_KINGDOM.get(overlord.getName()))
+                    .orElseGet(Lang.GUI_REGION_INFO_DESC6_NO_KINGDOM::get));
+        } else if (territoryData instanceof KingdomData) {
+            lore.add(Lang.GUI_KINGDOM_INFO_DESC6_NO_OVERLORD.get());
+        }
 
         return iconManager.get(IconKey.TERRITORY_ICON)
                 .setName(Lang.GUI_TOWN_NAME.get(langType, territoryData.getName()))
@@ -81,7 +92,7 @@ public abstract class TerritoryMenu extends BasicGui {
     protected GuiItem getLevelButton() {
         return IconManager.getInstance().get(IconKey.TERRITORY_LEVEL_ICON)
                 .setName(Lang.GUI_TOWN_LEVEL_ICON.get(tanPlayer.getLang()))
-                .setDescription(Lang.GUI_TOWN_LEVEL_ICON_DESC1.get())
+                .setDescription(territoryData instanceof TownData ? Lang.GUI_TOWN_LEVEL_ICON_DESC1.get() : Lang.GUI_TERRITORY_LEVEL_ICON_DESC1.get())
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.UPGRADE_TOWN))
                 .setAction(event -> new UpgradeMenu(player, territoryData))
                 .asGuiItem(player, langType);
@@ -90,7 +101,7 @@ public abstract class TerritoryMenu extends BasicGui {
     protected GuiItem getTownTreasuryButton() {
         return iconManager.get(IconKey.TERRITORY_TREASURY_ICON)
                 .setName(Lang.GUI_TOWN_TREASURY_ICON.get(langType))
-                .setDescription(Lang.GUI_TOWN_TREASURY_ICON_DESC1.get())
+                .setDescription(territoryData instanceof TownData ? Lang.GUI_TOWN_TREASURY_ICON_DESC1.get() : Lang.GUI_TERRITORY_TREASURY_ICON_DESC1.get())
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_TAXES))
                 .setAction(event -> new TreasuryMenu(player, territoryData))
                 .asGuiItem(player, langType);
@@ -99,7 +110,7 @@ public abstract class TerritoryMenu extends BasicGui {
     protected GuiItem getMemberButton() {
         return iconManager.get(IconKey.TERRITORY_MEMBER_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_ICON.get(langType))
-                .setDescription(Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get())
+                .setDescription(territoryData instanceof TownData ? Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get() : Lang.GUI_TERRITORY_MEMBERS_ICON_DESC1.get())
                 .setAction(event -> new TerritoryMemberMenu(player, territoryData).open())
                 .asGuiItem(player, langType);
     }
@@ -107,7 +118,7 @@ public abstract class TerritoryMenu extends BasicGui {
     protected GuiItem getLandButton() {
         return iconManager.get(IconKey.TERRITORY_LAND_ICON)
                 .setName(Lang.GUI_CLAIM_ICON.get(langType))
-                .setDescription(Lang.GUI_CLAIM_ICON_DESC1.get())
+                .setDescription(territoryData instanceof TownData ? Lang.GUI_CLAIM_ICON_DESC1.get() : Lang.GUI_TERRITORY_CLAIM_ICON_DESC1.get())
                 .setAction(event -> new ChunkSettingsMenu(player, territoryData))
                 .asGuiItem(player, langType);
     }

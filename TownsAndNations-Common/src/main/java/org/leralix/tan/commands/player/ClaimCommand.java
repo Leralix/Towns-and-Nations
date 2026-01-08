@@ -3,12 +3,12 @@ package org.leralix.tan.commands.player;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.MapSettings;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -31,15 +31,23 @@ public class ClaimCommand extends PlayerSubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tan claim <town/region>";
+        return "/tan claim <town/region/kingdom>";
     }
 
     @Override
     public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
-            suggestions.add("town");
-            suggestions.add("region");
+            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+            if (tanPlayer.hasTown()) {
+                suggestions.add("town");
+            }
+            if (tanPlayer.hasRegion()) {
+                suggestions.add("region");
+            }
+            if (tanPlayer.hasKingdom()) {
+                suggestions.add("kingdom");
+            }
         }
         return suggestions;
     }
@@ -57,18 +65,26 @@ public class ClaimCommand extends PlayerSubCommand {
 
         TerritoryData territoryData;
 
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+
         if (args[1].equals("town")) {
-            territoryData = TownDataStorage.getInstance().get(player);
-            if (territoryData == null) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get().getDefault());
+            if (!tanPlayer.hasTown()) {
+                TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(player));
                 return;
             }
+            territoryData = tanPlayer.getTown();
         } else if (args[1].equals("region")) {
-            territoryData = RegionDataStorage.getInstance().get(player);
-            if (territoryData == null) {
-                TanChatUtils.message(player, Lang.TOWN_NO_REGION.get().getDefault());
+            if (!tanPlayer.hasRegion()) {
+                TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(player));
                 return;
             }
+            territoryData = tanPlayer.getRegion();
+        } else if (args[1].equals("kingdom")) {
+            if (!tanPlayer.hasKingdom()) {
+                TanChatUtils.message(player, Lang.PLAYER_NO_KINGDOM.get(player));
+                return;
+            }
+            territoryData = tanPlayer.getKingdom();
         } else {
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
             return;

@@ -154,7 +154,7 @@ public class TransactionManager {
         if (ids == null || ids.isEmpty()) return Collections.emptyList();
 
         String placeholders = String.join(",", Collections.nCopies(ids.size(), "?"));
-        String sql = "SELECT * FROM " + transactionType.getTableName() + " WHERE id IN (" + placeholders + ")";
+        String sql = "SELECT * FROM " + transactionType.getTableName() + " WHERE id IN (" + placeholders + ") ORDER BY id DESC";
 
         List<T> results = new ArrayList<>();
 

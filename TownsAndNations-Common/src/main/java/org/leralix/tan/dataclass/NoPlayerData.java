@@ -3,6 +3,7 @@ package org.leralix.tan.dataclass;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.dataclass.territory.KingdomData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -96,6 +97,30 @@ public class NoPlayerData implements ITanPlayer {
     @Override
     public RegionData getRegion() {
         return null;
+    }
+
+    @Override
+    public boolean hasKingdom() {
+        return false;
+    }
+
+    @Override
+    public KingdomData getKingdom() {
+        return null;
+    }
+
+    @Override
+    public RankData getKingdomRank() {
+        return null;
+    }
+
+    @Override
+    public Integer getKingdomRankID() {
+        return null;
+    }
+
+    @Override
+    public void setKingdomRankID(Integer rankID) {
     }
 
     @Override

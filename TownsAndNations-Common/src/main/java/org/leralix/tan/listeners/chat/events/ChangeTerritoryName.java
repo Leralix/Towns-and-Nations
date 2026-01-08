@@ -2,6 +2,7 @@ package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.dataclass.territory.KingdomData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
@@ -26,9 +27,14 @@ public class ChangeTerritoryName extends ChatListenerEvent {
     @Override
     public boolean execute(Player player, String message) {
 
-        int maxSize = territoryToRename instanceof TownData ?
-                Constants.getTownMaxDescriptionSize() :
-                Constants.getRegionMaxDescriptionSize();
+        int maxSize;
+        if (territoryToRename instanceof TownData) {
+            maxSize = Constants.getTownMaxNameSize();
+        } else if (territoryToRename instanceof KingdomData) {
+            maxSize = Constants.getKingdomMaxNameSize();
+        } else {
+            maxSize = Constants.getRegionMaxNameSize();
+        }
 
         if(message.length() > maxSize){
             TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));

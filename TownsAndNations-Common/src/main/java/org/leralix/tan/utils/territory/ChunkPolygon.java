@@ -8,6 +8,7 @@ import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.war.fort.Fort;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,11 +28,7 @@ public class ChunkPolygon {
 
     public boolean isSupplied(){
 
-        Optional<Vector2D> capitalChunk = Optional.empty();
-
-        if(territoryOwner instanceof TownData townData){
-            capitalChunk = townData.getCapitalLocation();
-        }
+        Optional<Vector2D> capitalChunk = resolveCapitalChunk(territoryOwner);
 
 
         for(ClaimedChunk2 claimedChunk2 : chunksInPolygon){
@@ -45,6 +42,26 @@ public class ChunkPolygon {
             }
         }
         return false;
+    }
+
+    private static Optional<Vector2D> resolveCapitalChunk(TerritoryData territoryOwner) {
+        if (territoryOwner instanceof TownData townData) {
+            return townData.getCapitalLocation();
+        }
+
+        Set<String> visited = new HashSet<>();
+        TerritoryData current = territoryOwner;
+        while (current != null && visited.add(current.getID())) {
+            TerritoryData capital = current.getCapital();
+            if (capital == null) {
+                return Optional.empty();
+            }
+            if (capital instanceof TownData capitalTown) {
+                return capitalTown.getCapitalLocation();
+            }
+            current = capital;
+        }
+        return Optional.empty();
     }
 
     public void unclaimAll(){

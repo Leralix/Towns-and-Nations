@@ -242,22 +242,29 @@ public class TownsAndNations extends JavaPlugin {
         DatabaseConstants constants = Constants.databaseConstants();
 
         String dbName = constants.getDbType();
-        if (dbName.equalsIgnoreCase("sqlite")) {
+        if (dbName != null && dbName.equalsIgnoreCase("sqlite")) {
             String dbPath = getDataFolder().getAbsolutePath() + "/database/main.db";
             databaseHandler = new SQLiteHandler(dbPath);
         }
-        if (dbName.equals("mysql")) {
+        if (dbName != null && dbName.equalsIgnoreCase("mysql")) {
             databaseHandler = new MySqlHandler(
                     constants.getHost(),
                     constants.getPort(),
-                    constants.getDbType(),
+                    constants.getName(),
                     constants.getUser(),
                     constants.getPassword());
+        }
+
+        if (databaseHandler == null) {
+            getLogger().log(Level.SEVERE, "[TaN] Invalid database type: " + dbName + ". Disabling plugin.");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }
         try {
             databaseHandler.connect();
         } catch (SQLException e) {
             getLogger().log(Level.SEVERE, "[TaN] Error while connecting to the database");
+            Bukkit.getPluginManager().disablePlugin(this);
         }
     }
 
@@ -342,6 +349,8 @@ public class TownsAndNations extends JavaPlugin {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("User-Agent", USER_AGENT);
+            con.setConnectTimeout(2000);
+            con.setReadTimeout(2000);
 
             int responseCode = con.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {

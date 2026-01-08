@@ -101,6 +101,13 @@ public class PlayerEnterChunkListener implements Listener {
             }
             playerStat.getRegion().claimChunk(player, nextChunk);
         }
+        if (chunkType == ChunkType.KINGDOM) {
+            if (!playerStat.hasKingdom()) {
+                TanChatUtils.message(player, Lang.PLAYER_NO_KINGDOM.get(player));
+                return;
+            }
+            playerStat.getKingdom().claimChunk(player, nextChunk);
+        }
     }
 
     public static boolean sameOwner(final ClaimedChunk2 a, final ClaimedChunk2 b) {

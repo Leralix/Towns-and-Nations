@@ -8,6 +8,8 @@ public enum NewsletterType {
     PLAYER_JOIN_TOWN("player_join_town_newsletter"),
     REGION_CREATED("player_create_region_newsletter"),
     REGION_DELETED("player_delete_region_newsletter"),
+    KINGDOM_CREATED("player_create_kingdom_newsletter"),
+    KINGDOM_DELETED("player_delete_kingdom_newsletter"),
     TERRITORY_VASSAL_PROPOSAL("territory_vassal_proposal_newsletter"),
     TERRITORY_VASSAL_ACCEPTED("territory_vassal_accepted_newsletter"),
     TERRITORY_VASSAL_FORCED("territory_vassal_forced_newsletter"),

@@ -49,6 +49,7 @@ public class PremiumStorage extends JsonStorage<Boolean> {
 
         boolean premium = fetchPremium(playerName);
         dataMap.put(key, premium);
+        save();
         return premium;
     }
 

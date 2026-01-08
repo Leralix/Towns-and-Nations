@@ -62,7 +62,11 @@ public class TerritoryDataWrapper implements TanTerritory {
 
     @Override
     public UUID getOwnerUUID() {
-        return getOwner().getUUID();
+        TanPlayer owner = getOwner();
+        if (owner == null) {
+            return null;
+        }
+        return owner.getUUID();
     }
 
     @Override
@@ -111,7 +115,10 @@ public class TerritoryDataWrapper implements TanTerritory {
 
     @Override
     public TanTerritory getOverlord() {
-        return TerritoryDataWrapper.of(territoryData.getOverlord().get());
+        if (!territoryData.haveOverlord()) {
+            return null;
+        }
+        return TerritoryDataWrapper.of(territoryData.getOverlord().orElse(null));
     }
 
     @Override
