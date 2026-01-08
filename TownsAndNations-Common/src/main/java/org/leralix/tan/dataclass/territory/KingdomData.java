@@ -152,7 +152,7 @@ public class KingdomData extends TerritoryData {
 
     @Override
     public void removeOverlordPrivate() {
-        throw new UnsupportedOperationException("Kingdoms cannot have an overlord");
+        overlordID = null;
     }
 
     public List<TerritoryData> getSubjects() {
