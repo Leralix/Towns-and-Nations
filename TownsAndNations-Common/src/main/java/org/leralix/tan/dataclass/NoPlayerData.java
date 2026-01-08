@@ -19,6 +19,9 @@ import java.util.Set;
 import java.util.UUID;
 
 public class NoPlayerData implements ITanPlayer {
+
+    private Integer kingdomRankId;
+
     @Override
     public String getID() {
         return null;
@@ -116,11 +119,12 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public Integer getKingdomRankID() {
-        return null;
+        return kingdomRankId;
     }
 
     @Override
     public void setKingdomRankID(Integer rankID) {
+        this.kingdomRankId = rankID;
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.dataclass.territory.economy.Budget;
+import org.leralix.tan.dataclass.territory.economy.SubjectTaxLine;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TerritoryIndependanceInternalEvent;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -151,6 +152,7 @@ public class KingdomData extends TerritoryData {
 
     @Override
     public void removeOverlordPrivate() {
+        throw new UnsupportedOperationException("Kingdoms cannot have an overlord");
     }
 
     public List<TerritoryData> getSubjects() {
@@ -244,6 +246,7 @@ public class KingdomData extends TerritoryData {
 
     @Override
     protected void addSpecificTaxes(Budget budget) {
+        budget.addProfitLine(new SubjectTaxLine(this));
     }
 
     @Override

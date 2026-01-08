@@ -67,26 +67,26 @@ public class KingdomDataStorage extends JsonStorage<KingdomData> {
         super.load();
         int id = 0;
         for (String keys : getAll().keySet()) {
-            if (keys == null || keys.length() < 2) {
-                continue;
-            }
-
-            String suffix = keys.substring(1);
-            boolean isNumeric = suffix.chars().allMatch(Character::isDigit);
-            if (!isNumeric) {
-                continue;
-            }
-
-            int newID = Integer.parseInt(suffix);
-            if (newID > id) {
-                id = newID;
+            if (keys != null && keys.length() >= 2) {
+                String suffix = keys.substring(1);
+                boolean isNumeric = suffix.chars().allMatch(Character::isDigit);
+                if (isNumeric) {
+                    int newID = Integer.parseInt(suffix);
+                    if (newID > id) {
+                        id = newID;
+                    }
+                }
             }
         }
         nextID = id + 1;
     }
 
+    public static void resetInstance() {
+        instance = null;
+    }
+
     @Override
     public void reset() {
-        instance = null;
+        resetInstance();
     }
 }

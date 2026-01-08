@@ -4,7 +4,6 @@ import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -25,14 +24,19 @@ public class SubjectTaxLine extends ProfitLine {
     double actualTaxes = 0;
     double missingTaxes = 0;
 
-    public SubjectTaxLine(RegionData regionData) {
-        super(regionData);
-        double tax = regionData.getTax();
-        for (TerritoryData townData : regionData.getVassals()) {
-            if (townData.getBalance() > tax)
+    public SubjectTaxLine(TerritoryData territoryData) {
+        super(territoryData);
+
+        double tax = territoryData.getTax();
+        for (TerritoryData vassal : territoryData.getVassals()) {
+            if (vassal == null) {
+                continue;
+            }
+            if (vassal.getBalance() > tax) {
                 actualTaxes += tax;
-            else
+            } else {
                 missingTaxes += tax;
+            }
         }
     }
 

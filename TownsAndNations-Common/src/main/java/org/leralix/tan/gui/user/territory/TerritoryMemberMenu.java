@@ -31,15 +31,22 @@ public class TerritoryMemberMenu extends IteratorGUI {
     private final TerritoryData territoryData;
 
     public TerritoryMemberMenu(Player player, TerritoryData territoryData) {
-        super(player,
-                territoryData instanceof TownData ? Lang.HEADER_TOWN_MEMBERS :
-                        territoryData instanceof RegionData ? Lang.HEADER_REGION_MEMBERS :
-                                territoryData instanceof KingdomData ? Lang.HEADER_KINGDOM_MEMBERS :
-                                        Lang.HEADER_TOWN_MEMBERS,
-                6);
+        super(player, getTitleFor(territoryData), 6);
         this.territoryData = territoryData;
     }
 
+    private static Lang getTitleFor(TerritoryData territoryData) {
+        if (territoryData instanceof TownData) {
+            return Lang.HEADER_TOWN_MEMBERS;
+        }
+        if (territoryData instanceof RegionData) {
+            return Lang.HEADER_REGION_MEMBERS;
+        }
+        if (territoryData instanceof KingdomData) {
+            return Lang.HEADER_KINGDOM_MEMBERS;
+        }
+        return Lang.HEADER_TOWN_MEMBERS;
+    }
 
     @Override
     public void open() {

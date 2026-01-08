@@ -27,7 +27,7 @@ public class PlayerDeleteKingdomDAO extends NewsletterSubDAO<KingdomDeletedNews>
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to create " + TABLE_NAME + " table", e);
+            throw new NewsletterDaoException("Failed to create " + TABLE_NAME + " table", e);
         }
     }
 
@@ -40,7 +40,7 @@ public class PlayerDeleteKingdomDAO extends NewsletterSubDAO<KingdomDeletedNews>
             ps.setString(3, newsletter.getKingdomName());
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to save newsletter in " + TABLE_NAME, e);
+            throw new NewsletterDaoException("Failed to save newsletter in " + TABLE_NAME, e);
         }
     }
 
@@ -57,7 +57,7 @@ public class PlayerDeleteKingdomDAO extends NewsletterSubDAO<KingdomDeletedNews>
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to load newsletter from " + TABLE_NAME, e);
+            throw new NewsletterDaoException("Failed to load newsletter from " + TABLE_NAME, e);
         }
         return null;
     }
@@ -70,7 +70,7 @@ public class PlayerDeleteKingdomDAO extends NewsletterSubDAO<KingdomDeletedNews>
             ps.setObject(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to delete newsletter from " + TABLE_NAME, e);
+            throw new NewsletterDaoException("Failed to delete newsletter from " + TABLE_NAME, e);
         }
     }
 }

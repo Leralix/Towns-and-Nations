@@ -27,46 +27,63 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
     }
 
     public static BiomeStat fromStrings(List<String> biomeKey){
-
         ArrayList<Biome> res = new ArrayList<>();
 
-        for(String key : biomeKey){
-            key = key.toUpperCase().replace(" ", "_");
+        for (String rawKey : biomeKey) {
+            String key = normalizeKey(rawKey);
 
-            if(key.equals("ALL")){
-                try {
-                    res.addAll(Arrays.asList(Biome.values()));
-                } catch (IncompatibleClassChangeError ignored) {
-                    res.add(Biome.PLAINS);
-                    // Error with MockBukkit. This allows for tests to run.
-                }
+            if (isAllKeyword(key)) {
+                addAllBiomes(res);
                 break;
             }
 
-            BiomeCategory category = null;
-            for (BiomeCategory c : BiomeCategory.values()) {
-                if (c.name().equals(key)) {
-                    category = c;
-                    break;
-                }
-            }
+            BiomeCategory category = findCategory(key);
             if (category != null) {
                 res.addAll(category.getBiomes());
-                continue;
-            }
-
-            Biome biome = null;
-            for (Biome b : Biome.values()) {
-                if (b.name().equals(key)) {
-                    biome = b;
-                    break;
+            } else {
+                Biome biome = findBiome(key);
+                if (biome != null) {
+                    res.add(biome);
                 }
             }
-            if (biome != null) {
-                res.add(biome);
+        }
+
+        return new BiomeStat(res);
+    }
+
+    private static String normalizeKey(String key) {
+        return key.toUpperCase().replace(" ", "_");
+    }
+
+    private static boolean isAllKeyword(String key) {
+        return "ALL".equals(key);
+    }
+
+    private static void addAllBiomes(List<Biome> out) {
+        try {
+            out.addAll(Arrays.asList(Biome.values()));
+        } catch (IncompatibleClassChangeError ignored) {
+            out.add(Biome.PLAINS);
+            // Error with MockBukkit. This allows for tests to run.
+        }
+    }
+
+    private static BiomeCategory findCategory(String key) {
+        for (BiomeCategory c : BiomeCategory.values()) {
+            if (c.name().equals(key)) {
+                return c;
             }
         }
-        return new BiomeStat(res);
+        return null;
+    }
+
+    private static Biome findBiome(String key) {
+        for (Biome b : Biome.values()) {
+            if (b.name().equals(key)) {
+                return b;
+            }
+        }
+        return null;
     }
 
     @Override
