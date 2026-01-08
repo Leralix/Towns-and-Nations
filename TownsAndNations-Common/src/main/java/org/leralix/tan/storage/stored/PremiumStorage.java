@@ -69,8 +69,8 @@ public class PremiumStorage extends JsonStorage<Boolean> {
                     return obj.has("id") && obj.has("name");
                 }
             }
-        } catch (Exception ignored) {
-
+        } catch (Exception e) {
+            return false;
         }
         return false;
     }

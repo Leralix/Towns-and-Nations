@@ -43,17 +43,27 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
                 break;
             }
 
-            try{
-                BiomeCategory category = BiomeCategory.valueOf(key);
-                res.addAll(category.getBiomes());
+            BiomeCategory category = null;
+            for (BiomeCategory c : BiomeCategory.values()) {
+                if (c.name().equals(key)) {
+                    category = c;
+                    break;
+                }
             }
-            catch (IllegalArgumentException ignored){
-                try{
-                    res.add(Biome.valueOf(key));
+            if (category != null) {
+                res.addAll(category.getBiomes());
+                continue;
+            }
+
+            Biome biome = null;
+            for (Biome b : Biome.values()) {
+                if (b.name().equals(key)) {
+                    biome = b;
+                    break;
                 }
-                catch (IllegalArgumentException ignored2){
-                    // Ignore invalid biome keys
-                }
+            }
+            if (biome != null) {
+                res.add(biome);
             }
         }
         return new BiomeStat(res);

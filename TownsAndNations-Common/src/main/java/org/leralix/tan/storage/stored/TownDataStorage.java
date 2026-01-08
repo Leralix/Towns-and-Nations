@@ -48,13 +48,19 @@ public class TownDataStorage extends JsonStorage<TownData>{
 
         int id = 0;
         for (String cle : dataMap.keySet()) {
-            try {
-                int newID = Integer.parseInt(cle.substring(1));
-                if (newID > id) {
-                    id = newID;
-                }
-            } catch (NumberFormatException ignored) {
+            if (cle == null || cle.length() < 2) {
+                continue;
+            }
 
+            String suffix = cle.substring(1);
+            boolean isNumeric = suffix.chars().allMatch(Character::isDigit);
+            if (!isNumeric) {
+                continue;
+            }
+
+            int newID = Integer.parseInt(suffix);
+            if (newID > id) {
+                id = newID;
             }
         }
         newTownId = id + 1;

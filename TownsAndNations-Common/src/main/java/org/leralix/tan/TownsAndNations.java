@@ -354,14 +354,13 @@ public class TownsAndNations extends JavaPlugin {
 
             int responseCode = con.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                String inputLine;
                 StringBuilder response = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
+                try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+                    String inputLine;
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
                 }
-                in.close();
 
                 latestVersion = extractVersionFromResponse(response.toString());
                 if (CURRENT_VERSION.isOlderThan(latestVersion)) {
@@ -371,10 +370,10 @@ public class TownsAndNations extends JavaPlugin {
                 }
             } else {
                 getLogger().info("[TaN] An error occurred while trying to accesses github API.");
-                getLogger().info("[TaN] Error log : " + con.getInputStream());
+                getLogger().info("[TaN] GitHub API response code: " + responseCode);
             }
         } catch (Exception e) {
-            getLogger().warning("[TaN] An error occurred while trying to check for updates.");
+            getLogger().log(Level.WARNING, "[TaN] An error occurred while trying to check for updates.", e);
             latestVersion = CURRENT_VERSION;
         }
     }
