@@ -65,6 +65,12 @@ regionLevelExpression:
   flatMultiplier: 20.0
   base: 200.0
 
+kingdomLevelExpression:
+  LevelExpression: '(squareMultiplier * level ^ 2 + flatMultiplier * level + base) * 10'
+  squareMultiplier: 12.0
+  flatMultiplier: 30.0
+  base: 400.0
+
 # Town upgrades
 TownMaxLevel: 8
 upgrades:
@@ -515,3 +521,20 @@ region_upgrades:
       CHUNK_COST: 0.5
       AUTHORIZED_BIOMES: [ 'ALL' ]
       CHUNK_UPKEEP_COST: 0.05
+
+KingdomMaxLevel: 12
+kingdom_upgrades:
+
+  CITY_HALL:
+    col: -1
+    row: -1
+    itemCode: 'BELL'
+    maxLevel: 1
+    cost: [ '0' ]
+    prerequisites:
+      TOWN_LEVEL: 0
+    benefits:
+      CHUNK_CAP: infinity
+      CHUNK_COST: 1
+      AUTHORIZED_BIOMES: [ 'ALL' ]
+      CHUNK_UPKEEP_COST: 0.1

@@ -73,7 +73,7 @@ public class AddRelationMenu extends IteratorGUI {
             guiItems.add(otherTerritory.getIconWithInformationAndRelation(territoryData, tanPlayer.getLang())
                     .setAction(action -> {
                         if (otherTerritory.haveNoLeader()) {
-                            TanChatUtils.message(player, Lang.TOWN_DIPLOMATIC_INVITATION_NO_LEADER.get(tanPlayer));
+                            TanChatUtils.message(player, Lang.TERRITORY_DIPLOMATIC_INVITATION_NO_LEADER.get(tanPlayer));
                             return;
                         }
 

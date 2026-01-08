@@ -38,46 +38,46 @@ public class OpenDiplomacyMenu extends BasicGui {
         gui.setItem(15, getAllianceButton());
         gui.setItem(17, getProposalButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> PlayerGUI.dispatchPlayerTown(player)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player)));
 
         gui.open(player);
     }
 
     private GuiItem getWarButton() {
-        List<FilledLang> desc = generateDescription(Lang.GUI_TOWN_RELATION_HOSTILE_DESC1.get(), TownRelation.WAR);
+        List<FilledLang> desc = generateDescription(Lang.GUI_TERRITORY_RELATION_HOSTILE_DESC1.get(), TownRelation.WAR);
 
         return iconManager.get(IconKey.GUI_WAR_ICON)
-                .setName(Lang.GUI_TOWN_RELATION_HOSTILE.get(langType))
+                .setName(Lang.GUI_TERRITORY_RELATION_HOSTILE.get(langType))
                 .setDescription(desc)
                 .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.WAR))
                 .asGuiItem(player, langType);
     }
 
     private GuiItem getEmbargoButton() {
-        List<FilledLang> desc = generateDescription(Lang.GUI_TOWN_RELATION_EMBARGO_DESC1.get(), TownRelation.EMBARGO);
+        List<FilledLang> desc = generateDescription(Lang.GUI_TERRITORY_RELATION_EMBARGO_DESC1.get(), TownRelation.EMBARGO);
 
         return iconManager.get(IconKey.GUI_EMBARGO_ICON)
-                .setName(Lang.GUI_TOWN_RELATION_EMBARGO.get(langType))
+                .setName(Lang.GUI_TERRITORY_RELATION_EMBARGO.get(langType))
                 .setDescription(desc)
                 .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.EMBARGO))
                 .asGuiItem(player, langType);
     }
 
     private GuiItem getNonAggressionPactButton() {
-        List<FilledLang> desc = generateDescription(Lang.GUI_TOWN_RELATION_NAP_DESC1.get(), TownRelation.NON_AGGRESSION);
+        List<FilledLang> desc = generateDescription(Lang.GUI_TERRITORY_RELATION_NAP_DESC1.get(), TownRelation.NON_AGGRESSION);
 
         return iconManager.get(IconKey.GUI_NON_AGGRESSION_PACT_ICON)
-                .setName(Lang.GUI_TOWN_RELATION_NAP.get(langType))
+                .setName(Lang.GUI_TERRITORY_RELATION_NAP.get(langType))
                 .setDescription(desc)
                 .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.NON_AGGRESSION))
                 .asGuiItem(player, langType);
     }
 
     private GuiItem getAllianceButton() {
-        List<FilledLang> desc = generateDescription(Lang.GUI_TOWN_RELATION_ALLIANCE_DESC1.get(), TownRelation.ALLIANCE);
+        List<FilledLang> desc = generateDescription(Lang.GUI_TERRITORY_RELATION_ALLIANCE_DESC1.get(), TownRelation.ALLIANCE);
 
         return iconManager.get(IconKey.GUI_ALLIANCE_ICON)
-                .setName(Lang.GUI_TOWN_RELATION_ALLIANCE.get(langType))
+                .setName(Lang.GUI_TERRITORY_RELATION_ALLIANCE.get(langType))
                 .setDescription(desc)
                 .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.ALLIANCE))
                 .asGuiItem(player, langType);
@@ -85,10 +85,10 @@ public class OpenDiplomacyMenu extends BasicGui {
 
     private @NotNull GuiItem getProposalButton() {
         return iconManager.get(IconKey.GUI_PROPOSALS_ICON)
-                .setName(Lang.GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL.get(langType))
+                .setName(Lang.GUI_TERRITORY_RELATION_DIPLOMACY_PROPOSAL.get(langType))
                 .setDescription(
-                        Lang.GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC1.get(),
-                        Lang.GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC2.get(Integer.toString(territoryData.getAllDiplomacyProposal().size()))
+                        Lang.GUI_TERRITORY_RELATION_DIPLOMACY_PROPOSAL_DESC1.get(),
+                        Lang.GUI_TERRITORY_RELATION_DIPLOMACY_PROPOSAL_DESC2.get(Integer.toString(territoryData.getAllDiplomacyProposal().size()))
                 )
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TOWN_RELATION)) {

@@ -1,10 +1,13 @@
 package org.leralix.tan.api.internal.managers;
 
 import org.leralix.tan.api.internal.wrappers.RegionDataWrapper;
+import org.leralix.tan.api.internal.wrappers.KingdomDataWrapper;
 import org.leralix.tan.api.internal.wrappers.TownDataWrapper;
+import org.leralix.tan.storage.stored.KingdomDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.tan.api.getters.TanTerritoryManager;
+import org.tan.api.interfaces.TanKingdom;
 import org.tan.api.interfaces.TanRegion;
 import org.tan.api.interfaces.TanTown;
 
@@ -20,12 +23,14 @@ import java.util.Optional;
 public class TerritoryManager implements TanTerritoryManager {
     private final TownDataStorage townDataStorageInstance;
     private final RegionDataStorage regionDataStorageInstance;
+    private final KingdomDataStorage kingdomDataStorageInstance;
 
     private static TerritoryManager instance;
 
     private TerritoryManager() {
         townDataStorageInstance = TownDataStorage.getInstance();
         regionDataStorageInstance = RegionDataStorage.getInstance();
+        kingdomDataStorageInstance = KingdomDataStorage.getInstance();
     }
 
     public static TerritoryManager getInstance() {
@@ -71,6 +76,25 @@ public class TerritoryManager implements TanTerritoryManager {
         return regionDataStorageInstance.getAll().values().stream()
                 .map(RegionDataWrapper::of)
                 .map(TanRegion.class::cast)
+                .toList();
+    }
+
+    @Override
+    public Optional<TanKingdom> getKingdom(String kingdomID) {
+        KingdomDataWrapper wrapper = KingdomDataWrapper.of(kingdomDataStorageInstance.get(kingdomID));
+        return Optional.ofNullable(wrapper);
+    }
+
+    @Override
+    public Optional<TanKingdom> getKingdomByName(String kingdomName) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Collection<TanKingdom> getKingdoms() {
+        return kingdomDataStorageInstance.getAll().values().stream()
+                .map(KingdomDataWrapper::of)
+                .map(TanKingdom.class::cast)
                 .toList();
     }
 }

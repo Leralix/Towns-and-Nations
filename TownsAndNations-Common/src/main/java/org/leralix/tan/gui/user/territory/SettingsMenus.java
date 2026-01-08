@@ -7,7 +7,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.dataclass.territory.KingdomData;
+import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -46,9 +49,17 @@ public abstract class SettingsMenus extends BasicGui {
         lore.add(Lang.GUI_TOWN_INFO_DESC1.get(territoryData.getLeaderName()));
         lore.add(Lang.GUI_TOWN_INFO_DESC2.get(Integer.toString(territoryData.getPlayerIDList().size())));
         lore.add(Lang.GUI_TOWN_INFO_DESC3.get(Integer.toString(territoryData.getNumberOfClaimedChunk())));
-        lore.add(territoryData.getOverlord()
-                        .map(overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(overlord.getName()))
-                        .orElseGet(Lang.GUI_TOWN_INFO_DESC5_NO_REGION::get));
+        if (territoryData instanceof TownData) {
+            lore.add(territoryData.getOverlord()
+                    .map(overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(overlord.getName()))
+                    .orElseGet(Lang.GUI_TOWN_INFO_DESC5_NO_REGION::get));
+        } else if (territoryData instanceof RegionData) {
+            lore.add(territoryData.getOverlord()
+                    .map(overlord -> Lang.GUI_REGION_INFO_DESC6_KINGDOM.get(overlord.getName()))
+                    .orElseGet(Lang.GUI_REGION_INFO_DESC6_NO_KINGDOM::get));
+        } else if (territoryData instanceof KingdomData) {
+            lore.add(Lang.GUI_KINGDOM_INFO_DESC6_NO_OVERLORD.get());
+        }
         lore.add(Lang.GUI_TOWN_INFO_CHANGE_ICON.get());
         lore.add(Lang.RIGHT_CLICK_TO_SELECT_MEMBER_HEAD.get());
 

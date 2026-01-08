@@ -30,7 +30,7 @@ public class UpgradeMenu extends BasicGui {
     private final int maxLevel;
 
     public UpgradeMenu(Player player, TerritoryData territoryData){
-        super(player, Lang.HEADER_TOWN_UPGRADE, 6);
+        super(player, Lang.HEADER_TERRITORY_UPGRADE, 6);
         this.territoryData = territoryData;
         this.scrollIndex = 0;
         this.maxLevel = Constants.getTerritoryMaxLevel(territoryData);
@@ -115,7 +115,7 @@ public class UpgradeMenu extends BasicGui {
                             .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_UPGRADE)
                             .setAction( action -> {
                                 if(levelOfUpgrade >= maxLevelOfUpgrade){
-                                    TanChatUtils.message(player, Lang.TOWN_UPGRADE_MAX_LEVEL.get(langType), SoundEnum.NOT_ALLOWED);
+                                    TanChatUtils.message(player, Lang.TERRITORY_UPGRADE_MAX_LEVEL.get(langType), SoundEnum.NOT_ALLOWED);
                                     return;
                                 }
                                 TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
@@ -160,7 +160,7 @@ public class UpgradeMenu extends BasicGui {
         int nextLevelPrice = level.getMoneyRequiredForLevelUp();
 
         return iconManager.get(IconKey.LEVEL_UP_ICON)
-                .setName(Lang.GUI_TOWN_LEVEL_UP.get(langType))
+                .setName(Lang.GUI_TERRITORY_LEVEL_UP.get(langType))
                 .setDescription(
                         Lang.GUI_TOWN_LEVEL_UP_DESC1.get(Integer.toString(currentLevel)),
                         Lang.GUI_TOWN_LEVEL_UP_DESC2.get(Integer.toString(currentLevel + 1), Integer.toString(nextLevelPrice))

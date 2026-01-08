@@ -109,12 +109,8 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
                 TanChatUtils.message(player, Lang.CHUNK_OCCUPIED_CANT_UNCLAIM.get(langType));
                 return;
             }
-            if(
-                    Constants.preventOrphanChunks() &&
-                    !Constants.allowNonAdjacentChunksForTown() && this instanceof TownClaimedChunk ||
-                    !Constants.allowNonAdjacentChunksForRegion() && this instanceof RegionClaimedChunk
-            ){
-                if(ChunkUtil.doesUnclaimCauseOrphan(this)){
+            if (Constants.preventOrphanChunks() && !Constants.allowNonAdjacentChunksFor(ownerTerritory)) {
+                if (ChunkUtil.doesUnclaimCauseOrphan(this)) {
                     TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_BECAUSE_CREATE_ORPHAN.get(langType));
                     return;
                 }
@@ -143,11 +139,9 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
                     }
 
                     if(
-                            Constants.preventOrphanChunks() &&
-                            !Constants.allowNonAdjacentChunksForTown() && this instanceof TownClaimedChunk ||
-                            !Constants.allowNonAdjacentChunksForRegion() && this instanceof RegionClaimedChunk
-                    ){
-                        if(ChunkUtil.doesUnclaimCauseOrphan(this)){
+                            Constants.preventOrphanChunks() && !Constants.allowNonAdjacentChunksFor(ownerTerritory)
+                    ) {
+                        if (ChunkUtil.doesUnclaimCauseOrphan(this)) {
                             TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_BECAUSE_CREATE_ORPHAN.get(langType));
                             return;
                         }
@@ -231,7 +225,9 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
         }
 
         //If the permission is locked by admins, only shows default value.
-        var defaultPermission = Constants.getChunkPermissionConfig().getTownPermission(permissionType);
+        var defaultPermission = (territoryOfChunk instanceof TownData)
+                ? Constants.getChunkPermissionConfig().getTownPermission(permissionType)
+                : Constants.getChunkPermissionConfig().getRegionPermission(permissionType);
         if(defaultPermission.isLocked()){
             return defaultPermission.defaultRelation().isAllowed(territoryOfChunk, tanPlayer);
         }

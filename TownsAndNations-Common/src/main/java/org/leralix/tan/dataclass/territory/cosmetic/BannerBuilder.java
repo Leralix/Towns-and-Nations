@@ -56,14 +56,20 @@ public class BannerBuilder {
     public List<Pattern> getPatterns(){
         List<Pattern> patternList = new ArrayList<>();
         for (Pair<DyeColor, String> patternData : patterns) {
+            if (patternData != null && patternData.second() != null) {
+                PatternType patternType = null;
+                String wanted = patternData.second();
+                for (PatternType pt : PatternType.values()) {
+                    if (pt.name().equals(wanted)) {
+                        patternType = pt;
+                        break;
+                    }
+                }
 
-            try {
-                PatternType.valueOf(patternData.second());
-                patternList.add(new Pattern(
-                        patternData.first(),
-                        PatternType.valueOf(patternData.second())))
-                ;
-            } catch (IllegalArgumentException ignored) {}
+                if (patternType != null) {
+                    patternList.add(new Pattern(patternData.first(), patternType));
+                }
+            }
         }
         return patternList;
     }

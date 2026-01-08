@@ -4,8 +4,8 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.territory.KingdomData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -16,7 +16,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,10 +78,20 @@ public class MainMenu extends BasicGui {
     }
 
     private GuiItem getNationButton(ITanPlayer tanPlayer) {
+        List<FilledLang> description = new ArrayList<>();
+
+        if (tanPlayer.hasKingdom()) {
+            KingdomData kingdomData = tanPlayer.getKingdom();
+            description.add(Lang.GUI_KINGDOM_ICON_DESC1_KINGDOM.get(kingdomData.getColoredName()));
+            description.add(Lang.GUI_KINGDOM_ICON_DESC2_KINGDOM.get(kingdomData.getRank(tanPlayer).getColoredName()));
+        } else {
+            description.add(Lang.GUI_KINGDOM_ICON_DESC1_NO_KINGDOM.get());
+        }
+
         return iconManager.get(IconKey.NATION_BASE_ICON)
                 .setName(Lang.GUI_KINGDOM_ICON.get(tanPlayer))
-                .setDescription(Lang.GUI_WARNING_STILL_IN_DEV.get())
-                .setAction(action -> TanChatUtils.message(player, Lang.GUI_WARNING_STILL_IN_DEV.get(tanPlayer), SoundEnum.NOT_ALLOWED))
+                .setDescription(description)
+                .setAction(action -> PlayerGUI.dispatchPlayerKingdom(player))
                 .asGuiItem(player, langType);
     }
 

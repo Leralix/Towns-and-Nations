@@ -2,6 +2,7 @@ package org.tan.api.getters;
 
 import org.tan.api.interfaces.TanRegion;
 import org.tan.api.interfaces.TanTown;
+import org.tan.api.interfaces.TanKingdom;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -58,5 +59,28 @@ public interface TanTerritoryManager {
      * @return a {@link Collection} of all the regions
      */
     Collection<TanRegion> getRegions();
+
+    /**
+     * Get a kingdom by its ID
+     * @param kingdomID the ID of the kingdom
+     * @return The kingdom if it exists. {@link Optional#empty()} otherwise
+     */
+    Optional<TanKingdom> getKingdom(String kingdomID);
+
+    /**
+     * Get a kingdom by its name
+     * <br>
+     * It is recommended to use the UUID instead of the name because
+     * names duplicate can happen if the option is enabled in the configuration
+     * @param kingdomName the name of the kingdom
+     * @return The kingdom if it exists. {@link Optional#empty()} otherwise
+     */
+    Optional<TanKingdom> getKingdomByName(String kingdomName);
+
+    /**
+     * Get all the kingdoms
+     * @return a {@link Collection} of all the kingdoms
+     */
+    Collection<TanKingdom> getKingdoms();
 
 }

@@ -18,27 +18,21 @@ import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.*;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
-import org.leralix.tan.dataclass.territory.cosmetic.BannerBuilder;
-import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
-import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
-import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
-import org.leralix.tan.dataclass.territory.economy.Budget;
-import org.leralix.tan.dataclass.territory.economy.ChunkUpkeepLine;
-import org.leralix.tan.dataclass.territory.economy.SalaryPaymentLine;
-import org.leralix.tan.dataclass.territory.permission.PermissionGiven;
+import org.leralix.tan.dataclass.territory.cosmetic.*;
+import org.leralix.tan.dataclass.territory.economy.*;
+import org.leralix.tan.dataclass.territory.permission.*;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.events.EventManager;
-import org.leralix.tan.events.events.DiplomacyProposalAcceptedInternalEvent;
-import org.leralix.tan.events.events.DiplomacyProposalInternalEvent;
-import org.leralix.tan.events.events.TerritoryVassalAcceptedInternalEvent;
-import org.leralix.tan.events.events.TerritoryVassalProposalInternalEvent;
+import org.leralix.tan.events.events.*;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.dataclass.DiplomacyProposal;
+import org.leralix.tan.dataclass.RelationData;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
@@ -51,6 +45,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.upgrade.TerritoryStats;
 import org.leralix.tan.upgrade.rewards.StatsType;
+import org.leralix.tan.dataclass.territory.KingdomData;
 import org.leralix.tan.upgrade.rewards.list.BiomeStat;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCost;
@@ -125,6 +120,26 @@ public abstract class TerritoryData {
         color = StringUtil.randomColor();
     }
 
+    public Optional<TownData> getCapitalTown() {
+        if (this instanceof TownData townData) {
+            return Optional.of(townData);
+        }
+
+        Set<String> visited = new HashSet<>();
+        TerritoryData current = this;
+        while (current != null && visited.add(current.getID())) {
+            TerritoryData capital = current.getCapital();
+            if (capital == null) {
+                return Optional.empty();
+            }
+            if (capital instanceof TownData capitalTown) {
+                return Optional.of(capitalTown);
+            }
+            current = capital;
+        }
+        return Optional.empty();
+    }
+
     public String getID() {
         return id;
     }
@@ -140,7 +155,13 @@ public abstract class TerritoryData {
         }
 
         removeFromBalance(cost);
-        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(), name, newName));
+        if (this instanceof TownData) {
+            FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(), name, newName));
+        } else if (this instanceof KingdomData) {
+            FileUtil.addLineToHistory(Lang.HISTORY_KINGDOM_NAME_CHANGED.get(player.getName(), name, newName));
+        } else {
+            FileUtil.addLineToHistory(Lang.HISTORY_REGION_NAME_CHANGED.get(player.getName(), name, newName));
+        }
 
         TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(player, name, newName), SoundEnum.GOOD);
         rename(newName);
@@ -371,7 +392,11 @@ public abstract class TerritoryData {
 
     public void setOverlord(TerritoryData overlord) {
         getOverlordsProposals().remove(overlord.getID());
-        broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getBaseColoredName(), overlord.getBaseColoredName()), SoundEnum.GOOD);
+        if (overlord instanceof KingdomData) {
+            broadcastMessageWithSound(Lang.KINGDOM_ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getBaseColoredName(), overlord.getBaseColoredName()), SoundEnum.GOOD);
+        } else {
+            broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getBaseColoredName(), overlord.getBaseColoredName()), SoundEnum.GOOD);
+        }
 
         this.overlordID = overlord.getID();
         overlord.addVassal(this);
@@ -415,7 +440,10 @@ public abstract class TerritoryData {
 
     public boolean isCapital() {
         Optional<TerritoryData> capital = getOverlord();
-        return capital.map(overlord -> Objects.equals(overlord.getCapital().getID(), getID())).orElse(false);
+        return capital.map(overlord -> {
+            TerritoryData overlordCapital = overlord.getCapital();
+            return overlordCapital != null && Objects.equals(overlordCapital.getID(), getID());
+        }).orElse(false);
     }
 
     public abstract TerritoryData getCapital();
@@ -677,7 +705,11 @@ public abstract class TerritoryData {
 
     public void addVassalisationProposal(TerritoryData proposal) {
         getOverlordsProposals().add(proposal.getID());
-        broadcastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getBaseColoredName(), getBaseColoredName()), SoundEnum.MINOR_GOOD);
+        if (proposal instanceof KingdomData) {
+            broadcastMessageWithSound(Lang.KINGDOM_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getBaseColoredName(), getBaseColoredName()), SoundEnum.MINOR_GOOD);
+        } else {
+            broadcastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getBaseColoredName(), getBaseColoredName()), SoundEnum.MINOR_GOOD);
+        }
         EventManager.getInstance().callEvent(new TerritoryVassalProposalInternalEvent(proposal, this));
     }
 
@@ -1095,6 +1127,8 @@ public abstract class TerritoryData {
             // Migrate old data if exists
             if (this instanceof TownData) {
                 this.upgradesStatus = new TerritoryStats(StatsType.TOWN);
+            } else if (this instanceof KingdomData) {
+                this.upgradesStatus = new TerritoryStats(StatsType.KINGDOM);
             } else {
                 this.upgradesStatus = new TerritoryStats(StatsType.REGION);
             }
@@ -1128,8 +1162,9 @@ public abstract class TerritoryData {
             ratio = 0;
         }
 
-        boolean capitalExist = this instanceof TownData townData && townData.getCapitalLocation().isPresent();
-        boolean capitalCaptured = this instanceof TownData townData && townData.isTownCapitalOccupied();
+        Optional<TownData> capitalTownOpt = getCapitalTown();
+        boolean capitalExist = capitalTownOpt.isPresent() && capitalTownOpt.get().getCapitalLocation().isPresent();
+        boolean capitalCaptured = capitalTownOpt.isPresent() && capitalTownOpt.get().isTownCapitalOccupied();
 
         if(capitalExist && capitalCaptured){
             ratio += Constants.getCaptureCapitalBonusPercentage();

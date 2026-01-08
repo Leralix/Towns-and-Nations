@@ -88,7 +88,7 @@ public class RegionClaimedChunk extends TerritoryChunk {
 
     @Override
     public void notifyUpdate() {
-        if (!Constants.allowNonAdjacentChunksForRegion()) {
+        if (!Constants.allowNonAdjacentChunksFor(getOwner())) {
             ChunkUtil.unclaimIfNoLongerSupplied(this);
         }
     }

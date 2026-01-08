@@ -3,7 +3,8 @@ package org.leralix.tan.enums;
 public enum ChunkType {
 
     TOWN("town"),
-    REGION("region");
+    REGION("region"),
+    KINGDOM("kingdom");
 
     private final String name;
     ChunkType(String name) {

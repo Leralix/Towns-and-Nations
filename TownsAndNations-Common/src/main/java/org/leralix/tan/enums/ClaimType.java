@@ -6,7 +6,8 @@ import org.leralix.tan.lang.LangType;
 public enum ClaimType {
 
     TOWN(Lang.MAP_TOWN, "TOWN"),
-    REGION(Lang.MAP_REGION, "REGION");
+    REGION(Lang.MAP_REGION, "REGION"),
+    KINGDOM(Lang.MAP_KINGDOM, "KINGDOM");
 
     private final Lang buttonName;
     private final String buttonCommand;
@@ -35,6 +36,7 @@ public enum ClaimType {
 
     static {
         TOWN.setNextType(REGION);
-        REGION.setNextType(TOWN);
+        REGION.setNextType(KINGDOM);
+        KINGDOM.setNextType(TOWN);
     }
 }

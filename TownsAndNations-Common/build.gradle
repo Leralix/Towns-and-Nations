@@ -103,6 +103,8 @@ dependencies {
     testImplementation 'org.mockito:mockito-junit-jupiter:5.7.0'
     testImplementation 'me.clip:placeholderapi:2.11.5'
     testImplementation 'org.xerial:sqlite-jdbc:3.43.2.0'
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.0'
 }
 
 configurations.all {

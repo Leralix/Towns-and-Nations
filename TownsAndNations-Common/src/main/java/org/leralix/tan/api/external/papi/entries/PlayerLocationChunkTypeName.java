@@ -29,6 +29,7 @@ public class PlayerLocationChunkTypeName extends PapiEntry{
         return switch (claimedChunk.getType()){
             case TOWN -> "Town";
             case REGION -> "Region";
+            case KINGDOM -> "Kingdom";
             case LANDMARK -> "Landmark";
             case WILDERNESS -> "Wilderness";
         };

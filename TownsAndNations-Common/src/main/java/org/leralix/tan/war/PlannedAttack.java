@@ -255,6 +255,9 @@ public class PlannedAttack {
      * @return true if the attack is finished
      */
     public boolean isFinished(){
+        if (endTime < 0) {
+            return false;
+        }
         return System.currentTimeMillis() > endTime;
     }
 
@@ -295,6 +298,6 @@ public class PlannedAttack {
     }
 
     public boolean isInstantInAttack(long epochMilli) {
-        return epochMilli > startTime && epochMilli < endTime;
+        return epochMilli > startTime && (endTime < 0 || epochMilli < endTime);
     }
 }

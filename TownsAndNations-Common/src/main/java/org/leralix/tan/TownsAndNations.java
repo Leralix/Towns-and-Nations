@@ -242,22 +242,29 @@ public class TownsAndNations extends JavaPlugin {
         DatabaseConstants constants = Constants.databaseConstants();
 
         String dbName = constants.getDbType();
-        if (dbName.equalsIgnoreCase("sqlite")) {
+        if (dbName != null && dbName.equalsIgnoreCase("sqlite")) {
             String dbPath = getDataFolder().getAbsolutePath() + "/database/main.db";
             databaseHandler = new SQLiteHandler(dbPath);
         }
-        if (dbName.equals("mysql")) {
+        if (dbName != null && dbName.equalsIgnoreCase("mysql")) {
             databaseHandler = new MySqlHandler(
                     constants.getHost(),
                     constants.getPort(),
-                    constants.getDbType(),
+                    constants.getName(),
                     constants.getUser(),
                     constants.getPassword());
+        }
+
+        if (databaseHandler == null) {
+            getLogger().log(Level.SEVERE, "[TaN] Invalid database type: " + dbName + ". Disabling plugin.");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }
         try {
             databaseHandler.connect();
         } catch (SQLException e) {
             getLogger().log(Level.SEVERE, "[TaN] Error while connecting to the database");
+            Bukkit.getPluginManager().disablePlugin(this);
         }
     }
 
@@ -342,17 +349,18 @@ public class TownsAndNations extends JavaPlugin {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("User-Agent", USER_AGENT);
+            con.setConnectTimeout(2000);
+            con.setReadTimeout(2000);
 
             int responseCode = con.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                String inputLine;
                 StringBuilder response = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
+                try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+                    String inputLine;
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
                 }
-                in.close();
 
                 latestVersion = extractVersionFromResponse(response.toString());
                 if (CURRENT_VERSION.isOlderThan(latestVersion)) {
@@ -362,10 +370,10 @@ public class TownsAndNations extends JavaPlugin {
                 }
             } else {
                 getLogger().info("[TaN] An error occurred while trying to accesses github API.");
-                getLogger().info("[TaN] Error log : " + con.getInputStream());
+                getLogger().info("[TaN] GitHub API response code: " + responseCode);
             }
         } catch (Exception e) {
-            getLogger().warning("[TaN] An error occurred while trying to check for updates.");
+            getLogger().log(Level.WARNING, "[TaN] An error occurred while trying to check for updates.", e);
             latestVersion = CURRENT_VERSION;
         }
     }

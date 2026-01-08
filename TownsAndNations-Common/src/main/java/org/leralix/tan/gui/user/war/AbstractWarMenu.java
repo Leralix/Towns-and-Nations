@@ -4,7 +4,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
@@ -74,8 +73,9 @@ public abstract class AbstractWarMenu extends BasicGui {
             ratio = 0;
         }
 
-        boolean capitalExist = territoryData instanceof TownData townData && townData.getCapitalLocation().isPresent();
-        boolean capitalCaptured = territoryData instanceof TownData townData && townData.isTownCapitalOccupied();
+        var capitalTownOpt = territoryData.getCapitalTown();
+        boolean capitalExist = capitalTownOpt.isPresent() && capitalTownOpt.get().getCapitalLocation().isPresent();
+        boolean capitalCaptured = capitalTownOpt.isPresent() && capitalTownOpt.get().isTownCapitalOccupied();
 
         List<FilledLang> description = new ArrayList<>();
 

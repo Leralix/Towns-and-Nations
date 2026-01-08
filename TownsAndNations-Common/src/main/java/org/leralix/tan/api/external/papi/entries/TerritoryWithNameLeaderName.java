@@ -6,8 +6,7 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 public class TerritoryWithNameLeaderName extends PapiEntry {
 
@@ -29,8 +28,7 @@ public class TerritoryWithNameLeaderName extends PapiEntry {
         if(values.length == 0) return Lang.INVALID_VALUE.get(tanPlayer);
         String id = values[0];
         if(id == null) return Lang.INVALID_ID.get(tanPlayer);
-        TerritoryData territoryData = TownDataStorage.getInstance().get(id);
-        if(territoryData == null) territoryData = RegionDataStorage.getInstance().get(id);
+        TerritoryData territoryData = TerritoryUtil.getTerritory(id);
         if (territoryData == null) return Lang.INVALID_TERRITORY.get(tanPlayer);
 
         return territoryData.getLeaderData().getOfflinePlayer().getName();

@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -20,7 +21,7 @@ public class ChunkSettingsMenu extends BasicGui {
     private final TerritoryData territoryData;
 
     public ChunkSettingsMenu(Player player, TerritoryData territoryData){
-        super(player, Lang.HEADER_TOWN_MENU.get(territoryData.getName()), 3);
+        super(player, Lang.HEADER_LAND_SETTINGS.get(territoryData.getName()), 3);
         this.territoryData = territoryData;
         open();
     }
@@ -41,7 +42,7 @@ public class ChunkSettingsMenu extends BasicGui {
 
     private GuiItem getChunkIcon() {
         return iconManager.get(IconKey.LANDS_PERMISSION_ICON)
-                .setName(Lang.GUI_TOWN_CHUNK_PLAYER.get(tanPlayer))
+                .setName(territoryData instanceof TownData ? Lang.GUI_TOWN_CHUNK_PLAYER.get(tanPlayer) : Lang.GUI_TERRITORY_CHUNK_PLAYER.get(tanPlayer))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS))
                 .setAction(event -> new TerritoryChunkSettingsMenu(player, territoryData, this))
                 .asGuiItem(player, langType);
@@ -57,7 +58,7 @@ public class ChunkSettingsMenu extends BasicGui {
 
     private GuiItem getChunkMobSpawnSettings(){
         return iconManager.get(IconKey.MOBS_SPAWN_SETTINGS_ICON)
-                .setName(Lang.GUI_TOWN_CHUNK_MOB.get(tanPlayer))
+                .setName(territoryData instanceof TownData ? Lang.GUI_TOWN_CHUNK_MOB.get(tanPlayer) : Lang.GUI_TERRITORY_CHUNK_MOB.get(tanPlayer))
                 .setRequirements(
                         new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS),
                         new BooleanStatRequirement<>(territoryData, EnableMobBan.class)
@@ -68,7 +69,10 @@ public class ChunkSettingsMenu extends BasicGui {
                         new TerritoryMobSettings(player, territoryData);
                     }
                     else {
-                        TanChatUtils.message(player, Lang.TOWN_NOT_ENOUGH_LEVEL.get(langType, Lang.UNLOCK_MOB_BAN.get(langType)), SoundEnum.NOT_ALLOWED);
+                        TanChatUtils.message(player,
+                                (territoryData instanceof TownData ? Lang.TOWN_NOT_ENOUGH_LEVEL : Lang.TERRITORY_NOT_ENOUGH_LEVEL)
+                                        .get(langType, Lang.UNLOCK_MOB_BAN.get(langType)),
+                                SoundEnum.NOT_ALLOWED);
                     }
 
                 })
