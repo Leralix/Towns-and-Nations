@@ -6,7 +6,7 @@ import org.leralix.lib.commands.MainHelpCommand;
 public class DebugCommandManager extends CommandManager {
 
     public DebugCommandManager(){
-        super("tan.debug.commands");
+        super("tan.admin.commands");
 
         addSubCommand(new SaveData());
         addSubCommand(new CreateBackup());
