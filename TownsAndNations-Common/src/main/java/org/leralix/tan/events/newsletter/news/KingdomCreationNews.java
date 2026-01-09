@@ -6,12 +6,10 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.KingdomData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.KingdomDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanKingdom;
 import org.tan.api.interfaces.TanPlayer;
@@ -79,21 +77,16 @@ public class KingdomCreationNews extends Newsletter {
             return null;
         }
 
-        return IconManager.getInstance().get(IconKey.BROWSE_KINGDOM_ICON)
-                .setName(Lang.KINGDOM_CREATED_NEWSLETTER_TITLE.get(lang))
-                .setDescription(
-                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
-                        Lang.KINGDOM_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), kingdomData.getBaseColoredName()),
-                        Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
-                )
-                .setAction(action -> {
-                    action.setCancelled(true);
-                    if (action.isRightClick()) {
-                        markAsRead(player);
-                        onClick.accept(player);
-                    }
-                })
-                .asGuiItem(player, lang);
+        return NewsletterGuiItemUtil.createMarkAsReadGuiItem(
+                player,
+                lang,
+                getDate(),
+                IconKey.BROWSE_KINGDOM_ICON,
+                Lang.KINGDOM_CREATED_NEWSLETTER_TITLE.get(lang),
+                Lang.KINGDOM_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), kingdomData.getBaseColoredName()),
+                this::markAsRead,
+                onClick
+        );
     }
 
     @Override

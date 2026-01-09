@@ -43,10 +43,6 @@ public class KingdomMenu extends TerritoryMenu {
     }
 
     private GuiItem getSettingsButton() {
-        return IconManager.getInstance().get(IconKey.TERRITORY_SETTINGS_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(tanPlayer.getLang()))
-                .setDescription(Lang.GUI_KINGDOM_SETTINGS_ICON_DESC1.get())
-                .setAction(event -> new KingdomSettingsMenu(player, kingdomData))
-                .asGuiItem(player, langType);
+        return createSettingsButton(Lang.GUI_KINGDOM_SETTINGS_ICON_DESC1.get(), p -> new KingdomSettingsMenu(player, kingdomData));
     }
 }

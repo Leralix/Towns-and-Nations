@@ -25,6 +25,7 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 
 public abstract class TerritoryMenu extends BasicGui {
@@ -148,6 +149,14 @@ public abstract class TerritoryMenu extends BasicGui {
                 .setDescription(Lang.GUI_BUILDING_MENU_DESC1.get())
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_PROPERTY))
                 .setAction(event -> new BuildingMenu(player, territoryData, this))
+                .asGuiItem(player, langType);
+    }
+
+    protected GuiItem createSettingsButton(FilledLang description, Consumer<Player> openMenu) {
+        return IconManager.getInstance().get(IconKey.TERRITORY_SETTINGS_ICON)
+                .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(tanPlayer.getLang()))
+                .setDescription(description)
+                .setAction(event -> openMenu.accept(player))
                 .asGuiItem(player, langType);
     }
 }

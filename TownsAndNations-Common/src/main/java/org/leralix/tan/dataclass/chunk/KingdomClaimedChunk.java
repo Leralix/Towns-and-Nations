@@ -43,17 +43,7 @@ public class KingdomClaimedChunk extends TerritoryChunk {
             return;
         }
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-
-        TextComponent name = displayTerritoryColor ? kingdomData.getCustomColoredName() : new TextComponent(kingdomData.getBaseColoredName());
-        String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(tanPlayer.getPlayer(), name.toLegacyText());
-        player.sendTitle("", message, 5, 40, 20);
-
-        TextComponent textComponent = new TextComponent(kingdomData.getDescription());
-        textComponent.setColor(ChatColor.GRAY);
-        textComponent.setItalic(true);
-
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textComponent);
+        TerritoryEnterMessageUtil.sendEnterTerritoryMessage(player, kingdomData, displayTerritoryColor);
     }
 
     @Override
