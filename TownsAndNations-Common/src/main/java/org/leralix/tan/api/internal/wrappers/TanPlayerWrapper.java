@@ -65,7 +65,6 @@ public class TanPlayerWrapper implements TanPlayer {
     public Collection<TanProperty> getPropertiesOwned() {
         return tanPlayer.getProperties().stream()
                 .map(PropertyDataWrapper::of)
-                .map(p -> (TanProperty) p)
                 .toList();
     }
 
@@ -92,7 +91,6 @@ public class TanPlayerWrapper implements TanPlayer {
         return tanPlayer.getProperties().stream()
                 .filter(PropertyData::isForSale)
                 .map(PropertyDataWrapper::of)
-                .map(p -> (TanProperty) p)
-                .toList(); //TODO : update TAN-API
+                .toList();
     }
 }

@@ -34,7 +34,6 @@ public class TownDataWrapper extends TerritoryDataWrapper implements TanTown {
     public Collection<TanProperty> getProperties() {
         return townData.getPropertyDataMap().values().stream()
                 .map(PropertyDataWrapper::of)
-                .map(p -> (TanProperty) p)
                 .toList();
     }
 
@@ -42,7 +41,6 @@ public class TownDataWrapper extends TerritoryDataWrapper implements TanTown {
     public Collection<TanLandmark> getLandmarksOwned() {
         return LandmarkStorage.getInstance().getLandmarkOf(townData).stream()
                 .map(LandmarkDataWrapper::of)
-                .map(l -> (TanLandmark) l)
                 .toList();
     }
 

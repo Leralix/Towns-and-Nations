@@ -19,7 +19,7 @@ public class LandmarkDataWrapper implements TanLandmark {
         this.landmark = landmark;
     }
 
-    public static LandmarkDataWrapper of(Landmark landmark) {
+    public static TanLandmark of(Landmark landmark) {
         if (landmark == null) {
             return null;
         }

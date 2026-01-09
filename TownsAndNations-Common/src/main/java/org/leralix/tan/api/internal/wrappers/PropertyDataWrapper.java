@@ -15,7 +15,7 @@ public class PropertyDataWrapper implements TanProperty {
         this.propertyData = propertyData;
     }
 
-    public static PropertyDataWrapper of(PropertyData propertyData) {
+    public static TanProperty of(PropertyData propertyData) {
         if (propertyData == null) {
             return null;
         }
