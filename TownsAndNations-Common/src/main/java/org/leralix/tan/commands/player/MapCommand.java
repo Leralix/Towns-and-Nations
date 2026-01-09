@@ -1,20 +1,16 @@
 package org.leralix.tan.commands.player;
 
-import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.enums.ClaimAction;
 import org.leralix.tan.enums.ClaimType;
 import org.leralix.tan.enums.MapSettings;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.text.ChatChunkMapRenderer;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -64,7 +60,6 @@ public class MapCommand extends PlayerSubCommand {
     }
 
     public static void openMap(Player player, MapSettings settings) {
-        Chunk currentChunk = player.getLocation().getChunk();
         LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
         int radius = 4;
         Map<Integer, TextComponent> text = new HashMap<>();
@@ -78,42 +73,15 @@ public class MapCommand extends PlayerSubCommand {
         TextComponent actionButton = settings.getClaimTypeButton(langType);
         text.put(-2, actionButton);
 
-        // Envoi de l'en-tête
-        player.sendMessage("╭─────────⟢⟐⟣─────────╮");
-        for (int dz = -radius; dz <= radius; dz++) {
-            TextComponent newLine = new TextComponent();
-            newLine.addExtra("   ");
-            for (int dx = -radius; dx <= radius; dx++) {
-                int chunkX = currentChunk.getX();
-                int chunkZ = currentChunk.getZ();
-
-
-                chunkX += dx;
-                chunkZ += dz;
-
-                ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunkX, chunkZ, player.getWorld().getUID().toString());
-                TextComponent icon = claimedChunk.getMapIcon(langType);
-
-                if (dx == 0 && dz == 0) {
-
-                    if (claimedChunk instanceof TerritoryChunk territoryChunk && territoryChunk.isOccupied()) {
-                        icon.setText("🟠"); //Hashed orange square emoji
-                    } else {
-                        icon.setText("🌑"); // For some reason, the only round emoji with the same size as ⬛ is this emoji
-                    }
-                }
-
-                ClaimAction claimAction = settings.getClaimActionType();
-                ClaimType mapType = settings.getClaimType();
-                icon.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan " + claimAction.toString().toLowerCase() + " " + mapType.toString().toLowerCase() + " " + chunkX + " " + chunkZ));
-                newLine.addExtra(icon);
-            }
-            if (text.containsKey(dz)) {
-                newLine.addExtra(text.get(dz));
-            }
-            player.spigot().sendMessage(newLine);
-        }
-        player.sendMessage("╰─────────⟢⟐⟣─────────╯");
+        ClaimAction claimAction = settings.getClaimActionType();
+        ClaimType mapType = settings.getClaimType();
+        ChatChunkMapRenderer.sendChunkMap(
+                player,
+                radius,
+                langType,
+                (chunkX, chunkZ) -> "/tan " + claimAction.toString().toLowerCase() + " " + mapType.toString().toLowerCase() + " " + chunkX + " " + chunkZ,
+                text
+        );
     }
 
 }

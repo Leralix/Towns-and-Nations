@@ -34,20 +34,11 @@ public class UnclaimCommand extends PlayerSubCommand {
         return "/tan unclaim <town/region/kingdom> <x> <z>";
     }
     public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
-        List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
             ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-            if (tanPlayer.hasTown()) {
-                suggestions.add("town");
-            }
-            if (tanPlayer.hasRegion()) {
-                suggestions.add("region");
-            }
-            if (tanPlayer.hasKingdom()) {
-                suggestions.add("kingdom");
-            }
+            return TerritoryCommandUtil.getTerritoryTypeSuggestions(tanPlayer);
         }
-        return suggestions;
+        return new ArrayList<>();
     }
     @Override
     public void perform(Player player, String[] args){
@@ -71,9 +62,10 @@ public class UnclaimCommand extends PlayerSubCommand {
                 TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
                 return;
             }
-            int x = Integer.parseInt(args[2]);
-            int z = Integer.parseInt(args[3]);
-            chunk = player.getLocation().getWorld().getChunkAt(x, z);
+            chunk = TerritoryCommandUtil.parseChunkFromArgs(player, args, 2, 3, langType, getSyntax());
+            if (chunk == null) {
+                return;
+            }
         }
 
         if(!NewClaimedChunkStorage.getInstance().isChunkClaimed(chunk)){

@@ -36,20 +36,11 @@ public class ClaimCommand extends PlayerSubCommand {
 
     @Override
     public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
-        List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
             ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-            if (tanPlayer.hasTown()) {
-                suggestions.add("town");
-            }
-            if (tanPlayer.hasRegion()) {
-                suggestions.add("region");
-            }
-            if (tanPlayer.hasKingdom()) {
-                suggestions.add("kingdom");
-            }
+            return TerritoryCommandUtil.getTerritoryTypeSuggestions(tanPlayer);
         }
-        return suggestions;
+        return new ArrayList<>();
     }
 
     @Override
@@ -63,37 +54,18 @@ public class ClaimCommand extends PlayerSubCommand {
             return;
         }
 
-        TerritoryData territoryData;
-
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
-        if (args[1].equals("town")) {
-            if (!tanPlayer.hasTown()) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(player));
-                return;
-            }
-            territoryData = tanPlayer.getTown();
-        } else if (args[1].equals("region")) {
-            if (!tanPlayer.hasRegion()) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(player));
-                return;
-            }
-            territoryData = tanPlayer.getRegion();
-        } else if (args[1].equals("kingdom")) {
-            if (!tanPlayer.hasKingdom()) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_KINGDOM.get(player));
-                return;
-            }
-            territoryData = tanPlayer.getKingdom();
-        } else {
-            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
+        TerritoryData territoryData = TerritoryCommandUtil.resolveTerritory(player, tanPlayer, args[1], getSyntax());
+        if (territoryData == null) {
             return;
         }
 
         if (args.length == 4) {
-            int x = Integer.parseInt(args[2]);
-            int z = Integer.parseInt(args[3]);
-            Chunk chunk = player.getWorld().getChunkAt(x, z);
+            Chunk chunk = TerritoryCommandUtil.parseChunkFromArgs(player, args, 2, 3, langType, getSyntax());
+            if (chunk == null) {
+                return;
+            }
             territoryData.claimChunk(player, chunk);
             MapCommand.openMap(player, new MapSettings(args[0], args[1]));
         } else {

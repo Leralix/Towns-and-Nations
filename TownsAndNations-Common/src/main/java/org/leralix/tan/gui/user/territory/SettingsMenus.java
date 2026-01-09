@@ -44,22 +44,7 @@ public abstract class SettingsMenus extends BasicGui {
 
         LangType langType = tanPlayer.getLang();
 
-        List<FilledLang> lore = new ArrayList<>();
-        lore.add(Lang.GUI_TOWN_INFO_DESC0.get(territoryData.getDescription()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC1.get(territoryData.getLeaderName()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC2.get(Integer.toString(territoryData.getPlayerIDList().size())));
-        lore.add(Lang.GUI_TOWN_INFO_DESC3.get(Integer.toString(territoryData.getNumberOfClaimedChunk())));
-        if (territoryData instanceof TownData) {
-            lore.add(territoryData.getOverlord()
-                    .map(overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(overlord.getName()))
-                    .orElseGet(Lang.GUI_TOWN_INFO_DESC5_NO_REGION::get));
-        } else if (territoryData instanceof RegionData) {
-            lore.add(territoryData.getOverlord()
-                    .map(overlord -> Lang.GUI_REGION_INFO_DESC6_KINGDOM.get(overlord.getName()))
-                    .orElseGet(Lang.GUI_REGION_INFO_DESC6_NO_KINGDOM::get));
-        } else if (territoryData instanceof KingdomData) {
-            lore.add(Lang.GUI_KINGDOM_INFO_DESC6_NO_OVERLORD.get());
-        }
+        List<FilledLang> lore = TerritoryInfoLoreUtil.getTerritoryInfoLore(territoryData);
         lore.add(Lang.GUI_TOWN_INFO_CHANGE_ICON.get());
         lore.add(Lang.RIGHT_CLICK_TO_SELECT_MEMBER_HEAD.get());
 
