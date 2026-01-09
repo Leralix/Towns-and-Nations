@@ -5,6 +5,7 @@ plugins {
 
 jar {
     archiveBaseName = 'TownsAndNations'
+    enabled = false
 }
 
 shadowJar {
@@ -13,6 +14,10 @@ shadowJar {
 
 tasks.shadowJar {
     archiveClassifier.set('')
+}
+
+tasks.build {
+    dependsOn tasks.shadowJar
 }
 
 group = 'org.tan'
