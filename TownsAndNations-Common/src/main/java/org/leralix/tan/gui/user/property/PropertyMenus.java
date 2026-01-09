@@ -3,7 +3,9 @@ package org.leralix.tan.gui.user.property;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.OfflinePlayer;
 import org.leralix.tan.dataclass.PropertyData;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -161,7 +163,8 @@ public abstract class PropertyMenus extends BasicGui {
 
     protected GuiItem getAuthorizedPlayersButton() {
 
-        boolean isRentedAndPlayerIsNotRenter = propertyData.isRented() && !propertyData.getRenter().equals(tanPlayer);
+        ITanPlayer renter = propertyData.getRenter();
+        boolean isRentedAndPlayerIsNotRenter = propertyData.isRented() && renter != null && !renter.equals(tanPlayer);
 
         return iconManager.get(IconKey.AUTHORIZED_PLAYERS_ICON)
                 .setName(Lang.GUI_PROPERTY_PLAYER_LIST.get(langType))
@@ -182,17 +185,26 @@ public abstract class PropertyMenus extends BasicGui {
     }
 
     protected GuiItem getKickRenterButton() {
-        return iconManager.get(propertyData.getOfflineRenter())
-                .setName(Lang.GUI_PROPERTY_RENTED_BY.get(langType, propertyData.getRenter().getNameStored()))
+        ITanPlayer renter = propertyData.getRenter();
+        OfflinePlayer offlineRenter = propertyData.getOfflineRenter();
+        String renterName = renter != null ? renter.getNameStored() : offlineRenter.getName();
+        if (renterName == null) {
+            renterName = "Unknown";
+        }
+
+        return iconManager.get(offlineRenter)
+                .setName(Lang.GUI_PROPERTY_RENTED_BY.get(langType, renterName))
                 .setDescription(Lang.GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER.get())
                 .setAction(event -> {
                     event.setCancelled(true);
 
-                    Player renter = propertyData.getRenterPlayer();
+                    Player renterPlayer = propertyData.getRenterPlayer();
                     propertyData.expelRenter(false);
 
                     TanChatUtils.message(player, Lang.PROPERTY_RENTER_EXPELLED_OWNER_SIDE.get(langType), MINOR_GOOD);
-                    TanChatUtils.message(renter, Lang.PROPERTY_RENTER_EXPELLED_RENTER_SIDE.get(renter, propertyData.getName()), MINOR_BAD);
+                    if (renterPlayer != null) {
+                        TanChatUtils.message(renterPlayer, Lang.PROPERTY_RENTER_EXPELLED_RENTER_SIDE.get(renterPlayer, propertyData.getName()), MINOR_BAD);
+                    }
 
                     open();
                 })

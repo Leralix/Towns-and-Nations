@@ -165,7 +165,14 @@ public class PropertyData extends Building {
     }
 
     public boolean isRented() {
-        return rentingPlayerID != null;
+        if (rentingPlayerID == null) {
+            return false;
+        }
+        if (getRentingPlayerUuidOrNull() == null) {
+            rentingPlayerID = null;
+            return false;
+        }
+        return true;
     }
 
     public boolean isForRent() {
@@ -173,7 +180,7 @@ public class PropertyData extends Building {
     }
 
     public ITanPlayer getRenter() {
-        return PlayerDataStorage.getInstance().get(rentingPlayerID);
+        return PlayerDataStorage.getInstance().getOrNull(rentingPlayerID);
     }
 
     public String getRenterID() {
@@ -181,11 +188,19 @@ public class PropertyData extends Building {
     }
 
     public Player getRenterPlayer() {
-        return Bukkit.getPlayer(UUID.fromString(rentingPlayerID));
+        UUID renterUuid = getRentingPlayerUuidOrNull();
+        if (renterUuid == null) {
+            return null;
+        }
+        return Bukkit.getPlayer(renterUuid);
     }
 
     public OfflinePlayer getOfflineRenter() {
-        return Bukkit.getOfflinePlayer(UUID.fromString(rentingPlayerID));
+        UUID renterUuid = getRentingPlayerUuidOrNull();
+        if (renterUuid == null) {
+            return Bukkit.getOfflinePlayer(new UUID(0L, 0L));
+        }
+        return Bukkit.getOfflinePlayer(renterUuid);
     }
 
     public String getDescription() {
@@ -194,19 +209,23 @@ public class PropertyData extends Building {
 
     public void payRent() {
 
-        OfflinePlayer renter = Bukkit.getOfflinePlayer(UUID.fromString(rentingPlayerID));
+        UUID renterUuid = getRentingPlayerUuidOrNull();
+        if (renterUuid == null) {
+            expelRenter(true);
+            return;
+        }
+
+        OfflinePlayer renter = Bukkit.getOfflinePlayer(renterUuid);
         TerritoryData town = getTown();
 
         double baseRent = getRentPrice();
         double rent = getRentPriceWithTax();
         double taxRent = rent - baseRent;
 
-
         if (EconomyUtil.getBalance(renter) < rent) {
             expelRenter(true);
             return;
         }
-
 
         EconomyUtil.removeFromBalance(renter, rent);
         getOwner().addToBalance(baseRent);
@@ -238,7 +257,6 @@ public class PropertyData extends Building {
     public boolean isForSale() {
         return this.isForSale;
     }
-
 
     public double getRentPrice() {
         return this.rentPrice;
@@ -272,7 +290,7 @@ public class PropertyData extends Building {
         if (isForSale())
             lore.add(Lang.GUI_PROPERTY_FOR_SALE.get(String.valueOf(salePrice)));
         else if (isRented())
-            lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(getRenter().getNameStored(), String.valueOf(rentPrice)));
+            lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(getRenterDisplayName(), String.valueOf(rentPrice)));
         else if (isForRent())
             lore.add(Lang.GUI_PROPERTY_FOR_RENT.get(String.valueOf(rentPrice)));
         else {
@@ -325,7 +343,6 @@ public class PropertyData extends Building {
 
         LangType langType = Lang.getServerLang();
 
-
         lines[0] = Lang.SIGN_NAME.get(langType, this.getName());
         lines[1] = Lang.SIGN_PLAYER.get(langType, getOwner().getName());
 
@@ -337,7 +354,7 @@ public class PropertyData extends Building {
             lines[3] = Lang.SIGN_RENT_PRICE.get(langType, Double.toString(this.getRentPriceWithTax()));
         } else if (this.isRented()) {
             lines[2] = Lang.SIGN_RENTED_BY.get(langType);
-            lines[3] = this.getRenter().getNameStored();
+            lines[3] = getRenterDisplayName();
         } else {
             lines[2] = Lang.SIGN_NOT_FOR_SALE.get(langType);
             lines[3] = "";
@@ -366,7 +383,6 @@ public class PropertyData extends Building {
         return Optional.of(world.getBlockAt(this.signLocation.getX(), this.signLocation.getY(), this.signLocation.getZ()));
     }
 
-
     public void delete() {
         TownData town = getTown();
         expelRenter(false);
@@ -375,10 +391,20 @@ public class PropertyData extends Building {
         town.removeProperty(this);
 
         if (getOwner() instanceof PlayerOwned playerOwnedClass) {
-            ITanPlayer playerOwner = PlayerDataStorage.getInstance().get(playerOwnedClass.getPlayerID());
+            ITanPlayer playerOwner = PlayerDataStorage.getInstance().getOrNull(playerOwnedClass.getPlayerID());
+            if (playerOwner == null) {
+                return;
+            }
             playerOwner.removeProperty(this);
 
-            Player player = Bukkit.getPlayer(UUID.fromString(playerOwnedClass.getPlayerID()));
+            UUID ownerUuid;
+            try {
+                ownerUuid = UUID.fromString(playerOwnedClass.getPlayerID());
+            } catch (IllegalArgumentException e) {
+                return;
+            }
+
+            Player player = Bukkit.getPlayer(ownerUuid);
             if (player != null) {
                 TanChatUtils.message(player, Lang.PROPERTY_DELETED.get(playerOwner.getLang()), SoundEnum.MINOR_GOOD);
             }
@@ -397,7 +423,6 @@ public class PropertyData extends Building {
         TANCustomNBT.removeBockMetaData(signBlock, "propertySign");
         TANCustomNBT.removeBockMetaData(supportLocation.getLocation().getBlock(), "propertySign");
 
-
         world.spawnParticle(Particle.BUBBLE_POP, signBlock.getLocation(), 5);
     }
 
@@ -415,7 +440,9 @@ public class PropertyData extends Building {
             UUID exOwnerID = UUID.fromString(playerOwned.getPlayerID());
             OfflinePlayer exOwnerOffline = Bukkit.getOfflinePlayer(exOwnerID);
             Player exOwner = exOwnerOffline.getPlayer();
-            TanChatUtils.message(exOwner, Lang.PROPERTY_SOLD_EX_OWNER.get(langType, getName(), buyer.getName(), Double.toString(getPriceWithTax())), SoundEnum.GOOD);
+            if (exOwner != null) {
+                TanChatUtils.message(exOwner, Lang.PROPERTY_SOLD_EX_OWNER.get(langType, getName(), buyer.getName(), Double.toString(getPriceWithTax())), SoundEnum.GOOD);
+            }
 
             ITanPlayer exOwnerData = PlayerDataStorage.getInstance().get(exOwnerID);
             exOwnerData.removeProperty(this);
@@ -467,7 +494,7 @@ public class PropertyData extends Building {
 
     public String getDenyMessage(LangType langType) {
         if (isRented())
-            return Lang.PROPERTY_RENTED_BY.get(langType, getRenter().getNameStored());
+            return Lang.PROPERTY_RENTED_BY.get(langType, getRenterDisplayName());
         else
             return Lang.PROPERTY_BELONGS_TO.get(langType, getOwner().getName());
 
@@ -476,8 +503,10 @@ public class PropertyData extends Building {
     public void expelRenter(boolean rentBack) {
         if (!isRented())
             return;
-        ITanPlayer renter = PlayerDataStorage.getInstance().get(rentingPlayerID);
-        renter.removeProperty(this);
+        ITanPlayer renter = PlayerDataStorage.getInstance().getOrNull(rentingPlayerID);
+        if (renter != null) {
+            renter.removeProperty(this);
+        }
         this.rentingPlayerID = null;
         if (rentBack)
             isForRent = true;
@@ -564,5 +593,31 @@ public class PropertyData extends Building {
     @Override
     public Vector3D getPosition() {
         return signLocation;
+    }
+
+    private UUID getRentingPlayerUuidOrNull() {
+        if (rentingPlayerID == null) {
+            return null;
+        }
+        try {
+            return UUID.fromString(rentingPlayerID);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    private String getRenterDisplayName() {
+        ITanPlayer renter = getRenter();
+        if (renter != null) {
+            return renter.getNameStored();
+        }
+
+        OfflinePlayer offlineRenter = getOfflineRenter();
+        String name = offlineRenter.getName();
+        if (name != null) {
+            return name;
+        }
+
+        return "Unknown";
     }
 }
