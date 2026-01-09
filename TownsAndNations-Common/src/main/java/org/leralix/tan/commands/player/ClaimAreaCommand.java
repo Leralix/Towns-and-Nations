@@ -98,8 +98,16 @@ public class ClaimAreaCommand extends PlayerSubCommand {
         }
 
         if (args.length == 4) {
-            int x = Integer.parseInt(args[2]);
-            int z = Integer.parseInt(args[3]);
+            int x;
+            int z;
+            try {
+                x = Integer.parseInt(args[2]);
+                z = Integer.parseInt(args[3]);
+            } catch (NumberFormatException e) {
+                TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
+                TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+                return;
+            }
             Chunk chunk = player.getWorld().getChunkAt(x, z);
             territoryData.claimChunk(player, chunk);
         }
