@@ -48,7 +48,7 @@ public class KingdomDeletedNews extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
         if (tanPlayer == null) {
             return;
         }
@@ -62,7 +62,7 @@ public class KingdomDeletedNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
         if (tanPlayer == null) {
             return null;
         }
