@@ -89,6 +89,7 @@ language:
   SYNTAX_ERROR: "§cIncorrect syntax"
   SYNTAX_ERROR_AMOUNT: "§cIncorrect syntax for the amount"
   CORRECT_SYNTAX_INFO: "§cCorrect syntax: {0}"
+  MESSAGE_TOO_SHORT: "§cMessage is too short: {0} min"
   MESSAGE_TOO_LONG: "§cMessage is too long: {0} max"
   CANCELLED_ACTION: "§cAction cancelled"
   #Cancel

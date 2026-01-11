@@ -3,6 +3,8 @@ package org.leralix.tan.listeners.chat;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.function.Consumer;
 
@@ -39,5 +41,18 @@ public abstract class ChatListenerEvent {
                 playerConsumer.accept(player);
             }
         }.runTask(TownsAndNations.getPlugin());
+    }
+
+    protected static boolean checkMessageLength(Player player, String message, int minSize, int maxSize) {
+        if (message.length() < minSize) {
+            TanChatUtils.message(player, Lang.MESSAGE_TOO_SHORT.get(player, Integer.toString(minSize)));
+            return true;
+        }
+
+        if (message.length() > maxSize) {
+            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
+            return true;
+        }
+        return false;
     }
 }

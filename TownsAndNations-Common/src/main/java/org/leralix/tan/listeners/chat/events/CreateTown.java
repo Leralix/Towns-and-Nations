@@ -35,10 +35,10 @@ public class CreateTown extends ChatListenerEvent {
             return false;
         }
 
+        int minSize = Constants.getPrefixSize().getMinVal();
         int maxSize = Constants.getTownMaxNameSize();
 
-        if (message.length() > maxSize) {
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
+        if (checkMessageLength(player, message, minSize, maxSize)){
             return false;
         }
 
