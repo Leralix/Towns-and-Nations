@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.utils.constants.Constants;
 
 public class PlayerLocationPvpEnabled extends PapiEntry {
 
@@ -28,8 +29,8 @@ public class PlayerLocationPvpEnabled extends PapiEntry {
         ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
 
         return claimedChunk.canPVPHappen() ?
-                TRUE :
-                FALSE;
+                Constants.getTruePlaceholderString() :
+                Constants.getFalsePlaceholderString();
 
     }
 }

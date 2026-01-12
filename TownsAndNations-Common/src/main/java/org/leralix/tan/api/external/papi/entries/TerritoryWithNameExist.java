@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 
 public class TerritoryWithNameExist extends PapiEntry {
 
@@ -27,6 +28,6 @@ public class TerritoryWithNameExist extends PapiEntry {
         String name = values[0];
         if(name == null) return Lang.INVALID_VALUE.get(tanPlayer);
 
-        return getTerritoryByName(name) != null ? TRUE : FALSE;
+        return getTerritoryByName(name) != null ? Constants.getTruePlaceholderString() : Constants.getFalsePlaceholderString();
     }
 }

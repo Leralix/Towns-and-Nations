@@ -7,6 +7,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 
 public class TerritoryWithIdExist extends PapiEntry {
 
@@ -27,6 +28,6 @@ public class TerritoryWithIdExist extends PapiEntry {
         if(values.length == 0) return Lang.INVALID_VALUE.get(tanPlayer);
         String id = values[0];
         if(id == null) return Lang.INVALID_ID.get(tanPlayer);
-        return TownDataStorage.getInstance().get(id) != null || RegionDataStorage.getInstance().get(id) != null ? TRUE : FALSE;
+        return TownDataStorage.getInstance().get(id) != null || RegionDataStorage.getInstance().get(id) != null ? Constants.getTruePlaceholderString() : Constants.getFalsePlaceholderString();
     }
 }

@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 
 public class PlayerNameHaveTown extends PapiEntry{
 
@@ -29,6 +30,6 @@ public class PlayerNameHaveTown extends PapiEntry{
         OfflinePlayer playerSelected = Bukkit.getOfflinePlayer(playerName);
         ITanPlayer tanPlayer1 = PlayerDataStorage.getInstance().get(playerSelected);
         if(tanPlayer1 == null) return Lang.INVALID_PLAYER_NAME.get(tanPlayer);
-        return tanPlayer1.hasTown() ? TRUE: FALSE;
+        return tanPlayer1.hasTown() ? Constants.getTruePlaceholderString(): Constants.getFalsePlaceholderString();
     }
 }

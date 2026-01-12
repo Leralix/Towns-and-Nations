@@ -9,6 +9,7 @@ import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.utils.constants.Constants;
 
 public class PlayerLocationPropertyIsOwner extends PapiEntry{
 
@@ -37,8 +38,8 @@ public class PlayerLocationPropertyIsOwner extends PapiEntry{
 
             if(propertyData != null){
                 return propertyData.getOwner().getID().equals(player.getUniqueId().toString()) ?
-                        TRUE :
-                        FALSE;
+                        Constants.getTruePlaceholderString() :
+                        Constants.getFalsePlaceholderString();
             }
         }
 
