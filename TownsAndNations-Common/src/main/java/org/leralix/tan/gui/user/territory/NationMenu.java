@@ -6,10 +6,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.NationData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
-import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class NationMenu extends TerritoryMenu {
 
@@ -23,23 +20,9 @@ public class NationMenu extends TerritoryMenu {
 
     @Override
     public void open() {
-        gui.setItem(1, 5, getTerritoryInfo());
-        gui.getFiller().fillTop(GuiUtil.getUnnamedItem(Material.PURPLE_STAINED_GLASS_PANE));
-
-        gui.setItem(2, 2, getTownTreasuryButton());
-        gui.setItem(2, 3, getMemberButton());
-        gui.setItem(2, 4, getRankButton());
-        gui.setItem(2, 5, getBrowseButton());
-        gui.setItem(2, 6, getDiplomacyButton());
-        gui.setItem(2, 7, getLevelButton());
+        setupCommonLayout(Material.PURPLE_STAINED_GLASS_PANE);
+        setRow2Column4(getRankButton());
         gui.setItem(2, 8, getSettingsButton());
-
-        gui.setItem(3, 2, getBuildingButton());
-        gui.setItem(3, 3, getAttackButton());
-        gui.setItem(3, 4, getHierarchyButton());
-
-        gui.setItem(4, 1, GuiUtil.createBackArrow(player, MainMenu::new));
-
         gui.open(player);
     }
 
