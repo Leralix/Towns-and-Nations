@@ -24,7 +24,7 @@ import org.leralix.tan.gui.user.territory.TownMenu;
 import org.leralix.tan.gui.user.territory.hierarchy.VassalsMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.listeners.chat.events.DonateToTerritory;
+import org.leralix.tan.listeners.chat.events.DonateToOverlordWithLimit;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -137,7 +137,7 @@ public class PlayerGUI {
                 GuiItem donateToOverlordButton = ItemBuilder.from(donateToOverlord).asGuiItem(event -> {
                     event.setCancelled(true);
                     TanChatUtils.message(player, Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get(tanPlayer));
-                    PlayerChatListenerStorage.register(player, new DonateToTerritory(overlord));
+                    PlayerChatListenerStorage.register(player, new DonateToOverlordWithLimit(territoryData, overlord));
                 });
                 gui.setItem(2, 3, donateToOverlordButton);
             } else {
