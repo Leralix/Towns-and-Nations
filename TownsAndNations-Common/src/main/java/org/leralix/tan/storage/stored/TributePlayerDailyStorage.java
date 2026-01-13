@@ -41,6 +41,10 @@ public class TributePlayerDailyStorage extends JsonStorage<Double> {
 
     @Override
     public void reset() {
+        resetInstance();
+    }
+
+    private static synchronized void resetInstance() {
         instance = null;
     }
 }
