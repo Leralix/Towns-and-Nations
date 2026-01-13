@@ -242,4 +242,33 @@ public class NoPlayerData implements ITanPlayer {
     public Set<CurrentAttack> getCurrentAttacks() {
         return Set.of();
     }
+
+    @Override
+    public String getNationID() {
+        return null;
+    }
+
+    @Override
+    public org.leralix.tan.dataclass.territory.NationData getNation() {
+        return null;
+    }
+
+    @Override
+    public boolean hasNation() {
+        return false;
+    }
+
+    @Override
+    public RankData getNationRank() {
+        return null;
+    }
+
+    @Override
+    public Integer getNationRankID() {
+        return 0;
+    }
+
+    @Override
+    public void setNationRankID(Integer rankID) {
+    }
 }

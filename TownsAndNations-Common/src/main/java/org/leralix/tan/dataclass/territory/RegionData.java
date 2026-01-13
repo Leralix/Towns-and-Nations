@@ -121,7 +121,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     public boolean haveOverlord() {
-        return nationID != null;
+        return super.haveOverlord();
     }
 
     @Override
@@ -133,7 +133,10 @@ public class RegionData extends TerritoryData {
 
     @Override
     protected Collection<TerritoryData> getOverlords() {
-        return new ArrayList<>();
+        if (!haveOverlord()) {
+            return new ArrayList<>();
+        }
+        return Collections.singletonList(getOverlord().orElse(null));
     }
 
     public List<TerritoryData> getSubjects() {
@@ -160,7 +163,8 @@ public class RegionData extends TerritoryData {
 
     @Override
     public void removeOverlordPrivate() {
-        // Kingdoms are not implemented yet
+        this.overlordID = null;
+        this.nationID = null;
     }
 
     @Override

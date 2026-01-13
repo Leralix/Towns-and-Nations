@@ -91,6 +91,18 @@ public interface ITanPlayer {
 
     void setRegionRankID(Integer rankID);
 
+    String getNationID();
+
+    org.leralix.tan.dataclass.territory.NationData getNation();
+
+    boolean hasNation();
+
+    RankData getNationRank();
+
+    Integer getNationRankID();
+
+    void setNationRankID(Integer rankID);
+
     Integer getRankID(TerritoryData territoryData);
 
     RankData getRank(TerritoryData territoryData);

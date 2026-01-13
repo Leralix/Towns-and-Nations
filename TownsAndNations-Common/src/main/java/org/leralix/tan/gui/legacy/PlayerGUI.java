@@ -63,6 +63,20 @@ public class PlayerGUI {
         }
     }
 
+    public static void dispatchPlayerNation(Player player) {
+        if (!org.leralix.tan.utils.constants.Constants.enableNation()) {
+            org.leralix.tan.utils.text.TanChatUtils.message(player, Lang.GUI_WARNING_STILL_IN_DEV.get(PlayerDataStorage.getInstance().get(player)), org.leralix.lib.data.SoundEnum.NOT_ALLOWED);
+            return;
+        }
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        org.leralix.tan.dataclass.territory.NationData nationData = tanPlayer.getNation();
+        if (nationData != null) {
+            new org.leralix.tan.gui.user.territory.NationMenu(player, nationData);
+        } else {
+            new org.leralix.tan.gui.user.territory.NoNationMenu(player);
+        }
+    }
+
     public static void dispatchLandmarkGui(Player player, Landmark landmark) {
 
         TownData townData = TownDataStorage.getInstance().get(player);

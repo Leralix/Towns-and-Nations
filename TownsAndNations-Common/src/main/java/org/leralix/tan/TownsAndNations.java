@@ -175,6 +175,9 @@ public class TownsAndNations extends JavaPlugin {
         PlayerDataStorage.getInstance();
         NewClaimedChunkStorage.getInstance();
         TownDataStorage.getInstance();
+        if (Constants.enableNation()) {
+            NationDataStorage.getInstance();
+        }
         LandmarkStorage.getInstance();
         NewsletterStorage.getInstance();
         WarStorage.getInstance();
@@ -426,8 +429,12 @@ public class TownsAndNations extends JavaPlugin {
         RegionDataStorage.getInstance().reset();
         PlayerDataStorage.getInstance().reset();
         TownDataStorage.getInstance().reset();
+        if (Constants.enableNation()) {
+            NationDataStorage.getInstance().reset();
+        }
         LandmarkStorage.getInstance().reset();
         WarStorage.getInstance().reset();
         NewClaimedChunkStorage.getInstance().reset();
     }
 }
+

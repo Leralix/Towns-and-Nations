@@ -59,6 +59,9 @@ public class Constants {
     private static int regionCost;
     private static int regionMaxNameSize;
     private static int regionMaxDescriptionSize;
+    private static int nationCost;
+    private static int nationMaxNameSize;
+    private static int nationMaxDescriptionSize;
     private static int maxRankSize;
     private static int rankNameSize;
     private static boolean displayTerritoryColor;
@@ -179,6 +182,9 @@ public class Constants {
         regionCost = config.getInt("regionCost", 7500);
         regionMaxNameSize = config.getInt("RegionNameSize", 45);
         regionMaxDescriptionSize = config.getInt("RegionDescSize", 55);
+        nationCost = config.getInt("nationCost", 50000);
+        nationMaxNameSize = config.getInt("NationNameSize", 45);
+        nationMaxDescriptionSize = config.getInt("NationDescSize", 55);
         maxRankSize = config.getInt("maxRanks", 9);
         rankNameSize = config.getInt("RankNameSize", 40);
 
@@ -614,6 +620,18 @@ public class Constants {
 
     public static int getRegionMaxDescriptionSize(){
         return regionMaxDescriptionSize;
+    }
+
+    public static int getNationCost() {
+        return nationCost;
+    }
+
+    public static int getNationMaxNameSize(){
+        return nationMaxNameSize;
+    }
+
+    public static int getNationMaxDescriptionSize(){
+        return nationMaxDescriptionSize;
     }
 
     public static int getMaxRankSize() {
