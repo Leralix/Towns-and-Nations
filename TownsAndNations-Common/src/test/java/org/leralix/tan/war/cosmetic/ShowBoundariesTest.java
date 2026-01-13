@@ -38,6 +38,8 @@ class ShowBoundariesTest extends BasicTest {
 
         var townDefender = TownDataStorage.getInstance().newTown("DefenderTown", tanDefender);
 
+        townDefender.addToBalance(townDefender.getClaimCost() * 10);
+
         townDefender.claimChunk(defender, world.getChunkAt(0, 0));
         townDefender.claimChunk(defender, world.getChunkAt(0, 1));
 
