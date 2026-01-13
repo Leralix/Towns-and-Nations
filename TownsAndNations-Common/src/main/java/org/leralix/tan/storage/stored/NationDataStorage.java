@@ -43,7 +43,7 @@ public class NationDataStorage extends JsonStorage<NationData> {
                     id = newID;
                 }
             } catch (NumberFormatException ignored) {
-
+                // Ignore malformed nation IDs when computing nextID.
             }
         }
         nextID = id + 1;
@@ -51,6 +51,10 @@ public class NationDataStorage extends JsonStorage<NationData> {
 
     @Override
     public void reset() {
+        resetInstance();
+    }
+
+    private static synchronized void resetInstance() {
         instance = null;
     }
 

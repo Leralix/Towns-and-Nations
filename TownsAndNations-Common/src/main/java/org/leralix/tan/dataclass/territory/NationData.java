@@ -112,6 +112,7 @@ public class NationData extends TerritoryData {
 
     @Override
     public void abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
+        throw new UnsupportedOperationException("Nations cannot claim chunks directly. Claim chunks through regions/towns.");
     }
 
     @Override
@@ -121,6 +122,7 @@ public class NationData extends TerritoryData {
 
     @Override
     public void removeOverlordPrivate() {
+        // Nation cannot have an overlord.
     }
 
     @Override

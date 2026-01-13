@@ -3,7 +3,6 @@ package org.leralix.tan.listeners.chat.events;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.NationData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
@@ -62,7 +61,7 @@ public class CreateNation extends ChatListenerEvent {
             return false;
         }
 
-        NationData nationData = NationDataStorage.getInstance().createNewNation(message, regionData);
+        NationDataStorage.getInstance().createNewNation(message, regionData);
 
         TanChatUtils.message(player, Lang.REGION_CREATED_NEWSLETTER.get(message), SoundEnum.GOOD);
         openGui(p -> PlayerGUI.dispatchPlayerNation(player), player);

@@ -55,13 +55,6 @@ public class AdminMainMenu extends BasicGui {
                 .asGuiItem(player, langType);
     }
 
-    private GuiItem getPlayerButton() {
-        return iconManager.get(IconKey.PLAYER_HEAD_ICON)
-                .setName(Lang.GUI_ADMIN_PLAYER_ICON.get(langType))
-                .setAction(action -> new AdminBrowsePlayers(player))
-                .asGuiItem(player, langType);
-    }
-
     private GuiItem getTownButton() {
         return iconManager.get(IconKey.TOWN_BASE_ICON)
                 .setName(Lang.GUI_TOWN_ICON.get(langType))

@@ -120,11 +120,6 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public boolean haveOverlord() {
-        return super.haveOverlord();
-    }
-
-    @Override
     public void abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
 
         removeFromBalance(getClaimCost());

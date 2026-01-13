@@ -53,6 +53,12 @@ public class NationTaxLine extends ProfitLine {
     public void addItems(Gui gui, Player player, LangType lang) {
         double taxRate = territoryData.getTax();
 
+        addDecreaseItem(gui, player, lang, taxRate);
+        addInfoItem(gui, player, lang, taxRate);
+        addIncreaseItem(gui, player, lang);
+    }
+
+    private void addDecreaseItem(Gui gui, Player player, LangType lang, double taxRate) {
         gui.setItem(2, 2, IconManager.getInstance().get(IconKey.TAX_DECREASE_ICON)
                 .setName(Lang.GUI_TREASURY_LOWER_TAX.get(lang))
                 .setDescription(
@@ -76,7 +82,9 @@ public class NationTaxLine extends ProfitLine {
                 })
                 .asGuiItem(player, lang)
         );
+    }
 
+    private void addInfoItem(Gui gui, Player player, LangType lang, double taxRate) {
         gui.setItem(2, 3, IconManager.getInstance().get(IconKey.TAX_INFO_ICON)
                 .setName(Lang.GUI_TREASURY_FLAT_TAX.get(lang))
                 .setDescription(
@@ -99,7 +107,9 @@ public class NationTaxLine extends ProfitLine {
                 })
                 .asGuiItem(player, lang)
         );
+    }
 
+    private void addIncreaseItem(Gui gui, Player player, LangType lang) {
         gui.setItem(2, 4, IconManager.getInstance().get(IconKey.TAX_INCREASE_ICON)
                 .setName(Lang.GUI_TREASURY_INCREASE_TAX.get(lang))
                 .setDescription(
