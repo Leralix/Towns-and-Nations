@@ -5,7 +5,33 @@ import com.google.gson.GsonBuilder;
 
 import java.util.LinkedHashMap;
 
-public class TributePlayerDailyStorage extends JsonStorage<Double> {
+abstract class AbstractTributeDailyStorage extends JsonStorage<Double> {
+
+    protected AbstractTributeDailyStorage(String fileName) {
+        super(
+                fileName,
+                new TypeToken<LinkedHashMap<String, Double>>() {}.getType(),
+                new GsonBuilder().setPrettyPrinting().create()
+        );
+    }
+
+    public synchronized double getAmount(String id) {
+        Double val = dataMap.get(id);
+        return val == null ? 0.0 : val;
+    }
+
+    public synchronized void addAmount(String id, double amount) {
+        dataMap.put(id, getAmount(id) + amount);
+        save();
+    }
+
+    public synchronized void resetDaily() {
+        dataMap.clear();
+        save();
+    }
+}
+
+public class TributePlayerDailyStorage extends AbstractTributeDailyStorage {
 
     private static TributePlayerDailyStorage instance;
 
@@ -17,30 +43,12 @@ public class TributePlayerDailyStorage extends JsonStorage<Double> {
     }
 
     private TributePlayerDailyStorage() {
-        super(
-                "TAN - Tribute Player Daily.json",
-                new TypeToken<LinkedHashMap<String, Double>>() {}.getType(),
-                new GsonBuilder().setPrettyPrinting().create()
-        );
-    }
-
-    public synchronized double getAmount(String playerId) {
-        Double val = dataMap.get(playerId);
-        return val == null ? 0.0 : val;
-    }
-
-    public synchronized void addAmount(String playerId, double amount) {
-        dataMap.put(playerId, getAmount(playerId) + amount);
-        save();
-    }
-
-    public synchronized void resetDaily() {
-        dataMap.clear();
-        save();
+        super("TAN - Tribute Player Daily.json");
     }
 
     @Override
     public void reset() {
+        // Singleton reset: clear the static instance reference so a fresh storage can be recreated when needed.
         resetInstance();
     }
 
