@@ -18,6 +18,7 @@ import org.leralix.tan.utils.territory.ChunkUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ShowBoundaries {
 
@@ -112,6 +113,14 @@ public class ShowBoundaries {
         if(otherChunk instanceof TerritoryChunk otherTerritoryChunk){
             var centerTerritory = centerChunk.getOccupier();
             var otherTerritory = otherTerritoryChunk.getOccupier();
+
+            if (centerTerritory == null || otherTerritory == null) {
+                return true;
+            }
+
+            if (Objects.equals(centerTerritory.getID(), otherTerritory.getID())) {
+                return false;
+            }
 
             return centerTerritory.getRelationWith(otherTerritory) != TownRelation.SELF;
         }

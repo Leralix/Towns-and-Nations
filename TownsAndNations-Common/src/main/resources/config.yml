@@ -37,7 +37,7 @@ tagMinSize: 3
 tagMaxSize: 4
 # tag format
 # Minecraft color code : https://manacube.com/attachments/1575063877749-png.20438/
-townTagFormat: "&f[&l{townColor}{townTag}&r&f]"
+townTagFormat: "&f[{townColor}&l{townTag}&r&f]"
 
 #Enable the version check
 CheckForUpdate: true
@@ -615,6 +615,12 @@ worldguard_override_town: false
 worldguard_override_region: false
 worldguard_override_kingdom: false
 worldguard_override_landmark: false
+
+## PlaceholderAPI
+# Defines what FALSE and TRUE will return
+placeholderString:
+  trueValue: "true"
+  falseValue: "false"
 
 ########################
 ##       Storage      ##

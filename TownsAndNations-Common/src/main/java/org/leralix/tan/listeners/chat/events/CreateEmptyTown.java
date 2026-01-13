@@ -25,10 +25,10 @@ public class CreateEmptyTown extends ChatListenerEvent {
 
     @Override
     public boolean execute(Player player, String townName) {
+        int minSize = Constants.getPrefixSize().getMinVal();
         int maxSize = Constants.getTownMaxNameSize();
 
-        if (townName.length() > maxSize) {
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
+        if (checkMessageLength(player, townName, minSize, maxSize)){
             return false;
         }
 

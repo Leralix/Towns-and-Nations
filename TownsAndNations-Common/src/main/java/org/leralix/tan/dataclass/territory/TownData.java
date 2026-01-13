@@ -60,6 +60,7 @@ public class TownData extends TerritoryData {
         }
 
         Range prefixSizeRange = Constants.getPrefixSize();
+
         this.townTag = prefixSizeRange.isValueIn(townName.length()) ?
                 townName.toUpperCase() :
                 townName.substring(0, prefixSizeRange.getMaxVal()).toUpperCase();

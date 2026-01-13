@@ -14,14 +14,12 @@ import java.util.function.Predicate;
 
 public class ChunkUtil {
 
-    private static final NewClaimedChunkStorage claimedChunkStorage = NewClaimedChunkStorage.getInstance();
-
     private ChunkUtil() {
         throw new AssertionError("Utility class");
     }
 
     public static boolean isChunkEncirecledBy(ClaimedChunk2 center, Predicate<ClaimedChunk2> predicate) {
-        for (ClaimedChunk2 neighbor : claimedChunkStorage.getEightAjacentChunks(center)) {
+        for (ClaimedChunk2 neighbor : NewClaimedChunkStorage.getInstance().getEightAjacentChunks(center)) {
             if (!predicate.test(neighbor)) {
                 return false;
             }
@@ -33,7 +31,7 @@ public class ChunkUtil {
 
         List<ClaimedChunk2> res = new ArrayList<>();
 
-        for (TerritoryChunk territoryChunk : claimedChunkStorage.getAllChunkFrom(territoryData)) {
+        for (TerritoryChunk territoryChunk : NewClaimedChunkStorage.getInstance().getAllChunkFrom(territoryData)) {
             if (!isChunkEncirecledBy(territoryChunk, chunk -> territoryData.getID().equals(chunk.getOwnerID()))) {
                 res.add(territoryChunk);
             }
@@ -52,7 +50,7 @@ public class ChunkUtil {
 
         List<ChunkPolygon> polygonsAnalysed = new ArrayList<>();
 
-        for (ClaimedChunk2 claimedChunk2 : claimedChunkStorage.getEightAjacentChunks(unclaimedChunk)) {
+        for (ClaimedChunk2 claimedChunk2 : NewClaimedChunkStorage.getInstance().getEightAjacentChunks(unclaimedChunk)) {
 
             if (claimedChunk2 instanceof TerritoryChunk territoryChunk) {
                 if (alreadyAnalysed(territoryChunk, polygonsAnalysed)) {
@@ -79,7 +77,7 @@ public class ChunkUtil {
     public static boolean doesUnclaimCauseOrphan(TerritoryChunk chunkToPotentiallyUnclaim) {
 
 
-        for (ClaimedChunk2 claimedChunk2 : claimedChunkStorage.getEightAjacentChunks(chunkToPotentiallyUnclaim)) {
+        for (ClaimedChunk2 claimedChunk2 : NewClaimedChunkStorage.getInstance().getEightAjacentChunks(chunkToPotentiallyUnclaim)) {
 
             if (claimedChunk2 instanceof TerritoryChunk territoryChunk) {
 
@@ -135,7 +133,7 @@ public class ChunkUtil {
             result.add(current);
 
             // Get adjacent chunks (4 directions)
-            List<ClaimedChunk2> adjacentChunks = claimedChunkStorage.getFourAjacentChunks(current);
+            List<ClaimedChunk2> adjacentChunks = NewClaimedChunkStorage.getInstance().getFourAjacentChunks(current);
             for (ClaimedChunk2 adj : adjacentChunks) {
                 if (adj != null && !visited.contains(adj.getX() + "," + adj.getZ() + "," + adj.getWorldUUID())) {
                     toVisit.add(adj);
@@ -269,7 +267,7 @@ public class ChunkUtil {
             for (int dz = -radius; dz <= radius; dz++) {
                 int chunkX = centerX + dx;
                 int chunkZ = centerZ + dz;
-                ClaimedChunk2 chunk = claimedChunkStorage.get(chunkX, chunkZ, worldUUID);
+                ClaimedChunk2 chunk = NewClaimedChunkStorage.getInstance().get(chunkX, chunkZ, worldUUID);
                 double distance = centerPos.getDistance(new Vector2D(chunk.getX(), chunk.getZ(), worldUUID));
 
                 // Distance AND user filter

@@ -33,6 +33,8 @@ public class Constants {
     private static int nbDaysBeforeClearningTransactions;
     private static int nbDaysBeforeClearningNewsletter;
     private static NewsletterScopeConfig newsletterScopeConfig;
+    private static String falsePlaceholderString;
+    private static String truePlaceholderString;
     //Economy
     private static boolean useStandaloneEconomy;
     private static double startingBalance;
@@ -159,6 +161,9 @@ public class Constants {
         nbDaysBeforeClearningTransactions = config.getInt("nbDaysBeforeTransactionDeletion", 90);
         nbDaysBeforeClearningNewsletter = config.getInt("TimeBeforeClearingNewsletter");
         newsletterScopeConfig = new NewsletterScopeConfig(config.getConfigurationSection("events"));
+        var placeholdersSection = config.getConfigurationSection("placeholderString");
+        falsePlaceholderString = placeholdersSection.getString("falseValue", "false");
+        truePlaceholderString = placeholdersSection.getString("trueValue", "true");
         //Economy
         useStandaloneEconomy = config.getBoolean("UseTanEconomy", false);
         startingBalance = config.getDouble("StartingMoney", 100.0);
@@ -360,6 +365,14 @@ public class Constants {
 
     public static NewsletterScopeConfig getNewsletterScopeConfig() {
         return newsletterScopeConfig;
+    }
+
+    public static String getFalsePlaceholderString() {
+        return falsePlaceholderString;
+    }
+
+    public static String getTruePlaceholderString() {
+        return truePlaceholderString;
     }
 
     public static boolean displayTerritoryColor() {
