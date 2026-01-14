@@ -87,6 +87,10 @@ boundaryParticles :
 #Enable Kingdoms
 EnableKingdom: true
 
+tributeLimits:
+  enabled: false
+  perPlayerDailyLimit: 50000
+  perVassalDailyLimit: 400000
 
 ########################
 ##       Regions      ##

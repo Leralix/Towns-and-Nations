@@ -24,7 +24,7 @@ import org.leralix.tan.gui.user.territory.TownMenu;
 import org.leralix.tan.gui.user.territory.hierarchy.VassalsMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
-import org.leralix.tan.listeners.chat.events.DonateToTerritory;
+import org.leralix.tan.listeners.chat.events.DonateToOverlordWithLimit;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
@@ -60,6 +60,20 @@ public class PlayerGUI {
             new TownMenu(player, townData);
         } else {
             new NoTownMenu(player);
+        }
+    }
+
+    public static void dispatchPlayerNation(Player player) {
+        if (!org.leralix.tan.utils.constants.Constants.enableNation()) {
+            org.leralix.tan.utils.text.TanChatUtils.message(player, Lang.GUI_WARNING_STILL_IN_DEV.get(PlayerDataStorage.getInstance().get(player)), org.leralix.lib.data.SoundEnum.NOT_ALLOWED);
+            return;
+        }
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        org.leralix.tan.dataclass.territory.NationData nationData = tanPlayer.getNation();
+        if (nationData != null) {
+            new org.leralix.tan.gui.user.territory.NationMenu(player, nationData);
+        } else {
+            new org.leralix.tan.gui.user.territory.NoNationMenu(player);
         }
     }
 
@@ -137,7 +151,7 @@ public class PlayerGUI {
                 GuiItem donateToOverlordButton = ItemBuilder.from(donateToOverlord).asGuiItem(event -> {
                     event.setCancelled(true);
                     TanChatUtils.message(player, Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get(tanPlayer));
-                    PlayerChatListenerStorage.register(player, new DonateToTerritory(overlord));
+                    PlayerChatListenerStorage.register(player, new DonateToOverlordWithLimit(territoryData, overlord));
                 });
                 gui.setItem(2, 3, donateToOverlordButton);
             } else {

@@ -79,10 +79,21 @@ public class MainMenu extends BasicGui {
     }
 
     private GuiItem getNationButton(ITanPlayer tanPlayer) {
+
+        List<FilledLang> description = new ArrayList<>();
+
+        if (tanPlayer.hasNation()) {
+            org.leralix.tan.dataclass.territory.NationData nationData = tanPlayer.getNation();
+            description.add(Lang.GUI_NATION_ICON_DESC1_NATION.get(nationData.getColoredName()));
+            description.add(Lang.GUI_NATION_ICON_DESC2_NATION.get(nationData.getRank(tanPlayer).getColoredName()));
+        } else {
+            description.add(Lang.GUI_NATION_ICON_DESC1_NO_NATION.get());
+        }
+
         return iconManager.get(IconKey.NATION_BASE_ICON)
                 .setName(Lang.GUI_KINGDOM_ICON.get(tanPlayer))
-                .setDescription(Lang.GUI_WARNING_STILL_IN_DEV.get())
-                .setAction(action -> TanChatUtils.message(player, Lang.GUI_WARNING_STILL_IN_DEV.get(tanPlayer), SoundEnum.NOT_ALLOWED))
+                .setDescription(description)
+                .setAction(action -> PlayerGUI.dispatchPlayerNation(player))
                 .asGuiItem(player, langType);
     }
 
