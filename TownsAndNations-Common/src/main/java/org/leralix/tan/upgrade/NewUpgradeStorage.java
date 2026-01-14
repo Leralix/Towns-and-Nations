@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.territory.KingdomData;
+import org.leralix.tan.dataclass.territory.NationData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.service.requirements.model.*;
@@ -25,18 +25,18 @@ public class NewUpgradeStorage {
 
     private final Map<String, Upgrade> townUpgrades;
     private final Map<String, Upgrade> regionUpgrades;
-    private final Map<String, Upgrade> kingdomUpgrades;
+    private final Map<String, Upgrade> nationUpgrades;
 
 
     public NewUpgradeStorage(FileConfiguration upgradeConfig) {
 
         this.townUpgrades = new HashMap<>();
         this.regionUpgrades = new HashMap<>();
-        this.kingdomUpgrades = new HashMap<>();
+        this.nationUpgrades = new HashMap<>();
 
         setUpUpgrades(townUpgrades, upgradeConfig.getConfigurationSection("upgrades"));
         setUpUpgrades(regionUpgrades, upgradeConfig.getConfigurationSection("region_upgrades"));
-        setUpUpgrades(kingdomUpgrades, upgradeConfig.getConfigurationSection("kingdom_upgrades"));
+        setUpUpgrades(nationUpgrades, upgradeConfig.getConfigurationSection("nation_upgrades"));
 
     }
 
@@ -191,8 +191,8 @@ public class NewUpgradeStorage {
     }
 
     public Upgrade getUpgrade(TerritoryData territoryData, String id) {
-        if(territoryData instanceof KingdomData){
-            return kingdomUpgrades.get(id);
+        if(territoryData instanceof NationData){
+            return nationUpgrades.get(id);
         }
         if(territoryData instanceof RegionData){
             return regionUpgrades.get(id);
@@ -204,14 +204,14 @@ public class NewUpgradeStorage {
         return switch (statsType){
             case REGION -> regionUpgrades.values();
             case TOWN -> townUpgrades.values();
-            case KINGDOM -> kingdomUpgrades.values();
+            case NATION -> nationUpgrades.values();
             case null -> townUpgrades.values();
         };
     }
 
     public Collection<Upgrade> getUpgrades(TerritoryData territoryData) {
-        if(territoryData instanceof KingdomData){
-            return getUpgrades(StatsType.KINGDOM);
+        if(territoryData instanceof NationData){
+            return getUpgrades(StatsType.NATION);
         }
         if(territoryData instanceof RegionData){
             return getUpgrades(StatsType.REGION);

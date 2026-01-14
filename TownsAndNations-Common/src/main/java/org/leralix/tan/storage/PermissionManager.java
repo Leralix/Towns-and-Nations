@@ -28,7 +28,7 @@ public class PermissionManager {
             RelationPermission relationPermission = switch (permissionGiven){
                 case TOWN -> Constants.getChunkPermissionConfig().getTownPermission(type).defaultRelation();
                 case REGION -> Constants.getChunkPermissionConfig().getRegionPermission(type).defaultRelation();
-                case KINGDOM -> Constants.getChunkPermissionConfig().getRegionPermission(type).defaultRelation();
+                case NATION -> Constants.getChunkPermissionConfig().getRegionPermission(type).defaultRelation();
                 case PROPERTY -> Constants.getChunkPermissionConfig().getPropertiesPermission(type).defaultRelation();
             };
 

@@ -1,6 +1,6 @@
 package org.leralix.tan.gui.user.territory;
 
-import org.leralix.tan.dataclass.territory.KingdomData;
+import org.leralix.tan.dataclass.territory.NationData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -28,10 +28,10 @@ public final class TerritoryInfoLoreUtil {
                     .orElseGet(Lang.GUI_TOWN_INFO_DESC5_NO_REGION::get));
         } else if (territoryData instanceof RegionData) {
             lore.add(territoryData.getOverlord()
-                    .map(overlord -> Lang.GUI_REGION_INFO_DESC6_KINGDOM.get(overlord.getName()))
-                    .orElseGet(Lang.GUI_REGION_INFO_DESC6_NO_KINGDOM::get));
-        } else if (territoryData instanceof KingdomData) {
-            lore.add(Lang.GUI_KINGDOM_INFO_DESC6_NO_OVERLORD.get());
+                    .map(overlord -> Lang.GUI_REGION_INFO_DESC6_NATION.get(overlord.getName()))
+                    .orElseGet(Lang.GUI_REGION_INFO_DESC6_NO_NATION::get));
+        } else if (territoryData instanceof NationData) {
+            lore.add(Lang.GUI_NATION_INFO_DESC6_NO_OVERLORD.get());
         }
         return lore;
     }

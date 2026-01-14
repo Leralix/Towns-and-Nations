@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.territory.KingdomData;
+import org.leralix.tan.dataclass.territory.NationData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.RegionDeletednternalEvent;
@@ -20,9 +20,7 @@ import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
-import static org.leralix.lib.data.SoundEnum.GOOD;
-import static org.leralix.lib.data.SoundEnum.BAD;
-import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
+import static org.leralix.lib.data.SoundEnum.*;
 
 public class RegionSettingsMenu extends SettingsMenus {
 
@@ -46,8 +44,8 @@ public class RegionSettingsMenu extends SettingsMenus {
         gui.setItem(2, 5, setBannerButton());
 
         regionData.getOverlord().ifPresent(overlord -> {
-            if (overlord instanceof KingdomData kingdomData) {
-                gui.setItem(2, 6, getLeaveKingdomButton(kingdomData));
+            if (overlord instanceof NationData nationData) {
+                gui.setItem(2, 6, getLeaveNationButton(nationData));
             }
         });
 
@@ -59,12 +57,12 @@ public class RegionSettingsMenu extends SettingsMenus {
         gui.open(player);
     }
 
-    private @NotNull GuiItem getLeaveKingdomButton(KingdomData kingdomData) {
+    private @NotNull GuiItem getLeaveNationButton(NationData nationData) {
         return iconManager.get(IconKey.REGION_QUIT_REGION_ICON)
-                .setName(Lang.GUI_REGION_SETTINGS_LEAVE_KINGDOM.get(tanPlayer))
+                .setName(Lang.GUI_REGION_SETTINGS_LEAVE_NATION.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_REGION_SETTINGS_LEAVE_KINGDOM_DESC1.get(kingdomData.getName()),
-                        Lang.GUI_REGION_SETTINGS_LEAVE_KINGDOM_DESC2.get()
+                        Lang.GUI_REGION_SETTINGS_LEAVE_NATION_DESC1.get(nationData.getName()),
+                        Lang.GUI_REGION_SETTINGS_LEAVE_NATION_DESC2.get()
                 )
                 .setAction(event -> {
                     event.setCancelled(true);
@@ -80,17 +78,17 @@ public class RegionSettingsMenu extends SettingsMenus {
                     }
 
                     if (regionData.isCapital()) {
-                        TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_KINGDOM_CAPITAL.get(tanPlayer, regionData.getBaseColoredName()), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_NATION_CAPITAL.get(tanPlayer, regionData.getBaseColoredName()), NOT_ALLOWED);
                         return;
                     }
 
                     new ConfirmMenu(
                             player,
-                            Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(regionData.getBaseColoredName(), kingdomData.getBaseColoredName()),
+                            Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(regionData.getBaseColoredName(), nationData.getBaseColoredName()),
                             () -> {
                                 regionData.removeOverlord();
-                                regionData.broadcastMessageWithSound(Lang.REGION_BROADCAST_REGION_LEFT_KINGDOM.get(regionData.getName(), kingdomData.getName()), BAD);
-                                kingdomData.broadCastMessage(Lang.KINGDOM_BROADCAST_REGION_LEFT_KINGDOM.get(regionData.getName()));
+                                regionData.broadcastMessageWithSound(Lang.REGION_BROADCAST_REGION_LEFT_NATION.get(regionData.getName(), nationData.getName()), BAD);
+                                nationData.broadCastMessage(Lang.NATION_BROADCAST_REGION_LEFT_NATION.get(regionData.getName()));
                                 open();
                             },
                             this::open

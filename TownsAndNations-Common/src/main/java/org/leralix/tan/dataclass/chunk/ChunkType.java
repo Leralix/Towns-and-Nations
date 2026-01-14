@@ -5,6 +5,6 @@ public enum ChunkType {
     WILDERNESS,
     TOWN,
     REGION,
-    KINGDOM,
+    NATION,
     LANDMARK,
 }

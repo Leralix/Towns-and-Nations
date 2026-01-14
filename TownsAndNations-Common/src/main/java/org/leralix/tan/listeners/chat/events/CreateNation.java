@@ -1,58 +1,43 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
-import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.territory.NationData;
 import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.events.EventManager;
+import org.leralix.tan.events.events.NationCreatedInternalEvent;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class CreateNation extends ChatListenerEvent {
 
     private final int cost;
 
-    public CreateNation() {
+    public CreateNation(int cost) {
         super();
-        this.cost = Constants.getNationCost();
+        this.cost = cost;
     }
 
     @Override
     public boolean execute(Player player, String message) {
+
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         if (!tanPlayer.hasRegion()) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(tanPlayer), SoundEnum.NOT_ALLOWED);
+            TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(tanPlayer));
             return false;
         }
 
         RegionData regionData = tanPlayer.getRegion();
-        if (regionData == null) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(tanPlayer), SoundEnum.NOT_ALLOWED);
-            return false;
-        }
 
-        if (!regionData.isLeader(tanPlayer.getID())) {
-            TanChatUtils.message(player, Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer), SoundEnum.NOT_ALLOWED);
-            return false;
-        }
-
-        if (regionData.haveOverlord()) {
-            TanChatUtils.message(player, Lang.TOWN_ALREADY_HAVE_OVERLORD.get(tanPlayer), SoundEnum.NOT_ALLOWED);
-            return false;
-        }
-
-        if (NationDataStorage.getInstance().isNameUsed(message)) {
-            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(tanPlayer), SoundEnum.NOT_ALLOWED);
-            return false;
-        }
-
-        if (message.length() > Constants.getNationMaxNameSize()) {
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(tanPlayer, Integer.toString(Constants.getNationMaxNameSize())), SoundEnum.NOT_ALLOWED);
+        if (!regionData.isLeader(tanPlayer)) {
+            TanChatUtils.message(player, Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get(tanPlayer));
             return false;
         }
 
@@ -61,10 +46,29 @@ public class CreateNation extends ChatListenerEvent {
             return false;
         }
 
-        NationDataStorage.getInstance().createNewNation(message, regionData);
+        int maxSize = Constants.getNationMaxNameSize();
+        if (message.length() > maxSize) {
+            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(tanPlayer, Integer.toString(maxSize)));
+            return false;
+        }
 
-        TanChatUtils.message(player, Lang.REGION_CREATED_NEWSLETTER.get(message), SoundEnum.GOOD);
-        openGui(p -> PlayerGUI.dispatchPlayerNation(player), player);
+        if (NationDataStorage.getInstance().isNameUsed(message)) {
+            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(tanPlayer));
+            return false;
+        }
+
+        createNation(player, message, regionData);
         return true;
+    }
+
+    private void createNation(Player player, String nationName, RegionData capital) {
+        capital.removeFromBalance(cost);
+        NationData nation = NationDataStorage.getInstance().createNewNation(nationName, capital);
+
+        ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
+        EventManager.getInstance().callEvent(new NationCreatedInternalEvent(nation, playerData));
+        FileUtil.addLineToHistory(Lang.NATION_CREATED_NEWSLETTER.get(player.getName(), nation.getName()));
+
+        openGui(p -> PlayerGUI.dispatchPlayerNation(player), player);
     }
 }

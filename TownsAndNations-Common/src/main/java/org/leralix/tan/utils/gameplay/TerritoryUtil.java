@@ -1,10 +1,9 @@
 package org.leralix.tan.utils.gameplay;
 
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.storage.stored.KingdomDataStorage;
+import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.constants.Constants;
 
 public class TerritoryUtil {
 
@@ -18,8 +17,8 @@ public class TerritoryUtil {
         if(id.startsWith("R")) {
             return RegionDataStorage.getInstance().get(id);
         }
-        if (Constants.enableNation() && id.startsWith("N")) {
-            return org.leralix.tan.storage.stored.NationDataStorage.getInstance().get(id);
+        if (id.startsWith("N")) {
+            return NationDataStorage.getInstance().get(id);
         }
         return null;
     }

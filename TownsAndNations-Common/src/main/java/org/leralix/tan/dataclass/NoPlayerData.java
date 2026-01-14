@@ -3,7 +3,7 @@ package org.leralix.tan.dataclass;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.territory.KingdomData;
+import org.leralix.tan.dataclass.territory.NationData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -20,7 +20,7 @@ import java.util.UUID;
 
 public class NoPlayerData implements ITanPlayer {
 
-    private Integer kingdomRankId;
+    private Integer nationRankId;
 
     @Override
     public String getID() {
@@ -103,28 +103,8 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public boolean hasKingdom() {
-        return false;
-    }
-
-    @Override
-    public KingdomData getKingdom() {
+    public NationData getNation() {
         return null;
-    }
-
-    @Override
-    public RankData getKingdomRank() {
-        return null;
-    }
-
-    @Override
-    public Integer getKingdomRankID() {
-        return kingdomRankId;
-    }
-
-    @Override
-    public void setKingdomRankID(Integer rankID) {
-        this.kingdomRankId = rankID;
     }
 
     @Override
@@ -270,16 +250,6 @@ public class NoPlayerData implements ITanPlayer {
     @Override
     public Set<CurrentAttack> getCurrentAttacks() {
         return Set.of();
-    }
-
-    @Override
-    public String getNationID() {
-        return null;
-    }
-
-    @Override
-    public org.leralix.tan.dataclass.territory.NationData getNation() {
-        return null;
     }
 
     @Override

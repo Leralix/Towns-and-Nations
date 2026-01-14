@@ -95,8 +95,8 @@ public class ClaimedChunkWrapper implements TanClaimedChunk {
         if(tanTerritory instanceof TanRegion){
             NewClaimedChunkStorage.getInstance().claimRegionChunk(claimedChunk.getChunk(), tanTerritory.getID());
         }
-        if(tanTerritory instanceof TanKingdom){
-            NewClaimedChunkStorage.getInstance().claimKingdomChunk(claimedChunk.getChunk(), tanTerritory.getID());
+        if(tanTerritory instanceof TanNation){
+            NewClaimedChunkStorage.getInstance().claimNationChunk(claimedChunk.getChunk(), tanTerritory.getID());
         }
     }
 

@@ -4,5 +4,5 @@ public enum StatsType {
 
     TOWN,
     REGION,
-    KINGDOM
+    NATION
 }

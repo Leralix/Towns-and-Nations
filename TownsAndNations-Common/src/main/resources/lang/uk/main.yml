@@ -225,7 +225,7 @@ language:
   GUI_SERVER_TIME: "§aДата"
   CURRENT_SERVER_TIME: "§fСерверний час: §e{0}"
   CURRENT_PLAYER_TIME: "§fЧас гравця: §e{0}"
-  GUI_KINGDOM_ICON: "§aКоролівство"
+  GUI_NATION_ICON: "§aКоролівство"
   GUI_REGION_ICON: "§aРегіон"
   GUI_REGION_ICON_DESC1_REGION: "§fПоточний регіон: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fРанг регіону: {0}"

@@ -31,7 +31,7 @@ public class UnclaimCommand extends PlayerSubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tan unclaim <town/region/kingdom> <x> <z>";
+        return "/tan unclaim <town/region/nation> <x> <z>";
     }
     public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
         if (args.length == 2) {
@@ -57,7 +57,7 @@ public class UnclaimCommand extends PlayerSubCommand {
 
         if(args.length == 4){
             String territoryType = args[1].toLowerCase();
-            if (!territoryType.equals("town") && !territoryType.equals("region") && !territoryType.equals("kingdom")) {
+            if (!territoryType.equals("town") && !territoryType.equals("region") && !territoryType.equals("nation")) {
                 TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
                 TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
                 return;

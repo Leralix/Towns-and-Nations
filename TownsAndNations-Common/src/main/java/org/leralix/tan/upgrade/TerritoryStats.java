@@ -115,7 +115,7 @@ public class TerritoryStats {
         FileConfiguration fg = ConfigUtil.getCustomConfig(ConfigTag.UPGRADE);
         String sectionName = switch (statsType) {
             case REGION -> "regionLevelExpression";
-            case KINGDOM -> "kingdomLevelExpression";
+            case NATION -> "nationLevelExpression";
             case TOWN -> "townLevelExpression";
         };
         ConfigurationSection section = fg.getConfigurationSection(sectionName);

@@ -2,8 +2,8 @@ package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.dataclass.territory.NationData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.KingdomData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
@@ -29,8 +29,8 @@ public class ChangeTerritoryDescription extends ChatListenerEvent {
         int maxSize;
         if (territoryData instanceof TownData) {
             maxSize = Constants.getTownMaxDescriptionSize();
-        } else if (territoryData instanceof KingdomData) {
-            maxSize = Constants.getKingdomMaxDescriptionSize();
+        } else if (territoryData instanceof NationData) {
+            maxSize = Constants.getNationMaxDescriptionSize();
         } else {
             maxSize = Constants.getRegionMaxDescriptionSize();
         }
@@ -42,8 +42,8 @@ public class ChangeTerritoryDescription extends ChatListenerEvent {
 
         if (territoryData instanceof TownData) {
             FileUtil.addLineToHistory(Lang.HISTORY_TOWN_MESSAGE_CHANGED.get(player.getName(), territoryData.getName(), message));
-        } else if (territoryData instanceof KingdomData) {
-            FileUtil.addLineToHistory(Lang.HISTORY_KINGDOM_MESSAGE_CHANGED.get(player.getName(), territoryData.getName(), message));
+        } else if (territoryData instanceof NationData) {
+            FileUtil.addLineToHistory(Lang.HISTORY_NATION_MESSAGE_CHANGED.get(player.getName(), territoryData.getName(), message));
         } else {
             FileUtil.addLineToHistory(Lang.HISTORY_REGION_MESSAGE_CHANGED.get(player.getName(), territoryData.getName(), message));
         }

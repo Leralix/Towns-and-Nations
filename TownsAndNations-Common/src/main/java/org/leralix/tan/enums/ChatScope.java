@@ -6,7 +6,7 @@ import org.leralix.tan.lang.LangType;
 public enum ChatScope {
     CITY(Lang.CITY_SCOPE),
     REGION(Lang.REGION_SCOPE),
-    KINGDOM(Lang.KINGDOM_SCOPE),
+    NATION(Lang.NATION_SCOPE),
     ALLIANCE(Lang.ALLIANCE_SCOPE),
     GLOBAL(Lang.GLOBAL_SCOPE);
 

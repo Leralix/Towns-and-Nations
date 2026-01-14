@@ -2,48 +2,49 @@ package org.leralix.tan.events.newsletter.news;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.territory.NationData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.tan.api.interfaces.TanKingdom;
+import org.tan.api.interfaces.TanNation;
 import org.tan.api.interfaces.TanPlayer;
 
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class KingdomDeletedNews extends Newsletter {
+public class NationCreationNews extends Newsletter {
 
     private final String playerID;
-    private final String kingdomName;
+    private final String nationID;
 
-    public KingdomDeletedNews(TanKingdom kingdomData, TanPlayer player) {
+    public NationCreationNews(TanNation nationData, TanPlayer player) {
         super();
-        this.playerID = player.getUUID().toString();
-        this.kingdomName = kingdomData.getName();
+        playerID = player.getUUID().toString();
+        nationID = nationData.getID();
     }
 
-    public KingdomDeletedNews(UUID id, long date, String playerID, String oldKingdomName) {
+    public NationCreationNews(UUID id, long date, String playerID, String nationID) {
         super(id, date);
         this.playerID = playerID;
-        this.kingdomName = oldKingdomName;
+        this.nationID = nationID;
+    }
+
+    @Override
+    public NewsletterType getType() {
+        return NewsletterType.NATION_CREATED;
     }
 
     public String getPlayerID() {
         return playerID;
     }
 
-    public String getKingdomName() {
-        return kingdomName;
-    }
-
-    @Override
-    public NewsletterType getType() {
-        return NewsletterType.KINGDOM_DELETED;
+    public String getNationID() {
+        return nationID;
     }
 
     @Override
@@ -52,7 +53,11 @@ public class KingdomDeletedNews extends Newsletter {
         if (tanPlayer == null) {
             return;
         }
-        TanChatUtils.message(player, Lang.KINGDOM_DELETED_NEWSLETTER.get(player, tanPlayer.getNameStored(), kingdomName), SoundEnum.GOOD);
+        NationData nationData = NationDataStorage.getInstance().get(nationID);
+        if (nationData == null) {
+            return;
+        }
+        TanChatUtils.message(player, Lang.NATION_CREATED_NEWSLETTER.get(player, tanPlayer.getNameStored(), nationData.getBaseColoredName()));
     }
 
     @Override
@@ -62,8 +67,13 @@ public class KingdomDeletedNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
         if (tanPlayer == null) {
+            return null;
+        }
+        NationData nationData = NationDataStorage.getInstance().get(nationID);
+        if (nationData == null) {
             return null;
         }
 
@@ -71,9 +81,9 @@ public class KingdomDeletedNews extends Newsletter {
                 player,
                 lang,
                 getDate(),
-                IconKey.BROWSE_KINGDOM_ICON,
-                Lang.KINGDOM_DELETED_NEWSLETTER_TITLE.get(lang),
-                Lang.KINGDOM_DELETED_NEWSLETTER.get(tanPlayer.getNameStored(), kingdomName),
+                IconKey.BROWSE_NATION_ICON,
+                Lang.NATION_CREATED_NEWSLETTER_TITLE.get(lang),
+                Lang.NATION_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), nationData.getBaseColoredName()),
                 this::markAsRead,
                 onClick
         );

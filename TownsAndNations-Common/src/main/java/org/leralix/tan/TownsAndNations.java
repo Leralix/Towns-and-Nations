@@ -342,9 +342,10 @@ public class TownsAndNations extends JavaPlugin {
      * This method is called when the plugin is enabled.
      */
     private void checkForUpdate() {
+        // In case of any error, we consider the plugin is up to date
+        latestVersion = CURRENT_VERSION;
         if (!TownsAndNations.getPlugin().getConfig().getBoolean("CheckForUpdate", true)) {
             getLogger().info("[TaN] Update check is disabled");
-            latestVersion = CURRENT_VERSION;
             return;
         }
         try {
@@ -377,7 +378,6 @@ public class TownsAndNations extends JavaPlugin {
             }
         } catch (Exception e) {
             getLogger().log(Level.WARNING, "[TaN] An error occurred while trying to check for updates.", e);
-            latestVersion = CURRENT_VERSION;
         }
     }
 

@@ -7,10 +7,10 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
-public class OtherPlayerKingdomName extends PapiEntry {
+public class OtherPlayerNationName extends PapiEntry {
 
-    public OtherPlayerKingdomName() {
-        super("player_{}_kingdom_name");
+    public OtherPlayerNationName() {
+        super("player_{}_nation_name");
     }
 
     @Override
@@ -27,6 +27,6 @@ public class OtherPlayerKingdomName extends PapiEntry {
 
         ITanPlayer otherTanPlayer = PlayerDataStorage.getInstance().get(playerSelected);
 
-        return otherTanPlayer.hasKingdom() ? otherTanPlayer.getKingdom().getName() : Lang.NO_KINGDOM.get(tanPlayer);
+        return otherTanPlayer.hasNation() ? otherTanPlayer.getNation().getName() : Lang.NO_NATION.get(tanPlayer);
     }
 }

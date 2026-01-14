@@ -1,37 +1,16 @@
 package org.leralix.tan.dataclass.territory;
 
 import org.bukkit.Material;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.leralix.lib.SphereLib;
-import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.BasicTest;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.RankData;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.mockbukkit.mockbukkit.MockBukkit;
-import org.mockbukkit.mockbukkit.ServerMock;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TownDataTest {
-
-    private ServerMock server;
-
-    @BeforeEach
-    void setUp() {
-        server = MockBukkit.mock();
-
-        MockBukkit.load(SphereLib.class);
-        MockBukkit.load(TownsAndNations.class);
-    }
-
-    @AfterEach
-    public void tearDown()
-    {
-        MockBukkit.unmock();
-    }
+class TownDataTest extends BasicTest {
 
 
     @Test

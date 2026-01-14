@@ -81,18 +81,18 @@ boundaryParticles :
   ENEMY : FLAME
 
 ########################
-##      Kingdoms      ##
+##      Nations      ##
 ########################
 
-#Enable Kingdoms
-EnableKingdom: true
+#Enable Nations
+EnableNation: true
 
-kingdomCost: 25000
+nationCost: 25000
 
-KingdomNameSize: 45
-KingdomDescSize: 55
+NationNameSize: 45
+NationDescSize: 55
 
-ChangeKingdomNameCost: 100
+ChangeNationNameCost: 100
 
 tributeLimits:
   enabled: false
@@ -103,7 +103,7 @@ tributeLimits:
 ##       Regions      ##
 ########################
 
-#Enable Region (will automatically disable Kingdoms if set to false)
+#Enable Region (will automatically disable Nations if set to false)
 EnableRegion: true
 
 #The cost of creating a Region
@@ -119,8 +119,8 @@ ChangeRegionNameCost: 100
 #Allow non-adjacent chunks to be claimed
 RegionAllowNonAdjacentChunks: false
 
-#Allow non-adjacent chunks to be claimed for kingdoms
-KingdomAllowNonAdjacentChunks: false
+#Allow non-adjacent chunks to be claimed for nations
+NationAllowNonAdjacentChunks: false
 
 #Notify if a player from an enemy territory enters
 notifyEnemyEnterRegion: true
@@ -226,10 +226,10 @@ events:
   REGION_DELETED:
     BROADCAST: "ALL"
     NEWSLETTER: "ALL"
-  KINGDOM_CREATED:
+  NATION_CREATED:
     BROADCAST: "ALL"
     NEWSLETTER: "ALL"
-  KINGDOM_DELETED:
+  NATION_DELETED:
     BROADCAST: "ALL"
     NEWSLETTER: "ALL"
   TERRITORY_VASSAL_PROPOSAL:
@@ -617,7 +617,7 @@ database:
 worldguard_override_wilderness: true
 worldguard_override_town: false
 worldguard_override_region: false
-worldguard_override_kingdom: false
+worldguard_override_nation: false
 worldguard_override_landmark: false
 
 ## PlaceholderAPI

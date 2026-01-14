@@ -85,7 +85,7 @@ language:
   RELATION_ALLIANCE_NAME: "Allianse"
   RELATION_NON_AGGRESSION_NAME: "Ikke-aggresjon"
   RELATION_EMBARGO_NAME: "Embargo"
-  GUI_KINGDOM_ICON: "§aKongerike"
+  GUI_NATION_ICON: "§aKongerike"
   GUI_REGION_ICON: "§aRegion"
   GUI_REGION_ICON_DESC1_NO_REGION: "§fOpprett eller se på regioner"
   GUI_TOWN_ICON: "§aBy"

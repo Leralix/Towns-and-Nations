@@ -4,7 +4,7 @@ public enum ChunkType {
 
     TOWN("town"),
     REGION("region"),
-    KINGDOM("kingdom");
+    NATION("nation");
 
     private final String name;
     ChunkType(String name) {

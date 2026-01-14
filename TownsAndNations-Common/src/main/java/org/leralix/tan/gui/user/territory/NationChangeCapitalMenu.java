@@ -2,7 +2,7 @@ package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.KingdomData;
+import org.leralix.tan.dataclass.territory.NationData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.gui.IteratorGUI;
@@ -12,26 +12,26 @@ import org.leralix.tan.lang.Lang;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KingdomChangeCapitalMenu extends IteratorGUI {
+public class NationChangeCapitalMenu extends IteratorGUI {
 
-    private final KingdomData kingdomData;
+    private final NationData nationData;
 
-    public KingdomChangeCapitalMenu(Player player, KingdomData kingdomData) {
-        super(player, Lang.HEADER_CHANGE_KINGDOM_CAPITAL, 6);
-        this.kingdomData = kingdomData;
+    public NationChangeCapitalMenu(Player player, NationData nationData) {
+        super(player, Lang.HEADER_CHANGE_NATION_CAPITAL, 6);
+        this.nationData = nationData;
         open();
     }
 
     @Override
     public void open() {
-        iterator(getCandidates(), p -> new KingdomSettingsMenu(player, kingdomData));
+        iterator(getCandidates(), p -> new NationSettingsMenu(player, nationData));
         gui.open(player);
     }
 
     private List<GuiItem> getCandidates() {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
-        for (TerritoryData territory : kingdomData.getVassals()) {
+        for (TerritoryData territory : nationData.getVassals()) {
             if (!(territory instanceof RegionData regionData)) {
                 continue;
             }
@@ -43,10 +43,10 @@ public class KingdomChangeCapitalMenu extends IteratorGUI {
 
                                 new ConfirmMenu(
                                         player,
-                                        Lang.GUI_CONFIRM_CHANGE_KINGDOM_CAPITAL.get(regionData.getName()),
+                                        Lang.GUI_CONFIRM_CHANGE_NATION_CAPITAL.get(regionData.getName()),
                                         () -> {
-                                            kingdomData.setCapital(regionData.getID());
-                                            new KingdomSettingsMenu(player, kingdomData);
+                                            nationData.setCapital(regionData.getID());
+                                            new NationSettingsMenu(player, nationData);
                                         },
                                         this::open
                                 );

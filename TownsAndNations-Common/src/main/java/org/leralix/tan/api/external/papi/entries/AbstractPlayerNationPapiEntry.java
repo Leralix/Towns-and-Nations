@@ -6,9 +6,9 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
-public abstract class AbstractPlayerKingdomPapiEntry extends PapiEntry {
+public abstract class AbstractPlayerNationPapiEntry extends PapiEntry {
 
-    protected AbstractPlayerKingdomPapiEntry(String identifier) {
+    protected AbstractPlayerNationPapiEntry(String identifier) {
         super(identifier);
     }
 
@@ -21,12 +21,12 @@ public abstract class AbstractPlayerKingdomPapiEntry extends PapiEntry {
             return PLAYER_NOT_FOUND;
         }
 
-        if (!tanPlayer.hasKingdom()) {
-            return Lang.NO_KINGDOM.get(tanPlayer);
+        if (!tanPlayer.hasNation()) {
+            return Lang.NO_NATION.get(tanPlayer);
         }
 
-        return getDataForKingdomPlayer(tanPlayer);
+        return getDataForNationPlayer(tanPlayer);
     }
 
-    protected abstract String getDataForKingdomPlayer(ITanPlayer tanPlayer);
+    protected abstract String getDataForNationPlayer(ITanPlayer tanPlayer);
 }

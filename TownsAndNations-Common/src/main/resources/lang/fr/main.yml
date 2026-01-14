@@ -264,7 +264,7 @@ language:
   GUI_SERVER_TIME: "§aDate"
   CURRENT_SERVER_TIME: "§fHeure du serveur : §e{0}"
   CURRENT_PLAYER_TIME: "§fHeure du Joueur : §e{0}"
-  GUI_KINGDOM_ICON: "§aRoyaume"
+  GUI_NATION_ICON: "§aRoyaume"
   GUI_REGION_ICON: "§aRégion"
   GUI_REGION_ICON_DESC1_REGION: "§fRégion actuelle : {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fRang : {0}"

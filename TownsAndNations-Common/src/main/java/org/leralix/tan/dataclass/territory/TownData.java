@@ -21,7 +21,10 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.PlayerTaxTransaction;
-import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.upgrade.rewards.numeric.TownPlayerCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.graphic.PrefixUtil;
@@ -173,8 +176,10 @@ public class TownData extends TerritoryData {
     protected Collection<TerritoryData> getOverlords() {
         List<TerritoryData> overlords = new ArrayList<>();
 
-        if (haveOverlord()) {
-            RegionData regionData = getRegion();
+        var optRegion = getRegion();
+
+        if (optRegion.isPresent()) {
+            RegionData regionData = optRegion.get();
             overlords.add(regionData);
             regionData.getOverlord().ifPresent(overlords::add);
         }
@@ -312,8 +317,12 @@ public class TownData extends TerritoryData {
         return Optional.ofNullable(capitalLocation);
     }
 
-    public RegionData getRegion() {
-        return RegionDataStorage.getInstance().get(this.overlordID);
+    public Optional<RegionData> getRegion() {
+        var optRegion = getOverlord();
+        if(optRegion.isPresent() && optRegion.get() instanceof RegionData regionData){
+            return Optional.of(regionData);
+        }
+        return Optional.empty();
     }
 
 
@@ -450,10 +459,7 @@ public class TownData extends TerritoryData {
     public synchronized void delete() {
         super.delete();
 
-        if (haveOverlord()) {
-            RegionData regionData = getRegion();
-            regionData.removeVassal(this);
-        }
+        getRegion().ifPresent(regionData -> regionData.removeVassal(this));
 
         removeAllLandmark(); //Remove all Landmark from the deleted town
         removeAllProperty(); //Remove all Property from the deleted town

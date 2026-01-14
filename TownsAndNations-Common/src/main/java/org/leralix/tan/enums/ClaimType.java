@@ -7,7 +7,7 @@ public enum ClaimType {
 
     TOWN(Lang.MAP_TOWN, "TOWN"),
     REGION(Lang.MAP_REGION, "REGION"),
-    KINGDOM(Lang.MAP_KINGDOM, "KINGDOM");
+    NATION(Lang.MAP_NATION, "NATION");
 
     private final Lang buttonName;
     private final String buttonCommand;
@@ -36,7 +36,7 @@ public enum ClaimType {
 
     static {
         TOWN.setNextType(REGION);
-        REGION.setNextType(KINGDOM);
-        KINGDOM.setNextType(TOWN);
+        REGION.setNextType(NATION);
+        NATION.setNextType(TOWN);
     }
 }

@@ -38,12 +38,12 @@ public class AdminMainMenu extends BasicGui {
     private GuiItem getNationButton() {
         if (!org.leralix.tan.utils.constants.Constants.enableNation()) {
             return iconManager.get(IconKey.NATION_BASE_ICON)
-                    .setName(Lang.GUI_KINGDOM_ICON.get(langType))
+                    .setName(Lang.GUI_NATION_ICON.get(langType))
                     .setDescription(Lang.GUI_WARNING_STILL_IN_DEV.get())
                     .asGuiItem(player, langType);
         }
         return iconManager.get(IconKey.NATION_BASE_ICON)
-                .setName(Lang.GUI_KINGDOM_ICON.get(langType))
+                .setName(Lang.GUI_NATION_ICON.get(langType))
                 .setAction(action -> new AdminBrowseNation(player))
                 .asGuiItem(player, langType);
     }

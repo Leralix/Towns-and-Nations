@@ -51,7 +51,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
         registerEntry(new OtherPlayerTownName());
         registerEntry(new OtherPlayerTownTag());
         registerEntry(new OtherPlayerRegionName());
-        registerEntry(new OtherPlayerKingdomName());
+        registerEntry(new OtherPlayerNationName());
         registerEntry(new OtherPlayerTownColoredName());
         registerEntry(new OtherPlayerChatMode());
         registerEntry(new PlayerBalance());
@@ -62,11 +62,11 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
         registerEntry(new PlayerRegionBalance());
         registerEntry(new PlayerRegionChunkActualQuantity());
         registerEntry(new PlayerRegionName());
-        registerEntry(new PlayerKingdomBalance());
-        registerEntry(new PlayerKingdomChunkActualQuantity());
-        registerEntry(new PlayerKingdomName());
-        registerEntry(new PlayerKingdomRankColoredName());
-        registerEntry(new PlayerKingdomRankName());
+        registerEntry(new PlayerNationBalance());
+        registerEntry(new PlayerNationChunkActualQuantity());
+        registerEntry(new PlayerNationName());
+        registerEntry(new PlayerNationRankColoredName());
+        registerEntry(new PlayerNationRankName());
         registerEntry(new PlayerTownBalance());
         registerEntry(new PlayerTownChunkActualQuantity());
         registerEntry(new PlayerTownChunkMaxQuantity());

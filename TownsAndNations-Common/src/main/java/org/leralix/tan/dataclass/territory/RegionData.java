@@ -30,10 +30,8 @@ import java.util.*;
 
 public class RegionData extends TerritoryData {
 
-
     private String leaderID;
     private String capitalID;
-    private String nationID;
     private final Set<String> townsInRegion;
 
     public RegionData(String id, String name, ITanPlayer owner) {
@@ -41,7 +39,6 @@ public class RegionData extends TerritoryData {
         TownData ownerTown = owner.getTown();
 
         this.capitalID = ownerTown.getID();
-        this.nationID = null;
 
         this.townsInRegion = new HashSet<>();
 
@@ -158,8 +155,9 @@ public class RegionData extends TerritoryData {
 
     @Override
     public void removeOverlordPrivate() {
-        this.overlordID = null;
-        this.nationID = null;
+        for (ITanPlayer tanPlayer : getITanPlayerList()) {
+            tanPlayer.setNationRankID(null);
+        }
     }
 
     @Override
@@ -291,4 +289,12 @@ public class RegionData extends TerritoryData {
         budget.addProfitLine(new SubjectTaxLine(this));
     }
 
+    public Optional<NationData> getNation() {
+        var optNation = getOverlord();
+        if (optNation.isPresent() && optNation.get() instanceof NationData nationData) {
+            return Optional.of(nationData);
+        }
+        return Optional.empty();
+
+    }
 }

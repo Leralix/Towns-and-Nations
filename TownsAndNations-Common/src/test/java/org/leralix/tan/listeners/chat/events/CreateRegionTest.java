@@ -44,7 +44,8 @@ class CreateRegionTest {
         createRegion.execute(tanPlayer.getPlayer(), regionName);
 
         assertTrue(townData.haveOverlord());
-        RegionData regionData = townData.getRegion();
+        assertTrue(townData.getRegion().isPresent());
+        RegionData regionData = townData.getRegion().get();
         assertFalse(regionData.haveOverlord());
         assertEquals(regionName, regionData.getName());
         assertEquals(1, regionData.getSubjects().size());

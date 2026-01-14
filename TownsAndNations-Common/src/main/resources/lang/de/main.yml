@@ -230,7 +230,7 @@ language:
   CANNOT_BE_MODIFIED: "§cDies kann nicht bearbeitet werden"
   #Main menu
   GUI_SERVER_TIME: "§aDatum"
-  GUI_KINGDOM_ICON: "§aKönigreich"
+  GUI_NATION_ICON: "§aKönigreich"
   GUI_REGION_ICON: "§aRegion"
   GUI_REGION_ICON_DESC1_REGION: "§fAktuelle Region: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fRang der Region: {0}"

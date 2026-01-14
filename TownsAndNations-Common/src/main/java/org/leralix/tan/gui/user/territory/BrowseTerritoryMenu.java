@@ -6,7 +6,6 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.BrowseScope;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.KingdomDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;

@@ -1,13 +1,13 @@
 package org.leralix.tan.api.internal.managers;
 
+import org.leralix.tan.api.internal.wrappers.NationDataWrapper;
 import org.leralix.tan.api.internal.wrappers.RegionDataWrapper;
-import org.leralix.tan.api.internal.wrappers.KingdomDataWrapper;
 import org.leralix.tan.api.internal.wrappers.TownDataWrapper;
-import org.leralix.tan.storage.stored.KingdomDataStorage;
+import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.tan.api.getters.TanTerritoryManager;
-import org.tan.api.interfaces.TanKingdom;
+import org.tan.api.interfaces.TanNation;
 import org.tan.api.interfaces.TanRegion;
 import org.tan.api.interfaces.TanTown;
 
@@ -23,14 +23,14 @@ import java.util.Optional;
 public class TerritoryManager implements TanTerritoryManager {
     private final TownDataStorage townDataStorageInstance;
     private final RegionDataStorage regionDataStorageInstance;
-    private final KingdomDataStorage kingdomDataStorageInstance;
+    private final NationDataStorage nationDataStorageInstance;
 
     private static TerritoryManager instance;
 
     private TerritoryManager() {
         townDataStorageInstance = TownDataStorage.getInstance();
         regionDataStorageInstance = RegionDataStorage.getInstance();
-        kingdomDataStorageInstance = KingdomDataStorage.getInstance();
+        nationDataStorageInstance = NationDataStorage.getInstance();
     }
 
     public static TerritoryManager getInstance() {
@@ -80,21 +80,21 @@ public class TerritoryManager implements TanTerritoryManager {
     }
 
     @Override
-    public Optional<TanKingdom> getKingdom(String kingdomID) {
-        KingdomDataWrapper wrapper = KingdomDataWrapper.of(kingdomDataStorageInstance.get(kingdomID));
+    public Optional<TanNation> getNation(String nationID) {
+        NationDataWrapper wrapper = NationDataWrapper.of(nationDataStorageInstance.get(nationID));
         return Optional.ofNullable(wrapper);
     }
 
     @Override
-    public Optional<TanKingdom> getKingdomByName(String kingdomName) {
+    public Optional<TanNation> getNationByName(String nationName) {
         return Optional.empty();
     }
 
     @Override
-    public Collection<TanKingdom> getKingdoms() {
-        return kingdomDataStorageInstance.getAll().values().stream()
-                .map(KingdomDataWrapper::of)
-                .map(TanKingdom.class::cast)
+    public Collection<TanNation> getNations() {
+        return nationDataStorageInstance.getAll().values().stream()
+                .map(NationDataWrapper::of)
+                .map(TanNation.class::cast)
                 .toList();
     }
 }

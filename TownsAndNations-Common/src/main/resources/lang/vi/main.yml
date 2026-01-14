@@ -220,7 +220,7 @@ language:
   GUI_GENERIC_CLICK_TO_SHOW: "§7▶Bấm để hiển thị"
   GUI_GENERIC_CLICK_TO_RENAME: "§7▶ Bấm để đổi tên"
   CANNOT_BE_MODIFIED: "§cĐiều này không thể sửa đổi"
-  GUI_KINGDOM_ICON: "§aVương quốc"
+  GUI_NATION_ICON: "§aVương quốc"
   GUI_REGION_ICON: "§aVùng"
   GUI_REGION_ICON_DESC1_REGION: "§fVùng hiện tại: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fHạng vùng: {0}"

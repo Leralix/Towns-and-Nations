@@ -15,13 +15,13 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.territory.ChunkUtil;
 
-public class KingdomClaimedChunk extends TerritoryChunk {
+public class NationClaimedChunk extends TerritoryChunk {
 
-    public KingdomClaimedChunk(Chunk chunk, String owner) {
+    public NationClaimedChunk(Chunk chunk, String owner) {
         super(chunk, owner);
     }
 
-    public KingdomClaimedChunk(int x, int z, String worldUUID, String ownerID) {
+    public NationClaimedChunk(int x, int z, String worldUUID, String ownerID) {
         super(x, z, worldUUID, ownerID);
     }
 
@@ -38,12 +38,12 @@ public class KingdomClaimedChunk extends TerritoryChunk {
 
     @Override
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
-        TerritoryData kingdomData = getOwner();
-        if (kingdomData == null) {
+        TerritoryData nationData = getOwner();
+        if (nationData == null) {
             return;
         }
 
-        TerritoryEnterMessageUtil.sendEnterTerritoryMessage(player, kingdomData, displayTerritoryColor);
+        TerritoryEnterMessageUtil.sendEnterTerritoryMessage(player, nationData, displayTerritoryColor);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class KingdomClaimedChunk extends TerritoryChunk {
 
     @Override
     public ChunkType getType() {
-        return ChunkType.KINGDOM;
+        return ChunkType.NATION;
     }
 
     @Override

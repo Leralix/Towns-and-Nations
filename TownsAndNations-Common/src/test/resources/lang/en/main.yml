@@ -284,8 +284,8 @@ language:
   GUI_INCREASE_10PERCENT_DESC: "§fShift + click : §a+10%"
   GUI_DECREASE_1PERCENT_DESC: "§fClick : §c-1%"
   GUI_DECREASE_10PERCENT_DESC: "§fShift + click : §c-10%"
-  GUI_KINGDOM_ICON: "§aKingdom"
-  GUI_KINGDOM_ICON_DESC1: "§fIn development"
+  GUI_NATION_ICON: "§aNation"
+  GUI_NATION_ICON_DESC1: "§fIn development"
   GUI_REGION_ICON: "§aRegion"
   GUI_REGION_ICON_DESC1_REGION: "§fCurrent region: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fRegion rank: {0}"
@@ -869,7 +869,7 @@ language:
   #PlaceHolderAPI
   NO_TOWN: "No town"
   NO_REGION: "No region"
-  NO_KINGDOM: "No kingdom"
+  NO_NATION: "No nation"
   #Wars
   BASIC_ATTACK_NAME: "§aWar of {0} against {1}"
   ATTACK_ICON_DESC_1: "§fMain attacker : {0}"

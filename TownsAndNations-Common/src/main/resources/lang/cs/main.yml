@@ -260,7 +260,7 @@ language:
   GUI_SERVER_TIME: "§aDatum"
   CURRENT_SERVER_TIME: "§fČas serveru: §e{0}"
   CURRENT_PLAYER_TIME: "§fČas hráče §e{0}"
-  GUI_KINGDOM_ICON: "§aKrálovství"
+  GUI_NATION_ICON: "§aKrálovství"
   GUI_REGION_ICON: "§aRegion"
   GUI_REGION_ICON_DESC1_REGION: "§fAktuální region: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fHodnocení regionu: {0}"

@@ -185,7 +185,7 @@ language:
   RELATION_EMBARGO_NAME: "คว่ำบาตร"
   RELATION_HOSTILE_NAME: "เป็นศัตรู"
   CANNOT_BE_MODIFIED: "§cไม่สามารถแก้ไขได้"
-  GUI_KINGDOM_ICON: "§aอาณาจักร"
+  GUI_NATION_ICON: "§aอาณาจักร"
   GUI_REGION_ICON: "§aภูมิภาค"
   GUI_REGION_ICON_DESC1_REGION: "§fภูมิภาคปัจจุบัน: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fอันดับภูมิภาค: {0}"

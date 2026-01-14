@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.KingdomData;
+import org.leralix.tan.dataclass.territory.NationData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.ChatScope;
@@ -26,7 +26,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
     private static final String TOWN = "town";
     private static final String ALLIANCE = "alliance";
     private static final String REGION = "region";
-    private static final String KINGDOM = "kingdom";
+    private static final String NATION = "nation";
     private static final String GLOBAL = "global";
 
     @Override
@@ -45,7 +45,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tan chat <global|alliance|kingdom|region|town> [message]";
+        return "/tan chat <global|alliance|nation|region|town> [message]";
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
             suggestions.add(TOWN);
             suggestions.add(ALLIANCE);
             suggestions.add(REGION);
-            suggestions.add(KINGDOM);
+            suggestions.add(NATION);
         }
         return suggestions;
     }
@@ -104,12 +104,12 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
                 }
                 setScope(player, langType, channelName, currentScope, ChatScope.REGION);
                 return;
-            case KINGDOM:
-                if (!tanPlayer.hasKingdom()) {
-                    TanChatUtils.message(player, Lang.PLAYER_NO_KINGDOM.get(langType));
+            case NATION:
+                if (!tanPlayer.hasNation()) {
+                    TanChatUtils.message(player, Lang.PLAYER_NO_NATION.get(langType));
                     return;
                 }
-                setScope(player, langType, channelName, currentScope, ChatScope.KINGDOM);
+                setScope(player, langType, channelName, currentScope, ChatScope.NATION);
                 return;
             default:
                 TanChatUtils.message(player, Lang.CHAT_SCOPE_NOT_FOUND.get(langType, channelName));
@@ -141,8 +141,8 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
             case REGION:
                 sendRegionMessage(player, tanPlayer, langType, message);
                 return;
-            case KINGDOM:
-                sendKingdomMessage(player, tanPlayer, langType, message);
+            case NATION:
+                sendNationMessage(player, tanPlayer, langType, message);
                 return;
             case TOWN:
                 sendTownMessage(player, tanPlayer, langType, message);
@@ -195,18 +195,18 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
         regionData.broadCastMessage(Lang.CHAT_SCOPE_REGION_MESSAGE.get(regionData.getName(), player.getName(), message));
     }
 
-    private static void sendKingdomMessage(Player player, ITanPlayer tanPlayer, LangType langType, String message) {
-        if (!tanPlayer.hasKingdom()) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_KINGDOM.get(langType));
+    private static void sendNationMessage(Player player, ITanPlayer tanPlayer, LangType langType, String message) {
+        if (!tanPlayer.hasNation()) {
+            TanChatUtils.message(player, Lang.PLAYER_NO_NATION.get(langType));
             return;
         }
 
-        KingdomData kingdomData = tanPlayer.getKingdom();
-        if (kingdomData == null) {
+        NationData nationData = tanPlayer.getNation();
+        if (nationData == null) {
             return;
         }
 
-        kingdomData.broadCastMessage(Lang.CHAT_SCOPE_KINGDOM_MESSAGE.get(kingdomData.getName(), player.getName(), message));
+        nationData.broadCastMessage(Lang.CHAT_SCOPE_NATION_MESSAGE.get(nationData.getName(), player.getName(), message));
     }
 
     private static void sendTownMessage(Player player, ITanPlayer tanPlayer, LangType langType, String message) {

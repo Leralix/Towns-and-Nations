@@ -25,8 +25,8 @@ public final class TerritoryCommandUtil {
         if (tanPlayer.hasRegion()) {
             suggestions.add("region");
         }
-        if (tanPlayer.hasKingdom()) {
-            suggestions.add("kingdom");
+        if (tanPlayer.hasNation()) {
+            suggestions.add("nation");
         }
         return suggestions;
     }
@@ -46,12 +46,12 @@ public final class TerritoryCommandUtil {
             }
             return tanPlayer.getRegion();
         }
-        if (territoryArg.equals("kingdom")) {
-            if (!tanPlayer.hasKingdom()) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_KINGDOM.get(player));
+        if (territoryArg.equals("nation")) {
+            if (!tanPlayer.hasNation()) {
+                TanChatUtils.message(player, Lang.PLAYER_NO_NATION.get(player));
                 return null;
             }
-            return tanPlayer.getKingdom();
+            return tanPlayer.getNation();
         }
 
         TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(syntax).getDefault());

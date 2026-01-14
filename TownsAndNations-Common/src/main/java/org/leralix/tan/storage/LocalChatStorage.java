@@ -2,12 +2,11 @@ package org.leralix.tan.storage;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.KingdomData;
+import org.leralix.tan.dataclass.territory.NationData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.ChatScope;
@@ -65,8 +64,8 @@ public class LocalChatStorage {
             case REGION:
                 broadcastRegionMessage(player, tanPlayer, message, sendLogsToConsole);
                 return;
-            case KINGDOM:
-                broadcastKingdomMessage(player, tanPlayer, message, sendLogsToConsole);
+            case NATION:
+                broadcastNationMessage(player, tanPlayer, message, sendLogsToConsole);
                 return;
             case ALLIANCE:
                 broadcastAllianceMessage(player, tanPlayer, message, sendLogsToConsole);
@@ -100,15 +99,15 @@ public class LocalChatStorage {
          logIfNeeded(messageFormat, sendLogsToConsole);
      }
 
-     private static void broadcastKingdomMessage(Player player, ITanPlayer tanPlayer, String message, boolean sendLogsToConsole) {
-         if (!tanPlayer.hasKingdom()) {
-             TanChatUtils.message(player, Lang.NO_KINGDOM.get(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
+     private static void broadcastNationMessage(Player player, ITanPlayer tanPlayer, String message, boolean sendLogsToConsole) {
+         if (!tanPlayer.hasNation()) {
+             TanChatUtils.message(player, Lang.NO_NATION.get(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
              return;
          }
 
-         KingdomData kingdomData = tanPlayer.getKingdom();
-         FilledLang messageFormat = Lang.CHAT_SCOPE_KINGDOM_MESSAGE.get(kingdomData.getName(), player.getName(), message);
-         kingdomData.broadCastMessage(messageFormat);
+         NationData nationData = tanPlayer.getNation();
+         FilledLang messageFormat = Lang.CHAT_SCOPE_NATION_MESSAGE.get(nationData.getName(), player.getName(), message);
+         nationData.broadCastMessage(messageFormat);
          logIfNeeded(messageFormat, sendLogsToConsole);
      }
 

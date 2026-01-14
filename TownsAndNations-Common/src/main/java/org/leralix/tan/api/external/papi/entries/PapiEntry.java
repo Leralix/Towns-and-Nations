@@ -2,11 +2,11 @@ package org.leralix.tan.api.external.papi.entries;
 
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.territory.KingdomData;
+import org.leralix.tan.dataclass.territory.NationData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.storage.stored.KingdomDataStorage;
+import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
@@ -55,9 +55,9 @@ public abstract class PapiEntry {
                 return regionData;
             }
         }
-        for(KingdomData kingdomData : KingdomDataStorage.getInstance().getAll().values()){
-            if(kingdomData.getName().equalsIgnoreCase(name)){
-                return kingdomData;
+        for(NationData nationData : NationDataStorage.getInstance().getAll().values()){
+            if(nationData.getName().equalsIgnoreCase(name)){
+                return nationData;
             }
         }
         return null;

@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.KingdomData;
+import org.leralix.tan.dataclass.territory.NationData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.lang.Lang;
@@ -16,14 +16,14 @@ import java.util.UUID;
 
 import static org.leralix.lib.data.SoundEnum.GOOD;
 
-public class SelectNewOwnerForKingdomMenu extends IteratorGUI {
+public class SelectNewOwnerForNationMenu extends IteratorGUI {
 
-    private final KingdomData kingdomData;
+    private final NationData nationData;
     private final Runnable backMenu;
 
-    public SelectNewOwnerForKingdomMenu(Player player, KingdomData kingdomData, Runnable backMenu) {
+    public SelectNewOwnerForNationMenu(Player player, NationData nationData, Runnable backMenu) {
         super(player, Lang.HEADER_CHANGE_OWNERSHIP, 3);
-        this.kingdomData = kingdomData;
+        this.nationData = nationData;
         this.backMenu = backMenu;
         open();
     }
@@ -37,30 +37,30 @@ public class SelectNewOwnerForKingdomMenu extends IteratorGUI {
     private List<GuiItem> getCandidates() {
         List<GuiItem> guiItems = new ArrayList<>();
 
-        for (String playerUUID : kingdomData.getPlayerIDList()) {
-            if (kingdomData.isLeader(playerUUID)) {
+        for (String playerUUID : nationData.getPlayerIDList()) {
+            if (nationData.isLeader(playerUUID)) {
                 continue;
             }
 
-            OfflinePlayer kingdomPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerUUID));
+            OfflinePlayer nationPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerUUID));
 
             guiItems.add(
-                    iconManager.get(kingdomPlayer)
-                            .setName(kingdomPlayer.getName())
+                    iconManager.get(nationPlayer)
+                            .setName(nationPlayer.getName())
                             .setDescription(
-                                    Lang.GUI_KINGDOM_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1.get(kingdomPlayer.getName()),
-                                    Lang.GUI_KINGDOM_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2.get()
+                                    Lang.GUI_NATION_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1.get(nationPlayer.getName()),
+                                    Lang.GUI_NATION_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2.get()
                             )
                             .setAction(action -> {
                                 action.setCancelled(true);
 
                                 new ConfirmMenu(
                                         player,
-                                        Lang.GUI_CONFIRM_CHANGE_KINGDOM_LEADER.get(kingdomPlayer.getName()),
+                                        Lang.GUI_CONFIRM_CHANGE_NATION_LEADER.get(nationPlayer.getName()),
                                         () -> {
-                                            kingdomData.setLeaderID(kingdomPlayer.getUniqueId().toString());
-                                            kingdomData.broadcastMessageWithSound(Lang.GUI_KINGDOM_SETTINGS_KINGDOM_CHANGE_LEADER_BROADCAST.get(kingdomPlayer.getName()), GOOD);
-                                            TanChatUtils.message(player, Lang.GUI_KINGDOM_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(tanPlayer, kingdomPlayer.getName()));
+                                            nationData.setLeaderID(nationPlayer.getUniqueId().toString());
+                                            nationData.broadcastMessageWithSound(Lang.GUI_NATION_SETTINGS_NATION_CHANGE_LEADER_BROADCAST.get(nationPlayer.getName()), GOOD);
+                                            TanChatUtils.message(player, Lang.GUI_NATION_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(tanPlayer, nationPlayer.getName()));
 
                                             backMenu.run();
                                         },

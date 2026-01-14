@@ -4,8 +4,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.dataclass.territory.KingdomData;
-import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -17,16 +15,14 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
+import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.gui.user.territory.relation.OpenDiplomacyMenu;
 import org.leralix.tan.gui.user.territory.upgrade.UpgradeMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
-import org.leralix.tan.gui.user.MainMenu;
-import org.leralix.tan.utils.deprecated.GuiUtil;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -152,6 +148,15 @@ public abstract class TerritoryMenu extends BasicGui {
                 .setDescription(Lang.GUI_BUILDING_MENU_DESC1.get())
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_PROPERTY))
                 .setAction(event -> new BuildingMenu(player, territoryData, this))
+                .asGuiItem(player, langType);
+    }
+
+    GuiItem createSettingsButton(FilledLang filledLang, Consumer<Player> action){
+        return iconManager.get(IconKey.TERRITORY_SETTINGS_ICON)
+                .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(langType))
+                .setDescription(filledLang)
+                .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
+                .setAction(event -> action.accept(player))
                 .asGuiItem(player, langType);
     }
 

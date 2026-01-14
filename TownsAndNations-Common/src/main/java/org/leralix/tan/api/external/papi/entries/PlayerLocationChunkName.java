@@ -29,7 +29,7 @@ public class PlayerLocationChunkName extends PapiEntry{
         return switch (claimedChunk){
             case TownClaimedChunk townClaimedChunk -> townClaimedChunk.getTown().getName();
             case RegionClaimedChunk regionClaimedChunk -> regionClaimedChunk.getRegion().getName();
-            case KingdomClaimedChunk kingdomClaimedChunk -> kingdomClaimedChunk.getOwner().getName();
+            case NationClaimedChunk nationClaimedChunk -> nationClaimedChunk.getOwner().getName();
             case LandmarkClaimedChunk landmarkClaimedChunk -> landmarkClaimedChunk.getLandMark().getName();
             case WildernessChunk wildernessChunk -> wildernessChunk.getName();
             default -> throw new IllegalStateException("Unexpected value: " + claimedChunk);

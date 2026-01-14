@@ -19,7 +19,6 @@ import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
@@ -97,7 +96,7 @@ public abstract class AbstractTransaction {
      * @return  The name of the ID with the correct color code.
      */
     protected @NotNull String getColoredName(String id, LangType langType){
-        if(id.startsWith("T") || id.startsWith("R") || id.startsWith("K")){
+        if(id.startsWith("T") || id.startsWith("R") || id.startsWith("N")){
             return getTerritoryName(id, langType);
         }
         else {

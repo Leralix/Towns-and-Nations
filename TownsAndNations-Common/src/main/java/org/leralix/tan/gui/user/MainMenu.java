@@ -5,7 +5,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.KingdomData;
+import org.leralix.tan.dataclass.territory.NationData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -82,7 +82,7 @@ public class MainMenu extends BasicGui {
         List<FilledLang> description = new ArrayList<>();
 
         if (tanPlayer.hasNation()) {
-            org.leralix.tan.dataclass.territory.NationData nationData = tanPlayer.getNation();
+            NationData nationData = tanPlayer.getNation();
             description.add(Lang.GUI_NATION_ICON_DESC1_NATION.get(nationData.getColoredName()));
             description.add(Lang.GUI_NATION_ICON_DESC2_NATION.get(nationData.getRank(tanPlayer).getColoredName()));
         } else {
@@ -90,7 +90,7 @@ public class MainMenu extends BasicGui {
         }
 
         return iconManager.get(IconKey.NATION_BASE_ICON)
-                .setName(Lang.GUI_KINGDOM_ICON.get(tanPlayer))
+                .setName(Lang.GUI_NATION_ICON.get(tanPlayer))
                 .setDescription(description)
                 .setAction(action -> PlayerGUI.dispatchPlayerNation(player))
                 .asGuiItem(player, langType);

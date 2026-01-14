@@ -136,7 +136,7 @@ language:
   RELATION_NON_AGGRESSION_NAME: "Łagodny"
   RELATION_EMBARGO_NAME: "Embargo"
   RELATION_HOSTILE_NAME: "Wrogi"
-  GUI_KINGDOM_ICON: "§aKrólestwo"
+  GUI_NATION_ICON: "§aKrólestwo"
   GUI_REGION_ICON: "§aRegion"
   GUI_REGION_ICON_DESC1_NO_REGION: "§fStwórz lub przeglądaj regiony"
   GUI_TOWN_ICON: "§aMiasto"

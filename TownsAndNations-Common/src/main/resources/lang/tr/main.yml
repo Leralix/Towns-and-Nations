@@ -210,7 +210,7 @@ language:
   RELATION_EMBARGO_NAME: "Ambargo"
   RELATION_HOSTILE_NAME: "Düşman"
   CANNOT_BE_MODIFIED: "§cBu değiştirilemez"
-  GUI_KINGDOM_ICON: "§aKrallık"
+  GUI_NATION_ICON: "§aKrallık"
   GUI_REGION_ICON: "§aBölge"
   GUI_REGION_ICON_DESC1_REGION: "§fMevcut bölge: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fBölge rütbesi: {0}"

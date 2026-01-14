@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.events.EventManager;
@@ -139,12 +138,11 @@ public class TownSettingsMenu extends SettingsMenus {
                         return;
                     }
 
-                    if (townData.haveOverlord()) {
-                        RegionData regionData = townData.getRegion();
-                        if (regionData.isLeader(tanPlayer)) {
-                            TanChatUtils.message(player, Lang.CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER.get(tanPlayer), NOT_ALLOWED);
-                        }
+                    var optOverlord = territoryData.getOverlord();
+                    if (optOverlord.isPresent() && optOverlord.get().isLeader(tanPlayer)) {
+                        TanChatUtils.message(player, Lang.CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER.get(tanPlayer), NOT_ALLOWED);
                     }
+
 
                     new ConfirmMenu(
                             player,
