@@ -23,6 +23,9 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.text.TanChatUtils;
 
+import org.leralix.tan.gui.user.MainMenu;
+import org.leralix.tan.utils.deprecated.GuiUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -152,11 +155,28 @@ public abstract class TerritoryMenu extends BasicGui {
                 .asGuiItem(player, langType);
     }
 
-    protected GuiItem createSettingsButton(FilledLang description, Consumer<Player> openMenu) {
-        return IconManager.getInstance().get(IconKey.TERRITORY_SETTINGS_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(tanPlayer.getLang()))
-                .setDescription(description)
-                .setAction(event -> openMenu.accept(player))
-                .asGuiItem(player, langType);
+    protected void setupCommonLayout(Material glassColor) {
+        gui.setItem(1, 5, getTerritoryInfo());
+        gui.getFiller().fillTop(GuiUtil.getUnnamedItem(glassColor));
+
+        gui.setItem(2, 2, getTownTreasuryButton());
+        gui.setItem(2, 3, getMemberButton());
+        gui.setItem(2, 5, getBrowseButton());
+        gui.setItem(2, 6, getDiplomacyButton());
+        gui.setItem(2, 7, getLevelButton());
+
+        gui.setItem(3, 2, getBuildingButton());
+        gui.setItem(3, 3, getAttackButton());
+        gui.setItem(3, 4, getHierarchyButton());
+
+        gui.setItem(4, 1, GuiUtil.createBackArrow(player, MainMenu::new));
+    }
+
+    protected void setRow2Column4(GuiItem item) {
+        gui.setItem(2, 4, item);
+    }
+
+    protected void setRow3Column8(GuiItem item) {
+        gui.setItem(3, 8, item);
     }
 }

@@ -9,7 +9,7 @@ public enum BrowseScope implements DisplayableEnum {
     ALL(Lang.BROWSE_ALL_NAME),
     TOWNS(Lang.BROWSE_TOWNS_NAME),
     REGIONS(Lang.BROWSE_REGIONS_NAME),
-    KINGDOMS(Lang.BROWSE_KINGDOMS_NAME);
+    NATIONS(Lang.BROWSE_NATIONS_NAME);
 
     private final Lang name;
 

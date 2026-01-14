@@ -35,7 +35,8 @@ public class PlayerData implements ITanPlayer {
     private String TownId;
     private Integer townRankID;
     private Integer regionRankID;
-    private Integer kingdomRankID;
+    private String nationID;
+    private Integer nationRankID;
     private List<String> propertiesListID;
     private List<String> attackInvolvedIn;
     private LangType lang;
@@ -48,7 +49,8 @@ public class PlayerData implements ITanPlayer {
         this.TownId = null;
         this.townRankID = null;
         this.regionRankID = null;
-        this.kingdomRankID = null;
+        this.nationID = null;
+        this.nationRankID = null;
         this.propertiesListID = new ArrayList<>();
         this.attackInvolvedIn = new ArrayList<>();
     }
@@ -338,8 +340,8 @@ public class PlayerData implements ITanPlayer {
         if (hasRegion()) {
             territories.add(getRegion());
         }
-        if (hasKingdom()) {
-            territories.add(getKingdom());
+        if (hasNation()) {
+            territories.add(getNation());
         }
         return territories;
     }
@@ -372,8 +374,8 @@ public class PlayerData implements ITanPlayer {
         if(territoryData instanceof RegionData){
             setRegionRankID(defaultRankID);
         }
-        if(territoryData instanceof KingdomData){
-            setKingdomRankID(defaultRankID);
+        if(territoryData instanceof org.leralix.tan.dataclass.territory.NationData){
+            setNationRankID(defaultRankID);
         }
 
     }
@@ -398,6 +400,41 @@ public class PlayerData implements ITanPlayer {
         }
 
         return res;
+    }
+
+    @Override
+    public String getNationID() {
+        return this.nationID;
+    }
+
+    @Override
+    public org.leralix.tan.dataclass.territory.NationData getNation() {
+        if (nationID == null || !org.leralix.tan.utils.constants.Constants.enableNation()) {
+            return null;
+        }
+        return org.leralix.tan.storage.stored.NationDataStorage.getInstance().get(nationID);
+    }
+
+    @Override
+    public boolean hasNation() {
+        return nationID != null && org.leralix.tan.utils.constants.Constants.enableNation();
+    }
+
+    @Override
+    public RankData getNationRank() {
+        if (!hasNation())
+            return null;
+        return getNation().getRank(getNationRankID());
+    }
+
+    @Override
+    public Integer getNationRankID() {
+        return this.nationRankID;
+    }
+
+    @Override
+    public void setNationRankID(Integer rankID) {
+        this.nationRankID = rankID;
     }
 
 }

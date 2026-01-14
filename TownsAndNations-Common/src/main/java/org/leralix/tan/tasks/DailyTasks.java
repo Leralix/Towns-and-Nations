@@ -15,6 +15,8 @@ import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.TributePlayerDailyStorage;
+import org.leralix.tan.storage.stored.TributeVassalDailyStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.ArchiveUtil;
 
@@ -54,6 +56,9 @@ public class DailyTasks {
         for(RegionData regionData : RegionDataStorage.getInstance().getAll().values()){
             regionData.executeTasks();
         }
+
+        TributePlayerDailyStorage.getInstance().resetDaily();
+        TributeVassalDailyStorage.getInstance().resetDaily();
 
         clearOldTransaction();
         updatePlayerUsernames();

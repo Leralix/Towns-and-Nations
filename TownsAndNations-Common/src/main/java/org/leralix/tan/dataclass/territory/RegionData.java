@@ -120,24 +120,6 @@ public class RegionData extends TerritoryData {
     }
 
     @Override
-    public boolean haveOverlord() {
-        migrateLegacyOverlordIdIfNeeded();
-        return super.haveOverlord();
-    }
-
-    @Override
-    public Optional<TerritoryData> getOverlord() {
-        migrateLegacyOverlordIdIfNeeded();
-        return super.getOverlord();
-    }
-
-    @Override
-    public void setOverlord(TerritoryData overlord) {
-        super.setOverlord(overlord);
-        nationID = overlord == null ? null : overlord.getID();
-    }
-
-    @Override
     public void abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
 
         removeFromBalance(getClaimCost());
@@ -146,9 +128,10 @@ public class RegionData extends TerritoryData {
 
     @Override
     protected Collection<TerritoryData> getOverlords() {
-        List<TerritoryData> overlords = new ArrayList<>();
-        getOverlord().ifPresent(overlords::add);
-        return overlords;
+        if (!haveOverlord()) {
+            return new ArrayList<>();
+        }
+        return Collections.singletonList(getOverlord().orElse(null));
     }
 
     public List<TerritoryData> getSubjects() {
@@ -175,17 +158,8 @@ public class RegionData extends TerritoryData {
 
     @Override
     public void removeOverlordPrivate() {
-        // Kingdoms are not implemented yet
-        nationID = null;
-    }
-
-    private void migrateLegacyOverlordIdIfNeeded() {
-        if (overlordID == null && nationID != null) {
-            overlordID = nationID;
-        }
-        if (overlordID != null && nationID == null) {
-            nationID = overlordID;
-        }
+        this.overlordID = null;
+        this.nationID = null;
     }
 
     @Override

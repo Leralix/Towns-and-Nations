@@ -65,8 +65,8 @@ public class BrowseTerritoryMenu extends IteratorGUI {
             territoryList.addAll(TownDataStorage.getInstance().getAll().values());
         if(scope == BrowseScope.ALL || scope == BrowseScope.REGIONS)
             territoryList.addAll(RegionDataStorage.getInstance().getAll().values());
-        if(scope == BrowseScope.ALL || scope == BrowseScope.KINGDOMS)
-            territoryList.addAll(KingdomDataStorage.getInstance().getAll().values());
+        if(scope == BrowseScope.ALL || scope == BrowseScope.NATIONS && org.leralix.tan.utils.constants.Constants.enableNation())
+            territoryList.addAll(org.leralix.tan.storage.stored.NationDataStorage.getInstance().getAll().values());
 
         ArrayList<GuiItem> townGuiItems = new ArrayList<>();
 

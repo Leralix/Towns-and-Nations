@@ -94,6 +94,10 @@ KingdomDescSize: 55
 
 ChangeKingdomNameCost: 100
 
+tributeLimits:
+  enabled: false
+  perPlayerDailyLimit: 50000
+  perVassalDailyLimit: 400000
 
 ########################
 ##       Regions      ##
