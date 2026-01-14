@@ -20,11 +20,11 @@ jobs:
           java-version: '21'
           cache: gradle
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Build all jars
-        run: ./gradlew buildAllJars --no-daemon --console=plain
+        run: gradle buildAllJars --no-daemon --console=plain
 
       - name: Upload mc1.19 jar
         uses: actions/upload-artifact@v4
