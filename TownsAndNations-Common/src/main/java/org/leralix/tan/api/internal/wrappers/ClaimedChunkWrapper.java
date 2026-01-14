@@ -47,7 +47,11 @@ public class ClaimedChunkWrapper implements TanClaimedChunk {
 
     @Override
     public String getworldName() {
-        return claimedChunk.getWorld().getName();
+        var world = claimedChunk.getWorld();
+        if (world == null) {
+            return "";
+        }
+        return world.getName();
     }
 
     @Override
@@ -70,6 +74,9 @@ public class ClaimedChunkWrapper implements TanClaimedChunk {
 
     @Override
     public boolean canClaim(TanTerritory tanTerritory) {
+        if (tanTerritory == null) {
+            return false;
+        }
         TerritoryData territoryData = TerritoryUtil.getTerritory(tanTerritory.getID());
         if(territoryData != null){
             return claimedChunk.canTerritoryClaim(null, territoryData);
@@ -87,6 +94,9 @@ public class ClaimedChunkWrapper implements TanClaimedChunk {
         }
         if(tanTerritory instanceof TanRegion){
             NewClaimedChunkStorage.getInstance().claimRegionChunk(claimedChunk.getChunk(), tanTerritory.getID());
+        }
+        if(tanTerritory instanceof TanKingdom){
+            NewClaimedChunkStorage.getInstance().claimKingdomChunk(claimedChunk.getChunk(), tanTerritory.getID());
         }
     }
 

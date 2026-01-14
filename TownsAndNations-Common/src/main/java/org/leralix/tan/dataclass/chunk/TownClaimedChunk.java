@@ -66,15 +66,7 @@ public class TownClaimedChunk extends TerritoryChunk {
 
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
-        TextComponent name = displayTerritoryColor ? townTo.getCustomColoredName() : new TextComponent(townTo.getBaseColoredName());
-        String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(tanPlayer.getPlayer(), name.toLegacyText());
-        player.sendTitle("", message, 5, 40, 20);
-
-        TextComponent textComponent = new TextComponent(townTo.getDescription());
-        textComponent.setColor(ChatColor.GRAY);
-        textComponent.setItalic(true);
-
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textComponent);
+        TerritoryEnterMessageUtil.sendEnterTerritoryMessage(player, townTo, displayTerritoryColor);
 
 
         TownData playerTown = tanPlayer.getTown();
@@ -111,7 +103,7 @@ public class TownClaimedChunk extends TerritoryChunk {
 
     @Override
     public void notifyUpdate() {
-        if (!Constants.allowNonAdjacentChunksForTown()) {
+        if (!Constants.allowNonAdjacentChunksFor(getOwner())) {
             ChunkUtil.unclaimIfNoLongerSupplied(this);
         }
     }

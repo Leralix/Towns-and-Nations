@@ -51,15 +51,7 @@ public class RegionClaimedChunk extends TerritoryChunk {
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
         RegionData regionData = getRegion();
 
-        TextComponent name = displayTerritoryColor ? regionData.getCustomColoredName() : new TextComponent(regionData.getBaseColoredName());
-        String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(player, name.toLegacyText());
-        player.sendTitle("", message, 5, 40, 20);
-
-        TextComponent textComponent = new TextComponent(regionData.getDescription());
-        textComponent.setColor(ChatColor.GRAY);
-        textComponent.setItalic(true);
-
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textComponent);
+        TerritoryEnterMessageUtil.sendEnterTerritoryMessage(player, regionData, displayTerritoryColor);
     }
 
     @Override
@@ -88,7 +80,7 @@ public class RegionClaimedChunk extends TerritoryChunk {
 
     @Override
     public void notifyUpdate() {
-        if (!Constants.allowNonAdjacentChunksForRegion()) {
+        if (!Constants.allowNonAdjacentChunksFor(getOwner())) {
             ChunkUtil.unclaimIfNoLongerSupplied(this);
         }
     }

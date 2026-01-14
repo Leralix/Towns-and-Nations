@@ -1,0 +1,39 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+      - fix/**
+      - feature/**
+      - ci/**
+      - chore/**
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      - name: Build (shadowJar)
+        run: ./gradlew :TownsAndNations-Common:shadowJar -x test --console=plain
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TownsAndNations
+          path: TownsAndNations-Common/build/libs/TownsAndNations-*.jar
+          if-no-files-found: error

@@ -58,18 +58,45 @@ public class PlayerDataStorage extends JsonStorage<ITanPlayer> {
         return get(playerID.toString());
     }
 
+    public ITanPlayer getOrNull(String id) {
+        if (id == null) {
+            return null;
+        }
+
+        ITanPlayer res = dataMap.get(id);
+        if (res != null) {
+            return res;
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(id);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+
+        Player newPlayer = Bukkit.getPlayer(uuid);
+        if (newPlayer != null) {
+            return register(newPlayer);
+        }
+
+        return null;
+    }
+
     @Override
     public ITanPlayer get(String id){
 
-        if(id == null)
+        if (id == null) {
             return NO_PLAYER;
+        }
 
         ITanPlayer res = dataMap.get(id);
-        if(res != null)
+        if (res != null) {
             return res;
+        }
 
         Player newPlayer = Bukkit.getPlayer(UUID.fromString(id));
-        if(newPlayer != null){
+        if (newPlayer != null) {
             return register(newPlayer);
         }
         throw new RuntimeException("Error : Player ID [" + id + "] has not been found" );
@@ -79,6 +106,5 @@ public class PlayerDataStorage extends JsonStorage<ITanPlayer> {
     public void reset() {
         instance = null;
     }
-
 
 }

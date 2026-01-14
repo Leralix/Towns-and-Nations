@@ -58,12 +58,12 @@ public class UnclaimAdminCommand extends PlayerSubCommand {
             TerritoryData owner = territoryChunk.getOwner();
             ChunkCap chunkCap = owner.getNewLevel().getStat(ChunkCap.class);
             if(chunkCap.isUnlimited()){
-                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(langType, owner.getColoredName()), SoundEnum.GOOD);
+                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(langType, owner.getColoredName()));
             }
             else {
                 String currentChunks = Integer.toString(owner.getNumberOfClaimedChunk());
                 String maxChunks = Integer.toString(chunkCap.getMaxAmount());
-                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(langType, owner.getColoredName(), currentChunks, maxChunks), SoundEnum.GOOD);
+                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(langType, owner.getColoredName(), currentChunks, maxChunks));
             }
         }
         else {

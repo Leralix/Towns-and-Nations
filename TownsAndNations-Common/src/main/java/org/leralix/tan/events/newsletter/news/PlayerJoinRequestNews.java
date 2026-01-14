@@ -59,7 +59,7 @@ public class PlayerJoinRequestNews extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
         if (tanPlayer == null)
             return;
         TownData townData = TownDataStorage.getInstance().get(townID);
@@ -81,7 +81,14 @@ public class PlayerJoinRequestNews extends Newsletter {
             return null;
         }
 
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(playerID);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 
         return IconManager.getInstance().get(offlinePlayer)
                 .setName(Lang.NEWSLETTER_PLAYER_APPLICATION.get(lang, offlinePlayer.getName()))
@@ -103,19 +110,31 @@ public class PlayerJoinRequestNews extends Newsletter {
     @Override
     public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
 
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
+        TownData townData = getTownData();
+        if (townData == null) {
+            return null;
+        }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(playerID);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 
         return IconManager.getInstance().get(offlinePlayer)
                 .setName(Lang.NEWSLETTER_PLAYER_APPLICATION.get(lang, offlinePlayer.getName()))
                 .setDescription(
-                        Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), TownDataStorage.getInstance().get(townID).getBaseColoredName()),
+                        Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), townData.getBaseColoredName()),
                         Lang.NEWSLETTER_PLAYER_APPLICATION_DESC2.get(),
                         Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
                 )
                 .setAction(action -> {
                     action.setCancelled(true);
                     if (action.isLeftClick()) {
-                        new PlayerApplicationMenu(player, getTownData()).open();
+                        new PlayerApplicationMenu(player, townData).open();
                     }
                     if (action.isRightClick()) {
                         markAsRead(player);

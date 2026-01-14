@@ -24,7 +24,7 @@ public class MySqlHandler extends DatabaseHandler {
     public void connect() throws SQLException {
 
         if (host == null || databaseName == null) {
-            return;
+            throw new SQLException("Invalid MySQL configuration: host or database name is null");
         }
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

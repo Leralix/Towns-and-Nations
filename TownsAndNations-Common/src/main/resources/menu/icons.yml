@@ -39,6 +39,8 @@ BROWSE_TOWN_ICON: "minecraft:ANVIL"
 #Region menu - Player with no region
 CREATE_REGION_ICON: "minecraft:STONE_BRICKS"
 BROWSE_REGION_ICON: "minecraft:BOOK"
+CREATE_KINGDOM_ICON: "minecraft:GOLD_BLOCK"
+BROWSE_KINGDOM_ICON: "minecraft:BOOKSHELF"
 #Territory menu (common)
 TERRITORY_ICON: "TOWN_HEAD"
 TERRITORY_TREASURY_ICON: "https://textures.minecraft.net/texture/75c9cccf61a6e6284fe9bbe649155be4d9ca96f78ffcb279b84e16178dacb522"
@@ -79,6 +81,9 @@ TOWN_DELETE_TOWN_ICON: "minecraft:BARRIER"
 REGION_CHANGE_OWNERSHIP_ICON: "minecraft:LECTERN"
 REGION_QUIT_REGION_ICON: "minecraft:OAK_DOOR"
 REGION_DELETE_REGION_ICON: "minecraft:BARRIER"
+#Kingdom settings menu
+KINGDOM_CHANGE_CAPITAL_ICON: "minecraft:LECTERN"
+KINGDOM_DELETE_KINGDOM_ICON: "minecraft:BARRIER"
 #Manage members menu
 MANAGE_RANKS_ICON: "minecraft:LADDER"
 MANAGE_APPLICATIONS_ICON: "minecraft:WRITABLE_BOOK"

@@ -89,6 +89,10 @@ public class TanPlayerWrapper implements TanPlayer {
 
     @Override
     public Collection<TanProperty> getPropertiesForSale() {
-        return null; //TODO : update TAN-API
+        return tanPlayer.getProperties().stream()
+                .filter(PropertyData::isForSale)
+                .map(PropertyDataWrapper::of)
+                .map(p -> (TanProperty) p)
+                .toList(); //TODO : update TAN-API
     }
 }

@@ -7,7 +7,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.dataclass.territory.KingdomData;
+import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -41,14 +44,7 @@ public abstract class SettingsMenus extends BasicGui {
 
         LangType langType = tanPlayer.getLang();
 
-        List<FilledLang> lore = new ArrayList<>();
-        lore.add(Lang.GUI_TOWN_INFO_DESC0.get(territoryData.getDescription()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC1.get(territoryData.getLeaderName()));
-        lore.add(Lang.GUI_TOWN_INFO_DESC2.get(Integer.toString(territoryData.getPlayerIDList().size())));
-        lore.add(Lang.GUI_TOWN_INFO_DESC3.get(Integer.toString(territoryData.getNumberOfClaimedChunk())));
-        lore.add(territoryData.getOverlord()
-                        .map(overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(overlord.getName()))
-                        .orElseGet(Lang.GUI_TOWN_INFO_DESC5_NO_REGION::get));
+        List<FilledLang> lore = TerritoryInfoLoreUtil.getTerritoryInfoLore(territoryData);
         lore.add(Lang.GUI_TOWN_INFO_CHANGE_ICON.get());
         lore.add(Lang.RIGHT_CLICK_TO_SELECT_MEMBER_HEAD.get());
 

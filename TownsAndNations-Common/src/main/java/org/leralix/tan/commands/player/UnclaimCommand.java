@@ -4,6 +4,7 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.enums.MapSettings;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -11,7 +12,7 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UnclaimCommand extends PlayerSubCommand {
@@ -30,10 +31,14 @@ public class UnclaimCommand extends PlayerSubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tan unclaim";
+        return "/tan unclaim <town/region/kingdom> <x> <z>";
     }
     public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
-        return Collections.emptyList();
+        if (args.length == 2) {
+            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+            return TerritoryCommandUtil.getTerritoryTypeSuggestions(tanPlayer);
+        }
+        return new ArrayList<>();
     }
     @Override
     public void perform(Player player, String[] args){
@@ -51,9 +56,16 @@ public class UnclaimCommand extends PlayerSubCommand {
         }
 
         if(args.length == 4){
-            int x = Integer.parseInt(args[2]);
-            int y = Integer.parseInt(args[3]);
-            chunk = player.getLocation().getWorld().getChunkAt(x, y);
+            String territoryType = args[1].toLowerCase();
+            if (!territoryType.equals("town") && !territoryType.equals("region") && !territoryType.equals("kingdom")) {
+                TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
+                TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+                return;
+            }
+            chunk = TerritoryCommandUtil.parseChunkFromArgs(player, args, 2, 3, langType, getSyntax());
+            if (chunk == null) {
+                return;
+            }
         }
 
         if(!NewClaimedChunkStorage.getInstance().isChunkClaimed(chunk)){

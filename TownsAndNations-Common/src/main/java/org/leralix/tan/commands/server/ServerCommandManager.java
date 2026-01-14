@@ -5,7 +5,7 @@ import org.leralix.lib.commands.CommandManager;
 public class ServerCommandManager extends CommandManager {
 
     public ServerCommandManager(){
-        super("tan.server");
+        super("tan.server.commands");
         addSubCommand(new CreateTownServer());
         addSubCommand(new ApplyTownServer());
         addSubCommand(new QuitTownServer());

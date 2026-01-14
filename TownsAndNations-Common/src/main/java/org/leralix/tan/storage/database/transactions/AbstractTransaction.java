@@ -97,7 +97,7 @@ public abstract class AbstractTransaction {
      * @return  The name of the ID with the correct color code.
      */
     protected @NotNull String getColoredName(String id, LangType langType){
-        if(id.startsWith("T") || id.startsWith("R")){
+        if(id.startsWith("T") || id.startsWith("R") || id.startsWith("K")){
             return getTerritoryName(id, langType);
         }
         else {

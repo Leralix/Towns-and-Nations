@@ -87,6 +87,13 @@ boundaryParticles :
 #Enable Kingdoms
 EnableKingdom: true
 
+kingdomCost: 25000
+
+KingdomNameSize: 45
+KingdomDescSize: 55
+
+ChangeKingdomNameCost: 100
+
 tributeLimits:
   enabled: false
   perPlayerDailyLimit: 50000
@@ -111,6 +118,9 @@ ChangeRegionNameCost: 100
 
 #Allow non-adjacent chunks to be claimed
 RegionAllowNonAdjacentChunks: false
+
+#Allow non-adjacent chunks to be claimed for kingdoms
+KingdomAllowNonAdjacentChunks: false
 
 #Notify if a player from an enemy territory enters
 notifyEnemyEnterRegion: true
@@ -214,6 +224,12 @@ events:
     BROADCAST: "ALL"
     NEWSLETTER: "ALL"
   REGION_DELETED:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
+  KINGDOM_CREATED:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
+  KINGDOM_DELETED:
     BROADCAST: "ALL"
     NEWSLETTER: "ALL"
   TERRITORY_VASSAL_PROPOSAL:
@@ -601,6 +617,7 @@ database:
 worldguard_override_wilderness: true
 worldguard_override_town: false
 worldguard_override_region: false
+worldguard_override_kingdom: false
 worldguard_override_landmark: false
 
 ## PlaceholderAPI

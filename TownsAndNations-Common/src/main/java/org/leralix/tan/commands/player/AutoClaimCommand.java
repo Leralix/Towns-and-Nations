@@ -58,6 +58,10 @@ public class AutoClaimCommand extends PlayerSubCommand {
                 PlayerAutoClaimStorage.addPlayer(player, ChunkType.REGION);
                 TanChatUtils.message(player, Lang.AUTO_CLAIM_ON_FOR.get(player, ChunkType.REGION.getName()));
             }
+            case "kingdom" -> {
+                PlayerAutoClaimStorage.addPlayer(player, ChunkType.KINGDOM);
+                TanChatUtils.message(player, Lang.AUTO_CLAIM_ON_FOR.get(player, ChunkType.KINGDOM.getName()));
+            }
             case "stop" -> {
                 PlayerAutoClaimStorage.removePlayer(player);
                 TanChatUtils.message(player, Lang.AUTO_CLAIM_OFF.get(player));

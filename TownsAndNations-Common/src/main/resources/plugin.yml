@@ -32,6 +32,7 @@ permissions:
       tan.base.commands.*: true
       tan.base.town.*: true
       tan.base.region.*: true
+      tan.base.kingdom.*: true
 
   tan.base.commands.*:
     description: All town-related permissions
@@ -82,14 +83,34 @@ permissions:
     default: true
     children:
       tan.base.region.create: true
+      tan.base.region.quit: true
       tan.base.region.disband: true
 
   tan.base.region.create:
     description: Permission to create a region
     default: true
 
+  tan.base.region.quit:
+    description: Permission to leave a region/kingdom
+    default: true
+
   tan.base.region.disband:
     description: Permission to create a region
+    default: true
+
+  tan.base.kingdom.*:
+    description: All kingdom-related permissions
+    default: true
+    children:
+      tan.base.kingdom.create: true
+      tan.base.kingdom.disband: true
+
+  tan.base.kingdom.create:
+    description: Permission to create a kingdom
+    default: true
+
+  tan.base.kingdom.disband:
+    description: Permission to disband a kingdom
     default: true
 
   tan.admin.*:

@@ -1,5 +1,3 @@
 rootProject.name = 'TownsAndNations'
-
-
 include 'TownsAndNations-API'
 include 'TownsAndNations-Common'

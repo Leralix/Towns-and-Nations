@@ -2,8 +2,8 @@ package org.leralix.tan.gui.user.territory;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.storage.PermissionManager;
@@ -24,10 +24,10 @@ public class TerritoryChunkSettingsMenu extends CommonChunkSettingsMenu {
 
     @Override
     protected SpecificChunkConfig getSpecificChunkConfig(ChunkPermissionType type) {
-        if(territoryData instanceof RegionData){
-            return Constants.getChunkPermissionConfig().getRegionPermission(type);
+        if (territoryData instanceof TownData) {
+            return Constants.getChunkPermissionConfig().getTownPermission(type);
         }
-        return Constants.getChunkPermissionConfig().getTownPermission(type);
+        return Constants.getChunkPermissionConfig().getRegionPermission(type);
     }
 
     @Override

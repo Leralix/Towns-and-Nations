@@ -52,12 +52,12 @@ public class RegionChangeOwnership extends IteratorGUI {
                                         player,
                                         Lang.GUI_CONFIRM_CHANGE_LEADER.get(iterateTanPlayer.getNameStored()),
                                         () -> {
-                                            FileUtil.addLineToHistory(Lang.HISTORY_REGION_CAPITAL_CHANGED.get(player.getName(), regionData.getCapital().getName(), tanPlayer.getTown().getName()));
                                             regionData.setLeaderID(iterateTanPlayer.getID());
 
                                             regionData.broadcastMessageWithSound(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST.get(iterateTanPlayer.getNameStored()), GOOD);
 
-                                            if (!regionData.getCapital().getID().equals(iterateTanPlayer.getTown().getID())) {
+                                            if (iterateTanPlayer.getTown() != null && !regionData.getCapital().getID().equals(iterateTanPlayer.getTown().getID())) {
+                                                FileUtil.addLineToHistory(Lang.HISTORY_REGION_CAPITAL_CHANGED.get(player.getName(), regionData.getCapital().getName(), iterateTanPlayer.getTown().getName()));
                                                 regionData.broadCastMessage(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST.get(iterateTanPlayer.getTown().getName()));
                                                 regionData.setCapital(iterateTanPlayer.getTownId());
                                             }

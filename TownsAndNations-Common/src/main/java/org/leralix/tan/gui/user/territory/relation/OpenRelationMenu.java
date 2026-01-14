@@ -42,7 +42,7 @@ public class OpenRelationMenu extends IteratorGUI {
 
     private GuiItem getRemoveTerritoryButton() {
         return iconManager.get(IconKey.GUI_REMOVE_TERRITORY_ICON)
-                .setName(Lang.GUI_TOWN_RELATION_REMOVE_TOWN.get(tanPlayer))
+                .setName(Lang.GUI_TERRITORY_RELATION_REMOVE_TERRITORY.get(tanPlayer))
                 .setAction(
                         action -> {
                             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TOWN_RELATION)) {
@@ -56,7 +56,7 @@ public class OpenRelationMenu extends IteratorGUI {
 
     private GuiItem getAddTerritoryButton() {
         return iconManager.get(IconKey.GUI_ADD_TERRITORY_ICON)
-                .setName(Lang.GUI_TOWN_RELATION_ADD_TOWN.get(tanPlayer))
+                .setName(Lang.GUI_TERRITORY_RELATION_ADD_TERRITORY.get(tanPlayer))
                 .setAction(
                         action -> {
                             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TOWN_RELATION)) {

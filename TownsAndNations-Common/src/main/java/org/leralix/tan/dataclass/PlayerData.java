@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.dataclass.territory.KingdomData;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -140,6 +141,31 @@ public class PlayerData implements ITanPlayer {
         return getTown().getRegion();
     }
 
+    @Override
+    public boolean hasKingdom() {
+        RegionData region = getRegion();
+        if (region == null) {
+            return false;
+        }
+        return region.getOverlord().isPresent() && region.getOverlord().get() instanceof KingdomData;
+    }
+
+    @Override
+    public KingdomData getKingdom() {
+        if (!hasKingdom()) {
+            return null;
+        }
+        return (KingdomData) getRegion().getOverlord().get();
+    }
+
+    @Override
+    public RankData getKingdomRank() {
+        if (!hasKingdom()) {
+            return null;
+        }
+        return getKingdom().getRank(getKingdomRankID());
+    }
+
     public UUID getUUID() {
         return java.util.UUID.fromString(UUID);
     }
@@ -270,8 +296,24 @@ public class PlayerData implements ITanPlayer {
         return regionRankID;
     }
 
+    @Override
+    public Integer getKingdomRankID() {
+        if (!hasKingdom()) {
+            return null;
+        }
+        if (kingdomRankID == null) {
+            kingdomRankID = getKingdom().getDefaultRankID();
+        }
+        return kingdomRankID;
+    }
+
     public void setRegionRankID(Integer rankID) {
         this.regionRankID = rankID;
+    }
+
+    @Override
+    public void setKingdomRankID(Integer rankID) {
+        this.kingdomRankID = rankID;
     }
 
     public Integer getRankID(TerritoryData territoryData) {
@@ -279,6 +321,8 @@ public class PlayerData implements ITanPlayer {
             return getTownRankID();
         } else if (territoryData instanceof RegionData) {
             return getRegionRankID();
+        } else if (territoryData instanceof KingdomData) {
+            return getKingdomRankID();
         }
         return null;
     }

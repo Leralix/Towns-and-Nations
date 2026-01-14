@@ -29,11 +29,7 @@ public class TownMenu extends TerritoryMenu {
     }
 
     private GuiItem getSettingsButton() {
-        return IconManager.getInstance().get(IconKey.TERRITORY_SETTINGS_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(tanPlayer.getLang()))
-                .setDescription(Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get())
-                .setAction(event -> new TownSettingsMenu(player, townData))
-                .asGuiItem(player, langType);
+        return createSettingsButton(Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(), p -> new TownSettingsMenu(player, townData));
     }
 
     private GuiItem getLandmarksButton() {

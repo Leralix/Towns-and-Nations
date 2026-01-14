@@ -52,7 +52,7 @@ public class RegionDeletedNews extends Newsletter {
 
     @Override
     public void broadcast(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
         if (tanPlayer == null)
             return;
         TanChatUtils.message(player, Lang.REGION_DELETED_NEWSLETTER.get(player, tanPlayer.getNameStored(), regionName), SoundEnum.GOOD);
@@ -65,7 +65,7 @@ public class RegionDeletedNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
         if (tanPlayer == null)
             return null;
 

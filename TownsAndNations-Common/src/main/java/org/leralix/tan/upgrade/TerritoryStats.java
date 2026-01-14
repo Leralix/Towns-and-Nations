@@ -113,7 +113,12 @@ public class TerritoryStats {
 
     private int getRequiredMoney(int level) {
         FileConfiguration fg = ConfigUtil.getCustomConfig(ConfigTag.UPGRADE);
-        ConfigurationSection section = fg.getConfigurationSection("townLevelExpression");
+        String sectionName = switch (statsType) {
+            case REGION -> "regionLevelExpression";
+            case KINGDOM -> "kingdomLevelExpression";
+            case TOWN -> "townLevelExpression";
+        };
+        ConfigurationSection section = fg.getConfigurationSection(sectionName);
         String expressionString = section.getString("LevelExpression");
         String squareMultName = "squareMultiplier";
         String flatMultName = "flatMultiplier";

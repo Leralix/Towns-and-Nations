@@ -4,6 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.economy.Budget;
 import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.BasicGui;
@@ -84,10 +85,10 @@ public class TreasuryMenu extends BasicGui {
                         new TerritoryTransactionHistory(player, territoryData, TransactionType.DONATION, p -> new TreasuryMenu(player, territoryData));
                     }
                 })
-                .setDescription(Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get())
+                .setDescription(territoryData instanceof TownData ? Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get() : Lang.GUI_TERRITORY_TREASURY_DONATION_DESC1.get())
                 .setClickToAcceptMessage(
                         Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY,
-                        Lang.GUI_TOWN_TREASURY_RIGHT_CLICK_TO_DONATE
+                        territoryData instanceof TownData ? Lang.GUI_TOWN_TREASURY_RIGHT_CLICK_TO_DONATE : Lang.GUI_TERRITORY_TREASURY_RIGHT_CLICK_TO_DONATE
                 )
                 .asGuiItem(player, langType);
     }

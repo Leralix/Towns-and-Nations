@@ -5,14 +5,19 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 
 public class SubjectTaxLine extends TaxProfitLine {
 
-    public SubjectTaxLine(RegionData regionData) {
-        super(regionData);
-        double tax = regionData.getTax();
-        for (TerritoryData townData : regionData.getVassals()) {
-            if (townData.getBalance() > tax)
+    public SubjectTaxLine(TerritoryData territoryData) {
+        super(territoryData);
+
+        double tax = territoryData.getTax();
+        for (TerritoryData vassal : territoryData.getVassals()) {
+            if (vassal == null) {
+                continue;
+            }
+            if (vassal.getBalance() > tax) {
                 actualTaxes += tax;
-            else
+            } else {
                 missingTaxes += tax;
+            }
         }
     }
 }
