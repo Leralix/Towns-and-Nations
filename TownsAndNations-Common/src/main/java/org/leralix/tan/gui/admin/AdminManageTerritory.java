@@ -9,6 +9,7 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.history.TerritoryTransactionHistory;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.listeners.AdminSetTerritoryBalance;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
@@ -80,6 +81,16 @@ public abstract class AdminManageTerritory extends BasicGui {
                 .setName(Lang.ADMIN_GET_TRANSACTION_HISTORY.get(langType))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_OPEN)
                 .setAction(action -> new TerritoryTransactionHistory(player, territoryData, p -> open()))
+                .asGuiItem(player, langType);
+    }
+
+    protected GuiItem getDonateTerritory(){
+        return iconManager.get(IconKey.DONATION_ICON)
+                .setName(Lang.ADMIN_ADD_TERRITORY_BALANCE.get(langType))
+                .setDescription(Lang.GUI_YOUR_BALANCE_DESC1.get(Double.toString(territoryData.getBalance())))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_OPEN)
+                .setAction(action ->
+                        PlayerChatListenerStorage.register(player, new AdminSetTerritoryBalance(territoryData, p -> open())))
                 .asGuiItem(player, langType);
     }
 
