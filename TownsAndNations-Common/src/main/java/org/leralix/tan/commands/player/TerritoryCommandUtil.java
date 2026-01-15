@@ -54,7 +54,9 @@ public final class TerritoryCommandUtil {
             return tanPlayer.getNation();
         }
 
-        TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(syntax).getDefault());
+        LangType langType = LangType.of(player);
+        TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
+        TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, syntax));
         return null;
     }
 
