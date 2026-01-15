@@ -6,12 +6,13 @@ import org.leralix.tan.lang.LangType;
 
 public class AnyPlankScope extends ItemScope {
 
+    private static final Material CHERRY_PLANKS_MATERIAL = Material.matchMaterial("CHERRY_PLANKS");
 
     @Override
     public boolean isInScope(Material material) {
         return material == Material.ACACIA_PLANKS ||
                 material == Material.BIRCH_PLANKS ||
-                material == Material.CHERRY_PLANKS ||
+                (CHERRY_PLANKS_MATERIAL != null && material == CHERRY_PLANKS_MATERIAL) ||
                 material == Material.JUNGLE_PLANKS ||
                 material == Material.MANGROVE_PLANKS ||
                 material == Material.OAK_PLANKS ||
