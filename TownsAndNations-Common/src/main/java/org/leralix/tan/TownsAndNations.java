@@ -171,6 +171,7 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Loading Local data");
 
+        NationDataStorage.getInstance();
         RegionDataStorage.getInstance();
         PlayerDataStorage.getInstance();
         NewClaimedChunkStorage.getInstance();
