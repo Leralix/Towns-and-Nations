@@ -1,0 +1,15 @@
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+tasks.register('buildAllJars') {
+    group = 'build'
+    description = 'Build version-specific plugin jars for 1.19, 1.20 and 1.21'
+    dependsOn(
+            ':TownsAndNations-Plugin-1_19:shadowJar',
+            ':TownsAndNations-Plugin-1_20:shadowJar',
+            ':TownsAndNations-Plugin-1_21:shadowJar'
+    )
+}
