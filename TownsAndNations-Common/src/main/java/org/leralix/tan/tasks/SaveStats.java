@@ -20,6 +20,7 @@ public class SaveStats {
     }
 
     public static void saveAll() {
+        NationDataStorage.getInstance().save();
         RegionDataStorage.getInstance().save();
         TownDataStorage.getInstance().save();
         PlayerDataStorage.getInstance().save();
