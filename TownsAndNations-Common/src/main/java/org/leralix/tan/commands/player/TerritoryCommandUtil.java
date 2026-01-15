@@ -32,21 +32,21 @@ public final class TerritoryCommandUtil {
     }
 
     public static TerritoryData resolveTerritory(Player player, ITanPlayer tanPlayer, String territoryArg, String syntax) {
-        if (territoryArg.equals("town")) {
+        if (territoryArg.equalsIgnoreCase("town")) {
             if (!tanPlayer.hasTown()) {
                 TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(player));
                 return null;
             }
             return tanPlayer.getTown();
         }
-        if (territoryArg.equals("region")) {
+        if (territoryArg.equalsIgnoreCase("region")) {
             if (!tanPlayer.hasRegion()) {
                 TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(player));
                 return null;
             }
             return tanPlayer.getRegion();
         }
-        if (territoryArg.equals("nation")) {
+        if (territoryArg.equalsIgnoreCase("nation")) {
             if (!tanPlayer.hasNation()) {
                 TanChatUtils.message(player, Lang.PLAYER_NO_NATION.get(player));
                 return null;
