@@ -4,6 +4,13 @@ allprojects {
     }
 }
 
+ tasks.register('cleanAll', Delete) {
+     group = 'build'
+     description = 'Clean build directories in root project and all subprojects'
+     delete rootProject.buildDir
+     delete subprojects.collect { it.buildDir }
+ }
+
 tasks.register('buildAllJars') {
     group = 'build'
     description = 'Build version-specific plugin jars for 1.19, 1.20 and 1.21'
@@ -13,3 +20,22 @@ tasks.register('buildAllJars') {
             ':TownsAndNations-Plugin-1_21:shadowJar'
     )
 }
+
+ tasks.register('verifyAll') {
+     group = 'verification'
+     description = 'Run Common tests and build all version-specific jars'
+     dependsOn(
+             ':TownsAndNations-Common:test',
+             'buildAllJars'
+     )
+ }
+
+ tasks.register('verifyAllClean') {
+     group = 'verification'
+     description = 'Clean, then run Common tests and build all version-specific jars'
+     dependsOn(
+             'cleanAll',
+             ':TownsAndNations-Common:test',
+             'buildAllJars'
+     )
+ }
