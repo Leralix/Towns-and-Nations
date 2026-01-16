@@ -24,16 +24,17 @@ public class ClaimAreaCommand extends AbstractTerritoryClaimCommand {
     }
 
     public int getArguments() {
-        return 1;
+        return 2;
     }
 
     @Override
     public String getSyntax() {
-        return "/tan claimarea <town/region/nation>";
+        return "/tan claimarea <town/region/nation|kingdom>";
     }
 
     @Override
     protected void onNoCoordinates(Player player, TerritoryData territoryData, LangType langType, String territoryArg, String[] args) {
+        TanChatUtils.message(player, Lang.LEFT_CLICK_TO_CLAIM.get(langType), SoundEnum.MINOR_GOOD);
     }
 
     @Override
@@ -57,6 +58,5 @@ public class ClaimAreaCommand extends AbstractTerritoryClaimCommand {
                 (chunkX, chunkZ) -> "/tan claimarea " + territoryArg + " " + chunkX + " " + chunkZ,
                 Collections.emptyMap()
         );
-        TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, "/tan claimarea " + territoryArg), SoundEnum.MINOR_GOOD);
     }
 }

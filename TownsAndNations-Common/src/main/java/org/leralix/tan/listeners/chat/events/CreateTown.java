@@ -37,16 +37,17 @@ public class CreateTown extends ChatListenerEvent {
 
         int minSize = Constants.getPrefixSize().getMinVal();
         int maxSize = Constants.getTownMaxNameSize();
+        String townName = message == null ? "" : message.trim();
 
-        if (checkMessageLength(player, message, minSize, maxSize)){
+        if (checkMessageLength(player, townName, minSize, maxSize)) {
             return false;
         }
 
-        if (TownDataStorage.getInstance().isNameUsed(message)) {
+        if (TownDataStorage.getInstance().isNameUsed(townName)) {
             TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(player));
             return false;
         }
-        createTown(player, message);
+        createTown(player, townName);
 
         return true;
     }

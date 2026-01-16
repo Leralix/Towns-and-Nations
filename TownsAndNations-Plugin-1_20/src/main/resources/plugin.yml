@@ -33,6 +33,12 @@ permissions:
       tan.base.town.*: true
       tan.base.region.*: true
 
+  tan.base.commands:
+    description: Base command permission
+    default: true
+    children:
+      tan.base.commands.*: true
+
   tan.base.commands.*:
     description: All town-related permissions
     default: true
@@ -40,6 +46,7 @@ permissions:
       tan.base.commands.autoclaim: true
       tan.base.commands.chat: true
       tan.base.commands.claim: true
+      tan.base.commands.claimarea: true
       tan.base.commands.help: true
       tan.base.commands.invite: true
       tan.base.commands.join: true
