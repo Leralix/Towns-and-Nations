@@ -4,7 +4,7 @@ public class TributePlayerDailyStorage extends AbstractTributeDailyStorage {
 
     private static TributePlayerDailyStorage instance;
 
-    public static TributePlayerDailyStorage getInstance() {
+    public static synchronized TributePlayerDailyStorage getInstance() {
         if (instance == null) {
             instance = new TributePlayerDailyStorage();
         }
@@ -17,11 +17,6 @@ public class TributePlayerDailyStorage extends AbstractTributeDailyStorage {
 
     @Override
     public void reset() {
-        // Singleton reset: clear the static instance reference so a fresh storage can be recreated when needed.
-        resetInstance();
-    }
-
-    private static synchronized void resetInstance() {
         instance = null;
     }
 }

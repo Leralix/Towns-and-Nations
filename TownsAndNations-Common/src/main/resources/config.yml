@@ -66,6 +66,11 @@ maxPayDistance: 15
 #The amount of money a player starts with (only works if no external economy plugin is used)
 StartingMoney: 100.0
 
+tributeLimits:
+  enabled: false
+  perPlayerDailyLimit: 50000.0
+  perVassalDailyLimit: 400000.0
+
 ########################
 ##     Territories    ##
 ########################
@@ -93,11 +98,6 @@ NationNameSize: 45
 NationDescSize: 55
 
 ChangeNationNameCost: 100
-
-tributeLimits:
-  enabled: false
-  perPlayerDailyLimit: 50000
-  perVassalDailyLimit: 400000
 
 ########################
 ##       Regions      ##
@@ -328,6 +328,9 @@ allowedDays : [1, 2, 3, 4, 5, 6, 7]
 
 #Admin needs to approve every war. Admins need to use /tan admin gui to approve or deny a war
 AdminApproval: false
+
+enableWarPowerBalance: false
+maxWarPowerRatio: 2.0
 
 #The duration of an attack in minutes
 WarDuration: 30

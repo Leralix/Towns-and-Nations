@@ -12,9 +12,9 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.DonationTransaction;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TributePlayerDailyStorage;
 import org.leralix.tan.storage.stored.TributeVassalDailyStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class DonateToOverlordWithLimit extends ChatListenerEvent {
