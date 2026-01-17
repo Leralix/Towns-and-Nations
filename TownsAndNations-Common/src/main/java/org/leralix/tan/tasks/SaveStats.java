@@ -3,6 +3,7 @@ package org.leralix.tan.tasks;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.utils.constants.Constants;
 
 public class SaveStats {
 
@@ -23,6 +24,9 @@ public class SaveStats {
         NationDataStorage.getInstance().save();
         RegionDataStorage.getInstance().save();
         TownDataStorage.getInstance().save();
+        if (Constants.enableNation()) {
+            NationDataStorage.getInstance().save();
+        }
         PlayerDataStorage.getInstance().save();
         NewClaimedChunkStorage.getInstance().save();
         LandmarkStorage.getInstance().save();

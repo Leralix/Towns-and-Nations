@@ -69,8 +69,12 @@ public abstract class JsonStorage<T> {
         else {
             try (Reader reader = new FileReader(file)) {
                 dataMap = gson.fromJson(reader, type);
-            } catch (IOException e) {
+                if (dataMap == null) {
+                    dataMap = new LinkedHashMap<>();
+                }
+            } catch (Exception e) {
                 TownsAndNations.getPlugin().getLogger().severe("Error loading " + file.getName());
+                dataMap = new LinkedHashMap<>();
             }
         }
     }

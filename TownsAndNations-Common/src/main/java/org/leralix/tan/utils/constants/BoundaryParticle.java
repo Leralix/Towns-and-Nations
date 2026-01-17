@@ -20,8 +20,11 @@ public class BoundaryParticle {
     }
 
     private Particle fromString(String particleName){
+        if (particleName == null) {
+            return Particle.COMPOSTER;
+        }
         try{
-            return Particle.valueOf(particleName);
+            return Particle.valueOf(particleName.toUpperCase());
         } catch (IllegalArgumentException e) {
             return Particle.COMPOSTER;
         }

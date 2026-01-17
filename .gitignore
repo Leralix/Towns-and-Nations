@@ -85,3 +85,6 @@ nb-configuration.xml
 .DS_Store
 TownsAndNations-Common/src/test/resources/database/main.db
 gradle.properties
+
+buildAllJars-multiversion-build.log
+buildAllJars-multiversion-build.utf8.log

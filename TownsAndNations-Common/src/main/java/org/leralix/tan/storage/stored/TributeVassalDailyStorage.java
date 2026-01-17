@@ -1,6 +1,11 @@
 package org.leralix.tan.storage.stored;
 
-public class TributeVassalDailyStorage extends AbstractTributeDailyStorage {
+import com.google.common.reflect.TypeToken;
+import com.google.gson.GsonBuilder;
+
+import java.util.LinkedHashMap;
+
+public class TributeVassalDailyStorage extends JsonStorage<Double> {
 
     private static TributeVassalDailyStorage instance;
 
@@ -12,16 +17,30 @@ public class TributeVassalDailyStorage extends AbstractTributeDailyStorage {
     }
 
     private TributeVassalDailyStorage() {
-        super("TAN - Tribute Vassal Daily.json");
+        super(
+                "TAN - Tribute Vassal Daily.json",
+                new TypeToken<LinkedHashMap<String, Double>>() {}.getType(),
+                new GsonBuilder().setPrettyPrinting().create()
+        );
+    }
+
+    public synchronized double getAmount(String vassalTerritoryId) {
+        Double val = dataMap.get(vassalTerritoryId);
+        return val == null ? 0.0 : val;
+    }
+
+    public synchronized void addAmount(String vassalTerritoryId, double amount) {
+        dataMap.put(vassalTerritoryId, getAmount(vassalTerritoryId) + amount);
+        save();
+    }
+
+    public synchronized void resetDaily() {
+        dataMap.clear();
+        save();
     }
 
     @Override
     public void reset() {
-        // Singleton reset: clear the static instance reference so a fresh storage can be recreated when needed.
-        resetInstance();
-    }
-
-    private static synchronized void resetInstance() {
         instance = null;
     }
 }

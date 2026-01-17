@@ -13,6 +13,7 @@ import org.leralix.tan.gui.cosmetic.type.*;
 
 import java.io.File;
 import java.util.EnumMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -69,9 +70,11 @@ public class IconManager {
 
             Material iconMaterial;
 
-            try {
-                iconMaterial = Material.valueOf(args[1]);
-            } catch (IllegalArgumentException e) {
+            iconMaterial = Material.matchMaterial(args[1]);
+            if (iconMaterial == null) {
+                iconMaterial = Material.matchMaterial(args[1].toUpperCase(Locale.ROOT));
+            }
+            if (iconMaterial == null) {
                 TownsAndNations.getPlugin().getLogger().log(Level.WARNING, "Invalid material in config : {0}", args[1]);
                 iconMaterial = Material.BARRIER;
             }

@@ -26,6 +26,7 @@ import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public class Landmark {
@@ -101,8 +102,26 @@ public class Landmark {
         return Optional.of(position.getWorld().getBlockAt(position.getLocation()));
     }
 
+    private Material resolveMaterial() {
+        if (materialName == null) {
+            return Material.BARRIER;
+        }
+
+        Material material = Material.matchMaterial(materialName);
+        if (material != null) {
+            return material;
+        }
+
+        material = Material.matchMaterial(materialName.toUpperCase(Locale.ROOT));
+        if (material != null) {
+            return material;
+        }
+
+        return Material.BARRIER;
+    }
+
     public Material getRessourceMaterial() {
-        return Material.valueOf(materialName);
+        return resolveMaterial();
     }
 
     public ItemStack getResources() {
@@ -139,8 +158,7 @@ public class Landmark {
 
 
     public ItemStack getIcon(LangType langType) {
-        Material rewardMaterial = Material.valueOf(materialName);
-        ItemStack icon = new ItemStack(rewardMaterial, amount);
+        ItemStack icon = new ItemStack(resolveMaterial(), amount);
         ItemMeta meta = icon.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(ChatColor.GREEN + getName());
@@ -180,7 +198,7 @@ public class Landmark {
         if (storedDays == 0)
             return;
 
-        player.getInventory().addItem(new ItemStack(Material.valueOf(materialName), number));
+        player.getInventory().addItem(new ItemStack(resolveMaterial(), number));
         storedDays = 0;
     }
 

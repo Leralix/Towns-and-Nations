@@ -328,15 +328,16 @@ public class Constants {
      * @return  The Particle enum, or DRAGON_BREATH if not found
      */
     private static Particle getParticle(FileConfiguration config, String key) {
-        String particleName = config.getString(key, "DRAGON_BREATH").toUpperCase();
-        Particle particle;
-        try {
-            particle = Particle.valueOf(particleName);
-        } catch (IllegalArgumentException e) {
-            particle = Particle.DRAGON_BREATH;
-            TownsAndNations.getPlugin().getLogger();
+        String particleName = config.getString(key, "DRAGON_BREATH");
+        if (particleName == null) {
+            return Particle.DRAGON_BREATH;
         }
-        return particle;
+        try {
+            return Particle.valueOf(particleName.toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException e) {
+            TownsAndNations.getPlugin().getLogger().warning("Invalid particle in config: " + particleName);
+            return Particle.DRAGON_BREATH;
+        }
     }
 
     public static boolean onlineMode() {

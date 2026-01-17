@@ -6,12 +6,13 @@ import org.leralix.tan.lang.LangType;
 
 public class AnyLogScope extends ItemScope {
 
+    private static final Material CHERRY_LOG_MATERIAL = Material.matchMaterial("CHERRY_LOG");
 
     @Override
     public boolean isInScope(Material material) {
         return material == Material.ACACIA_LOG ||
                 material == Material.BIRCH_LOG ||
-                material == Material.CHERRY_LOG ||
+                (CHERRY_LOG_MATERIAL != null && material == CHERRY_LOG_MATERIAL) ||
                 material == Material.JUNGLE_LOG ||
                 material == Material.MANGROVE_LOG ||
                 material == Material.OAK_LOG ||

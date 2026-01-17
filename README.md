@@ -24,4 +24,20 @@ API :
 Since v0.15.0 towns and nations provide an API. This API allows simple checks and interactions with the plugin. 
 An installation guide can be found on GitBook: https://arcadia-9.gitbook.io/towns-and-nations/developpers/api
 
+## Building version-specific jars (1.19 / 1.20 / 1.21)
+
+This repository can produce **3 separate plugin jars**, one for each supported Minecraft version.
+
+Build all jars:
+
+```bash
+gradle buildAllJars
+```
+
+Outputs:
+
+- `TownsAndNations-Plugin-1_19/build/libs/TownsAndNations-*-mc1.19.jar`
+- `TownsAndNations-Plugin-1_20/build/libs/TownsAndNations-*-mc1.20.jar`
+- `TownsAndNations-Plugin-1_21/build/libs/TownsAndNations-*-mc1.21.jar`
+
 
