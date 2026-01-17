@@ -598,14 +598,17 @@ public abstract class TerritoryData {
             return true;
         }
 
-        // If first claim of the territory and in a buffer zone of another territory, deny the claim
-        if (getNumberOfClaimedChunk() == 0) {
-            int bufferZone = Constants.territoryClaimBufferZone();
+        int bufferZone = Constants.territoryClaimBufferZone();
+        if (bufferZone > 0 && (getNumberOfClaimedChunk() == 0 || Constants.applyTerritoryClaimBufferZoneToAllClaims())) {
             if (ChunkUtil.isInBufferZone(chunkData, this, bufferZone)) {
                 TanChatUtils.message(player, Lang.CHUNK_IN_BUFFER_ZONE.get(player, Integer.toString(bufferZone)));
                 return false;
             }
-            return true;
+
+            // If first claim of the territory and not in a buffer zone of another territory, allow the claim
+            if (getNumberOfClaimedChunk() == 0) {
+                return true;
+            }
         }
 
 
