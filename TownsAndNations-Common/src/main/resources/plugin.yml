@@ -49,9 +49,9 @@ permissions:
     description: Allows access to /tan
     default: true
     children:
-      tan.base.commands.*: true
+      tan.base.commands.all: true
 
-  tan.base.commands.*:
+  tan.base.commands.all:
     description: All base commands
     default: false
     children:
