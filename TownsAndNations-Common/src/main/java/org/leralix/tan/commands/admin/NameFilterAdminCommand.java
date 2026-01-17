@@ -14,6 +14,11 @@ public class NameFilterAdminCommand extends SubCommand {
     private static final Class<?>[] NO_TYPES = new Class<?>[0];
     private static final Object[] NO_ARGS = new Object[0];
 
+    private static final String ACTION_ADD = "add";
+    private static final String ACTION_REMOVE = "remove";
+    private static final String ACTION_LIST = "list";
+    private static final String ACTION_RELOAD = "reload";
+
     @Override
     public String getName() {
         return "namefilter";
@@ -37,9 +42,9 @@ public class NameFilterAdminCommand extends SubCommand {
     @Override
     public List<String> getTabCompleteSuggestions(CommandSender commandSender, String lowerCase, String[] args) {
         if (args.length == 2) {
-            return List.of("add", "remove", "list", "reload");
+            return List.of(ACTION_ADD, ACTION_REMOVE, ACTION_LIST, ACTION_RELOAD);
         }
-        if (args.length == 3 && ("remove".equalsIgnoreCase(args[1]) || "list".equalsIgnoreCase(args[1]))) {
+        if (args.length == 3 && (ACTION_REMOVE.equalsIgnoreCase(args[1]) || ACTION_LIST.equalsIgnoreCase(args[1]))) {
             return listBlockedWordsOrEmpty();
         }
         return Collections.emptyList();
@@ -58,19 +63,19 @@ public class NameFilterAdminCommand extends SubCommand {
         }
 
         switch (action) {
-            case "reload" -> handleReload(commandSender);
-            case "list" -> handleList(commandSender);
-            case "add" -> handleAdd(commandSender, args);
-            case "remove" -> handleRemove(commandSender, args);
+            case ACTION_RELOAD -> handleReload(commandSender);
+            case ACTION_LIST -> handleList(commandSender);
+            case ACTION_ADD -> handleAdd(commandSender, args);
+            case ACTION_REMOVE -> handleRemove(commandSender, args);
             default -> commandSender.sendMessage(getSyntax());
         }
     }
 
     private static boolean isNameFilterAction(String action) {
-        return "reload".equals(action)
-                || "list".equals(action)
-                || "add".equals(action)
-                || "remove".equals(action);
+        return ACTION_RELOAD.equals(action)
+                || ACTION_LIST.equals(action)
+                || ACTION_ADD.equals(action)
+                || ACTION_REMOVE.equals(action);
     }
 
     private void handleReload(CommandSender sender) {
