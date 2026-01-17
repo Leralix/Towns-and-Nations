@@ -28,6 +28,9 @@ jobs:
           java-version: '21'
           cache: gradle
 
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
       - name: Build (shadowJar)
         run: ./gradlew :TownsAndNations-Common:shadowJar -x test --console=plain
 
