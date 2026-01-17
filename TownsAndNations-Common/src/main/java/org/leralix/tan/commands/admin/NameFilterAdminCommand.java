@@ -52,6 +52,11 @@ public class NameFilterAdminCommand extends SubCommand {
         }
 
         String action = args[1].toLowerCase(Locale.ROOT);
+
+        if (isNameFilterAction(action) && !ensureNameFilterAvailable(commandSender)) {
+            return;
+        }
+
         switch (action) {
             case "reload" -> handleReload(commandSender);
             case "list" -> handleList(commandSender);
@@ -61,18 +66,19 @@ public class NameFilterAdminCommand extends SubCommand {
         }
     }
 
+    private static boolean isNameFilterAction(String action) {
+        return "reload".equals(action)
+                || "list".equals(action)
+                || "add".equals(action)
+                || "remove".equals(action);
+    }
+
     private void handleReload(CommandSender sender) {
-        if (!ensureNameFilterAvailable(sender)) {
-            return;
-        }
         reloadNameFilter();
         sender.sendMessage("Name filter reloaded.");
     }
 
     private void handleList(CommandSender sender) {
-        if (!ensureNameFilterAvailable(sender)) {
-            return;
-        }
         List<String> words = listBlockedWordsOrEmpty();
         if (words.isEmpty()) {
             sender.sendMessage("Name filter list is empty.");
@@ -92,9 +98,6 @@ public class NameFilterAdminCommand extends SubCommand {
 
     private void handleWordMutation(CommandSender sender, String[] args, String methodName, String okPrefix, String failPrefix) {
         if (!requireMinArgs(sender, args, 3)) {
-            return;
-        }
-        if (!ensureNameFilterAvailable(sender)) {
             return;
         }
         String word = joinFrom(args, 2);
