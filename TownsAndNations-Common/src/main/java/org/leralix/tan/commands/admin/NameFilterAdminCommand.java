@@ -19,25 +19,10 @@ public class NameFilterAdminCommand extends SubCommand {
     private static final String ACTION_LIST = "list";
     private static final String ACTION_RELOAD = "reload";
 
-    @Override
-    public String getName() {
-        return "namefilter";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Manage name filter words list";
-    }
-
-    @Override
-    public int getArguments() {
-        return 1;
-    }
-
-    @Override
-    public String getSyntax() {
-        return "/tanadmin namefilter <add|remove|list|reload> [word]";
-    }
+    @Override public String getName() { return "namefilter"; }
+    @Override public String getDescription() { return "Manage name filter words list"; }
+    @Override public int getArguments() { return 1; }
+    @Override public String getSyntax() { return "/tanadmin namefilter <add|remove|list|reload> [word]"; }
 
     @Override
     public List<String> getTabCompleteSuggestions(CommandSender commandSender, String lowerCase, String[] args) {
