@@ -43,6 +43,7 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.constants.DatabaseConstants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.text.NumberUtil;
+import org.leralix.tan.utils.text.NameFilter;
 import org.tan.api.TanAPI;
 
 import java.io.BufferedReader;
@@ -158,6 +159,7 @@ public class TownsAndNations extends JavaPlugin {
         getLogger().log(Level.INFO, "[TaN] -Loading Configs");
 
         Constants.init(ConfigUtil.getCustomConfig(ConfigTag.MAIN), ConfigUtil.getCustomConfig(ConfigTag.UPGRADE));
+        NameFilter.reload();
         ClaimBlacklistStorage.init();
         IconManager.getInstance();
         NumberUtil.init();

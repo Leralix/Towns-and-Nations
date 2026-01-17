@@ -10,6 +10,7 @@ import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.text.NameFilter;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -58,6 +59,7 @@ public class ReloadCommand extends SubCommand {
             DynamicLang.loadTranslations(langFolder, lang);
 
             Constants.init(ConfigUtil.getCustomConfig(ConfigTag.MAIN), ConfigUtil.getCustomConfig(ConfigTag.UPGRADE));
+            NameFilter.reload();
             ClaimBlacklistStorage.init();
             NumberUtil.init();
 
