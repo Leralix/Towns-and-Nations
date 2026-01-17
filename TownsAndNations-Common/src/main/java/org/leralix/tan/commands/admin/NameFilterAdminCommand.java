@@ -135,7 +135,7 @@ public class NameFilterAdminCommand extends SubCommand {
     }
 
     private static void reloadNameFilter() {
-        invokeStatic("reload", NO_TYPES, NO_ARGS);
+        invokeStatic(ACTION_RELOAD, NO_TYPES, NO_ARGS);
     }
 
     private static List<String> listBlockedWordsOrEmpty() {
