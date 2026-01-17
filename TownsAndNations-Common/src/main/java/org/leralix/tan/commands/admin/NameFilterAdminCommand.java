@@ -2,13 +2,14 @@ package org.leralix.tan.commands.admin;
 
 import org.bukkit.command.CommandSender;
 import org.leralix.lib.commands.SubCommand;
-import org.leralix.tan.utils.text.NameFilter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class NameFilterAdminCommand extends SubCommand {
+
+    private static final String NAME_FILTER_CLASS = "org.leralix.tan.utils.text.NameFilter";
 
     @Override
     public String getName() {
@@ -36,7 +37,7 @@ public class NameFilterAdminCommand extends SubCommand {
             return List.of("add", "remove", "list", "reload");
         }
         if (args.length == 3 && ("remove".equalsIgnoreCase(args[1]) || "list".equalsIgnoreCase(args[1]))) {
-            return NameFilter.listBlockedWords();
+            return listBlockedWordsOrEmpty();
         }
         return Collections.emptyList();
     }
@@ -51,11 +52,17 @@ public class NameFilterAdminCommand extends SubCommand {
         String action = args[1].toLowerCase();
         switch (action) {
             case "reload" -> {
-                NameFilter.reload();
+                if (!ensureNameFilterAvailable(commandSender)) {
+                    return;
+                }
+                reloadNameFilter();
                 commandSender.sendMessage("Name filter reloaded.");
             }
             case "list" -> {
-                List<String> words = NameFilter.listBlockedWords();
+                if (!ensureNameFilterAvailable(commandSender)) {
+                    return;
+                }
+                List<String> words = listBlockedWordsOrEmpty();
                 if (words.isEmpty()) {
                     commandSender.sendMessage("Name filter list is empty.");
                     return;
@@ -68,8 +75,11 @@ public class NameFilterAdminCommand extends SubCommand {
                     commandSender.sendMessage(getSyntax());
                     return;
                 }
+                if (!ensureNameFilterAvailable(commandSender)) {
+                    return;
+                }
                 String word = joinFrom(args, 2);
-                boolean ok = NameFilter.addBlockedWord(word);
+                boolean ok = addBlockedWord(word);
                 if (ok) {
                     commandSender.sendMessage("Added blocked word: " + word);
                 } else {
@@ -81,8 +91,11 @@ public class NameFilterAdminCommand extends SubCommand {
                     commandSender.sendMessage(getSyntax());
                     return;
                 }
+                if (!ensureNameFilterAvailable(commandSender)) {
+                    return;
+                }
                 String word = joinFrom(args, 2);
-                boolean ok = NameFilter.removeBlockedWord(word);
+                boolean ok = removeBlockedWord(word);
                 if (ok) {
                     commandSender.sendMessage("Removed blocked word: " + word);
                 } else {
@@ -90,6 +103,70 @@ public class NameFilterAdminCommand extends SubCommand {
                 }
             }
             default -> commandSender.sendMessage(getSyntax());
+        }
+    }
+
+    private static boolean ensureNameFilterAvailable(CommandSender sender) {
+        if (getNameFilterClass() != null) {
+            return true;
+        }
+        sender.sendMessage("NameFilter is not available in this build.");
+        return false;
+    }
+
+    private static Class<?> getNameFilterClass() {
+        try {
+            return Class.forName(NAME_FILTER_CLASS);
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
+
+    private static void reloadNameFilter() {
+        invokeStaticVoid("reload");
+    }
+
+    private static List<String> listBlockedWordsOrEmpty() {
+        Object res = invokeStatic("listBlockedWords");
+        if (res instanceof List<?> list) {
+            List<String> out = new ArrayList<>();
+            for (Object o : list) {
+                if (o != null) {
+                    out.add(o.toString());
+                }
+            }
+            return out;
+        }
+        return Collections.emptyList();
+    }
+
+    private static boolean addBlockedWord(String word) {
+        Object res = invokeStatic("addBlockedWord", new Class<?>[]{String.class}, new Object[]{word});
+        return res instanceof Boolean b && b;
+    }
+
+    private static boolean removeBlockedWord(String word) {
+        Object res = invokeStatic("removeBlockedWord", new Class<?>[]{String.class}, new Object[]{word});
+        return res instanceof Boolean b && b;
+    }
+
+    private static void invokeStaticVoid(String methodName) {
+        invokeStatic(methodName, new Class<?>[0], new Object[0]);
+    }
+
+    private static Object invokeStatic(String methodName) {
+        return invokeStatic(methodName, new Class<?>[0], new Object[0]);
+    }
+
+    private static Object invokeStatic(String methodName, Class<?>[] parameterTypes, Object[] args) {
+        Class<?> cls = getNameFilterClass();
+        if (cls == null) {
+            return null;
+        }
+        try {
+            return cls.getMethod(methodName, parameterTypes).invoke(null, args);
+        } catch (ReflectiveOperationException e) {
+            return null;
         }
     }
 
