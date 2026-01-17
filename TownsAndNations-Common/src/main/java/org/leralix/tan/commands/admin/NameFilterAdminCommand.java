@@ -6,6 +6,7 @@ import org.leralix.lib.commands.SubCommand;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class NameFilterAdminCommand extends SubCommand {
 
@@ -44,66 +45,71 @@ public class NameFilterAdminCommand extends SubCommand {
 
     @Override
     public void perform(CommandSender commandSender, String[] args) {
-        if (args.length < 2) {
-            commandSender.sendMessage(getSyntax());
+        if (!requireMinArgs(commandSender, args, 2)) {
             return;
         }
 
-        String action = args[1].toLowerCase();
+        String action = args[1].toLowerCase(Locale.ROOT);
         switch (action) {
-            case "reload" -> {
-                if (!ensureNameFilterAvailable(commandSender)) {
-                    return;
-                }
-                reloadNameFilter();
-                commandSender.sendMessage("Name filter reloaded.");
-            }
-            case "list" -> {
-                if (!ensureNameFilterAvailable(commandSender)) {
-                    return;
-                }
-                List<String> words = listBlockedWordsOrEmpty();
-                if (words.isEmpty()) {
-                    commandSender.sendMessage("Name filter list is empty.");
-                    return;
-                }
-                commandSender.sendMessage("Name filter blocked words (" + words.size() + "):");
-                commandSender.sendMessage(String.join(", ", words));
-            }
-            case "add" -> {
-                if (args.length < 3) {
-                    commandSender.sendMessage(getSyntax());
-                    return;
-                }
-                if (!ensureNameFilterAvailable(commandSender)) {
-                    return;
-                }
-                String word = joinFrom(args, 2);
-                boolean ok = addBlockedWord(word);
-                if (ok) {
-                    commandSender.sendMessage("Added blocked word: " + word);
-                } else {
-                    commandSender.sendMessage("Failed to add blocked word: " + word);
-                }
-            }
-            case "remove" -> {
-                if (args.length < 3) {
-                    commandSender.sendMessage(getSyntax());
-                    return;
-                }
-                if (!ensureNameFilterAvailable(commandSender)) {
-                    return;
-                }
-                String word = joinFrom(args, 2);
-                boolean ok = removeBlockedWord(word);
-                if (ok) {
-                    commandSender.sendMessage("Removed blocked word: " + word);
-                } else {
-                    commandSender.sendMessage("Blocked word not found (or failed to remove): " + word);
-                }
-            }
+            case "reload" -> handleReload(commandSender);
+            case "list" -> handleList(commandSender);
+            case "add" -> handleAdd(commandSender, args);
+            case "remove" -> handleRemove(commandSender, args);
             default -> commandSender.sendMessage(getSyntax());
         }
+    }
+
+    private void handleReload(CommandSender sender) {
+        if (!ensureNameFilterAvailable(sender)) {
+            return;
+        }
+        reloadNameFilter();
+        sender.sendMessage("Name filter reloaded.");
+    }
+
+    private void handleList(CommandSender sender) {
+        if (!ensureNameFilterAvailable(sender)) {
+            return;
+        }
+        List<String> words = listBlockedWordsOrEmpty();
+        if (words.isEmpty()) {
+            sender.sendMessage("Name filter list is empty.");
+            return;
+        }
+        sender.sendMessage("Name filter blocked words (" + words.size() + "):");
+        sender.sendMessage(String.join(", ", words));
+    }
+
+    private void handleAdd(CommandSender sender, String[] args) {
+        if (!requireMinArgs(sender, args, 3)) {
+            return;
+        }
+        if (!ensureNameFilterAvailable(sender)) {
+            return;
+        }
+        String word = joinFrom(args, 2);
+        boolean ok = addBlockedWord(word);
+        sender.sendMessage(ok ? "Added blocked word: " + word : "Failed to add blocked word: " + word);
+    }
+
+    private void handleRemove(CommandSender sender, String[] args) {
+        if (!requireMinArgs(sender, args, 3)) {
+            return;
+        }
+        if (!ensureNameFilterAvailable(sender)) {
+            return;
+        }
+        String word = joinFrom(args, 2);
+        boolean ok = removeBlockedWord(word);
+        sender.sendMessage(ok ? "Removed blocked word: " + word : "Blocked word not found (or failed to remove): " + word);
+    }
+
+    private boolean requireMinArgs(CommandSender sender, String[] args, int minArgs) {
+        if (args.length < minArgs) {
+            sender.sendMessage(getSyntax());
+            return false;
+        }
+        return true;
     }
 
     private static boolean ensureNameFilterAvailable(CommandSender sender) {
