@@ -67,6 +67,8 @@ public class Constants {
     private static int rankNameSize;
     private static boolean displayTerritoryColor;
     private static int territoryClaimBufferZone;
+    private static boolean applyTerritoryClaimBufferZoneToAllClaims;
+    private static boolean preventEncircleTerritoryClaims;
     private static int minimumNumberOfChunksUnclaimed;
     private static double percentageOfChunksUnclaimed;
     private static boolean preventOrphanChunks;
@@ -112,6 +114,9 @@ public class Constants {
     private static int capturePercentageToSurrender;
     private static int captureCapitalBonusPercentage;
     private static PermissionAtWars permissionAtWars;
+
+    private static boolean enableWarPowerBalance;
+    private static double maxWarPowerRatio;
 
     private static int attackDuration;
     private static int minTimeBeforeAttack;
@@ -195,6 +200,8 @@ public class Constants {
 
         displayTerritoryColor = config.getBoolean("displayTerritoryNameWithOwnColor", false);
         territoryClaimBufferZone = config.getInt("TerritoryClaimBufferZone", 2);
+        applyTerritoryClaimBufferZoneToAllClaims = config.getBoolean("ApplyTerritoryClaimBufferZoneToAllClaims", false);
+        preventEncircleTerritoryClaims = config.getBoolean("preventEncircleTerritoryClaims", false);
         minimumNumberOfChunksUnclaimed = config.getInt("minimumNumberOfChunksUnclaimed", 5);
         percentageOfChunksUnclaimed = config.getDouble("percentageOfChunksUnclaimed", 10) / 100;
         preventOrphanChunks = config.getBoolean("preventUnclaimOrphanChunks", false);
@@ -266,6 +273,12 @@ public class Constants {
         capturePercentageToSurrender = config.getInt("capturePercentageToSurrender");
         captureCapitalBonusPercentage = config.getInt("captureCapitalBonusPercentage");
         permissionAtWars = new PermissionAtWars(config.getConfigurationSection("attackersPermissions"));
+
+        enableWarPowerBalance = config.getBoolean("enableWarPowerBalance", false);
+        maxWarPowerRatio = config.getDouble("maxWarPowerRatio", 2.0);
+        if (maxWarPowerRatio < 1.0) {
+            maxWarPowerRatio = 1.0;
+        }
         attackDuration = config.getInt("WarDuration", 30);
         minTimeBeforeAttack = config.getInt("MinimumTimeBeforeAttack", 120);
         maxTimeBeforeAttack = config.getInt("MaximumTimeBeforeAttack", 4320);
@@ -381,6 +394,14 @@ public class Constants {
 
     public static int territoryClaimBufferZone() {
         return territoryClaimBufferZone;
+    }
+
+    public static boolean applyTerritoryClaimBufferZoneToAllClaims() {
+        return applyTerritoryClaimBufferZoneToAllClaims;
+    }
+
+    public static boolean preventEncircleTerritoryClaims() {
+        return preventEncircleTerritoryClaims;
     }
 
     public static int getMinimumNumberOfChunksUnclaimed() {
@@ -676,6 +697,14 @@ public class Constants {
 
     public static int getCaptureCapitalBonusPercentage() {
         return captureCapitalBonusPercentage;
+    }
+
+    public static boolean isWarPowerBalanceEnabled() {
+        return enableWarPowerBalance;
+    }
+
+    public static double getMaxWarPowerRatio() {
+        return maxWarPowerRatio;
     }
 
     public static PermissionAtWars getPermissionAtWars() {

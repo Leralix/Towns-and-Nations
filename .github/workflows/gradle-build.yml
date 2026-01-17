@@ -17,6 +17,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - mc: mc1.19
+            paperVersion: 1.19.4-R0.1-SNAPSHOT
+          - mc: mc1.20
+            paperVersion: 1.20-R0.1-SNAPSHOT
+          - mc: mc1.21
+            paperVersion: 1.21-R0.1-SNAPSHOT
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,15 +39,17 @@ jobs:
           java-version: '21'
           cache: gradle
 
-      - name: Make gradlew executable
-        run: chmod +x gradlew
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.5'
 
-      - name: Build (shadowJar)
-        run: ./gradlew :TownsAndNations-Common:shadowJar -x test --console=plain
+      - name: Build & Test (shadowJar)
+        run: gradle :TownsAndNations-Common:test :TownsAndNations-Common:shadowJar -PpaperVersion=${{ matrix.paperVersion }} -PjarClassifier=${{ matrix.mc }} --no-daemon --console=plain
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: TownsAndNations
-          path: TownsAndNations-Common/build/libs/TownsAndNations-*.jar
+          name: TownsAndNations-${{ matrix.mc }}
+          path: TownsAndNations-Common/build/libs/*-${{ matrix.mc }}.jar
           if-no-files-found: error

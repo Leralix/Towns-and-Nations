@@ -49,15 +49,17 @@ permissions:
     description: Allows access to /tan
     default: true
     children:
-      tan.base.commands.*: true
+      tan.base.commands.all: true
 
-  tan.base.commands.*:
+  tan.base.commands.all:
     description: All base commands
     default: false
     children:
       tan.base.commands.autoclaim: true
+      tan.base.commands.borders: true
       tan.base.commands.chat: true
       tan.base.commands.claim: true
+      tan.base.commands.claimarea: true
       tan.base.commands.help: true
       tan.base.commands.invite: true
       tan.base.commands.join: true
@@ -69,6 +71,66 @@ permissions:
       tan.base.commands.setspawn: true
       tan.base.commands.spawn: true
       tan.base.commands.unclaim: true
+
+  tan.base.commands.borders:
+    description: Access to /tan borders
+    default: true
+
+  tan.base.commands.chat:
+    description: Access to /tan chat
+    default: true
+
+  tan.base.commands.claim:
+    description: Access to /tan claim
+    default: true
+
+  tan.base.commands.claimarea:
+    description: Access to /tan claimarea
+    default: true
+
+  tan.base.commands.help:
+    description: Access to /tan help
+    default: true
+
+  tan.base.commands.invite:
+    description: Access to /tan invite
+    default: true
+
+  tan.base.commands.join:
+    description: Access to /tan join
+    default: true
+
+  tan.base.commands.map:
+    description: Access to /tan map
+    default: true
+
+  tan.base.commands.newsletter:
+    description: Access to /tan newsletter
+    default: true
+
+  tan.base.commands.pay:
+    description: Access to /tan pay
+    default: true
+
+  tan.base.commands.balance:
+    description: Access to /tan balance
+    default: true
+
+  tan.base.commands.setspawn:
+    description: Access to /tan setspawn
+    default: true
+
+  tan.base.commands.spawn:
+    description: Access to /tan spawn
+    default: true
+
+  tan.base.commands.unclaim:
+    description: Access to /tan unclaim
+    default: true
+
+  tan.base.commands.autoclaim:
+    description: Access to /tan autoclaim
+    default: true
 
   tan.base.commands.gui:
     description: Access to /tan gui
@@ -164,14 +226,113 @@ permissions:
     children:
       tan.admin.commands.addmoney: true
       tan.admin.commands.gui: true
+      tan.admin.commands.help: true
+      tan.admin.commands.namefilter: true
       tan.admin.commands.reload: true
       tan.admin.commands.setmoney: true
       tan.admin.commands.sudo: true
       tan.admin.commands.unclaim: true
+      tan.admin.commands.saveall: true
+      tan.admin.commands.createBackup: true
+      tan.admin.commands.skipday: true
+      tan.admin.commands.playsound: true
+      tan.admin.commands.report: true
+
+  tan.admin.commands.namefilter:
+    description: Manage name filter words list
+    default: op
+
+  tan.admin.commands.addmoney:
+    description: Access to /tanadmin addmoney
+    default: op
+
+  tan.admin.commands.setmoney:
+    description: Access to /tanadmin setmoney
+    default: op
+
+  tan.admin.commands.reload:
+    description: Access to /tanadmin reload
+    default: op
+
+  tan.admin.commands.sudo:
+    description: Access to /tanadmin sudo
+    default: op
+
+  tan.admin.commands.unclaim:
+    description: Access to /tanadmin unclaim
+    default: op
+
+  tan.admin.commands.gui:
+    description: Access to /tanadmin gui
+    default: op
+
+  tan.admin.commands.help:
+    description: Access to /tanadmin help
+    default: op
+
+  tan.admin.commands.saveall:
+    description: Access to /tandebug saveall
+    default: op
+
+  tan.admin.commands.createBackup:
+    description: Access to /tandebug createBackup
+    default: op
+
+  tan.admin.commands.skipday:
+    description: Access to /tandebug skipday
+    default: op
+
+  tan.admin.commands.playsound:
+    description: Access to /tandebug playsound
+    default: op
+
+  tan.admin.commands.report:
+    description: Access to /tandebug report
+    default: op
 
   # =========================
   # SERVER
   # =========================
   tan.server.commands:
     description: Server-side commands
+    default: op
+
+  tan.server.commands.*:
+    description: All server-side subcommands
+    default: false
+    children:
+      tan.server.commands.createtown: true
+      tan.server.commands.applytown: true
+      tan.server.commands.quittown: true
+      tan.server.commands.disbandtown: true
+      tan.server.commands.gui: true
+      tan.server.commands.landmarkUpdate: true
+      tan.server.commands.landmarkSetStoredLimit: true
+
+  tan.server.commands.createtown:
+    description: Access to /tanserver createtown
+    default: op
+
+  tan.server.commands.applytown:
+    description: Access to /tanserver applytown
+    default: op
+
+  tan.server.commands.quittown:
+    description: Access to /tanserver quittown
+    default: op
+
+  tan.server.commands.disbandtown:
+    description: Access to /tanserver disbandtown
+    default: op
+
+  tan.server.commands.gui:
+    description: Access to /tanserver gui
+    default: op
+
+  tan.server.commands.landmarkUpdate:
+    description: Access to /tanserver landmarkUpdate
+    default: op
+
+  tan.server.commands.landmarkSetStoredLimit:
+    description: Access to /tanserver landmarkSetStoredLimit
     default: op

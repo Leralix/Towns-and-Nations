@@ -14,6 +14,7 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.text.NameFilter;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class CreateRegion extends ChatListenerEvent {
@@ -42,18 +43,24 @@ public class CreateRegion extends ChatListenerEvent {
             return false;
         }
 
+        String regionName = message == null ? "" : message.trim();
+
+        if (!NameFilter.validateOrWarn(player, regionName, NameFilter.Scope.REGION)) {
+            return false;
+        }
+
         int maxSize = Constants.getRegionMaxNameSize();
-        if(message.length() > maxSize){
+        if(regionName.length() > maxSize){
             TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(tanPlayer, Integer.toString(maxSize)));
             return false;
         }
 
-        if(RegionDataStorage.getInstance().isNameUsed(message)){
+        if(RegionDataStorage.getInstance().isNameUsed(regionName)){
             TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(tanPlayer));
             return false;
         }
 
-        createRegion(player, message, town);
+        createRegion(player, regionName, town);
         return true;
     }
 
