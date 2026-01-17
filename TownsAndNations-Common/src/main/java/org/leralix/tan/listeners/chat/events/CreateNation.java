@@ -13,6 +13,7 @@ import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.FileUtil;
+import org.leralix.tan.utils.text.NameFilter;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class CreateNation extends ChatListenerEvent {
@@ -46,18 +47,24 @@ public class CreateNation extends ChatListenerEvent {
             return false;
         }
 
+        String nationName = message == null ? "" : message.trim();
+
+        if (!NameFilter.validateOrWarn(player, nationName, NameFilter.Scope.NATION)) {
+            return false;
+        }
+
         int maxSize = Constants.getNationMaxNameSize();
-        if (message.length() > maxSize) {
+        if (nationName.length() > maxSize) {
             TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(tanPlayer, Integer.toString(maxSize)));
             return false;
         }
 
-        if (NationDataStorage.getInstance().isNameUsed(message)) {
+        if (NationDataStorage.getInstance().isNameUsed(nationName)) {
             TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(tanPlayer));
             return false;
         }
 
-        createNation(player, message, regionData);
+        createNation(player, nationName, regionData);
         return true;
     }
 
