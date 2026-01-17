@@ -91,6 +91,58 @@ public class ChunkUtil {
         return false;
     }
 
+    public static boolean wouldClaimCauseEncirclement(Chunk chunkToClaim, TerritoryData claimingTerritory) {
+        if (chunkToClaim == null || claimingTerritory == null) {
+            return false;
+        }
+
+        ClaimedChunk2 toClaim = NewClaimedChunkStorage.getInstance().get(chunkToClaim);
+        String worldId = chunkToClaim.getWorld().getUID().toString();
+        String claimingId = claimingTerritory.getID();
+
+        List<ClaimedChunk2> neighbors = List.of(
+                NewClaimedChunkStorage.getInstance().get(chunkToClaim.getX() + 1, chunkToClaim.getZ(), worldId),
+                NewClaimedChunkStorage.getInstance().get(chunkToClaim.getX() - 1, chunkToClaim.getZ(), worldId),
+                NewClaimedChunkStorage.getInstance().get(chunkToClaim.getX(), chunkToClaim.getZ() + 1, worldId),
+                NewClaimedChunkStorage.getInstance().get(chunkToClaim.getX(), chunkToClaim.getZ() - 1, worldId)
+        );
+
+        for (ClaimedChunk2 neighbor : neighbors) {
+            if (!(neighbor instanceof TerritoryChunk territoryChunk)) {
+                continue;
+            }
+            if (claimingId.equals(territoryChunk.getOwnerID())) {
+                continue;
+            }
+
+            int nx = territoryChunk.getX();
+            int nz = territoryChunk.getZ();
+
+            boolean surrounded = true;
+            surrounded &= isOwnedOrWillBeOwnedBy(nx + 1, nz, worldId, claimingId, toClaim);
+            surrounded &= isOwnedOrWillBeOwnedBy(nx - 1, nz, worldId, claimingId, toClaim);
+            surrounded &= isOwnedOrWillBeOwnedBy(nx, nz + 1, worldId, claimingId, toClaim);
+            surrounded &= isOwnedOrWillBeOwnedBy(nx, nz - 1, worldId, claimingId, toClaim);
+
+            if (surrounded) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean isOwnedOrWillBeOwnedBy(int x, int z, String worldId, String claimingId, ClaimedChunk2 toClaim) {
+        ClaimedChunk2 chk = NewClaimedChunkStorage.getInstance().get(x, z, worldId);
+        if (chk.getX() == toClaim.getX() && chk.getZ() == toClaim.getZ() && chk.getWorldUUID().equals(toClaim.getWorldUUID())) {
+            return true;
+        }
+        if (chk instanceof TerritoryChunk territoryChunk) {
+            return claimingId.equals(territoryChunk.getOwnerID());
+        }
+        return false;
+    }
+
     private static ChunkPolygon getPolygon(TerritoryChunk startChunk) {
         return getPolygon(startChunk, null);
     }
