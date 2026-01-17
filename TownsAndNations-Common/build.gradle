@@ -3,6 +3,9 @@ plugins {
     id "com.gradleup.shadow" version "8.3.7"
 }
 
+def paperVersion = (project.findProperty('paperVersion') ?: '1.20-R0.1-SNAPSHOT').toString()
+def jarClassifier = (project.findProperty('jarClassifier') ?: '').toString()
+
 jar {
     archiveBaseName = 'TownsAndNations'
     enabled = false
@@ -13,7 +16,7 @@ shadowJar {
 }
 
 tasks.shadowJar {
-    archiveClassifier.set('')
+    archiveClassifier.set(jarClassifier)
 }
 
 tasks.build {
@@ -76,7 +79,7 @@ repositories {
 dependencies {
     //Compile only
     compileOnly 'io.github.leralix:sphere-lib:0.6.0'
-    compileOnly 'io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT'
+    compileOnly "io.papermc.paper:paper-api:${paperVersion}"
     compileOnly 'com.mojang:authlib:4.0.43'
     compileOnly 'net.luckperms:api:5.4'
     compileOnly "com.github.MilkBowl:VaultAPI:1.7.1"
@@ -97,7 +100,7 @@ dependencies {
     //Tests
     testImplementation 'io.github.leralix:sphere-lib:0.6.0'
     testImplementation 'com.github.MockBukkit:MockBukkit:v4.72.9'
-    testImplementation 'io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT'
+    testImplementation "io.papermc.paper:paper-api:${paperVersion}"
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
