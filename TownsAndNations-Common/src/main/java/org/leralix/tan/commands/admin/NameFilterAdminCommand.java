@@ -11,6 +11,8 @@ import java.util.Locale;
 public class NameFilterAdminCommand extends SubCommand {
 
     private static final String NAME_FILTER_CLASS = "org.leralix.tan.utils.text.NameFilter";
+    private static final Class<?>[] NO_TYPES = new Class<?>[0];
+    private static final Object[] NO_ARGS = new Object[0];
 
     @Override
     public String getName() {
@@ -81,18 +83,14 @@ public class NameFilterAdminCommand extends SubCommand {
     }
 
     private void handleAdd(CommandSender sender, String[] args) {
-        if (!requireMinArgs(sender, args, 3)) {
-            return;
-        }
-        if (!ensureNameFilterAvailable(sender)) {
-            return;
-        }
-        String word = joinFrom(args, 2);
-        boolean ok = addBlockedWord(word);
-        sender.sendMessage(ok ? "Added blocked word: " + word : "Failed to add blocked word: " + word);
+        handleWordMutation(sender, args, "addBlockedWord", "Added blocked word: ", "Failed to add blocked word: ");
     }
 
     private void handleRemove(CommandSender sender, String[] args) {
+        handleWordMutation(sender, args, "removeBlockedWord", "Removed blocked word: ", "Blocked word not found (or failed to remove): ");
+    }
+
+    private void handleWordMutation(CommandSender sender, String[] args, String methodName, String okPrefix, String failPrefix) {
         if (!requireMinArgs(sender, args, 3)) {
             return;
         }
@@ -100,8 +98,8 @@ public class NameFilterAdminCommand extends SubCommand {
             return;
         }
         String word = joinFrom(args, 2);
-        boolean ok = removeBlockedWord(word);
-        sender.sendMessage(ok ? "Removed blocked word: " + word : "Blocked word not found (or failed to remove): " + word);
+        boolean ok = invokeBooleanWithStringArg(methodName, word);
+        sender.sendMessage((ok ? okPrefix : failPrefix) + word);
     }
 
     private boolean requireMinArgs(CommandSender sender, String[] args, int minArgs) {
@@ -129,11 +127,11 @@ public class NameFilterAdminCommand extends SubCommand {
     }
 
     private static void reloadNameFilter() {
-        invokeStaticVoid("reload");
+        invokeStatic("reload", NO_TYPES, NO_ARGS);
     }
 
     private static List<String> listBlockedWordsOrEmpty() {
-        Object res = invokeStatic("listBlockedWords");
+        Object res = invokeStatic("listBlockedWords", NO_TYPES, NO_ARGS);
         if (res instanceof List<?> list) {
             List<String> out = new ArrayList<>();
             for (Object o : list) {
@@ -146,22 +144,9 @@ public class NameFilterAdminCommand extends SubCommand {
         return Collections.emptyList();
     }
 
-    private static boolean addBlockedWord(String word) {
-        Object res = invokeStatic("addBlockedWord", new Class<?>[]{String.class}, new Object[]{word});
+    private static boolean invokeBooleanWithStringArg(String methodName, String value) {
+        Object res = invokeStatic(methodName, new Class<?>[]{String.class}, new Object[]{value});
         return res instanceof Boolean b && b;
-    }
-
-    private static boolean removeBlockedWord(String word) {
-        Object res = invokeStatic("removeBlockedWord", new Class<?>[]{String.class}, new Object[]{word});
-        return res instanceof Boolean b && b;
-    }
-
-    private static void invokeStaticVoid(String methodName) {
-        invokeStatic(methodName, new Class<?>[0], new Object[0]);
-    }
-
-    private static Object invokeStatic(String methodName) {
-        return invokeStatic(methodName, new Class<?>[0], new Object[0]);
     }
 
     private static Object invokeStatic(String methodName, Class<?>[] parameterTypes, Object[] args) {
