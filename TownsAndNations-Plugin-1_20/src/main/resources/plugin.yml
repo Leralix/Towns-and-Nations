@@ -1,59 +1,47 @@
 name: TownsAndNations
 version: '${version}'
 main: org.leralix.tan.TownsAndNations
-api-version: "1.19"
-authors: [Leralix]
+api-version: "1.20"
+authors: [ Leralix ]
 depend: [SphereLib, Vault]
 softdepend: [PlaceholderAPI, WorldGuard]
 description: A town plugin with roleplay elements
-
 commands:
   tan:
-    description: Base command of Towns and Nations
+    description: base command of Towns and Nations
     permission: tan.base.commands
     usage: /<command>
-
   tanadmin:
-    description: Admin command of Towns and Nations
+    description: admin command of Towns and Nations
     permission: tan.admin.commands
     usage: /<command>
-
   tandebug:
-    description: Debug command of Towns and Nations
+    description: debug command of Towns and Nations
     permission: tan.admin.commands
     usage: /<command>
-
   tanserver:
-    description: Server-side command of Towns and Nations
+    description: server side command of Towns and Nations.
     permission: tan.server.commands
     usage: /<command>
 
 permissions:
-
-  # =========================
-  # BASE ROOT
-  # =========================
   tan.base.*:
-    description: All base permissions of Towns and Nations
+    description: Base permissions of Towns and Nations
     default: true
     children:
-      tan.base.commands: true
+      tan.base.commands.*: true
       tan.base.town.*: true
       tan.base.region.*: true
-      tan.base.nation.*: true
 
-  # =========================
-  # BASE COMMANDS
-  # =========================
   tan.base.commands:
-    description: Allows access to /tan
+    description: Base command permission
     default: true
     children:
-      tan.base.commands.all: true
+      tan.base.commands.*: true
 
-  tan.base.commands.all:
-    description: All base commands
-    default: false
+  tan.base.commands.*:
+    description: All town-related permissions
+    default: true
     children:
       tan.base.commands.autoclaim: true
       tan.base.commands.chat: true
@@ -71,16 +59,9 @@ permissions:
       tan.base.commands.spawn: true
       tan.base.commands.unclaim: true
 
-  tan.base.commands.gui:
-    description: Access to /tan gui
-    default: true
-
-  # =========================
-  # TOWNS
-  # =========================
   tan.base.town.*:
-    description: All town permissions
-    default: false
+    description: All town-related permissions
+    default: true
     children:
       tan.base.town.create: true
       tan.base.town.join: true
@@ -96,71 +77,36 @@ permissions:
     default: true
 
   tan.base.town.quit:
-    description: Permission to leave a town
+    description: Permission to join a town
     default: true
 
   tan.base.town.disband:
-    description: Permission to disband a town
+    description: Permission to join a town
     default: true
 
-  # =========================
-  # REGIONS
-  # =========================
   tan.base.region.*:
-    description: All region permissions
-    default: false
+    description: All region-related permissions
+    default: true
     children:
       tan.base.region.create: true
-      tan.base.region.quit: true
       tan.base.region.disband: true
 
   tan.base.region.create:
     description: Permission to create a region
     default: true
 
-  tan.base.region.quit:
-    description: Permission to leave a region or nation
-    default: true
-
   tan.base.region.disband:
-    description: Permission to disband a region
+    description: Permission to create a region
     default: true
 
-  # =========================
-  # NATIONS
-  # =========================
-  tan.base.nation.*:
-    description: All nation permissions
-    default: false
-    children:
-      tan.base.nation.create: true
-      tan.base.nation.disband: true
-
-  tan.base.nation.create:
-    description: Permission to create a nation
-    default: true
-
-  tan.base.nation.disband:
-    description: Permission to disband a nation
-    default: true
-
-  # =========================
-  # ADMIN
-  # =========================
   tan.admin.*:
-    description: All admin permissions
-    default: op
-    children:
-      tan.admin.commands: true
-
-  tan.admin.commands:
-    description: Allows access to admin commands
-    default: op
+    description: Admin permissions of Towns and Nations
+    default: false
     children:
       tan.admin.commands.*: true
 
   tan.admin.commands.*:
-    description: All admin subcommands
+    description: All admin commands
     default: false
     children:
       tan.admin.commands.addmoney: true
@@ -169,10 +115,3 @@ permissions:
       tan.admin.commands.setmoney: true
       tan.admin.commands.sudo: true
       tan.admin.commands.unclaim: true
-
-  # =========================
-  # SERVER
-  # =========================
-  tan.server.commands:
-    description: Server-side commands
-    default: op

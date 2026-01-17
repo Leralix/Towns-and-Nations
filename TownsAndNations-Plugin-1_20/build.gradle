@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id "com.gradleup.shadow" version "8.3.7"
+}
+
+group = 'org.tan'
+version = '0.16.8'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "spigot-repo"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+    maven {
+        name = 'papermc'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+}
+
+dependencies {
+    implementation(project(":TownsAndNations-Common"))
+    compileOnly 'io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT'
+}
+
+tasks.shadowJar {
+    archiveFileName.set("TownsAndNations-${version}-mc1.20.jar")
+    archiveClassifier.set('')
+    relocate("dev.triumphteam.gui", "dev.triumphteam.gui")
+    relocate 'net.objecthunter.exp4j', 'org.leralix.tan.libs.exp4j'
+    relocate 'org.bstats', 'org.leralix.tan.bstat'
+    relocate 'com.mysql', 'org.leralix.shadow.mysql'
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}

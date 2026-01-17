@@ -63,10 +63,15 @@ public class TownData extends TerritoryData {
         }
 
         Range prefixSizeRange = Constants.getPrefixSize();
-
-        this.townTag = prefixSizeRange.isValueIn(townName.length()) ?
-                townName.toUpperCase() :
-                townName.substring(0, prefixSizeRange.getMaxVal()).toUpperCase();
+        String safeTownName = townName == null ? "" : townName;
+        if (safeTownName.isEmpty()) {
+            this.townTag = "";
+        } else if (prefixSizeRange.isValueIn(safeTownName.length())) {
+            this.townTag = safeTownName.toUpperCase();
+        } else {
+            int endIndex = Math.min(prefixSizeRange.getMaxVal(), safeTownName.length());
+            this.townTag = safeTownName.substring(0, endIndex).toUpperCase();
+        }
     }
 
     @Override
@@ -417,7 +422,18 @@ public class TownData extends TerritoryData {
     }
 
     public String getTownTag() {
-        if (this.townTag == null) setTownTag(name.substring(0, 3).toUpperCase());
+        if (this.townTag == null) {
+            Range prefixSizeRange = Constants.getPrefixSize();
+            String safeName = name == null ? "" : name;
+            if (safeName.isEmpty()) {
+                setTownTag("");
+            } else if (prefixSizeRange.isValueIn(safeName.length())) {
+                setTownTag(safeName.toUpperCase());
+            } else {
+                int endIndex = Math.min(prefixSizeRange.getMaxVal(), safeName.length());
+                setTownTag(safeName.substring(0, endIndex).toUpperCase());
+            }
+        }
         return this.townTag;
     }
 

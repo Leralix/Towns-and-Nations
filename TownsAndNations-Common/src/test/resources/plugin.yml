@@ -1,0 +1,25 @@
+name: TownsAndNations
+version: 'TEST'
+main: org.leralix.tan.TownsAndNations
+api-version: "1.19"
+authors: [ Leralix ]
+depend: [SphereLib, Vault]
+softdepend: [PlaceholderAPI, WorldGuard]
+description: A town plugin with roleplay elements
+commands:
+  tan:
+    description: base command of Towns and Nations
+    permission: tan.base.commands
+    usage: /<command>
+  tanadmin:
+    description: admin command of Towns and Nations
+    permission: tan.admin.commands
+    usage: /<command>
+  tandebug:
+    description: debug command of Towns and Nations
+    permission: tan.admin.commands
+    usage: /<command>
+  tanserver:
+    description: server side command of Towns and Nations.
+    permission: tan.server.commands
+    usage: /<command>

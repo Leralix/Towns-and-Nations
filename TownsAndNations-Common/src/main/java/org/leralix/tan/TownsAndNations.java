@@ -195,10 +195,29 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Loading commands");
         enableEventList();
-        getCommand("tan").setExecutor(new PlayerCommandManager());
-        getCommand("tanadmin").setExecutor(new AdminCommandManager());
-        getCommand("tandebug").setExecutor(new DebugCommandManager());
-        getCommand("tanserver").setExecutor(new ServerCommandManager());
+        PlayerCommandManager playerCommandManager = new PlayerCommandManager();
+        if (getCommand("tan") != null) {
+            getCommand("tan").setExecutor(playerCommandManager);
+            getCommand("tan").setTabCompleter(playerCommandManager);
+        }
+
+        AdminCommandManager adminCommandManager = new AdminCommandManager();
+        if (getCommand("tanadmin") != null) {
+            getCommand("tanadmin").setExecutor(adminCommandManager);
+            getCommand("tanadmin").setTabCompleter(adminCommandManager);
+        }
+
+        DebugCommandManager debugCommandManager = new DebugCommandManager();
+        if (getCommand("tandebug") != null) {
+            getCommand("tandebug").setExecutor(debugCommandManager);
+            getCommand("tandebug").setTabCompleter(debugCommandManager);
+        }
+
+        ServerCommandManager serverCommandManager = new ServerCommandManager();
+        if (getCommand("tanserver") != null) {
+            getCommand("tanserver").setExecutor(serverCommandManager);
+            getCommand("tanserver").setTabCompleter(serverCommandManager);
+        }
 
         getLogger().log(Level.INFO, "[TaN] -Registering Dependencies");
 
