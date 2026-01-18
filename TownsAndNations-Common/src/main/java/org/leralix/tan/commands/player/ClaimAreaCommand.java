@@ -29,7 +29,7 @@ public class ClaimAreaCommand extends AbstractTerritoryClaimCommand {
 
     @Override
     public String getSyntax() {
-        return "/tan claimarea <town/region/nation>";
+        return "/tan claimarea <town/region/nation|kingdom>";
     }
 
     @Override
