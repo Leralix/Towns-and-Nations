@@ -56,11 +56,11 @@ public class InternalAPI extends TanAPI {
 
     @Override
     public PluginVersion getPluginVersion() {
-        return new PluginVersion("0.14.0");
+        return pluginVersion;
     }
 
     @Override
     public PluginVersion getMinimumSupportingMapPlugin() {
-        return new PluginVersion("0.11.0");
+        return minimumSupportingMapPlugin;
     }
 }

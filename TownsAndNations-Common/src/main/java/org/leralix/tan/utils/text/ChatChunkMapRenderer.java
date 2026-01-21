@@ -37,7 +37,12 @@ public final class ChatChunkMapRenderer {
                 int chunkZ = currentChunk.getZ() + dz;
 
                 ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunkX, chunkZ, player.getWorld().getUID().toString());
-                TextComponent icon = claimedChunk.getMapIcon(langType);
+                TextComponent icon;
+                try {
+                    icon = claimedChunk.getMapIcon(langType);
+                } catch (RuntimeException e) {
+                    icon = new TextComponent("?");
+                }
 
                 if (dx == 0 && dz == 0) {
                     if (claimedChunk instanceof TerritoryChunk territoryChunk && territoryChunk.isOccupied()) {

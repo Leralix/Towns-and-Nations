@@ -46,21 +46,39 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
     @Override
     public TextComponent getMapIcon(LangType langType) {
 
+        TerritoryData owner = getOwner();
+        if (owner == null) {
+            TextComponent textComponent = new TextComponent("?");
+            textComponent.setHoverEvent(new HoverEvent(
+                    HoverEvent.Action.SHOW_TEXT,
+                    new Text(
+                            "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
+                                    Lang.LEFT_CLICK_TO_CLAIM.get(langType)
+                    )
+            ));
+            return textComponent;
+        }
+
+        TerritoryData occupier = getOccupier();
+        if (occupier == null) {
+            occupier = owner;
+        }
+
         TextComponent textComponent;
         String text;
         if(isOccupied()){
             textComponent = new TextComponent("🟧");
-            textComponent.setColor(getOccupier().getChunkColor());
+            textComponent.setColor(occupier.getChunkColor());
             text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                    getOwner().getBaseColoredName() + "\n" +
-                    getOccupier().getBaseColoredName() + "\n" +
+                    owner.getBaseColoredName() + "\n" +
+                    occupier.getBaseColoredName() + "\n" +
                     Lang.LEFT_CLICK_TO_CLAIM.get(langType);
         }
         else {
             textComponent = new TextComponent("⬛");
-            textComponent.setColor(getOwner().getChunkColor());
+            textComponent.setColor(owner.getChunkColor());
             text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                    getOwner().getBaseColoredName() + "\n" +
+                    owner.getBaseColoredName() + "\n" +
                     Lang.LEFT_CLICK_TO_CLAIM.get(langType);
         }
 
