@@ -9,6 +9,7 @@ import org.leralix.tan.gui.user.ranks.RankManagerMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.text.NameFilter;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class RenameRank extends ChatListenerEvent {
@@ -23,14 +24,19 @@ public class RenameRank extends ChatListenerEvent {
 
     @Override
     public boolean execute(Player player, String message) {
+        String rankName = message == null ? "" : message.trim();
         int maxSize = Constants.getRankNameSize();
 
-        if (message.length() > maxSize) {
+        if (!NameFilter.validateOrWarn(player, rankName)) {
+            return false;
+        }
+
+        if (rankName.length() > maxSize) {
             TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
             return false;
         }
 
-        rankData.setName(message);
+        rankData.setName(rankName);
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> new RankManagerMenu(player, territoryConcerned, rankData).open());
         return true;
     }

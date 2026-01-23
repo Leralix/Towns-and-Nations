@@ -43,7 +43,7 @@ townTagFormat: "&f[{townColor}&l{townTag}&r&f]"
 CheckForUpdate: true
 
 EnableNameFilter: true
-NameFilterFile: "words.yml"
+NameFilterFile: "banned_words.yml"
 
 NameFilterNormalizeDiacritics: true
 NameFilterNormalizeLeetspeak: false
