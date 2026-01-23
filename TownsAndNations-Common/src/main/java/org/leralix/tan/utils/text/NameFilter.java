@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.io.File;
@@ -25,7 +26,7 @@ import java.util.regex.Pattern;
 
 public class NameFilter {
 
-    private static final String DEFAULT_WORDS_FILE = "words.yml";
+    private static final String DEFAULT_WORDS_FILE = "banned_words.yml";
 
     private static volatile boolean enabled = true;
     private static volatile boolean normalizeDiacritics = true;
@@ -154,15 +155,7 @@ public class NameFilter {
         if (isNameAllowed(name, null)) {
             return true;
         }
-
-        String msg = "This name contains blocked words. Please choose a different name.";
-
-        if (sender instanceof Player player) {
-            TanChatUtils.message(player, msg);
-        } else if (sender != null) {
-            sender.sendMessage(msg);
-        }
-
+        sendBlockedNameWarning(sender);
         return false;
     }
 
@@ -170,16 +163,16 @@ public class NameFilter {
         if (isNameAllowed(name, scope)) {
             return true;
         }
-
-        String msg = "This name contains blocked words. Please choose a different name.";
-
-        if (sender instanceof Player player) {
-            TanChatUtils.message(player, msg);
-        } else if (sender != null) {
-            sender.sendMessage(msg);
-        }
-
+        sendBlockedNameWarning(sender);
         return false;
+    }
+
+    private static void sendBlockedNameWarning(CommandSender sender) {
+        if (sender instanceof Player player) {
+            TanChatUtils.message(player, Lang.NAME_FILTER_BLOCKED_NAME.get(player));
+        } else if (sender != null) {
+            sender.sendMessage(Lang.NAME_FILTER_BLOCKED_NAME.getDefault());
+        }
     }
 
     public static synchronized List<String> listBlockedWords() {

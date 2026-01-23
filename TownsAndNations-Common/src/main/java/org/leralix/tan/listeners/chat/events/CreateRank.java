@@ -5,6 +5,7 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.text.NameFilter;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.function.Consumer;
@@ -20,18 +21,23 @@ public class CreateRank extends ChatListenerEvent {
 
     @Override
     public boolean execute(Player player, String message) {
+        String rankName = message == null ? "" : message.trim();
         int maxNameSize = Constants.getRankNameSize();
 
-        if (message.length() > maxNameSize) {
+        if (!NameFilter.validateOrWarn(player, rankName)) {
+            return false;
+        }
+
+        if (rankName.length() > maxNameSize) {
             TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxNameSize)));
             return false;
         }
-        if (territoryData.isRankNameUsed(message)) {
+        if (territoryData.isRankNameUsed(rankName)) {
             TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(player));
             return false;
         }
 
-        territoryData.registerNewRank(message);
+        territoryData.registerNewRank(rankName);
         openGui(guiCallback, player);
         return true;
     }
