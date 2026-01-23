@@ -1,7 +1,9 @@
 package org.leralix.tan.commands.admin;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
+import org.leralix.tan.lang.Lang;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +22,7 @@ public class NameFilterAdminCommand extends SubCommand {
     private static final String ACTION_RELOAD = "reload";
 
     @Override public String getName() { return "namefilter"; }
-    @Override public String getDescription() { return "Manage name filter words list"; }
+    @Override public String getDescription() { return Lang.ADMIN_NAME_FILTER_DESC.getDefault(); }
     @Override public int getArguments() { return 1; }
     @Override public String getSyntax() { return "/tanadmin namefilter <add|remove|list|reload> [word]"; }
 
@@ -65,34 +67,34 @@ public class NameFilterAdminCommand extends SubCommand {
 
     private void handleReload(CommandSender sender) {
         reloadNameFilter();
-        sender.sendMessage("Name filter reloaded.");
+        send(sender, Lang.ADMIN_NAME_FILTER_RELOADED);
     }
 
     private void handleList(CommandSender sender) {
         List<String> words = listBlockedWordsOrEmpty();
         if (words.isEmpty()) {
-            sender.sendMessage("Name filter list is empty.");
+            send(sender, Lang.ADMIN_NAME_FILTER_LIST_EMPTY);
             return;
         }
-        sender.sendMessage("Name filter blocked words (" + words.size() + "):");
+        send(sender, Lang.ADMIN_NAME_FILTER_LIST_HEADER, Integer.toString(words.size()));
         sender.sendMessage(String.join(", ", words));
     }
 
     private void handleAdd(CommandSender sender, String[] args) {
-        handleWordMutation(sender, args, "addBlockedWord", "Added blocked word: ", "Failed to add blocked word: ");
+        handleWordMutation(sender, args, "addBlockedWord", Lang.ADMIN_NAME_FILTER_ADD_SUCCESS, Lang.ADMIN_NAME_FILTER_ADD_FAILED);
     }
 
     private void handleRemove(CommandSender sender, String[] args) {
-        handleWordMutation(sender, args, "removeBlockedWord", "Removed blocked word: ", "Blocked word not found (or failed to remove): ");
+        handleWordMutation(sender, args, "removeBlockedWord", Lang.ADMIN_NAME_FILTER_REMOVE_SUCCESS, Lang.ADMIN_NAME_FILTER_REMOVE_FAILED);
     }
 
-    private void handleWordMutation(CommandSender sender, String[] args, String methodName, String okPrefix, String failPrefix) {
+    private void handleWordMutation(CommandSender sender, String[] args, String methodName, Lang okMessage, Lang failMessage) {
         if (!requireMinArgs(sender, args, 3)) {
             return;
         }
         String word = joinFrom(args, 2);
         boolean ok = invokeBooleanWithStringArg(methodName, word);
-        sender.sendMessage((ok ? okPrefix : failPrefix) + word);
+        send(sender, ok ? okMessage : failMessage, word);
     }
 
     private boolean requireMinArgs(CommandSender sender, String[] args, int minArgs) {
@@ -107,8 +109,16 @@ public class NameFilterAdminCommand extends SubCommand {
         if (getNameFilterClass() != null) {
             return true;
         }
-        sender.sendMessage("NameFilter is not available in this build.");
+        send(sender, Lang.ADMIN_NAME_FILTER_NOT_AVAILABLE);
         return false;
+    }
+
+    private static void send(CommandSender sender, Lang key, String... placeholders) {
+        if (sender instanceof Player player) {
+            sender.sendMessage(key.get(player, placeholders));
+        } else if (sender != null) {
+            sender.sendMessage(key.get(Lang.getServerLang(), placeholders));
+        }
     }
 
     private static Class<?> getNameFilterClass() {
