@@ -20,9 +20,9 @@ mcBuilds.each { cfg ->
         ]
 
         if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-            commandLine(['cmd', '/c', 'gradle'] + args)
+            commandLine(['cmd', '/c', 'gradlew.bat'] + args)
         } else {
-            commandLine(['gradle'] + args)
+            commandLine(['./gradlew'] + args)
         }
     }
 }
