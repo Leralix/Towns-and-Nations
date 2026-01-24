@@ -1,0 +1,32 @@
+plugins {
+    id 'base'
+}
+
+def mcBuilds = [
+        [classifier: 'mc1.19', paperVersion: '1.19.4-R0.1-SNAPSHOT'],
+        [classifier: 'mc1.20', paperVersion: '1.20-R0.1-SNAPSHOT'],
+        [classifier: 'mc1.21', paperVersion: '1.21-R0.1-SNAPSHOT']
+]
+
+mcBuilds.each { cfg ->
+    tasks.register("shadowJar_${cfg.classifier}", Exec) {
+        workingDir = project.rootDir
+        def args = [
+                ':TownsAndNations-Common:shadowJar',
+                "-PpaperVersion=${cfg.paperVersion}",
+                "-PjarClassifier=${cfg.classifier}",
+                '--no-daemon',
+                '--console=plain'
+        ]
+
+        if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+            commandLine(['cmd', '/c', 'gradlew.bat'] + args)
+        } else {
+            commandLine(['./gradlew'] + args)
+        }
+    }
+}
+
+tasks.register('buildAllJars') {
+    dependsOn mcBuilds.collect { cfg -> tasks.named("shadowJar_${cfg.classifier}") }
+}

@@ -84,6 +84,10 @@ StartingMoney: 100.0
 #Buffer is only checked if ...AllowNonAdjacentChunks is set to false
 TerritoryClaimBufferZone: 2
 
+ApplyTerritoryClaimBufferZoneToAllClaims: false
+
+preventEncircleTerritoryClaims: false
+
 # Particles shown to display territory boundaries
 boundaryParticles :
   ALLY: COMPOSTER
