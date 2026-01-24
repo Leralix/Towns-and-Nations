@@ -1,0 +1,45 @@
+name: Build Versioned Jars
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build all jars
+        run: gradle buildAllJars --no-daemon --console=plain
+
+      - name: Upload mc1.19 jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: TownsAndNations-mc1.19
+          path: TownsAndNations-Plugin-1_19/build/libs/*.jar
+
+      - name: Upload mc1.20 jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: TownsAndNations-mc1.20
+          path: TownsAndNations-Plugin-1_20/build/libs/*.jar
+
+      - name: Upload mc1.21 jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: TownsAndNations-mc1.21
+          path: TownsAndNations-Plugin-1_21/build/libs/*.jar

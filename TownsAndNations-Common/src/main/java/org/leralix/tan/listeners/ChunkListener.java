@@ -35,6 +35,19 @@ import org.leralix.tan.war.info.SideStatus;
 
 public class ChunkListener implements Listener {
 
+    private static final Material CHISELED_BOOKSHELF_MATERIAL = Material.matchMaterial("CHISELED_BOOKSHELF");
+    private static final Material DECORATED_POT_MATERIAL = Material.matchMaterial("DECORATED_POT");
+    private static final Material VAULT_MATERIAL = Material.matchMaterial("VAULT");
+    private static final Material TRIAL_SPAWNER_MATERIAL = Material.matchMaterial("TRIAL_SPAWNER");
+
+    private static boolean isOptionalMaterial(Material actual, Material optional) {
+        return optional != null && actual == optional;
+    }
+
+    private static boolean isOptionalEntityType(EntityType actual, String optionalName) {
+        return actual != null && actual.name().equals(optionalName);
+    }
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
 
@@ -150,7 +163,10 @@ public class ChunkListener implements Listener {
                         Tag.CAULDRONS.isTagged(materialType) ||
                         materialBlock == Material.COMPOSTER ||
                         Tag.ALL_SIGNS.isTagged(materialType) ||
-                        materialBlock == Material.CHISELED_BOOKSHELF ||
+                        isOptionalMaterial(materialBlock, CHISELED_BOOKSHELF_MATERIAL) ||
+                        isOptionalMaterial(materialBlock, DECORATED_POT_MATERIAL) ||
+                        isOptionalMaterial(materialBlock, VAULT_MATERIAL) ||
+                        isOptionalMaterial(materialBlock, TRIAL_SPAWNER_MATERIAL) ||
                         Tag.CAMPFIRES.isTagged(materialType) ||
                         materialBlock == Material.BEACON
 
@@ -220,7 +236,8 @@ public class ChunkListener implements Listener {
             if (entity instanceof Allay ||
                     entity instanceof Axolotl ||
                     entity instanceof Bat ||
-                    entity instanceof Camel ||
+                    isOptionalEntityType(entity.getType(), "ARMADILLO") ||
+                    isOptionalEntityType(entity.getType(), "CAMEL") ||
                     entity instanceof Cat ||
                     entity instanceof Chicken ||
                     entity instanceof Cow ||
@@ -235,7 +252,7 @@ public class ChunkListener implements Listener {
                     entity instanceof Rabbit ||
                     entity instanceof Sheep ||
                     entity instanceof SkeletonHorse ||
-                    entity instanceof Sniffer ||
+                    isOptionalEntityType(entity.getType(), "SNIFFER") ||
                     entity instanceof Snowman ||
                     entity instanceof Squid ||
                     entity instanceof Strider ||
@@ -278,7 +295,8 @@ public class ChunkListener implements Listener {
                 if (entity instanceof Allay ||
                         entity instanceof Axolotl ||
                         entity instanceof Bat ||
-                        entity instanceof Camel ||
+                        isOptionalEntityType(entity.getType(), "ARMADILLO") ||
+                        isOptionalEntityType(entity.getType(), "CAMEL") ||
                         entity instanceof Cat ||
                         entity instanceof Chicken ||
                         entity instanceof Cow ||
@@ -293,7 +311,7 @@ public class ChunkListener implements Listener {
                         entity instanceof Rabbit ||
                         entity instanceof Sheep ||
                         entity instanceof SkeletonHorse ||
-                        entity instanceof Sniffer ||
+                        isOptionalEntityType(entity.getType(), "SNIFFER") ||
                         entity instanceof Snowman ||
                         entity instanceof Squid ||
                         entity instanceof Strider ||

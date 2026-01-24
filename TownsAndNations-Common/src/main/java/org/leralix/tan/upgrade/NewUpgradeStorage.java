@@ -49,9 +49,11 @@ public class NewUpgradeStorage {
                 String itemCode = upgradesSection.getString(key + ".itemCode", "BARRIER");
 
                 Material icon;
-                try {
-                    icon = Material.valueOf(itemCode.toUpperCase());
-                } catch (IllegalArgumentException e) {
+                icon = Material.matchMaterial(itemCode);
+                if (icon == null) {
+                    icon = Material.matchMaterial(itemCode.toUpperCase());
+                }
+                if (icon == null) {
                     icon = Material.BARRIER;
                 }
 
@@ -128,7 +130,13 @@ public class NewUpgradeStorage {
                     new AnyPlankScope();
             case "ANY_STONE" ->
                     new AnyStoneScope();
-            default -> new MaterialScope(Material.valueOf(ressourcesKey));
+            default -> {
+                Material material = Material.matchMaterial(ressourcesKey);
+                if (material == null) {
+                    material = Material.BARRIER;
+                }
+                yield new MaterialScope(material);
+            }
         };
     }
 

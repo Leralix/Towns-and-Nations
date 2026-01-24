@@ -86,6 +86,18 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
         return null;
     }
 
+     private static List<Biome> biomesOf(String... names) {
+         List<Biome> res = new ArrayList<>();
+         for (String name : names) {
+             try {
+                 res.add(Biome.valueOf(name));
+             } catch (IllegalArgumentException ignored) {
+                 // Biome not present in this Minecraft version
+             }
+         }
+         return res;
+     }
+
     @Override
     public BiomeStat aggregate(List<BiomeStat> stats) {
         List<Biome> res = new ArrayList<>();
@@ -153,60 +165,60 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
     }
 
     enum BiomeCategory {
-        OCEAN(List.of(
-                Biome.OCEAN,
-                Biome.DEEP_OCEAN,
-                Biome.WARM_OCEAN,
-                Biome.LUKEWARM_OCEAN,
-                Biome.COLD_OCEAN,
-                Biome.DEEP_LUKEWARM_OCEAN,
-                Biome.DEEP_COLD_OCEAN,
-                Biome.FROZEN_OCEAN,
-                Biome.DEEP_FROZEN_OCEAN
+        OCEAN(biomesOf(
+                "OCEAN",
+                "DEEP_OCEAN",
+                "WARM_OCEAN",
+                "LUKEWARM_OCEAN",
+                "COLD_OCEAN",
+                "DEEP_LUKEWARM_OCEAN",
+                "DEEP_COLD_OCEAN",
+                "FROZEN_OCEAN",
+                "DEEP_FROZEN_OCEAN"
         )),
-        PLAINS(List.of(
-                Biome.PLAINS,
-                Biome.SUNFLOWER_PLAINS,
-                Biome.MEADOW
+        PLAINS(biomesOf(
+                "PLAINS",
+                "SUNFLOWER_PLAINS",
+                "MEADOW"
         )),
-        DESERT(List.of(
-                Biome.DESERT,
-                Biome.BADLANDS,
-                Biome.WOODED_BADLANDS,
-                Biome.ERODED_BADLANDS
+        DESERT(biomesOf(
+                "DESERT",
+                "BADLANDS",
+                "WOODED_BADLANDS",
+                "ERODED_BADLANDS"
         )),
-        FOREST(List.of(
-                Biome.FOREST,
-                Biome.DARK_FOREST,
-                Biome.FLOWER_FOREST,
-                Biome.BIRCH_FOREST,
-                Biome.OLD_GROWTH_BIRCH_FOREST,
-                Biome.OLD_GROWTH_SPRUCE_TAIGA,
-                Biome.GROVE,
-                Biome.CHERRY_GROVE
+        FOREST(biomesOf(
+                "FOREST",
+                "DARK_FOREST",
+                "FLOWER_FOREST",
+                "BIRCH_FOREST",
+                "OLD_GROWTH_BIRCH_FOREST",
+                "OLD_GROWTH_SPRUCE_TAIGA",
+                "GROVE",
+                "CHERRY_GROVE"
         )),
-        MOUNTAIN(List.of(
-                Biome.WINDSWEPT_HILLS,
-                Biome.WINDSWEPT_GRAVELLY_HILLS,
-                Biome.ICE_SPIKES,
-                Biome.STONY_PEAKS,
-                Biome.FROZEN_PEAKS,
-                Biome.JAGGED_PEAKS,
-                Biome.SNOWY_SLOPES
+        MOUNTAIN(biomesOf(
+                "WINDSWEPT_HILLS",
+                "WINDSWEPT_GRAVELLY_HILLS",
+                "ICE_SPIKES",
+                "STONY_PEAKS",
+                "FROZEN_PEAKS",
+                "JAGGED_PEAKS",
+                "SNOWY_SLOPES"
         )),
-        NETHER(List.of(
-                Biome.NETHER_WASTES,
-                Biome.SOUL_SAND_VALLEY,
-                Biome.CRIMSON_FOREST,
-                Biome.WARPED_FOREST,
-                Biome.BASALT_DELTAS
+        NETHER(biomesOf(
+                "NETHER_WASTES",
+                "SOUL_SAND_VALLEY",
+                "CRIMSON_FOREST",
+                "WARPED_FOREST",
+                "BASALT_DELTAS"
         )),
-        END(List.of(
-                Biome.THE_END,
-                Biome.SMALL_END_ISLANDS,
-                Biome.END_MIDLANDS,
-                Biome.END_HIGHLANDS,
-                Biome.END_BARRENS
+        END(biomesOf(
+                "THE_END",
+                "SMALL_END_ISLANDS",
+                "END_MIDLANDS",
+                "END_HIGHLANDS",
+                "END_BARRENS"
         )),
         CUSTOM_BIOMES(List.of());
 
