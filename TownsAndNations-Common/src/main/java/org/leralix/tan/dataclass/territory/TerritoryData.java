@@ -17,7 +17,7 @@ import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.RandomUtil;
 import org.leralix.tan.building.Building;
 import org.leralix.tan.dataclass.*;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.cosmetic.BannerBuilder;
 import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
@@ -629,7 +629,7 @@ public abstract class TerritoryData implements TanTerritory {
             return false;
         }
 
-        ClaimedChunk2 chunkData = NewClaimedChunkStorage.getInstance().get(chunk);
+        ClaimedChunk chunkData = NewClaimedChunkStorage.getInstance().get(chunk);
         if (!chunkData.canTerritoryClaim(player, this)) {
             return false;
         }
@@ -983,18 +983,18 @@ public abstract class TerritoryData implements TanTerritory {
         double percentageOfChunkToKeep = Constants.getPercentageOfChunksUnclaimed();
 
 
-        List<ClaimedChunk2> borderChunks = ChunkUtil.getBorderChunks(this);
+        List<ClaimedChunk> borderChunks = ChunkUtil.getBorderChunks(this);
 
 
-        for (ClaimedChunk2 claimedChunk2 : borderChunks) {
+        for (ClaimedChunk claimedChunk : borderChunks) {
             if (RandomUtil.getRandom().nextDouble() < percentageOfChunkToKeep) {
-                NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(claimedChunk2);
+                NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(claimedChunk);
                 nbOfUnclaimedChunk++;
             }
         }
         if (nbOfUnclaimedChunk < minNbOfUnclaimedChunk) {
-            for (ClaimedChunk2 claimedChunk2 : borderChunks) {
-                NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(claimedChunk2);
+            for (ClaimedChunk claimedChunk : borderChunks) {
+                NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(claimedChunk);
                 nbOfUnclaimedChunk++;
                 if (nbOfUnclaimedChunk >= minNbOfUnclaimedChunk) break;
             }

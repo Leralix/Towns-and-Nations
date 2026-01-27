@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.chunk.WildernessChunk;
 import org.leralix.tan.enums.ChunkType;
@@ -55,8 +55,8 @@ public class PlayerEnterChunkListener implements Listener {
         }
 
 
-        ClaimedChunk2 currentClaimedChunk = newClaimedChunkStorage.get(currentChunk);
-        ClaimedChunk2 nextClaimedChunk = newClaimedChunkStorage.get(nextChunk);
+        ClaimedChunk currentClaimedChunk = newClaimedChunkStorage.get(currentChunk);
+        ClaimedChunk nextClaimedChunk = newClaimedChunkStorage.get(nextChunk);
 
         //Both chunks have the same owner, no need to change
         if (sameOwner(currentClaimedChunk, nextClaimedChunk)) {
@@ -110,7 +110,7 @@ public class PlayerEnterChunkListener implements Listener {
         }
     }
 
-    public static boolean sameOwner(final ClaimedChunk2 a, final ClaimedChunk2 b) {
+    public static boolean sameOwner(final ClaimedChunk a, final ClaimedChunk b) {
         if (a == b) return true;
         return a.getOwnerIDString().equals(b.getOwnerIDString());
     }

@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.dataclass.chunk.WildernessChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
@@ -51,7 +51,7 @@ public class CreateFortEvent extends RightClickListenerEvent {
             return ListenerState.FAILURE;
         }
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(upBlock.getChunk());
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(upBlock.getChunk());
 
         // If outposts are enabled and chunk is not claimed
         if (Constants.enableFortOutpost() && claimedChunk instanceof WildernessChunk) {

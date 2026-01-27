@@ -4,7 +4,7 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
@@ -51,7 +51,7 @@ public class UnclaimAdminCommand extends PlayerSubCommand {
         }
 
         Chunk chunk = player.getLocation().getChunk();
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
         if(claimedChunk instanceof TerritoryChunk territoryChunk){
             NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(territoryChunk);
 

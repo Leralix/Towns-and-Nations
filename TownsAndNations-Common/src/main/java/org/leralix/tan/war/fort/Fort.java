@@ -9,7 +9,7 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.building.Building;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.cosmetic.BannerBuilder;
@@ -83,8 +83,8 @@ public abstract class Fort extends Building implements TanFort {
                         territoryChunk.getFortProtecting().isEmpty()
         );
 
-        for (ClaimedChunk2 claimedChunk2 : chunks) {
-            if (claimedChunk2 instanceof TerritoryChunk territoryChunk) {
+        for (ClaimedChunk claimedChunk : chunks) {
+            if (claimedChunk instanceof TerritoryChunk territoryChunk) {
                 territoryChunk.setOccupier(newOwner);
             }
         }
@@ -108,8 +108,8 @@ public abstract class Fort extends Building implements TanFort {
                             territoryChunk.getFortProtecting().isEmpty()
         );
 
-        for (ClaimedChunk2 claimedChunk2 : chunks) {
-            if (claimedChunk2 instanceof TerritoryChunk territoryChunk) {
+        for (ClaimedChunk claimedChunk : chunks) {
+            if (claimedChunk instanceof TerritoryChunk territoryChunk) {
                 territoryChunk.liberate();
             }
         }

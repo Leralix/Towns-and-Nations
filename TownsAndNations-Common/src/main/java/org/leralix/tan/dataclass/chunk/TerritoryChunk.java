@@ -28,7 +28,7 @@ import org.leralix.tan.war.legacy.CurrentAttack;
 
 import java.util.Optional;
 
-public abstract class TerritoryChunk extends ClaimedChunk2 {
+public abstract class TerritoryChunk extends ClaimedChunk {
 
     private String occupierID;
 

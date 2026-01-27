@@ -3,7 +3,7 @@ package org.leralix.tan.commands.player;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.enums.RolePermission;
@@ -73,7 +73,7 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
             return;
         }
 
-        ClaimedChunk2 currentChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getChunk());
+        ClaimedChunk currentChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getChunk());
         if(!(currentChunk instanceof TownClaimedChunk townChunk && townChunk.getTown().equals(townData))){
             TanChatUtils.message(player, Lang.SPAWN_NEED_TO_BE_IN_CHUNK.get(langType));
             return;

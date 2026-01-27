@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.lang.Lang;
@@ -34,13 +34,13 @@ public class ChangeCapital extends RightClickListenerEvent {
             return ListenerState.CONTINUE;
         }
 
-        ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(block.getChunk());
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(block.getChunk());
         Player player = event.getPlayer();
 
-        if(claimedChunk2 instanceof TownClaimedChunk townClaimedChunk) {
+        if(claimedChunk instanceof TownClaimedChunk townClaimedChunk) {
 
             if(townData.getID().equals(townClaimedChunk.getOwnerIDString())){
-                townData.setCapitalLocation(claimedChunk2.getVector2D());
+                townData.setCapitalLocation(claimedChunk.getVector2D());
 
                 openGui(fallbackGui, player);
                 SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);

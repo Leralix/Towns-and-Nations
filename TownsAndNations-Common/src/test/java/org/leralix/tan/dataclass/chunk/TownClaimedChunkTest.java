@@ -64,7 +64,7 @@ class TownClaimedChunkTest extends BasicTest {
         TownData townData = TownDataStorage.getInstance().newTown("Town");
 
         claimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
-        ClaimedChunk2 claimedChunkToKeep = claimedChunkStorage.claimTownChunk(world.getChunkAt(0, 1), townData.getID());
+        ClaimedChunk claimedChunkToKeep = claimedChunkStorage.claimTownChunk(world.getChunkAt(0, 1), townData.getID());
         townData.registerFort(new Vector3D(10, 0, 20, world.getUID().toString()));
 
         TerritoryChunk townClaimedChunk = new TownClaimedChunk(world.getChunkAt(0, 0), townData.getID());

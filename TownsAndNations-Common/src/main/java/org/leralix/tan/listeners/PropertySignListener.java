@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.MetadataValue;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.user.RenterPropertyMenu;
@@ -73,9 +73,9 @@ public class PropertySignListener implements Listener {
     }
 
     private boolean canPlayerOpenMenu(Player player, Block clickedBlock) {
-        ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(clickedBlock.getChunk());
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(clickedBlock.getChunk());
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        if (tanPlayer.hasTown() && claimedChunk2 instanceof TownClaimedChunk townClaimedChunk) {
+        if (tanPlayer.hasTown() && claimedChunk instanceof TownClaimedChunk townClaimedChunk) {
             TownRelation territoryRelation = townClaimedChunk.getTown().getWorstRelationWith(tanPlayer);
             return Constants.getRelationConstants(territoryRelation).canInteractWithProperty();
         }

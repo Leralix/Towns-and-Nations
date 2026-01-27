@@ -23,7 +23,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.FurnaceInventory;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
@@ -528,7 +528,7 @@ public class ChunkListener implements Listener {
         if (SudoPlayerStorage.isSudoPlayer(player))
             return true;
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         // Check if player is involved in a war with this territory. Additional actions may be authorized

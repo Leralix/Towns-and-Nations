@@ -5,7 +5,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
 public class MobSpawnListener implements Listener {
@@ -16,10 +16,10 @@ public class MobSpawnListener implements Listener {
         if(!NewClaimedChunkStorage.getInstance().isChunkClaimed(currentChunk)){
             return;
         }
-        ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(currentChunk);
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(currentChunk);
         EntityType entityType = e.getEntity().getType();
 
-        if(!claimedChunk2.canEntitySpawn(entityType)){
+        if(!claimedChunk.canEntitySpawn(entityType)){
             e.setCancelled(true);
         }
     }

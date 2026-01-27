@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
@@ -27,7 +27,7 @@ public class PlayerLocationPropertyExist extends PapiEntry{
 
         Location location = onlinePlayer.getLocation();
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
 
         if(claimedChunk instanceof TownClaimedChunk townClaimedChunk){
 

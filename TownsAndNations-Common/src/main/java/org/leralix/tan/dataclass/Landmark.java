@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.dataclass.chunk.WildernessChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
@@ -240,7 +240,7 @@ public class Landmark implements TanLandmark {
             for (int z = -1; z <= 1; z++) {
                 if (x == 0 && z == 0) continue; // Skip the center chunk
                 Chunk neighborChunk = chunk.getWorld().getChunkAt(chunk.getX() + x, chunk.getZ() + z);
-                ClaimedChunk2 neighborClaimedChunk = NewClaimedChunkStorage.getInstance().get(neighborChunk);
+                ClaimedChunk neighborClaimedChunk = NewClaimedChunkStorage.getInstance().get(neighborChunk);
                 if (neighborClaimedChunk instanceof WildernessChunk
                         || !neighborClaimedChunk.getOwner().equals(playerTown)) {
                     isEncircled = false;

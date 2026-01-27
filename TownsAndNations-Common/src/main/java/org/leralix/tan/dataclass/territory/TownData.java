@@ -6,7 +6,7 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.*;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.economy.*;
 import org.leralix.tan.economy.EconomyUtil;
@@ -317,7 +317,7 @@ public class TownData extends TerritoryData implements TanTown {
         removeFromBalance(getClaimCost());
         NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(NewClaimedChunkStorage.getInstance().get(chunk));
 
-        ClaimedChunk2 chunkClaimed = NewClaimedChunkStorage.getInstance().claimTownChunk(chunk, getID());
+        ClaimedChunk chunkClaimed = NewClaimedChunkStorage.getInstance().claimTownChunk(chunk, getID());
         //If this was the first claimed chunk, set the capital.
         if (getNumberOfClaimedChunk() == 1) {
             setCapitalLocation(chunkClaimed.getVector2D());

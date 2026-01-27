@@ -46,7 +46,7 @@ class LandmarkClaimedChunkTest extends BasicTest {
                 (double) chunk.getZ() * 16)
         );
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
         assertInstanceOf(LandmarkClaimedChunk.class, claimedChunk);
     }
 
@@ -67,10 +67,10 @@ class LandmarkClaimedChunkTest extends BasicTest {
         assertTrue(landmark.isOwned());
         assertTrue(landmark.isOwnedBy(townData));
 
-        ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(chunk);
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
 
         // Simulate an update that would check for encirclement. Since no claimed chunk are adjacent, it should unclaim itself.
-        claimedChunk2.notifyUpdate();
+        claimedChunk.notifyUpdate();
 
         assertFalse(landmark.isOwned());
         assertFalse(landmark.isOwnedBy(townData));
@@ -93,7 +93,7 @@ class LandmarkClaimedChunkTest extends BasicTest {
         TownData townData = TownDataStorage.getInstance().newTown("town");
 
 
-        for(ClaimedChunk2 adjacent : claimedChunkStorage.getEightAjacentChunks(claimedChunkStorage.get(chunk))){
+        for(ClaimedChunk adjacent : claimedChunkStorage.getEightAjacentChunks(claimedChunkStorage.get(chunk))){
             claimedChunkStorage.claimTownChunk(adjacent.getChunk(), townData.getID());
         }
 
@@ -102,10 +102,10 @@ class LandmarkClaimedChunkTest extends BasicTest {
         assertTrue(landmark.isOwned());
         assertTrue(landmark.isOwnedBy(townData));
 
-        ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(chunk);
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
 
         // Simulate an update that would check for encirclement. Since all adjacent chunks are claimed, it should remain claimed.
-        claimedChunk2.notifyUpdate();
+        claimedChunk.notifyUpdate();
 
         assertTrue(landmark.isOwned());
         assertTrue(landmark.isOwnedBy(townData));

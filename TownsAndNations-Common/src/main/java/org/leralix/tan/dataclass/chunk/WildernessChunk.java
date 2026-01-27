@@ -18,7 +18,7 @@ import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
-public class WildernessChunk extends ClaimedChunk2 {
+public class WildernessChunk extends ClaimedChunk {
 
     public WildernessChunk(int x, int z, String worldUUID) {
         super(x, z, worldUUID, "wilderness");

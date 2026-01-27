@@ -3,8 +3,8 @@ package org.leralix.tan.commands.player;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.enums.MapSettings;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -72,7 +72,7 @@ public class UnclaimCommand extends PlayerSubCommand {
             TanChatUtils.message(player, Lang.CHUNK_NOT_CLAIMED.get(langType));
             return;
         }
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
         claimedChunk.unclaimChunk(player);
         if(args.length == 4){
             MapCommand.openMap(player, new MapSettings(args[0], args[1]));

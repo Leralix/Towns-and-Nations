@@ -24,16 +24,25 @@ import org.tan.api.interfaces.*;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class ClaimedChunk2 implements TanClaimedChunk {
+/**
+ * The Main implementation of a chunk in Towns and Nations.
+ * Each minecraft chunk is linked to a ClaimedChunk.
+ * <ul>
+ *     <li>Claimed by a territory: {@link TerritoryChunk}</li>
+ *     <li>Wilderness chunk: {@link WildernessChunk}</li>
+ *     <li>Landmark chunk {@link LandmarkClaimedChunk}</li>
+ * </ul>
+ */
+public abstract class ClaimedChunk implements TanClaimedChunk {
 
     private final Vector2D vector2D;
     protected final String ownerID;
 
-    protected ClaimedChunk2(Chunk chunk, String owner) {
+    protected ClaimedChunk(Chunk chunk, String owner) {
         this(chunk.getX(), chunk.getZ(), chunk.getWorld().getUID().toString(), owner);
     }
 
-    protected ClaimedChunk2(int x, int z, String worldUUID, String owner) {
+    protected ClaimedChunk(int x, int z, String worldUUID, String owner) {
         this.vector2D = new Vector2D(x, z, worldUUID);
         this.ownerID = owner;
     }

@@ -25,7 +25,7 @@ public class PlayerLocationChunkName extends PapiEntry{
 
         Location location = onlinePlayer.getLocation();
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
         return switch (claimedChunk){
             case TownClaimedChunk townClaimedChunk -> townClaimedChunk.getTown().getName();
             case RegionClaimedChunk regionClaimedChunk -> regionClaimedChunk.getRegion().getName();

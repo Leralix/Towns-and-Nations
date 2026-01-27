@@ -20,7 +20,7 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
-public class LandmarkClaimedChunk extends ClaimedChunk2 {
+public class LandmarkClaimedChunk extends ClaimedChunk {
     public LandmarkClaimedChunk(Chunk chunk, String owner) {
         super(chunk, owner);
     }

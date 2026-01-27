@@ -9,7 +9,7 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
@@ -49,7 +49,7 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
         if (block == null)
             return ListenerState.CONTINUE;
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(block.getChunk());
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(block.getChunk());
         if (!(claimedChunk instanceof TownClaimedChunk townClaimedChunk && townClaimedChunk.getTown().isPlayerIn(player))) {
             TanChatUtils.message(player, Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(langType));
             return ListenerState.FAILURE;

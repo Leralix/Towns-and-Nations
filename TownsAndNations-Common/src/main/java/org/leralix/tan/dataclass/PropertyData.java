@@ -18,7 +18,7 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.lib.utils.particles.ParticleUtils;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.building.Building;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.dataclass.property.AbstractOwner;
 import org.leralix.tan.dataclass.property.PlayerOwned;
 import org.leralix.tan.dataclass.property.TerritoryOwned;
@@ -528,7 +528,7 @@ public class PropertyData extends Building implements TanProperty {
         getPermissionManager().setAll(PermissionGiven.PROPERTY);
     }
 
-    public boolean isInChunk(ClaimedChunk2 chunk) {
+    public boolean isInChunk(ClaimedChunk chunk) {
         int minX = Math.min(p1.getX() >> 4, p2.getX() >> 4);
         int maxX = Math.max(p1.getX() >> 4, p2.getX() >> 4);
         int minZ = Math.min(p1.getZ() >> 4, p2.getZ() >> 4);

@@ -4,7 +4,7 @@ import org.bukkit.Chunk;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.storage.blacklist.BlackListWorld;
 import org.leralix.tan.storage.blacklist.BlackListZone;
 import org.leralix.tan.storage.blacklist.IBlackList;
@@ -55,7 +55,7 @@ public class ClaimBlacklistStorage {
         return false;
     }
 
-    public static boolean cannotBeClaimed(ClaimedChunk2 claimedChunk) {
+    public static boolean cannotBeClaimed(ClaimedChunk claimedChunk) {
         return cannotBeClaimed(claimedChunk.getChunk());
     }
 
