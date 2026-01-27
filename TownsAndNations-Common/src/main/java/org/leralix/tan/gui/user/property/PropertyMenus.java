@@ -3,9 +3,7 @@ package org.leralix.tan.gui.user.property;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.OfflinePlayer;
 import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -34,7 +32,7 @@ public abstract class PropertyMenus extends BasicGui {
     protected GuiItem getPropertyIcon() {
         return iconManager.get(propertyData.getIcon())
                 .setName(propertyData.getName())
-                .setDescription(propertyData.getBasicDescription())
+                .setDescription(propertyData.getBasicDescription(langType))
                 .asGuiItem(player, langType);
     }
 
@@ -163,8 +161,8 @@ public abstract class PropertyMenus extends BasicGui {
 
     protected GuiItem getAuthorizedPlayersButton() {
 
-        ITanPlayer renter = propertyData.getRenter();
-        boolean isRentedAndPlayerIsNotRenter = propertyData.isRented() && renter != null && !renter.equals(tanPlayer);
+        var optRenter = propertyData.getRenter();
+        boolean isRentedAndPlayerIsNotRenter = propertyData.isRented() && optRenter.isPresent() && !optRenter.get().equals(tanPlayer);
 
         return iconManager.get(IconKey.AUTHORIZED_PLAYERS_ICON)
                 .setName(Lang.GUI_PROPERTY_PLAYER_LIST.get(langType))
@@ -185,15 +183,8 @@ public abstract class PropertyMenus extends BasicGui {
     }
 
     protected GuiItem getKickRenterButton() {
-        ITanPlayer renter = propertyData.getRenter();
-        OfflinePlayer offlineRenter = propertyData.getOfflineRenter();
-        String renterName = renter != null ? renter.getNameStored() : offlineRenter.getName();
-        if (renterName == null) {
-            renterName = "Unknown";
-        }
-
-        return iconManager.get(offlineRenter)
-                .setName(Lang.GUI_PROPERTY_RENTED_BY.get(langType, renterName))
+        return iconManager.get(propertyData.getOfflineRenter())
+                .setName(Lang.GUI_PROPERTY_RENTED_BY.get(langType, propertyData.getRenterDisplayName(langType)))
                 .setDescription(Lang.GUI_PROPERTY_RIGHT_CLICK_TO_EXPEL_RENTER.get())
                 .setAction(event -> {
                     event.setCancelled(true);

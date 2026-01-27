@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.tan.api.interfaces.TanPlayer;
 
 import java.util.UUID;
 
@@ -35,7 +36,7 @@ public class PlayerOwned extends AbstractOwner{
     }
 
     @Override
-    public boolean canAccess(ITanPlayer tanPlayer) {
+    public boolean canAccess(TanPlayer tanPlayer) {
         return tanPlayer.getID().equals(playerID);
     }
 

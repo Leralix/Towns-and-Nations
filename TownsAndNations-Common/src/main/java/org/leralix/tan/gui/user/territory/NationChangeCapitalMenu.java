@@ -31,7 +31,7 @@ public class NationChangeCapitalMenu extends IteratorGUI {
     private List<GuiItem> getCandidates() {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
-        for (TerritoryData territory : nationData.getVassals()) {
+        for (TerritoryData territory : nationData.getVassalsInternal()) {
             if (!(territory instanceof RegionData regionData)) {
                 continue;
             }

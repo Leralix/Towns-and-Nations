@@ -20,6 +20,12 @@ public interface TanPlayer {
     void setNameStored(String name);
 
     /**
+     * Get the player UUID in a String.
+     * @return The UUID of the player, converted into a String.
+     */
+    String getID();
+
+    /**
      * Get the player UUID.
      * @return The UUID of the player.
      */
@@ -32,9 +38,9 @@ public interface TanPlayer {
 
     /**
      * Get the town the player is part of.
-     * @return The town the player is part of or {@link Optional#empty()} if the player is not part of a town.
+     * @return The town the player is part of or null if the player is not part of a town.
      */
-    Optional<TanTown> getTown();
+    TanTown getTown();
 
     /**
      * @return True if the player is part of a region, false otherwise.

@@ -23,12 +23,15 @@ import org.leralix.tan.upgrade.rewards.percentage.LandmarkBonus;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.tan.api.interfaces.TanLandmark;
+import org.tan.api.interfaces.TanTerritory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-public class Landmark {
+public class Landmark implements TanLandmark {
 
     private final String ID;
     private String name;
@@ -65,6 +68,20 @@ public class Landmark {
     public void setOwner(TownData newOwner) {
         EventManager.getInstance().callEvent(new LandmarkClaimedInternalEvent(this, newOwner));
         this.ownerID = newOwner.getID();
+    }
+
+    @Override
+    public void setOwner(UUID newOwner) {
+        TownData townData = TownDataStorage.getInstance().get(newOwner.toString());
+        if(townData != null)
+            setOwner(townData);
+    }
+
+    @Override
+    public void setOwner(TanTerritory newOwner) {
+        if(newOwner instanceof TownData townData){
+            setOwner(townData);
+        }
     }
 
     public void removeOwnership() {
@@ -133,7 +150,7 @@ public class Landmark {
         return true;
     }
 
-    private TownData getOwner() {
+    public TanTerritory getOwner() {
         return TownDataStorage.getInstance().get(ownerID);
     }
 
@@ -193,6 +210,26 @@ public class Landmark {
 
     public Location getLocation() {
         return new Location(position.getWorld(), position.getX(), position.getY(), position.getZ());
+    }
+
+    @Override
+    public void setQuantity(int quantity) {
+
+    }
+
+    @Override
+    public int getQuantity() {
+        return 0;
+    }
+
+    @Override
+    public void setItem(ItemStack item) {
+
+    }
+
+    @Override
+    public ItemStack getItem() {
+        return null;
     }
 
     public boolean isEncircledBy(TownData playerTown) {

@@ -13,14 +13,14 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.timezone.TimeZoneEnum;
 import org.leralix.tan.war.info.SideStatus;
 import org.leralix.tan.war.legacy.CurrentAttack;
+import org.tan.api.interfaces.TanProperty;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 public class NoPlayerData implements ITanPlayer {
-
-    private Integer nationRankId;
 
     @Override
     public String getID() {
@@ -100,6 +100,21 @@ public class NoPlayerData implements ITanPlayer {
     @Override
     public RegionData getRegion() {
         return null;
+    }
+
+    @Override
+    public Collection<TanProperty> getPropertiesOwned() {
+        return List.of();
+    }
+
+    @Override
+    public Collection<TanProperty> getPropertiesRented() {
+        return List.of();
+    }
+
+    @Override
+    public Collection<TanProperty> getPropertiesForSale() {
+        return List.of();
     }
 
     @Override

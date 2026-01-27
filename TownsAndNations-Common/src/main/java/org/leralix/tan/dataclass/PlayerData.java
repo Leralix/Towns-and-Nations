@@ -23,8 +23,10 @@ import org.leralix.tan.war.War;
 import org.leralix.tan.war.info.SideStatus;
 import org.leralix.tan.war.legacy.CurrentAttack;
 import org.leralix.tan.war.legacy.WarRole;
+import org.tan.api.interfaces.TanProperty;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class PlayerData implements ITanPlayer {
@@ -185,6 +187,35 @@ public class PlayerData implements ITanPlayer {
         }
 
         return propertyDataList;
+    }
+
+    @Override
+    public Collection<TanProperty> getPropertiesOwned() {
+        return List.copyOf(getProperties());
+    }
+
+    @Override
+    public Collection<TanProperty> getPropertiesRented() {
+        List<TanProperty> properties = new ArrayList<>();
+
+        for(TownData town : TownDataStorage.getInstance().getAll().values()){
+            for(PropertyData property : town.getPropertiesInternal()){
+                if(!property.isRented()){
+                    continue;
+                }
+                if(getID().equals(property.getRenterID())){
+                    properties.add(property);
+                }
+            }
+        }
+        return properties;
+    }
+
+    @Override
+    public Collection<TanProperty> getPropertiesForSale() {
+        return getProperties().stream()
+                .filter(PropertyData::isForSale)
+                .collect(Collectors.toList());
     }
 
     public void removeProperty(PropertyData propertyData) {

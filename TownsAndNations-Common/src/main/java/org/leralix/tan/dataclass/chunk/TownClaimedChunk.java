@@ -1,8 +1,5 @@
 package org.leralix.tan.dataclass.chunk;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -12,20 +9,17 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class TownClaimedChunk extends TerritoryChunk {
+
     public TownClaimedChunk(Chunk chunk, String owner) {
         super(chunk, owner);
     }
@@ -39,7 +33,7 @@ public class TownClaimedChunk extends TerritoryChunk {
     }
 
     public TownData getTown() {
-        return TownDataStorage.getInstance().get(ownerID);
+        return TownDataStorage.getInstance().get(getOwnerIDString());
     }
 
     @Override
@@ -92,7 +86,7 @@ public class TownClaimedChunk extends TerritoryChunk {
     }
 
     @Override
-    public boolean isClaimed() {
+    public boolean isClaimedInternal() {
         return true;
     }
 

@@ -1,6 +1,5 @@
 package org.leralix.tan.dataclass.territory.economy;
 
-import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 
 public class SubjectTaxLine extends TaxProfitLine {
@@ -9,7 +8,7 @@ public class SubjectTaxLine extends TaxProfitLine {
         super(territoryData);
 
         double tax = territoryData.getTax();
-        for (TerritoryData vassal : territoryData.getVassals()) {
+        for (TerritoryData vassal : territoryData.getVassalsInternal()) {
             if (vassal == null) {
                 continue;
             }

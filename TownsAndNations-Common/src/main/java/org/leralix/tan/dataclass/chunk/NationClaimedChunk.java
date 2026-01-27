@@ -60,7 +60,7 @@ public class NationClaimedChunk extends TerritoryChunk {
     }
 
     @Override
-    public boolean isClaimed() {
+    public boolean isClaimedInternal() {
         return true;
     }
 

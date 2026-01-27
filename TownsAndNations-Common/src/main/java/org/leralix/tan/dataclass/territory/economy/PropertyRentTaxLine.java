@@ -29,7 +29,7 @@ public class PropertyRentTaxLine extends ProfitLine {
 
     public PropertyRentTaxLine(TownData townData) {
         super(townData);
-        for (PropertyData propertyData : townData.getProperties()) {
+        for (PropertyData propertyData : townData.getPropertiesInternal()) {
             if(propertyData.isRented()){
                 taxes += propertyData.getRentPrice() * townData.getTaxOnRentingProperty();
             }

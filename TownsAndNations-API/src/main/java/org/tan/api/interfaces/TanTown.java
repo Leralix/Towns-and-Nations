@@ -8,10 +8,6 @@ import java.util.Optional;
 public interface TanTown extends TanTerritory {
 
     /**
-     * @return the level of the town
-     */
-    int getLevel();
-    /**
      * @return a {@link Collection} of {@link TanProperty} in the town
      */
     Collection<TanProperty> getProperties();

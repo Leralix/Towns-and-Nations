@@ -30,7 +30,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
     }
 
     public String getName() {
-        return TownDataStorage.getInstance().get(getOwnerID()).getName();
+        return TownDataStorage.getInstance().get(getOwnerIDString()).getName();
     }
 
     @Override
@@ -98,7 +98,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public boolean isClaimed() {
+    public boolean isClaimedInternal() {
         return true;
     }
 
@@ -129,7 +129,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
 
     @Override
     public void notifyUpdate() {
-        if (Constants.isLandmarkClaimRequiresEncirclement() || !isClaimed()) {
+        if (Constants.isLandmarkClaimRequiresEncirclement() || !isClaimedInternal()) {
             removeIfNotEncircled();
         }
     }
@@ -137,7 +137,7 @@ public class LandmarkClaimedChunk extends ClaimedChunk2 {
     private void removeIfNotEncircled() {
         Landmark landmark = getLandMark();
 
-        if (ChunkUtil.isChunkEncirecledBy(this, chunk -> chunk.getOwnerID().equals(landmark.getOwnerID()))) {
+        if (ChunkUtil.isChunkEncirecledBy(this, chunk -> chunk.getOwnerIDString().equals(landmark.getOwnerID()))) {
             return;
         }
         getLandMark().removeOwnership();

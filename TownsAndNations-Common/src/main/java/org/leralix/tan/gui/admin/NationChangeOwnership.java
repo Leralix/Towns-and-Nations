@@ -30,7 +30,7 @@ public class NationChangeOwnership extends IteratorGUI {
 
     private List<GuiItem> getCandidates() {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (org.leralix.tan.dataclass.territory.TerritoryData territoryData : nationData.getVassals()) {
+        for (org.leralix.tan.dataclass.territory.TerritoryData territoryData : nationData.getVassalsInternal()) {
             if (territoryData instanceof RegionData regionData) {
                 ITanPlayer regionLeader = regionData.getLeaderData();
                 if (regionLeader != null) {

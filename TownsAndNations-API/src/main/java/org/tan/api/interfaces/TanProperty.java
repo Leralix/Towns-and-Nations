@@ -4,17 +4,7 @@ import org.leralix.lib.position.Vector3D;
 
 import java.util.Optional;
 
-public interface TanProperty {
-
-    /**
-     * @return the ID of the property
-     */
-    String getID();
-
-    /**
-     * @return the name of the property
-     */
-    String getName();
+public interface TanProperty extends TanBuilding {
 
     /**
      * @return the description of the property

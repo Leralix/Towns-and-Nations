@@ -143,8 +143,8 @@ public class ChooseWarGoal extends BasicGui {
     private @NotNull GuiItem getLiberateButton() {
 
         boolean doesEnemyHaveSubjects = warRole == WarRole.MAIN_ATTACKER
-                ? !war.getMainDefender().getVassals().isEmpty()
-                : !war.getMainAttacker().getVassals().isEmpty();
+                ? !war.getMainDefender().getVassalsInternal().isEmpty()
+                : !war.getMainAttacker().getVassalsInternal().isEmpty();
 
         return iconManager.get(IconKey.WAR_GOAL_LIBERATE_ICON)
                 .setName(Lang.LIBERATE_SUBJECT_WAR_GOAL.get(langType))

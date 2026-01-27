@@ -396,6 +396,7 @@ language:
   GUI_PROPERTY_NOT_FOR_SALE: "§c✘ Not for sale"
   GUI_PROPERTY_FOR_RENT: "§a✔ For rent"
   GUI_PROPERTY_NOT_FOR_RENT: "§c✘ Not for rent"
+  GUI_UNKOWN_OWNER_OR_RENTER: "§cUnknown"
   GUI_PROPERTY_RENTED_BY: "§f➥Rented by: §3{0}"
   PROPERTY_BELONGS_TO: "§f➥Owned by: §3{0}"
   PROPERTY_RENTED_BY: "§f➥Rented by: §3{0}"

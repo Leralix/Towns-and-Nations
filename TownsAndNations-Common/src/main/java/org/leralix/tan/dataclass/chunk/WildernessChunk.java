@@ -90,7 +90,7 @@ public class WildernessChunk extends ClaimedChunk2 {
     }
 
     @Override
-    public boolean isClaimed() {
+    public boolean isClaimedInternal() {
         return false;
     }
 

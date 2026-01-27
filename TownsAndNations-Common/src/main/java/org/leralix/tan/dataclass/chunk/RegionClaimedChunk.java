@@ -45,7 +45,7 @@ public class RegionClaimedChunk extends TerritoryChunk {
     }
 
     public RegionData getRegion() {
-        return RegionDataStorage.getInstance().get(getOwnerID());
+        return RegionDataStorage.getInstance().get(getOwnerIDString());
     }
 
     public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
@@ -69,7 +69,7 @@ public class RegionClaimedChunk extends TerritoryChunk {
     }
 
     @Override
-    public boolean isClaimed() {
+    public boolean isClaimedInternal() {
         return true;
     }
 

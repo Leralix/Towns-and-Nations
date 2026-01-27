@@ -8,7 +8,7 @@ public class NationTaxLine extends TaxProfitLine {
     public NationTaxLine(NationData nationData) {
         super(nationData);
         double tax = nationData.getTax();
-        for (TerritoryData regionData : nationData.getVassals()) {
+        for (TerritoryData regionData : nationData.getVassalsInternal()) {
             if (regionData.getBalance() > tax)
                 actualTaxes += tax;
             else

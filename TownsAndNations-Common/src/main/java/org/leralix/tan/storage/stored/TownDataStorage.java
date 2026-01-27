@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.property.AbstractOwner;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
@@ -17,6 +16,7 @@ import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.storage.typeadapter.EnumMapKeyValueDeserializer;
 import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.storage.typeadapter.OwnerDeserializer;
+import org.tan.api.interfaces.TanProperty;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -127,7 +127,7 @@ public class TownDataStorage extends JsonStorage<TownData>{
 
     public void checkValidWorlds() {
         for (TownData town : new ArrayList<>(getAll().values())) {
-            for (PropertyData property : town.getProperties()) {
+            for (TanProperty property : town.getProperties()) {
                 if (property.getPosition().getWorld() == null) {
                     property.delete();
                     TownsAndNations.getPlugin().getLogger().warning("Deleted property " + property.getName() + " due to invalid world.");

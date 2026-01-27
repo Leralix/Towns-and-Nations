@@ -41,7 +41,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
     }
 
     private static String getChunkKey(ClaimedChunk2 chunk) {
-        return getChunkKey(chunk.getX(), chunk.getZ(), chunk.getWorldUUID());
+        return getChunkKey(chunk.getX(), chunk.getZ(), chunk.getWorldID());
     }
 
     private static String getChunkKey(int x, int z, String chunkWorldUID) {
@@ -64,7 +64,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
     public Collection<TerritoryChunk> getAllChunkFrom(String territoryDataID) {
         List<TerritoryChunk> chunks = new ArrayList<>();
         for (ClaimedChunk2 chunk : dataMap.values()) {
-            if (chunk instanceof TerritoryChunk territoryChunk && territoryChunk.getOwnerID().equals(territoryDataID)) {
+            if (chunk instanceof TerritoryChunk territoryChunk && territoryChunk.getOwnerIDString().equals(territoryDataID)) {
                 chunks.add(territoryChunk);
             }
         }
@@ -128,7 +128,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
 
         for (String adjacentChunkKey : adjacentChunkKeys) {
             ClaimedChunk2 adjacentClaimedChunk = dataMap.get(adjacentChunkKey);
-            if (adjacentClaimedChunk != null && adjacentClaimedChunk.getOwnerID().equals(townID)) {
+            if (adjacentClaimedChunk != null && adjacentClaimedChunk.getOwnerIDString().equals(townID)) {
                 return true;
             }
         }
@@ -182,7 +182,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk2>{
         while (iterator.hasNext()) {
             Map.Entry<String, ClaimedChunk2> entry = iterator.next();
             ClaimedChunk2 chunk = entry.getValue();
-            if (chunk.getOwnerID().equals(id)) {
+            if (chunk.getOwnerIDString().equals(id)) {
                 iterator.remove();
             }
         }

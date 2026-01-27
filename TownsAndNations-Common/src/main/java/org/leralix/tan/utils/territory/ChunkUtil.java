@@ -32,7 +32,7 @@ public class ChunkUtil {
         List<ClaimedChunk2> res = new ArrayList<>();
 
         for (TerritoryChunk territoryChunk : NewClaimedChunkStorage.getInstance().getAllChunkFrom(territoryData)) {
-            if (!isChunkEncirecledBy(territoryChunk, chunk -> territoryData.getID().equals(chunk.getOwnerID()))) {
+            if (!isChunkEncirecledBy(territoryChunk, chunk -> territoryData.getID().equals(chunk.getOwnerIDString()))) {
                 res.add(territoryChunk);
             }
         }
@@ -102,7 +102,7 @@ public class ChunkUtil {
      */
     private static ChunkPolygon getPolygon(TerritoryChunk startChunk, TerritoryChunk blacklistedChunk) {
 
-        String ownerID = startChunk.getOwnerID();
+        String ownerID = startChunk.getOwnerIDString();
         Set<String> visited = new HashSet<>();
         Set<ClaimedChunk2> result = new HashSet<>();
         Queue<ClaimedChunk2> toVisit = new LinkedList<>();
@@ -111,7 +111,7 @@ public class ChunkUtil {
 
         while (!toVisit.isEmpty()) {
             ClaimedChunk2 current = toVisit.poll();
-            String key = current.getX() + "," + current.getZ() + "," + current.getWorldUUID();
+            String key = current.getX() + "," + current.getZ() + "," + current.getWorldID();
 
             if (visited.contains(key)) {
                 continue;
@@ -126,7 +126,7 @@ public class ChunkUtil {
                 continue; // Ignore blacklisted chunk
             }
 
-            if (!territoryChunk.getOwnerID().equals(ownerID)) {
+            if (!territoryChunk.getOwnerIDString().equals(ownerID)) {
                 continue; // Belongs to another territory
             }
 
@@ -135,7 +135,7 @@ public class ChunkUtil {
             // Get adjacent chunks (4 directions)
             List<ClaimedChunk2> adjacentChunks = NewClaimedChunkStorage.getInstance().getFourAjacentChunks(current);
             for (ClaimedChunk2 adj : adjacentChunks) {
-                if (adj != null && !visited.contains(adj.getX() + "," + adj.getZ() + "," + adj.getWorldUUID())) {
+                if (adj != null && !visited.contains(adj.getX() + "," + adj.getZ() + "," + adj.getWorldID())) {
                     toVisit.add(adj);
                 }
             }
@@ -259,7 +259,7 @@ public class ChunkUtil {
         List<ClaimedChunk2> chunksInRadius = new ArrayList<>();
         int centerX = center.getX();
         int centerZ = center.getZ();
-        String worldUUID = center.getWorldUUID();
+        String worldUUID = center.getWorldID();
 
         Vector2D centerPos = new Vector2D(centerX, centerZ, worldUUID);
 

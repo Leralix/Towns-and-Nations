@@ -30,11 +30,13 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
+import org.tan.api.interfaces.TanLandmark;
+import org.tan.api.interfaces.TanProperty;
+import org.tan.api.interfaces.TanTown;
 
 import java.util.*;
 
-
-public class TownData extends TerritoryData {
+public class TownData extends TerritoryData implements TanTown {
 
     //This is all that should be kept after the transition to the parent class
     private String UuidLeader;
@@ -67,6 +69,20 @@ public class TownData extends TerritoryData {
         this.townTag = prefixSizeRange.isValueIn(townName.length()) ?
                 townName.toUpperCase() :
                 townName.substring(0, prefixSizeRange.getMaxVal()).toUpperCase();
+    }
+
+    @Override
+    public Collection<TanProperty> getProperties() {
+        return List.copyOf(getPropertiesInternal());
+    }
+
+    public Collection<PropertyData> getPropertiesInternal() {
+        return getPropertyDataMap().values();
+    }
+
+    @Override
+    public Collection<TanLandmark> getLandmarksOwned() {
+        return List.copyOf(LandmarkStorage.getInstance().getLandmarkOf(this));
     }
 
     @Override
@@ -319,7 +335,7 @@ public class TownData extends TerritoryData {
 
     public Optional<RegionData> getRegion() {
         var optRegion = getOverlord();
-        if(optRegion.isPresent() && optRegion.get() instanceof RegionData regionData){
+        if (optRegion.isPresent() && optRegion.get() instanceof RegionData regionData) {
             return Optional.of(regionData);
         }
         return Optional.empty();
@@ -371,10 +387,6 @@ public class TownData extends TerritoryData {
         return this.propertyDataMap;
     }
 
-    public Collection<PropertyData> getProperties() {
-        return getPropertyDataMap().values();
-    }
-
     public String nextPropertyID() {
         if (getPropertyDataMap().isEmpty()) return "P0";
         int size = getPropertyDataMap().size();
@@ -404,7 +416,7 @@ public class TownData extends TerritoryData {
     }
 
     public PropertyData getProperty(Location location) {
-        for (PropertyData propertyData : getProperties()) {
+        for (PropertyData propertyData : getPropertyDataMap().values()) {
             if (propertyData.containsLocation(location)) {
                 return propertyData;
             }
@@ -476,11 +488,8 @@ public class TownData extends TerritoryData {
     }
 
     private void removeAllProperty() {
-        Iterator<PropertyData> iterator = getProperties().iterator();
-        while (iterator.hasNext()) {
-            PropertyData propertyData = iterator.next();
-            propertyData.delete();
-            iterator.remove();
+        for(TanProperty property : new ArrayList<>(getProperties())){
+            property.delete();
         }
     }
 
@@ -504,14 +513,9 @@ public class TownData extends TerritoryData {
         return Collections.emptySet();
     }
 
-    @Override
-    public boolean isVassal(String territoryID) {
-        return false;
-    }
-
-    public boolean isTownCapitalOccupied(){
+    public boolean isTownCapitalOccupied() {
         var optCapital = getCapitalLocation();
-        if(optCapital.isPresent()){
+        if (optCapital.isPresent()) {
             var claimedChunk = NewClaimedChunkStorage.getInstance().get(optCapital.get().getChunk());
             return claimedChunk instanceof TerritoryChunk territoryChunk && territoryChunk.isOccupied();
         }

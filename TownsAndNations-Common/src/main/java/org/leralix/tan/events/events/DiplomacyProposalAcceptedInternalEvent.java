@@ -1,7 +1,5 @@
 package org.leralix.tan.events.events;
 
-import org.leralix.tan.api.internal.wrappers.TerritoryDataWrapper;
-import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.enums.EDiplomacyState;
@@ -11,15 +9,15 @@ import org.tan.api.interfaces.TanTerritory;
 public class DiplomacyProposalAcceptedInternalEvent extends InternalEvent implements DiplomacyProposalAcceptedEvent {
 
 
-    private final TerritoryData proposedTerritory;
-    private final TerritoryData acceptingTerritory;
+    private final TanTerritory proposedTerritory;
+    private final TanTerritory acceptingTerritory;
 
     private final TownRelation oldRelation;
     private final TownRelation newRelation;
 
     public DiplomacyProposalAcceptedInternalEvent(
-            TerritoryData proposedTerritory,
-            TerritoryData acceptingTerritory,
+            TanTerritory proposedTerritory,
+            TanTerritory acceptingTerritory,
             TownRelation oldRelation,
             TownRelation newRelation
     ) {
@@ -31,12 +29,12 @@ public class DiplomacyProposalAcceptedInternalEvent extends InternalEvent implem
 
     @Override
     public TanTerritory getProposingTerritory() {
-        return TerritoryDataWrapper.of(proposedTerritory);
+        return proposedTerritory;
     }
 
     @Override
     public TanTerritory getReceivingTerritory() {
-        return TerritoryDataWrapper.of(acceptingTerritory);
+        return acceptingTerritory;
     }
 
     @Override

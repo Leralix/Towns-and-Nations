@@ -88,7 +88,7 @@ public class PlayerPropertiesMenu extends IteratorGUI {
             guiItems.add(
                     iconManager.get(propertyData.getIcon())
                             .setName(propertyData.getName())
-                            .setDescription(propertyData.getBasicDescription())
+                            .setDescription(propertyData.getBasicDescription(langType))
                             .setAction(event -> new PlayerPropertyManager(player, propertyData, p -> open()))
                             .asGuiItem(player, langType)
             );

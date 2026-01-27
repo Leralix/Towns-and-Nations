@@ -6,6 +6,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.entity.Player;
@@ -67,11 +68,15 @@ import org.leralix.tan.war.War;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
 import org.leralix.tan.war.legacy.WarRole;
+import org.tan.api.enums.ETownPermission;
+import org.tan.api.interfaces.TanClaimedChunk;
+import org.tan.api.interfaces.TanPlayer;
+import org.tan.api.interfaces.TanTerritory;
 
 import java.util.*;
 import java.util.function.Consumer;
 
-public abstract class TerritoryData {
+public abstract class TerritoryData implements TanTerritory {
 
     protected String id;
     protected String name;
@@ -146,6 +151,40 @@ public abstract class TerritoryData {
         return Optional.empty();
     }
 
+    @Override
+    public TanPlayer getOwner() {
+        return getLeaderData();
+    }
+
+    @Override
+    public UUID getOwnerUUID() {
+        return UUID.fromString(getLeaderID());
+    }
+
+    @Override
+    public Color getColor() {
+        return Color.fromRGB(getChunkColorCode());
+    }
+
+    @Override
+    public void setColor(Color color) {
+        setChunkColor(color.asRGB());
+    }
+
+    @Override
+    public Collection<TanClaimedChunk> getClaimedChunks() {
+        return List.copyOf(NewClaimedChunkStorage.getInstance().getAllChunkFrom(this));
+    }
+
+    @Override
+    public boolean canPlayerDoAction(TanPlayer player, ETownPermission permission) {
+
+        return doesPlayerHavePermission(
+                PlayerDataStorage.getInstance().get(player.getUUID()),
+                RolePermission.valueOf(permission.name())
+        );
+    }
+
     public String getID() {
         return id;
     }
@@ -170,10 +209,12 @@ public abstract class TerritoryData {
         }
 
         TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(player, name, newName), SoundEnum.GOOD);
-        rename(newName);
+        setName(newName);
     }
 
-    public void rename(String newName) {
+
+    @Override
+    public void setName(String newName) {
         this.name = newName;
     }
 
@@ -193,7 +234,7 @@ public abstract class TerritoryData {
 
     public abstract void setLeaderID(String leaderID);
 
-    public boolean isLeader(ITanPlayer tanPlayer) {
+    public boolean isLeader(TanPlayer tanPlayer) {
         return isLeader(tanPlayer.getID());
     }
 
@@ -229,7 +270,7 @@ public abstract class TerritoryData {
 
     public abstract Collection<String> getPlayerIDList();
 
-    public boolean isPlayerIn(ITanPlayer tanPlayer) {
+    public boolean isPlayerIn(TanPlayer tanPlayer) {
         return isPlayerIn(tanPlayer.getID());
     }
 
@@ -343,7 +384,6 @@ public abstract class TerritoryData {
         return getRelations().getRelationWith(territoryID);
     }
 
-    @SuppressWarnings("unused")
     public long getCreationDate() {
         return dateTimeCreated;
     }
@@ -626,7 +666,7 @@ public abstract class TerritoryData {
 
         applyToAllOnlinePlayer(Player::closeInventory);
 
-        for (TerritoryData territory : getVassals()) {
+        for (TerritoryData territory : getVassalsInternal()) {
             territory.removeOverlord();
         }
 
@@ -648,8 +688,8 @@ public abstract class TerritoryData {
      * @return True if this territory can claim, false otherwise.
      */
     public boolean canConquerChunk(TerritoryChunk chunk) {
-        if (getAvailableEnemyClaims().containsKey(chunk.getOwnerID())) {
-            consumeEnemyClaim(chunk.getOwnerID());
+        if (getAvailableEnemyClaims().containsKey(chunk.getOwnerIDString())) {
+            consumeEnemyClaim(chunk.getOwnerIDString());
             return true;
         }
         return false;
@@ -684,7 +724,7 @@ public abstract class TerritoryData {
 
     public abstract Set<String> getVassalsID();
 
-    public List<TerritoryData> getVassals() {
+    public List<TerritoryData> getVassalsInternal() {
         List<TerritoryData> res = new ArrayList<>();
         for (String vassalID : getVassalsID()) {
             TerritoryData vassal = TerritoryUtil.getTerritory(vassalID);
@@ -693,15 +733,19 @@ public abstract class TerritoryData {
         return res;
     }
 
+    @Override
+    public Collection<TanPlayer> getMembers() {
+        return List.copyOf(getITanPlayerList());
+    }
+
+    @Override
+    public Collection<TanTerritory> getVassals() {
+        return List.copyOf(getVassalsInternal());
+    }
+
     public int getVassalCount() {
         return getVassalsID().size();
     }
-
-    public boolean isVassal(TerritoryData territoryData) {
-        return isVassal(territoryData.getID());
-    }
-
-    public abstract boolean isVassal(String territoryID);
 
 
     public abstract Collection<TerritoryData> getPotentialVassals();
@@ -1093,7 +1137,7 @@ public abstract class TerritoryData {
         List<Building> buildings = new ArrayList<>(getOwnedForts());
 
         if (this instanceof TownData townData) {
-            buildings.addAll(townData.getProperties());
+            buildings.addAll(townData.getPropertiesInternal());
         }
         buildings.removeAll(Collections.singleton(null));
         return buildings;

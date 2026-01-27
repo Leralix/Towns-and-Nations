@@ -1,6 +1,5 @@
 package org.leralix.tan.events.events;
 
-import org.leralix.tan.api.internal.wrappers.TerritoryDataWrapper;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.events.AttackWonByAttackerEvent;
@@ -20,11 +19,11 @@ public class AttackWonByAttackerInternalEvent extends InternalEvent implements A
 
     @Override
     public TanTerritory getDefenderTerritory() {
-        return TerritoryDataWrapper.of(attackedTerritory);
+        return attackedTerritory;
     }
 
     @Override
     public TanTerritory getAttackerTerritory() {
-        return TerritoryDataWrapper.of(attackingTerritory);
+        return attackingTerritory;
     }
 }

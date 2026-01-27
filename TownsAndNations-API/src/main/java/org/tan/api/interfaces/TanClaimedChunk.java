@@ -50,11 +50,11 @@ public interface TanClaimedChunk {
     /**
      * Return the ID of the owner of the chunk.
      * <br>
-     * Return {@link Optional#empty()} if the chunk is wilderness
+     * Return {@link Optional#empty()} if the chunk is a wilderness
      * or claimed by a landmark.
      * @return The UUID of the territory owning the chunk if claimed.
      */
-    Optional<UUID> getOwnerID();
+    Optional<String> getOwnerID();
 
     /**
      * Unclaim the chunk.

@@ -49,7 +49,7 @@ public interface TanTerritory {
     /**
      * @return the creation date of the territory in Unix timestamp format
      */
-    Long getCreationDate();
+    long getCreationDate();
 
     /**
      * @return the icon of the territory
@@ -93,10 +93,11 @@ public interface TanTerritory {
      */
     boolean haveOverlord();
 
-    /**
-     * @return the overlord of the territory
-     */
-    TanTerritory getOverlord();
+    //TODO : uncomment this method when TownData is fixed
+//    /**
+//     * @return the overlord of the territory
+//     */
+//    Optional<TanTerritory> getOverlord();
 
     /**
      * Check if the player has the permission to do the action in the territory

@@ -63,7 +63,7 @@ public class CreateFortEvent extends RightClickListenerEvent {
         }
         // Else, only create a fort if created inside a claimed chunk
         else {
-            if (!tanTerritory.getID().equals(claimedChunk.getOwnerID())) {
+            if (!tanTerritory.getID().equals(claimedChunk.getOwnerIDString())) {
                 TanChatUtils.message(player, Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(tanPlayer));
                 return ListenerState.FAILURE;
             }

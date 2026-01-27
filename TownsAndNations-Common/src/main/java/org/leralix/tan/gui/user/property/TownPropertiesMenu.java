@@ -41,11 +41,11 @@ public class TownPropertiesMenu extends IteratorGUI {
     private List<GuiItem> getProperties() {
         List<GuiItem> res = new ArrayList<>();
 
-        for (PropertyData townProperty : townData.getProperties()){
+        for (PropertyData townProperty : townData.getPropertiesInternal()){
 
             res.add(iconManager.get(townProperty.getIcon())
                     .setName(townProperty.getName())
-                    .setDescription(townProperty.getBasicDescription())
+                    .setDescription(townProperty.getBasicDescription(langType))
                     .setAction(event -> {
                         event.setCancelled(true);
                         if(!tanPlayer.hasTown()){

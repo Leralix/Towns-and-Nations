@@ -25,10 +25,11 @@ import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.text.StringUtil;
+import org.tan.api.interfaces.TanRegion;
 
 import java.util.*;
 
-public class RegionData extends TerritoryData {
+public class RegionData extends TerritoryData implements TanRegion {
 
     private String leaderID;
     private String capitalID;
@@ -162,7 +163,7 @@ public class RegionData extends TerritoryData {
 
     @Override
     protected void collectTaxes() {
-        for (TerritoryData town : getVassals()) {
+        for (TerritoryData town : getVassalsInternal()) {
             if (town == null) continue;
             double tax = getTax();
             double currentBalance = town.getBalance();
@@ -257,11 +258,6 @@ public class RegionData extends TerritoryData {
     @Override
     public Set<String> getVassalsID() {
         return townsInRegion;
-    }
-
-    @Override
-    public boolean isVassal(String territoryID) {
-        return townsInRegion.contains(territoryID);
     }
 
 

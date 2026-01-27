@@ -11,12 +11,7 @@ import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
-import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.storage.stored.TributePlayerDailyStorage;
-import org.leralix.tan.storage.stored.TributeVassalDailyStorage;
+import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.ArchiveUtil;
 
@@ -78,7 +73,7 @@ public class DailyTasks {
 
     private static void propertyRent() {
         for (TownData town : TownDataStorage.getInstance().getAll().values()) {
-            for (PropertyData property : town.getProperties()) {
+            for (PropertyData property : town.getPropertiesInternal()) {
                 if (property.isRented()) {
                     property.payRent();
                 }

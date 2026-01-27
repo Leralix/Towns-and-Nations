@@ -46,13 +46,16 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
+import org.tan.api.interfaces.TanOwner;
+import org.tan.api.interfaces.TanPlayer;
+import org.tan.api.interfaces.TanProperty;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class PropertyData extends Building {
+public class PropertyData extends Building implements TanProperty {
     private final String ID;
 
     /**
@@ -118,6 +121,11 @@ public class PropertyData extends Building {
     public String getTotalID() {
         return ID;
     }
+    
+    @Override
+    public String getID() {
+        return getPropertyID();
+    }
 
     public void setIcon(CustomIcon icon) {
         this.icon = icon;
@@ -178,9 +186,10 @@ public class PropertyData extends Building {
     public boolean isForRent() {
         return isForRent;
     }
-
-    public ITanPlayer getRenter() {
-        return PlayerDataStorage.getInstance().getOrNull(rentingPlayerID);
+    
+    @Override
+    public Optional<TanPlayer> getRenter() {
+        return Optional.ofNullable(PlayerDataStorage.getInstance().getOrNull(rentingPlayerID));
     }
 
     public String getRenterID() {
@@ -243,7 +252,8 @@ public class PropertyData extends Building {
         );
     }
 
-    public AbstractOwner getOwner() {
+    @Override
+    public TanOwner getOwner() {
         if (owner == null) {
             owner = new TerritoryOwned(getTown());
         }
@@ -266,6 +276,10 @@ public class PropertyData extends Building {
         return NumberUtil.roundWithDigits(getRentPrice() * (1 + getTown().getTaxOnRentingProperty()));
     }
 
+    public double getSalePrice() {
+        return this.salePrice;
+    }
+
     public double getPrice() {
         return this.salePrice;
     }
@@ -280,7 +294,7 @@ public class PropertyData extends Building {
                 Math.max(p1.getZ(), p2.getZ()) >= location.getZ() && Math.min(p1.getZ(), p2.getZ()) <= location.getZ();
     }
 
-    public List<FilledLang> getBasicDescription() {
+    public List<FilledLang> getBasicDescription(LangType langType) {
         List<FilledLang> lore = new ArrayList<>();
 
         lore.add(Lang.GUI_PROPERTY_DESCRIPTION.get(getDescription()));
@@ -290,7 +304,7 @@ public class PropertyData extends Building {
         if (isForSale())
             lore.add(Lang.GUI_PROPERTY_FOR_SALE.get(String.valueOf(salePrice)));
         else if (isRented())
-            lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(getRenterDisplayName(), String.valueOf(rentPrice)));
+            lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(getRenterDisplayName(langType), String.valueOf(rentPrice)));
         else if (isForRent())
             lore.add(Lang.GUI_PROPERTY_FOR_RENT.get(String.valueOf(rentPrice)));
         else {
@@ -354,7 +368,7 @@ public class PropertyData extends Building {
             lines[3] = Lang.SIGN_RENT_PRICE.get(langType, Double.toString(this.getRentPriceWithTax()));
         } else if (this.isRented()) {
             lines[2] = Lang.SIGN_RENTED_BY.get(langType);
-            lines[3] = getRenterDisplayName();
+            lines[3] = getRenterDisplayName(langType);
         } else {
             lines[2] = Lang.SIGN_NOT_FOR_SALE.get(langType);
             lines[3] = "";
@@ -494,7 +508,7 @@ public class PropertyData extends Building {
 
     public String getDenyMessage(LangType langType) {
         if (isRented())
-            return Lang.PROPERTY_RENTED_BY.get(langType, getRenterDisplayName());
+            return Lang.PROPERTY_RENTED_BY.get(langType, getRenterDisplayName(langType));
         else
             return Lang.PROPERTY_BELONGS_TO.get(langType, getOwner().getName());
 
@@ -578,7 +592,7 @@ public class PropertyData extends Building {
 
         return iconManager.get(getIcon())
                 .setName(getName())
-                .setDescription(getBasicDescription())
+                .setDescription(getBasicDescription(langType))
                 .setAction(event -> {
                     if (!canInteract) {
                         SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
@@ -606,18 +620,9 @@ public class PropertyData extends Building {
         }
     }
 
-    private String getRenterDisplayName() {
-        ITanPlayer renter = getRenter();
-        if (renter != null) {
-            return renter.getNameStored();
-        }
-
-        OfflinePlayer offlineRenter = getOfflineRenter();
-        String name = offlineRenter.getName();
-        if (name != null) {
-            return name;
-        }
-
-        return "Unknown";
+    public String getRenterDisplayName(LangType langType) {
+        return getRenter()
+                .map(TanPlayer::getNameStored)
+                .orElse(Lang.GUI_UNKOWN_OWNER_OR_RENTER.get(langType));
     }
 }

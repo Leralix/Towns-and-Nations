@@ -54,7 +54,7 @@ public class VassalsMenu extends IteratorGUI {
 
         List<GuiItem> res = new ArrayList<>();
 
-        for (TerritoryData vassal : territoryData.getVassals()) {
+        for (TerritoryData vassal : territoryData.getVassalsInternal()) {
 
             GuiItem vassalButton = iconManager.get(vassal.getIcon())
                     .setName(vassal.getColoredName())

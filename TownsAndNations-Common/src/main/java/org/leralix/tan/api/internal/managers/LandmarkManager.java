@@ -1,7 +1,6 @@
 package org.leralix.tan.api.internal.managers;
 
 import org.bukkit.Location;
-import org.leralix.tan.api.internal.wrappers.LandmarkDataWrapper;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.tan.api.getters.TanLandmarkManager;
 import org.tan.api.interfaces.TanLandmark;
@@ -30,14 +29,13 @@ public class LandmarkManager implements TanLandmarkManager {
     @Override
     public Collection<TanLandmark> getLandmarks() {
         return landmarkStorage.getAll().values().stream()
-                .map(LandmarkDataWrapper::of)
                 .map(t -> (TanLandmark) t)
                 .toList();
     }
 
     @Override
     public Optional<TanLandmark> getLandmark(String s) {
-        return Optional.ofNullable(LandmarkDataWrapper.of(landmarkStorage.get(s)));
+        return Optional.ofNullable(landmarkStorage.get(s));
     }
 
     @Override

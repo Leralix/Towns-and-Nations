@@ -112,7 +112,7 @@ public class PlayerEnterChunkListener implements Listener {
 
     public static boolean sameOwner(final ClaimedChunk2 a, final ClaimedChunk2 b) {
         if (a == b) return true;
-        return a.getOwnerID().equals(b.getOwnerID());
+        return a.getOwnerIDString().equals(b.getOwnerIDString());
     }
 
 

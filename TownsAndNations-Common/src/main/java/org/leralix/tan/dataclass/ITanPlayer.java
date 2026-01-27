@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public interface ITanPlayer {
+import org.tan.api.interfaces.TanPlayer;
+
+public interface ITanPlayer extends TanPlayer {
 
     String getID();
 

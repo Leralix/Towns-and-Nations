@@ -1,6 +1,7 @@
 package org.leralix.tan.dataclass.chunk;
 
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -13,11 +14,17 @@ import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
+import org.tan.api.enums.EChunkPermission;
+import org.tan.api.interfaces.*;
 
-public abstract class ClaimedChunk2 {
+import java.util.Optional;
+import java.util.UUID;
+
+public abstract class ClaimedChunk2 implements TanClaimedChunk {
 
     private final Vector2D vector2D;
     protected final String ownerID;
@@ -31,8 +38,13 @@ public abstract class ClaimedChunk2 {
         this.ownerID = owner;
     }
 
-    public String getOwnerID() {
+    public String getOwnerIDString() {
         return this.ownerID;
+    }
+    
+    @Override
+    public Optional<String> getOwnerID() {
+        return Optional.ofNullable(ownerID);
     }
 
     public Vector2D getVector2D() {
@@ -60,12 +72,23 @@ public abstract class ClaimedChunk2 {
         return getZ() * 16 + 8;
     }
 
-    public String getWorldUUID() {
+    public String getWorldID() {
         return vector2D.getWorldID().toString();
+    }
+    
+    @Override
+    public UUID getWorldUUID() {
+        return vector2D.getWorldID();
+    }
+    
+    @Override
+    public String getworldName() {
+        World world = getWorld();
+        if(world == null) return "";
+        return world.getName();
     }
 
     public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
-
 
         //If worldguard is enabled and a chunk type is ok, add a worldguard check to the default tan's check.
         var worldGuardManager = WorldGuardManager.getInstance();
@@ -116,8 +139,32 @@ public abstract class ClaimedChunk2 {
         TanChatUtils.message(player, Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(player, getOwner().getBaseColoredName()));
         return false;
     }
+    
+    @Override
+    public boolean canClaim(TanTerritory territory) {
+        if(!(territory instanceof TerritoryData territoryData)){
+            return false;
+        }
+        return canTerritoryClaim(territoryData);
+    }
+    
+    @Override
+    public void claim(TanTerritory tanTerritory) {
+        if (tanTerritory == null) {
+            return;
+        }
+        if (tanTerritory instanceof TanTown) {
+            NewClaimedChunkStorage.getInstance().claimTownChunk(getChunk(), tanTerritory.getID());
+        }
+        if (tanTerritory instanceof TanRegion) {
+            NewClaimedChunkStorage.getInstance().claimRegionChunk(getChunk(), tanTerritory.getID());
+        }
+        if (tanTerritory instanceof TanNation) {
+            NewClaimedChunkStorage.getInstance().claimNationChunk(getChunk(), tanTerritory.getID());
+        }
+    }
 
-    public abstract boolean isClaimed();
+    public abstract boolean isClaimedInternal();
 
     public abstract boolean canExplosionGrief();
 
@@ -143,5 +190,39 @@ public abstract class ClaimedChunk2 {
         Chunk chunkToCompare = position.getLocation().getChunk();
         Chunk chunk = getChunk();
         return chunk.getX() == chunkToCompare.getX() && chunk.getZ() == chunkToCompare.getZ() && chunk.getWorld() == chunkToCompare.getWorld();
+    }
+    
+    @Override
+    public Boolean isClaimed() {
+        return isClaimedInternal();
+    }
+
+    @Override
+    public boolean canBeGriefByExplosion() {
+        return canExplosionGrief();
+    }
+
+    @Override
+    public boolean canBeGriefByFire() {
+        return canFireGrief();
+    }
+
+    @Override
+    public boolean canPvpHappen() {
+        return canPVPHappen();
+    }
+
+    @Override
+    public boolean canPlayerDoAction(TanPlayer tanPlayer, EChunkPermission permission, Location location) {
+         Player player = Bukkit.getPlayer(tanPlayer.getUUID());
+         if(player == null) {
+             return false; 
+         }
+         return canPlayerDo(player, ChunkPermissionType.valueOf(permission.name()), location);
+    }
+
+    @Override
+    public void unclaim() {
+        NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
     }
 }

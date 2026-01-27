@@ -92,7 +92,7 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
             }
 
             if(ownerTerritory instanceof TownData ownerTown){
-                for (PropertyData propertyData : ownerTown.getProperties()) {
+                for (PropertyData propertyData : ownerTown.getPropertiesInternal()) {
                     if (propertyData.isInChunk(this)) {
                         TanChatUtils.message(player, Lang.PROPERTY_IN_CHUNK.get(langType, propertyData.getName()));
                         return;
@@ -208,7 +208,7 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
     }
 
     public void liberate() {
-        this.occupierID = getOwnerID();
+        this.occupierID = getOwnerID().orElse(null);
     }
 
     public boolean isOccupied() {
@@ -247,7 +247,6 @@ public abstract class TerritoryChunk extends ClaimedChunk2 {
      */
     public boolean canBypassBufferZone(TerritoryData territoryToAllow) {
 
-        String ownerID = getOwnerID();
         // This chunks is held by the same territory
         if(ownerID.equals(territoryToAllow.getID())){
             return true;

@@ -22,8 +22,9 @@ import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.territory.ChunkUtil;
+import org.tan.api.interfaces.TanFort;
 
-public abstract class Fort extends Building {
+public abstract class Fort extends Building implements TanFort {
 
     protected Fort() {
 
@@ -40,6 +41,11 @@ public abstract class Fort extends Building {
             banner.setPatterns(bannerBuilder.getPatterns());
             banner.update();
         }
+    }
+
+    @Override
+    public Vector3D getFlagPosition() {
+        return getPosition();
     }
 
     public void spawnFlag() {
@@ -155,6 +161,7 @@ public abstract class Fort extends Building {
         TANCustomNBT.removeBockMetaData(flagBlock, "fortFlag");
     }
 
+    @Override
     public void delete() {
         getOccupier().removeOwnedFort(this);
         deleteFlag();

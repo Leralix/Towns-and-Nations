@@ -42,7 +42,7 @@ public class SelectTerritoryForLIberation extends IteratorGUI {
     private List<GuiItem> getTerritoryToLiberate() {
         List<GuiItem> items = new ArrayList<>();
 
-        for(TerritoryData territory : enemyTerritory.getVassals()) {
+        for(TerritoryData territory : enemyTerritory.getVassalsInternal()) {
 
             if(territory.isCapital()){
                 continue;

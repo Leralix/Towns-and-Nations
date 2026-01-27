@@ -1,6 +1,5 @@
 package org.leralix.tan.api.internal.managers;
 
-import org.leralix.tan.api.internal.wrappers.FortDataWrapper;
 import org.leralix.tan.storage.impl.FortDataStorage;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.tan.api.getters.TanFortManager;
@@ -29,13 +28,12 @@ public class FortManager implements TanFortManager {
     @Override
     public List<TanFort> getForts() {
         return fortStorage.getForts().stream()
-                .map(FortDataWrapper::of)
                 .map((TanFort t) -> t)
                 .toList();
     }
 
     @Override
     public TanFort getFort(String fortID) {
-        return FortDataWrapper.of(fortStorage.getFort(fortID));
+        return fortStorage.getFort(fortID);
     }
 }

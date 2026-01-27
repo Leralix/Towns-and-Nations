@@ -2,8 +2,6 @@ package org.leralix.tan.api.internal.managers;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.leralix.tan.api.internal.wrappers.ClaimedChunkWrapper;
-import org.leralix.tan.api.internal.wrappers.TerritoryDataWrapper;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
 import org.leralix.tan.dataclass.chunk.LandmarkClaimedChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
@@ -39,7 +37,7 @@ public class ClaimManager implements TanClaimManager {
 
     @Override
     public TanClaimedChunk getClaimedChunk(Location location) {
-        return ClaimedChunkWrapper.of(NewClaimedChunkStorage.getInstance().get(location.getChunk()));
+        return NewClaimedChunkStorage.getInstance().get(location.getChunk());
     }
 
     @Override
@@ -50,8 +48,8 @@ public class ClaimManager implements TanClaimManager {
         }
         if(claimedChunk instanceof LandmarkClaimedChunk landmarkClaimedChunk){
             TerritoryData territoryData = landmarkClaimedChunk.getOwner();
-            return Optional.ofNullable(TerritoryDataWrapper.of(territoryData));
+            return Optional.ofNullable(territoryData);
         }
-        return Optional.ofNullable(TerritoryDataWrapper.of(claimedChunk.getOwner()));
+        return Optional.ofNullable(claimedChunk.getOwner());
     }
 }

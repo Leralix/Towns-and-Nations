@@ -1,26 +1,16 @@
 package org.leralix.tan.dataclass.property;
 
-import org.leralix.tan.dataclass.ITanPlayer;
+import org.tan.api.interfaces.TanOwner;
 
-public abstract class AbstractOwner {
+public abstract class AbstractOwner implements TanOwner {
 
     /**
      * Used for serialisation
      */
     protected final OwnerType type;
 
-
     protected AbstractOwner(OwnerType type){
         this.type = type;
     }
 
-    public abstract String getName();
-
-    public abstract String getColoredName();
-
-    public abstract boolean canAccess(ITanPlayer tanPlayer);
-
-    public abstract void addToBalance(double amount);
-
-    public abstract String getID();
 }

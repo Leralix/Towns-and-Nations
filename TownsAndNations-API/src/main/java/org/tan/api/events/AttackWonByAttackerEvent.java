@@ -2,7 +2,7 @@ package org.tan.api.events;
 
 import org.tan.api.interfaces.TanTerritory;
 
-@Deprecated
+@Deprecated(since = "Use AttackEndedEvent instead")
 public interface AttackWonByAttackerEvent extends TanEvent {
 
     TanTerritory getDefenderTerritory();

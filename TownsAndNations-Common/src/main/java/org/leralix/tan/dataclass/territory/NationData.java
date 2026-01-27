@@ -23,10 +23,11 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.tan.api.interfaces.TanNation;
 
 import java.util.*;
 
-public class NationData extends TerritoryData {
+public class NationData extends TerritoryData implements TanNation {
 
     private String leaderID;
     private String capitalID;
@@ -227,11 +228,6 @@ public class NationData extends TerritoryData {
     }
 
     @Override
-    public boolean isVassal(String territoryID) {
-        return regionsInNation.contains(territoryID);
-    }
-
-    @Override
     public Collection<TerritoryData> getPotentialVassals() {
         return new ArrayList<>(RegionDataStorage.getInstance().getAll().values());
     }
@@ -253,7 +249,7 @@ public class NationData extends TerritoryData {
 
     @Override
     protected void collectTaxes() {
-        for (TerritoryData region : getVassals()) {
+        for (TerritoryData region : getVassalsInternal()) {
             if (region == null) {
                 continue;
             }

@@ -6,13 +6,13 @@ import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.property.AbstractOwner;
 import org.leralix.tan.dataclass.property.PlayerOwned;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.property.PropertyMenus;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
+import org.tan.api.interfaces.TanOwner;
 
 import java.util.UUID;
 
@@ -48,7 +48,7 @@ public class RenterPropertyMenu extends PropertyMenus {
 
                     TanChatUtils.message(player, Lang.PROPERTY_RENTER_LEAVE_RENTER_SIDE.get(tanPlayer, propertyData.getName()), MINOR_GOOD);
 
-                    AbstractOwner owner = propertyData.getOwner();
+                    TanOwner owner = propertyData.getOwner();
                     if(owner instanceof PlayerOwned playerOwned){
                         Player playerOwn = Bukkit.getPlayer(UUID.fromString(playerOwned.getPlayerID()));
                         TanChatUtils.message(playerOwn, Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(playerOwn, player.getName(), propertyData.getName()), MINOR_BAD);

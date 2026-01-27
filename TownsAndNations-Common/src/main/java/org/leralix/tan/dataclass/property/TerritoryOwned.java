@@ -3,7 +3,9 @@ package org.leralix.tan.dataclass.property;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.tan.api.interfaces.TanPlayer;
 
 public class TerritoryOwned extends AbstractOwner {
 
@@ -27,7 +29,11 @@ public class TerritoryOwned extends AbstractOwner {
     }
 
     @Override
-    public boolean canAccess(ITanPlayer tanPlayer) {
+    public boolean canAccess(TanPlayer tanPlayer) {
+       return canAccess(PlayerDataStorage.getInstance().get(tanPlayer.getID()));
+    }
+
+    private boolean canAccess(ITanPlayer tanPlayer) {
         TerritoryData territoryData = TerritoryUtil.getTerritory(territoryID);
         if(territoryData == null){
             return false;
