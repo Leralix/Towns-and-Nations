@@ -3,6 +3,7 @@ package org.leralix.tan.tasks;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.storage.stored.truce.TruceStorage;
 
 public class SaveStats {
 

@@ -2,8 +2,8 @@ package org.leralix.tan.commands.player;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.enums.MapSettings;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.gui.scope.MapSettings;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 

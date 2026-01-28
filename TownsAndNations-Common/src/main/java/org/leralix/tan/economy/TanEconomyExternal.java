@@ -2,7 +2,7 @@ package org.leralix.tan.economy;
 
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.data.player.ITanPlayer;
 
 import java.util.UUID;
 

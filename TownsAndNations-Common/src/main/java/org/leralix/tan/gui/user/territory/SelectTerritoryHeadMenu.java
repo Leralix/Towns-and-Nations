@@ -5,8 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.cosmetic.PlayerHeadIcon;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.cosmetic.PlayerHeadIcon;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 

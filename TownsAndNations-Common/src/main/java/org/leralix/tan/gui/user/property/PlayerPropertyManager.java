@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
+import org.leralix.tan.data.building.property.PropertyData;
+import org.leralix.tan.data.territory.cosmetic.CustomIcon;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 

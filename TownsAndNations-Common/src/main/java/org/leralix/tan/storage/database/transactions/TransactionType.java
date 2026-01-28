@@ -1,8 +1,8 @@
 package org.leralix.tan.storage.database.transactions;
 
+import org.leralix.tan.gui.scope.DisplayableEnum;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.utils.deprecated.DisplayableEnum;
 
 public enum TransactionType implements DisplayableEnum {
 

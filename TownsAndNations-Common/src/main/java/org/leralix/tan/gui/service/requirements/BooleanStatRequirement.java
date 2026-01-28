@@ -1,10 +1,10 @@
 package org.leralix.tan.gui.service.requirements;
 
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.upgrade.rewards.AggregatableStat;
+import org.leralix.tan.data.upgrade.rewards.bool.BooleanStat;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.upgrade.rewards.AggregatableStat;
-import org.leralix.tan.upgrade.rewards.bool.BooleanStat;
 
 public class BooleanStatRequirement<T extends BooleanStat & AggregatableStat<T>> extends IndividualRequirement {
 

@@ -1,16 +1,16 @@
 package org.leralix.tan.storage;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.enums.ChunkType;
+import org.leralix.tan.gui.scope.ClaimType;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class PlayerAutoClaimStorage {
 
-    private static final Map<Player, ChunkType> playerList = new HashMap<>();
+    private static final Map<Player, ClaimType> playerList = new HashMap<>();
 
-    public static void addPlayer(Player player, ChunkType chunkType) {
+    public static void addPlayer(Player player, ClaimType chunkType) {
         playerList.put(player, chunkType);
     }
 
@@ -22,7 +22,7 @@ public class PlayerAutoClaimStorage {
         return playerList.containsKey(player);
     }
 
-    public static ChunkType getChunkType(Player player) {
+    public static ClaimType getChunkType(Player player) {
         return playerList.get(player);
     }
 

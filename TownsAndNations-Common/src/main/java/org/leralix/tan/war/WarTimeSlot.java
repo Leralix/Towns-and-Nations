@@ -2,11 +2,11 @@ package org.leralix.tan.war;
 
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.Range;
+import org.leralix.tan.data.timezone.TimeZoneManager;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.timezone.TimeZoneManager;
+import org.leralix.tan.utils.Range;
 
 import java.time.DayOfWeek;
 import java.time.Instant;

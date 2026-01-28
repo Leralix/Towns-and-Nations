@@ -2,8 +2,8 @@ package org.leralix.tan.listeners.interact.events.property;
 
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.building.property.PropertyData;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 
 public class CreateTerritoryPropertyEvent extends CreatePropertyEvent {

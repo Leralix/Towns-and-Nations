@@ -4,7 +4,6 @@ import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.lang.FilledLang;
-import org.leralix.tan.lang.Lang;
 
 import java.io.BufferedWriter;
 import java.io.File;

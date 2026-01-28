@@ -2,10 +2,10 @@ package org.leralix.tan.gui.user.player;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.leralix.tan.data.timezone.TimeZoneEnum;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.timezone.TimeZoneEnum;
 
 import java.util.ArrayList;
 import java.util.List;

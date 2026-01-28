@@ -4,11 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.war.capture.CaptureManager;
 import org.leralix.tan.war.cosmetic.BoundaryRegister;
 import org.leralix.tan.war.cosmetic.ShowBoundaries;
-import org.leralix.tan.war.legacy.CurrentAttack;
 
 
 public class SecondTask {

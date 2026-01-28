@@ -2,8 +2,8 @@ package org.leralix.tan.gui.user.property;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.building.property.PropertyData;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 

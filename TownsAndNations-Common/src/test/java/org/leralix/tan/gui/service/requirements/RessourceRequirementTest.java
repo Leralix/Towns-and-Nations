@@ -4,12 +4,12 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.upgrade.Upgrade;
 import org.leralix.tan.gui.service.requirements.model.AnyLogScope;
 import org.leralix.tan.gui.service.requirements.model.MaterialScope;
 import org.leralix.tan.gui.service.requirements.upgrade.ItemRequirementBuilder;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.upgrade.Upgrade;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 
 import java.util.List;

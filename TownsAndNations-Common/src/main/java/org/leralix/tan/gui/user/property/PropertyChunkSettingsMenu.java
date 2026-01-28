@@ -2,9 +2,9 @@ package org.leralix.tan.gui.user.property;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.data.building.property.PropertyData;
+import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.user.territory.CommonChunkSettingsMenu;
 import org.leralix.tan.gui.user.territory.OpenRankListForChunkPermission;

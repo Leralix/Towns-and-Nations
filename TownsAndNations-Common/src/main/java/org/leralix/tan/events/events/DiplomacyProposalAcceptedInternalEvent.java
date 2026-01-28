@@ -1,6 +1,6 @@
 package org.leralix.tan.events.events;
 
-import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.enums.EDiplomacyState;
 import org.tan.api.events.DiplomacyProposalAcceptedEvent;

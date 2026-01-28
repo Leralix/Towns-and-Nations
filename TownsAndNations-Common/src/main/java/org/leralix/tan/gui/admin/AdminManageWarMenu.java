@@ -9,7 +9,7 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.war.War;
-import org.leralix.tan.war.legacy.WarRole;
+import org.leralix.tan.war.info.WarRole;
 
 import java.util.ArrayList;
 import java.util.List;

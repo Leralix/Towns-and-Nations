@@ -3,10 +3,10 @@ package org.leralix.tan.storage.stored;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.NationData;
-import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.dataclass.territory.cosmetic.ICustomIcon;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.NationData;
+import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.data.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.storage.typeadapter.IconAdapter;
 
 import java.util.LinkedHashMap;

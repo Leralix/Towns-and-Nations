@@ -2,11 +2,11 @@ package org.leralix.tan.utils.territory;
 
 import org.bukkit.Chunk;
 import org.leralix.lib.position.Vector2D;
-import org.leralix.tan.building.Building;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk;
-import org.leralix.tan.dataclass.chunk.TerritoryChunk;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.building.Building;
+import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.TerritoryChunk;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
 import java.util.*;

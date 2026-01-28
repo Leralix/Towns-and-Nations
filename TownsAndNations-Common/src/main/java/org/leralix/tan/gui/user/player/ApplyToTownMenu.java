@@ -2,7 +2,7 @@ package org.leralix.tan.gui.user.player;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.user.territory.NoTownMenu;
 import org.leralix.tan.lang.Lang;

@@ -2,7 +2,7 @@ package org.leralix.tan.events.newsletter.news;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.LangType;

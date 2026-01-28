@@ -2,7 +2,7 @@ package org.leralix.tan.economy;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 

@@ -5,9 +5,9 @@ import com.google.gson.GsonBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.NoPlayerData;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.player.NoPlayerData;
+import org.leralix.tan.data.player.PlayerData;
 
 import java.util.HashMap;
 import java.util.UUID;

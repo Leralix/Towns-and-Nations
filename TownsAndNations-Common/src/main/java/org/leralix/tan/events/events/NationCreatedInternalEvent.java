@@ -1,7 +1,7 @@
 package org.leralix.tan.events.events;
 
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.NationData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.NationData;
 import org.tan.api.events.NationCreatedEvent;
 
 public class NationCreatedInternalEvent extends AbstractNationInternalEvent implements NationCreatedEvent {

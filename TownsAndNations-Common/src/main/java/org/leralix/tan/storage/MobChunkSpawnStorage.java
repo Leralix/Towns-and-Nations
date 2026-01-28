@@ -1,7 +1,7 @@
 package org.leralix.tan.storage;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.leralix.tan.enums.MobChunkSpawnEnum;
+import org.leralix.tan.data.territory.permission.MobChunkSpawnEnum;
 
 import java.util.EnumMap;
 import java.util.Map;

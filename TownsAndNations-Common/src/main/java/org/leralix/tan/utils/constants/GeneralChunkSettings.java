@@ -1,8 +1,7 @@
 package org.leralix.tan.utils.constants;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.leralix.tan.enums.permissions.GeneralChunkSetting;
-import org.leralix.tan.war.legacy.InteractionStatus;
+import org.leralix.tan.data.territory.permission.GeneralChunkSetting;
 
 import java.util.HashMap;
 import java.util.Map;

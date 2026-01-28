@@ -1,6 +1,6 @@
 package org.leralix.tan.events.events;
 
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.events.AttackWonByAttackerEvent;
 import org.tan.api.interfaces.TanTerritory;

@@ -5,10 +5,10 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.leralix.tan.data.building.fort.Fort;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.war.fort.Fort;
-import org.leralix.tan.war.legacy.CurrentAttack;
+import org.leralix.tan.war.attack.CurrentAttack;
 
 import java.util.ArrayList;
 import java.util.List;

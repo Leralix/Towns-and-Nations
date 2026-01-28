@@ -1,6 +1,6 @@
 package org.leralix.tan.events.newsletter.dao;
 
-import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.events.newsletter.news.DiplomacyProposalNews;
 
 import javax.sql.DataSource;

@@ -1,9 +1,9 @@
 package org.leralix.tan.gui.user.war;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.war.War;
-import org.leralix.tan.war.legacy.WarRole;
+import org.leralix.tan.war.info.WarRole;
 
 public class WarMenuDispatch {
 

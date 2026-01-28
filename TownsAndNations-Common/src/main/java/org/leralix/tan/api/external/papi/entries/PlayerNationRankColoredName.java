@@ -1,6 +1,6 @@
 package org.leralix.tan.api.external.papi.entries;
 
-import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.data.player.ITanPlayer;
 
 public class PlayerNationRankColoredName extends AbstractPlayerNationPapiEntry {
 

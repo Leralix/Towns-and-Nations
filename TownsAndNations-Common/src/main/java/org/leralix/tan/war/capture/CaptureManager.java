@@ -2,17 +2,17 @@ package org.leralix.tan.war.capture;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.chunk.TerritoryChunk;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.building.fort.Fort;
+import org.leralix.tan.data.chunk.TerritoryChunk;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.War;
-import org.leralix.tan.war.fort.Fort;
-import org.leralix.tan.war.legacy.CurrentAttack;
-import org.leralix.tan.war.legacy.WarRole;
+import org.leralix.tan.war.attack.CurrentAttack;
+import org.leralix.tan.war.info.WarRole;
 
 import java.util.*;
 import java.util.function.BiConsumer;

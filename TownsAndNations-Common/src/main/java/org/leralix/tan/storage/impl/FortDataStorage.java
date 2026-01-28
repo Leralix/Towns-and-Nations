@@ -5,11 +5,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.building.fort.Fort;
+import org.leralix.tan.data.building.fort.FortData;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.FortStorage;
-import org.leralix.tan.war.fort.Fort;
-import org.leralix.tan.war.fort.FortData;
 
 import java.io.*;
 import java.lang.reflect.Type;

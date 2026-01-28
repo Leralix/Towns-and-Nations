@@ -6,12 +6,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk;
-import org.leralix.tan.dataclass.chunk.TerritoryChunk;
-import org.leralix.tan.dataclass.chunk.WildernessChunk;
-import org.leralix.tan.enums.ChunkType;
-import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.TerritoryChunk;
+import org.leralix.tan.data.chunk.WildernessChunk;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.relation.TownRelation;
+import org.leralix.tan.gui.scope.ClaimType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.PlayerAutoClaimStorage;
@@ -84,24 +84,24 @@ public class PlayerEnterChunkListener implements Listener {
     }
 
     private void autoClaimChunk(final @NotNull PlayerMoveEvent e, final @NotNull Chunk nextChunk, final @NotNull Player player) {
-        ChunkType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
+        ClaimType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
         ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
 
-        if (chunkType == ChunkType.TOWN) {
+        if (chunkType == ClaimType.TOWN) {
             if (!playerStat.hasTown()) {
                 TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(player));
                 return;
             }
             playerStat.getTown().claimChunk(player, nextChunk);
         }
-        if (chunkType == ChunkType.REGION) {
+        if (chunkType == ClaimType.REGION) {
             if (!playerStat.hasRegion()) {
                 TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(player));
                 return;
             }
             playerStat.getRegion().claimChunk(player, nextChunk);
         }
-        if (chunkType == ChunkType.NATION) {
+        if (chunkType == ClaimType.NATION) {
             if (!playerStat.hasNation()) {
                 TanChatUtils.message(player, Lang.PLAYER_NO_NATION.get(player));
                 return;

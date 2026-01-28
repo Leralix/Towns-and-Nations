@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.lib.SphereLib;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.mockbukkit.mockbukkit.MockBukkit;

@@ -8,8 +8,8 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.chunk.*;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.chunk.*;
+import org.leralix.tan.data.territory.TerritoryData;
 
 import java.io.File;
 import java.io.FileReader;

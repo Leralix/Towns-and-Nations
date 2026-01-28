@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.lib.SphereLib;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.Landmark;
+import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;

@@ -1,8 +1,8 @@
 package org.leralix.tan.war;
 
 import org.bukkit.Material;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.WarEndInternalEvent;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
@@ -15,8 +15,8 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.war.capture.CaptureManager;
 import org.leralix.tan.war.info.AttackResultCancelled;
-import org.leralix.tan.war.legacy.WarRole;
-import org.leralix.tan.war.legacy.wargoals.WarGoal;
+import org.leralix.tan.war.info.WarRole;
+import org.leralix.tan.war.wargoals.WarGoal;
 
 import java.util.*;
 

@@ -5,7 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.chunk.*;
+import org.leralix.tan.data.chunk.*;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
 public class PlayerLocationChunkName extends PapiEntry{

@@ -2,9 +2,9 @@ package org.leralix.tan.gui.user.territory;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.storage.PermissionManager;
 import org.leralix.tan.utils.constants.Constants;

@@ -11,13 +11,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.building.fort.Fort;
+import org.leralix.tan.data.building.landmark.Landmark;
+import org.leralix.tan.data.building.property.PropertyData;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.war.fort.Fort;
 
 import java.util.ArrayList;
 import java.util.Iterator;

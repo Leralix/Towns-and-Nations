@@ -7,8 +7,8 @@ import org.leralix.tan.BasicTest;
 import org.leralix.tan.api.external.papi.entries.OtherPlayerChatMode;
 import org.leralix.tan.api.external.papi.entries.PapiEntry;
 import org.leralix.tan.api.external.papi.entries.PlayerBalance;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.enums.ChatScope;
+import org.leralix.tan.commands.player.ChatScope;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
