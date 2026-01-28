@@ -32,7 +32,15 @@ public class ChunkUtil {
         List<ClaimedChunk> res = new ArrayList<>();
 
         for (TerritoryChunk territoryChunk : NewClaimedChunkStorage.getInstance().getAllChunkFrom(territoryData)) {
-            if (!isChunkEncirecledBy(territoryChunk, chunk -> territoryData.getID().equals(chunk.getOwnerIDString()))) {
+
+            if (!isChunkEncirecledBy(
+                    territoryChunk,
+                    chunk -> {
+                        if(chunk instanceof TerritoryChunk territoryChunk1){
+                            return territoryChunk1.getOwnerID().equals(territoryData.getID());
+                        }
+                        return false;
+            })) {
                 res.add(territoryChunk);
             }
         }
@@ -102,7 +110,7 @@ public class ChunkUtil {
      */
     private static ChunkPolygon getPolygon(TerritoryChunk startChunk, TerritoryChunk blacklistedChunk) {
 
-        String ownerID = startChunk.getOwnerIDString();
+        String ownerID = startChunk.getOwnerID();
         Set<String> visited = new HashSet<>();
         Set<ClaimedChunk> result = new HashSet<>();
         Queue<ClaimedChunk> toVisit = new LinkedList<>();
@@ -126,7 +134,7 @@ public class ChunkUtil {
                 continue; // Ignore blacklisted chunk
             }
 
-            if (!territoryChunk.getOwnerIDString().equals(ownerID)) {
+            if (!territoryChunk.getOwnerID().equals(ownerID)) {
                 continue; // Belongs to another territory
             }
 
@@ -141,7 +149,7 @@ public class ChunkUtil {
             }
         }
 
-        return new ChunkPolygon(startChunk.getOwner(), result);
+        return new ChunkPolygon(startChunk.getOwnerInternal(), result);
     }
 
     private static boolean alreadyAnalysed(ClaimedChunk claimedChunk, List<ChunkPolygon> polygonsAnalysed) {
@@ -153,14 +161,14 @@ public class ChunkUtil {
         return false;
     }
 
-    public static boolean chunkContainsBuildings(TerritoryChunk townClaimedChunk, TerritoryData territoryData) {
-        for (Building building : territoryData.getBuildings()) {
+    public static boolean chunkContainsBuildings(TerritoryChunk townClaimedChunk, TerritoryData territory) {
+        for (Building building : territory.getBuildings()) {
             if (building.getPosition().getLocation().getChunk().equals(townClaimedChunk.getChunk())) {
                 return true;
             }
         }
 
-        if (territoryData instanceof TownData townData) {
+        if (territory instanceof TownData townData) {
 
             var optionalLocation = townData.getCapitalLocation();
 

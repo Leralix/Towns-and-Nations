@@ -117,7 +117,7 @@ public class RankData {
     /**
      * Check if the rank has a specific permission
      * Keep in mind that since leader overrides all permissions,
-     * {@link org.leralix.tan.dataclass.territory.TerritoryData#doesPlayerHavePermission} should be used for player permission
+     * {@link org.leralix.tan.dataclass.territory.TerritoryData#checkPlayerPermission} should be used for player permission
      * @param permission    the permission to check
      * @return  True if the rank contains the permission, false otherwise.
      */

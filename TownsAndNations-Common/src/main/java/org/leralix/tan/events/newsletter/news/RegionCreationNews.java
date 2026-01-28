@@ -58,7 +58,7 @@ public class RegionCreationNews extends Newsletter {
         RegionData regionData = RegionDataStorage.getInstance().get(regionID);
         if (regionData == null)
             return;
-        TanChatUtils.message(player, Lang.REGION_CREATED_NEWSLETTER.get(player, tanPlayer.getNameStored(), regionData.getBaseColoredName()));
+        TanChatUtils.message(player, Lang.REGION_CREATED_NEWSLETTER.get(player, tanPlayer.getNameStored(), regionData.getColoredName()));
     }
 
     @Override
@@ -80,7 +80,7 @@ public class RegionCreationNews extends Newsletter {
                 .setName(Lang.REGION_CREATED_NEWSLETTER_TITLE.get(lang))
                 .setDescription(
                         Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
-                        Lang.REGION_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), regionData.getBaseColoredName()),
+                        Lang.REGION_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), regionData.getColoredName()),
                         Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
                 )
                 .setAction(action -> {

@@ -16,6 +16,10 @@ import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.upgrade.NewUpgradeStorage;
 import org.leralix.tan.war.WarTimeSlot;
 import org.leralix.tan.war.legacy.InteractionStatus;
+import org.tan.api.interfaces.TanNation;
+import org.tan.api.interfaces.TanRegion;
+import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.TanTown;
 
 import java.util.*;
 
@@ -573,14 +577,14 @@ public class Constants {
         return allowNonAdjacentChunksForRegion;
     }
 
-    public static boolean allowNonAdjacentChunksFor(TerritoryData territoryData) {
-        if (territoryData instanceof TownData) {
+    public static boolean allowNonAdjacentChunksFor(TanTerritory territoryData) {
+        if (territoryData instanceof TanTown) {
             return allowNonAdjacentChunksForTown;
         }
-        if (territoryData instanceof RegionData) {
+        if (territoryData instanceof TanRegion) {
             return allowNonAdjacentChunksForRegion;
         }
-        if (territoryData instanceof NationData) {
+        if (territoryData instanceof TanNation) {
             return allowNonAdjacentChunksForNation;
         }
         return false;

@@ -1,8 +1,10 @@
 package org.tan.api.interfaces;
 
 import org.bukkit.Color;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.tan.api.enums.ETownPermission;
+import org.tan.api.enums.TerritoryPermission;
+import org.tan.api.interfaces.chunk.TanClaimedChunk;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -18,6 +20,11 @@ public interface TanTerritory {
      * @return the name of the territory
      */
     String getName();
+
+    /**
+     * @return the name of the territory with its chunk color applied
+     */
+    String getColoredName();
 
     /**
      * Set the name of the territory
@@ -93,6 +100,11 @@ public interface TanTerritory {
      */
     boolean haveOverlord();
 
+    /**
+     * @return the chunk color in hex format (#RRGGBB)
+     */
+    String getChunkColorInHex();
+
     //TODO : uncomment this method when TownData is fixed
 //    /**
 //     * @return the overlord of the territory
@@ -106,7 +118,20 @@ public interface TanTerritory {
      * @param permission    The specific permission to check
      * @return              True if the player has the permission, false otherwise
      */
-    boolean canPlayerDoAction(TanPlayer player, ETownPermission permission);
+    boolean canPlayerDoAction(TanPlayer player, TerritoryPermission permission);
 
+    /**
+     * Check if the player is in the territory
+     * @param player    The player to check
+     * @return  true if the player is a member of this territory, false otherwise
+     */
+    boolean isPlayerIn(Player player);
 
+    /**
+     * Check if the player has the specified permission in the territory
+     * @param player            The player to check
+     * @param rolePermission    Role permission to check
+     * @return  true if the player has the specified permission, false otherwise
+     */
+    boolean checkPlayerPermission(TanPlayer player, TerritoryPermission rolePermission);
 }

@@ -12,16 +12,13 @@ import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.api.external.worldguard.WorldGuardManager;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.gameplay.TerritoryUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.enums.EChunkPermission;
 import org.tan.api.interfaces.*;
+import org.tan.api.interfaces.chunk.TanClaimedChunk;
 
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -36,24 +33,13 @@ import java.util.UUID;
 public abstract class ClaimedChunk implements TanClaimedChunk {
 
     private final Vector2D vector2D;
-    protected final String ownerID;
 
-    protected ClaimedChunk(Chunk chunk, String owner) {
-        this(chunk.getX(), chunk.getZ(), chunk.getWorld().getUID().toString(), owner);
+    protected ClaimedChunk(Chunk chunk) {
+        this(chunk.getX(), chunk.getZ(), chunk.getWorld().getUID().toString());
     }
 
-    protected ClaimedChunk(int x, int z, String worldUUID, String owner) {
+    protected ClaimedChunk(int x, int z, String worldUUID) {
         this.vector2D = new Vector2D(x, z, worldUUID);
-        this.ownerID = owner;
-    }
-
-    public String getOwnerIDString() {
-        return this.ownerID;
-    }
-    
-    @Override
-    public Optional<String> getOwnerID() {
-        return Optional.ofNullable(ownerID);
     }
 
     public Vector2D getVector2D() {
@@ -115,10 +101,7 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
 
     protected abstract boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location);
 
-    void playerCantPerformAction(Player player) {
-        TanChatUtils.message(player, Lang.PLAYER_ACTION_NO_PERMISSION.get(player));
-        TanChatUtils.message(player, Lang.CHUNK_BELONGS_TO.get(player, getOwner().getName()));
-    }
+    protected abstract void playerCantPerformAction(Player player);
 
     public abstract void unclaimChunk(Player player);
 
@@ -132,23 +115,12 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
         return vector2D.getWorld();
     }
 
-    public TerritoryData getOwner() {
-        if (ownerID == null) return null;
-        return TerritoryUtil.getTerritory(ownerID);
-    }
-
     public abstract TextComponent getMapIcon(LangType langType);
+
+    public abstract boolean canTerritoryClaim(Player player, TerritoryData territoryData);
 
     public abstract boolean canTerritoryClaim(TerritoryData territoryData);
 
-    public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
-        if (canTerritoryClaim(territoryData)) {
-            return true;
-        }
-        TanChatUtils.message(player, Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(player, getOwner().getBaseColoredName()));
-        return false;
-    }
-    
     @Override
     public boolean canClaim(TanTerritory territory) {
         if(!(territory instanceof TerritoryData territoryData)){
@@ -172,8 +144,6 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
             NewClaimedChunkStorage.getInstance().claimNationChunk(getChunk(), tanTerritory.getID());
         }
     }
-
-    public abstract boolean isClaimedInternal();
 
     public abstract boolean canExplosionGrief();
 
@@ -199,11 +169,6 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
         Chunk chunkToCompare = position.getLocation().getChunk();
         Chunk chunk = getChunk();
         return chunk.getX() == chunkToCompare.getX() && chunk.getZ() == chunkToCompare.getZ() && chunk.getWorld() == chunkToCompare.getWorld();
-    }
-    
-    @Override
-    public Boolean isClaimed() {
-        return isClaimedInternal();
     }
 
     @Override

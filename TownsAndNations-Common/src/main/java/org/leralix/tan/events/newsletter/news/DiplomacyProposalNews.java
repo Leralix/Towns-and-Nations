@@ -93,9 +93,9 @@ public class DiplomacyProposalNews extends Newsletter {
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.PAPER,
-                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL.get(lang, proposingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL.get(lang, proposingTerritory.getColoredName()),
                 Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1.get(lang, receivingTerritory.getBaseColoredName(), wantedRelation.getColoredName(lang)),
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1.get(lang, receivingTerritory.getColoredName(), wantedRelation.getColoredName(lang)),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
@@ -117,8 +117,8 @@ public class DiplomacyProposalNews extends Newsletter {
 
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.PAPER,
-                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL.get(lang, proposingTerritory.getBaseColoredName()),
-                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1.get(lang, receivingTerritory.getBaseColoredName(), wantedRelation.getColoredName(lang)),
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL.get(lang, proposingTerritory.getColoredName()),
+                Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1.get(lang, receivingTerritory.getColoredName(), wantedRelation.getColoredName(lang)),
                 Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2.get(lang),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
         return ItemBuilder.from(icon).asGuiItem(event -> {

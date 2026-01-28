@@ -8,14 +8,8 @@ import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.territory.ChunkUtil;
-import org.leralix.tan.war.PlannedAttack;
-import org.leralix.tan.war.War;
-import org.leralix.tan.war.legacy.CreateAttackData;
-import org.leralix.tan.war.legacy.CurrentAttack;
-import org.leralix.tan.war.legacy.WarRole;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,6 +43,7 @@ class ShowBoundariesTest extends BasicTest {
         List<ChunkLine> chunkLines = ShowBoundaries.sortChunkLines(list, tanDefender);
 
         // Two chunks -> 3 faces each
+        assertEquals(2, townDefender.getNumberOfClaimedChunk());
         assertEquals(6, chunkLines.size());
     }
 

@@ -62,10 +62,10 @@ public class PlayerEnterChunkListener implements Listener {
         if (sameOwner(currentClaimedChunk, nextClaimedChunk)) {
             return;
         }
-        //If territory deny access to players with a certain relation.
+        //If territory denies access to players with a certain relation.
         if (nextClaimedChunk instanceof TerritoryChunk territoryChunk) {
             ITanPlayer tanPlayer = playerDataStorage.get(player);
-            TownRelation worstRelation = territoryChunk.getOwner().getWorstRelationWith(tanPlayer);
+            TownRelation worstRelation = territoryChunk.getOwnerInternal().getWorstRelationWith(tanPlayer);
             if (!Constants.getRelationConstants(worstRelation).canAccessTerritory()) {
                 event.setCancelled(true);
                 LangType lang = tanPlayer.getLang();
@@ -110,9 +110,27 @@ public class PlayerEnterChunkListener implements Listener {
         }
     }
 
-    public static boolean sameOwner(final ClaimedChunk a, final ClaimedChunk b) {
-        if (a == b) return true;
-        return a.getOwnerIDString().equals(b.getOwnerIDString());
+    /**
+     * Defines what it means for two claimed chunks to be considered owned by the same owner.
+     * <ul>
+     *     <li>Both chunks are the same</li>
+     *     <li>Both chunks are wilderness chunks</li>
+     *     <li>Both chunks are territory chunks owned by the same territory</li>
+     * </ul>
+     * @param firstClaim    the first claimed chunk to compare
+     * @param secondClaim   the second claimed chunk to compare
+     * @return  true if both claimed chunks are considered owned by the same owner, false otherwise
+     */
+    public static boolean sameOwner(
+            ClaimedChunk firstClaim,
+            ClaimedChunk secondClaim
+    ) {
+        if (firstClaim == secondClaim) return true;
+        if(firstClaim instanceof WildernessChunk && secondClaim instanceof WildernessChunk) return true;
+        if(firstClaim instanceof TerritoryChunk firstTerritoryChunk && secondClaim instanceof TerritoryChunk secondTerritoryChunk){
+            return firstTerritoryChunk.getOwnerID().equals(secondTerritoryChunk.getOwnerID());
+        }
+        return false;
     }
 
 

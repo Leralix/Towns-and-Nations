@@ -53,7 +53,7 @@ public class ShowBoundaries {
         for (ClaimedChunk centerChunk : chunkInRange) {
             if (centerChunk instanceof TerritoryChunk centerTerritoryChunk) {
 
-                TownRelation townRelation = centerTerritoryChunk.getOccupier().getWorstRelationWith(tanPlayer);
+                TownRelation townRelation = centerTerritoryChunk.getOccupierInternal().getWorstRelationWith(tanPlayer);
                 BoundaryType type = townRelation.getBoundaryType();
                 Vector2D centerChunkPosition = centerChunk.getVector2D();
 
@@ -111,8 +111,8 @@ public class ShowBoundaries {
     private static boolean isDifferentTerritory(TerritoryChunk centerChunk, ClaimedChunk otherChunk) {
 
         if(otherChunk instanceof TerritoryChunk otherTerritoryChunk){
-            var centerTerritory = centerChunk.getOccupier();
-            var otherTerritory = otherTerritoryChunk.getOccupier();
+            var centerTerritory = centerChunk.getOccupierInternal();
+            var otherTerritory = otherTerritoryChunk.getOccupierInternal();
 
             if (centerTerritory == null || otherTerritory == null) {
                 return true;

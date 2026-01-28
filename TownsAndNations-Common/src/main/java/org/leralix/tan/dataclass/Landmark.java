@@ -1,13 +1,16 @@
 package org.leralix.tan.dataclass;
 
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk;
-import org.leralix.tan.dataclass.chunk.WildernessChunk;
+import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.events.EventManager;
@@ -23,6 +26,7 @@ import org.leralix.tan.upgrade.rewards.percentage.LandmarkBonus;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.territory.ChunkUtil;
 import org.tan.api.interfaces.TanLandmark;
 import org.tan.api.interfaces.TanTerritory;
 
@@ -232,24 +236,25 @@ public class Landmark implements TanLandmark {
         return null;
     }
 
-    public boolean isEncircledBy(TownData playerTown) {
-        Chunk chunk = position.getLocation().getChunk();
+    /**
+     * Check if this landmark is encircled by the given territory
+     * @param territoryToCompare the territory to compare
+     * @return  true if the landmark is encircled by the given territory, false otherwise
+     */
+    public boolean isEncircledBy(TanTerritory territoryToCompare) {
 
-        boolean isEncircled = true;
-        for (int x = -1; x <= 1; x++) {
-            for (int z = -1; z <= 1; z++) {
-                if (x == 0 && z == 0) continue; // Skip the center chunk
-                Chunk neighborChunk = chunk.getWorld().getChunkAt(chunk.getX() + x, chunk.getZ() + z);
-                ClaimedChunk neighborClaimedChunk = NewClaimedChunkStorage.getInstance().get(neighborChunk);
-                if (neighborClaimedChunk instanceof WildernessChunk
-                        || !neighborClaimedChunk.getOwner().equals(playerTown)) {
-                    isEncircled = false;
-                    break;
-                }
-            }
-            if (!isEncircled) break;
-        }
-        return isEncircled;
+        return ChunkUtil.isChunkEncirecledBy(
+                getChunk(),
+                chunk -> {
+                    if (chunk instanceof TerritoryChunk territoryChunk) {
+                        return territoryChunk.getOwnerID().equals(territoryToCompare.getID());
+                    }
+                    return false;
+                });
+    }
+
+    private ClaimedChunk getChunk() {
+        return NewClaimedChunkStorage.getInstance().get(position.getLocation().getChunk());
     }
 
     public void setProtectedBlockData() {

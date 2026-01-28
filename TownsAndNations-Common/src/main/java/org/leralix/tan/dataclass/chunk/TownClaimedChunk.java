@@ -4,14 +4,11 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
@@ -33,7 +30,7 @@ public class TownClaimedChunk extends TerritoryChunk {
     }
 
     public TownData getTown() {
-        return TownDataStorage.getInstance().get(getOwnerIDString());
+        return TownDataStorage.getInstance().get(getOwnerID());
     }
 
     @Override
@@ -54,26 +51,6 @@ public class TownClaimedChunk extends TerritoryChunk {
 
         return commonTerritoryCanPlayerDo(player, permissionType, tanPlayer);
     }
-    
-    public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
-        TownData townTo = getTown();
-
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-
-        TerritoryEnterMessageUtil.sendEnterTerritoryMessage(player, townTo, displayTerritoryColor);
-
-
-        TownData playerTown = tanPlayer.getTown();
-        if (playerTown == null) {
-            return;
-        }
-        TownRelation relation = playerTown.getRelationWith(townTo);
-
-        if (relation == TownRelation.WAR && Constants.notifyWhenEnemyEnterTerritory()) {
-            TanChatUtils.message(player, Lang.CHUNK_ENTER_TOWN_AT_WAR.get(tanPlayer.getLang()), SoundEnum.BAD);
-            townTo.broadcastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.getInstance().get(player).getName(), player.getName()), SoundEnum.BAD);
-        }
-    }
 
     @Override
     public boolean canEntitySpawn(EntityType entityType) {
@@ -83,11 +60,6 @@ public class TownClaimedChunk extends TerritoryChunk {
     @Override
     public boolean canTerritoryClaim(TerritoryData territoryData) {
         return territoryData.canConquerChunk(this);
-    }
-
-    @Override
-    public boolean isClaimedInternal() {
-        return true;
     }
 
     @Override

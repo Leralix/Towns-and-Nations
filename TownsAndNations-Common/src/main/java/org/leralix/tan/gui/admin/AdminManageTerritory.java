@@ -59,7 +59,7 @@ public abstract class AdminManageTerritory extends BasicGui {
                    FileUtil.addLineToHistory(Lang.REGION_DELETED_NEWSLETTER.get(player.getName(), territoryData.getName()));
                    if (territoryData.isCapital()) {
                        territoryData.getOverlord().ifPresent(overlord ->
-                               TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(langType, overlord.getBaseColoredName()), SoundEnum.NOT_ALLOWED)
+                               TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(langType, overlord.getColoredName()), SoundEnum.NOT_ALLOWED)
                        );
                        return;
                    }

@@ -17,20 +17,28 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class LandmarkClaimedChunk extends ClaimedChunk {
+
+    /**
+     * The ID of the landmark on this chunk
+     * The name "ownerID" is used for compatibility with old ClaimedChunk2 structure.
+     */
+    private final String ownerID;
+
     public LandmarkClaimedChunk(Chunk chunk, String owner) {
-        super(chunk, owner);
+        super(chunk);
+        this.ownerID = owner;
     }
 
     public LandmarkClaimedChunk(int x, int z, String worldUUID, String ownerID) {
-        super(x, z, worldUUID, ownerID);
+        super(x, z, worldUUID);
+        this.ownerID = ownerID;
     }
 
     public String getName() {
-        return TownDataStorage.getInstance().get(getOwnerIDString()).getName();
+        return TownDataStorage.getInstance().get(ownerID).getName();
     }
 
     @Override
@@ -54,6 +62,11 @@ public class LandmarkClaimedChunk extends ClaimedChunk {
 
         TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.get(player));
         return false;
+    }
+
+    @Override
+    protected void playerCantPerformAction(Player player) {
+        TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.get(player));
     }
 
 
@@ -87,19 +100,20 @@ public class LandmarkClaimedChunk extends ClaimedChunk {
     }
 
     @Override
-    public boolean canTerritoryClaim(TerritoryData territoryData) {
-        return false;
-    }
-
-    @Override
     public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
         TanChatUtils.message(player, Lang.CANNOT_CLAIM_LANDMARK.get(player));
         return false;
     }
 
     @Override
-    public boolean isClaimedInternal() {
-        return true;
+    public boolean canTerritoryClaim(TerritoryData territoryData) {
+        return false;
+    }
+
+    @Override
+    public boolean isClaimed() {
+        Landmark landmark = getLandMark();
+        return landmark != null && landmark.isOwned();
     }
 
     @Override
@@ -129,17 +143,12 @@ public class LandmarkClaimedChunk extends ClaimedChunk {
 
     @Override
     public void notifyUpdate() {
-        if (Constants.isLandmarkClaimRequiresEncirclement() || !isClaimedInternal()) {
-            removeIfNotEncircled();
-        }
-    }
+        if (Constants.isLandmarkClaimRequiresEncirclement() && isClaimed()) {
+            Landmark landmark = getLandMark();
 
-    private void removeIfNotEncircled() {
-        Landmark landmark = getLandMark();
-
-        if (ChunkUtil.isChunkEncirecledBy(this, chunk -> chunk.getOwnerIDString().equals(landmark.getOwnerID()))) {
-            return;
+            if(!landmark.isEncircledBy(landmark.getOwner())){
+                landmark.removeOwnership();
+            }
         }
-        getLandMark().removeOwnership();
     }
 }

@@ -533,7 +533,7 @@ public class ChunkListener implements Listener {
 
         // Check if player is involved in a war with this territory. Additional actions may be authorized
         if (claimedChunk instanceof TerritoryChunk territoryChunk) {
-            SideStatus side = tanPlayer.getWarSideWith(territoryChunk.getOwner());
+            SideStatus side = tanPlayer.getWarSideWith(territoryChunk.getOwnerInternal());
             if (side == SideStatus.ALLY && Constants.getPermissionAtWars().canAllyDoAction(permissionType)) {
                 return true;
             } else if (side == SideStatus.ENEMY && Constants.getPermissionAtWars().canEnemyDoAction(permissionType)) {

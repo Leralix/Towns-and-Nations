@@ -9,7 +9,6 @@ import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
-import org.leralix.tan.gui.user.war.WarMenu;
 import org.leralix.tan.gui.user.war.WarMenuDispatch;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;

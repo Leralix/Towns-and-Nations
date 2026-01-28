@@ -110,7 +110,7 @@ public class CaptureManager {
 
                 ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
-                var occupier = territoryChunk.getOccupier();
+                var occupier = territoryChunk.getOccupierInternal();
                 WarRole occupierRole = warRelatedToAttack.getTerritoryRole(occupier);
                 // If territory is neutral, then do not capture it
                 if(occupierRole == WarRole.NEUTRAL){

@@ -45,7 +45,6 @@ public class NationData extends TerritoryData implements TanNation {
         return 2;
     }
 
-    @Override
     public String getBaseColoredName() {
         return "§6" + getName();
     }

@@ -16,7 +16,7 @@ public final class TerritoryEnterMessageUtil {
     public static void sendEnterTerritoryMessage(Player player, TerritoryData territoryData, boolean displayTerritoryColor) {
         TextComponent name = displayTerritoryColor
                 ? territoryData.getCustomColoredName()
-                : new TextComponent(territoryData.getBaseColoredName());
+                : new TextComponent(territoryData.getColoredName());
 
         String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(player, name.toLegacyText());
         player.sendTitle("", message, 5, 40, 20);

@@ -55,7 +55,7 @@ public class AttackCancelledByDefenderNewsletter extends Newsletter {
         ItemStack icon = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
                 Lang.ATTACK_CANCELLED_TITLE.get(lang),
                 Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.ATTACK_CANCELLED.get(lang, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
+                Lang.ATTACK_CANCELLED.get(lang, attackingTerritory.getColoredName(), defendingTerritory.getColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
@@ -94,7 +94,7 @@ public class AttackCancelledByDefenderNewsletter extends Newsletter {
         TerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
         if (attackingTerritory == null || defendingTerritory == null)
             return;
-        TanChatUtils.message(player, Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(player, defendingTerritory.getBaseColoredName(), attackingTerritory.getBaseColoredName()), SoundEnum.WAR);
+        TanChatUtils.message(player, Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(player, defendingTerritory.getColoredName(), attackingTerritory.getColoredName()), SoundEnum.WAR);
     }
 
     @Override

@@ -21,11 +21,11 @@ import org.leralix.tan.utils.text.TanChatUtils;
 public class WildernessChunk extends ClaimedChunk {
 
     public WildernessChunk(int x, int z, String worldUUID) {
-        super(x, z, worldUUID, "wilderness");
+        super(x, z, worldUUID);
     }
 
     public WildernessChunk(Chunk chunk) {
-        super(chunk, "wilderness");
+        super(chunk);
     }
 
     @Override
@@ -38,6 +38,11 @@ public class WildernessChunk extends ClaimedChunk {
         }
         TanChatUtils.message(player, Lang.WILDERNESS_NO_PERMISSION.getDefault());
         return false;
+    }
+
+    @Override
+    protected void playerCantPerformAction(Player player) {
+        TanChatUtils.message(player, Lang.WILDERNESS_NO_PERMISSION.getDefault());
     }
 
     @Override
@@ -85,13 +90,18 @@ public class WildernessChunk extends ClaimedChunk {
     }
 
     @Override
+    public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
+        return true;
+    }
+
+    @Override
     public boolean canTerritoryClaim(TerritoryData territoryData) {
         return true;
     }
 
     @Override
-    public boolean isClaimedInternal() {
-        return false;
+    public boolean isClaimed() {
+        return false; // Wilderness chunks are never claimed
     }
 
     @Override

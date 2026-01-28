@@ -31,7 +31,7 @@ public abstract class AbstractWarMenu extends BasicGui {
 
         description.add(Lang.GUI_DEFENDING_SIDE_ICON_DESC1.get());
         for (TerritoryData territoryData : war.getDefendingTerritories()) {
-            description.add(Lang.GUI_ICON_LIST.get(territoryData.getBaseColoredName()));
+            description.add(Lang.GUI_ICON_LIST.get(territoryData.getColoredName()));
         }
 
         return iconManager.get(IconKey.WAR_DEFENDER_SIDE_ICON)
@@ -45,7 +45,7 @@ public abstract class AbstractWarMenu extends BasicGui {
 
         description.add(Lang.GUI_ATTACKING_SIDE_ICON_DESC1.get());
         for (TerritoryData territoryData : war.getAttackingTerritories()) {
-            description.add(Lang.GUI_ICON_LIST.get(territoryData.getBaseColoredName()));
+            description.add(Lang.GUI_ICON_LIST.get(territoryData.getColoredName()));
         }
 
         return iconManager.get(IconKey.WAR_ATTACKER_SIDE_ICON)

@@ -4,11 +4,12 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk;
 import org.leralix.tan.dataclass.chunk.LandmarkClaimedChunk;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.dataclass.chunk.TerritoryChunk;
+import org.leralix.tan.dataclass.chunk.WildernessChunk;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.tan.api.getters.TanClaimManager;
-import org.tan.api.interfaces.TanClaimedChunk;
 import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.chunk.TanClaimedChunk;
 
 import java.util.Optional;
 
@@ -43,13 +44,12 @@ public class ClaimManager implements TanClaimManager {
     @Override
     public Optional<TanTerritory> getTerritoryOfBlock(Block block) {
         ClaimedChunk claimedChunk = newClaimedChunkStorage.get(block.getChunk());
-        if(!claimedChunk.isClaimed()){
-            return Optional.empty();
-        }
-        if(claimedChunk instanceof LandmarkClaimedChunk landmarkClaimedChunk){
-            TerritoryData territoryData = landmarkClaimedChunk.getOwner();
-            return Optional.ofNullable(territoryData);
-        }
-        return Optional.ofNullable(claimedChunk.getOwner());
+
+        return switch (claimedChunk){
+            case WildernessChunk ignored -> Optional.empty();
+            case LandmarkClaimedChunk landmarkClaimedChunk -> Optional.ofNullable(landmarkClaimedChunk.getLandMark().getOwner());
+            case TerritoryChunk territoryChunk -> Optional.ofNullable(territoryChunk.getOwner());
+            default -> throw new IllegalStateException("Unexpected chunk type : " + claimedChunk);
+        };
     }
 }

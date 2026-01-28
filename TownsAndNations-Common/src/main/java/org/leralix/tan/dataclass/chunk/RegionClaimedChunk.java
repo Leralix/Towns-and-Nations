@@ -1,27 +1,17 @@
 package org.leralix.tan.dataclass.chunk;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.territory.RegionData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.territory.ChunkUtil;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 public class RegionClaimedChunk extends TerritoryChunk {
 
@@ -45,13 +35,7 @@ public class RegionClaimedChunk extends TerritoryChunk {
     }
 
     public RegionData getRegion() {
-        return RegionDataStorage.getInstance().get(getOwnerIDString());
-    }
-
-    public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
-        RegionData regionData = getRegion();
-
-        TerritoryEnterMessageUtil.sendEnterTerritoryMessage(player, regionData, displayTerritoryColor);
+        return RegionDataStorage.getInstance().get(getOwnerID());
     }
 
     @Override
@@ -66,11 +50,6 @@ public class RegionClaimedChunk extends TerritoryChunk {
 
         // if the town is part of this specific region, they can claim
         return getRegion().getSubjects().contains(territoryData);
-    }
-
-    @Override
-    public boolean isClaimedInternal() {
-        return true;
     }
 
     @Override

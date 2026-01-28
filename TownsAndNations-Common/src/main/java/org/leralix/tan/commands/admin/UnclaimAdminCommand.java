@@ -55,7 +55,7 @@ public class UnclaimAdminCommand extends PlayerSubCommand {
         if(claimedChunk instanceof TerritoryChunk territoryChunk){
             NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(territoryChunk);
 
-            TerritoryData owner = territoryChunk.getOwner();
+            TerritoryData owner = territoryChunk.getOwnerInternal();
             ChunkCap chunkCap = owner.getNewLevel().getStat(ChunkCap.class);
             if(chunkCap.isUnlimited()){
                 TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(langType, owner.getColoredName()));

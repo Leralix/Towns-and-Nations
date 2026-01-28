@@ -64,7 +64,7 @@ public class TownCreatedNews extends Newsletter {
                 .setName(Lang.TOWN_CREATED_NEWSLETTER_TITLE.get(lang))
                 .setDescription(
                         Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
-                        Lang.TOWN_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), townData.getBaseColoredName()),
+                        Lang.TOWN_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), townData.getColoredName()),
                         Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
                 )
                 .setAction(action -> {
@@ -101,7 +101,7 @@ public class TownCreatedNews extends Newsletter {
         TownData townData = TownDataStorage.getInstance().get(townID);
         if (townData == null)
             return;
-        TanChatUtils.message(player, Lang.TOWN_CREATED_NEWSLETTER.get(player, tanPlayer.getNameStored(), townData.getBaseColoredName()), SoundEnum.GOOD);
+        TanChatUtils.message(player, Lang.TOWN_CREATED_NEWSLETTER.get(player, tanPlayer.getNameStored(), townData.getColoredName()), SoundEnum.GOOD);
     }
 
     @Override

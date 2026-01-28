@@ -78,13 +78,13 @@ public class RegionSettingsMenu extends SettingsMenus {
                     }
 
                     if (regionData.isCapital()) {
-                        TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_NATION_CAPITAL.get(tanPlayer, regionData.getBaseColoredName()), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_NATION_CAPITAL.get(tanPlayer, regionData.getColoredName()), NOT_ALLOWED);
                         return;
                     }
 
                     new ConfirmMenu(
                             player,
-                            Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(regionData.getBaseColoredName(), nationData.getBaseColoredName()),
+                            Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(regionData.getColoredName(), nationData.getColoredName()),
                             () -> {
                                 regionData.removeOverlord();
                                 regionData.broadcastMessageWithSound(Lang.REGION_BROADCAST_REGION_LEFT_NATION.get(regionData.getName(), nationData.getName()), BAD);
@@ -130,7 +130,7 @@ public class RegionSettingsMenu extends SettingsMenus {
                     event.setCancelled(true);
 
                     if (regionData.isCapital()) {
-                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, regionData.getOverlord().get().getBaseColoredName()));
+                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, regionData.getOverlord().get().getColoredName()));
                         return;
                     }
 

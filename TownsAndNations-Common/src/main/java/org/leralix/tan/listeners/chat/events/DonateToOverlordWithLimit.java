@@ -12,9 +12,9 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.DonationTransaction;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TributePlayerDailyStorage;
 import org.leralix.tan.storage.stored.TributeVassalDailyStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class DonateToOverlordWithLimit extends ChatListenerEvent {
@@ -74,7 +74,7 @@ public class DonateToOverlordWithLimit extends ChatListenerEvent {
         EconomyUtil.removeFromBalance(player, amount);
         overlordTerritory.addToBalance(amount);
         TransactionManager.getInstance().register(new DonationTransaction(overlordTerritory, player, amount));
-        TanChatUtils.message(player, Lang.PLAYER_SEND_MONEY_SUCCESS.get(langType, Double.toString(amount), overlordTerritory.getBaseColoredName()), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player, Lang.PLAYER_SEND_MONEY_SUCCESS.get(langType, Double.toString(amount), overlordTerritory.getColoredName()), SoundEnum.MINOR_GOOD);
 
         if (enabled) {
             TributePlayerDailyStorage.getInstance().addAmount(player.getUniqueId().toString(), amount);

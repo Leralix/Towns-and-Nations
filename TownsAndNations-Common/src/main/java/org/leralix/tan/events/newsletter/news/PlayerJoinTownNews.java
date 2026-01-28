@@ -61,7 +61,7 @@ public class PlayerJoinTownNews extends Newsletter {
         TownData townData = TownDataStorage.getInstance().get(townID);
         if (townData == null)
             return;
-        TanChatUtils.message(player, Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(player, tanPlayer.getNameStored(), townData.getBaseColoredName()), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player, Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(player, tanPlayer.getNameStored(), townData.getColoredName()), SoundEnum.MINOR_GOOD);
     }
 
     @Override

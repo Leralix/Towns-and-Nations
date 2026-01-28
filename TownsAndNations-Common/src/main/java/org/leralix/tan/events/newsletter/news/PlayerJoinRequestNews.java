@@ -69,7 +69,7 @@ public class PlayerJoinRequestNews extends Newsletter {
                 Lang.PLAYER_APPLICATION_NEWSLETTER.get(
                         player,
                         tanPlayer.getNameStored(),
-                        townData.getBaseColoredName()),
+                        townData.getColoredName()),
                 SoundEnum.MINOR_GOOD);
     }
 
@@ -94,7 +94,7 @@ public class PlayerJoinRequestNews extends Newsletter {
                 .setName(Lang.NEWSLETTER_PLAYER_APPLICATION.get(lang, offlinePlayer.getName()))
                 .setDescription(
                         Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
-                        Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), getTownData().getBaseColoredName()),
+                        Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), getTownData().getColoredName()),
                         Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
                 )
                 .setAction(action -> {
@@ -127,7 +127,7 @@ public class PlayerJoinRequestNews extends Newsletter {
         return IconManager.getInstance().get(offlinePlayer)
                 .setName(Lang.NEWSLETTER_PLAYER_APPLICATION.get(lang, offlinePlayer.getName()))
                 .setDescription(
-                        Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), townData.getBaseColoredName()),
+                        Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), townData.getColoredName()),
                         Lang.NEWSLETTER_PLAYER_APPLICATION_DESC2.get(),
                         Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
                 )

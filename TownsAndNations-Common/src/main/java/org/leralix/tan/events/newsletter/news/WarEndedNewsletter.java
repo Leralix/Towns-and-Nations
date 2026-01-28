@@ -62,8 +62,8 @@ public class WarEndedNewsletter extends Newsletter {
                 Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
                 Lang.WAR_ENDED.get(
                         lang,
-                        winningTerritory.getBaseColoredName(),
-                        defeatedTerritory.getBaseColoredName(),
+                        winningTerritory.getColoredName(),
+                        defeatedTerritory.getColoredName(),
                         Integer.toString(nbAppliedWargoals)
                 ),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.getDefault());
@@ -102,8 +102,8 @@ public class WarEndedNewsletter extends Newsletter {
         TanChatUtils.message(player,
                 Lang.ATTACK_ENDED.get(
                         player,
-                        winningTerritory.getBaseColoredName(),
-                        defeatedTerritory.getBaseColoredName(),
+                        winningTerritory.getColoredName(),
+                        defeatedTerritory.getColoredName(),
                         Integer.toString(nbAppliedWargoals)
                 ), SoundEnum.MINOR_LEVEL_UP);
     }

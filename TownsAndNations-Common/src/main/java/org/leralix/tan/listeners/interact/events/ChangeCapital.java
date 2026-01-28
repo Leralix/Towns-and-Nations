@@ -39,7 +39,7 @@ public class ChangeCapital extends RightClickListenerEvent {
 
         if(claimedChunk instanceof TownClaimedChunk townClaimedChunk) {
 
-            if(townData.getID().equals(townClaimedChunk.getOwnerIDString())){
+            if(townData.getID().equals(townClaimedChunk.getOwnerID())){
                 townData.setCapitalLocation(claimedChunk.getVector2D());
 
                 openGui(fallbackGui, player);

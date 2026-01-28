@@ -17,13 +17,14 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.*;
 
-public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk>{
+public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk> {
 
     private static NewClaimedChunkStorage instance;
 
     private NewClaimedChunkStorage() {
         super("TAN - Claimed Chunks.json",
-                new TypeToken<HashMap<String, ClaimedChunk>>() {}.getType(),
+                new TypeToken<HashMap<String, ClaimedChunk>>() {
+                }.getType(),
                 new GsonBuilder()
                         .setPrettyPrinting()
                         .create());
@@ -64,7 +65,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk>{
     public Collection<TerritoryChunk> getAllChunkFrom(String territoryDataID) {
         List<TerritoryChunk> chunks = new ArrayList<>();
         for (ClaimedChunk chunk : dataMap.values()) {
-            if (chunk instanceof TerritoryChunk territoryChunk && territoryChunk.getOwnerIDString().equals(territoryDataID)) {
+            if (chunk instanceof TerritoryChunk territoryChunk && territoryChunk.getOwnerID().equals(territoryDataID)) {
                 chunks.add(territoryChunk);
             }
         }
@@ -128,7 +129,9 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk>{
 
         for (String adjacentChunkKey : adjacentChunkKeys) {
             ClaimedChunk adjacentClaimedChunk = dataMap.get(adjacentChunkKey);
-            if (adjacentClaimedChunk != null && adjacentClaimedChunk.getOwnerIDString().equals(townID)) {
+            if (adjacentClaimedChunk instanceof TerritoryChunk territoryChunk &&
+                    territoryChunk.getOwnerID().equals(townID)
+            ) {
                 return true;
             }
         }
@@ -182,7 +185,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk>{
         while (iterator.hasNext()) {
             Map.Entry<String, ClaimedChunk> entry = iterator.next();
             ClaimedChunk chunk = entry.getValue();
-            if (chunk.getOwnerIDString().equals(id)) {
+            if (chunk instanceof TerritoryChunk territoryChunk && territoryChunk.getOwnerID().equals(id)) {
                 iterator.remove();
             }
         }
@@ -201,7 +204,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk>{
      * @param player The player
      * @return The chunk on the player current position
      */
-    public @NotNull ClaimedChunk get(Player player){
+    public @NotNull ClaimedChunk get(Player player) {
         return get(player.getLocation().getChunk());
     }
 
@@ -220,7 +223,8 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk>{
         File file = getFile("TAN - Claimed Chunks.json");
         if (file.exists()) {
             try (FileReader reader = new FileReader(file)) {
-                Type type = new TypeToken<Map<String, JsonObject>>() {}.getType();
+                Type type = new TypeToken<Map<String, JsonObject>>() {
+                }.getType();
                 Map<String, JsonObject> jsonData = gson.fromJson(reader, type);
 
                 for (Map.Entry<String, JsonObject> entry : jsonData.entrySet()) {
@@ -264,8 +268,8 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk>{
     }
 
     public void checkValidWorlds() {
-        for(ClaimedChunk chunk : new ArrayList<>(dataMap.values())) {
-            if(chunk.getWorld() == null){
+        for (ClaimedChunk chunk : new ArrayList<>(dataMap.values())) {
+            if (chunk.getWorld() == null) {
                 unclaimChunk(chunk);
                 TownsAndNations.getPlugin().getLogger().warning("Deleted claimed chunk " + chunk.getX() + "," + chunk.getZ() + " due to invalid world.");
             }

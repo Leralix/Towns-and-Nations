@@ -1,5 +1,6 @@
 package org.leralix.tan.listeners.interact.events;
 
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -8,6 +9,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.dataclass.ITanPlayer;
 import org.leralix.tan.dataclass.chunk.ClaimedChunk;
+import org.leralix.tan.dataclass.chunk.TerritoryChunk;
 import org.leralix.tan.dataclass.chunk.WildernessChunk;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
@@ -51,25 +53,37 @@ public class CreateFortEvent extends RightClickListenerEvent {
             return ListenerState.FAILURE;
         }
 
-        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(upBlock.getChunk());
+        Chunk chunk = upBlock.getChunk();
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
 
-        // If outposts are enabled and chunk is not claimed
-        if (Constants.enableFortOutpost() && claimedChunk instanceof WildernessChunk) {
-            boolean wasAbleToClaim = tanTerritory.claimChunk(player, upBlock.getChunk(), true);
 
-            if (!wasAbleToClaim) {
+        switch (claimedChunk){
+            case WildernessChunk ignored when Constants.enableFortOutpost() -> {
+
+                boolean wasAbleToClaim = tanTerritory.claimChunk(player, chunk, true);
+
+                if (wasAbleToClaim) {
+                    createFort(block);
+                    return ListenerState.SUCCESS;
+                }
+                else {
+                    return ListenerState.FAILURE;
+                }
+            }
+            case TerritoryChunk territoryChunk -> {
+                if (territoryChunk.getOwnerID().equals(tanTerritory.getID())) {
+                    createFort(block);
+                    return ListenerState.SUCCESS;
+                }
+                else {
+                    TanChatUtils.message(player, Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(tanPlayer));
+                    return ListenerState.FAILURE;
+                }
+            }
+            default -> {
                 return ListenerState.FAILURE;
             }
         }
-        // Else, only create a fort if created inside a claimed chunk
-        else {
-            if (!tanTerritory.getID().equals(claimedChunk.getOwnerIDString())) {
-                TanChatUtils.message(player, Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(tanPlayer));
-                return ListenerState.FAILURE;
-            }
-        }
-        createFort(block);
-        return ListenerState.SUCCESS;
     }
 
     private void createFort(Block block) {

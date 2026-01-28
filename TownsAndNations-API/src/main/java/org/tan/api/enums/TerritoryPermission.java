@@ -1,6 +1,6 @@
 package org.tan.api.enums;
 
-public enum ETownPermission {
+public enum TerritoryPermission {
     
     MANAGE_TAXES,
     CLAIM_CHUNK,

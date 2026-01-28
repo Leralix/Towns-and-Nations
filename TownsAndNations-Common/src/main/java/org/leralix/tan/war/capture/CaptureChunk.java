@@ -167,7 +167,7 @@ public class CaptureChunk {
 
         War war = currentAttack.getAttackData().getWar();
 
-        WarRole warRole = war.getTerritoryRole(territoryChunk.getOccupier());
+        WarRole warRole = war.getTerritoryRole(territoryChunk.getOccupierInternal());
         return switch (warRole) {
             case MAIN_ATTACKER, OTHER_ATTACKER -> war.getMainDefender();
             case MAIN_DEFENDER, OTHER_DEFENDER, NEUTRAL -> war.getMainAttacker();

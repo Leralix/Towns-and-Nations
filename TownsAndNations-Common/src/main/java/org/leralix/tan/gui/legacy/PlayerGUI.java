@@ -178,16 +178,16 @@ public class PlayerGUI {
 
             if (territoryData.isCapital()) {
                 if (overlord instanceof NationData) {
-                    TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_NATION_CAPITAL.get(tanPlayer, territoryData.getBaseColoredName()));
+                    TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_NATION_CAPITAL.get(tanPlayer, territoryData.getColoredName()));
                 } else {
-                    TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL.get(tanPlayer, territoryData.getBaseColoredName()));
+                    TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL.get(tanPlayer, territoryData.getColoredName()));
                 }
                 return;
             }
 
             new ConfirmMenu(
                     player,
-                    Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(territoryData.getBaseColoredName(), overlord.getBaseColoredName()),
+                    Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(territoryData.getColoredName(), overlord.getColoredName()),
                     () -> {
                         territoryData.removeOverlord();
                         if (overlord instanceof NationData) {
@@ -222,7 +222,7 @@ public class PlayerGUI {
             ItemStack vassalIcon = HeadUtils.createCustomItemStack(
                     Material.GOLDEN_SWORD,
                     Lang.VASSAL_GUI.get(tanPlayer),
-                    Lang.VASSAL_GUI_DESC1.get(tanPlayer, territoryData.getBaseColoredName(), Integer.toString(territoryData.getVassalCount()))
+                    Lang.VASSAL_GUI_DESC1.get(tanPlayer, territoryData.getColoredName(), Integer.toString(territoryData.getVassalCount()))
             );
 
             gui.setItem(2, 6, IconManager.getInstance().get((territoryData instanceof NationData) ? IconKey.REGION_BASE_ICON : IconKey.TOWN_BASE_ICON)

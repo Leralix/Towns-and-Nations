@@ -54,7 +54,7 @@ public class TerritoryVassalForcedNews extends Newsletter {
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
                 Lang.FORCED_VASSALAGE_TITLE.get(lang),
                 Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.FORCED_VASSALAGE.get(lang, proposingTerritory.getBaseColoredName(), forcedTerritory.getBaseColoredName()),
+                Lang.FORCED_VASSALAGE.get(lang, proposingTerritory.getColoredName(), forcedTerritory.getColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
@@ -99,7 +99,7 @@ public class TerritoryVassalForcedNews extends Newsletter {
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(forcedTerritoryID);
         if(receivingTerritory == null)
             return;
-        TanChatUtils.message(player, Lang.FORCED_VASSALAGE.get(player, receivingTerritory.getBaseColoredName(), proposingTerritory.getBaseColoredName()), SoundEnum.MINOR_BAD);
+        TanChatUtils.message(player, Lang.FORCED_VASSALAGE.get(player, receivingTerritory.getColoredName(), proposingTerritory.getColoredName()), SoundEnum.MINOR_BAD);
     }
 
     public String getProposingTerritoryID() {

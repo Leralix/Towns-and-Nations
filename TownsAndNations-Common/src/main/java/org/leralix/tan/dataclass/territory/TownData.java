@@ -96,7 +96,7 @@ public class TownData extends TerritoryData implements TanTown {
         getTownDefaultRank().addPlayer(tanNewPlayer);
         tanNewPlayer.joinTown(this);
 
-        TanChatUtils.message(tanNewPlayer.getPlayer(), Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(tanNewPlayer.getLang(), getBaseColoredName()));
+        TanChatUtils.message(tanNewPlayer.getPlayer(), Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(tanNewPlayer.getLang(), this.getColoredName()));
 
         tanNewPlayer.clearAllTownApplications();
 

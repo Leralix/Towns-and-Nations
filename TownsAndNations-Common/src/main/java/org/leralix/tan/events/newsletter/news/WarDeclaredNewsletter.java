@@ -55,7 +55,7 @@ public class WarDeclaredNewsletter extends Newsletter {
         ItemStack icon = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
                 Lang.WAR_DECLARED_TITLE.get(lang),
                 Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.WAR_DECLARED.get(lang, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
+                Lang.WAR_DECLARED.get(lang, attackingTerritory.getColoredName(), defendingTerritory.getColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.getDefault());
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
@@ -95,7 +95,7 @@ public class WarDeclaredNewsletter extends Newsletter {
         if(attackingTerritory == null || defendingTerritory == null)
             return;
 
-        TanChatUtils.message(player, Lang.WAR_DECLARED.get(player, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()), SoundEnum.WAR);
+        TanChatUtils.message(player, Lang.WAR_DECLARED.get(player, attackingTerritory.getColoredName(), defendingTerritory.getColoredName()), SoundEnum.WAR);
     }
 
     @Override

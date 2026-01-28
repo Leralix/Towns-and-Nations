@@ -57,7 +57,7 @@ public class NationCreationNews extends Newsletter {
         if (nationData == null) {
             return;
         }
-        TanChatUtils.message(player, Lang.NATION_CREATED_NEWSLETTER.get(player, tanPlayer.getNameStored(), nationData.getBaseColoredName()));
+        TanChatUtils.message(player, Lang.NATION_CREATED_NEWSLETTER.get(player, tanPlayer.getNameStored(), nationData.getColoredName()));
     }
 
     @Override
@@ -83,7 +83,7 @@ public class NationCreationNews extends Newsletter {
                 getDate(),
                 IconKey.BROWSE_NATION_ICON,
                 Lang.NATION_CREATED_NEWSLETTER_TITLE.get(lang),
-                Lang.NATION_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), nationData.getBaseColoredName()),
+                Lang.NATION_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), nationData.getColoredName()),
                 this::markAsRead,
                 onClick
         );

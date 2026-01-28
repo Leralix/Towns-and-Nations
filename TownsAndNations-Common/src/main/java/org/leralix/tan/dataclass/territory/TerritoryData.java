@@ -68,10 +68,10 @@ import org.leralix.tan.war.War;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
 import org.leralix.tan.war.legacy.WarRole;
-import org.tan.api.enums.ETownPermission;
-import org.tan.api.interfaces.TanClaimedChunk;
+import org.tan.api.enums.TerritoryPermission;
 import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.chunk.TanClaimedChunk;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -177,8 +177,7 @@ public abstract class TerritoryData implements TanTerritory {
     }
 
     @Override
-    public boolean canPlayerDoAction(TanPlayer player, ETownPermission permission) {
-
+    public boolean canPlayerDoAction(TanPlayer player, TerritoryPermission permission) {
         return doesPlayerHavePermission(
                 PlayerDataStorage.getInstance().get(player.getUUID()),
                 RolePermission.valueOf(permission.name())
@@ -219,8 +218,6 @@ public abstract class TerritoryData implements TanTerritory {
     }
 
     public abstract int getHierarchyRank();
-
-    public abstract String getBaseColoredName();
 
     public TextComponent getCustomColoredName() {
         TextComponent coloredName = new TextComponent(getName());
@@ -274,8 +271,14 @@ public abstract class TerritoryData implements TanTerritory {
         return isPlayerIn(tanPlayer.getID());
     }
 
+    @Override
     public boolean isPlayerIn(Player player) {
         return isPlayerIn(player.getUniqueId().toString());
+    }
+
+    @Override
+    public boolean checkPlayerPermission(TanPlayer player, TerritoryPermission rolePermission) {
+        return doesPlayerHavePermission(player, RolePermission.valueOf(rolePermission.name()));
     }
 
     public boolean isPlayerIn(String playerID) {
@@ -439,9 +442,9 @@ public abstract class TerritoryData implements TanTerritory {
     public void setOverlord(TerritoryData overlord) {
         getOverlordsProposals().remove(overlord.getID());
         if (overlord instanceof NationData) {
-            broadcastMessageWithSound(Lang.NATION_ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getBaseColoredName(), overlord.getBaseColoredName()), SoundEnum.GOOD);
+            broadcastMessageWithSound(Lang.NATION_ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), SoundEnum.GOOD);
         } else {
-            broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getBaseColoredName(), overlord.getBaseColoredName()), SoundEnum.GOOD);
+            broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), overlord.getColoredName()), SoundEnum.GOOD);
         }
 
         this.overlordID = overlord.getID();
@@ -502,6 +505,7 @@ public abstract class TerritoryData implements TanTerritory {
         return color;
     }
 
+    @Override
     public String getChunkColorInHex() {
         return String.format("#%06X", getChunkColorCode());
     }
@@ -688,8 +692,8 @@ public abstract class TerritoryData implements TanTerritory {
      * @return True if this territory can claim, false otherwise.
      */
     public boolean canConquerChunk(TerritoryChunk chunk) {
-        if (getAvailableEnemyClaims().containsKey(chunk.getOwnerIDString())) {
-            consumeEnemyClaim(chunk.getOwnerIDString());
+        if (getAvailableEnemyClaims().containsKey(chunk.getOwnerID())) {
+            consumeEnemyClaim(chunk.getOwnerID());
             return true;
         }
         return false;
@@ -713,7 +717,7 @@ public abstract class TerritoryData implements TanTerritory {
         addToBalance(amount);
 
         TransactionManager.getInstance().register(new DonationTransaction(this, player, amount));
-        TanChatUtils.message(player, Lang.PLAYER_SEND_MONEY_SUCCESS.get(langType, Double.toString(amount), getBaseColoredName()), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player, Lang.PLAYER_SEND_MONEY_SUCCESS.get(langType, Double.toString(amount), this.getColoredName()), SoundEnum.MINOR_GOOD);
     }
 
     public abstract void openMainMenu(Player player);
@@ -758,9 +762,9 @@ public abstract class TerritoryData implements TanTerritory {
     public void addVassalisationProposal(TerritoryData proposal) {
         getOverlordsProposals().add(proposal.getID());
         if (proposal instanceof NationData) {
-            broadcastMessageWithSound(Lang.NATION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getBaseColoredName(), getBaseColoredName()), SoundEnum.MINOR_GOOD);
+            broadcastMessageWithSound(Lang.NATION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getColoredName(), this.getColoredName()), SoundEnum.MINOR_GOOD);
         } else {
-            broadcastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getBaseColoredName(), getBaseColoredName()), SoundEnum.MINOR_GOOD);
+            broadcastMessageWithSound(Lang.REGION_DIPLOMATIC_INVITATION_RECEIVED_1.get(proposal.getColoredName(), this.getColoredName()), SoundEnum.MINOR_GOOD);
         }
         EventManager.getInstance().callEvent(new TerritoryVassalProposalInternalEvent(proposal, this));
     }
@@ -800,7 +804,7 @@ public abstract class TerritoryData implements TanTerritory {
                             }
 
                             setOverlord(proposalOverlord);
-                            broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getBaseColoredName(), proposalOverlord.getName()), SoundEnum.GOOD);
+                            broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), proposalOverlord.getName()), SoundEnum.GOOD);
                             PlayerGUI.openHierarchyMenu(player, this);
                         } else if (action.isRightClick()) {
                             getOverlordsProposals().remove(proposalID);
@@ -830,6 +834,11 @@ public abstract class TerritoryData implements TanTerritory {
 
     public RankData getRank(int rankID) {
         return getRanks().get(rankID);
+    }
+
+    //TODO : enable TanPlayer to be used directly
+    public RankData getRank(TanPlayer tanPlayer){
+        return getRank(PlayerDataStorage.getInstance().get(tanPlayer.getID()));
     }
 
     public abstract RankData getRank(ITanPlayer tanPlayer);
@@ -886,7 +895,7 @@ public abstract class TerritoryData implements TanTerritory {
         return doesPlayerHavePermission(PlayerDataStorage.getInstance().get(player), townRolePermission);
     }
 
-    public boolean doesPlayerHavePermission(ITanPlayer tanPlayer, RolePermission townRolePermission) {
+    public boolean doesPlayerHavePermission(TanPlayer tanPlayer, RolePermission townRolePermission) {
 
         if (!this.isPlayerIn(tanPlayer)) {
             return false;
@@ -1066,6 +1075,11 @@ public abstract class TerritoryData implements TanTerritory {
             return getBaseColoredName();
         }
     }
+
+    /**
+     * @return the base-colored name of the territory, without using the territory color settings
+     */
+    protected abstract String getBaseColoredName();
 
     public String getLeaderName() {
         if (this.haveNoLeader()) return Lang.NO_LEADER.getDefault();

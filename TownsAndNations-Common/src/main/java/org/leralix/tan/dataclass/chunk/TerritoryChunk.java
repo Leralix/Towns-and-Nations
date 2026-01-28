@@ -1,5 +1,6 @@
 package org.leralix.tan.dataclass.chunk;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
@@ -11,13 +12,14 @@ import org.leralix.tan.dataclass.PropertyData;
 import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.dataclass.territory.TownData;
 import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
-import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.enums.TownRelation;
 import org.leralix.tan.enums.permissions.ChunkPermissionType;
 import org.leralix.tan.enums.permissions.GeneralChunkSetting;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
@@ -25,23 +27,112 @@ import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.fort.Fort;
 import org.leralix.tan.war.legacy.CurrentAttack;
+import org.tan.api.enums.TerritoryPermission;
+import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.chunk.TanTerritoryChunk;
 
 import java.util.Optional;
 
-public abstract class TerritoryChunk extends ClaimedChunk {
+/**
+ * A ClaimedChunk that is owned by a Territory.
+ * There are 3 types of TerritoryChunk:
+ * <ul>
+ *     <li>Town : {@link TownClaimedChunk}</li>
+ *     <li>Region : {@link RegionClaimedChunk}</li>
+ *     <li>Nation : {@link NationClaimedChunk}</li>
+ * </ul>
+ */
+public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritoryChunk {
 
+    /**
+     * The ID of the territory owning this chunk
+     */
+    private String ownerID;
+
+    /**
+     * The ID of the territory occupying this chunk
+     * If the territory is captured by another territory, this will be different from ownerID
+     */
     private String occupierID;
 
     protected TerritoryChunk(Chunk chunk, String owner) {
-        super(chunk, owner);
+        super(chunk);
+        this.ownerID = owner;
         this.occupierID = owner;
     }
 
     protected TerritoryChunk(int x, int z, String worldUUID, String owner) {
-        super(x, z, worldUUID, owner);
+        super(x, z, worldUUID);
+        this.ownerID = owner;
         this.occupierID = owner;
     }
 
+    public TerritoryData getOwnerInternal(){
+        return TerritoryUtil.getTerritory(ownerID);
+    }
+
+    @Override
+    public TanTerritory getOwner(){
+        return TerritoryUtil.getTerritory(ownerID);
+    }
+
+    @Override
+    public String getOwnerID() {
+        return ownerID;
+    }
+
+    public TerritoryData getOccupierInternal(){
+        return TerritoryUtil.getTerritory(occupierID);
+    }
+
+    @Override
+    public TanTerritory getOccupier(){
+        return TerritoryUtil.getTerritory(occupierID);
+    }
+
+    @Override
+    protected void playerCantPerformAction(Player player){
+        TanChatUtils.message(player, Lang.PLAYER_ACTION_NO_PERMISSION.get(player));
+        TanChatUtils.message(player, Lang.CHUNK_BELONGS_TO.get(player, getOwner().getName()));
+    }
+
+    @Override
+    public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
+        if(canTerritoryClaim(territoryData)) {
+            return true;
+        }
+        TanChatUtils.message(player, Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(player, getOwner().getColoredName()));
+        return false;
+    }
+
+    @Override
+    public boolean isClaimed() {
+        return true; // A TerritoryChunk is always claimed
+    }
+
+    @Override
+    public abstract boolean canTerritoryClaim(TerritoryData territoryData);
+
+    @Override
+    public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
+        TanTerritory ownerTerritory = getOwner();
+
+        TerritoryData territoryData = TerritoryUtil.getTerritory(ownerTerritory.getID());
+
+        TerritoryEnterMessageUtil.sendEnterTerritoryMessage(player, territoryData, displayTerritoryColor);
+
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        TownData playerTown = tanPlayer.getTown();
+        if (playerTown == null) {
+            return;
+        }
+        TownRelation relation = playerTown.getRelationWith(territoryData);
+
+        if (relation == TownRelation.WAR && Constants.notifyWhenEnemyEnterTerritory()) {
+            TanChatUtils.message(player, Lang.CHUNK_ENTER_TOWN_AT_WAR.get(tanPlayer.getLang()), SoundEnum.BAD);
+            territoryData.broadcastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.getInstance().get(player).getName(), player.getName()), SoundEnum.BAD);
+        }
+    }
 
     @Override
     public TextComponent getMapIcon(LangType langType) {
@@ -50,21 +141,19 @@ public abstract class TerritoryChunk extends ClaimedChunk {
         String text;
         if(isOccupied()){
             textComponent = new TextComponent("🟧");
-            textComponent.setColor(getOccupier().getChunkColor());
+            textComponent.setColor(ChatColor.valueOf(getOccupier().getChunkColorInHex()));
             text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                    getOwner().getBaseColoredName() + "\n" +
-                    getOccupier().getBaseColoredName() + "\n" +
+                    getOwner().getColoredName() + "\n" +
+                    getOccupier().getColoredName() + "\n" +
                     Lang.LEFT_CLICK_TO_CLAIM.get(langType);
         }
         else {
             textComponent = new TextComponent("⬛");
-            textComponent.setColor(getOwner().getChunkColor());
+            textComponent.setColor(ChatColor.valueOf(getOwner().getChunkColorInHex()));
             text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                    getOwner().getBaseColoredName() + "\n" +
+                    getOwner().getColoredName() + "\n" +
                     Lang.LEFT_CLICK_TO_CLAIM.get(langType);
         }
-
-
 
         textComponent.setHoverEvent(new HoverEvent(
                 HoverEvent.Action.SHOW_TEXT,
@@ -73,7 +162,7 @@ public abstract class TerritoryChunk extends ClaimedChunk {
     }
 
     /**
-     * Called when a player want to unclaim a chunk
+     * Called when a player wants to unclaim a chunk
      * Will verify if the player is allowed to unclaim it, and if so, unclaim.
      * @param player the player trying to unclaim this chunk
      */
@@ -82,11 +171,11 @@ public abstract class TerritoryChunk extends ClaimedChunk {
         ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player);
         LangType langType = playerStat.getLang();
 
-        TerritoryData ownerTerritory = getOwner();
+        TerritoryData ownerTerritory = getOwnerInternal();
 
         //If owner territory contains the player, regular check
         if(ownerTerritory.isPlayerIn(player)){
-            if (!ownerTerritory.doesPlayerHavePermission(playerStat, RolePermission.UNCLAIM_CHUNK)) {
+            if (!ownerTerritory.checkPlayerPermission(playerStat, TerritoryPermission.UNCLAIM_CHUNK)) {
                 TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), SoundEnum.NOT_ALLOWED);
                 return;
             }
@@ -159,7 +248,7 @@ public abstract class TerritoryChunk extends ClaimedChunk {
 
 
     public Optional<Fort> getFortProtecting() {
-        for (Fort fort : getOccupier().getAllControlledFort()) {
+        for (Fort fort : getOccupierInternal().getAllControlledFort()) {
             if (fort.getPosition().getDistance(getMiddleVector2D()) <= Constants.getFortProtectionRadius()) {
                 return Optional.of(fort);
             }
@@ -177,26 +266,22 @@ public abstract class TerritoryChunk extends ClaimedChunk {
 
     @Override
     public boolean canExplosionGrief() {
-        return Constants.getChunkSettings(GeneralChunkSetting.TNT_GRIEF).canGrief(getOwner(), GeneralChunkSetting.TNT_GRIEF);
+        return Constants.getChunkSettings(GeneralChunkSetting.TNT_GRIEF).canGrief(getOwnerInternal(), GeneralChunkSetting.TNT_GRIEF);
     }
 
     @Override
     public boolean canFireGrief() {
-        return Constants.getChunkSettings(GeneralChunkSetting.FIRE_GRIEF).canGrief(getOwner(), GeneralChunkSetting.FIRE_GRIEF);
+        return Constants.getChunkSettings(GeneralChunkSetting.FIRE_GRIEF).canGrief(getOwnerInternal(), GeneralChunkSetting.FIRE_GRIEF);
     }
 
     @Override
     public boolean canPVPHappen() {
-        return Constants.getChunkSettings(GeneralChunkSetting.ENABLE_PVP).canGrief(getOwner(), GeneralChunkSetting.ENABLE_PVP);
+        return Constants.getChunkSettings(GeneralChunkSetting.ENABLE_PVP).canGrief(getOwnerInternal(), GeneralChunkSetting.ENABLE_PVP);
     }
 
     @Override
     public boolean canMobGrief() {
-        return Constants.getChunkSettings(GeneralChunkSetting.MOB_GRIEF).canGrief(getOwner(), GeneralChunkSetting.MOB_GRIEF);
-    }
-
-    public TerritoryData getOccupier(){
-        return TerritoryUtil.getTerritory(getOccupierID());
+        return Constants.getChunkSettings(GeneralChunkSetting.MOB_GRIEF).canGrief(getOwnerInternal(), GeneralChunkSetting.MOB_GRIEF);
     }
 
     public void setOccupier(TerritoryData occupier) {
@@ -208,7 +293,7 @@ public abstract class TerritoryChunk extends ClaimedChunk {
     }
 
     public void liberate() {
-        this.occupierID = getOwnerID().orElse(null);
+        this.occupierID = getOwnerID();
     }
 
     public boolean isOccupied() {
@@ -217,7 +302,7 @@ public abstract class TerritoryChunk extends ClaimedChunk {
 
     protected boolean commonTerritoryCanPlayerDo(Player player, ChunkPermissionType permissionType, ITanPlayer tanPlayer) {
 
-        TerritoryData territoryOfChunk = getOwner();
+        TerritoryData territoryOfChunk = getOwnerInternal();
         //Player is at war with the town
         for (CurrentAttack currentAttacks : territoryOfChunk.getCurrentAttacks()) {
             if (currentAttacks.containsPlayer(tanPlayer))

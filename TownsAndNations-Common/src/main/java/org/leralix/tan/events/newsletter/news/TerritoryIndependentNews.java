@@ -56,7 +56,7 @@ public class TerritoryIndependentNews extends Newsletter {
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
                 Lang.TOWN_LEAVE_REGION_NEWSLETTER_TITLE.get(lang),
                 Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(lang, leavingTown.getBaseColoredName(), region.getBaseColoredName()),
+                Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(lang, leavingTown.getColoredName(), region.getColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
@@ -98,7 +98,7 @@ public class TerritoryIndependentNews extends Newsletter {
         if (region == null)
             return;
 
-        TanChatUtils.message(player, Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(player, leavingTown.getBaseColoredName(), region.getBaseColoredName()), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player, Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(player, leavingTown.getColoredName(), region.getColoredName()), SoundEnum.MINOR_GOOD);
     }
 
     @Override

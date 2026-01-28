@@ -2,8 +2,8 @@ package org.tan.api.getters;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.tan.api.interfaces.TanClaimedChunk;
 import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.chunk.TanClaimedChunk;
 
 import java.util.Optional;
 

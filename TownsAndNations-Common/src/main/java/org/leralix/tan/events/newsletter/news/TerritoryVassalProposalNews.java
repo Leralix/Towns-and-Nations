@@ -55,7 +55,7 @@ public class TerritoryVassalProposalNews extends Newsletter {
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
                 Lang.NEWSLETTER_JOIN_REGION_PROPOSAL.get(lang),
                 Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(lang, proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(lang, proposingTerritory.getColoredName(), receivingTerritory.getColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
 
@@ -77,7 +77,7 @@ public class TerritoryVassalProposalNews extends Newsletter {
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
                 Lang.NEWSLETTER_JOIN_REGION_PROPOSAL.get(lang),
-                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(lang, proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(lang, proposingTerritory.getColoredName(), receivingTerritory.getColoredName()),
                 Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2.get(lang),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
@@ -117,7 +117,7 @@ public class TerritoryVassalProposalNews extends Newsletter {
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if(receivingTerritory == null)
             return;
-        TanChatUtils.message(player, Lang.TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER.get(player, proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()), SoundEnum.MINOR_BAD);
+        TanChatUtils.message(player, Lang.TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER.get(player, proposingTerritory.getColoredName(), receivingTerritory.getColoredName()), SoundEnum.MINOR_BAD);
     }
 
     public String getProposingTerritoryID() {

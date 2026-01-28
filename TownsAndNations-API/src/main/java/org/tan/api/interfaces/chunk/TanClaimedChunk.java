@@ -1,9 +1,10 @@
-package org.tan.api.interfaces;
+package org.tan.api.interfaces.chunk;
 
 import org.bukkit.Location;
 import org.tan.api.enums.EChunkPermission;
+import org.tan.api.interfaces.TanPlayer;
+import org.tan.api.interfaces.TanTerritory;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public interface TanClaimedChunk {
@@ -43,18 +44,14 @@ public interface TanClaimedChunk {
 
     /**
      * Check if the chunk is currently being claimed by a territory.
+     * <ul>
+     *     <li>{@link TanTerritoryChunk : always true}</li>
+     *     <li>{@link TanWildernessChunk : always false}</li>
+     *     <li>{@link TanChunk : true if claimed, false otherwise}</li>
+     * </ul>
      * @return True if the chunk is claimed by a territory or a landmark, false otherwise
      */
-    Boolean isClaimed();
-
-    /**
-     * Return the ID of the owner of the chunk.
-     * <br>
-     * Return {@link Optional#empty()} if the chunk is a wilderness
-     * or claimed by a landmark.
-     * @return The UUID of the territory owning the chunk if claimed.
-     */
-    Optional<String> getOwnerID();
+    boolean isClaimed();
 
     /**
      * Unclaim the chunk.
