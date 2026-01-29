@@ -8,13 +8,12 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class OtherPlayerRegionNameTest extends BasicTest  {
+class OtherPlayerRegionNameTest extends BasicTest {
 
     @Override
     @BeforeEach
@@ -27,12 +26,12 @@ class OtherPlayerRegionNameTest extends BasicTest  {
     void nominalTest() {
 
         Player player = server.addPlayer("player name");
-        ITanPlayer tanPlayer  = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
 
         TownData townData = TownDataStorage.getInstance().newTown("Town", tanPlayer);
         RegionData regionData = RegionDataStorage.getInstance().createNewRegion("Region", townData);
 
-        OtherPlayerRegionName entry = new OtherPlayerRegionName();
+        OtherPlayerRegionName entry = new OtherPlayerRegionName(townsAndNations.getPlayerDataStorage());
 
         String name = entry.getData(player, "player_{player name}_region_name");
 
@@ -43,9 +42,9 @@ class OtherPlayerRegionNameTest extends BasicTest  {
     void noRegionTest() {
 
         Player player = server.addPlayer("player name");
-        PlayerDataStorage.getInstance().get(player);
+        townsAndNations.getPlayerDataStorage().get(player);
 
-        OtherPlayerRegionName entry = new OtherPlayerRegionName();
+        OtherPlayerRegionName entry = new OtherPlayerRegionName(townsAndNations.getPlayerDataStorage());
 
         String name = entry.getData(player, "player_{player name}_region_name");
 

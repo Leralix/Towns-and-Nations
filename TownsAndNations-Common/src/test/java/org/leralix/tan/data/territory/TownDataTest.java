@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.rank.RankData;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,7 +14,7 @@ class TownDataTest extends BasicTest {
 
     @Test
     void createTown(){
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
         TownData townData = new TownData("T1", "testTown", tanPlayer);
 
         assertEquals("T1", townData.getID());
@@ -28,7 +27,7 @@ class TownDataTest extends BasicTest {
 
     @Test
     void addRank(){
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
         TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer);
 
         assertEquals(townData.getTownDefaultRank(), tanPlayer.getTownRank());
@@ -47,8 +46,8 @@ class TownDataTest extends BasicTest {
 
     @Test
     void deleteTownWithPlayers(){
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
-        ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
+        ITanPlayer tanPlayer2 = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
         TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer);
 
         assertEquals(1, townData.getPlayerIDList().size());

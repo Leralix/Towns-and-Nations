@@ -20,6 +20,12 @@ import java.util.Map;
 
 public class MapCommand extends PlayerSubCommand {
 
+    private final PlayerDataStorage playerDataStorage;
+
+    public MapCommand(PlayerDataStorage playerDataStorage){
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @Override
     public String getName() {
         return "map";
@@ -54,13 +60,13 @@ public class MapCommand extends PlayerSubCommand {
             openMap(player, new MapSettings(args[1], args[2]));
             return;
         }
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = playerDataStorage.get(player).getLang();
         TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.get(langType), SoundEnum.NOT_ALLOWED);
         TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
     }
 
-    public static void openMap(Player player, MapSettings settings) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+    public void openMap(Player player, MapSettings settings) {
+        LangType langType = playerDataStorage.get(player).getLang();
         int radius = 4;
         Map<Integer, TextComponent> text = new HashMap<>();
         TextComponent claimType = new TextComponent(Lang.MAP_CLAIM_TYPE.get(langType));

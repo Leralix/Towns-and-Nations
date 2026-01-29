@@ -14,20 +14,21 @@ import java.util.UUID;
 
 public class PlayerDataStorage extends JsonStorage<ITanPlayer> {
 
-    private static final String ERROR_MESSAGE = "Error while creating player storage";
 
     private static PlayerDataStorage instance;
 
     private static ITanPlayer NO_PLAYER;
 
-    private PlayerDataStorage() {
+    public PlayerDataStorage() {
         super("TAN - Players.json",
                 new TypeToken<HashMap<String, PlayerData>>() {}.getType(),
                 new GsonBuilder()
                         .setPrettyPrinting()
                         .create());
+        instance = this;
     }
 
+    @Deprecated(since = "0.17.0", forRemoval = true)
     public static synchronized PlayerDataStorage getInstance() {
         if (instance == null) {
             instance = new PlayerDataStorage();

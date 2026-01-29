@@ -22,11 +22,17 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 public class PlayerJoinListener implements Listener {
 
+    private final PlayerDataStorage playerDataStorage;
+
+    public PlayerJoinListener(PlayerDataStorage playerDataStorage){
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
 
 
         if(tanPlayer.hasTown()){

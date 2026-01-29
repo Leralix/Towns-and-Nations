@@ -9,14 +9,17 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 public class PlayerRegionResidentQuantity extends PapiEntry {
 
 
-    public PlayerRegionResidentQuantity(){
+    private final PlayerDataStorage playerDataStorage;
+
+    public PlayerRegionResidentQuantity(PlayerDataStorage playerDataStorage){
         super("player_region_resident_quantity");
+        this.playerDataStorage = playerDataStorage;
     }
 
     @Override
     public String getData(OfflinePlayer player, @NotNull String params) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId());
+        ITanPlayer tanPlayer = playerDataStorage.get(player.getUniqueId());
 
         if (tanPlayer == null) {
             return PLAYER_NOT_FOUND;

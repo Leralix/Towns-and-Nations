@@ -15,17 +15,16 @@ import java.util.List;
 
 public abstract class AbstractTerritoryClaimCommand extends PlayerSubCommand {
 
-    protected abstract void onNoCoordinates(Player player, TerritoryData territoryData, LangType langType, String territoryArg, String[] args);
+    private final PlayerDataStorage playerDataStorage;
 
-    protected abstract void onCoordinates(Player player, TerritoryData territoryData, Chunk chunk, LangType langType, String territoryArg, String[] args);
-
-    protected void onEnd(Player player, TerritoryData territoryData, LangType langType, String territoryArg, String[] args) {
+    public AbstractTerritoryClaimCommand(PlayerDataStorage playerDataStorage){
+        this.playerDataStorage = playerDataStorage;
     }
 
     @Override
     public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
         if (args.length == 2) {
-            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+            ITanPlayer tanPlayer = playerDataStorage.get(player);
             return TerritoryCommandUtil.getTerritoryTypeSuggestions(tanPlayer);
         }
         return new ArrayList<>();
@@ -43,7 +42,7 @@ public abstract class AbstractTerritoryClaimCommand extends PlayerSubCommand {
         }
 
         String territoryArg = args[1];
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
         TerritoryData territoryData = TerritoryCommandUtil.resolveTerritory(player, tanPlayer, territoryArg, getSyntax());
         if (territoryData == null) {
             return;
@@ -63,4 +62,11 @@ public abstract class AbstractTerritoryClaimCommand extends PlayerSubCommand {
         onCoordinates(player, territoryData, chunk, langType, territoryArg, args);
         onEnd(player, territoryData, langType, territoryArg, args);
     }
+
+    protected abstract void onNoCoordinates(Player player, TerritoryData territoryData, LangType langType, String territoryArg, String[] args);
+
+    protected abstract void onCoordinates(Player player, TerritoryData territoryData, Chunk chunk, LangType langType, String territoryArg, String[] args);
+
+    protected abstract void onEnd(Player player, TerritoryData territoryData, LangType langType, String territoryArg, String[] args);
+
 }

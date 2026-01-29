@@ -9,14 +9,17 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 public class OtherPlayerRegionName extends PapiEntry {
 
-    public OtherPlayerRegionName() {
+    private final PlayerDataStorage playerDataStorage;
+
+    public OtherPlayerRegionName(PlayerDataStorage playerDataStorage) {
         super("player_{}_region_name");
+        this.playerDataStorage = playerDataStorage;
     }
 
     @Override
     public String getData(OfflinePlayer player, @NotNull String params) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId());
+        ITanPlayer tanPlayer = playerDataStorage.get(player.getUniqueId());
 
         if (tanPlayer == null) {
             return PLAYER_NOT_FOUND;
@@ -25,7 +28,7 @@ public class OtherPlayerRegionName extends PapiEntry {
         String[] values = extractValues(params);
         OfflinePlayer playerSelected = Bukkit.getOfflinePlayer(values[0]);
 
-        ITanPlayer otherTanPlayer = PlayerDataStorage.getInstance().get(playerSelected);
+        ITanPlayer otherTanPlayer = playerDataStorage.get(playerSelected);
 
         return otherTanPlayer.hasRegion() ?
                 otherTanPlayer.getRegion().getName() :

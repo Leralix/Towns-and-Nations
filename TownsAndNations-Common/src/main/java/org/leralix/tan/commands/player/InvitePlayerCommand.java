@@ -18,11 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InvitePlayerCommand extends PlayerSubCommand {
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public InvitePlayerCommand(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @Override
     public String getName() {
         return "invite";
     }
-
 
     @Override
     public String getDescription() {
@@ -63,8 +69,8 @@ public class InvitePlayerCommand extends PlayerSubCommand {
         }
     }
 
-    private static void invite(Player player, String playerToInvite) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+    private void invite(Player player, String playerToInvite) {
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
         TownData townData = TownDataStorage.getInstance().get(player);
         LangType langType = tanPlayer.getLang();
 
@@ -89,7 +95,7 @@ public class InvitePlayerCommand extends PlayerSubCommand {
             TanChatUtils.message(player, Lang.INVITATION_TOWN_FULL.get(langType));
             return;
         }
-        ITanPlayer inviteStat = PlayerDataStorage.getInstance().get(invite);
+        ITanPlayer inviteStat = playerDataStorage.get(invite);
 
         if (inviteStat.getTownId() != null) {
             if (inviteStat.getTownId().equals(town.getID())) {

@@ -10,14 +10,17 @@ import org.leralix.tan.utils.constants.Constants;
 public class TerritoryWithNameExist extends PapiEntry {
 
 
-    public TerritoryWithNameExist() {
+    private final PlayerDataStorage playerDataStorage;
+
+    public TerritoryWithNameExist(PlayerDataStorage playerDataStorage) {
         super("territory_with_name_{}_exist");
+        this.playerDataStorage = playerDataStorage;
     }
 
     @Override
     public String getData(OfflinePlayer player, @NotNull String params) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId());
+        ITanPlayer tanPlayer = playerDataStorage.get(player.getUniqueId());
 
         if (tanPlayer == null) {
             return PLAYER_NOT_FOUND;

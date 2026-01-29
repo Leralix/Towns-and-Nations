@@ -14,7 +14,6 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.property.PropertyData;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.gameplay.ItemStackSerializer;
 import org.mockbukkit.mockbukkit.MockBukkit;
@@ -57,7 +56,7 @@ class ChangePropertyRentPriceTest {
 
         player = server.addPlayer();
         World world = server.addSimpleWorld("world");
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
         TownData townData = TownDataStorage.getInstance().newTown("town 1");
 
         propertyData = townData.registerNewProperty(

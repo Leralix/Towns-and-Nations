@@ -1,14 +1,13 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.lib.SphereLib;
+import org.leralix.tan.BasicTest;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
@@ -16,26 +15,22 @@ import org.mockbukkit.mockbukkit.ServerMock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class ChangeTerritoryNameTest {
+class ChangeTerritoryNameTest extends BasicTest {
 
     private static Player player;
     private static TownData townData;
 
+    @Override
     @BeforeEach
-    void setUp() {
+    protected void setUp() {
         ServerMock server = MockBukkit.mock();
 
         MockBukkit.load(SphereLib.class);
         MockBukkit.load(TownsAndNations.class);
 
         player = server.addPlayer();
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
         townData = TownDataStorage.getInstance().newTown("town 1", tanPlayer);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        MockBukkit.unmock();
     }
 
     @Test
@@ -61,6 +56,4 @@ class ChangeTerritoryNameTest {
 
         assertNotEquals(newName, townData.getName());
     }
-
-
 }

@@ -1,38 +1,17 @@
 package org.leralix.tan.listeners.chat.events;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.leralix.lib.SphereLib;
-import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.mockbukkit.mockbukkit.MockBukkit;
-import org.mockbukkit.mockbukkit.ServerMock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CreateRankTest {
-
-    private ServerMock server;
-
-    @BeforeEach
-    void setUp() {
-        server = MockBukkit.mock();
-
-        MockBukkit.load(SphereLib.class);
-        MockBukkit.load(TownsAndNations.class);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        MockBukkit.unmock();
-    }
+class CreateRankTest extends BasicTest {
 
     @Test
     void nominalCase() {
-        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        var tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
         TownData townData = TownDataStorage.getInstance().newTown("TestTown", tanPlayer);
 
         assertEquals(1, townData.getAllRanks().size());
@@ -44,7 +23,7 @@ class CreateRankTest {
 
     @Test
     void duplicateNameAllowed() {
-        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        var tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
         TownData townData = TownDataStorage.getInstance().newTown("TestTown", tanPlayer);
         String newRankName = "TestRank";
 

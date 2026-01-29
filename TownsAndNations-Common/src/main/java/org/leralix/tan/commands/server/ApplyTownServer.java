@@ -15,6 +15,13 @@ import java.util.List;
 
 public class ApplyTownServer extends SubCommand {
 
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public ApplyTownServer(PlayerDataStorage playerDataStorage){
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @Override
     public String getName() {
         return "applytown";
@@ -57,7 +64,7 @@ public class ApplyTownServer extends SubCommand {
             TanChatUtils.message(commandSender, Lang.TOWN_NOT_FOUND);
             return;
         }
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(p.getUniqueId().toString());
+        ITanPlayer tanPlayer = playerDataStorage.get(p.getUniqueId().toString());
         if(tanPlayer.hasTown()){
             TanChatUtils.message(commandSender, Lang.PLAYER_ALREADY_HAVE_TOWN);
             return;

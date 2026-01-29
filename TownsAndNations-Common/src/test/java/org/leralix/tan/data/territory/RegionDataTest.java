@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.rank.RankData;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
@@ -15,7 +14,7 @@ class RegionDataTest extends BasicTest {
     @Test
     void testCreation(){
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
         TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer);
         RegionData regionData = RegionDataStorage.getInstance().createNewRegion("testRegion", townData);
 
@@ -33,7 +32,7 @@ class RegionDataTest extends BasicTest {
     @Test
     void testAddVassal(){
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
         TownData townData = TownDataStorage.getInstance().newTown("FirstTown", tanPlayer);
         RegionData regionData = RegionDataStorage.getInstance().createNewRegion("testRegion", townData);
         TownData newTown = TownDataStorage.getInstance().newTown("secondTown");
@@ -51,8 +50,8 @@ class RegionDataTest extends BasicTest {
     @Test
     void getAllPlayer(){
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
-        ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
+        ITanPlayer tanPlayer2 = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
 
         TownData town1 = TownDataStorage.getInstance().newTown("testTown", tanPlayer);
         TownData town2 = TownDataStorage.getInstance().newTown("testTown", tanPlayer2);
@@ -72,8 +71,8 @@ class RegionDataTest extends BasicTest {
     @Test
     void addPlayerToTownAfterRegionCreation(){
 
-        ITanPlayer leader = PlayerDataStorage.getInstance().get(server.addPlayer());
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        ITanPlayer leader = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
+        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
 
         TownData townData = TownDataStorage.getInstance().newTown("town", leader);
 

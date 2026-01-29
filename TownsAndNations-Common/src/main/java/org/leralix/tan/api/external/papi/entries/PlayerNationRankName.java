@@ -1,11 +1,12 @@
 package org.leralix.tan.api.external.papi.entries;
 
 import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 public class PlayerNationRankName extends AbstractPlayerNationPapiEntry {
 
-    public PlayerNationRankName() {
-        super("player_nation_rank_name");
+    public PlayerNationRankName(PlayerDataStorage playerDataStorage) {
+        super("player_nation_rank_name", playerDataStorage);
     }
 
     @Override

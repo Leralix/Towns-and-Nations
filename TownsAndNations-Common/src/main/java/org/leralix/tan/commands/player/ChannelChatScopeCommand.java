@@ -28,6 +28,12 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
     private static final String NATION = "nation";
     private static final String GLOBAL = "global";
 
+    private final PlayerDataStorage playerDataStorage;
+
+    public ChannelChatScopeCommand(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @Override
     public String getName() {
         return "chat";
@@ -62,7 +68,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = playerDataStorage.get(player).getLang();
         if (args.length < 2) {
             TanChatUtils.message(player, Lang.NOT_ENOUGH_ARGS_ERROR.get(langType), SoundEnum.NOT_ALLOWED);
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
@@ -76,8 +82,8 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
         sendSingleMessage(player, args[1], args);
     }
 
-    private static void registerPlayerToScope(Player player, String channelName) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+    private void registerPlayerToScope(Player player, String channelName) {
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
         LangType langType = tanPlayer.getLang();
         ChatScope currentScope = LocalChatStorage.getPlayerChatScope(player);
         String normalizedChannelName = channelName.toLowerCase();
@@ -125,7 +131,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
     }
 
     private void sendSingleMessage(Player player, String channelName, String[] words) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
         LangType langType = tanPlayer.getLang();
         String message = String.join(" ", Arrays.copyOfRange(words, 2, words.length));
 

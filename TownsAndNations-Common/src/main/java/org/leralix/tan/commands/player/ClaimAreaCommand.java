@@ -6,12 +6,17 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.ChatChunkMapRenderer;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 
 public class ClaimAreaCommand extends AbstractTerritoryClaimCommand {
+
+    public ClaimAreaCommand(PlayerDataStorage playerDataStorage) {
+        super(playerDataStorage);
+    }
 
     @Override
     public String getName() {

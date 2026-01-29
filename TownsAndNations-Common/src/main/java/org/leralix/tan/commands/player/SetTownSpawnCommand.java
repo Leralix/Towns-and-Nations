@@ -19,6 +19,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class SetTownSpawnCommand extends PlayerSubCommand {
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public SetTownSpawnCommand(PlayerDataStorage playerDataStorage){
+        this.playerDataStorage = playerDataStorage;
+    }
+
+
     @Override
     public String getName() {
         return "setspawn";
@@ -42,7 +50,7 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args){
 
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = playerDataStorage.get(player).getLang();
 
         //Incorrect syntax
         if (args.length != 1){
@@ -51,7 +59,7 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
         }
 
         //No town
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer playerStat = playerDataStorage.get(player.getUniqueId().toString());
         if(!playerStat.hasTown()){
             TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
             return;

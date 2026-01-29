@@ -15,6 +15,12 @@ import java.util.List;
 
 public class SetMoney extends SubCommand {
 
+    private final PlayerDataStorage playerDataStorage;
+
+    public SetMoney(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @Override
     public String getName() {
         return "setmoney";
@@ -45,7 +51,7 @@ public class SetMoney extends SubCommand {
             TanChatUtils.message(player, Lang.NOT_ENOUGH_ARGS_ERROR, SoundEnum.NOT_ALLOWED);
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO);
         } else if (args.length == 3) {
-            ITanPlayer target = PlayerDataStorage.getInstance().get(Bukkit.getOfflinePlayer(args[1]));
+            ITanPlayer target = playerDataStorage.get(Bukkit.getOfflinePlayer(args[1]));
             setMoney(player, args, target);
 
         } else {

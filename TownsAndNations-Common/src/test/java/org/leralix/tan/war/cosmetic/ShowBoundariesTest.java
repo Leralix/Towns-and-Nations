@@ -1,11 +1,9 @@
 package org.leralix.tan.war.cosmetic;
 
 import org.bukkit.World;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.territory.ChunkUtil;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
@@ -16,18 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ShowBoundariesTest extends BasicTest {
 
-    @Override
-    @BeforeEach
-    protected void setUp() {
-        super.setUp();
-    }
-
-
     @Test
     void test_getChunksInRadius_no_chunks() {
 
         PlayerMock defender = server.addPlayer();
-        ITanPlayer tanDefender = PlayerDataStorage.getInstance().get(defender);
+        ITanPlayer tanDefender = townsAndNations.getPlayerDataStorage().get(defender);
         World world = server.addSimpleWorld("world");
 
         var townDefender = TownDataStorage.getInstance().newTown("DefenderTown", tanDefender);
@@ -46,6 +37,4 @@ class ShowBoundariesTest extends BasicTest {
         assertEquals(2, townDefender.getNumberOfClaimedChunk());
         assertEquals(6, chunkLines.size());
     }
-
-
 }

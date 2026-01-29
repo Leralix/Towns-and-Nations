@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.storage.stored.NationDataStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
@@ -20,7 +19,7 @@ public class NationDataTest extends BasicTest {
         String nationName = "FirstNation";
 
         Player bukkitPlayer = server.addPlayer();
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(bukkitPlayer);
+        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(bukkitPlayer);
         TownData townData = TownDataStorage.getInstance().newTown("FirstTown", tanPlayer);
         RegionData regionData = RegionDataStorage.getInstance().createNewRegion("FirstRegion", townData);
         NationData nationData = NationDataStorage.getInstance().createNewNation(nationName, regionData);

@@ -11,7 +11,6 @@ import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.war.info.BoundaryType;
@@ -22,13 +21,11 @@ import java.util.Objects;
 
 public class ShowBoundaries {
 
-
-    public static void display(Player player) {
+    public static void display(Player player, ITanPlayer tanPlayer) {
 
         double radius = Constants.getWarBoundaryRadius();
         List<ClaimedChunk> chunkInRange = ChunkUtil.getChunksInRadius(player.getChunk(), radius);
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         List<ChunkLine> lines = sortChunkLines(chunkInRange, tanPlayer);
 
         drawLines(player, lines);
@@ -134,7 +131,9 @@ public class ShowBoundaries {
 
         String worldID = centerChunk.getWorldID().toString();
 
-        Vector2D start, end;
+        Vector2D start;
+        Vector2D end;
+
         switch (dir) {
             case NORTH -> {
                 start = new Vector2D(baseX, baseZ, worldID);

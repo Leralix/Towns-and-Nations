@@ -8,14 +8,17 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 public abstract class AbstractPlayerNationPapiEntry extends PapiEntry {
 
-    protected AbstractPlayerNationPapiEntry(String identifier) {
+    private final PlayerDataStorage playerDataStorage;
+
+    protected AbstractPlayerNationPapiEntry(String identifier, PlayerDataStorage playerDataStorage) {
         super(identifier);
+        this.playerDataStorage = playerDataStorage;
     }
 
     @Override
     public final String getData(OfflinePlayer player, @NotNull String params) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId());
+        ITanPlayer tanPlayer = playerDataStorage.get(player.getUniqueId());
 
         if (tanPlayer == null) {
             return PLAYER_NOT_FOUND;

@@ -14,6 +14,11 @@ import java.util.List;
 
 class QuitTownServer extends SubCommand {
 
+    private final PlayerDataStorage playerDataStorage;
+
+    public QuitTownServer(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
 
     @Override
     public String getName() {
@@ -42,24 +47,23 @@ class QuitTownServer extends SubCommand {
 
     @Override
     public void perform(CommandSender commandSender, String[] args) {
-        if(args.length < 2){
+        if (args.length < 2) {
             TanChatUtils.message(commandSender, Lang.INVALID_ARGUMENTS);
             return;
         }
 
-
         Player p = commandSender.getServer().getPlayer(args[1]);
-        if(p == null){
+        if (p == null) {
             TanChatUtils.message(commandSender, Lang.PLAYER_NOT_FOUND);
             return;
         }
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(p);
+        ITanPlayer tanPlayer = playerDataStorage.get(p);
         TownData townData = tanPlayer.getTown();
-        if(townData == null){
+        if (townData == null) {
             TanChatUtils.message(commandSender, Lang.PLAYER_NO_TOWN);
             return;
         }
-        if(townData.isLeader(tanPlayer)){
+        if (townData.isLeader(tanPlayer)) {
             TanChatUtils.message(commandSender, Lang.LEADER_CANNOT_QUIT_TOWN);
             return;
         }

@@ -109,6 +109,10 @@ public class TownsAndNations extends JavaPlugin {
      */
     private DatabaseHandler databaseHandler;
 
+    private PlayerDataStorage playerDataStorage;
+
+    private SaveStats saveStats;
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -155,8 +159,6 @@ public class TownsAndNations extends JavaPlugin {
         ConfigUtil.addCustomConfig(this, "upgrades.yml", ConfigTag.UPGRADE);
 
 
-
-
         getLogger().log(Level.INFO, "[TaN] -Loading Configs");
 
         Constants.init(ConfigUtil.getCustomConfig(ConfigTag.MAIN), ConfigUtil.getCustomConfig(ConfigTag.UPGRADE));
@@ -174,9 +176,10 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Loading Local data");
 
+        playerDataStorage = new PlayerDataStorage();
+
         NationDataStorage.getInstance();
         RegionDataStorage.getInstance();
-        PlayerDataStorage.getInstance();
         NewClaimedChunkStorage.getInstance();
         TownDataStorage.getInstance();
         if (Constants.enableNation()) {
@@ -192,22 +195,26 @@ public class TownsAndNations extends JavaPlugin {
         TownDataStorage.getInstance().checkValidWorlds();
         NewClaimedChunkStorage.getInstance().checkValidWorlds();
 
+        this.saveStats = new SaveStats(this);
+
         getLogger().log(Level.INFO, "[TaN] -Loading blocks data");
         TANCustomNBT.setBlocsData();
 
 
         getLogger().log(Level.INFO, "[TaN] -Loading commands");
         enableEventList();
-        getCommand("tan").setExecutor(new PlayerCommandManager());
-        getCommand("tanadmin").setExecutor(new AdminCommandManager());
-        getCommand("tandebug").setExecutor(new DebugCommandManager());
-        getCommand("tanserver").setExecutor(new ServerCommandManager());
+        getCommand("tan").setExecutor(new PlayerCommandManager(playerDataStorage));
+        getCommand("tanadmin").setExecutor(new AdminCommandManager(playerDataStorage));
+        getCommand("tandebug").setExecutor(new DebugCommandManager(saveStats));
+        getCommand("tanserver").setExecutor(new ServerCommandManager(playerDataStorage));
 
         getLogger().log(Level.INFO, "[TaN] -Registering Dependencies");
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             getLogger().log(Level.INFO, "[TaN] -Registering PlaceholderAPI");
-            new PlaceHolderAPI().register();
+            new PlaceHolderAPI(
+                    playerDataStorage
+            ).register();
         }
 
         if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
@@ -219,16 +226,16 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Registering API");
 
-        TanAPI.register(new InternalAPI(CURRENT_VERSION, MINIMUM_SUPPORTING_DYNMAP));
+        TanAPI.register(new InternalAPI(CURRENT_VERSION, MINIMUM_SUPPORTING_DYNMAP, this));
 
         initBStats();
 
         getLogger().log(Level.INFO, "[TaN] -Registering Tasks");
-        SaveStats.startSchedule();
+        saveStats.startSchedule();
 
         DailyTasks dailyTasks = new DailyTasks(Constants.getDailyTaskHour(), Constants.getDailyTaskMinute());
         dailyTasks.scheduleMidnightTask();
-        SecondTask secondTask = new SecondTask();
+        SecondTask secondTask = new SecondTask(playerDataStorage);
         secondTask.startScheduler();
 
         loadedSuccessfully = true;
@@ -293,7 +300,7 @@ public class TownsAndNations extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        if(!loadedSuccessfully){
+        if (!loadedSuccessfully) {
             getLogger().info("[TaN] Not saving data because plugin crashed during loading");
             getLogger().info("[TaN] Plugin disabled");
             return;
@@ -301,7 +308,7 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().info("[TaN] Savings Data");
 
-        SaveStats.saveAll();
+        saveStats.saveAll();
 
         try {
             Thread.sleep(50);
@@ -319,7 +326,7 @@ public class TownsAndNations extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new ChatListener(), this);
         pluginManager.registerEvents(new ChunkListener(), this);
-        pluginManager.registerEvents(new PlayerJoinListener(), this);
+        pluginManager.registerEvents(new PlayerJoinListener(playerDataStorage), this);
         pluginManager.registerEvents(new PlayerEnterChunkListener(), this);
         pluginManager.registerEvents(new ChatScopeListener(), this);
         pluginManager.registerEvents(new MobSpawnListener(), this);
@@ -328,7 +335,7 @@ public class TownsAndNations extends JavaPlugin {
         pluginManager.registerEvents(new LandmarkChestListener(), this);
         pluginManager.registerEvents(new EconomyInitialiser(), this);
         pluginManager.registerEvents(new CommandBlocker(), this);
-        pluginManager.registerEvents(new AttackListener(PlayerDataStorage.getInstance()), this);
+        pluginManager.registerEvents(new AttackListener(playerDataStorage), this);
         pluginManager.registerEvents(new RightClickListener(), this);
     }
 
@@ -439,7 +446,6 @@ public class TownsAndNations extends JavaPlugin {
      */
     public void resetSingletonForTests() {
         RegionDataStorage.getInstance().reset();
-        PlayerDataStorage.getInstance().reset();
         TownDataStorage.getInstance().reset();
         if (Constants.enableNation()) {
             NationDataStorage.getInstance().reset();
@@ -447,6 +453,10 @@ public class TownsAndNations extends JavaPlugin {
         LandmarkStorage.getInstance().reset();
         WarStorage.getInstance().reset();
         NewClaimedChunkStorage.getInstance().reset();
+    }
+
+    public PlayerDataStorage getPlayerDataStorage() {
+        return playerDataStorage;
     }
 }
 

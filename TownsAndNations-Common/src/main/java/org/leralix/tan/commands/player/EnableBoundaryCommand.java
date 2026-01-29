@@ -13,6 +13,12 @@ import java.util.List;
 
 public class EnableBoundaryCommand extends PlayerSubCommand {
 
+    private final PlayerDataStorage playerDataStorage;
+
+    public EnableBoundaryCommand(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @Override
     public String getName() {
         return "borders";
@@ -35,21 +41,20 @@ public class EnableBoundaryCommand extends PlayerSubCommand {
 
     @Override
     public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
-       return List.of();
+        return List.of();
     }
 
     @Override
     public void perform(Player player, String[] args) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = playerDataStorage.get(player).getLang();
 
-        if(args.length != 1){
+        if (args.length != 1) {
             TanChatUtils.message(player, Lang.SEE_BORDER_COMMAND_DESC.get(langType, getSyntax()));
             return;
         }
-        if(BoundaryRegister.isRegistered(player)){
+        if (BoundaryRegister.isRegistered(player)) {
             TanChatUtils.message(player, Lang.DISABLE_BORDER_INFO.get(langType), SoundEnum.MINOR_GOOD);
-        }
-        else {
+        } else {
             TanChatUtils.message(player, Lang.ENABLE_BORDER_INFO.get(langType), SoundEnum.MINOR_GOOD);
         }
         BoundaryRegister.switchPlayer(player);

@@ -1,29 +1,15 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.leralix.lib.SphereLib;
-import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.mockbukkit.mockbukkit.MockBukkit;
-import org.mockbukkit.mockbukkit.ServerMock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class DonateToTerritoryTest {
-
-    private ServerMock server;
-
-    @BeforeEach
-    void setUp() {
-        server = MockBukkit.mock();
-
-        MockBukkit.load(SphereLib.class);
-        MockBukkit.load(TownsAndNations.class);
-    }
+class DonateToTerritoryTest extends BasicTest {
 
     @AfterEach
     public void tearDown() {
@@ -32,7 +18,7 @@ class DonateToTerritoryTest {
 
     @Test
     void nominalCase() {
-        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        var tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
         TownData townData = TownDataStorage.getInstance().newTown("townToDonate", tanPlayer);
         int amount = 1;
         tanPlayer.addToBalance(amount);
@@ -45,7 +31,7 @@ class DonateToTerritoryTest {
 
     @Test
     void notEnoughMoney() {
-        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        var tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
         TownData townData = TownDataStorage.getInstance().newTown("townToDonate", tanPlayer);
 
         int amount = (int) (tanPlayer.getBalance() + 1);
@@ -58,7 +44,7 @@ class DonateToTerritoryTest {
 
     @Test
     void notANumber() {
-        var tanPlayer = PlayerDataStorage.getInstance().get(server.addPlayer());
+        var tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
         TownData townData = TownDataStorage.getInstance().newTown("townToDonate", tanPlayer);
 
         String amount = "notANumber";

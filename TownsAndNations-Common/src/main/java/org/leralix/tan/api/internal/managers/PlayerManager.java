@@ -14,8 +14,8 @@ public class PlayerManager implements TanPlayerManager {
 
     private final PlayerDataStorage playerDataStorage;
 
-    public PlayerManager() {
-        this.playerDataStorage = PlayerDataStorage.getInstance();
+    public PlayerManager(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
     }
 
     @Override
