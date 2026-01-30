@@ -24,7 +24,7 @@ public class NationCreationNews extends Newsletter {
 
     public NationCreationNews(TanNation nationData, TanPlayer player) {
         super();
-        playerID = player.getUUID().toString();
+        playerID = player.getID().toString();
         nationID = nationData.getID();
     }
 

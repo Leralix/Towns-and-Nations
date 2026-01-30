@@ -51,7 +51,7 @@ public interface TanTerritory {
     /**
      * @return the UUID of the owner of the territory
      */
-    UUID getOwnerUUID();
+    UUID getLeaderID();
 
     /**
      * @return the creation date of the territory in Unix timestamp format

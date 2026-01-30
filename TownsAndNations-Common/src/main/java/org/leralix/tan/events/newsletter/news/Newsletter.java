@@ -46,7 +46,7 @@ public abstract class Newsletter {
     }
 
     public void markAsRead(ITanPlayer tanPlayer){
-        markAsRead(UUID.fromString(tanPlayer.getID()));
+        markAsRead(tanPlayer.getID());
     }
 
     public void markAsRead(UUID playerID){

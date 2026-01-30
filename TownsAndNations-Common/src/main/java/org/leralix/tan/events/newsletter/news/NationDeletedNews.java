@@ -23,7 +23,7 @@ public class NationDeletedNews extends Newsletter {
 
     public NationDeletedNews(TanNation nationData, TanPlayer player) {
         super();
-        this.playerID = player.getUUID().toString();
+        this.playerID = player.getID().toString();
         this.nationName = nationData.getName();
     }
 

@@ -77,15 +77,18 @@ public class TeamUtils {
      */
     public static void addPlayerToCorrectTeam(Player player, Player playerToAdd) {
 
-        Scoreboard scoreboard = player.getScoreboard();
-        if(!PlayerDataStorage.getInstance().get(playerToAdd).hasTown() || !PlayerDataStorage.getInstance().get(player).hasTown())
+        PlayerDataStorage playerDataStorage = PlayerDataStorage.getInstance();
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
+        ITanPlayer tanPlayerToAdd = playerDataStorage.get(playerToAdd);
+
+        if(!tanPlayerToAdd.hasTown() || !tanPlayer.hasTown())
             return;
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        TownRelation relation = tanPlayer.getRelationWithPlayer(playerToAdd);
+        TownRelation relation = tanPlayer.getRelationWithPlayer(tanPlayerToAdd);
         if(relation == null)
             return;
 
+        Scoreboard scoreboard = player.getScoreboard();
         Team playerTeam = scoreboard.getTeam(relation.getName(Lang.getServerLang()).toLowerCase());
         if(playerTeam == null){ //Player did not have a town when he logged in. No team was created for him.
             TeamUtils.setIndividualScoreBoard(player);

@@ -27,7 +27,7 @@ public class TownCreatedNews extends Newsletter {
     private final String townID;
 
     public TownCreatedNews(TanTown townData, TanPlayer player) {
-        this(townData.getID(), player.getUUID().toString());
+        this(townData.getID(), player.getID().toString());
     }
 
     public TownCreatedNews(String townID, String playerID) {

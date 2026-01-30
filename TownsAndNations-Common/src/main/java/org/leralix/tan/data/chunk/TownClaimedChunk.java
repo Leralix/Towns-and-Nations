@@ -5,11 +5,10 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.building.property.PropertyData;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
-import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.territory.ChunkUtil;
@@ -34,8 +33,7 @@ public class TownClaimedChunk extends TerritoryChunk {
     }
 
     @Override
-    protected boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+    protected boolean canPlayerDoInternal(Player player, ITanPlayer tanPlayer, ChunkPermissionType permissionType, Location location) {
 
         //Location is in a property, and players own or rent it
         TownData ownerTown = getTown();
@@ -48,7 +46,6 @@ public class TownClaimedChunk extends TerritoryChunk {
                 return false;
             }
         }
-
         return commonTerritoryCanPlayerDo(player, permissionType, tanPlayer);
     }
 

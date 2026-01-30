@@ -11,6 +11,7 @@ import org.leralix.tan.commands.debug.DebugCommandManager;
 import org.leralix.tan.commands.player.PlayerCommandManager;
 import org.leralix.tan.commands.server.ServerCommandManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.tasks.SaveStats;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,7 +33,7 @@ class CommandPermissionConsistencyTest extends BasicTest {
 
         assertPermissionsExist(permissionsSection, "tan.base.commands", new PlayerCommandManager(playerDataStorage));
         assertPermissionsExist(permissionsSection, "tan.admin.commands", new AdminCommandManager(playerDataStorage));
-        assertPermissionsExist(permissionsSection, "tan.admin.commands", new DebugCommandManager());
+        assertPermissionsExist(permissionsSection, "tan.admin.commands", new DebugCommandManager(new SaveStats(townsAndNations)));
         assertPermissionsExist(permissionsSection, "tan.server.commands", new ServerCommandManager(playerDataStorage));
     }
 

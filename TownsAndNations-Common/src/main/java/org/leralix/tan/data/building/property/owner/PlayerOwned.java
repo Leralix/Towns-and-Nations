@@ -13,7 +13,7 @@ public class PlayerOwned extends AbstractOwner{
     private final String playerID;
 
     public PlayerOwned(ITanPlayer player) {
-        this(player.getUUID().toString());
+        this(player.getID().toString());
     }
 
     public PlayerOwned(String playerID) {

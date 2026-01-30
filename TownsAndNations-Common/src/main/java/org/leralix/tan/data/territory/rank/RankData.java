@@ -6,10 +6,7 @@ import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.cosmetic.CustomIcon;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class RankData {
 
@@ -17,7 +14,7 @@ public class RankData {
     private String name;
     private RankEnum rankEnum;
     CustomIcon rankIcon;
-    private final List<String> players;
+    private final List<UUID> players;
     private int salary;
     private final Set<RolePermission> permissions = EnumSet.noneOf(RolePermission.class);
 
@@ -70,29 +67,29 @@ public class RankData {
         return rankIcon.getIcon();
     }
 
-    public void addPlayer(String playerUUID) {
-        this.players.add(playerUUID);
+    public void addPlayer(UUID playerID) {
+        this.players.add(playerID);
     }
 
     public void addPlayer(ITanPlayer tanPlayer) {
         addPlayer(tanPlayer.getID());
     }
 
-    public void removePlayer(String playerUUID) {
-        this.players.remove(playerUUID);
+    public void removePlayer(UUID playerID) {
+        this.players.remove(playerID);
     }
 
     public void removePlayer(ITanPlayer player) {
         removePlayer(player.getID());
     }
 
-    public List<String> getPlayersID() {
+    public List<UUID> getPlayersID() {
         return this.players;
     }
 
     public List<ITanPlayer> getPlayers() {
         List<ITanPlayer> playerList = new ArrayList<>();
-        for (String playerID : this.players) {
+        for (UUID playerID : this.players) {
             playerList.add(PlayerDataStorage.getInstance().get(playerID));
         }
         return playerList;

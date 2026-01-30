@@ -110,7 +110,7 @@ public class InvitePlayerCommand extends PlayerSubCommand {
             return;
         }
 
-        TownInviteDataStorage.addInvitation(invite.getUniqueId().toString(), town.getID());
+        TownInviteDataStorage.addInvitation(invite.getUniqueId(), town.getID());
 
         TanChatUtils.message(player, Lang.INVITATION_SENT_SUCCESS.get(langType, invite.getName()));
 

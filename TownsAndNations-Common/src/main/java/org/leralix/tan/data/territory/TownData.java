@@ -44,13 +44,13 @@ import java.util.*;
 public class TownData extends TerritoryData implements TanTown {
 
     //This is all that should be kept after the transition to the parent class
-    private String UuidLeader;
+    private UUID UuidLeader;
     private String townTag;
     private boolean isRecruiting;
-    private HashSet<String> PlayerJoinRequestSet;
+    private final Set<UUID> PlayerJoinRequestSet;
     private Map<String, PropertyData> propertyDataMap;
     private TeleportationPosition teleportationPosition;
-    private final HashSet<String> townPlayerListId;
+    private final Set<UUID> townPlayerListId;
     private Vector2D capitalLocation;
 
 
@@ -115,7 +115,7 @@ public class TownData extends TerritoryData implements TanTown {
         TownDataStorage.getInstance().save();
     }
 
-    public void removePlayer(String tanPlayerID) {
+    public void removePlayer(UUID tanPlayerID) {
         removePlayer(PlayerDataStorage.getInstance().get(tanPlayerID));
     }
 
@@ -132,14 +132,14 @@ public class TownData extends TerritoryData implements TanTown {
     }
 
     @Override
-    public Collection<String> getPlayerIDList() {
+    public Collection<UUID> getPlayerIDList() {
         return townPlayerListId;
     }
 
     @Override
     public Collection<ITanPlayer> getITanPlayerList() {
         ArrayList<ITanPlayer> res = new ArrayList<>();
-        for (String playerID : getPlayerIDList()) {
+        for (UUID playerID : getPlayerIDList()) {
             res.add(PlayerDataStorage.getInstance().get(playerID));
         }
         return res;
@@ -171,7 +171,7 @@ public class TownData extends TerritoryData implements TanTown {
     }
 
     @Override
-    public String getLeaderID() {
+    public UUID getLeaderID() {
         if (this.UuidLeader == null)
             return townPlayerListId.iterator().next(); //If the leader is null, the first player in the list is the leader
         return this.UuidLeader;
@@ -183,13 +183,13 @@ public class TownData extends TerritoryData implements TanTown {
     }
 
     @Override
-    public void setLeaderID(String leaderID) {
+    public void setLeaderID(UUID leaderID) {
         this.UuidLeader = leaderID;
     }
 
 
     @Override
-    public boolean isLeader(String leaderID) {
+    public boolean isLeader(UUID leaderID) {
         return getLeaderID().equals(leaderID);
     }
 
@@ -211,8 +211,8 @@ public class TownData extends TerritoryData implements TanTown {
 
     @Override
     public void broadCastMessage(FilledLang message) {
-        for (String playerId : townPlayerListId) {
-            Player player = Bukkit.getServer().getPlayer(UUID.fromString(playerId));
+        for (UUID playerId : townPlayerListId) {
+            Player player = Bukkit.getServer().getPlayer(playerId);
             if (player != null && player.isOnline()) {
 
                 TanChatUtils.message(player, message.get(player));
@@ -222,8 +222,8 @@ public class TownData extends TerritoryData implements TanTown {
 
     @Override
     public void broadcastMessageWithSound(FilledLang message, SoundEnum soundEnum, boolean addPrefix) {
-        for (String playerId : townPlayerListId) {
-            Player player = Bukkit.getPlayer(UUID.fromString(playerId));
+        for (UUID playerId : townPlayerListId) {
+            Player player = Bukkit.getPlayer(playerId);
             TanChatUtils.message(player, message, soundEnum);
         }
     }
@@ -248,16 +248,12 @@ public class TownData extends TerritoryData implements TanTown {
         addPlayerJoinRequest(tanPlayer.getID());
     }
 
-    public void addPlayerJoinRequest(String playerUUID) {
-        this.PlayerJoinRequestSet.add(playerUUID);
+    public void addPlayerJoinRequest(UUID playerID) {
+        this.PlayerJoinRequestSet.add(playerID);
     }
 
-    public void removePlayerJoinRequest(String playerUUID) {
-        PlayerJoinRequestSet.remove(playerUUID);
-    }
-
-    public void removePlayerJoinRequest(Player player) {
-        removePlayerJoinRequest(player.getUniqueId().toString());
+    public void removePlayerJoinRequest(UUID playerID) {
+        PlayerJoinRequestSet.remove(playerID);
     }
 
     public boolean isPlayerAlreadyRequested(String playerUUID) {
@@ -268,7 +264,7 @@ public class TownData extends TerritoryData implements TanTown {
         return isPlayerAlreadyRequested(player.getUniqueId().toString());
     }
 
-    public Set<String> getPlayerJoinRequestSet() {
+    public Set<UUID> getPlayerJoinRequestSet() {
         return this.PlayerJoinRequestSet;
     }
 
@@ -295,11 +291,11 @@ public class TownData extends TerritoryData implements TanTown {
             if (playerBalance < tax) {
                 EconomyUtil.removeFromBalance(offlinePlayer, playerBalance);
                 addToBalance(playerBalance);
-                TransactionManager.getInstance().register(new PlayerTaxTransaction(this, tanPlayer.getID(), playerBalance, false));
+                TransactionManager.getInstance().register(new PlayerTaxTransaction(this, tanPlayer.getID().toString(), playerBalance, false));
             } else {
                 EconomyUtil.removeFromBalance(offlinePlayer, tax);
                 addToBalance(tax);
-                TransactionManager.getInstance().register(new PlayerTaxTransaction(this, tanPlayer.getID(), tax, true));
+                TransactionManager.getInstance().register(new PlayerTaxTransaction(this, tanPlayer.getID().toString(), tax, true));
             }
         }
     }
@@ -481,8 +477,7 @@ public class TownData extends TerritoryData implements TanTown {
         removeAllLandmark(); //Remove all Landmark from the deleted town
         removeAllProperty(); //Remove all Property from the deleted town
 
-        List<String> playersToRemove = new ArrayList<>(getPlayerIDList());
-        for (String playerID : playersToRemove) {
+        for (UUID playerID : new ArrayList<>(getPlayerIDList())) {
             removePlayer(playerID);
         }
 

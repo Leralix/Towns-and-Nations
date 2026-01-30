@@ -14,6 +14,7 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * This class is used to register players that are teleporting to a location.
@@ -27,7 +28,7 @@ public class TeleportationRegister {
     /**
      * This HashMap contains the player's ID and the TeleportationData object.
      */
-    private static final HashMap<String, TeleportationData> spawnRegister = new HashMap<>();
+    private static final HashMap<UUID, TeleportationData> spawnRegister = new HashMap<>();
 
     /**
      * This method is used to register a player to teleport to a town.
@@ -43,11 +44,11 @@ public class TeleportationRegister {
         spawnRegister.remove(player.getID());
     }
 
-    public static boolean isPlayerRegistered(String playerID) {
+    public static boolean isPlayerRegistered(UUID playerID) {
         return spawnRegister.containsKey(playerID);
     }
 
-    public static TeleportationData getTeleportationData(String playerID) {
+    public static TeleportationData getTeleportationData(UUID playerID) {
         return spawnRegister.get(playerID);
     }
 
@@ -56,13 +57,13 @@ public class TeleportationRegister {
     }
 
     public static TeleportationData getTeleportationData(Player player) {
-        return getTeleportationData(player.getUniqueId().toString());
+        return getTeleportationData(player.getUniqueId());
     }
 
     public static void teleportToTownSpawn(ITanPlayer tanPlayer, TownData townData) {
         int secondBeforeTeleport = Constants.getTimeBeforeTeleport();
 
-        Player player = Bukkit.getPlayer(tanPlayer.getUUID());
+        Player player = Bukkit.getPlayer(tanPlayer.getID());
         if (player == null)
             return;
 
@@ -97,7 +98,7 @@ public class TeleportationRegister {
 
         TeleportationPosition teleportationPosition = spawnRegister.get(tanPlayer.getID()).getTeleportationPosition();
 
-        Player player = Bukkit.getPlayer(tanPlayer.getUUID());
+        Player player = Bukkit.getPlayer(tanPlayer.getID());
         if (player != null) {
             teleportationPosition.teleport(player);
             TanChatUtils.message(player, Lang.SPAWN_TELEPORTED.get(tanPlayer), SoundEnum.MINOR_GOOD);

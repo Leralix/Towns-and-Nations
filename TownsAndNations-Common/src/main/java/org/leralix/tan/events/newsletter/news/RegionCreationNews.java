@@ -27,7 +27,7 @@ public class RegionCreationNews extends Newsletter {
 
     public RegionCreationNews(TanRegion regionData, TanPlayer player) {
         super();
-        playerID = player.getUUID().toString();
+        playerID = player.getID().toString();
         regionID = regionData.getID();
     }
 

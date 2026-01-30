@@ -42,14 +42,14 @@ public class AssignPlayerToRankMenu extends IteratorGUI {
 
     private List<GuiItem> getAvailablePlayers() {
         List<GuiItem> playersToAdd = new ArrayList<>();
-        for (String otherPlayerUUID : territoryData.getPlayerIDList()) {
+        for (UUID otherPlayerUUID : territoryData.getPlayerIDList()) {
             ITanPlayer otherITanPlayer = PlayerDataStorage.getInstance().get(otherPlayerUUID);
 
             if(Objects.equals(otherITanPlayer.getRankID(territoryData), rankData.getID())){
                 continue;
             }
 
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(otherPlayerUUID));
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(otherPlayerUUID);
             playersToAdd.add(iconManager.get(offlinePlayer)
                     .setName(offlinePlayer.getName())
                     .setAction(action -> {

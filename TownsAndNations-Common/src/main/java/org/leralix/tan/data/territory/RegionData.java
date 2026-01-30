@@ -31,7 +31,7 @@ import java.util.*;
 
 public class RegionData extends TerritoryData implements TanRegion {
 
-    private String leaderID;
+    private UUID leaderID;
     private String capitalID;
     private final Set<String> townsInRegion;
 
@@ -56,7 +56,7 @@ public class RegionData extends TerritoryData implements TanRegion {
     }
 
     @Override
-    public String getLeaderID() {
+    public UUID getLeaderID() {
         if (leaderID == null) leaderID = getCapital().getLeaderID();
         return leaderID;
     }
@@ -67,19 +67,19 @@ public class RegionData extends TerritoryData implements TanRegion {
     }
 
     @Override
-    public void setLeaderID(String newLeaderID) {
+    public void setLeaderID(UUID newLeaderID) {
         this.leaderID = newLeaderID;
     }
 
     @Override
-    public boolean isLeader(String id) {
+    public boolean isLeader(UUID id) {
         return getLeaderID().equals(id);
     }
 
 
     @Override
-    public Collection<String> getPlayerIDList() {
-        ArrayList<String> playerList = new ArrayList<>();
+    public Collection<UUID> getPlayerIDList() {
+        ArrayList<UUID> playerList = new ArrayList<>();
         for (TerritoryData townData : getSubjects()) {
             playerList.addAll(townData.getPlayerIDList());
         }
@@ -89,7 +89,7 @@ public class RegionData extends TerritoryData implements TanRegion {
     @Override
     public Collection<ITanPlayer> getITanPlayerList() {
         ArrayList<ITanPlayer> ITanPlayerList = new ArrayList<>();
-        for (String playerID : getPlayerIDList()) {
+        for (UUID playerID : getPlayerIDList()) {
             ITanPlayerList.add(PlayerDataStorage.getInstance().get(playerID));
         }
         return ITanPlayerList;
@@ -192,7 +192,7 @@ public class RegionData extends TerritoryData implements TanRegion {
         TownData town = (TownData) vassal;
 
         for (RankData rank : getRanks().values()) {
-            for (String playerID : town.getPlayerIDList()) {
+            for (UUID playerID : town.getPlayerIDList()) {
                 rank.removePlayer(playerID);
             }
         }

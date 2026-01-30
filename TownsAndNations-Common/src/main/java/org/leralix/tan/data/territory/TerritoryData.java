@@ -161,11 +161,6 @@ public abstract class TerritoryData implements TanTerritory {
     }
 
     @Override
-    public UUID getOwnerUUID() {
-        return UUID.fromString(getLeaderID());
-    }
-
-    @Override
     public Color getColor() {
         return Color.fromRGB(getChunkColorCode());
     }
@@ -183,7 +178,7 @@ public abstract class TerritoryData implements TanTerritory {
     @Override
     public boolean canPlayerDoAction(TanPlayer player, TerritoryPermission permission) {
         return doesPlayerHavePermission(
-                PlayerDataStorage.getInstance().get(player.getUUID()),
+                PlayerDataStorage.getInstance().get(player.getID()),
                 RolePermission.valueOf(permission.name())
         );
     }
@@ -229,20 +224,20 @@ public abstract class TerritoryData implements TanTerritory {
         return coloredName;
     }
 
-    public abstract String getLeaderID();
+    public abstract UUID getLeaderID();
 
     public abstract ITanPlayer getLeaderData();
 
-    public abstract void setLeaderID(String leaderID);
+    public abstract void setLeaderID(UUID leaderID);
 
     public boolean isLeader(TanPlayer tanPlayer) {
         return isLeader(tanPlayer.getID());
     }
 
-    public abstract boolean isLeader(String playerID);
+    public abstract boolean isLeader(UUID playerID);
 
     public boolean isLeader(Player player) {
-        return isLeader(player.getUniqueId().toString());
+        return isLeader(player.getUniqueId());
     }
 
     public String getDescription() {
@@ -269,7 +264,7 @@ public abstract class TerritoryData implements TanTerritory {
         this.customIcon = icon;
     }
 
-    public abstract Collection<String> getPlayerIDList();
+    public abstract Collection<UUID> getPlayerIDList();
 
     public boolean isPlayerIn(TanPlayer tanPlayer) {
         return isPlayerIn(tanPlayer.getID());
@@ -277,7 +272,7 @@ public abstract class TerritoryData implements TanTerritory {
 
     @Override
     public boolean isPlayerIn(Player player) {
-        return isPlayerIn(player.getUniqueId().toString());
+        return isPlayerIn(player.getUniqueId());
     }
 
     @Override
@@ -285,12 +280,12 @@ public abstract class TerritoryData implements TanTerritory {
         return doesPlayerHavePermission(player, RolePermission.valueOf(rolePermission.name()));
     }
 
-    public boolean isPlayerIn(String playerID) {
+    public boolean isPlayerIn(UUID playerID) {
         return getPlayerIDList().contains(playerID);
     }
 
-    public Collection<String> getOrderedPlayerIDList() {
-        List<String> sortedList = new ArrayList<>();
+    public Collection<UUID> getOrderedPlayerIDList() {
+        List<UUID> sortedList = new ArrayList<>();
         List<ITanPlayer> playersSorted = getITanPlayerList().stream().sorted(Comparator.comparingInt(tanPlayer -> -this.getRank(tanPlayer.getRankID(this)).getLevel())).toList();
 
         for (ITanPlayer tanPlayer : playersSorted) {
@@ -960,17 +955,17 @@ public abstract class TerritoryData implements TanTerritory {
     private void paySalaries() {
         for (RankData rank : getAllRanks()) {
             int rankSalary = rank.getSalary();
-            List<String> playerIdList = rank.getPlayersID();
+            List<UUID> playerIdList = rank.getPlayersID();
             double costOfSalary = (double) playerIdList.size() * rankSalary;
 
             if (rankSalary == 0 || costOfSalary > getBalance()) {
                 continue;
             }
             removeFromBalance(costOfSalary);
-            for (String playerId : playerIdList) {
+            for (UUID playerId : playerIdList) {
                 ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerId);
                 EconomyUtil.addFromBalance(tanPlayer, rankSalary);
-                TransactionManager.getInstance().register(new SalaryTransaction(getID(), playerId, costOfSalary));
+                TransactionManager.getInstance().register(new SalaryTransaction(getID(), playerId.toString(), costOfSalary));
             }
         }
     }
@@ -1183,8 +1178,8 @@ public abstract class TerritoryData implements TanTerritory {
 
     private List<Player> getPlayers() {
         List<Player> playerList = new ArrayList<>();
-        for (String playerID : getPlayerIDList()) {
-            Player player = Bukkit.getPlayer(UUID.fromString(playerID));
+        for (UUID playerID : getPlayerIDList()) {
+            Player player = Bukkit.getPlayer(playerID);
             if (player != null) {
                 playerList.add(player);
             }

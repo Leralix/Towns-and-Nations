@@ -3,19 +3,15 @@ package org.leralix.tan.listeners.chat.events;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.leralix.lib.SphereLib;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.BasicTest;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.mockbukkit.mockbukkit.MockBukkit;
-import org.mockbukkit.mockbukkit.ServerMock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -28,11 +24,7 @@ class ChangeTerritoryDescriptionTest extends BasicTest {
     @Override
     @BeforeEach
     protected void setUp() {
-
-        ServerMock server = MockBukkit.mock();
-
-        MockBukkit.load(SphereLib.class);
-        MockBukkit.load(TownsAndNations.class);
+        super.setUp();
 
         player = server.addPlayer();
         ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);

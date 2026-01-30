@@ -31,7 +31,6 @@ public class PlayerTransactionHistory extends AbstractTransactionHistory {
         this.playerData = playerData;
     }
 
-
     @Override
     protected EntityScope getScope() {
         return EntityScope.PLAYER;
@@ -39,6 +38,6 @@ public class PlayerTransactionHistory extends AbstractTransactionHistory {
 
     @Override
     protected String getID() {
-        return playerData.getID();
+        return playerData.getID().toString();
     }
 }

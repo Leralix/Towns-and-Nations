@@ -17,7 +17,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.constants.Constants;
@@ -33,7 +32,10 @@ import java.util.stream.Collectors;
 
 public class PlayerData implements ITanPlayer {
 
-    private final String UUID;
+    //Removing UUID "string" in favor of id "UUID"
+    @Deprecated(since = "0.17.0", forRemoval = true)
+    private String UUID;
+    private UUID id;
     private String storedName;
     private Double Balance;
     private String TownId;
@@ -46,7 +48,8 @@ public class PlayerData implements ITanPlayer {
     private TimeZoneEnum timeZone;
 
     public PlayerData(Player player) {
-        this.UUID = player.getUniqueId().toString();
+
+        this.id = player.getUniqueId();
         this.storedName = player.getName();
         this.Balance = Constants.getStartingBalance();
         this.TownId = null;
@@ -57,13 +60,16 @@ public class PlayerData implements ITanPlayer {
         this.attackInvolvedIn = new ArrayList<>();
     }
 
-    public String getID() {
-        return UUID;
+    public UUID getID() {
+        if(id == null){
+            id = java.util.UUID.fromString(UUID);
+        }
+        return id;
     }
 
     public String getNameStored() {
         if (storedName == null) {
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(java.util.UUID.fromString(UUID));
+            OfflinePlayer offlinePlayer = getOfflinePlayer();
             storedName = offlinePlayer.getName();
             if (storedName == null) {
                 storedName = "Unknown name";
@@ -107,7 +113,7 @@ public class PlayerData implements ITanPlayer {
         if (townData == null) {
             return false;
         }
-        return getTown().isLeader(this.UUID);
+        return getTown().isLeader(getID());
     }
 
     public RankData getTownRank() {
@@ -141,10 +147,6 @@ public class PlayerData implements ITanPlayer {
         if (!hasRegion())
             return null;
         return getTown().getRegion().orElse(null);
-    }
-
-    public UUID getUUID() {
-        return java.util.UUID.fromString(UUID);
     }
 
     public void joinTown(TownData townData) {
@@ -225,7 +227,7 @@ public class PlayerData implements ITanPlayer {
     }
 
     public Player getPlayer() {
-        return Bukkit.getPlayer(getUUID());
+        return Bukkit.getPlayer(getID());
     }
 
     public List<String> getAttackInvolvedIn() {
@@ -278,11 +280,6 @@ public class PlayerData implements ITanPlayer {
         getAttackInvolvedIn().remove(currentAttacks.getAttackData().getID());
     }
 
-    @Override
-    public TownRelation getRelationWithPlayer(Player otherPlayer) {
-        return getRelationWithPlayer(PlayerDataStorage.getInstance().get(otherPlayer));
-    }
-
     public TownRelation getRelationWithPlayer(ITanPlayer otherPlayer) {
         if (!hasTown() || !otherPlayer.hasTown())
             return TownRelation.NEUTRAL;
@@ -327,7 +324,7 @@ public class PlayerData implements ITanPlayer {
     }
 
     public OfflinePlayer getOfflinePlayer() {
-        return Bukkit.getServer().getOfflinePlayer(getUUID());
+        return Bukkit.getServer().getOfflinePlayer(getID());
     }
 
     public LangType getLang() {
@@ -341,9 +338,9 @@ public class PlayerData implements ITanPlayer {
     }
 
     public void clearAllTownApplications() {
-        TownInviteDataStorage.removeInvitation(UUID); //Remove town invitation
+        TownInviteDataStorage.removeInvitation(getID()); //Remove town invitation
         for (TownData allTown : TownDataStorage.getInstance().getAll().values()) {
-            allTown.removePlayerJoinRequest(UUID); //Remove applications
+            allTown.removePlayerJoinRequest(getID()); //Remove applications
         }
     }
 
@@ -380,6 +377,11 @@ public class PlayerData implements ITanPlayer {
         }
 
         return res;
+    }
+
+    @Override
+    public Player getOnlinePlayer() {
+        return Bukkit.getPlayer(getID());
     }
 
     @Override

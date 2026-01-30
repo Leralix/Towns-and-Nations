@@ -10,10 +10,12 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.api.external.worldguard.WorldGuardManager;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.tan.api.enums.EChunkPermission;
 import org.tan.api.interfaces.*;
@@ -70,36 +72,35 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
     public String getWorldID() {
         return vector2D.getWorldID().toString();
     }
-    
+
     @Override
     public UUID getWorldUUID() {
         return vector2D.getWorldID();
     }
-    
+
     @Override
     public String getworldName() {
         World world = getWorld();
-        if(world == null) return "";
+        if (world == null) return "";
         return world.getName();
     }
 
-    public boolean canPlayerDo(Player player, ChunkPermissionType permissionType, Location location) {
+    public boolean canPlayerDo(Player player, ITanPlayer tanPlayer, ChunkPermissionType permissionType, Location location) {
 
         //If worldguard is enabled and a chunk type is ok, add a worldguard check to the default tan's check.
         var worldGuardManager = WorldGuardManager.getInstance();
         if (worldGuardManager.isEnabled() &&
                 Constants.isWorldGuardEnabledFor(getType()) &&
-                worldGuardManager.isHandledByWorldGuard(location))
-        {
+                worldGuardManager.isHandledByWorldGuard(location)) {
             return worldGuardManager.isActionAllowed(player, location, permissionType) &&
-                    canPlayerDoInternal(player, permissionType, location);
+                    canPlayerDoInternal(player, tanPlayer, permissionType, location);
 
         }
 
-        return canPlayerDoInternal(player, permissionType, location);
+        return canPlayerDoInternal(player, tanPlayer, permissionType, location);
     }
 
-    protected abstract boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location);
+    protected abstract boolean canPlayerDoInternal(Player player, ITanPlayer tanPlayer, ChunkPermissionType permissionType, Location location);
 
     protected abstract void playerCantPerformAction(Player player);
 
@@ -123,12 +124,12 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
 
     @Override
     public boolean canClaim(TanTerritory territory) {
-        if(!(territory instanceof TerritoryData territoryData)){
+        if (!(territory instanceof TerritoryData territoryData)) {
             return false;
         }
         return canTerritoryClaim(territoryData);
     }
-    
+
     @Override
     public void claim(TanTerritory tanTerritory) {
         if (tanTerritory == null) {
@@ -188,11 +189,12 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
 
     @Override
     public boolean canPlayerDoAction(TanPlayer tanPlayer, EChunkPermission permission, Location location) {
-         Player player = Bukkit.getPlayer(tanPlayer.getUUID());
-         if(player == null) {
-             return false; 
-         }
-         return canPlayerDo(player, ChunkPermissionType.valueOf(permission.name()), location);
+        Player player = Bukkit.getPlayer(tanPlayer.getID());
+        if (player == null) {
+            return false;
+        }
+        ITanPlayer iTanPlayer = PlayerDataStorage.getInstance().get(player);
+        return canPlayerDo(player, iTanPlayer, ChunkPermissionType.valueOf(permission.name()), location);
     }
 
     @Override

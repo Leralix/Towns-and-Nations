@@ -26,7 +26,7 @@ public class TownDeletedNews extends Newsletter {
 
     public TownDeletedNews(TanTown town, TanPlayer player) {
         super();
-        this.playerID = player.getUUID().toString();
+        this.playerID = player.getID().toString();
         this.oldTownName = town.getName();
     }
 

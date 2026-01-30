@@ -18,7 +18,6 @@ import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.gameplay.ItemStackSerializer;
 import org.mockbukkit.mockbukkit.MockBukkit;
-import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockito.MockedStatic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -50,8 +49,6 @@ class ChangePropertySalePriceTest extends BasicTest {
                     String arg = invocation.getArgument(0);
                     return new ItemStack(Material.valueOf(arg));
                 });
-
-        ServerMock server = MockBukkit.mock();
 
         MockBukkit.load(SphereLib.class);
         townsAndNations = MockBukkit.load(TownsAndNations.class);

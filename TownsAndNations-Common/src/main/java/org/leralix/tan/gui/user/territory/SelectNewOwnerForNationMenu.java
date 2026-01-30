@@ -37,12 +37,12 @@ public class SelectNewOwnerForNationMenu extends IteratorGUI {
     private List<GuiItem> getCandidates() {
         List<GuiItem> guiItems = new ArrayList<>();
 
-        for (String playerUUID : nationData.getPlayerIDList()) {
+        for (UUID playerUUID : nationData.getPlayerIDList()) {
             if (nationData.isLeader(playerUUID)) {
                 continue;
             }
 
-            OfflinePlayer nationPlayer = Bukkit.getServer().getOfflinePlayer(UUID.fromString(playerUUID));
+            OfflinePlayer nationPlayer = Bukkit.getServer().getOfflinePlayer(playerUUID);
 
             guiItems.add(
                     iconManager.get(nationPlayer)
@@ -58,7 +58,7 @@ public class SelectNewOwnerForNationMenu extends IteratorGUI {
                                         player,
                                         Lang.GUI_CONFIRM_CHANGE_NATION_LEADER.get(nationPlayer.getName()),
                                         () -> {
-                                            nationData.setLeaderID(nationPlayer.getUniqueId().toString());
+                                            nationData.setLeaderID(nationPlayer.getUniqueId());
                                             nationData.broadcastMessageWithSound(Lang.GUI_NATION_SETTINGS_NATION_CHANGE_LEADER_BROADCAST.get(nationPlayer.getName()), GOOD);
                                             TanChatUtils.message(player, Lang.GUI_NATION_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(tanPlayer, nationPlayer.getName()));
 

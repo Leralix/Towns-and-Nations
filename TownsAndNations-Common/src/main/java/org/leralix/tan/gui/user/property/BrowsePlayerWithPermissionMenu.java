@@ -60,8 +60,8 @@ public class BrowsePlayerWithPermissionMenu extends IteratorGUI {
     private List<GuiItem> getAuthorizedPlayers() {
         List<GuiItem> guiItems = new ArrayList<>();
 
-        for (String authorizedPlayerID : permissionManager.get(chunkPermission).getAuthorizedPlayers()) {
-            OfflinePlayer authorizedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(authorizedPlayerID));
+        for (UUID authorizedPlayerID : permissionManager.get(chunkPermission).getAuthorizedPlayers()) {
+            OfflinePlayer authorizedPlayer = Bukkit.getOfflinePlayer(authorizedPlayerID);
 
             guiItems.add(
                     iconManager.get(authorizedPlayer)

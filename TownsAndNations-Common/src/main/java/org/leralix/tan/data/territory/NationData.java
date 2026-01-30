@@ -29,7 +29,7 @@ import java.util.*;
 
 public class NationData extends TerritoryData implements TanNation {
 
-    private String leaderID;
+    private UUID leaderID;
     private String capitalID;
     private final Set<String> regionsInNation;
 
@@ -50,7 +50,7 @@ public class NationData extends TerritoryData implements TanNation {
     }
 
     @Override
-    public String getLeaderID() {
+    public UUID getLeaderID() {
         if (leaderID == null) {
             TerritoryData capital = getCapital();
             if (capital != null) {
@@ -66,18 +66,18 @@ public class NationData extends TerritoryData implements TanNation {
     }
 
     @Override
-    public void setLeaderID(String leaderID) {
+    public void setLeaderID(UUID leaderID) {
         this.leaderID = leaderID;
     }
 
     @Override
-    public boolean isLeader(String playerID) {
+    public boolean isLeader(UUID playerID) {
         return getLeaderID().equals(playerID);
     }
 
     @Override
-    public Collection<String> getPlayerIDList() {
-        ArrayList<String> playerList = new ArrayList<>();
+    public Collection<UUID> getPlayerIDList() {
+        ArrayList<UUID> playerList = new ArrayList<>();
         for (TerritoryData regionData : getSubjects()) {
             if (regionData == null) {
                 continue;
@@ -91,7 +91,7 @@ public class NationData extends TerritoryData implements TanNation {
     @Override
     public Collection<ITanPlayer> getITanPlayerList() {
         ArrayList<ITanPlayer> players = new ArrayList<>();
-        for (String playerID : getPlayerIDList()) {
+        for (UUID playerID : getPlayerIDList()) {
             players.add(PlayerDataStorage.getInstance().get(playerID));
         }
         return players;
@@ -177,7 +177,7 @@ public class NationData extends TerritoryData implements TanNation {
 
         if (vassal instanceof RegionData regionData) {
             for (RankData rank : getRanks().values()) {
-                for (String playerID : regionData.getPlayerIDList()) {
+                for (UUID playerID : regionData.getPlayerIDList()) {
                     rank.removePlayer(playerID);
                 }
             }

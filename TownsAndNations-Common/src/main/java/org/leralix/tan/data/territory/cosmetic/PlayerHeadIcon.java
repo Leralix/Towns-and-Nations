@@ -11,7 +11,7 @@ import org.leralix.tan.storage.stored.PremiumStorage;
 import java.util.UUID;
 
 public class PlayerHeadIcon implements ICustomIcon {
-    private final String playerUUID;
+    private final UUID playerUUID;
 
     public PlayerHeadIcon(ITanPlayer player) {
         if(player == null) {
@@ -21,7 +21,7 @@ public class PlayerHeadIcon implements ICustomIcon {
         }
     }
 
-    public PlayerHeadIcon(String playerID) {
+    public PlayerHeadIcon(UUID playerID) {
         this.playerUUID = playerID;
     }
 
@@ -32,7 +32,7 @@ public class PlayerHeadIcon implements ICustomIcon {
 
         SkullMeta skullMeta = (SkullMeta) icon.getItemMeta();
 
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
 
         if(skullMeta == null || !PremiumStorage.getInstance().isPremium(offlinePlayer.getName())) {
             return icon;

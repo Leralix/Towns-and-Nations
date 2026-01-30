@@ -69,7 +69,7 @@ public class JoinTownCommand extends PlayerSubCommand {
 
             String townID = args[1];
 
-            if (!TownInviteDataStorage.isInvited(player.getUniqueId().toString(), townID)) {
+            if (!TownInviteDataStorage.isInvited(player.getUniqueId(), townID)) {
                 TanChatUtils.message(player, Lang.TOWN_INVITATION_NO_INVITATION.get(lang));
                 return;
             }

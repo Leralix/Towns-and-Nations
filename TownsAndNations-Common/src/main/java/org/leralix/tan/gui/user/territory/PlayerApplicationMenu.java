@@ -43,18 +43,10 @@ public class PlayerApplicationMenu extends IteratorGUI {
 
     private List<GuiItem> getApplicationList() {
         List<GuiItem> guiItems = new ArrayList<>();
-        for (String playerUUID : new ArrayList<>(townData.getPlayerJoinRequestSet())) {
+        for (UUID playerUUID : new ArrayList<>(townData.getPlayerJoinRequestSet())) {
 
-            UUID parsedUuid;
-            try {
-                parsedUuid = UUID.fromString(playerUUID);
-            } catch (IllegalArgumentException e) {
-                townData.removePlayerJoinRequest(playerUUID);
-                continue;
-            }
-
-            OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(parsedUuid);
-            ITanPlayer playerIterateData = PlayerDataStorage.getInstance().getOrNull(playerUUID);
+            OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(playerUUID);
+            ITanPlayer playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
             guiItems.add(iconManager.get(playerIterate)
                     .setClickToAcceptMessage(
                             Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC2,

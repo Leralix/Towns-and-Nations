@@ -18,7 +18,7 @@ public class SpawnListener implements Listener {
     @EventHandler
     public void onPlayerHit(EntityDamageByEntityEvent event) {
         if (event.getEntity() instanceof Player player &&
-                TeleportationRegister.isPlayerRegistered(player.getUniqueId().toString()) &&
+                TeleportationRegister.isPlayerRegistered(player.getUniqueId()) &&
                 Constants.isCancelTeleportOnDamage() &&
                 !TeleportationRegister.getTeleportationData(player).isCancelled()
         ) {
@@ -31,7 +31,7 @@ public class SpawnListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (TeleportationRegister.isPlayerRegistered(player.getUniqueId().toString()) &&
+        if (TeleportationRegister.isPlayerRegistered(player.getUniqueId()) &&
                 !TeleportationRegister.getTeleportationData(player).isCancelled()) {
 
             Location locationFrom = event.getFrom();

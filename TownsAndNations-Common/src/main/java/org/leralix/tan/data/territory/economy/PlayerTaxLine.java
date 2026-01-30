@@ -35,9 +35,9 @@ public class PlayerTaxLine extends ProfitLine {
     public PlayerTaxLine(TownData townData) {
         super(townData);
         double flatTax = townData.getTax();
-        for (String playerID : townData.getPlayerIDList()) {
+        for (UUID playerID : townData.getPlayerIDList()) {
             ITanPlayer othertanPlayer = PlayerDataStorage.getInstance().get(playerID);
-            OfflinePlayer otherPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
+            OfflinePlayer otherPlayer = Bukkit.getOfflinePlayer(playerID);
             if (!othertanPlayer.getTownRank().isPayingTaxes()) {
                 continue;
             }

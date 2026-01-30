@@ -43,7 +43,7 @@ public class PlayerDataStorage extends JsonStorage<ITanPlayer> {
         return register(tanPlayer);
     }
     ITanPlayer register(ITanPlayer p) {
-        put(p.getID(), p);
+        put(p.getID().toString(), p);
         return p;
     }
 

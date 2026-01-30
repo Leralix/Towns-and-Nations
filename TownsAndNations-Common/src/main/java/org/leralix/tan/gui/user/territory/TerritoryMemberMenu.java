@@ -65,8 +65,8 @@ public class TerritoryMemberMenu extends IteratorGUI {
         List<GuiItem> players = new ArrayList<>();
         PlayerDataStorage playerDataStorage = PlayerDataStorage.getInstance();
 
-        for (String playerUUID : territoryData.getOrderedPlayerIDList()) {
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
+        for (UUID playerUUID : territoryData.getOrderedPlayerIDList()) {
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
 
             ITanPlayer playerToIterate = playerDataStorage.get(offlinePlayer);
 

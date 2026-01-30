@@ -541,6 +541,6 @@ public class ChunkListener implements Listener {
             }
         }
 
-        return claimedChunk.canPlayerDo(player, permissionType, location);
+        return claimedChunk.canPlayerDo(player, tanPlayer, permissionType, location);
     }
 }

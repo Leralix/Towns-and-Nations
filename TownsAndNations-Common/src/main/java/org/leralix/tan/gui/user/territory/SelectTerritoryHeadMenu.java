@@ -37,9 +37,9 @@ public class SelectTerritoryHeadMenu extends IteratorGUI {
     private List<GuiItem> getHeads() {
 
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (String playerID : territoryData.getPlayerIDList()) {
+        for (UUID playerID : territoryData.getPlayerIDList()) {
 
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerID);
 
             guiItems.add(
                     iconManager
@@ -47,7 +47,7 @@ public class SelectTerritoryHeadMenu extends IteratorGUI {
                             .setName(offlinePlayer.getName())
                             .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                             .setAction(action -> {
-                                territoryData.setIcon(new PlayerHeadIcon(offlinePlayer.getUniqueId().toString()));
+                                territoryData.setIcon(new PlayerHeadIcon(offlinePlayer.getUniqueId()));
                                 SoundUtil.playSound(player, MINOR_GOOD);
                                 territoryData.openMainMenu(player);
                             })

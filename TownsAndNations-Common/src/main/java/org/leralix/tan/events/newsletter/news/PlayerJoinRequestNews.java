@@ -25,8 +25,8 @@ import java.util.function.Consumer;
 
 public class PlayerJoinRequestNews extends Newsletter {
 
-    String playerID;
-    String townID;
+    private final String playerID;
+    private final String townID;
 
     public PlayerJoinRequestNews(UUID id, long date, String playerID, String townID) {
         super(id, date);
@@ -36,7 +36,7 @@ public class PlayerJoinRequestNews extends Newsletter {
 
     public PlayerJoinRequestNews(TanPlayer player, TanTown townData) {
         super();
-        this.playerID = player.getUUID().toString();
+        this.playerID = player.getID().toString();
         this.townID = townData.getID();
     }
 

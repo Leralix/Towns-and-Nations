@@ -5,12 +5,13 @@ import org.leralix.tan.data.territory.TerritoryData;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class ChunkPermission {
 
     private RelationPermission overallPermission;
     private Set<Integer> specificRankIDPermissions;
-    private final Set<String> specificPlayerPermissions;
+    private final Set<UUID> specificPlayerPermissions;
 
     public ChunkPermission(RelationPermission defaultRelation) {
         this.overallPermission = defaultRelation;
@@ -26,12 +27,12 @@ public class ChunkPermission {
         return this.overallPermission;
     }
 
-    public void addSpecificPlayerPermission(String playerName) {
-        this.specificPlayerPermissions.add(playerName);
+    public void addSpecificPlayerPermission(UUID playerID) {
+        this.specificPlayerPermissions.add(playerID);
     }
 
-    public void removeSpecificPlayerPermission(String playerName) {
-        this.specificPlayerPermissions.remove(playerName);
+    public void removeSpecificPlayerPermission(UUID playerID) {
+        this.specificPlayerPermissions.remove(playerID);
     }
 
     public Set<Integer> getAuthorizedRanks() {
@@ -50,8 +51,8 @@ public class ChunkPermission {
     }
 
 
-    private boolean isPlayerAllowed(String playerName) {
-        return this.specificPlayerPermissions.contains(playerName);
+    private boolean isPlayerAllowed(UUID playerID) {
+        return this.specificPlayerPermissions.contains(playerID);
     }
 
 
@@ -59,7 +60,7 @@ public class ChunkPermission {
         if (this.overallPermission.isAllowed(territoryToCheck, tanPlayer)) {
             return true;
         }
-        if(isPlayerRankAllowed(tanPlayer, territoryToCheck)) {
+        if (isPlayerRankAllowed(tanPlayer, territoryToCheck)) {
             return true;
         }
 
@@ -67,13 +68,13 @@ public class ChunkPermission {
     }
 
     private boolean isPlayerRankAllowed(ITanPlayer tanPlayer, TerritoryData territoryToCheck) {
-        if(!territoryToCheck.isPlayerIn(tanPlayer)){
+        if (!territoryToCheck.isPlayerIn(tanPlayer)) {
             return false;
         }
         return specificRankIDPermissions.contains(tanPlayer.getRankID(territoryToCheck));
     }
 
-    public Set<String> getAuthorizedPlayers() {
+    public Set<UUID> getAuthorizedPlayers() {
         return this.specificPlayerPermissions;
     }
 }

@@ -25,7 +25,7 @@ import java.util.UUID;
 public class NoPlayerData implements ITanPlayer {
 
     @Override
-    public String getID() {
+    public UUID getID() {
         return null;
     }
 
@@ -125,11 +125,6 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public UUID getUUID() {
-        return null;
-    }
-
-    @Override
     public void joinTown(TownData townData) {
         // singleton class, no need to set name
     }
@@ -200,11 +195,6 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public TownRelation getRelationWithPlayer(Player otherPlayer) {
-        return TownRelation.NEUTRAL;
-    }
-
-    @Override
     public Integer getRegionRankID() {
         return 0;
     }
@@ -267,6 +257,11 @@ public class NoPlayerData implements ITanPlayer {
     @Override
     public Set<CurrentAttack> getCurrentAttacks() {
         return Set.of();
+    }
+
+    @Override
+    public Player getOnlinePlayer() {
+        return null;
     }
 
     @Override

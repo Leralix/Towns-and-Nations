@@ -63,8 +63,8 @@ public class OpenPlayerListForChunkPermission extends IteratorGUI {
     private List<GuiItem> getAuthorizedPlayer() {
         List<GuiItem> guiItems = new ArrayList<>();
 
-        for (String authorizedPlayerID : chunkPermission.getChunkPermissions().get(chunkPermissionType).getAuthorizedPlayers()) {
-            OfflinePlayer authorizedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(authorizedPlayerID));
+        for (UUID authorizedPlayerID : chunkPermission.getChunkPermissions().get(chunkPermissionType).getAuthorizedPlayers()) {
+            OfflinePlayer authorizedPlayer = Bukkit.getOfflinePlayer(authorizedPlayerID);
 
             guiItems.add(iconManager.get(authorizedPlayer)
                     .setName(authorizedPlayer.getName())

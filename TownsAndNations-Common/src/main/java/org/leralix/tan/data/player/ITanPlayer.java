@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public interface ITanPlayer extends TanPlayer {
 
-    String getID();
+    UUID getID();
 
     String getNameStored();
 
@@ -53,8 +53,6 @@ public interface ITanPlayer extends TanPlayer {
     boolean hasRegion();
 
     RegionData getRegion();
-
-    UUID getUUID();
 
     void joinTown(TownData townData);
 
@@ -88,8 +86,6 @@ public interface ITanPlayer extends TanPlayer {
     void removeWar(@NotNull CurrentAttack currentAttacks);
 
     TownRelation getRelationWithPlayer(ITanPlayer otherPlayer);
-
-    TownRelation getRelationWithPlayer(Player otherPlayer);
 
     Integer getRegionRankID();
 
@@ -129,4 +125,6 @@ public interface ITanPlayer extends TanPlayer {
     void setTimeZone(TimeZoneEnum timeZone);
 
     Set<CurrentAttack> getCurrentAttacks();
+
+    Player getOnlinePlayer();
 }

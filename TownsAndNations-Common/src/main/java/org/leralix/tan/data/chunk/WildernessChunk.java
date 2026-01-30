@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
@@ -29,7 +30,7 @@ public class WildernessChunk extends ClaimedChunk {
     }
 
     @Override
-    protected boolean canPlayerDoInternal(Player player, ChunkPermissionType permissionType, Location location) {
+    protected boolean canPlayerDoInternal(Player player, ITanPlayer tanPlayer, ChunkPermissionType permissionType, Location location) {
 
         World world = location.getWorld();
 

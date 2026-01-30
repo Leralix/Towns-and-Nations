@@ -73,7 +73,7 @@ public class ApplyToTownMenu extends IteratorGUI {
                             if (!specificTownData.isPlayerAlreadyRequested(player)) {
                                 return;
                             }
-                            specificTownData.removePlayerJoinRequest(player);
+                            specificTownData.removePlayerJoinRequest(player.getUniqueId());
                             TanChatUtils.message(player, Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(tanPlayer));
                             open();
                         }

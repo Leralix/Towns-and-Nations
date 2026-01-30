@@ -13,7 +13,6 @@ import org.leralix.tan.utils.text.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class AdminBrowsePlayers extends IteratorGUI {
     
@@ -32,7 +31,7 @@ public class AdminBrowsePlayers extends IteratorGUI {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for (ITanPlayer tanPlayer : PlayerDataStorage.getInstance().getAll().values()) {
 
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(tanPlayer.getID()));
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(tanPlayer.getID());
 
             guiItems.add(iconManager.get(offlinePlayer)
                     .setName(offlinePlayer.getName())

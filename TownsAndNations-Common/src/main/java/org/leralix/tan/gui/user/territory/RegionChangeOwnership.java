@@ -38,10 +38,10 @@ public class RegionChangeOwnership extends IteratorGUI {
 
     private List<GuiItem> getCandidates() {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (String playerID : regionData.getPlayerIDList()) {
+        for (UUID playerID : regionData.getPlayerIDList()) {
 
             ITanPlayer iterateTanPlayer = PlayerDataStorage.getInstance().get(playerID);
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerID);
             guiItems.add(
                     iconManager.get(offlinePlayer)
                             .setName(offlinePlayer.getName())

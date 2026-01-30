@@ -27,7 +27,7 @@ public class RegionDeletedNews extends Newsletter {
 
     public RegionDeletedNews(TanRegion regionData, TanPlayer player) {
         super();
-        this.playerID = player.getUUID().toString();
+        this.playerID = player.getID().toString();
         this.regionName = regionData.getName();
     }
 

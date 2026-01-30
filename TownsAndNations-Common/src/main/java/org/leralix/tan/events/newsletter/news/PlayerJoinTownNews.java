@@ -30,7 +30,7 @@ public class PlayerJoinTownNews extends Newsletter {
 
     public PlayerJoinTownNews(TanPlayer tanPlayer, TanTown townData) {
         super();
-        playerID = tanPlayer.getUUID().toString();
+        playerID = tanPlayer.getID().toString();
         townID = townData.getID();
     }
 
