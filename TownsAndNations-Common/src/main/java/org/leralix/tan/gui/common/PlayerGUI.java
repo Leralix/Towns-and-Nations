@@ -1,4 +1,4 @@
-package org.leralix.tan.gui.legacy;
+package org.leralix.tan.gui.common;
 
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.building.landmark.Landmark;

@@ -8,7 +8,7 @@ import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TownCreatedInternalEvent;
-import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.common.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.storage.stored.TownDataStorage;
