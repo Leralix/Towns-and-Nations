@@ -40,7 +40,7 @@ public class AdminManageWarMenu extends BasicGui {
                 IconKey.WAR_DEFENDER_SIDE_ICON
         ));
         gui.setItem(2, 7, getAuthorizeAttacksButton());
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> returnGui.open()));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> returnGui.open(), langType));
         gui.open(player);
     }
 

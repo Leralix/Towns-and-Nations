@@ -43,7 +43,7 @@ public class PlayerPropertyManager extends PropertyMenus {
         gui.setItem(2, 8, getDeleteButton());
 
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, onClose));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, onClose, langType));
 
         gui.open(player);
     }

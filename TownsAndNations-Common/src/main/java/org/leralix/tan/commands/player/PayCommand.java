@@ -111,7 +111,7 @@ public class PayCommand extends PlayerSubCommand {
                 )
         );
         TanChatUtils.message(player, Lang.PAY_CONFIRMED_SENDER.get(langType, Integer.toString(amount), receiver.getName()));
-        TanChatUtils.message(receiver, Lang.PAY_CONFIRMED_RECEIVER.get(receiver, Integer.toString(amount), player.getName()));
+        TanChatUtils.message(receiver, Lang.PAY_CONFIRMED_RECEIVER.get(playerDataStorage.get(receiver).getLang(), Integer.toString(amount), player.getName()));
     }
 
 

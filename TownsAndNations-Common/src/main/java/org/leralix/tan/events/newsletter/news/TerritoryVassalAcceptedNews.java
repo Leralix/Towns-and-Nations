@@ -3,6 +3,7 @@ package org.leralix.tan.events.newsletter.news;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -82,7 +83,7 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(regionID);
         if (proposingTerritory == null)
             return;
@@ -91,7 +92,7 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
             return;
 
         TanChatUtils.message(player, Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER.get(
-                player,
+                tanPlayer,
                 proposingTerritory.getCustomColoredName().toLegacyText(),
                 receivingTerritory.getCustomColoredName().toLegacyText()),
                 SoundEnum.MINOR_GOOD);
@@ -103,10 +104,5 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
 
     public String getReceivingTerritoryID() {
         return townID;
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
     }
 }

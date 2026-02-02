@@ -74,7 +74,7 @@ public class BuildingMenu extends IteratorGUI {
                         TanChatUtils.message(player, Lang.GUI_PROPERTY_CAP_FULL.get(langType, Integer.toString(nbProperties), Integer.toString(maxNbProperties)), SoundEnum.NOT_ALLOWED);
                         return;
                     }
-                    RightClickListener.register(player, new CreateTerritoryPropertyEvent(player, townData));
+                    RightClickListener.register(player, langType, new CreateTerritoryPropertyEvent(player, tanPlayer, townData));
                 })
                 .asGuiItem(player, langType);
     }
@@ -92,7 +92,7 @@ public class BuildingMenu extends IteratorGUI {
                     }
 
                     TanChatUtils.message(player, Lang.RIGHT_CLICK_TO_PLACE_FORT.get(langType));
-                    RightClickListener.register(player, new CreateFortEvent(territoryData));
+                    RightClickListener.register(player, langType, new CreateFortEvent(territoryData));
                     player.closeInventory();
                 })
                 .asGuiItem(player, langType);

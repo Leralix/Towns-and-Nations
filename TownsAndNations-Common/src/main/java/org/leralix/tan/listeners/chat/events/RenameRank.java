@@ -3,6 +3,7 @@ package org.leralix.tan.listeners.chat.events;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.rank.RankData;
 import org.leralix.tan.gui.user.ranks.RankManagerMenu;
@@ -23,7 +24,7 @@ public class RenameRank extends ChatListenerEvent {
     }
 
     @Override
-    public boolean execute(Player player, String message) {
+    public boolean execute(Player player, ITanPlayer playerData, String message) {
         String rankName = message == null ? "" : message.trim();
         int maxSize = Constants.getRankNameSize();
 
@@ -32,7 +33,7 @@ public class RenameRank extends ChatListenerEvent {
         }
 
         if (rankName.length() > maxSize) {
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
+            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(playerData, Integer.toString(maxSize)));
             return false;
         }
 

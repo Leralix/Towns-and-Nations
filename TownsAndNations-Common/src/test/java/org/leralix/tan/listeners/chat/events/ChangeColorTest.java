@@ -1,46 +1,27 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.leralix.lib.SphereLib;
-import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.BasicTest;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.mockbukkit.mockbukkit.MockBukkit;
-import org.mockbukkit.mockbukkit.ServerMock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ChangeColorTest {
+class ChangeColorTest extends BasicTest {
 
-
-    private ServerMock server;
-
-    @BeforeEach
-    void setUp() {
-        server = MockBukkit.mock();
-
-        MockBukkit.load(SphereLib.class);
-        MockBukkit.load(TownsAndNations.class);
-    }
-
-    @AfterEach
-    public void tearDown()
-    {
-        MockBukkit.unmock();
-    }
 
     @Test
     void nominalCase() {
 
         Player player = server.addPlayer();
+        ITanPlayer playerData = playerDataStorage.get(player);
         TownData townData = TownDataStorage.getInstance().newTown("town 1");
 
         ChangeColor changeColor = new ChangeColor(townData, null);
 
-        changeColor.execute(player, "FF00FF");
+        changeColor.execute(player, playerData, "FF00FF");
 
         assertEquals(0xFF00FF, townData.getChunkColorCode());
     }

@@ -395,10 +395,10 @@ public class TownData extends TerritoryData implements TanTown {
         return "P" + (lastID + 1);
     }
 
-    public PropertyData registerNewProperty(Vector3D p1, Vector3D p2, TerritoryData owner) {
+    public PropertyData registerNewProperty(Vector3D p1, Vector3D p2) {
         String propertyID = nextPropertyID();
         String id = this.getID() + "_" + propertyID;
-        PropertyData newProperty = new PropertyData(id, p1, p2, owner);
+        PropertyData newProperty = new PropertyData(id, p1, p2, this);
         this.propertyDataMap.put(propertyID, newProperty);
         return newProperty;
     }
@@ -454,7 +454,7 @@ public class TownData extends TerritoryData implements TanTown {
 
         broadcastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()), SoundEnum.BAD);
         Player player = kickedPlayer.getPlayer();
-        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get(player), SoundEnum.BAD);
+        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get(kickedITanPlayer.getLang()), SoundEnum.BAD);
     }
 
     public boolean haveNoLeader() {

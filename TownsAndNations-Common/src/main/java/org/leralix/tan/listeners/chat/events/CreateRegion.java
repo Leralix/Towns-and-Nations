@@ -9,7 +9,6 @@ import org.leralix.tan.events.events.RegionCreatedInternalEvent;
 import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
@@ -23,22 +22,20 @@ public class CreateRegion extends ChatListenerEvent {
     public CreateRegion(int cost) {
         super();
         this.cost = cost;
-
     }
 
     @Override
-    public boolean execute(Player player, String message) {
+    public boolean execute(Player player, ITanPlayer playerData, String message) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        TownData town = TownDataStorage.getInstance().get(tanPlayer);
+        TownData town = TownDataStorage.getInstance().get(playerData);
 
         if(!town.isLeader(player)){
-            TanChatUtils.message(player, Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get(tanPlayer));
+            TanChatUtils.message(player, Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get(playerData));
             return false;
         }
 
         if(town.getBalance() < cost){
-            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, town.getColoredName(), Double.toString(cost - town.getBalance())));
+            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(playerData, town.getColoredName(), Double.toString(cost - town.getBalance())));
             return false;
         }
 
@@ -50,24 +47,23 @@ public class CreateRegion extends ChatListenerEvent {
 
         int maxSize = Constants.getRegionMaxNameSize();
         if(regionName.length() > maxSize){
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(tanPlayer, Integer.toString(maxSize)));
+            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(playerData, Integer.toString(maxSize)));
             return false;
         }
 
         if(RegionDataStorage.getInstance().isNameUsed(regionName)){
-            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(tanPlayer));
+            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(playerData));
             return false;
         }
 
-        createRegion(player, regionName, town);
+        createRegion(player, playerData, regionName, town);
         return true;
     }
 
-    private void createRegion(Player player, String regionName, TownData capital) {
+    private void createRegion(Player player, ITanPlayer playerData, String regionName, TownData capital) {
         capital.removeFromBalance(cost);
         RegionData newRegion = RegionDataStorage.getInstance().createNewRegion(regionName, capital);
 
-        ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
         EventManager.getInstance().callEvent(new RegionCreatedInternalEvent(newRegion, playerData));
 
         openGui(p -> PlayerGUI.dispatchPlayerRegion(player), player);

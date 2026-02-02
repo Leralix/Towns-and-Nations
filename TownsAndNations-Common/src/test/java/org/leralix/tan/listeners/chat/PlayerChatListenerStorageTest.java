@@ -3,11 +3,12 @@ package org.leralix.tan.listeners.chat;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.lang.LangType;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -18,7 +19,7 @@ class PlayerChatListenerStorageTest extends BasicTest {
     void registerPlayer(){
 
         Player player = server.addPlayer();
-        PlayerChatListenerStorage.register(player, null);
+        PlayerChatListenerStorage.register(player, langType,null);
 
         assertTrue(PlayerChatListenerStorage.contains(player));
     }
@@ -27,11 +28,12 @@ class PlayerChatListenerStorageTest extends BasicTest {
     void messageSuccess(){
 
         Player player = server.addPlayer();
+        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
         ChatListenerEvent mockedChatListenerEvent = mock(ChatListenerEvent.class);
-        when(mockedChatListenerEvent.execute(any(Player.class), anyString())).thenReturn(true);
-        PlayerChatListenerStorage.register(player, mockedChatListenerEvent);
+        when(mockedChatListenerEvent.execute(any(Player.class), eq(tanPlayer), anyString())).thenReturn(true);
+        PlayerChatListenerStorage.register(player, langType, mockedChatListenerEvent);
 
-        PlayerChatListenerStorage.execute(player, "");
+        PlayerChatListenerStorage.execute(player, tanPlayer, "");
 
         assertFalse(PlayerChatListenerStorage.contains(player));
     }
@@ -43,11 +45,13 @@ class PlayerChatListenerStorageTest extends BasicTest {
     void messageError(){
 
         Player player = server.addPlayer();
-        ChatListenerEvent mockedChatListenerEvent = mock(ChatListenerEvent.class);
-        when(mockedChatListenerEvent.execute(any(Player.class), anyString())).thenReturn(false);
-        PlayerChatListenerStorage.register(player, mockedChatListenerEvent);
+        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
 
-        PlayerChatListenerStorage.execute(player, "");
+        ChatListenerEvent mockedChatListenerEvent = mock(ChatListenerEvent.class);
+        when(mockedChatListenerEvent.execute(any(Player.class), eq(tanPlayer), anyString())).thenReturn(false);
+        PlayerChatListenerStorage.register(player, LangType.ENGLISH, mockedChatListenerEvent);
+
+        PlayerChatListenerStorage.execute(player, tanPlayer, "");
 
         assertTrue(PlayerChatListenerStorage.contains(player));
     }

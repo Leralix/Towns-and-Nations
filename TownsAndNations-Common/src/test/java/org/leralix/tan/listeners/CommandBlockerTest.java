@@ -12,13 +12,10 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 class CommandBlockerTest extends BasicTest {
 
-
-
     @Test
-    void test_relationForbidCommandWithPlayer(){
+    void test_relationForbidCommandWithPlayer() {
         Player sender = server.addPlayer("sender");
         Player target = server.addPlayer("target");
 
@@ -30,7 +27,9 @@ class CommandBlockerTest extends BasicTest {
 
         town1.setRelation(town2, TownRelation.EMBARGO);
 
-        assertTrue(CommandBlocker.relationForbidCommandWithPlayer(sender, "/tpa target", Collections.singleton("/tpa %PLAYER%")));
+        CommandBlocker commandBlocker = new CommandBlocker(townsAndNations.getPlayerDataStorage());
+        assertTrue(commandBlocker.relationForbidCommandWithPlayer(sender, "/tpa target",
+                Collections.singleton("/tpa %PLAYER%")));
     }
 
 }

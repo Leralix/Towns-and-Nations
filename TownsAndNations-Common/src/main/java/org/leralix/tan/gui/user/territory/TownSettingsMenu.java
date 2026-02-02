@@ -66,7 +66,7 @@ public class TownSettingsMenu extends SettingsMenus {
         gui.setItem(2, 7, getQuitButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> new TownMenu(player, townData)));
+        gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> new TownMenu(player, townData), langType));
 
         gui.open(player);
     }
@@ -99,7 +99,7 @@ public class TownSettingsMenu extends SettingsMenus {
                         return;
                     }
 
-                    RightClickListener.register(player, new ChangeCapital(townData, p -> open()));
+                    RightClickListener.register(player, langType, new ChangeCapital(townData, p -> open()));
                 })
                 .asGuiItem(player, langType);
 
@@ -113,7 +113,7 @@ public class TownSettingsMenu extends SettingsMenus {
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
                 .setAction(action -> {
                     TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
-                    PlayerChatListenerStorage.register(player, new ChangeTownTag(townData, p -> open()));
+                    PlayerChatListenerStorage.register(player, langType, new ChangeTownTag(townData, p -> open()));
                 })
                 .asGuiItem(player, langType);
     }

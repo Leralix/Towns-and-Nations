@@ -30,7 +30,7 @@ public class NoTownMenu extends BasicGui {
 
         gui.setItem(2, 3, getCreateTownButton());
         gui.setItem(2, 7, getBrowseTownsButton());
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(player), langType));
 
         gui.open(player);
     }
@@ -55,7 +55,7 @@ public class NoTownMenu extends BasicGui {
                     }
                     else {
                         TanChatUtils.message(player, Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get(tanPlayer));
-                        PlayerChatListenerStorage.register(player, new CreateTown(townPrice));
+                        PlayerChatListenerStorage.register(player, langType, new CreateTown(townPrice));
                     }
                 })
                 .asGuiItem(player, langType);

@@ -73,8 +73,8 @@ public class PlayerPropertiesMenu extends IteratorGUI {
                         return;
                     }
 
-                    TanChatUtils.message(player, Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get(tanPlayer));
-                    RightClickListener.register(player, new CreatePlayerPropertyEvent(player));
+                    TanChatUtils.message(player, Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get(langType));
+                    RightClickListener.register(player, langType, new CreatePlayerPropertyEvent(player, tanPlayer, tanPlayer.getTown()));
                     player.closeInventory();
                 })
                 .asGuiItem(player, langType);

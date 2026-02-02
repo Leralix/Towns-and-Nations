@@ -41,7 +41,7 @@ public class LandmarkOwnedMenu extends BasicGui {
         gui.setItem(2, 4, getCollectButton());
         gui.setItem(2, 6, getAbandonButton());
 
-        gui.setItem(3,1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory, langType));
 
         GuiItem panelIcon = GuiUtil.getUnnamedItem(Material.GRAY_STAINED_GLASS_PANE);
         gui.getFiller().fillTop(panelIcon);

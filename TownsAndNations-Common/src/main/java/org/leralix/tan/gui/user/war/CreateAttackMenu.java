@@ -53,7 +53,7 @@ public class CreateAttackMenu extends BasicGui {
         gui.setItem(2, 4, getAddTimeButton());
 
         gui.setItem(2, 8, getConfirmButton());
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, e -> returnGui.open()));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, e -> returnGui.open(), langType));
 
         gui.open(player);
     }

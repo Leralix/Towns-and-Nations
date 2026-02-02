@@ -38,7 +38,7 @@ public class NewsletterMenu extends IteratorGUI {
     }
 
     private List<GuiItem> getNewsletters() {
-        return NewsletterStorage.getInstance().getNewsletterForPlayer(player, scope, p -> open());
+        return NewsletterStorage.getInstance().getNewsletterForPlayer(player, scope, p -> open(), langType);
     }
 
     private GuiItem getMarkAllAsReadButton() {

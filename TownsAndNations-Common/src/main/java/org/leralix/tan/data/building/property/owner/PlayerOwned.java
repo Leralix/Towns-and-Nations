@@ -3,32 +3,31 @@ package org.leralix.tan.data.building.property.owner;
 import org.bukkit.Bukkit;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.tan.api.interfaces.TanPlayer;
 
 import java.util.UUID;
 
 public class PlayerOwned extends AbstractOwner{
 
-    private final String playerID;
+    private final UUID playerID;
 
     public PlayerOwned(ITanPlayer player) {
-        this(player.getID().toString());
+        this(player.getID());
     }
 
-    public PlayerOwned(String playerID) {
+    public PlayerOwned(UUID playerID) {
         super(OwnerType.PLAYER);
         this.playerID = playerID;
     }
 
     @Override
     public String getID() {
-        return playerID;
+        return playerID.toString();
     }
 
     @Override
     public String getName() {
-        return Bukkit.getOfflinePlayer(UUID.fromString(playerID)).getName();
+        return Bukkit.getOfflinePlayer(playerID).getName();
     }
 
     @Override
@@ -43,8 +42,6 @@ public class PlayerOwned extends AbstractOwner{
 
     @Override
     public void addToBalance(double amount) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerID);
-        EconomyUtil.addFromBalance(tanPlayer, amount);
+        EconomyUtil.addFromBalance(Bukkit.getPlayer(playerID), amount);
     }
-
 }

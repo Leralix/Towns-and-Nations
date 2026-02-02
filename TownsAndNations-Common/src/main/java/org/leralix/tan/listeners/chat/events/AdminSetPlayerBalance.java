@@ -21,10 +21,10 @@ public class AdminSetPlayerBalance extends ChatListenerEvent {
 
 
     @Override
-    protected boolean execute(Player player, String message) {
+    protected boolean execute(Player player, ITanPlayer playerData, String message) {
         Double amount = parseStringToDouble(message);
         if (amount == null) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(player));
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(playerData));
             return false;
         }
         EconomyUtil.setBalance(targetPlayer, amount);

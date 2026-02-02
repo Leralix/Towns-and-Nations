@@ -12,7 +12,6 @@ import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.territory.PlayerApplicationMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -58,17 +57,16 @@ public class PlayerJoinRequestNews extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
-        if (tanPlayer == null)
-            return;
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
+        OfflinePlayer playerJoinRequest = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
+
         TownData townData = TownDataStorage.getInstance().get(townID);
         if (townData == null)
             return;
         TanChatUtils.message(player,
                 Lang.PLAYER_APPLICATION_NEWSLETTER.get(
-                        player,
-                        tanPlayer.getNameStored(),
+                        tanPlayer,
+                        playerJoinRequest.getName(),
                         townData.getColoredName()),
                 SoundEnum.MINOR_GOOD);
     }
@@ -151,10 +149,5 @@ public class PlayerJoinRequestNews extends Newsletter {
             return false;
         }
         return townData.isPlayerIn(player);
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
     }
 }

@@ -84,7 +84,7 @@ public class UnclaimCommand extends PlayerSubCommand {
             return;
         }
         ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
-        claimedChunk.unclaimChunk(player);
+        claimedChunk.unclaimChunk(player, langType);
         if (args.length == 4) {
             var mapCommand = new MapCommand(TownsAndNations.getPlugin().getPlayerDataStorage());
             mapCommand.openMap(player, new MapSettings(args[0], args[1]));

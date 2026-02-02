@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class ChangeTerritoryNameTest extends BasicTest {
 
     private static Player player;
+    private static ITanPlayer tanPlayer;
     private static TownData townData;
 
     @Override
@@ -22,7 +23,7 @@ class ChangeTerritoryNameTest extends BasicTest {
         super.setUp();
 
         player = server.addPlayer();
-        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
+        tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
         townData = TownDataStorage.getInstance().newTown("town 1", tanPlayer);
     }
 
@@ -33,7 +34,7 @@ class ChangeTerritoryNameTest extends BasicTest {
         String newName = "NewName";
 
         ChangeTerritoryName changeTerritoryName = new ChangeTerritoryName(townData, 25, null);
-        changeTerritoryName.execute(player, newName);
+        changeTerritoryName.execute(player, tanPlayer, newName);
 
         assertEquals(newName, townData.getName());
         assertEquals(25, townData.getBalance());
@@ -45,7 +46,7 @@ class ChangeTerritoryNameTest extends BasicTest {
         String newName = "NewName";
 
         ChangeTerritoryName changeTerritoryName = new ChangeTerritoryName(townData, 1, null);
-        changeTerritoryName.execute(player, newName);
+        changeTerritoryName.execute(player, tanPlayer, newName);
 
         assertNotEquals(newName, townData.getName());
     }

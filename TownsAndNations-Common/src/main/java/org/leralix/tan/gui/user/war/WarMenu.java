@@ -48,7 +48,7 @@ public class WarMenu extends AbstractWarMenu {
         gui.setItem(2, 7, getEnemyWargoalsIcon());
         gui.setItem(2, 8, getSurrenderButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new WarsMenu(player, territoryData)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new WarsMenu(player, territoryData), langType));
         gui.open(player);
     }
 
@@ -58,7 +58,7 @@ public class WarMenu extends AbstractWarMenu {
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_RENAME)
                 .setAction(action -> {
                     TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(tanPlayer));
-                    PlayerChatListenerStorage.register(player, new ChangeWarName(war, p -> open()));
+                    PlayerChatListenerStorage.register(player, langType, new ChangeWarName(war, p -> open()));
                 })
                 .asGuiItem(player, langType);
     }

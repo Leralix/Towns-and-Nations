@@ -26,10 +26,10 @@ public class PlayerEnterChunkListener implements Listener {
     private final NewClaimedChunkStorage newClaimedChunkStorage;
     private final PlayerDataStorage playerDataStorage;
 
-    public PlayerEnterChunkListener() {
-        displayTerritoryNamewithColor = Constants.displayTerritoryColor();
-        newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
-        playerDataStorage = PlayerDataStorage.getInstance();
+    public PlayerEnterChunkListener(PlayerDataStorage playerDataStorage) {
+        this.displayTerritoryNamewithColor = Constants.displayTerritoryColor();
+        this.newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
+        this.playerDataStorage = playerDataStorage;
     }
 
     @EventHandler
@@ -44,7 +44,7 @@ public class PlayerEnterChunkListener implements Listener {
 
         Player player = event.getPlayer();
 
-        //If both chunks are not claimed, no need to display anything
+        // If both chunks are not claimed, no need to display anything
         if (!newClaimedChunkStorage.isChunkClaimed(currentChunk) &&
                 !newClaimedChunkStorage.isChunkClaimed(nextChunk)) {
 
@@ -54,28 +54,28 @@ public class PlayerEnterChunkListener implements Listener {
             return;
         }
 
-
         ClaimedChunk currentClaimedChunk = newClaimedChunkStorage.get(currentChunk);
         ClaimedChunk nextClaimedChunk = newClaimedChunkStorage.get(nextChunk);
 
-        //Both chunks have the same owner, no need to change
+        // Both chunks have the same owner, no need to change
         if (sameOwner(currentClaimedChunk, nextClaimedChunk)) {
             return;
         }
-        //If territory denies access to players with a certain relation.
+        // If territory denies access to players with a certain relation.
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
+
         if (nextClaimedChunk instanceof TerritoryChunk territoryChunk) {
-            ITanPlayer tanPlayer = playerDataStorage.get(player);
             TownRelation worstRelation = territoryChunk.getOwnerInternal().getWorstRelationWith(tanPlayer);
             if (!Constants.getRelationConstants(worstRelation).canAccessTerritory()) {
                 event.setCancelled(true);
                 LangType lang = tanPlayer.getLang();
-                TanChatUtils.message(player, Lang.PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION.get(lang, territoryChunk.getOwner().getColoredName(), worstRelation.getColoredName(lang)));
+                TanChatUtils.message(player, Lang.PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION.get(lang,
+                        territoryChunk.getOwner().getColoredName(), worstRelation.getColoredName(lang)));
                 return;
             }
         }
 
-        nextClaimedChunk.playerEnterClaimedArea(player, displayTerritoryNamewithColor);
-
+        nextClaimedChunk.playerEnterClaimedArea(player, tanPlayer, displayTerritoryNamewithColor);
 
         if (nextClaimedChunk instanceof WildernessChunk &&
                 PlayerAutoClaimStorage.containsPlayer(event.getPlayer())) {
@@ -83,27 +83,28 @@ public class PlayerEnterChunkListener implements Listener {
         }
     }
 
-    private void autoClaimChunk(final @NotNull PlayerMoveEvent e, final @NotNull Chunk nextChunk, final @NotNull Player player) {
+    private void autoClaimChunk(final @NotNull PlayerMoveEvent e, final @NotNull Chunk nextChunk,
+            final @NotNull Player player) {
         ClaimType chunkType = PlayerAutoClaimStorage.getChunkType(e.getPlayer());
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer playerStat = playerDataStorage.get(player.getUniqueId().toString());
 
         if (chunkType == ClaimType.TOWN) {
             if (!playerStat.hasTown()) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(player));
+                TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(playerStat));
                 return;
             }
             playerStat.getTown().claimChunk(player, nextChunk);
         }
         if (chunkType == ClaimType.REGION) {
             if (!playerStat.hasRegion()) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(player));
+                TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(playerStat));
                 return;
             }
             playerStat.getRegion().claimChunk(player, nextChunk);
         }
         if (chunkType == ClaimType.NATION) {
             if (!playerStat.hasNation()) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_NATION.get(player));
+                TanChatUtils.message(player, Lang.PLAYER_NO_NATION.get(playerStat));
                 return;
             }
             playerStat.getNation().claimChunk(player, nextChunk);
@@ -111,27 +112,31 @@ public class PlayerEnterChunkListener implements Listener {
     }
 
     /**
-     * Defines what it means for two claimed chunks to be considered owned by the same owner.
+     * Defines what it means for two claimed chunks to be considered owned by the
+     * same owner.
      * <ul>
-     *     <li>Both chunks are the same</li>
-     *     <li>Both chunks are wilderness chunks</li>
-     *     <li>Both chunks are territory chunks owned by the same territory</li>
+     * <li>Both chunks are the same</li>
+     * <li>Both chunks are wilderness chunks</li>
+     * <li>Both chunks are territory chunks owned by the same territory</li>
      * </ul>
-     * @param firstClaim    the first claimed chunk to compare
-     * @param secondClaim   the second claimed chunk to compare
-     * @return  true if both claimed chunks are considered owned by the same owner, false otherwise
+     * 
+     * @param firstClaim  the first claimed chunk to compare
+     * @param secondClaim the second claimed chunk to compare
+     * @return true if both claimed chunks are considered owned by the same owner,
+     *         false otherwise
      */
     public static boolean sameOwner(
             ClaimedChunk firstClaim,
-            ClaimedChunk secondClaim
-    ) {
-        if (firstClaim == secondClaim) return true;
-        if(firstClaim instanceof WildernessChunk && secondClaim instanceof WildernessChunk) return true;
-        if(firstClaim instanceof TerritoryChunk firstTerritoryChunk && secondClaim instanceof TerritoryChunk secondTerritoryChunk){
+            ClaimedChunk secondClaim) {
+        if (firstClaim == secondClaim)
+            return true;
+        if (firstClaim instanceof WildernessChunk && secondClaim instanceof WildernessChunk)
+            return true;
+        if (firstClaim instanceof TerritoryChunk firstTerritoryChunk
+                && secondClaim instanceof TerritoryChunk secondTerritoryChunk) {
             return firstTerritoryChunk.getOwnerID().equals(secondTerritoryChunk.getOwnerID());
         }
         return false;
     }
-
 
 }

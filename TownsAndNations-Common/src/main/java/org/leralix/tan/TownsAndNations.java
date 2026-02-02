@@ -324,19 +324,19 @@ public class TownsAndNations extends JavaPlugin {
      */
     private void enableEventList() {
         PluginManager pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(new ChatListener(), this);
-        pluginManager.registerEvents(new ChunkListener(), this);
+        pluginManager.registerEvents(new ChatListener(playerDataStorage), this);
+        pluginManager.registerEvents(new ChunkListener(playerDataStorage), this);
         pluginManager.registerEvents(new PlayerJoinListener(playerDataStorage), this);
-        pluginManager.registerEvents(new PlayerEnterChunkListener(), this);
-        pluginManager.registerEvents(new ChatScopeListener(), this);
+        pluginManager.registerEvents(new PlayerEnterChunkListener(playerDataStorage), this);
+        pluginManager.registerEvents(new ChatScopeListener(playerDataStorage), this);
         pluginManager.registerEvents(new MobSpawnListener(), this);
-        pluginManager.registerEvents(new SpawnListener(), this);
-        pluginManager.registerEvents(new PropertySignListener(), this);
-        pluginManager.registerEvents(new LandmarkChestListener(), this);
+        pluginManager.registerEvents(new SpawnListener(playerDataStorage), this);
+        pluginManager.registerEvents(new PropertySignListener(playerDataStorage), this);
+        pluginManager.registerEvents(new LandmarkChestListener(playerDataStorage), this);
         pluginManager.registerEvents(new EconomyInitialiser(), this);
-        pluginManager.registerEvents(new CommandBlocker(), this);
+        pluginManager.registerEvents(new CommandBlocker(playerDataStorage), this);
         pluginManager.registerEvents(new AttackListener(playerDataStorage), this);
-        pluginManager.registerEvents(new RightClickListener(), this);
+        pluginManager.registerEvents(new RightClickListener(playerDataStorage), this);
     }
 
     /**

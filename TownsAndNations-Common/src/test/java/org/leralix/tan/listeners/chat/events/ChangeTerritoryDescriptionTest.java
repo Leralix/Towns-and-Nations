@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class ChangeTerritoryDescriptionTest extends BasicTest {
 
     private static Player player;
+    private static ITanPlayer tanPlayer;
     private static TownData townData;
 
     @Override
@@ -27,7 +28,7 @@ class ChangeTerritoryDescriptionTest extends BasicTest {
         super.setUp();
 
         player = server.addPlayer();
-        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
+        tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
         townData = TownDataStorage.getInstance().newTown("town 1", tanPlayer);
     }
 
@@ -38,7 +39,7 @@ class ChangeTerritoryDescriptionTest extends BasicTest {
         ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(townData, null);
         String description = "new description 1";
 
-        changeDescription.execute(player, description);
+        changeDescription.execute(player, tanPlayer, description);
 
         assertEquals(description, townData.getDescription());
     }
@@ -50,7 +51,7 @@ class ChangeTerritoryDescriptionTest extends BasicTest {
         ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(regionData, null);
         String description = "new description 2";
 
-        changeDescription.execute(player, description);
+        changeDescription.execute(player, tanPlayer, description);
 
         assertEquals(description, regionData.getDescription());
     }
@@ -62,7 +63,7 @@ class ChangeTerritoryDescriptionTest extends BasicTest {
         ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(territoryData, null);
         String description = "new description 3";
 
-        changeDescription.execute(player, description);
+        changeDescription.execute(player, tanPlayer, description);
 
         assertEquals(description, territoryData.getDescription());
     }
@@ -75,7 +76,7 @@ class ChangeTerritoryDescriptionTest extends BasicTest {
         description.append("a".repeat(maxDescriptionLength));
 
         ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(townData, null);
-        changeDescription.execute(player, description.toString());
+        changeDescription.execute(player, tanPlayer, description.toString());
 
         assertNotEquals(description.toString(), townData.getDescription());
     }

@@ -82,7 +82,7 @@ public abstract class ProfitLine implements Comparable<ProfitLine> {
                         new TerritoryTransactionHistory(player, territoryData, TransactionType.TERRITORY_TAX, p -> new TreasuryMenu(player, territoryData));
                     } else if (action.isRightClick()) {
                         TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
-                        PlayerChatListenerStorage.register(player, new SetTerritoryTax(territoryData, p -> new TreasuryMenu(player, territoryData)));
+                        PlayerChatListenerStorage.register(player, lang, new SetTerritoryTax(territoryData, p -> new TreasuryMenu(player, territoryData)));
                     }
                 })
                 .asGuiItem(player, lang)

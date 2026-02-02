@@ -8,7 +8,6 @@ import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,12 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class NameFilter {
@@ -169,7 +163,7 @@ public class NameFilter {
 
     private static void sendBlockedNameWarning(CommandSender sender) {
         if (sender instanceof Player player) {
-            TanChatUtils.message(player, Lang.NAME_FILTER_BLOCKED_NAME.get(player));
+            TanChatUtils.message(player, Lang.NAME_FILTER_BLOCKED_NAME.get());
         } else if (sender != null) {
             sender.sendMessage(Lang.NAME_FILTER_BLOCKED_NAME.getDefault());
         }

@@ -35,7 +35,7 @@ public class ChunkSettingsMenu extends BasicGui {
         gui.setItem(2, 5, getChunkGeneralSettings());
         gui.setItem(2, 7, getChunkMobSpawnSettings());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, territoryData::openMainMenu));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, territoryData::openMainMenu, langType));
 
         gui.open(player);
     }

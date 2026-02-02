@@ -42,18 +42,18 @@ public class WildernessChunk extends ClaimedChunk {
     }
 
     @Override
-    protected void playerCantPerformAction(Player player) {
+    protected void playerCantPerformAction(Player player, LangType langType) {
         TanChatUtils.message(player, Lang.WILDERNESS_NO_PERMISSION.getDefault());
     }
 
     @Override
-    public void unclaimChunk(Player player) {
+    public void unclaimChunk(Player player, LangType langType) {
         //No need to unclaim wilderness chunks
     }
 
     @Override
-    public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.WILDERNESS.get(player)));
+    public void playerEnterClaimedArea(Player player, ITanPlayer tanPlayer, boolean displayTerritoryColor) {
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.WILDERNESS.get(tanPlayer)));
     }
 
     @Override
@@ -91,7 +91,7 @@ public class WildernessChunk extends ClaimedChunk {
     }
 
     @Override
-    public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
+    public boolean canTerritoryClaim(Player player, TerritoryData territoryData, LangType langType) {
         return true;
     }
 

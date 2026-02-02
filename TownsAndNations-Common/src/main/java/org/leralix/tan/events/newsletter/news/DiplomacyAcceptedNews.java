@@ -67,7 +67,7 @@ public class DiplomacyAcceptedNews extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         if(proposingTerritory == null)
             return;
@@ -75,12 +75,12 @@ public class DiplomacyAcceptedNews extends Newsletter {
         if(receivingTerritory == null)
             return;
 
-        LangType lang = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType lang = tanPlayer.getLang();
 
         if(isRelationWorse){
             TanChatUtils.message(player,
                     Lang.BROADCAST_RELATION_WORSEN.get(
-                            player,
+                            lang,
                             proposingTerritory.getCustomColoredName().toLegacyText(),
                             receivingTerritory.getCustomColoredName().toLegacyText(),
                             wantedRelation.getColoredName(lang)),
@@ -89,7 +89,7 @@ public class DiplomacyAcceptedNews extends Newsletter {
         else{
             TanChatUtils.message(player,
                     Lang.BROADCAST_RELATION_IMPROVE.get(
-                            player,
+                            lang,
                             proposingTerritory.getCustomColoredName().toLegacyText(),
                             receivingTerritory.getCustomColoredName().toLegacyText(),
                             wantedRelation.getColoredName(lang)),
@@ -136,10 +136,5 @@ public class DiplomacyAcceptedNews extends Newsletter {
             return false;
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         return receivingTerritory.isPlayerIn(tanPlayer) || proposingTerritory.isPlayerIn(tanPlayer);
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
     }
 }

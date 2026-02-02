@@ -27,7 +27,7 @@ public class TownPropertyManager extends PropertyMenus {
         if(propertyData.isRented())
             gui.setItem(2, 7, getKickRenterButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new TownPropertiesMenu(player, townData)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new TownPropertiesMenu(player, townData), langType));
 
         gui.open(player);
     }

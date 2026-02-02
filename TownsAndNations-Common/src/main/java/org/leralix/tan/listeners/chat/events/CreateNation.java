@@ -26,7 +26,7 @@ public class CreateNation extends ChatListenerEvent {
     }
 
     @Override
-    public boolean execute(Player player, String message) {
+    public boolean execute(Player player, ITanPlayer playerData, String message) {
 
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 

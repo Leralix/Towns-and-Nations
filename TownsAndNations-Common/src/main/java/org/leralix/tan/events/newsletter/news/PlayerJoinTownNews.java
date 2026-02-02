@@ -1,19 +1,19 @@
 package org.leralix.tan.events.newsletter.news;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.events.newsletter.NewsletterType;
+import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanPlayer;
@@ -54,38 +54,40 @@ public class PlayerJoinTownNews extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
-        if (tanPlayer == null)
-            return;
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
+        OfflinePlayer playerJoiningTown = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
         TownData townData = TownDataStorage.getInstance().get(townID);
         if (townData == null)
             return;
-        TanChatUtils.message(player, Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(player, tanPlayer.getNameStored(), townData.getColoredName()), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player, Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(tanPlayer, playerJoiningTown.getName(), townData.getColoredName()), SoundEnum.MINOR_GOOD);
     }
 
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
-        if (tanPlayer == null)
-            return null;
+        OfflinePlayer playerJoiningTown = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
+
         TownData townData = TownDataStorage.getInstance().get(townID);
         if (townData == null)
             return null;
 
-        ItemStack itemStack = HeadUtils.makeSkullURL(
-                Lang.PLAYER_JOINED_TOWN_NEWSLETTER_TITLE.get(lang), "http://textures.minecraft.net/texture/16338322d26c6a7c08fb9fd22959a136728fa2d4dccd22b1563eb1bbaa1d5471",
-                Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(lang, tanPlayer.getNameStored(), townData.getCustomColoredName().toLegacyText()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
-        return ItemBuilder.from(itemStack).asGuiItem(event -> {
-            event.setCancelled(true);
-            if (event.isRightClick()) {
-                markAsRead(player);
-                onClick.accept(player);
-            }
-        });
+        return IconManager.getInstance().get(IconKey.NEWSLETTER_PLAYER_JOIN_TOWN_ICON)
+                .setName(Lang.PLAYER_JOINED_TOWN_NEWSLETTER_TITLE.get(lang))
+                .setDescription(
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
+                        Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(playerJoiningTown.getName(), townData.getCustomColoredName().toLegacyText())
+                )
+                .setClickToAcceptMessage(
+                        Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ
+                )
+                .setAction(action -> {
+                            action.setCancelled(true);
+                            if (action.isRightClick()) {
+                                markAsRead(player);
+                                onClick.accept(player);
+                            }
+                        }
+                ).asGuiItem(player, lang);
     }
 
     @Override
@@ -99,11 +101,5 @@ public class PlayerJoinTownNews extends Newsletter {
         if (townData == null)
             return false;
         return townData.doesPlayerHavePermission(player, RolePermission.INVITE_PLAYER);
-    }
-
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
     }
 }

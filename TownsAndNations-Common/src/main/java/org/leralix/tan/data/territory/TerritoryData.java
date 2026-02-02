@@ -192,11 +192,6 @@ public abstract class TerritoryData implements TanTerritory {
     }
 
     public void rename(Player player, int cost, String newName) {
-        if (getBalance() < cost) {
-            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(cost - getBalance())));
-            return;
-        }
-
         removeFromBalance(cost);
         if (this instanceof TownData) {
             FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(), name, newName));
@@ -205,8 +200,6 @@ public abstract class TerritoryData implements TanTerritory {
         } else {
             FileUtil.addLineToHistory(Lang.HISTORY_REGION_NAME_CHANGED.get(player.getName(), name, newName));
         }
-
-        TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(player, name, newName), SoundEnum.GOOD);
         setName(newName);
     }
 
@@ -604,12 +597,12 @@ public abstract class TerritoryData implements TanTerritory {
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
-            TanChatUtils.message(player, Lang.CHUNK_IS_BLACKLISTED.get(player));
+            TanChatUtils.message(player, Lang.CHUNK_IS_BLACKLISTED.get(tanPlayer.getLang()));
             return false;
         }
 
         if (!doesPlayerHavePermission(tanPlayer, RolePermission.CLAIM_CHUNK)) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(player));
+            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer.getLang()));
             return false;
         }
 
@@ -617,23 +610,23 @@ public abstract class TerritoryData implements TanTerritory {
         int nbOfClaimedChunks = getNumberOfClaimedChunk();
 
         if (!territoryStats.getStat(BiomeStat.class).canClaimBiome(chunk)) {
-            TanChatUtils.message(player, Lang.CHUNK_BIOME_NOT_ALLOWED.get(player));
+            TanChatUtils.message(player, Lang.CHUNK_BIOME_NOT_ALLOWED.get(tanPlayer.getLang()));
             return false;
         }
 
         if (!territoryStats.getStat(ChunkCap.class).canDoAction(nbOfClaimedChunks)) {
-            TanChatUtils.message(player, Lang.MAX_CHUNK_LIMIT_REACHED.get(player));
+            TanChatUtils.message(player, Lang.MAX_CHUNK_LIMIT_REACHED.get(tanPlayer.getLang()));
             return false;
         }
 
         int cost = getClaimCost();
         if (getBalance() < cost) {
-            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(player, getColoredName(), Double.toString(cost - getBalance())));
+            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer.getLang(), getColoredName(), Double.toString(cost - getBalance())));
             return false;
         }
 
         ClaimedChunk chunkData = NewClaimedChunkStorage.getInstance().get(chunk);
-        if (!chunkData.canTerritoryClaim(player, this)) {
+        if (!chunkData.canTerritoryClaim(player, this,  tanPlayer.getLang())) {
             return false;
         }
 
@@ -645,7 +638,7 @@ public abstract class TerritoryData implements TanTerritory {
         if (getNumberOfClaimedChunk() == 0) {
             int bufferZone = Constants.territoryClaimBufferZone();
             if (ChunkUtil.isInBufferZone(chunkData, this, bufferZone)) {
-                TanChatUtils.message(player, Lang.CHUNK_IN_BUFFER_ZONE.get(player, Integer.toString(bufferZone)));
+                TanChatUtils.message(player, Lang.CHUNK_IN_BUFFER_ZONE.get(tanPlayer.getLang(), Integer.toString(bufferZone)));
                 return false;
             }
             return true;
@@ -653,7 +646,7 @@ public abstract class TerritoryData implements TanTerritory {
 
 
         if (!NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
-            TanChatUtils.message(player, Lang.CHUNK_NOT_ADJACENT.get(player));
+            TanChatUtils.message(player, Lang.CHUNK_NOT_ADJACENT.get(tanPlayer.getLang()));
             return false;
         }
         return true;

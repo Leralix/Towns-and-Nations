@@ -35,7 +35,7 @@ public class AdminManagePlayer extends BasicGui {
         gui.setItem(2, 4, getBalanceButton());
         gui.setItem(2, 6, getTownButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminBrowsePlayers(player)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminBrowsePlayers(player), langType));
 
         gui.open(player);
     }
@@ -49,7 +49,7 @@ public class AdminManagePlayer extends BasicGui {
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(action -> {
                     player.closeInventory();
-                    PlayerChatListenerStorage.register(player, new AdminSetPlayerBalance(targetPlayer));
+                    PlayerChatListenerStorage.register(player, langType, new AdminSetPlayerBalance(targetPlayer));
                 })
                 .asGuiItem(player, langType);
     }

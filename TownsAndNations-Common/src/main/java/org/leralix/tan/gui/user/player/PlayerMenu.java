@@ -36,7 +36,7 @@ public class PlayerMenu extends BasicGui {
         gui.setItem(2, 7, getTimezoneButton());
         gui.setItem(2, 8, getLanguageButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, MainMenu::new));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, MainMenu::new, langType));
 
         gui.open(player);
     }

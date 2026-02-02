@@ -61,8 +61,16 @@ public abstract class Newsletter {
        return NewsletterStorage.getInstance().getNewsletterDAO().hasRead(id, playerID);
     }
 
-    public abstract void broadcast(Player player);
+    public abstract void broadcast(Player player, ITanPlayer tanPlayer);
 
-    public abstract void broadcastConcerned(Player player);
+    /**
+     * Defines if the newsletter should be broadcasted to the player.
+     * By default, it calls the broadcast method (everyone is concerned).
+     * @param player        The player to check.
+     * @param playerData    The player data.
+     */
+    public void broadcastConcerned(Player player, ITanPlayer playerData){
+        broadcast(player, playerData);
+    }
 
 }

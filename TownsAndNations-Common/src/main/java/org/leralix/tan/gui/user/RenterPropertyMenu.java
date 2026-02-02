@@ -35,7 +35,7 @@ public class RenterPropertyMenu extends PropertyMenus {
         gui.setItem(2, 4, getAuthorizedPlayersButton());
         gui.setItem(2, 6, getStopRentPropertyButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory, langType));
         gui.open(player);
     }
 
@@ -51,7 +51,7 @@ public class RenterPropertyMenu extends PropertyMenus {
                     TanOwner owner = propertyData.getOwner();
                     if(owner instanceof PlayerOwned playerOwned){
                         Player playerOwn = Bukkit.getPlayer(UUID.fromString(playerOwned.getID()));
-                        TanChatUtils.message(playerOwn, Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(playerOwn, player.getName(), propertyData.getName()), MINOR_BAD);
+                        TanChatUtils.message(playerOwn, Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(langType, player.getName(), propertyData.getName()), MINOR_BAD);
                     }
 
                     player.closeInventory();

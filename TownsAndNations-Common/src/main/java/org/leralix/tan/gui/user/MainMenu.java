@@ -54,7 +54,7 @@ public class MainMenu extends BasicGui {
         gui.setItem(2, townPosition, getTownButton(tanPlayer));
         gui.setItem(2, playerPosition, getPlayerButton(tanPlayer));
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory, langType));
 
         gui.open(player);
     }

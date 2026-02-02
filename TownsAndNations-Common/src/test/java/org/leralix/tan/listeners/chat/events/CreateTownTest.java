@@ -17,7 +17,7 @@ class CreateTownTest extends BasicTest {
         ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
 
         CreateTown createTown = new CreateTown(10);
-        createTown.execute(tanPlayer.getPlayer(), "town-A");
+        createTown.execute(tanPlayer.getPlayer(),tanPlayer, "town-A");
 
         assertTrue(tanPlayer.hasTown());
         TownData town = tanPlayer.getTown();
@@ -33,7 +33,7 @@ class CreateTownTest extends BasicTest {
         ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
 
         CreateTown createTown = new CreateTown((int) (tanPlayer.getBalance() + 1));
-        createTown.execute(tanPlayer.getPlayer(), "anotherName");
+        createTown.execute(tanPlayer.getPlayer(), tanPlayer, "anotherName");
 
         assertFalse(tanPlayer.hasTown());
     }
@@ -46,7 +46,7 @@ class CreateTownTest extends BasicTest {
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
 
         CreateTown createTown = new CreateTown(0);
-        createTown.execute(tanPlayer.getPlayer(), "a" + "a".repeat(Math.max(0, maxSize)));
+        createTown.execute(tanPlayer.getPlayer(), tanPlayer, "a" + "a".repeat(Math.max(0, maxSize)));
 
         assertFalse(tanPlayer.hasTown());
     }
@@ -60,8 +60,8 @@ class CreateTownTest extends BasicTest {
         String townName = "townWithDuplicateName";
 
         CreateTown createTown = new CreateTown(0);
-        createTown.execute(tanPlayer1.getPlayer(), townName);
-        createTown.execute(tanPlayer2.getPlayer(), townName);
+        createTown.execute(tanPlayer1.getPlayer(), tanPlayer1, townName);
+        createTown.execute(tanPlayer2.getPlayer(), tanPlayer2, townName);
 
         assertTrue(tanPlayer1.hasTown());
         assertFalse(tanPlayer2.hasTown());

@@ -19,7 +19,7 @@ class CreateRegionTest extends BasicTest {
         String regionName = "Region-B";
 
         CreateRegion createRegion = new CreateRegion(25);
-        createRegion.execute(tanPlayer.getPlayer(), regionName);
+        createRegion.execute(tanPlayer.getPlayer(), tanPlayer, regionName);
 
         assertTrue(townData.haveOverlord());
         assertTrue(townData.getRegion().isPresent());
@@ -42,7 +42,7 @@ class CreateRegionTest extends BasicTest {
         String regionName = "Region";
 
         CreateRegion createRegion = new CreateRegion(0);
-        createRegion.execute(secondTanPlayer.getPlayer(), regionName);
+        createRegion.execute(secondTanPlayer.getPlayer(), tanPlayer, regionName);
 
         assertFalse(townData.haveOverlord());
     }
@@ -54,7 +54,7 @@ class CreateRegionTest extends BasicTest {
         var townData = TownDataStorage.getInstance().newTown("Town", tanPlayer);
 
         CreateRegion createRegion = new CreateRegion(1);
-        createRegion.execute(tanPlayer.getPlayer(), "Region");
+        createRegion.execute(tanPlayer.getPlayer(), tanPlayer, "Region");
 
         assertFalse(townData.haveOverlord());
     }
@@ -68,7 +68,7 @@ class CreateRegionTest extends BasicTest {
         int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
 
         CreateRegion createRegion = new CreateRegion(25);
-        createRegion.execute(tanPlayer.getPlayer(), "a" + "a".repeat(Math.max(0, maxSize)));
+        createRegion.execute(tanPlayer.getPlayer(), tanPlayer, "a" + "a".repeat(Math.max(0, maxSize)));
 
         assertFalse(townData.haveOverlord());
     }
@@ -84,8 +84,8 @@ class CreateRegionTest extends BasicTest {
         String regionName = "specificRegionName";
 
         CreateRegion createRegion = new CreateRegion(0);
-        createRegion.execute(tanPlayer1.getPlayer(), regionName);
-        createRegion.execute(tanPlayer2.getPlayer(), regionName);
+        createRegion.execute(tanPlayer1.getPlayer(), tanPlayer1, regionName);
+        createRegion.execute(tanPlayer2.getPlayer(), tanPlayer2, regionName);
 
         assertTrue(townData1.haveOverlord());
         assertFalse(townData2.haveOverlord());

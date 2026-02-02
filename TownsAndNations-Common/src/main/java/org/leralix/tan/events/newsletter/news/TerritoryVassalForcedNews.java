@@ -92,14 +92,14 @@ public class TerritoryVassalForcedNews extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         if(proposingTerritory == null)
             return;
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(forcedTerritoryID);
         if(receivingTerritory == null)
             return;
-        TanChatUtils.message(player, Lang.FORCED_VASSALAGE.get(player, receivingTerritory.getColoredName(), proposingTerritory.getColoredName()), SoundEnum.MINOR_BAD);
+        TanChatUtils.message(player, Lang.FORCED_VASSALAGE.get(tanPlayer, receivingTerritory.getColoredName(), proposingTerritory.getColoredName()), SoundEnum.MINOR_BAD);
     }
 
     public String getProposingTerritoryID() {
@@ -108,10 +108,5 @@ public class TerritoryVassalForcedNews extends Newsletter {
 
     public String getForcedTerritoryID() {
         return forcedTerritoryID;
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
     }
 }

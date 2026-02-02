@@ -37,7 +37,7 @@ public class OpenDiplomacyMenu extends BasicGui {
         gui.setItem(15, getAllianceButton());
         gui.setItem(17, getProposalButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player), langType));
 
         gui.open(player);
     }

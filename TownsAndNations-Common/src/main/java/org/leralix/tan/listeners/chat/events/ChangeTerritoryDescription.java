@@ -2,6 +2,7 @@ package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.NationData;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.TownData;
@@ -24,7 +25,7 @@ public class ChangeTerritoryDescription extends ChatListenerEvent {
     }
 
     @Override
-    public boolean execute(Player player, String message) {
+    public boolean execute(Player player, ITanPlayer playerData, String message) {
 
         int maxSize;
         if (territoryData instanceof TownData) {
@@ -36,7 +37,7 @@ public class ChangeTerritoryDescription extends ChatListenerEvent {
         }
 
         if (message.length() > maxSize) {
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
+            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(playerData, Integer.toString(maxSize)));
             return false;
         }
 
@@ -48,7 +49,7 @@ public class ChangeTerritoryDescription extends ChatListenerEvent {
             FileUtil.addLineToHistory(Lang.HISTORY_REGION_MESSAGE_CHANGED.get(player.getName(), territoryData.getName(), message));
         }
         territoryData.setDescription(message);
-        TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(player));
+        TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(playerData));
         openGui(guiCallback, player);
         return true;
     }

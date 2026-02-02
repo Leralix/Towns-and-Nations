@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.events.CreateTown;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.text.NameFilter;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -14,6 +15,11 @@ import java.util.List;
 
 class CreateTownServer extends SubCommand {
 
+    private final PlayerDataStorage playerDataStorage;
+
+    public CreateTownServer(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
 
     @Override
     public String getName() {
@@ -57,8 +63,8 @@ class CreateTownServer extends SubCommand {
             return;
         }
 
-        Player p = commandSender.getServer().getPlayer(args[1]);
-        if(p == null){
+        Player leader = commandSender.getServer().getPlayer(args[1]);
+        if(leader == null){
             TanChatUtils.message(commandSender, Lang.PLAYER_NOT_FOUND);
             return;
         }
@@ -66,7 +72,7 @@ class CreateTownServer extends SubCommand {
             TanChatUtils.message(commandSender, Lang.NAME_ALREADY_USED);
             return;
         }
-        new CreateTown(0).createTown(p, townName);
+        new CreateTown(0).createTown(leader, playerDataStorage.get(leader), townName);
 
     }
 }

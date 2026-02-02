@@ -24,7 +24,7 @@ class DonateToTerritoryTest extends BasicTest {
         tanPlayer.addToBalance(amount);
 
         DonateToTerritory donateToTerritory = new DonateToTerritory(townData);
-        donateToTerritory.execute(tanPlayer.getPlayer(), String.valueOf(amount));
+        donateToTerritory.execute(tanPlayer.getPlayer(), tanPlayer, String.valueOf(amount));
 
         assertEquals(amount, townData.getBalance());
     }
@@ -37,7 +37,7 @@ class DonateToTerritoryTest extends BasicTest {
         int amount = (int) (tanPlayer.getBalance() + 1);
 
         DonateToTerritory donateToTerritory = new DonateToTerritory(townData);
-        donateToTerritory.execute(tanPlayer.getPlayer(), String.valueOf(amount));
+        donateToTerritory.execute(tanPlayer.getPlayer(), tanPlayer, String.valueOf(amount));
 
         assertEquals(0, townData.getBalance());
     }
@@ -50,7 +50,7 @@ class DonateToTerritoryTest extends BasicTest {
         String amount = "notANumber";
 
         DonateToTerritory donateToTerritory = new DonateToTerritory(townData);
-        donateToTerritory.execute(tanPlayer.getPlayer(), amount);
+        donateToTerritory.execute(tanPlayer.getPlayer(), tanPlayer, amount);
 
         assertEquals(0, townData.getBalance());
     }

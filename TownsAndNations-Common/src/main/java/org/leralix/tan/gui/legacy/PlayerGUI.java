@@ -101,7 +101,7 @@ public class PlayerGUI {
 
         fillDecorations(gui, decorativeGlass);
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player), tanPlayer.getLang()));
         gui.open(player);
     }
 
@@ -213,7 +213,7 @@ public class PlayerGUI {
         return ItemBuilder.from(donateToOverlord).asGuiItem(event -> {
             event.setCancelled(true);
             TanChatUtils.message(player, Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get(tanPlayer));
-            PlayerChatListenerStorage.register(player, new DonateToTerritory(overlord));
+            PlayerChatListenerStorage.register(player,tanPlayer.getLang(), new DonateToTerritory(overlord));
         });
     }
 

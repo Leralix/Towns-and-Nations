@@ -32,30 +32,36 @@ public final class TerritoryCommandUtil {
     }
 
     public static TerritoryData resolveTerritory(Player player, ITanPlayer tanPlayer, String territoryArg, String syntax) {
-        if (territoryArg.equals("town")) {
-            if (!tanPlayer.hasTown()) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(player));
-                return null;
-            }
-            return tanPlayer.getTown();
-        }
-        if (territoryArg.equals("region")) {
-            if (!tanPlayer.hasRegion()) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(player));
-                return null;
-            }
-            return tanPlayer.getRegion();
-        }
-        if (territoryArg.equals("nation")) {
-            if (!tanPlayer.hasNation()) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_NATION.get(player));
-                return null;
-            }
-            return tanPlayer.getNation();
-        }
 
-        TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(syntax).getDefault());
-        return null;
+        LangType langType = tanPlayer.getLang();
+
+        switch (territoryArg) {
+            case "town" -> {
+                if (!tanPlayer.hasTown()) {
+                    TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
+                    return null;
+                }
+                return tanPlayer.getTown();
+            }
+            case "region" -> {
+                if (!tanPlayer.hasRegion()) {
+                    TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(langType));
+                    return null;
+                }
+                return tanPlayer.getRegion();
+            }
+            case "nation" -> {
+                if (!tanPlayer.hasNation()) {
+                    TanChatUtils.message(player, Lang.PLAYER_NO_NATION.get(langType));
+                    return null;
+                }
+                return tanPlayer.getNation();
+            }
+            default -> {
+                TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(syntax).getDefault());
+                return null;
+            }
+        }
     }
 
     public static Chunk parseChunkFromArgs(Player player, String[] args, int xIndex, int zIndex, LangType langType, String syntax) {

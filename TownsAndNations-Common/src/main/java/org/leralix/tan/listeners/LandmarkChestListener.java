@@ -17,6 +17,13 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class LandmarkChestListener implements Listener {
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public LandmarkChestListener(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -27,7 +34,7 @@ public class LandmarkChestListener implements Listener {
                 clickedBlock.getType() == Material.CHEST &&
                 clickedBlock.hasMetadata("LandmarkChest")) {
             event.setCancelled(true);
-            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+            ITanPlayer tanPlayer = playerDataStorage.get(player);
             for (MetadataValue value : clickedBlock.getMetadata("LandmarkChest")) {
                 String customData = value.asString();
                 Landmark landmark = LandmarkStorage.getInstance().get(customData);
@@ -38,7 +45,6 @@ public class LandmarkChestListener implements Listener {
                 PlayerGUI.dispatchLandmarkGui(player, landmark);
             }
         }
-
 
     }
 

@@ -102,11 +102,11 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
 
     protected abstract boolean canPlayerDoInternal(Player player, ITanPlayer tanPlayer, ChunkPermissionType permissionType, Location location);
 
-    protected abstract void playerCantPerformAction(Player player);
+    protected abstract void playerCantPerformAction(Player player, LangType langType);
 
-    public abstract void unclaimChunk(Player player);
+    public abstract void unclaimChunk(Player player, LangType langType);
 
-    public abstract void playerEnterClaimedArea(Player player, boolean displayTerritoryColor);
+    public abstract void playerEnterClaimedArea(Player player, ITanPlayer tanPlayer, boolean displayTerritoryColor);
 
     public abstract String getName();
 
@@ -118,7 +118,7 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
 
     public abstract TextComponent getMapIcon(LangType langType);
 
-    public abstract boolean canTerritoryClaim(Player player, TerritoryData territoryData);
+    public abstract boolean canTerritoryClaim(Player player, TerritoryData territoryData, LangType langType);
 
     public abstract boolean canTerritoryClaim(TerritoryData territoryData);
 

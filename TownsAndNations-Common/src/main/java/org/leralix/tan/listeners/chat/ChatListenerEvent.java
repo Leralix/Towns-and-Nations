@@ -3,7 +3,9 @@ package org.leralix.tan.listeners.chat;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.function.Consumer;
@@ -15,7 +17,7 @@ public abstract class ChatListenerEvent {
 
     }
 
-    protected abstract boolean execute(Player player, String message);
+    protected abstract boolean execute(Player player, ITanPlayer playerData, String message);
 
     protected static Integer parseStringToInt(String stringAmount) {
         if (stringAmount != null && stringAmount.matches("-?\\d+")) {
@@ -43,14 +45,20 @@ public abstract class ChatListenerEvent {
         }.runTask(TownsAndNations.getPlugin());
     }
 
-    protected static boolean checkMessageLength(Player player, String message, int minSize, int maxSize) {
+    protected static boolean checkMessageLength(
+            Player player,
+            String message,
+            int minSize,
+            int maxSize,
+            LangType langType
+    ) {
         if (message.length() < minSize) {
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_SHORT.get(player, Integer.toString(minSize)));
+            TanChatUtils.message(player, Lang.MESSAGE_TOO_SHORT.get(langType, Integer.toString(minSize)));
             return true;
         }
 
         if (message.length() > maxSize) {
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
+            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(langType, Integer.toString(maxSize)));
             return true;
         }
         return false;

@@ -58,7 +58,6 @@ import java.util.UUID;
 
 public class PropertyData extends Building implements TanProperty {
     private final String ID;
-
     /**
      * Owner of the property
      */
@@ -66,7 +65,7 @@ public class PropertyData extends Building implements TanProperty {
     /**
      * ID of the renter. Can be null if not rented.
      */
-    private String rentingPlayerID;
+    private UUID rentingPlayerID;
     private PermissionManager permissionManager;
 
     private ICustomIcon icon;
@@ -165,7 +164,7 @@ public class PropertyData extends Building implements TanProperty {
     }
 
     public void allocateRenter(Player renter) {
-        rentingPlayerID = renter.getUniqueId().toString();
+        rentingPlayerID = renter.getUniqueId();
         this.isForRent = false;
         if (Constants.shouldPayRentAtStart())
             payRent();
@@ -173,32 +172,31 @@ public class PropertyData extends Building implements TanProperty {
         getPermissionManager().setAll(PermissionGiven.PROPERTY);
     }
 
+    @Override
     public boolean isRented() {
-        if (rentingPlayerID == null) {
-            return false;
-        }
-        if (getRentingPlayerUuidOrNull() == null) {
-            rentingPlayerID = null;
-            return false;
-        }
-        return true;
+        return rentingPlayerID != null;
     }
 
     public boolean isForRent() {
         return isForRent;
     }
-    
+
     @Override
     public Optional<TanPlayer> getRenter() {
-        return Optional.ofNullable(PlayerDataStorage.getInstance().getOrNull(rentingPlayerID));
+        if(rentingPlayerID == null){
+            return Optional.empty();
+        }
+        else {
+            return Optional.of(PlayerDataStorage.getInstance().get(rentingPlayerID));
+        }
     }
 
-    public String getRenterID() {
+    public UUID getRenterID() {
         return rentingPlayerID;
     }
 
     public Player getRenterPlayer() {
-        UUID renterUuid = getRentingPlayerUuidOrNull();
+        UUID renterUuid = getRenterID();
         if (renterUuid == null) {
             return null;
         }
@@ -206,7 +204,7 @@ public class PropertyData extends Building implements TanProperty {
     }
 
     public OfflinePlayer getOfflineRenter() {
-        UUID renterUuid = getRentingPlayerUuidOrNull();
+        UUID renterUuid = getRenterID();
         if (renterUuid == null) {
             return Bukkit.getOfflinePlayer(new UUID(0L, 0L));
         }
@@ -219,7 +217,7 @@ public class PropertyData extends Building implements TanProperty {
 
     public void payRent() {
 
-        UUID renterUuid = getRentingPlayerUuidOrNull();
+        UUID renterUuid = getRenterID();
         if (renterUuid == null) {
             expelRenter(true);
             return;
@@ -406,10 +404,9 @@ public class PropertyData extends Building implements TanProperty {
         town.removeProperty(this);
 
         if (getOwner() instanceof PlayerOwned playerOwnedClass) {
-            ITanPlayer playerOwner = PlayerDataStorage.getInstance().getOrNull(playerOwnedClass.getID());
-            if (playerOwner == null) {
-                return;
-            }
+            UUID ownerID = UUID.fromString(playerOwnedClass.getID());
+            ITanPlayer playerOwner = PlayerDataStorage.getInstance().get(ownerID);
+
             playerOwner.removeProperty(this);
 
             UUID ownerUuid;
@@ -441,8 +438,8 @@ public class PropertyData extends Building implements TanProperty {
         world.spawnParticle(Particle.BUBBLE_POP, signBlock.getLocation(), 5);
     }
 
-    public void buyProperty(Player buyer) {
-        LangType langType = PlayerDataStorage.getInstance().get(buyer).getLang();
+    public void buyProperty(Player buyer, ITanPlayer buyerData) {
+        LangType langType = buyerData.getLang();
 
         double playerBalance = EconomyUtil.getBalance(buyer);
         double cost = getPriceWithTax();
@@ -485,7 +482,7 @@ public class PropertyData extends Building implements TanProperty {
 
         ITanPlayer newOwnerData = PlayerDataStorage.getInstance().get(buyer.getUniqueId().toString());
         newOwnerData.addProperty(this);
-        this.owner = new PlayerOwned(buyer.getUniqueId().toString());
+        this.owner = new PlayerOwned(buyer.getUniqueId());
 
         this.isForSale = false;
         updateSign();
@@ -518,7 +515,7 @@ public class PropertyData extends Building implements TanProperty {
     public void expelRenter(boolean rentBack) {
         if (!isRented())
             return;
-        ITanPlayer renter = PlayerDataStorage.getInstance().getOrNull(rentingPlayerID);
+        ITanPlayer renter = PlayerDataStorage.getInstance().get(rentingPlayerID);
         if (renter != null) {
             renter.removeProperty(this);
         }
@@ -608,17 +605,6 @@ public class PropertyData extends Building implements TanProperty {
     @Override
     public Vector3D getPosition() {
         return signLocation;
-    }
-
-    private UUID getRentingPlayerUuidOrNull() {
-        if (rentingPlayerID == null) {
-            return null;
-        }
-        try {
-            return UUID.fromString(rentingPlayerID);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
     }
 
     public String getRenterDisplayName(LangType langType) {

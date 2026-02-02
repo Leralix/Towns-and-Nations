@@ -58,7 +58,7 @@ public class PropertyCreationTaxLine extends ProfitLine {
                 new TerritoryTransactionHistory(player, territoryData, TransactionType.CREATE_PROPERTY, p -> new TreasuryMenu(player, territoryData));
             } else if (event.isRightClick()) {
                 TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
-                PlayerChatListenerStorage.register(player, new SetCreatePropertyTax(territoryData, p -> new TreasuryMenu(player, territoryData)));
+                PlayerChatListenerStorage.register(player, lang, new SetCreatePropertyTax(territoryData, p -> new TreasuryMenu(player, territoryData)));
             }
         });
 

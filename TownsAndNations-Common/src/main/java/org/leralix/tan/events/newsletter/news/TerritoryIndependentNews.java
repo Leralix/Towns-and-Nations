@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
@@ -90,7 +91,7 @@ public class TerritoryIndependentNews extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
         TerritoryData leavingTown = TerritoryUtil.getTerritory(formerMasterID);
         if (leavingTown == null)
             return;
@@ -98,11 +99,6 @@ public class TerritoryIndependentNews extends Newsletter {
         if (region == null)
             return;
 
-        TanChatUtils.message(player, Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(player, leavingTown.getColoredName(), region.getColoredName()), SoundEnum.MINOR_GOOD);
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
+        TanChatUtils.message(player, Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(tanPlayer, leavingTown.getColoredName(), region.getColoredName()), SoundEnum.MINOR_GOOD);
     }
 }

@@ -49,7 +49,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
 
         gui.setItem(2, 5, getClaimButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, Player::closeInventory));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, Player::closeInventory, langType));
 
 
         GuiItem panelGui = ItemBuilder.from(HeadUtils.createCustomItemStack(Material.GRAY_STAINED_GLASS_PANE, "")).asGuiItem(event -> event.setCancelled(true));

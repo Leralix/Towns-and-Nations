@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class ChangeTownTagTest extends BasicTest {
 
     private static Player player;
+    private static ITanPlayer tanPlayer;
     private static TownData townData;
 
     @Override
@@ -23,7 +24,7 @@ class ChangeTownTagTest extends BasicTest {
     protected void setUp() {
         super.setUp();
         player = server.addPlayer();
-        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
+        tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
         townData = TownDataStorage.getInstance().newTown("town 1", tanPlayer);
     }
 
@@ -38,7 +39,7 @@ class ChangeTownTagTest extends BasicTest {
         String newTag = "TAG";
 
         ChangeTownTag changeTownTag = new ChangeTownTag(townData, null);
-        changeTownTag.execute(player, newTag);
+        changeTownTag.execute(player, tanPlayer, newTag);
 
         assertEquals(newTag, townData.getTownTag());
     }
@@ -49,7 +50,7 @@ class ChangeTownTagTest extends BasicTest {
         String newTag = "goofy ahh tag";
 
         ChangeTownTag changeTownTag = new ChangeTownTag(townData, null);
-        changeTownTag.execute(player, newTag);
+        changeTownTag.execute(player, tanPlayer, newTag);
 
         assertNotEquals(newTag, townData.getTownTag());
     }

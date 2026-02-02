@@ -4,6 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.building.landmark.Landmark;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -47,7 +48,7 @@ public class LandmarkClaimedNewsletter extends Newsletter {
         TerritoryData newOwner = TerritoryUtil.getTerritory(newOwnerID);
         Landmark landmark = LandmarkStorage.getInstance().get(landmarkID);
 
-        if(landmark == null || newOwner == null){
+        if (landmark == null || newOwner == null) {
             return null;
         }
 
@@ -85,14 +86,9 @@ public class LandmarkClaimedNewsletter extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
         TerritoryData newOwner = TerritoryUtil.getTerritory(newOwnerID);
         Landmark landmark = LandmarkStorage.getInstance().get(landmarkID);
-        Lang.LANDMARK_CLAIMED_NEWSLETTER.get(player, newOwner.getColoredName(), landmark.getName());
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
+        Lang.LANDMARK_CLAIMED_NEWSLETTER.get(tanPlayer, newOwner.getColoredName(), landmark.getName());
     }
 }

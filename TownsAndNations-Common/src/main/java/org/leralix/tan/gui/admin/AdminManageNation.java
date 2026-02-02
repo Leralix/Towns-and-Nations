@@ -27,7 +27,7 @@ public class AdminManageNation extends AdminManageTerritory {
         gui.setItem(2, 7, getTransactionHistory());
         gui.setItem(2, 8, getDelete());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminBrowseNation(player)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminBrowseNation(player), langType));
 
         gui.open(player);
     }

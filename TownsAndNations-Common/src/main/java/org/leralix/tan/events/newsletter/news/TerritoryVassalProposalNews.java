@@ -24,7 +24,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 
-
 public class TerritoryVassalProposalNews extends Newsletter {
     String proposingTerritoryID;
     String receivingTerritoryID;
@@ -49,7 +48,7 @@ public class TerritoryVassalProposalNews extends Newsletter {
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
-        if(proposingTerritory == null || receivingTerritory == null)
+        if (proposingTerritory == null || receivingTerritory == null)
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
@@ -61,7 +60,7 @@ public class TerritoryVassalProposalNews extends Newsletter {
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
-            if(event.isRightClick()){
+            if (event.isRightClick()) {
                 markAsRead(player);
                 onClick.accept(player);
             }
@@ -72,7 +71,7 @@ public class TerritoryVassalProposalNews extends Newsletter {
     public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
-        if(proposingTerritory == null || receivingTerritory == null)
+        if (proposingTerritory == null || receivingTerritory == null)
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
@@ -84,9 +83,9 @@ public class TerritoryVassalProposalNews extends Newsletter {
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
-            if(event.isLeftClick())
+            if (event.isLeftClick())
                 PlayerGUI.openChooseOverlordMenu(player, receivingTerritory, 0);
-            if(event.isRightClick()){
+            if (event.isRightClick()) {
                 markAsRead(player);
                 onClick.accept(player);
             }
@@ -96,10 +95,10 @@ public class TerritoryVassalProposalNews extends Newsletter {
     @Override
     public boolean shouldShowToPlayer(Player player) {
         TerritoryData territoryData = TerritoryUtil.getTerritory(receivingTerritoryID);
-        if(territoryData == null)
+        if (territoryData == null)
             return false;
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        if(!territoryData.isPlayerIn(tanPlayer))
+        if (!territoryData.isPlayerIn(tanPlayer))
             return false;
         return territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR);
     }
@@ -110,14 +109,14 @@ public class TerritoryVassalProposalNews extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
-        if(proposingTerritory == null)
+        if (proposingTerritory == null)
             return;
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
-        if(receivingTerritory == null)
+        if (receivingTerritory == null)
             return;
-        TanChatUtils.message(player, Lang.TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER.get(player, proposingTerritory.getColoredName(), receivingTerritory.getColoredName()), SoundEnum.MINOR_BAD);
+        TanChatUtils.message(player, Lang.TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER.get(tanPlayer, proposingTerritory.getColoredName(), receivingTerritory.getColoredName()), SoundEnum.MINOR_BAD);
     }
 
     public String getProposingTerritoryID() {
@@ -126,10 +125,5 @@ public class TerritoryVassalProposalNews extends Newsletter {
 
     public String getReceivingTerritoryID() {
         return receivingTerritoryID;
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
     }
 }

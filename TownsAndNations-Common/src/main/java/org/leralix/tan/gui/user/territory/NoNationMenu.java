@@ -28,7 +28,7 @@ public class NoNationMenu extends BasicGui {
     public void open() {
         gui.setItem(2, 3, getCreateNationButton());
         gui.setItem(2, 7, getBrowseNationsButton());
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(player), langType));
         gui.open(player);
     }
 
@@ -70,7 +70,7 @@ public class NoNationMenu extends BasicGui {
                     }
 
                     TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_NATION_NAME.get(tanPlayer));
-                    PlayerChatListenerStorage.register(player, new CreateNation(nationCost));
+                    PlayerChatListenerStorage.register(player, langType, new CreateNation(nationCost));
                 })
                 .asGuiItem(player, langType);
     }

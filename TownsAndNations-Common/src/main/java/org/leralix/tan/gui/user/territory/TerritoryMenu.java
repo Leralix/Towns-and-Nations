@@ -174,7 +174,7 @@ public abstract class TerritoryMenu extends BasicGui {
         gui.setItem(3, 3, getAttackButton());
         gui.setItem(3, 4, getHierarchyButton());
 
-        gui.setItem(4, 1, GuiUtil.createBackArrow(player, MainMenu::new));
+        gui.setItem(4, 1, GuiUtil.createBackArrow(player, MainMenu::new, langType));
     }
 
     protected void setRow2Column4(GuiItem item) {

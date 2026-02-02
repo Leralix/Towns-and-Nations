@@ -2,12 +2,10 @@ package org.leralix.tan.lang;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 
 import java.io.File;
@@ -1220,13 +1218,6 @@ public enum Lang {
         return new FilledLang(this);
     }
 
-    public String get(Player player){
-        if(player == null){
-            return get(serverLang);
-        }
-        return get(PlayerDataStorage.getInstance().get(player));
-    }
-
     public String get(ITanPlayer tanPlayer){
         if(tanPlayer == null) {
             return get(serverLang);
@@ -1248,10 +1239,6 @@ public enum Lang {
 
     public FilledLang get(String... placeholders) {
         return new FilledLang(this, placeholders);
-    }
-
-    public String get(Player player, String... placeholders) {
-        return get(PlayerDataStorage.getInstance().get(player), placeholders);
     }
 
     public String get(ITanPlayer tanPlayer, String... placeholders) {

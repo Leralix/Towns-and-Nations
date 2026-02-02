@@ -69,7 +69,7 @@ public class PropertyRentTaxLine extends ProfitLine {
                 new TerritoryTransactionHistory(player, territoryData, TransactionType.RENTING_PROPERTY, p -> new TreasuryMenu(player, territoryData));
             } else if (event.isRightClick()) {
                 TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
-                PlayerChatListenerStorage.register(player, new SetRentPropertyRate(territoryData));
+                PlayerChatListenerStorage.register(player, lang, new SetRentPropertyRate(territoryData));
             }
         });
 

@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
@@ -93,7 +94,7 @@ public class WarEndedNewsletter extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
         TerritoryData winningTerritory = TerritoryUtil.getTerritory(winningTerritoryID);
         TerritoryData defeatedTerritory = TerritoryUtil.getTerritory(defeatedTerritoryID);
         if(winningTerritory == null || defeatedTerritory == null)
@@ -101,15 +102,10 @@ public class WarEndedNewsletter extends Newsletter {
 
         TanChatUtils.message(player,
                 Lang.ATTACK_ENDED.get(
-                        player,
+                        tanPlayer,
                         winningTerritory.getColoredName(),
                         defeatedTerritory.getColoredName(),
                         Integer.toString(nbAppliedWargoals)
                 ), SoundEnum.MINOR_LEVEL_UP);
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
     }
 }

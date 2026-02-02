@@ -1,6 +1,7 @@
 package org.leralix.tan.events.newsletter.news;
 
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
@@ -9,7 +10,6 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanPlayer;
@@ -46,15 +46,14 @@ public class TownDeletedNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
-        if (tanPlayer == null)
-            return null;
+        OfflinePlayer townDeleter = player.getServer().getOfflinePlayer(UUID.fromString(playerID));
+
 
         return IconManager.getInstance().get(IconKey.TOWN_BASE_ICON)
                 .setName(Lang.TOWN_DELETED_NEWSLETTER_TITLE.get(lang))
                 .setDescription(
                         Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
-                        Lang.TOWN_DELETED_NEWSLETTER.get(tanPlayer.getNameStored(), oldTownName),
+                        Lang.TOWN_DELETED_NEWSLETTER.get(townDeleter.getName(), oldTownName),
                         Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
                 )
                 .setAction(action -> {
@@ -83,16 +82,9 @@ public class TownDeletedNews extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
-        if (tanPlayer == null)
-            return;
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
+        OfflinePlayer townDeleter = player.getServer().getOfflinePlayer(UUID.fromString(playerID));
 
-        TanChatUtils.message(player, Lang.TOWN_DELETED_NEWSLETTER.get(player, tanPlayer.getNameStored(), oldTownName), SoundEnum.BAD);
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
+        TanChatUtils.message(player, Lang.TOWN_DELETED_NEWSLETTER.get(tanPlayer, townDeleter.getName(), oldTownName), SoundEnum.BAD);
     }
 }

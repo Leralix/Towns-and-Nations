@@ -63,17 +63,16 @@ public class DiplomacyProposalNews extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
-        if(proposingTerritory == null)
+        if (proposingTerritory == null)
             return;
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
-        if(receivingTerritory == null)
+        if (receivingTerritory == null)
             return;
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         TanChatUtils.message(player,
                 Lang.DIPLOMACY_PROPOSAL_NEWSLETTER.get(
-                        player,
+                        tanPlayer,
                         proposingTerritory.getCustomColoredName().toLegacyText(),
                         receivingTerritory.getCustomColoredName().toLegacyText(),
                         wantedRelation.getColoredName(tanPlayer.getLang())),
@@ -81,15 +80,10 @@ public class DiplomacyProposalNews extends Newsletter {
     }
 
     @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
-    }
-
-    @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
-        if(proposingTerritory == null || receivingTerritory == null)
+        if (proposingTerritory == null || receivingTerritory == null)
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.PAPER,
@@ -100,7 +94,7 @@ public class DiplomacyProposalNews extends Newsletter {
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
-            if(event.isRightClick()){
+            if (event.isRightClick()) {
                 markAsRead(player);
                 onClick.accept(player);
             }
@@ -111,9 +105,8 @@ public class DiplomacyProposalNews extends Newsletter {
     public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
-        if(proposingTerritory == null || receivingTerritory == null)
+        if (proposingTerritory == null || receivingTerritory == null)
             return null;
-
 
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.PAPER,
@@ -123,14 +116,14 @@ public class DiplomacyProposalNews extends Newsletter {
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
-            if(event.isLeftClick()){
-                if(receivingTerritory.doesPlayerHavePermission(player, RolePermission.MANAGE_TOWN_RELATION)){
+            if (event.isLeftClick()) {
+                if (receivingTerritory.doesPlayerHavePermission(player, RolePermission.MANAGE_TOWN_RELATION)) {
                     TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang), SoundEnum.NOT_ALLOWED);
                     return;
                 }
                 new OpenDiplomacyProposalsMenu(player, receivingTerritory);
             }
-            if(event.isRightClick()){
+            if (event.isRightClick()) {
                 markAsRead(player);
                 onClick.accept(player);
             }
@@ -141,10 +134,10 @@ public class DiplomacyProposalNews extends Newsletter {
     @Override
     public boolean shouldShowToPlayer(Player player) {
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
-        if(receivingTerritory == null)
+        if (receivingTerritory == null)
             return false;
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
-        if(proposingTerritory == null)
+        if (proposingTerritory == null)
             return false;
 
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);

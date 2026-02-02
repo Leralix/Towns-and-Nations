@@ -61,13 +61,13 @@ public class LandmarkClaimedChunk extends ClaimedChunk {
         }
 
 
-        TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.get(player));
+        TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.get(tanPlayer));
         return false;
     }
 
     @Override
-    protected void playerCantPerformAction(Player player) {
-        TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.get(player));
+    protected void playerCantPerformAction(Player player, LangType langType) {
+        TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.get(langType));
     }
 
 
@@ -75,11 +75,11 @@ public class LandmarkClaimedChunk extends ClaimedChunk {
         return LandmarkStorage.getInstance().get(ownerID);
     }
 
-    public void unclaimChunk(Player player) {
-        TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_LANDMARK_CHUNK.get(player));
+    public void unclaimChunk(Player player, LangType langType) {
+        TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_LANDMARK_CHUNK.get(langType));
     }
 
-    public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
+    public void playerEnterClaimedArea(Player player, ITanPlayer tanPlayer, boolean displayTerritoryColor) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.PLAYER_ENTER_LANDMARK_CHUNK.getDefault()));
     }
 
@@ -101,8 +101,8 @@ public class LandmarkClaimedChunk extends ClaimedChunk {
     }
 
     @Override
-    public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
-        TanChatUtils.message(player, Lang.CANNOT_CLAIM_LANDMARK.get(player));
+    public boolean canTerritoryClaim(Player player, TerritoryData territoryData, LangType langType) {
+        TanChatUtils.message(player, Lang.CANNOT_CLAIM_LANDMARK.get(langType));
         return false;
     }
 

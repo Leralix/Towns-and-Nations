@@ -17,7 +17,7 @@ class CreateRankTest extends BasicTest {
         assertEquals(1, townData.getAllRanks().size());
 
         CreateRank createRank = new CreateRank(townData, null);
-        createRank.execute(tanPlayer.getPlayer(), "TestRank");
+        createRank.execute(tanPlayer.getPlayer(), tanPlayer, "TestRank");
         assertEquals(2, townData.getAllRanks().size());
     }
 
@@ -29,9 +29,9 @@ class CreateRankTest extends BasicTest {
 
         assertEquals(1, townData.getAllRanks().size());
         CreateRank createRank = new CreateRank(townData, null);
-        createRank.execute(tanPlayer.getPlayer(), newRankName);
+        createRank.execute(tanPlayer.getPlayer(), tanPlayer, newRankName);
         assertEquals(2, townData.getAllRanks().size());
-        createRank.execute(tanPlayer.getPlayer(), newRankName);
+        createRank.execute(tanPlayer.getPlayer(), tanPlayer, newRankName);
         assertEquals(2, townData.getAllRanks().size());
     }
 

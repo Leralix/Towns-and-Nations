@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
@@ -28,16 +29,16 @@ public class SelectNbChunksForConquer extends ChatListenerEvent {
     }
 
     @Override
-    protected boolean execute(Player player, String message) {
+    protected boolean execute(Player player, ITanPlayer playerData, String message) {
         Integer amount = parseStringToInt(message);
         if (amount == null) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(player));
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(playerData));
             return false;
         }
 
         int maxAmountOfChunkToCapture = Constants.getNbChunkToCaptureMax();
         if (amount > maxAmountOfChunkToCapture) {
-            TanChatUtils.message(player, Lang.VALUE_EXCEED_MAXIMUM_ERROR.get(player, Integer.toString(maxAmountOfChunkToCapture)));
+            TanChatUtils.message(player, Lang.VALUE_EXCEED_MAXIMUM_ERROR.get(playerData, Integer.toString(maxAmountOfChunkToCapture)));
             return false;
         }
 

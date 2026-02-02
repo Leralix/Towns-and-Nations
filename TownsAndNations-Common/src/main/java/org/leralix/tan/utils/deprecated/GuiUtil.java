@@ -39,12 +39,16 @@ public class GuiUtil {
                 .create();
     }
 
-    public static GuiItem createBackArrow(Player player, Consumer<Player> openMenuAction) {
-        ItemStack getBackArrow = HeadUtils.createCustomItemStack(Material.ARROW, Lang.GUI_BACK_ARROW.get(player));
-        return ItemBuilder.from(getBackArrow).asGuiItem(event -> {
-            event.setCancelled(true);
-            openMenuAction.accept(player);
-        });
+    public static GuiItem createBackArrow(Player player, Consumer<Player> openMenuAction, LangType langType) {
+
+        return IconManager.getInstance().get(Material.ARROW)
+                .setName(Lang.GUI_BACK_ARROW.get(langType))
+                .setAction(event -> {
+                    event.setCancelled(true);
+                    openMenuAction.accept(player);
+                })
+                .asGuiItem(player, langType);
+
     }
 
     public static GuiItem getUnnamedItem(Material material) {
@@ -125,7 +129,7 @@ public class GuiUtil {
 
         int lastRow = gui.getRows();
 
-        gui.setItem(lastRow, 1, GuiUtil.createBackArrow(player, backArrowAction));
+        gui.setItem(lastRow, 1, GuiUtil.createBackArrow(player, backArrowAction, tanPlayer.getLang()));
 
         gui.setItem(lastRow, 7, IconManager.getInstance().get(IconKey.PREVIOUS_PAGE_ICON)
                 .setName(Lang.GUI_PREVIOUS_PAGE.get(tanPlayer))

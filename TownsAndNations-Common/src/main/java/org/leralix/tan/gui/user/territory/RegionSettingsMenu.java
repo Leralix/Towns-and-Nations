@@ -52,7 +52,7 @@ public class RegionSettingsMenu extends SettingsMenus {
         gui.setItem(2, 7, getChangeOwnershipButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new RegionMenu(player, regionData)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new RegionMenu(player, regionData), langType));
 
         gui.open(player);
     }

@@ -45,7 +45,7 @@ class OtherPlayerTownNameTest extends BasicTest {
 
         String name = entry.getData(player, "player_{player name}_town_name");
 
-        assertEquals(Lang.NO_TOWN.get(player), name);
+        assertEquals(Lang.NO_TOWN.get(langType), name);
     }
 
 }

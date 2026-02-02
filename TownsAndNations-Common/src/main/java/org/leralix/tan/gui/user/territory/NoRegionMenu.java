@@ -31,7 +31,7 @@ public class NoRegionMenu extends BasicGui {
 
         gui.setItem(2, 3, getCreateRegionButton());
         gui.setItem(2, 7, getBrowseRegionsButton());
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(player), langType));
 
         gui.open(player);
     }
@@ -61,7 +61,7 @@ public class NoRegionMenu extends BasicGui {
                         TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), Double.toString(regionCost - townMoney)));
                     } else {
                         TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(tanPlayer));
-                        PlayerChatListenerStorage.register(player, new CreateRegion(regionCost));
+                        PlayerChatListenerStorage.register(player, langType, new CreateRegion(regionCost));
                     }
                 }).asGuiItem(player, langType);
     }

@@ -32,7 +32,7 @@ public class TerritoryChunkGeneralSettings extends IteratorGUI {
     public void open() {
         iterator(getSettings(), p -> new ChunkSettingsMenu(player, territoryData));
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new ChunkSettingsMenu(player, territoryData)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new ChunkSettingsMenu(player, territoryData), langType));
         gui.open(player);
     }
 

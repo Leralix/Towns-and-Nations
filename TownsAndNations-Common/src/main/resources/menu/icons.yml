@@ -33,6 +33,8 @@ HELP_TRANSLATION_ICON: "https://textures.minecraft.net/texture/b04831f7a7d8f624c
 #Newsletter menu
 MARK_ALL_AS_READ_ICON: "minecraft:BOOK"
 CHANGE_NEWSLETTER_SCOPE_ICON: "minecraft:NAME_TAG"
+#Newsletter icons
+NEWSLETTER_PLAYER_JOIN_TOWN_ICON: "https://textures.minecraft.net/texture/16338322d26c6a7c08fb9fd22959a136728fa2d4dccd22b1563eb1bbaa1d5471"
 #Town menu - Player with no town
 CREATE_TOWN_ICON: "minecraft:GRASS_BLOCK"
 BROWSE_TOWN_ICON: "minecraft:ANVIL"

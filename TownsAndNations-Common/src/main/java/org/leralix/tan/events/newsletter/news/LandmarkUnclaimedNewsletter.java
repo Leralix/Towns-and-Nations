@@ -4,6 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.building.landmark.Landmark;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -50,7 +51,7 @@ public class LandmarkUnclaimedNewsletter extends Newsletter {
         TerritoryData oldOwner = TerritoryUtil.getTerritory(oldOwnerID);
         Landmark landmark = LandmarkStorage.getInstance().get(landmarkID);
 
-        if(landmark == null || oldOwner == null){
+        if (landmark == null || oldOwner == null) {
             return null;
         }
 
@@ -62,7 +63,7 @@ public class LandmarkUnclaimedNewsletter extends Newsletter {
                 )
                 .setAction(event -> {
                     event.setCancelled(true);
-                    if(event.isRightClick()){
+                    if (event.isRightClick()) {
                         markAsRead(player);
                         onClick.accept(player);
                     }
@@ -78,7 +79,7 @@ public class LandmarkUnclaimedNewsletter extends Newsletter {
     @Override
     public boolean shouldShowToPlayer(Player player) {
         TerritoryData territoryData = TerritoryUtil.getTerritory(oldOwnerID);
-        if(territoryData == null) return false;
+        if (territoryData == null) return false;
         return territoryData.isPlayerIn(player);
     }
 
@@ -88,15 +89,9 @@ public class LandmarkUnclaimedNewsletter extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
         TerritoryData oldOwner = TerritoryUtil.getTerritory(oldOwnerID);
         Landmark landmark = LandmarkStorage.getInstance().get(landmarkID);
-        Lang.LANDMARK_UNCLAIMED_NEWSLETTER.get(player, oldOwner.getColoredName(), landmark.getName());
-
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
+        Lang.LANDMARK_UNCLAIMED_NEWSLETTER.get(tanPlayer, oldOwner.getColoredName(), landmark.getName());
     }
 }

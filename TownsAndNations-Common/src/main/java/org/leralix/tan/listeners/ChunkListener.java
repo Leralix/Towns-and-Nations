@@ -35,6 +35,12 @@ import org.leralix.tan.war.info.SideStatus;
 
 public class ChunkListener implements Listener {
 
+    private final PlayerDataStorage playerDataStorage;
+
+    public ChunkListener(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
 
@@ -339,8 +345,8 @@ public class ChunkListener implements Listener {
             return false;
         }
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(aggressor);
-        ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(receiver);
+        ITanPlayer tanPlayer = playerDataStorage.get(aggressor);
+        ITanPlayer tanPlayer2 = playerDataStorage.get(receiver);
         TownRelation relation = tanPlayer.getRelationWithPlayer(tanPlayer2);
 
         return Constants.getRelationConstants(relation).canPvP();
@@ -529,14 +535,15 @@ public class ChunkListener implements Listener {
             return true;
 
         ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
 
-        // Check if player is involved in a war with this territory. Additional actions may be authorized
+        // Check if a player is involved in a war with this territory. Additional actions may be authorized
         if (claimedChunk instanceof TerritoryChunk territoryChunk) {
             SideStatus side = tanPlayer.getWarSideWith(territoryChunk.getOwnerInternal());
-            if (side == SideStatus.ALLY && Constants.getPermissionAtWars().canAllyDoAction(permissionType)) {
-                return true;
-            } else if (side == SideStatus.ENEMY && Constants.getPermissionAtWars().canEnemyDoAction(permissionType)) {
+            if (
+                    (side == SideStatus.ALLY && Constants.getPermissionAtWars().canAllyDoAction(permissionType)) ||
+                    (side == SideStatus.ENEMY && Constants.getPermissionAtWars().canEnemyDoAction(permissionType))
+            ) {
                 return true;
             }
         }

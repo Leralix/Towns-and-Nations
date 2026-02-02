@@ -63,7 +63,7 @@ public class TerritoryRanksMenu extends IteratorGUI {
                         return;
                     }
                     TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(tanPlayer));
-                    PlayerChatListenerStorage.register(player, new CreateRank(territoryData, p -> new TerritoryRanksMenu(player, territoryData).open()));
+                    PlayerChatListenerStorage.register(player, langType, new CreateRank(territoryData, p -> new TerritoryRanksMenu(player, territoryData).open()));
                 })
                 .asGuiItem(player, langType);
     }

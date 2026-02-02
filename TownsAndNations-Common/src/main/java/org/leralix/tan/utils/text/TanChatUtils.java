@@ -4,8 +4,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 /**
  * This class is used for chat related utilities.
@@ -28,7 +30,8 @@ public class TanChatUtils {
         }
 
         if (commandSender instanceof Player player) {
-            message(player, message.get(player), soundEnum);
+            ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
+            message(player, message.get(playerData), soundEnum);
         }
         commandSender.sendMessage(message.getDefault());
     }

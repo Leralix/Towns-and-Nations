@@ -59,31 +59,6 @@ public class PlayerDataStorage extends JsonStorage<ITanPlayer> {
         return get(playerID.toString());
     }
 
-    public ITanPlayer getOrNull(String id) {
-        if (id == null) {
-            return null;
-        }
-
-        ITanPlayer res = dataMap.get(id);
-        if (res != null) {
-            return res;
-        }
-
-        UUID uuid;
-        try {
-            uuid = UUID.fromString(id);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-
-        Player newPlayer = Bukkit.getPlayer(uuid);
-        if (newPlayer != null) {
-            return register(newPlayer);
-        }
-
-        return null;
-    }
-
     @Override
     public ITanPlayer get(String id){
 

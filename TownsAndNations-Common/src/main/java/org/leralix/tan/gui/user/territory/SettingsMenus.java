@@ -64,7 +64,7 @@ public abstract class SettingsMenus extends BasicGui {
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(action -> {
                     TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(tanPlayer));
-                    PlayerChatListenerStorage.register(player, new ChangeTerritoryName(territoryData, cost, p -> open()));
+                    PlayerChatListenerStorage.register(player, langType, new ChangeTerritoryName(territoryData, cost, p -> open()));
                 })
                 .asGuiItem(player, langType);
     }
@@ -77,7 +77,7 @@ public abstract class SettingsMenus extends BasicGui {
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(action -> {
                     TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(tanPlayer));
-                    PlayerChatListenerStorage.register(player, new ChangeTerritoryDescription(territoryData, p -> open()));
+                    PlayerChatListenerStorage.register(player, langType, new ChangeTerritoryDescription(territoryData, p -> open()));
                 })
                 .asGuiItem(player, langType);
     }
@@ -93,7 +93,7 @@ public abstract class SettingsMenus extends BasicGui {
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(action -> {
                     TanChatUtils.message(player, Lang.GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT.get(tanPlayer));
-                    PlayerChatListenerStorage.register(player, new ChangeColor(territoryData, p -> open()));
+                    PlayerChatListenerStorage.register(player, langType, new ChangeColor(territoryData, p -> open()));
                 })
                 .asGuiItem(player, langType);
     }

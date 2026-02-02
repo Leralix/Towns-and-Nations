@@ -44,7 +44,7 @@ public class ChooseWarGoal extends BasicGui {
         gui.setItem(2, 7, getSubjugateButton());
         gui.setItem(2, 8, getLiberateButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> returnGui.open()));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> returnGui.open(), langType));
 
         gui.open(player);
     }
@@ -70,7 +70,7 @@ public class ChooseWarGoal extends BasicGui {
                                 return;
                             }
                             TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
-                            PlayerChatListenerStorage.register(player, new SelectNbChunksForConquer(war, warRole, returnGui));
+                            PlayerChatListenerStorage.register(player, langType, new SelectNbChunksForConquer(war, warRole, returnGui));
                         }
                 )
                 .asGuiItem(player, langType);

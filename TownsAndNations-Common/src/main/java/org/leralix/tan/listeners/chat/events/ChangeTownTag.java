@@ -1,6 +1,7 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
@@ -21,11 +22,12 @@ public class ChangeTownTag extends ChatListenerEvent {
     }
 
     @Override
-    public boolean execute(Player player, String message) {
+    public boolean execute(Player player, ITanPlayer playerData, String message) {
 
         Range prefixRange = Constants.getPrefixSize();
         if(!prefixRange.isValueIn(message.length())){
-            TanChatUtils.message(player, Lang.MESSAGE_NOT_RIGHT_SIZE.get(player,
+            TanChatUtils.message(player, Lang.MESSAGE_NOT_RIGHT_SIZE.get(
+                    playerData,
                     Integer.toString(prefixRange.getMinVal()),
                     Integer.toString(prefixRange.getMaxVal())
             ));
@@ -33,7 +35,7 @@ public class ChangeTownTag extends ChatListenerEvent {
         }
 
         townData.setTownTag(message);
-        TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(player));
+        TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(playerData));
         openGui(guiCallback, player);
         return true;
     }

@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
@@ -89,16 +90,14 @@ public class AttackCancelledByDefenderNewsletter extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
         TerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
         TerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
         if (attackingTerritory == null || defendingTerritory == null)
             return;
-        TanChatUtils.message(player, Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(player, defendingTerritory.getColoredName(), attackingTerritory.getColoredName()), SoundEnum.WAR);
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
+        TanChatUtils.message(player, Lang.DEFENSIVE_SIDE_HAS_SURRENDER.get(
+                defendingTerritory.getColoredName(),
+                attackingTerritory.getColoredName()
+        ), SoundEnum.WAR);
     }
 }

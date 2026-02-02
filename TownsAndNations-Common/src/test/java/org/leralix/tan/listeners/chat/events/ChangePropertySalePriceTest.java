@@ -28,6 +28,7 @@ import static org.mockito.Mockito.mockStatic;
 class ChangePropertySalePriceTest extends BasicTest {
 
     private Player player;
+    private ITanPlayer tanPlayer;
     private PropertyData propertyData;
     private MockedStatic<ItemStackSerializer> mockedSerializer;
     private TownsAndNations townsAndNations;
@@ -56,7 +57,7 @@ class ChangePropertySalePriceTest extends BasicTest {
 
         player = server.addPlayer();
         World world = server.addSimpleWorld("world");
-        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
+        tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
         TownData townData = TownDataStorage.getInstance().newTown("town 1");
 
         propertyData = townData.registerNewProperty(
@@ -78,7 +79,7 @@ class ChangePropertySalePriceTest extends BasicTest {
 
         ChangePropertySalePrice changePropertySalePrice = new ChangePropertySalePrice(propertyData, null);
 
-        changePropertySalePrice.execute(player, "1000");
+        changePropertySalePrice.execute(player, tanPlayer, "1000");
 
         assertEquals(1000, propertyData.getPrice());
     }
@@ -88,7 +89,7 @@ class ChangePropertySalePriceTest extends BasicTest {
 
         ChangePropertySalePrice changePropertySalePrice = new ChangePropertySalePrice(propertyData, null);
 
-        changePropertySalePrice.execute(player, "1%");
+        changePropertySalePrice.execute(player, tanPlayer, "1%");
 
         assertEquals(0, propertyData.getRentPrice());
     }

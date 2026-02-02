@@ -49,7 +49,7 @@ public class AdminLandmarksMenu extends IteratorGUI {
                     ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getBlock().getChunk());
 
                     if (claimedChunk instanceof LandmarkClaimedChunk) {
-                        TanChatUtils.message(player, Lang.ADMIN_CHUNK_ALREADY_LANDMARK.get(player));
+                        TanChatUtils.message(player, Lang.ADMIN_CHUNK_ALREADY_LANDMARK.get(langType));
                         return;
                     }
                     Landmark newLandmark = LandmarkStorage.getInstance().addLandmark(player.getLocation());

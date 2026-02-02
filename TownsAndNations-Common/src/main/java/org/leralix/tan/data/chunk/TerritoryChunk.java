@@ -91,17 +91,17 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
     }
 
     @Override
-    protected void playerCantPerformAction(Player player){
-        TanChatUtils.message(player, Lang.PLAYER_ACTION_NO_PERMISSION.get(player));
-        TanChatUtils.message(player, Lang.CHUNK_BELONGS_TO.get(player, getOwner().getName()));
+    protected void playerCantPerformAction(Player player, LangType langType){
+        TanChatUtils.message(player, Lang.PLAYER_ACTION_NO_PERMISSION.get());
+        TanChatUtils.message(player, Lang.CHUNK_BELONGS_TO.get(getOwner().getName()));
     }
 
     @Override
-    public boolean canTerritoryClaim(Player player, TerritoryData territoryData) {
+    public boolean canTerritoryClaim(Player player, TerritoryData territoryData, LangType langType) {
         if(canTerritoryClaim(territoryData)) {
             return true;
         }
-        TanChatUtils.message(player, Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(player, getOwner().getColoredName()));
+        TanChatUtils.message(player, Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName()));
         return false;
     }
 
@@ -114,14 +114,13 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
     public abstract boolean canTerritoryClaim(TerritoryData territoryData);
 
     @Override
-    public void playerEnterClaimedArea(Player player, boolean displayTerritoryColor) {
+    public void playerEnterClaimedArea(Player player, ITanPlayer tanPlayer, boolean displayTerritoryColor) {
         TanTerritory ownerTerritory = getOwner();
 
         TerritoryData territoryData = TerritoryUtil.getTerritory(ownerTerritory.getID());
 
-        TerritoryEnterMessageUtil.sendEnterTerritoryMessage(player, territoryData, displayTerritoryColor);
+        TerritoryEnterMessageUtil.sendEnterTerritoryMessage(player, territoryData, displayTerritoryColor, tanPlayer.getLang());
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         TownData playerTown = tanPlayer.getTown();
         if (playerTown == null) {
             return;
@@ -164,12 +163,13 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
     /**
      * Called when a player wants to unclaim a chunk
      * Will verify if the player is allowed to unclaim it, and if so, unclaim.
-     * @param player the player trying to unclaim this chunk
+     *
+     * @param player    the player trying to unclaim this chunk
+     * @param langType  the display language for all messages sent to the player
      */
-    public void unclaimChunk(Player player) {
+    public void unclaimChunk(Player player, LangType langType) {
 
         ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player);
-        LangType langType = playerStat.getLang();
 
         TerritoryData ownerTerritory = getOwnerInternal();
 
@@ -209,12 +209,12 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
 
             ChunkCap chunkCap = ownerTerritory.getNewLevel().getStat(ChunkCap.class);
             if(chunkCap.isUnlimited()){
-                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(player, ownerTerritory.getColoredName()));
+                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(ownerTerritory.getColoredName()));
             }
             else {
                 String currentChunks = Integer.toString(ownerTerritory.getNumberOfClaimedChunk());
                 String maxChunks = Integer.toString(chunkCap.getMaxAmount());
-                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(player, ownerTerritory.getColoredName(), currentChunks, maxChunks));
+                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(ownerTerritory.getColoredName(), currentChunks, maxChunks));
             }
         }
         else {
@@ -321,7 +321,7 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
         if (chunkPermission.isAllowed(territoryOfChunk, tanPlayer))
             return true;
 
-        playerCantPerformAction(player);
+        playerCantPerformAction(player, tanPlayer.getLang());
         return false;
     }
 

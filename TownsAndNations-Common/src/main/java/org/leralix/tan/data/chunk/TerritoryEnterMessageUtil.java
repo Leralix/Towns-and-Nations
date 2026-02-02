@@ -6,6 +6,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 
 public final class TerritoryEnterMessageUtil {
 
@@ -13,12 +14,12 @@ public final class TerritoryEnterMessageUtil {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void sendEnterTerritoryMessage(Player player, TerritoryData territoryData, boolean displayTerritoryColor) {
+    public static void sendEnterTerritoryMessage(Player player, TerritoryData territoryData, boolean displayTerritoryColor, LangType langType) {
         TextComponent name = displayTerritoryColor
                 ? territoryData.getCustomColoredName()
                 : new TextComponent(territoryData.getColoredName());
 
-        String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(player, name.toLegacyText());
+        String message = Lang.PLAYER_ENTER_TERRITORY_CHUNK.get(langType, name.toLegacyText());
         player.sendTitle("", message, 5, 40, 20);
 
         TextComponent textComponent = new TextComponent(territoryData.getDescription());

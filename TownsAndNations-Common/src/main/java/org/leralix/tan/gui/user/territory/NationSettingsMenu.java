@@ -45,7 +45,7 @@ public class NationSettingsMenu extends SettingsMenus {
         gui.setItem(2, 7, getChangeCapitalButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new NationMenu(player, nationData)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new NationMenu(player, nationData), langType));
 
         gui.open(player);
     }
