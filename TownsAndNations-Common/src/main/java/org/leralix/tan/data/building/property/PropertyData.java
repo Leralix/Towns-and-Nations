@@ -57,6 +57,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class PropertyData extends Building implements TanProperty {
+
+    private static final String PROPERTY_SIGN_METADATA = "propertySign";
+
     private final String ID;
     /**
      * Owner of the property
@@ -432,8 +435,8 @@ public class PropertyData extends Building implements TanProperty {
         Block signBlock = signLocation.getLocation().getBlock();
         signBlock.setType(org.bukkit.Material.AIR);
 
-        TANCustomNBT.removeBockMetaData(signBlock, "propertySign");
-        TANCustomNBT.removeBockMetaData(supportLocation.getLocation().getBlock(), "propertySign");
+        TANCustomNBT.removeBockMetaData(signBlock, PROPERTY_SIGN_METADATA);
+        TANCustomNBT.removeBockMetaData(supportLocation.getLocation().getBlock(), PROPERTY_SIGN_METADATA);
 
         world.spawnParticle(Particle.BUBBLE_POP, signBlock.getLocation(), 5);
     }
@@ -545,8 +548,8 @@ public class PropertyData extends Building implements TanProperty {
     }
 
     public void setSignData() {
-        TANCustomNBT.setBockMetaData(signLocation.getLocation().getBlock(), "propertySign", getTotalID());
-        TANCustomNBT.setBockMetaData(supportLocation.getLocation().getBlock(), "propertySign", getTotalID());
+        TANCustomNBT.setBockMetaData(signLocation.getLocation().getBlock(), PROPERTY_SIGN_METADATA, getTotalID());
+        TANCustomNBT.setBockMetaData(supportLocation.getLocation().getBlock(), PROPERTY_SIGN_METADATA, getTotalID());
     }
 
     public void createPropertySign(Player player, Block block, BlockFace blockFace) {
@@ -573,8 +576,8 @@ public class PropertyData extends Building implements TanProperty {
         sign.update();
 
         // Ajout des métadonnées aux blocs
-        block.setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), getTotalID()));
-        sign.getBlock().setMetadata("propertySign", new FixedMetadataValue(TownsAndNations.getPlugin(), getTotalID()));
+        block.setMetadata(PROPERTY_SIGN_METADATA, new FixedMetadataValue(TownsAndNations.getPlugin(), getTotalID()));
+        sign.getBlock().setMetadata(PROPERTY_SIGN_METADATA, new FixedMetadataValue(TownsAndNations.getPlugin(), getTotalID()));
 
         this.signLocation = new Vector3D(selectedSignLocation);
         this.supportLocation = new Vector3D(block.getLocation());

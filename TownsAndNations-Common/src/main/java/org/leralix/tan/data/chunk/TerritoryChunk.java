@@ -67,12 +67,12 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
         this.occupierID = owner;
     }
 
-    public TerritoryData getOwnerInternal(){
+    public TerritoryData getOwnerInternal() {
         return TerritoryUtil.getTerritory(ownerID);
     }
 
     @Override
-    public TanTerritory getOwner(){
+    public TanTerritory getOwner() {
         return TerritoryUtil.getTerritory(ownerID);
     }
 
@@ -81,24 +81,24 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
         return ownerID;
     }
 
-    public TerritoryData getOccupierInternal(){
+    public TerritoryData getOccupierInternal() {
         return TerritoryUtil.getTerritory(occupierID);
     }
 
     @Override
-    public TanTerritory getOccupier(){
+    public TanTerritory getOccupier() {
         return TerritoryUtil.getTerritory(occupierID);
     }
 
     @Override
-    protected void playerCantPerformAction(Player player, LangType langType){
+    protected void playerCantPerformAction(Player player, LangType langType) {
         TanChatUtils.message(player, Lang.PLAYER_ACTION_NO_PERMISSION.get());
         TanChatUtils.message(player, Lang.CHUNK_BELONGS_TO.get(getOwner().getName()));
     }
 
     @Override
     public boolean canTerritoryClaim(Player player, TerritoryData territoryData, LangType langType) {
-        if(canTerritoryClaim(territoryData)) {
+        if (canTerritoryClaim(territoryData)) {
             return true;
         }
         TanChatUtils.message(player, Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName()));
@@ -138,15 +138,14 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
 
         TextComponent textComponent;
         String text;
-        if(isOccupied()){
+        if (isOccupied()) {
             textComponent = new TextComponent("🟧");
             textComponent.setColor(ChatColor.valueOf(getOccupier().getChunkColorInHex()));
             text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
                     getOwner().getColoredName() + "\n" +
                     getOccupier().getColoredName() + "\n" +
                     Lang.LEFT_CLICK_TO_CLAIM.get(langType);
-        }
-        else {
+        } else {
             textComponent = new TextComponent("⬛");
             textComponent.setColor(ChatColor.valueOf(getOwner().getChunkColorInHex()));
             text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
@@ -164,8 +163,8 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
      * Called when a player wants to unclaim a chunk
      * Will verify if the player is allowed to unclaim it, and if so, unclaim.
      *
-     * @param player    the player trying to unclaim this chunk
-     * @param langType  the display language for all messages sent to the player
+     * @param player   the player trying to unclaim this chunk
+     * @param langType the display language for all messages sent to the player
      */
     public void unclaimChunk(Player player, LangType langType) {
 
@@ -174,13 +173,13 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
         TerritoryData ownerTerritory = getOwnerInternal();
 
         //If owner territory contains the player, regular check
-        if(ownerTerritory.isPlayerIn(player)){
+        if (ownerTerritory.isPlayerIn(player)) {
             if (!ownerTerritory.checkPlayerPermission(playerStat, TerritoryPermission.UNCLAIM_CHUNK)) {
                 TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), SoundEnum.NOT_ALLOWED);
                 return;
             }
 
-            if(ownerTerritory instanceof TownData ownerTown){
+            if (ownerTerritory instanceof TownData ownerTown) {
                 for (PropertyData propertyData : ownerTown.getPropertiesInternal()) {
                     if (propertyData.isInChunk(this)) {
                         TanChatUtils.message(player, Lang.PROPERTY_IN_CHUNK.get(langType, propertyData.getName()));
@@ -194,47 +193,47 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
                 return;
             }
 
-            if(isOccupied()){
+            if (isOccupied()) {
                 TanChatUtils.message(player, Lang.CHUNK_OCCUPIED_CANT_UNCLAIM.get(langType));
                 return;
             }
-            if (Constants.preventOrphanChunks() && !Constants.allowNonAdjacentChunksFor(ownerTerritory)) {
-                if (ChunkUtil.doesUnclaimCauseOrphan(this)) {
-                    TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_BECAUSE_CREATE_ORPHAN.get(langType));
-                    return;
-                }
+            if (Constants.preventOrphanChunks() &&
+                    !Constants.allowNonAdjacentChunksFor(ownerTerritory) &&
+                    ChunkUtil.doesUnclaimCauseOrphan(this)
+            ) {
+                TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_BECAUSE_CREATE_ORPHAN.get(langType));
+                return;
             }
+
 
             NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
 
             ChunkCap chunkCap = ownerTerritory.getNewLevel().getStat(ChunkCap.class);
-            if(chunkCap.isUnlimited()){
+            if (chunkCap.isUnlimited()) {
                 TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(ownerTerritory.getColoredName()));
-            }
-            else {
+            } else {
                 String currentChunks = Integer.toString(ownerTerritory.getNumberOfClaimedChunk());
                 String maxChunks = Integer.toString(chunkCap.getMaxAmount());
                 TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(ownerTerritory.getColoredName(), currentChunks, maxChunks));
             }
-        }
-        else {
+        } else {
             // Special case: one of the player's territories can conquer chunks due to a past war.
-            for(TerritoryData territoryData : playerStat.getAllTerritoriesPlayerIsIn()){
-                if(territoryData.canConquerChunk(this)){
+            for (TerritoryData territoryData : playerStat.getAllTerritoriesPlayerIsIn()) {
+                if (territoryData.canConquerChunk(this)) {
 
-                    if(isOccupied()){
+                    if (isOccupied()) {
                         TanChatUtils.message(player, Lang.CHUNK_OCCUPIED_CANT_UNCLAIM.get(langType));
                         return;
                     }
 
-                    if(
-                            Constants.preventOrphanChunks() && !Constants.allowNonAdjacentChunksFor(ownerTerritory)
+                    if (Constants.preventOrphanChunks() &&
+                            !Constants.allowNonAdjacentChunksFor(ownerTerritory) &&
+                            ChunkUtil.doesUnclaimCauseOrphan(this)
                     ) {
-                        if (ChunkUtil.doesUnclaimCauseOrphan(this)) {
-                            TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_BECAUSE_CREATE_ORPHAN.get(langType));
-                            return;
-                        }
+                        TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_BECAUSE_CREATE_ORPHAN.get(langType));
+                        return;
                     }
+
 
                     NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
                     TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(langType, ownerTerritory.getColoredName()), SoundEnum.MINOR_GOOD);
@@ -258,7 +257,7 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
 
 
     public String getOccupierID() {
-        if(occupierID == null) {
+        if (occupierID == null) {
             occupierID = ownerID;
         }
         return occupierID;
@@ -313,7 +312,7 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
         var defaultPermission = (territoryOfChunk instanceof TownData)
                 ? Constants.getChunkPermissionConfig().getTownPermission(permissionType)
                 : Constants.getChunkPermissionConfig().getRegionPermission(permissionType);
-        if(defaultPermission.isLocked()){
+        if (defaultPermission.isLocked()) {
             return defaultPermission.defaultRelation().isAllowed(territoryOfChunk, tanPlayer);
         }
 
@@ -327,13 +326,14 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
 
     /**
      * Defines if this territory can bypass buffer zone restrictions and claim a chunk in the radius of the buffer zone
-      * @param territoryToAllow The territory wishing to claim a chunk in the buffer zone
+     *
+     * @param territoryToAllow The territory wishing to claim a chunk in the buffer zone
      * @return True if the territory can bypass buffer zone restrictions, false otherwise
      */
     public boolean canBypassBufferZone(TerritoryData territoryToAllow) {
 
         // This chunks is held by the same territory
-        if(ownerID.equals(territoryToAllow.getID())){
+        if (ownerID.equals(territoryToAllow.getID())) {
             return true;
         }
 

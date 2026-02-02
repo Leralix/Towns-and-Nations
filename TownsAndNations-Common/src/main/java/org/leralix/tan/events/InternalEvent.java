@@ -8,7 +8,7 @@ public abstract class InternalEvent implements TanEvent {
 
     private final Instant timestamp;
 
-    public InternalEvent() {
+    protected InternalEvent() {
         this.timestamp = Instant.now();
     }
 

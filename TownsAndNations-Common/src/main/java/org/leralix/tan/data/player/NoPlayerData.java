@@ -281,5 +281,6 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public void setNationRankID(Integer rankID) {
+        // singleton class, no need to set name
     }
 }

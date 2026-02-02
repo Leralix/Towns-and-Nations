@@ -30,6 +30,8 @@ import java.util.Optional;
  */
 public class TANCustomNBT {
 
+    private static final String PROPERTY_SIGN_METADATA = "propertySign";
+
     private TANCustomNBT() {
         throw new IllegalStateException("Utility class");
     }
@@ -127,8 +129,8 @@ public class TANCustomNBT {
                     Location blockBeneathLocation = block.getLocation().add(0,-1,0);
                     Block blockBeneath = blockBeneathLocation.getWorld().getBlockAt(blockBeneathLocation);
 
-                    setBockMetaData(block, "propertySign", propertyData.getTotalID());
-                    setBockMetaData(blockBeneath, "propertySign", propertyData.getTotalID());
+                    setBockMetaData(block, PROPERTY_SIGN_METADATA, propertyData.getTotalID());
+                    setBockMetaData(blockBeneath, PROPERTY_SIGN_METADATA, propertyData.getTotalID());
                 } else {
                     iterator.remove();
                 }

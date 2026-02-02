@@ -35,6 +35,8 @@ import org.leralix.tan.war.info.SideStatus;
 
 public class ChunkListener implements Listener {
 
+    private static final String PROPERTY_SIGN_METADATA = "propertySign";
+
     private final PlayerDataStorage playerDataStorage;
 
     public ChunkListener(PlayerDataStorage playerDataStorage) {
@@ -49,7 +51,7 @@ public class ChunkListener implements Listener {
         Location loc = breakedBlock.getLocation();
 
         //Check if the block is a property sign
-        if (breakedBlock.hasMetadata("propertySign")) {
+        if (breakedBlock.hasMetadata(PROPERTY_SIGN_METADATA)) {
             event.setCancelled(true);
             return;
         }
@@ -103,7 +105,7 @@ public class ChunkListener implements Listener {
         //Check if the block is a property sign
         if (block.getType() == Material.OAK_SIGN) {
             Sign sign = (Sign) block.getState();
-            if (sign.hasMetadata("propertySign")) {
+            if (sign.hasMetadata(PROPERTY_SIGN_METADATA)) {
                 event.setCancelled(true);
                 return;
             }

@@ -28,6 +28,8 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 public class PropertySignListener implements Listener {
 
+    private static final String PROPERTY_SIGN_METADATA = "propertySign";
+
     private final PlayerDataStorage playerDataStorage;
 
     public PropertySignListener(PlayerDataStorage playerDataStorage) {
@@ -44,9 +46,9 @@ public class PropertySignListener implements Listener {
                 (clickedBlock.getType() == Material.OAK_SIGN || clickedBlock.getType() == Material.OAK_WALL_SIGN)) {
 
             Sign sign = (Sign) clickedBlock.getState();
-            if (sign.hasMetadata("propertySign")) {
+            if (sign.hasMetadata(PROPERTY_SIGN_METADATA)) {
                 event.setCancelled(true);
-                for (MetadataValue value : sign.getMetadata("propertySign")) {
+                for (MetadataValue value : sign.getMetadata(PROPERTY_SIGN_METADATA)) {
                     String customData = value.asString();
                     String[] ids = customData.split("_");
                     PropertyData propertyData = TownDataStorage.getInstance().get(ids[0]).getProperty(ids[1]);

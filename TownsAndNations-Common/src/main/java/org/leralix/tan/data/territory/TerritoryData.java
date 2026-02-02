@@ -720,6 +720,9 @@ public abstract class TerritoryData implements TanTerritory {
 
     public abstract Set<String> getVassalsID();
 
+    /**
+     * @return The list of vassals as TerritoryData
+     */
     public List<TerritoryData> getVassalsInternal() {
         List<TerritoryData> res = new ArrayList<>();
         for (String vassalID : getVassalsID()) {

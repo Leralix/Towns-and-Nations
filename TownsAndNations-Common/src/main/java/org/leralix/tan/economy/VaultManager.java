@@ -12,6 +12,10 @@ import java.util.logging.Logger;
 
 public class VaultManager {
 
+    private VaultManager(){
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void setupVault() {
         AbstractTanEcon tanEcon;
         Logger logger = Bukkit.getLogger();

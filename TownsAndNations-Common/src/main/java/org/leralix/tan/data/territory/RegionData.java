@@ -88,11 +88,11 @@ public class RegionData extends TerritoryData implements TanRegion {
 
     @Override
     public Collection<ITanPlayer> getITanPlayerList() {
-        ArrayList<ITanPlayer> ITanPlayerList = new ArrayList<>();
+        ArrayList<ITanPlayer> tanPlayerList = new ArrayList<>();
         for (UUID playerID : getPlayerIDList()) {
-            ITanPlayerList.add(PlayerDataStorage.getInstance().get(playerID));
+            tanPlayerList.add(PlayerDataStorage.getInstance().get(playerID));
         }
-        return ITanPlayerList;
+        return tanPlayerList;
     }
 
 

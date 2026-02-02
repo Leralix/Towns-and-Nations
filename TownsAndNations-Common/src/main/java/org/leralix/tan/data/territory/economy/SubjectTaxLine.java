@@ -9,9 +9,6 @@ public class SubjectTaxLine extends TaxProfitLine {
 
         double tax = territoryData.getTax();
         for (TerritoryData vassal : territoryData.getVassalsInternal()) {
-            if (vassal == null) {
-                continue;
-            }
             if (vassal.getBalance() > tax) {
                 actualTaxes += tax;
             } else {

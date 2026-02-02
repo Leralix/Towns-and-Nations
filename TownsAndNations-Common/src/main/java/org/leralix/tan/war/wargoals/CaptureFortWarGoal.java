@@ -8,6 +8,7 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.impl.FortDataStorage;
+import org.tan.api.interfaces.TanFort;
 import org.tan.api.interfaces.war.wargoals.TanCaptureFortWargoal;
 
 import java.util.ArrayList;
@@ -17,12 +18,12 @@ public class CaptureFortWarGoal extends WarGoal implements TanCaptureFortWargoal
 
     private final String fortToCaptureID;
 
-    public CaptureFortWarGoal(Fort fortToCapture){
+    public CaptureFortWarGoal(Fort fortToCapture) {
         super();
         this.fortToCaptureID = fortToCapture.getID();
     }
 
-    private Fort getFort(){
+    private Fort getFort() {
         return FortDataStorage.getInstance().getFort(fortToCaptureID);
     }
 
@@ -55,4 +56,8 @@ public class CaptureFortWarGoal extends WarGoal implements TanCaptureFortWargoal
         return Lang.CAPTURE_FORT_WAR_GOAL_DESC1.get(langType, getFort().getName());
     }
 
+    @Override
+    public TanFort getFortToCapture() {
+        return getFort();
+    }
 }

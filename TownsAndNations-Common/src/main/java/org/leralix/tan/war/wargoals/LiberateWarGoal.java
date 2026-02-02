@@ -50,7 +50,7 @@ public class LiberateWarGoal extends WarGoal implements TanLiberateWargoal {
         return Lang.GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT.get(langType, getTerritoryToLiberate().getName());
     }
 
-
+    @Override
     public TerritoryData getTerritoryToLiberate() {
         return TerritoryUtil.getTerritory(territoryToLiberateID);
     }
