@@ -15,9 +15,9 @@ import java.util.List;
 
 public abstract class AbstractTerritoryClaimCommand extends PlayerSubCommand {
 
-    private final PlayerDataStorage playerDataStorage;
+    protected final PlayerDataStorage playerDataStorage;
 
-    public AbstractTerritoryClaimCommand(PlayerDataStorage playerDataStorage){
+    protected AbstractTerritoryClaimCommand(PlayerDataStorage playerDataStorage){
         this.playerDataStorage = playerDataStorage;
     }
 
@@ -32,7 +32,8 @@ public abstract class AbstractTerritoryClaimCommand extends PlayerSubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        LangType langType = LangType.of(player);
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
+        LangType langType = tanPlayer.getLang();
 
         int size = args.length;
         if (size != 2 && size != 4) {
@@ -42,7 +43,6 @@ public abstract class AbstractTerritoryClaimCommand extends PlayerSubCommand {
         }
 
         String territoryArg = args[1];
-        ITanPlayer tanPlayer = playerDataStorage.get(player);
         TerritoryData territoryData = TerritoryCommandUtil.resolveTerritory(player, tanPlayer, territoryArg, getSyntax());
         if (territoryData == null) {
             return;

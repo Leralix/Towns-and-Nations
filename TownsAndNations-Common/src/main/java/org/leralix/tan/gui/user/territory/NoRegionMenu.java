@@ -55,7 +55,7 @@ public class NoRegionMenu extends BasicGui {
                         TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer), NOT_ALLOWED);
                         return;
                     }
-                    TownData townData = TownDataStorage.getInstance().get(player);
+                    TownData townData = TownDataStorage.getInstance().get(tanPlayer);
                     double townMoney = townData.getBalance();
                     if (townMoney < regionCost) {
                         TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), Double.toString(regionCost - townMoney)));

@@ -33,7 +33,7 @@ class CommandPermissionConsistencyTest extends BasicTest {
 
         assertPermissionsExist(permissionsSection, "tan.base.commands", new PlayerCommandManager(playerDataStorage));
         assertPermissionsExist(permissionsSection, "tan.admin.commands", new AdminCommandManager(playerDataStorage));
-        assertPermissionsExist(permissionsSection, "tan.admin.commands", new DebugCommandManager(new SaveStats(townsAndNations)));
+        assertPermissionsExist(permissionsSection, "tan.admin.commands", new DebugCommandManager(new SaveStats(townsAndNations), null));
         assertPermissionsExist(permissionsSection, "tan.server.commands", new ServerCommandManager(playerDataStorage));
     }
 

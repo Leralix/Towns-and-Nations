@@ -65,7 +65,7 @@ public class TownSpawnCommand extends PlayerSubCommand {
             return;
         }
 
-        TownData townData = TownDataStorage.getInstance().get(player);
+        TownData townData = TownDataStorage.getInstance().get(playerStat);
         EnableTownSpawn enableTownSpawn = townData.getNewLevel().getStat(EnableTownSpawn.class);
         //Spawn Unlocked
         if (!enableTownSpawn.isEnabled()) {

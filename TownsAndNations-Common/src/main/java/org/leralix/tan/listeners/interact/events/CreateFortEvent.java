@@ -7,10 +7,10 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.chunk.ClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.chunk.WildernessChunk;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.ListenerState;
@@ -23,7 +23,6 @@ import org.leralix.tan.utils.text.TanChatUtils;
 public class CreateFortEvent extends RightClickListenerEvent {
 
     private final TerritoryData tanTerritory;
-
 
     public CreateFortEvent(TerritoryData tanTerritory) {
         this.tanTerritory = tanTerritory;

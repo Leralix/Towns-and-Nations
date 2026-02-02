@@ -71,7 +71,7 @@ public class InvitePlayerCommand extends PlayerSubCommand {
 
     private void invite(Player player, String playerToInvite) {
         ITanPlayer tanPlayer = playerDataStorage.get(player);
-        TownData townData = TownDataStorage.getInstance().get(player);
+        TownData townData = TownDataStorage.getInstance().get(tanPlayer);
         LangType langType = tanPlayer.getLang();
 
         if (townData == null) {
@@ -90,7 +90,7 @@ public class InvitePlayerCommand extends PlayerSubCommand {
         }
 
 
-        TownData town = TownDataStorage.getInstance().get(player);
+        TownData town = TownDataStorage.getInstance().get(tanPlayer);
         if (town.isFull()) {
             TanChatUtils.message(player, Lang.INVITATION_TOWN_FULL.get(langType));
             return;

@@ -63,7 +63,8 @@ public class PlayerGUI {
     }
 
     public static void dispatchPlayerTown(Player player) {
-        TownData townData = TownDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        TownData townData = TownDataStorage.getInstance().get(tanPlayer);
         if (townData != null) {
             new TownMenu(player, townData);
         } else {
@@ -73,8 +74,8 @@ public class PlayerGUI {
 
     public static void dispatchLandmarkGui(Player player, Landmark landmark) {
 
-        TownData townData = TownDataStorage.getInstance().get(player);
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        TownData townData = TownDataStorage.getInstance().get(tanPlayer);
         if (!landmark.isOwned()) {
             new LandmarkNoOwnerMenu(player, landmark);
             return;

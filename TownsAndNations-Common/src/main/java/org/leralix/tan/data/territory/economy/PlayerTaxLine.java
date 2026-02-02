@@ -2,8 +2,6 @@ package org.leralix.tan.data.territory.economy;
 
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
@@ -25,8 +23,6 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
-import java.util.UUID;
-
 public class PlayerTaxLine extends ProfitLine {
 
     double actualTaxes = 0;
@@ -35,16 +31,17 @@ public class PlayerTaxLine extends ProfitLine {
     public PlayerTaxLine(TownData townData) {
         super(townData);
         double flatTax = townData.getTax();
-        for (UUID playerID : townData.getPlayerIDList()) {
-            ITanPlayer othertanPlayer = PlayerDataStorage.getInstance().get(playerID);
-            OfflinePlayer otherPlayer = Bukkit.getOfflinePlayer(playerID);
-            if (!othertanPlayer.getTownRank().isPayingTaxes()) {
+
+        for(ITanPlayer tanPlayer : townData.getITanPlayerList()) {
+            if (!tanPlayer.getTownRank().isPayingTaxes()) {
                 continue;
             }
-            if (EconomyUtil.getBalance(otherPlayer) < flatTax)
+            if (EconomyUtil.getBalance(tanPlayer) < flatTax){
                 missingTaxes += flatTax;
-            else
+            }
+            else{
                 actualTaxes += flatTax;
+            }
         }
 
     }

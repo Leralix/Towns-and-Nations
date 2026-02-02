@@ -2,7 +2,6 @@ package org.leralix.tan.storage.stored;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.property.owner.AbstractOwner;
@@ -106,10 +105,6 @@ public class TownDataStorage extends JsonStorage<TownData>{
 
     public TownData get(ITanPlayer tanPlayer){
         return get(tanPlayer.getTownId());
-    }
-
-    public TownData get(Player player){
-        return get(PlayerDataStorage.getInstance().get(player).getTownId());
     }
 
 

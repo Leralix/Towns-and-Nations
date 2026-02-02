@@ -115,10 +115,6 @@ public class TownData extends TerritoryData implements TanTown {
         TownDataStorage.getInstance().save();
     }
 
-    public void removePlayer(UUID tanPlayerID) {
-        removePlayer(PlayerDataStorage.getInstance().get(tanPlayerID));
-    }
-
     public void removePlayer(ITanPlayer tanPlayer) {
         for (TerritoryData overlords : getOverlords()) {
             overlords.unregisterPlayer(tanPlayer);
@@ -214,7 +210,6 @@ public class TownData extends TerritoryData implements TanTown {
         for (UUID playerId : townPlayerListId) {
             Player player = Bukkit.getServer().getPlayer(playerId);
             if (player != null && player.isOnline()) {
-
                 TanChatUtils.message(player, message.get(player));
             }
         }
@@ -477,8 +472,8 @@ public class TownData extends TerritoryData implements TanTown {
         removeAllLandmark(); //Remove all Landmark from the deleted town
         removeAllProperty(); //Remove all Property from the deleted town
 
-        for (UUID playerID : new ArrayList<>(getPlayerIDList())) {
-            removePlayer(playerID);
+        for (ITanPlayer playerData : new ArrayList<>(getITanPlayerList())) {
+            removePlayer(playerData);
         }
 
         TeamUtils.updateAllScoreboardColor();

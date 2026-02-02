@@ -51,8 +51,8 @@ public class ClaimAreaCommand extends AbstractTerritoryClaimCommand {
         openClaimAreaMap(player, territoryArg);
     }
 
-    public static void openClaimAreaMap(Player player, String territoryArg) {
-        LangType langType = LangType.of(player);
+    public void openClaimAreaMap(Player player, String territoryArg) {
+        LangType langType = playerDataStorage.get(player).getLang();
         int radius = 4;
 
         ChatChunkMapRenderer.sendChunkMap(

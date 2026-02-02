@@ -201,13 +201,6 @@ public class TownsAndNations extends JavaPlugin {
         TANCustomNBT.setBlocsData();
 
 
-        getLogger().log(Level.INFO, "[TaN] -Loading commands");
-        enableEventList();
-        getCommand("tan").setExecutor(new PlayerCommandManager(playerDataStorage));
-        getCommand("tanadmin").setExecutor(new AdminCommandManager(playerDataStorage));
-        getCommand("tandebug").setExecutor(new DebugCommandManager(saveStats));
-        getCommand("tanserver").setExecutor(new ServerCommandManager(playerDataStorage));
-
         getLogger().log(Level.INFO, "[TaN] -Registering Dependencies");
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
@@ -233,10 +226,17 @@ public class TownsAndNations extends JavaPlugin {
         getLogger().log(Level.INFO, "[TaN] -Registering Tasks");
         saveStats.startSchedule();
 
-        DailyTasks dailyTasks = new DailyTasks(Constants.getDailyTaskHour(), Constants.getDailyTaskMinute());
+        DailyTasks dailyTasks = new DailyTasks(playerDataStorage, Constants.getDailyTaskHour(), Constants.getDailyTaskMinute());
         dailyTasks.scheduleMidnightTask();
         SecondTask secondTask = new SecondTask(playerDataStorage);
         secondTask.startScheduler();
+
+        getLogger().log(Level.INFO, "[TaN] -Loading commands");
+        enableEventList();
+        getCommand("tan").setExecutor(new PlayerCommandManager(playerDataStorage));
+        getCommand("tanadmin").setExecutor(new AdminCommandManager(playerDataStorage));
+        getCommand("tandebug").setExecutor(new DebugCommandManager(saveStats, dailyTasks));
+        getCommand("tanserver").setExecutor(new ServerCommandManager(playerDataStorage));
 
         loadedSuccessfully = true;
         getLogger().log(Level.INFO, "[TaN] Plugin loaded successfully");

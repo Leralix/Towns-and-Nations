@@ -63,7 +63,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
     }
 
     private @NotNull GuiItem getClaimButton() {
-        TownData playerTown = TownDataStorage.getInstance().get(player);
+        TownData playerTown = TownDataStorage.getInstance().get(tanPlayer);
         double cost = Constants.getClaimLandmarkCost();
         List<FilledLang> description = new ArrayList<>();
 

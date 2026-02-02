@@ -12,6 +12,12 @@ import java.util.List;
 
 public class SkipDay extends SubCommand {
 
+    private final DailyTasks dailyTasks;
+
+    public SkipDay(DailyTasks dailyTasks) {
+        this.dailyTasks = dailyTasks;
+    }
+
     @Override
     public String getName() {
         return "skipday";
@@ -36,7 +42,7 @@ public class SkipDay extends SubCommand {
     }
     @Override
     public void perform(CommandSender commandSender, String[] args) {
-        DailyTasks.executeMidnightTasks();
+        dailyTasks.executeMidnightTasks();
         TanChatUtils.message(commandSender, Lang.COMMAND_GENERIC_SUCCESS, SoundEnum.NOT_ALLOWED);
     }
 }

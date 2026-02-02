@@ -20,10 +20,12 @@ import java.util.GregorianCalendar;
 
 public class DailyTasks {
 
+    private final PlayerDataStorage playerDataStorage;
     private final int hourTime;
     private final int minuteTime;
 
-    public DailyTasks(int hourTime, int minuteTime) {
+    public DailyTasks(PlayerDataStorage playerDataStorage, int hourTime, int minuteTime) {
+        this.playerDataStorage = playerDataStorage;
         this.hourTime = hourTime;
         this.minuteTime = minuteTime;
     }
@@ -42,7 +44,7 @@ public class DailyTasks {
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L); // Execute every 1200 ticks (1 minute)
     }
 
-    public static void executeMidnightTasks() {
+    public void executeMidnightTasks() {
         propertyRent();
 
         for(TownData town : TownDataStorage.getInstance().getAll().values()){
@@ -65,13 +67,13 @@ public class DailyTasks {
         ArchiveUtil.archiveFiles();
     }
 
-    private static void updatePlayerUsernames() {
-        for(ITanPlayer player : PlayerDataStorage.getInstance().getAll().values()){
+    private void updatePlayerUsernames() {
+        for(ITanPlayer player : playerDataStorage.getAll().values()){
             player.clearName();
         }
     }
 
-    private static void propertyRent() {
+    private void propertyRent() {
         for (TownData town : TownDataStorage.getInstance().getAll().values()) {
             for (PropertyData property : town.getPropertiesInternal()) {
                 if (property.isRented()) {

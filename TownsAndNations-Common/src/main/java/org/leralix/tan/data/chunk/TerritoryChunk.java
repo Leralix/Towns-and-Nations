@@ -129,7 +129,7 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
 
         if (relation == TownRelation.WAR && Constants.notifyWhenEnemyEnterTerritory()) {
             TanChatUtils.message(player, Lang.CHUNK_ENTER_TOWN_AT_WAR.get(tanPlayer.getLang()), SoundEnum.BAD);
-            territoryData.broadcastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.getInstance().get(player).getName(), player.getName()), SoundEnum.BAD);
+            territoryData.broadcastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.getInstance().get(tanPlayer).getName(), player.getName()), SoundEnum.BAD);
         }
     }
 

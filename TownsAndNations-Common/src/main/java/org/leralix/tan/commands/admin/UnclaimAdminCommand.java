@@ -11,17 +11,24 @@ import org.leralix.tan.data.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
 
 public class UnclaimAdminCommand extends PlayerSubCommand {
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public UnclaimAdminCommand(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @Override
     public String getName() {
         return "unclaim";
     }
-
 
     @Override
     public String getDescription() {
@@ -44,7 +51,7 @@ public class UnclaimAdminCommand extends PlayerSubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        LangType langType = LangType.of(player);
+        LangType langType = playerDataStorage.get(player).getLang();
         if (args.length != 1) {
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType));
             return;

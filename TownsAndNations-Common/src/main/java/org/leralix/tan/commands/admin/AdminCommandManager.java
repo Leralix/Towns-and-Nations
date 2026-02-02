@@ -8,10 +8,10 @@ public class AdminCommandManager extends CommandManager {
 
     public AdminCommandManager(PlayerDataStorage playerDataStorage){
         super("tan.admin.commands");
-        addSubCommand(new OpenAdminGUI());
+        addSubCommand(new OpenAdminGUI(playerDataStorage));
         addSubCommand(new AddMoney(playerDataStorage));
         addSubCommand(new SetMoney(playerDataStorage));
-        addSubCommand(new UnclaimAdminCommand());
+        addSubCommand(new UnclaimAdminCommand(playerDataStorage));
 
         addSubCommand(new NameFilterAdminCommand());
 
