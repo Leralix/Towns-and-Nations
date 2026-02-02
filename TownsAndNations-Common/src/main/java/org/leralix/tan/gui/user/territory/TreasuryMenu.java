@@ -47,7 +47,7 @@ public class TreasuryMenu extends BasicGui {
         gui.setItem(3,2, getDonationButton());
         gui.setItem(3,4, getRetrieveButton());
 
-        gui.setItem(5,1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player), langType));
+        gui.setItem(5,1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player, tanPlayer), langType));
 
         gui.open(player);
     }

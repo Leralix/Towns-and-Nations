@@ -14,10 +14,9 @@ import java.util.UUID;
 
 public class PlayerDataStorage extends JsonStorage<ITanPlayer> {
 
-
+    private static final ITanPlayer NO_PLAYER = new NoPlayerData();
+    
     private static PlayerDataStorage instance;
-
-    private static ITanPlayer NO_PLAYER;
 
     public PlayerDataStorage() {
         super("TAN - Players.json",
@@ -32,7 +31,6 @@ public class PlayerDataStorage extends JsonStorage<ITanPlayer> {
     public static synchronized PlayerDataStorage getInstance() {
         if (instance == null) {
             instance = new PlayerDataStorage();
-            NO_PLAYER = new NoPlayerData();
         }
         return instance;
     }

@@ -1,7 +1,6 @@
 package org.leralix.tan.data.territory;
 
 
-import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -47,7 +46,6 @@ import org.leralix.tan.events.events.DiplomacyProposalInternalEvent;
 import org.leralix.tan.events.events.TerritoryVassalAcceptedInternalEvent;
 import org.leralix.tan.events.events.TerritoryVassalProposalInternalEvent;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -712,7 +710,7 @@ public abstract class TerritoryData implements TanTerritory {
         TanChatUtils.message(player, Lang.PLAYER_SEND_MONEY_SUCCESS.get(langType, Double.toString(amount), this.getColoredName()), SoundEnum.MINOR_GOOD);
     }
 
-    public abstract void openMainMenu(Player player);
+    public abstract void openMainMenu(Player player, ITanPlayer playerData);
 
     public abstract boolean canHaveVassals();
 
@@ -749,7 +747,7 @@ public abstract class TerritoryData implements TanTerritory {
 
     public abstract Collection<TerritoryData> getPotentialVassals();
 
-    private List<String> getOverlordsProposals() {
+    public List<String> getOverlordsProposals() {
         if (overlordsProposals == null) overlordsProposals = new ArrayList<>();
         return overlordsProposals;
     }
@@ -774,42 +772,6 @@ public abstract class TerritoryData implements TanTerritory {
 
     public int getNumberOfVassalisationProposals() {
         return getOverlordsProposals().size();
-    }
-
-    public List<GuiItem> getAllSubjugationProposals(Player player, int page) {
-        ArrayList<GuiItem> proposals = new ArrayList<>();
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        LangType langType = tanPlayer.getLang();
-
-        for (String proposalID : getOverlordsProposals()) {
-            TerritoryData proposalOverlord = TerritoryUtil.getTerritory(proposalID);
-            if (proposalOverlord == null) continue;
-
-            proposals.add(proposalOverlord
-                    .getIconWithInformations(langType)
-                    .setClickToAcceptMessage(
-                            Lang.GUI_GENERIC_LEFT_CLICK_TO_ACCEPT,
-                            Lang.RIGHT_CLICK_TO_REFUSE
-                    )
-                    .setAction(action -> {
-                        if (action.isLeftClick()) {
-                            if (haveOverlord()) {
-                                TanChatUtils.message(player, Lang.TOWN_ALREADY_HAVE_OVERLORD.get(langType), SoundEnum.NOT_ALLOWED);
-                                return;
-                            }
-
-                            setOverlord(proposalOverlord);
-                            broadcastMessageWithSound(Lang.ACCEPTED_VASSALISATION_PROPOSAL_ALL.get(this.getColoredName(), proposalOverlord.getName()), SoundEnum.GOOD);
-                            PlayerGUI.openHierarchyMenu(player, this);
-                        } else if (action.isRightClick()) {
-                            getOverlordsProposals().remove(proposalID);
-                            PlayerGUI.openChooseOverlordMenu(player, this, page);
-                        }
-                    })
-                    .asGuiItem(player, langType)
-            );
-        }
-        return proposals;
     }
 
     protected Map<Integer, RankData> getRanks() {

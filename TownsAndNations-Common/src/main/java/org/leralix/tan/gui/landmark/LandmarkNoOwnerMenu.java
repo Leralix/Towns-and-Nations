@@ -116,7 +116,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
                                 playerTown.removeFromBalance(cost);
                                 landmark.setOwner(playerTown);
                                 playerTown.broadcastMessageWithSound(Lang.GUI_LANDMARK_CLAIMED.get(), GOOD);
-                                PlayerGUI.dispatchLandmarkGui(player, landmark);
+                                PlayerGUI.dispatchLandmarkGui(player, tanPlayer, landmark);
                             },
                             this::open
                     );

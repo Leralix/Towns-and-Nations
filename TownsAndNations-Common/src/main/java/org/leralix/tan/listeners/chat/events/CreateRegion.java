@@ -66,6 +66,6 @@ public class CreateRegion extends ChatListenerEvent {
 
         EventManager.getInstance().callEvent(new RegionCreatedInternalEvent(newRegion, playerData));
 
-        openGui(p -> PlayerGUI.dispatchPlayerRegion(player), player);
+        openGui(p -> PlayerGUI.dispatchPlayerRegion(player, playerData), player);
     }
 }

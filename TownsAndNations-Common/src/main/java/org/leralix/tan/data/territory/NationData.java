@@ -207,8 +207,8 @@ public class NationData extends TerritoryData implements TanNation {
     }
 
     @Override
-    public void openMainMenu(Player player) {
-        PlayerGUI.dispatchPlayerNation(player);
+    public void openMainMenu(Player player, ITanPlayer playerData) {
+        PlayerGUI.dispatchPlayerNation(player, playerData);
     }
 
     @Override

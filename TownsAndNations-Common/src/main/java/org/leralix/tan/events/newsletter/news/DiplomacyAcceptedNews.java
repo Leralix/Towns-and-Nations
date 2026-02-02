@@ -11,7 +11,6 @@ import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.DateUtil;
@@ -134,7 +133,6 @@ public class DiplomacyAcceptedNews extends Newsletter {
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if(receivingTerritory == null)
             return false;
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        return receivingTerritory.isPlayerIn(tanPlayer) || proposingTerritory.isPlayerIn(tanPlayer);
+        return receivingTerritory.isPlayerIn(player) || proposingTerritory.isPlayerIn(player);
     }
 }

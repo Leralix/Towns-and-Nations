@@ -51,7 +51,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
     @Override
     public void open() {
 
-        iterator(getMemberList(), p -> territoryData.openMainMenu(player));
+        iterator(getMemberList(), p -> territoryData.openMainMenu(player, tanPlayer));
 
         gui.setItem(6, 4, getManageRankButton());
         if (territoryData instanceof TownData townData) {

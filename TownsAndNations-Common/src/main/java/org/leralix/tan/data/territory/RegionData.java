@@ -241,8 +241,8 @@ public class RegionData extends TerritoryData implements TanRegion {
     }
 
     @Override
-    public void openMainMenu(Player player) {
-        PlayerGUI.dispatchPlayerRegion(player);
+    public void openMainMenu(Player player, ITanPlayer playerData) {
+        PlayerGUI.dispatchPlayerRegion(player, playerData);
     }
 
     @Override

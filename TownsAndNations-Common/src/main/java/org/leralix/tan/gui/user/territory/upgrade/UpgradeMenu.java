@@ -150,7 +150,7 @@ public class UpgradeMenu extends BasicGui {
         gui.setItem(6, 8, getRightButton());
         gui.setItem(6, 7, getLeftButton());
 
-        gui.setItem(6, 1, GuiUtil.createBackArrow(player, territoryData::openMainMenu, langType));
+        gui.setItem(6, 1, GuiUtil.createBackArrow(player, player1 -> territoryData.openMainMenu(player1, tanPlayer), langType));
     }
 
     private @NotNull GuiItem getUpgradeTownButton() {

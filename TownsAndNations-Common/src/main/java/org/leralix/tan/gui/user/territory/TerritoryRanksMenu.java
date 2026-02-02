@@ -33,7 +33,7 @@ public class TerritoryRanksMenu extends IteratorGUI {
     public void open() {
 
         GuiUtil.createIterator(gui, getRanks(), page, player,
-                p -> territoryData.openMainMenu(player),
+                p -> territoryData.openMainMenu(player, tanPlayer),
                 p -> nextPage(),
                 p -> previousPage()
         );

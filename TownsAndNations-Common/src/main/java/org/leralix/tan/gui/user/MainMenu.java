@@ -92,7 +92,7 @@ public class MainMenu extends BasicGui {
         return iconManager.get(IconKey.NATION_BASE_ICON)
                 .setName(Lang.GUI_NATION_ICON.get(tanPlayer))
                 .setDescription(description)
-                .setAction(action -> PlayerGUI.dispatchPlayerNation(player))
+                .setAction(action -> PlayerGUI.dispatchPlayerNation(player, tanPlayer))
                 .asGuiItem(player, langType);
     }
 
@@ -112,7 +112,7 @@ public class MainMenu extends BasicGui {
         return iconManager.get(IconKey.REGION_BASE_ICON)
                 .setName(Lang.GUI_REGION_ICON.get(tanPlayer))
                 .setDescription(description)
-                .setAction(action -> PlayerGUI.dispatchPlayerRegion(player))
+                .setAction(action -> PlayerGUI.dispatchPlayerRegion(player, tanPlayer))
                 .asGuiItem(player, langType);
     }
 
@@ -129,7 +129,7 @@ public class MainMenu extends BasicGui {
         return iconManager.get(IconKey.TOWN_BASE_ICON)
                 .setName(Lang.GUI_TOWN_ICON.get(tanPlayer))
                 .setDescription(description)
-                .setAction(action -> PlayerGUI.dispatchPlayerTown(player))
+                .setAction(action -> PlayerGUI.dispatchPlayerTown(player, tanPlayer))
                 .asGuiItem(player, langType);
     }
 

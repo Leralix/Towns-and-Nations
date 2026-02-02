@@ -30,7 +30,7 @@ public class SelectTerritoryHeadMenu extends IteratorGUI {
 
     @Override
     public void open() {
-        iterator(getHeads(), p -> territoryData.openMainMenu(player));
+        iterator(getHeads(), p -> territoryData.openMainMenu(player, tanPlayer));
         gui.open(player);
     }
 
@@ -49,7 +49,7 @@ public class SelectTerritoryHeadMenu extends IteratorGUI {
                             .setAction(action -> {
                                 territoryData.setIcon(new PlayerHeadIcon(offlinePlayer.getUniqueId()));
                                 SoundUtil.playSound(player, MINOR_GOOD);
-                                territoryData.openMainMenu(player);
+                                territoryData.openMainMenu(player, tanPlayer);
                             })
                             .asGuiItem(player, langType)
             );

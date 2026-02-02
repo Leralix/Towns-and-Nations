@@ -570,6 +570,7 @@ language:
   HEADER_ADMIN_PLAYER_MENU: "Players - Admin"
   HEADER_ADMIN_SET_PLAYER_TOWN: "Set {0} town - Admin"
   HEADER_BUILDING_MENU: "Buildings"
+  HEADER_TERRITORY_SELECT_OVERLORD: "Select overlord"
   GUI_TOWN_INFO_DESC0: "§7§o\"{0}\"" #town's quote
   GUI_TOWN_INFO_DESC1: "§fLeader: §3{0}"
   GUI_TOWN_INFO_DESC2: "§fMembers: §9{0}♣"

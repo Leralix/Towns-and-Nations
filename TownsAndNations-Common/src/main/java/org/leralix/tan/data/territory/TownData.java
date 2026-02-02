@@ -489,8 +489,8 @@ public class TownData extends TerritoryData implements TanTown {
     }
 
     @Override
-    public void openMainMenu(Player player) {
-        PlayerGUI.dispatchPlayerTown(player);
+    public void openMainMenu(Player player, ITanPlayer playerData) {
+        PlayerGUI.dispatchPlayerTown(player, playerData);
     }
 
     @Override

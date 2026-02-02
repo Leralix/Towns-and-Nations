@@ -76,6 +76,6 @@ public class CreateNation extends ChatListenerEvent {
         EventManager.getInstance().callEvent(new NationCreatedInternalEvent(nation, playerData));
         FileUtil.addLineToHistory(Lang.NATION_CREATED_NEWSLETTER.get(player.getName(), nation.getName()));
 
-        openGui(p -> PlayerGUI.dispatchPlayerNation(player), player);
+        openGui(p -> PlayerGUI.dispatchPlayerNation(player, playerData), player);
     }
 }

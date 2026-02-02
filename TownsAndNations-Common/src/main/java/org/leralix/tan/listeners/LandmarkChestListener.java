@@ -42,7 +42,7 @@ public class LandmarkChestListener implements Listener {
                     TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer.getLang()));
                     return;
                 }
-                PlayerGUI.dispatchLandmarkGui(player, landmark);
+                PlayerGUI.dispatchLandmarkGui(player, tanPlayer, landmark);
             }
         }
 

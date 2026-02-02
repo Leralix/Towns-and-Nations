@@ -10,7 +10,7 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.events.newsletter.NewsletterType;
-import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.user.territory.hierarchy.TerritoryChooseOverlordMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -84,7 +84,7 @@ public class TerritoryVassalProposalNews extends Newsletter {
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
             if (event.isLeftClick())
-                PlayerGUI.openChooseOverlordMenu(player, receivingTerritory, 0);
+                new TerritoryChooseOverlordMenu(player, receivingTerritory, Player::closeInventory);
             if (event.isRightClick()) {
                 markAsRead(player);
                 onClick.accept(player);

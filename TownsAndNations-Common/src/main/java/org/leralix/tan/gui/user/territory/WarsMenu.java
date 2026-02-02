@@ -28,7 +28,7 @@ public class WarsMenu extends IteratorGUI {
 
     @Override
     public void open() {
-        iterator(getWars(), p -> territoryData.openMainMenu(player));
+        iterator(getWars(), p -> territoryData.openMainMenu(player, tanPlayer));
         gui.setItem(4, 4, getAttackButton());
         gui.setItem(4, 5, getDeclareWarButton());
         gui.open(player);

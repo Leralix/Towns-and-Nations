@@ -25,7 +25,7 @@ public class PlayerOwnedLandmarksMenu extends IteratorGUI {
     @Override
     public void open() {
 
-        iterator(getLandmarks(), p -> townData.openMainMenu(player));
+        iterator(getLandmarks(), p -> townData.openMainMenu(player, tanPlayer));
 
         gui.open(player);
     }
