@@ -1,20 +1,21 @@
 package org.leralix.tan.commands.admin;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.leralix.lib.commands.SubCommand;
-import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.lang.DynamicLang;
+import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
+import org.leralix.tan.storage.impl.FortDataStorage;
+import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.NameFilter;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,20 +49,23 @@ public class ReloadCommand extends SubCommand {
     public void perform(CommandSender commandSender, String[] args) {
         if (args.length == 1) {
             Plugin plugin = TownsAndNations.getPlugin();
-            ConfigUtil.addCustomConfig(plugin, "config.yml", ConfigTag.MAIN);
-            ConfigUtil.addCustomConfig(plugin, "upgrades.yml", ConfigTag.UPGRADE);
-            ConfigUtil.addCustomConfig(plugin, "lang.yml", ConfigTag.LANG);
 
-            String lang = ConfigUtil.getCustomConfig(ConfigTag.LANG).getString("language");
-            File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
+            List<String> mainBlackList = List.of(
+                    "claimBlacklist",
+                    "wildernessRules",
+                    "townPermissions",
+                    "regionPermissions",
+                    "propertyPermissions"
+            );
+            YamlConfiguration mainConfig = ConfigUtil.saveAndUpdateResource(plugin, "config.yml", mainBlackList);
+            YamlConfiguration upgradesConfig =  ConfigUtil.saveAndUpdateResource(plugin, "upgrades.yml", Collections.singletonList("upgrades"));
 
-            Lang.loadTranslations(langFolder, lang);
-            DynamicLang.loadTranslations(langFolder, lang);
-
-            Constants.init(ConfigUtil.getCustomConfig(ConfigTag.MAIN), ConfigUtil.getCustomConfig(ConfigTag.UPGRADE));
-            NameFilter.reload();
-            ClaimBlacklistStorage.init();
+            Constants.init(mainConfig, upgradesConfig);
+            NameFilter.reload(mainConfig);
+            ClaimBlacklistStorage.init(mainConfig);
+            IconManager.getInstance();
             NumberUtil.init();
+            FortStorage.init(new FortDataStorage());
 
             TanChatUtils.message(commandSender, Lang.RELOAD_SUCCESS);
             TanChatUtils.message(commandSender, Lang.LANGUAGE_SUCCESSFULLY_LOADED);

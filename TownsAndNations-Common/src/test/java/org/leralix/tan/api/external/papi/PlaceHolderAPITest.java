@@ -24,7 +24,7 @@ class PlaceHolderAPITest extends BasicTest {
     protected void setUp() {
         super.setUp();
 
-        placeHolderAPI = new PlaceHolderAPI(townsAndNations.getPlayerDataStorage());
+        placeHolderAPI = new PlaceHolderAPI(townsAndNations.getPlayerDataStorage(), null);
     }
 
 

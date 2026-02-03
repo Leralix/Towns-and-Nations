@@ -10,9 +10,12 @@ public class PlayerChatMode extends PapiEntry{
 
     private final PlayerDataStorage playerDataStorage;
 
-    public PlayerChatMode (PlayerDataStorage playerDataStorage) {
+    private final LocalChatStorage localChatStorage;
+
+    public PlayerChatMode (PlayerDataStorage playerDataStorage, LocalChatStorage localChatStorage) {
         super("chat_mode");
         this.playerDataStorage = playerDataStorage;
+        this.localChatStorage = localChatStorage;
     }
 
     @Override
@@ -24,6 +27,6 @@ public class PlayerChatMode extends PapiEntry{
             return PLAYER_NOT_FOUND;
         }
 
-        return LocalChatStorage.getPlayerChatScope(player.getUniqueId().toString()).getName(tanPlayer.getLang());
+        return localChatStorage.getPlayerChatScope(player.getUniqueId().toString()).getName(tanPlayer.getLang());
     }
 }

@@ -5,6 +5,7 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.api.external.papi.entries.*;
+import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.util.HashMap;
@@ -45,7 +46,7 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
         return true;
     }
 
-    public PlaceHolderAPI(PlayerDataStorage playerDataStorage) {
+    public PlaceHolderAPI(PlayerDataStorage playerDataStorage, LocalChatStorage localChatStorage) {
         entries = new HashMap<>();
 
         registerEntry(new GetFirstTerritoryIdWithName(playerDataStorage));
@@ -54,10 +55,10 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
         registerEntry(new OtherPlayerRegionName(playerDataStorage));
         registerEntry(new OtherPlayerNationName(playerDataStorage));
         registerEntry(new OtherPlayerTownColoredName(playerDataStorage));
-        registerEntry(new OtherPlayerChatMode(playerDataStorage));
+        registerEntry(new OtherPlayerChatMode(playerDataStorage, localChatStorage));
         registerEntry(new PlayerBalance());
         registerEntry(new PlayerBiggerOverlordName(playerDataStorage));
-        registerEntry(new PlayerChatMode(playerDataStorage));
+        registerEntry(new PlayerChatMode(playerDataStorage, localChatStorage));
         registerEntry(new PlayerNameHaveTown(playerDataStorage));
         registerEntry(new PlayerNameIsTownLeader(playerDataStorage));
         registerEntry(new PlayerRegionBalance(playerDataStorage));
