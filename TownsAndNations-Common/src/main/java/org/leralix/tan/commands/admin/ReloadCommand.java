@@ -12,6 +12,7 @@ import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.impl.FortDataStorage;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.NameFilter;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -66,6 +67,7 @@ public class ReloadCommand extends SubCommand {
             IconManager.getInstance();
             NumberUtil.init();
             FortStorage.init(new FortDataStorage());
+            FileUtil.setEnable(mainConfig.getBoolean("archiveHistory", false));
 
             TanChatUtils.message(commandSender, Lang.RELOAD_SUCCESS);
             TanChatUtils.message(commandSender, Lang.LANGUAGE_SUCCESSFULLY_LOADED);

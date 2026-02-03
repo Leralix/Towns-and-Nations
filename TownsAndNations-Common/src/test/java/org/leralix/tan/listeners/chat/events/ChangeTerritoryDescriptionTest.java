@@ -3,8 +3,6 @@ package org.leralix.tan.listeners.chat.events;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.RegionData;
@@ -12,6 +10,7 @@ import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -70,7 +69,7 @@ class ChangeTerritoryDescriptionTest extends BasicTest {
 
     @Test
     void DescTooBigError() {
-        int maxDescriptionLength = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("TownDescSize");
+        int maxDescriptionLength = Constants.getTownMaxDescriptionSize();
 
         StringBuilder description = new StringBuilder("a");
         description.append("a".repeat(maxDescriptionLength));

@@ -1,11 +1,10 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.junit.jupiter.api.Test;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.utils.constants.Constants;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,7 +64,7 @@ class CreateRegionTest extends BasicTest {
         var townData = TownDataStorage.getInstance().newTown("Town", tanPlayer);
         townData.addToBalance(50);
 
-        int maxSize = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getInt("RegionNameSize");
+        int maxSize = Constants.getRegionMaxNameSize();
 
         CreateRegion createRegion = new CreateRegion(25);
         createRegion.execute(tanPlayer.getPlayer(), tanPlayer, "a" + "a".repeat(Math.max(0, maxSize)));

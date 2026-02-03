@@ -43,6 +43,7 @@ import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.tasks.SecondTask;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.constants.DatabaseConstants;
+import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.text.NameFilter;
 import org.leralix.tan.utils.text.NumberUtil;
@@ -190,6 +191,7 @@ public class TownsAndNations extends JavaPlugin {
         WarStorage.getInstance();
         EventManager.getInstance().registerEvents(new NewsletterEvents());
         TruceStorage.getInstance();
+        FileUtil.setEnable(mainConfig.getBoolean("archiveHistory", false));
 
         FortStorage.getInstance().checkValidWorlds();
         TownDataStorage.getInstance().checkValidWorlds();
