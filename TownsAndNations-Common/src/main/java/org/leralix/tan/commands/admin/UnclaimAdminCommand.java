@@ -4,24 +4,31 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.chunk.TerritoryChunk;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.TerritoryChunk;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.upgrade.rewards.numeric.ChunkCap;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
 
 public class UnclaimAdminCommand extends PlayerSubCommand {
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public UnclaimAdminCommand(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @Override
     public String getName() {
         return "unclaim";
     }
-
 
     @Override
     public String getDescription() {
@@ -44,18 +51,18 @@ public class UnclaimAdminCommand extends PlayerSubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        LangType langType = LangType.of(player);
+        LangType langType = playerDataStorage.get(player).getLang();
         if (args.length != 1) {
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType));
             return;
         }
 
         Chunk chunk = player.getLocation().getChunk();
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
         if(claimedChunk instanceof TerritoryChunk territoryChunk){
             NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(territoryChunk);
 
-            TerritoryData owner = territoryChunk.getOwner();
+            TerritoryData owner = territoryChunk.getOwnerInternal();
             ChunkCap chunkCap = owner.getNewLevel().getStat(ChunkCap.class);
             if(chunkCap.isUnlimited()){
                 TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(langType, owner.getColoredName()));

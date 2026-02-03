@@ -4,7 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.gui.user.territory.TreasuryMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
@@ -20,15 +21,15 @@ public abstract class SetSpecificRate extends ChatListenerEvent {
     }
 
     @Override
-    public boolean execute(Player player, String message) {
+    public boolean execute(Player player, ITanPlayer playerData, String message) {
         Double amount = parseStringToDouble(message);
         if (amount == null) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(player));
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(playerData));
             return false;
         }
         amount = Math.clamp(amount, 0, 100);
 
-        TanChatUtils.message(player, Lang.TOWN_SET_RATE_SUCCESS.get(player, Double.toString(amount)), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player, Lang.TOWN_SET_RATE_SUCCESS.get(playerData, Double.toString(amount)), SoundEnum.MINOR_GOOD);
 
 
         setRate(amount / 100);

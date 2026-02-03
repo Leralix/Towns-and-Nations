@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.territory.cosmetic.CustomIcon;
+import org.leralix.tan.data.building.property.PropertyData;
+import org.leralix.tan.data.territory.cosmetic.CustomIcon;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
@@ -43,14 +43,14 @@ public class PlayerPropertyManager extends PropertyMenus {
         gui.setItem(2, 8, getDeleteButton());
 
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, onClose));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, onClose, langType));
 
         gui.open(player);
     }
 
     @Override
     protected GuiItem getPropertyIcon(){
-        var desc = propertyData.getBasicDescription();
+        var desc = propertyData.getBasicDescription(langType);
         desc.add(Lang.GUI_PROPERTY_CHANGE_ICON.get());
 
         return iconManager.get(propertyData.getIcon())

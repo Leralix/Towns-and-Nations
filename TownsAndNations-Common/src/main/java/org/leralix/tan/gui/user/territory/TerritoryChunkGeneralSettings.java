@@ -3,9 +3,9 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.enums.RolePermission;
-import org.leralix.tan.enums.permissions.GeneralChunkSetting;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.permission.GeneralChunkSetting;
+import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -32,7 +32,7 @@ public class TerritoryChunkGeneralSettings extends IteratorGUI {
     public void open() {
         iterator(getSettings(), p -> new ChunkSettingsMenu(player, territoryData));
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new ChunkSettingsMenu(player, territoryData)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new ChunkSettingsMenu(player, territoryData), langType));
         gui.open(player);
     }
 

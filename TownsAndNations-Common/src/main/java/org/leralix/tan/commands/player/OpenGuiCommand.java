@@ -14,18 +14,26 @@ import java.util.List;
 
 
 public class OpenGuiCommand extends PlayerSubCommand {
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public OpenGuiCommand(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @Override
     public String getName() {
         return "gui";
     }
 
-
     @Override
     public String getDescription() {
         return Lang.TOWN_GUI_COMMAND_DESC.getDefault();
     }
-    public int getArguments(){ return 2;}
 
+    public int getArguments() {
+        return 2;
+    }
 
     @Override
     public String getSyntax() {
@@ -33,16 +41,17 @@ public class OpenGuiCommand extends PlayerSubCommand {
     }
 
     @Override
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
         return Collections.emptyList();
     }
+
     @Override
-    public void perform(Player player, String[] args){
-        if (args.length == 1){
+    public void perform(Player player, String[] args) {
+        if (args.length == 1) {
 
             getOpeningGui(player);
-        }else if(args.length > 1){
-            LangType lang = PlayerDataStorage.getInstance().get(player).getLang();
+        } else if (args.length > 1) {
+            LangType lang = playerDataStorage.get(player).getLang();
             TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.get(lang));
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(lang, getSyntax()));
         }
@@ -52,8 +61,6 @@ public class OpenGuiCommand extends PlayerSubCommand {
     private void getOpeningGui(Player player) {
         new MainMenu(player);
     }
-
-
 }
 
 

@@ -5,9 +5,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
-import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.permission.ChunkPermission;
+import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
@@ -73,7 +73,7 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
                             Lang.GUI_GENERIC_ADD_BUTTON
                     )
                     .setAction(action -> {
-                        permission.addSpecificPlayerPermission(playerToAdd.getUniqueId().toString());
+                        permission.addSpecificPlayerPermission(playerToAdd.getUniqueId());
                         SoundUtil.playSound(player, SoundEnum.ADD);
                         open();
                     })

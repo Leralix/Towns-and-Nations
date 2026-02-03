@@ -1,9 +1,9 @@
 package org.leralix.tan.storage.typeadapter;
 
 import com.google.gson.*;
-import org.leralix.tan.dataclass.property.AbstractOwner;
-import org.leralix.tan.dataclass.property.PlayerOwned;
-import org.leralix.tan.dataclass.property.TerritoryOwned;
+import org.leralix.tan.data.building.property.owner.AbstractOwner;
+import org.leralix.tan.data.building.property.owner.PlayerOwned;
+import org.leralix.tan.data.building.property.owner.TerritoryOwned;
 
 import java.lang.reflect.Type;
 

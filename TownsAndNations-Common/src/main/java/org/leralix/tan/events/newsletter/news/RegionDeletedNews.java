@@ -1,19 +1,19 @@
 package org.leralix.tan.events.newsletter.news;
 
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanPlayer;
-import org.tan.api.interfaces.TanRegion;
+import org.tan.api.interfaces.territory.TanRegion;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -27,7 +27,7 @@ public class RegionDeletedNews extends Newsletter {
 
     public RegionDeletedNews(TanRegion regionData, TanPlayer player) {
         super();
-        this.playerID = player.getUUID().toString();
+        this.playerID = player.getID().toString();
         this.regionName = regionData.getName();
     }
 
@@ -51,29 +51,20 @@ public class RegionDeletedNews extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
-        if (tanPlayer == null)
-            return;
-        TanChatUtils.message(player, Lang.REGION_DELETED_NEWSLETTER.get(player, tanPlayer.getNameStored(), regionName), SoundEnum.GOOD);
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
+        OfflinePlayer getRegionDeleter = player.getServer().getOfflinePlayer(UUID.fromString(playerID));
+        TanChatUtils.message(player, Lang.REGION_DELETED_NEWSLETTER.get(tanPlayer, getRegionDeleter.getName(), regionName), SoundEnum.GOOD);
     }
 
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
-        if (tanPlayer == null)
-            return null;
+        OfflinePlayer getRegionDeleter = player.getServer().getOfflinePlayer(UUID.fromString(playerID));
 
         return IconManager.getInstance().get(IconKey.REGION_BASE_ICON)
                 .setName(Lang.REGION_DELETED_NEWSLETTER_TITLE.get(lang))
                 .setDescription(
                         Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
-                        Lang.REGION_DELETED_NEWSLETTER.get(tanPlayer.getNameStored(), regionName),
+                        Lang.REGION_DELETED_NEWSLETTER.get(getRegionDeleter.getName(), regionName),
                         Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
                 )
                 .setAction(action -> {

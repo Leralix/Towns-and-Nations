@@ -3,16 +3,16 @@ package org.leralix.tan.war.capture;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.chunk.TerritoryChunk;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.building.fort.Fort;
+import org.leralix.tan.data.chunk.TerritoryChunk;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.war.War;
-import org.leralix.tan.war.fort.Fort;
-import org.leralix.tan.war.legacy.CurrentAttack;
-import org.leralix.tan.war.legacy.WarRole;
+import org.leralix.tan.war.attack.CurrentAttack;
+import org.leralix.tan.war.info.WarRole;
 
 import java.util.*;
 
@@ -167,7 +167,7 @@ public class CaptureChunk {
 
         War war = currentAttack.getAttackData().getWar();
 
-        WarRole warRole = war.getTerritoryRole(territoryChunk.getOccupier());
+        WarRole warRole = war.getTerritoryRole(territoryChunk.getOccupierInternal());
         return switch (warRole) {
             case MAIN_ATTACKER, OTHER_ATTACKER -> war.getMainDefender();
             case MAIN_DEFENDER, OTHER_DEFENDER, NEUTRAL -> war.getMainAttacker();

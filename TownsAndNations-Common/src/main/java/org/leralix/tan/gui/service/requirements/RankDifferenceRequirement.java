@@ -1,8 +1,8 @@
 package org.leralix.tan.gui.service.requirements;
 
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.RankData;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.rank.RankData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 

@@ -3,13 +3,12 @@ package org.leralix.tan.gui.user.territory.hierarchy;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.territory.NationData;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.data.territory.NationData;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -33,7 +32,7 @@ public class VassalsMenu extends IteratorGUI {
 
     @Override
     public void open() {
-        iterator(getVassals(), p -> PlayerGUI.openHierarchyMenu(player, territoryData));
+        iterator(getVassals(), p -> new HierarchyMenu(player, territoryData));
 
         gui.setItem(4, 3, getAddVassalButton());
 
@@ -54,7 +53,7 @@ public class VassalsMenu extends IteratorGUI {
 
         List<GuiItem> res = new ArrayList<>();
 
-        for (TerritoryData vassal : territoryData.getVassals()) {
+        for (TerritoryData vassal : territoryData.getVassalsInternal()) {
 
             GuiItem vassalButton = iconManager.get(vassal.getIcon())
                     .setName(vassal.getColoredName())

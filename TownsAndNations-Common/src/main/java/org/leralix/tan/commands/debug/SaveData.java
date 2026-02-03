@@ -11,6 +11,12 @@ import java.util.List;
 
 public class SaveData extends SubCommand {
 
+    private final SaveStats saveStats;
+
+    public SaveData(SaveStats saveStats) {
+        this.saveStats = saveStats;
+    }
+
     @Override
     public String getName() {
         return "saveall";
@@ -30,12 +36,14 @@ public class SaveData extends SubCommand {
     public String getSyntax() {
         return "/tandebug saveall";
     }
-    public List<String> getTabCompleteSuggestions(CommandSender commandSender, String lowerCase, String[] args){
+
+    public List<String> getTabCompleteSuggestions(CommandSender commandSender, String lowerCase, String[] args) {
         return Collections.emptyList();
     }
+
     @Override
     public void perform(CommandSender commandSender, String[] args) {
-        SaveStats.saveAll();
+        saveStats.saveAll();
         TanChatUtils.message(commandSender, Lang.COMMAND_GENERIC_SUCCESS);
     }
 }

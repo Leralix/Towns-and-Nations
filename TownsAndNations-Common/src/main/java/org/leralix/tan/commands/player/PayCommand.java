@@ -19,8 +19,11 @@ public class PayCommand extends PlayerSubCommand {
 
     private final double maxPayDistance;
 
-    public PayCommand(double maxPayDistance){
+    private final PlayerDataStorage playerDataStorage;
+
+    public PayCommand(double maxPayDistance, PlayerDataStorage playerDataStorage) {
         this.maxPayDistance = maxPayDistance;
+        this.playerDataStorage = playerDataStorage;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class PayCommand extends PlayerSubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = playerDataStorage.get(player).getLang();
         if (args.length < 3) {
             TanChatUtils.message(player, Lang.NOT_ENOUGH_ARGS_ERROR.get(langType));
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
@@ -105,10 +108,10 @@ public class PayCommand extends PlayerSubCommand {
                         player.getUniqueId().toString(),
                         receiver.getUniqueId().toString(),
                         amount
-                        )
+                )
         );
         TanChatUtils.message(player, Lang.PAY_CONFIRMED_SENDER.get(langType, Integer.toString(amount), receiver.getName()));
-        TanChatUtils.message(receiver, Lang.PAY_CONFIRMED_RECEIVER.get(receiver, Integer.toString(amount), player.getName()));
+        TanChatUtils.message(receiver, Lang.PAY_CONFIRMED_RECEIVER.get(playerDataStorage.get(receiver).getLang(), Integer.toString(amount), player.getName()));
     }
 
 

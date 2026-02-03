@@ -7,20 +7,20 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.data.building.landmark.Landmark;
+import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.rank.RolePermission;
+import org.leralix.tan.data.upgrade.rewards.numeric.LandmarkCap;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.common.ConfirmMenu;
+import org.leralix.tan.gui.common.PlayerGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.upgrade.rewards.numeric.LandmarkCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.deprecated.HeadUtils;
@@ -49,7 +49,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
 
         gui.setItem(2, 5, getClaimButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, Player::closeInventory));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, Player::closeInventory, langType));
 
 
         GuiItem panelGui = ItemBuilder.from(HeadUtils.createCustomItemStack(Material.GRAY_STAINED_GLASS_PANE, "")).asGuiItem(event -> event.setCancelled(true));
@@ -63,7 +63,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
     }
 
     private @NotNull GuiItem getClaimButton() {
-        TownData playerTown = TownDataStorage.getInstance().get(player);
+        TownData playerTown = TownDataStorage.getInstance().get(tanPlayer);
         double cost = Constants.getClaimLandmarkCost();
         List<FilledLang> description = new ArrayList<>();
 
@@ -116,7 +116,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
                                 playerTown.removeFromBalance(cost);
                                 landmark.setOwner(playerTown);
                                 playerTown.broadcastMessageWithSound(Lang.GUI_LANDMARK_CLAIMED.get(), GOOD);
-                                PlayerGUI.dispatchLandmarkGui(player, landmark);
+                                PlayerGUI.dispatchLandmarkGui(player, tanPlayer, landmark);
                             },
                             this::open
                     );

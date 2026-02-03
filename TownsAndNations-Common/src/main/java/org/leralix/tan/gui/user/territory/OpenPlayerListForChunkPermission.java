@@ -5,10 +5,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.ClaimedChunkSettings;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.enums.RolePermission;
-import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.permission.ChunkPermissionType;
+import org.leralix.tan.data.territory.permission.ClaimedChunkSettings;
+import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -63,8 +63,8 @@ public class OpenPlayerListForChunkPermission extends IteratorGUI {
     private List<GuiItem> getAuthorizedPlayer() {
         List<GuiItem> guiItems = new ArrayList<>();
 
-        for (String authorizedPlayerID : chunkPermission.getChunkPermissions().get(chunkPermissionType).getAuthorizedPlayers()) {
-            OfflinePlayer authorizedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(authorizedPlayerID));
+        for (UUID authorizedPlayerID : chunkPermission.getChunkPermissions().get(chunkPermissionType).getAuthorizedPlayers()) {
+            OfflinePlayer authorizedPlayer = Bukkit.getOfflinePlayer(authorizedPlayerID);
 
             guiItems.add(iconManager.get(authorizedPlayer)
                     .setName(authorizedPlayer.getName())

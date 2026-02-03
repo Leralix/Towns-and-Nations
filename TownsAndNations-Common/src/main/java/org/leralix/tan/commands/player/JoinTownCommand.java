@@ -3,9 +3,8 @@ package org.leralix.tan.commands.player;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
@@ -17,11 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JoinTownCommand extends PlayerSubCommand {
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public JoinTownCommand(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @Override
     public String getName() {
         return "join";
     }
-
 
     @Override
     public String getDescription() {
@@ -39,7 +44,7 @@ public class JoinTownCommand extends PlayerSubCommand {
     }
 
     @Override
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
         List<String> suggestions = new ArrayList<>();
         if (args.length == 2) {
             suggestions.add("<Town ID>");
@@ -50,36 +55,35 @@ public class JoinTownCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args) {
 
-        LangType lang = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType lang = playerDataStorage.get(player).getLang();
 
         if (args.length == 1) {
             TanChatUtils.message(player, Lang.NOT_ENOUGH_ARGS_ERROR.get(lang), SoundEnum.NOT_ALLOWED);
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(lang, getSyntax()));
-        } else if (args.length == 2){
+        } else if (args.length == 2) {
 
-            if(!player.hasPermission("tan.base.town.join")){
+            if (!player.hasPermission("tan.base.town.join")) {
                 TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang), SoundEnum.NOT_ALLOWED);
                 return;
             }
 
             String townID = args[1];
 
-            if(!TownInviteDataStorage.isInvited(player.getUniqueId().toString(),townID)){
+            if (!TownInviteDataStorage.isInvited(player.getUniqueId(), townID)) {
                 TanChatUtils.message(player, Lang.TOWN_INVITATION_NO_INVITATION.get(lang));
                 return;
             }
 
             TownData townData = TownDataStorage.getInstance().get(townID);
-            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+            ITanPlayer tanPlayer = playerDataStorage.get(player);
 
-            if(townData.isFull()){
+            if (townData.isFull()) {
                 TanChatUtils.message(player, Lang.INVITATION_TOWN_FULL.get(lang));
                 return;
             }
 
             townData.addPlayer(tanPlayer);
-        }
-        else{
+        } else {
             TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.get(lang));
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(lang, getSyntax()));
         }

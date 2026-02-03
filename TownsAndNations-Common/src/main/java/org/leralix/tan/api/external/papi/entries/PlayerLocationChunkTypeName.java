@@ -5,7 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
+import org.leralix.tan.data.chunk.ClaimedChunk;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
 public class PlayerLocationChunkTypeName extends PapiEntry{
@@ -25,7 +25,7 @@ public class PlayerLocationChunkTypeName extends PapiEntry{
 
         Location location = onlinePlayer.getLocation();
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
         return switch (claimedChunk.getType()){
             case TOWN -> "Town";
             case REGION -> "Region";

@@ -7,19 +7,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.building.property.PropertyData;
+import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.TownClaimedChunk;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.interact.ListenerState;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -33,10 +31,10 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
     protected Vector3D position2;
     protected double cost;
 
-    protected CreatePropertyEvent(Player player) {
+    protected CreatePropertyEvent(Player player, ITanPlayer playerData, TownData townData) {
         this.player = player;
-        this.townData = TownDataStorage.getInstance().get(player);
-        this.tanPlayer = PlayerDataStorage.getInstance().get(player);
+        this.townData = townData;
+        this.tanPlayer = playerData;
     }
 
 
@@ -49,7 +47,7 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
         if (block == null)
             return ListenerState.CONTINUE;
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(block.getChunk());
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(block.getChunk());
         if (!(claimedChunk instanceof TownClaimedChunk townClaimedChunk && townClaimedChunk.getTown().isPlayerIn(player))) {
             TanChatUtils.message(player, Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(langType));
             return ListenerState.FAILURE;
@@ -62,7 +60,7 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
 
         if (position1 == null) {
             position1 = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
-            TanChatUtils.message(player, Lang.PLAYER_FIRST_POINT_SET.get(player, position1.toString()));
+            TanChatUtils.message(player, Lang.PLAYER_FIRST_POINT_SET.get(langType, position1.toString()));
             return ListenerState.CONTINUE;
         }
         if (position2 == null) {

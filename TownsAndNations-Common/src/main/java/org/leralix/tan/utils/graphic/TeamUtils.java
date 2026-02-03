@@ -6,8 +6,8 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
@@ -77,15 +77,18 @@ public class TeamUtils {
      */
     public static void addPlayerToCorrectTeam(Player player, Player playerToAdd) {
 
-        Scoreboard scoreboard = player.getScoreboard();
-        if(!PlayerDataStorage.getInstance().get(playerToAdd).hasTown() || !PlayerDataStorage.getInstance().get(player).hasTown())
+        PlayerDataStorage playerDataStorage = PlayerDataStorage.getInstance();
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
+        ITanPlayer tanPlayerToAdd = playerDataStorage.get(playerToAdd);
+
+        if(!tanPlayerToAdd.hasTown() || !tanPlayer.hasTown())
             return;
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        TownRelation relation = tanPlayer.getRelationWithPlayer(playerToAdd);
+        TownRelation relation = tanPlayer.getRelationWithPlayer(tanPlayerToAdd);
         if(relation == null)
             return;
 
+        Scoreboard scoreboard = player.getScoreboard();
         Team playerTeam = scoreboard.getTeam(relation.getName(Lang.getServerLang()).toLowerCase());
         if(playerTeam == null){ //Player did not have a town when he logged in. No team was created for him.
             TeamUtils.setIndividualScoreBoard(player);

@@ -6,7 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -14,7 +15,7 @@ import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -56,7 +57,7 @@ public class TerritoryIndependentNews extends Newsletter {
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
                 Lang.TOWN_LEAVE_REGION_NEWSLETTER_TITLE.get(lang),
                 Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(lang, leavingTown.getBaseColoredName(), region.getBaseColoredName()),
+                Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(lang, leavingTown.getColoredName(), region.getColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
@@ -90,7 +91,7 @@ public class TerritoryIndependentNews extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
         TerritoryData leavingTown = TerritoryUtil.getTerritory(formerMasterID);
         if (leavingTown == null)
             return;
@@ -98,11 +99,6 @@ public class TerritoryIndependentNews extends Newsletter {
         if (region == null)
             return;
 
-        TanChatUtils.message(player, Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(player, leavingTown.getBaseColoredName(), region.getBaseColoredName()), SoundEnum.MINOR_GOOD);
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
+        TanChatUtils.message(player, Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(tanPlayer, leavingTown.getColoredName(), region.getColoredName()), SoundEnum.MINOR_GOOD);
     }
 }

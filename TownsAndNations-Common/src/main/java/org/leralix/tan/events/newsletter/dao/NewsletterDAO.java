@@ -2,9 +2,9 @@ package org.leralix.tan.events.newsletter.dao;
 
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.timezone.TimeZoneManager;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.events.newsletter.news.Newsletter;
-import org.leralix.tan.timezone.TimeZoneManager;
 
 import javax.sql.DataSource;
 import java.sql.*;

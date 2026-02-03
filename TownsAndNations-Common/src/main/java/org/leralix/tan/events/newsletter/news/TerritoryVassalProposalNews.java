@@ -6,11 +6,11 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.events.newsletter.NewsletterType;
-import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.user.territory.hierarchy.TerritoryChooseOverlordMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -18,11 +18,10 @@ import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.UUID;
 import java.util.function.Consumer;
-
 
 
 public class TerritoryVassalProposalNews extends Newsletter {
@@ -49,19 +48,19 @@ public class TerritoryVassalProposalNews extends Newsletter {
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
-        if(proposingTerritory == null || receivingTerritory == null)
+        if (proposingTerritory == null || receivingTerritory == null)
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
                 Lang.NEWSLETTER_JOIN_REGION_PROPOSAL.get(lang),
                 Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(lang, proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(lang, proposingTerritory.getColoredName(), receivingTerritory.getColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
-            if(event.isRightClick()){
+            if (event.isRightClick()) {
                 markAsRead(player);
                 onClick.accept(player);
             }
@@ -72,21 +71,21 @@ public class TerritoryVassalProposalNews extends Newsletter {
     public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
-        if(proposingTerritory == null || receivingTerritory == null)
+        if (proposingTerritory == null || receivingTerritory == null)
             return null;
 
         ItemStack icon = HeadUtils.createCustomItemStack(Material.GOLDEN_HELMET,
                 Lang.NEWSLETTER_JOIN_REGION_PROPOSAL.get(lang),
-                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(lang, proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()),
+                Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(lang, proposingTerritory.getColoredName(), receivingTerritory.getColoredName()),
                 Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2.get(lang),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
 
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
             event.setCancelled(true);
-            if(event.isLeftClick())
-                PlayerGUI.openChooseOverlordMenu(player, receivingTerritory, 0);
-            if(event.isRightClick()){
+            if (event.isLeftClick())
+                new TerritoryChooseOverlordMenu(player, receivingTerritory, Player::closeInventory);
+            if (event.isRightClick()) {
                 markAsRead(player);
                 onClick.accept(player);
             }
@@ -96,10 +95,10 @@ public class TerritoryVassalProposalNews extends Newsletter {
     @Override
     public boolean shouldShowToPlayer(Player player) {
         TerritoryData territoryData = TerritoryUtil.getTerritory(receivingTerritoryID);
-        if(territoryData == null)
+        if (territoryData == null)
             return false;
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        if(!territoryData.isPlayerIn(tanPlayer))
+        if (!territoryData.isPlayerIn(tanPlayer))
             return false;
         return territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR);
     }
@@ -110,14 +109,14 @@ public class TerritoryVassalProposalNews extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
-        if(proposingTerritory == null)
+        if (proposingTerritory == null)
             return;
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
-        if(receivingTerritory == null)
+        if (receivingTerritory == null)
             return;
-        TanChatUtils.message(player, Lang.TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER.get(player, proposingTerritory.getBaseColoredName(), receivingTerritory.getBaseColoredName()), SoundEnum.MINOR_BAD);
+        TanChatUtils.message(player, Lang.TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER.get(tanPlayer, proposingTerritory.getColoredName(), receivingTerritory.getColoredName()), SoundEnum.MINOR_BAD);
     }
 
     public String getProposingTerritoryID() {
@@ -126,10 +125,5 @@ public class TerritoryVassalProposalNews extends Newsletter {
 
     public String getReceivingTerritoryID() {
         return receivingTerritoryID;
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
     }
 }

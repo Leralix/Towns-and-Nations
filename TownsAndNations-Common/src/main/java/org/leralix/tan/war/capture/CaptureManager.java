@@ -2,17 +2,18 @@ package org.leralix.tan.war.capture;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.chunk.TerritoryChunk;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.building.fort.Fort;
+import org.leralix.tan.data.chunk.TerritoryChunk;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.War;
-import org.leralix.tan.war.fort.Fort;
-import org.leralix.tan.war.legacy.CurrentAttack;
-import org.leralix.tan.war.legacy.WarRole;
+import org.leralix.tan.war.attack.CurrentAttack;
+import org.leralix.tan.war.info.WarRole;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -24,9 +25,15 @@ public class CaptureManager {
 
     private static CaptureManager instance;
 
+    private final PlayerDataStorage playerDataStorage;
+
+    public CaptureManager(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
+
     public static CaptureManager getInstance() {
         if(instance == null) {
-            instance = new CaptureManager();
+            instance = new CaptureManager(TownsAndNations.getPlugin().getPlayerDataStorage());
         }
         return instance;
     }
@@ -91,7 +98,7 @@ public class CaptureManager {
     }
 
     /**
-     * For one attack currently ongoing, update capture progress of chunks where players are
+     * For one attack currently ongoing, update the capture progress of chunks where players are
      * @param currentAttack the attack to update
      */
     private void handleChunkCapture(CurrentAttack currentAttack) {
@@ -103,14 +110,14 @@ public class CaptureManager {
             var claimedChunk = NewClaimedChunkStorage.getInstance().get(player);
 
             if(claimedChunk instanceof TerritoryChunk territoryChunk){
-                //If chunk is surrounded by allied chunks, cannot be captured.
+                //If a chunk is surrounded by allied chunks, it cannot be captured.
                 if(NewClaimedChunkStorage.getInstance().isAllAdjacentChunksClaimedBySameTerritory(territoryChunk.getChunk(), territoryChunk.getOccupierID())){
                     continue;
                 }
 
-                ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+                ITanPlayer tanPlayer = playerDataStorage.get(player);
 
-                var occupier = territoryChunk.getOccupier();
+                var occupier = territoryChunk.getOccupierInternal();
                 WarRole occupierRole = warRelatedToAttack.getTerritoryRole(occupier);
                 // If territory is neutral, then do not capture it
                 if(occupierRole == WarRole.NEUTRAL){

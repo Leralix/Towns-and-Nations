@@ -4,16 +4,16 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.NationData;
-import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.NationData;
+import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.data.timezone.TimeZoneManager;
 import org.leralix.tan.gui.BasicGui;
+import org.leralix.tan.gui.common.PlayerGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.gui.user.player.PlayerMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
@@ -54,7 +54,7 @@ public class MainMenu extends BasicGui {
         gui.setItem(2, townPosition, getTownButton(tanPlayer));
         gui.setItem(2, playerPosition, getPlayerButton(tanPlayer));
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory, langType));
 
         gui.open(player);
     }
@@ -92,7 +92,7 @@ public class MainMenu extends BasicGui {
         return iconManager.get(IconKey.NATION_BASE_ICON)
                 .setName(Lang.GUI_NATION_ICON.get(tanPlayer))
                 .setDescription(description)
-                .setAction(action -> PlayerGUI.dispatchPlayerNation(player))
+                .setAction(action -> PlayerGUI.dispatchPlayerNation(player, tanPlayer))
                 .asGuiItem(player, langType);
     }
 
@@ -112,7 +112,7 @@ public class MainMenu extends BasicGui {
         return iconManager.get(IconKey.REGION_BASE_ICON)
                 .setName(Lang.GUI_REGION_ICON.get(tanPlayer))
                 .setDescription(description)
-                .setAction(action -> PlayerGUI.dispatchPlayerRegion(player))
+                .setAction(action -> PlayerGUI.dispatchPlayerRegion(player, tanPlayer))
                 .asGuiItem(player, langType);
     }
 
@@ -129,7 +129,7 @@ public class MainMenu extends BasicGui {
         return iconManager.get(IconKey.TOWN_BASE_ICON)
                 .setName(Lang.GUI_TOWN_ICON.get(tanPlayer))
                 .setDescription(description)
-                .setAction(action -> PlayerGUI.dispatchPlayerTown(player))
+                .setAction(action -> PlayerGUI.dispatchPlayerTown(player, tanPlayer))
                 .asGuiItem(player, langType);
     }
 

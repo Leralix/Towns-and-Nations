@@ -3,7 +3,7 @@ package org.leralix.tan.listeners.chat.events;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.admin.AdminManagePlayer;
 import org.leralix.tan.lang.Lang;
@@ -21,10 +21,10 @@ public class AdminSetPlayerBalance extends ChatListenerEvent {
 
 
     @Override
-    protected boolean execute(Player player, String message) {
+    protected boolean execute(Player player, ITanPlayer playerData, String message) {
         Double amount = parseStringToDouble(message);
         if (amount == null) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(player));
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(playerData));
             return false;
         }
         EconomyUtil.setBalance(targetPlayer, amount);

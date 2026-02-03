@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TownDeletedInternalEvent;
 import org.leralix.tan.gui.common.ConfirmMenu;
@@ -66,7 +66,7 @@ public class TownSettingsMenu extends SettingsMenus {
         gui.setItem(2, 7, getQuitButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> new TownMenu(player, townData)));
+        gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> new TownMenu(player, townData), langType));
 
         gui.open(player);
     }
@@ -99,7 +99,7 @@ public class TownSettingsMenu extends SettingsMenus {
                         return;
                     }
 
-                    RightClickListener.register(player, new ChangeCapital(townData, p -> open()));
+                    RightClickListener.register(player, langType, new ChangeCapital(townData, p -> open()));
                 })
                 .asGuiItem(player, langType);
 
@@ -113,7 +113,7 @@ public class TownSettingsMenu extends SettingsMenus {
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
                 .setAction(action -> {
                     TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
-                    PlayerChatListenerStorage.register(player, new ChangeTownTag(townData, p -> open()));
+                    PlayerChatListenerStorage.register(player, langType, new ChangeTownTag(townData, p -> open()));
                 })
                 .asGuiItem(player, langType);
     }
@@ -173,7 +173,7 @@ public class TownSettingsMenu extends SettingsMenus {
                 .setAction(event -> {
                     event.setCancelled(true);
                     if (townData.isCapital()) {
-                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, townData.getOverlord().get().getBaseColoredName()));
+                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, townData.getOverlord().get().getColoredName()));
                         return;
                     }
 

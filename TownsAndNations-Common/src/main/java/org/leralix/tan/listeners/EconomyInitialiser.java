@@ -11,11 +11,10 @@ public class EconomyInitialiser implements Listener {
 
     @EventHandler
     public void onServiceRegister(ServiceRegisterEvent event) {
-        if (event.getProvider().getProvider() instanceof Economy economy) {
-            if(EconomyUtil.isStandalone()){
-                EconomyUtil.register(new TanEconomyExternal(economy));
-            }
+        if (event.getProvider().getProvider() instanceof Economy economy && EconomyUtil.isStandalone()) {
+            EconomyUtil.register(new TanEconomyExternal(economy));
         }
+
     }
 
 }

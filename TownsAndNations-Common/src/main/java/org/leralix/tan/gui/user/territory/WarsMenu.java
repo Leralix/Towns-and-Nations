@@ -5,17 +5,13 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.user.war.NeutralWarMenu;
-import org.leralix.tan.gui.user.war.SecondaryWarMenu;
-import org.leralix.tan.gui.user.war.WarMenu;
 import org.leralix.tan.gui.user.war.WarMenuDispatch;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.war.War;
-import org.leralix.tan.war.legacy.WarRole;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +28,7 @@ public class WarsMenu extends IteratorGUI {
 
     @Override
     public void open() {
-        iterator(getWars(), p -> territoryData.openMainMenu(player));
+        iterator(getWars(), p -> territoryData.openMainMenu(player, tanPlayer));
         gui.setItem(4, 4, getAttackButton());
         gui.setItem(4, 5, getDeclareWarButton());
         gui.open(player);

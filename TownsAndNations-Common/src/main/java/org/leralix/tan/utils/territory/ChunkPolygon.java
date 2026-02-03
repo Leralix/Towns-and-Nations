@@ -1,12 +1,12 @@
 package org.leralix.tan.utils.territory;
 
 import org.leralix.lib.position.Vector2D;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.building.fort.Fort;
+import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.war.fort.Fort;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -15,14 +15,14 @@ import java.util.Set;
 public class ChunkPolygon {
 
     private final TerritoryData territoryOwner;
-    private final Set<ClaimedChunk2> chunksInPolygon;
+    private final Set<ClaimedChunk> chunksInPolygon;
 
-    public ChunkPolygon(TerritoryData territoryData, Set<ClaimedChunk2> chunksInPolygon) {
+    public ChunkPolygon(TerritoryData territoryData, Set<ClaimedChunk> chunksInPolygon) {
         this.territoryOwner = territoryData;
         this.chunksInPolygon = chunksInPolygon;
     }
 
-    public Set<ClaimedChunk2> getChunksInPolygon() {
+    public Set<ClaimedChunk> getChunksInPolygon() {
         return chunksInPolygon;
     }
 
@@ -31,13 +31,13 @@ public class ChunkPolygon {
         Optional<Vector2D> capitalChunk = resolveCapitalChunk(territoryOwner);
 
 
-        for(ClaimedChunk2 claimedChunk2 : chunksInPolygon){
+        for(ClaimedChunk claimedChunk : chunksInPolygon){
             for(Fort fort : FortStorage.getInstance().getOwnedFort(territoryOwner)){
-                if(claimedChunk2.containsPosition(fort.getPosition())){
+                if(claimedChunk.containsPosition(fort.getPosition())){
                     return true;
                 }
             }
-            if(capitalChunk.isPresent() && claimedChunk2.getVector2D().equals(capitalChunk.get())){
+            if(capitalChunk.isPresent() && claimedChunk.getVector2D().equals(capitalChunk.get())){
                 return true;
             }
         }
@@ -65,13 +65,13 @@ public class ChunkPolygon {
     }
 
     public void unclaimAll(){
-        for(ClaimedChunk2 claimedChunk2 : chunksInPolygon){
-            NewClaimedChunkStorage.getInstance().unclaimChunk(claimedChunk2);
+        for(ClaimedChunk claimedChunk : chunksInPolygon){
+            NewClaimedChunkStorage.getInstance().unclaimChunk(claimedChunk);
         }
     }
 
-    public boolean contains(ClaimedChunk2 claimedChunk) {
-        for(ClaimedChunk2 chunkInPolygon : chunksInPolygon){
+    public boolean contains(ClaimedChunk claimedChunk) {
+        for(ClaimedChunk chunkInPolygon : chunksInPolygon){
             if(claimedChunk.equals(chunkInPolygon)){
                 return true;
             }

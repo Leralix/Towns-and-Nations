@@ -3,12 +3,11 @@ package org.leralix.tan.gui.user.territory.relation;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.enums.RolePermission;
-import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.rank.RolePermission;
+import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.legacy.PlayerGUI;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.constants.Constants;
@@ -38,7 +37,7 @@ public class OpenDiplomacyMenu extends BasicGui {
         gui.setItem(15, getAllianceButton());
         gui.setItem(17, getProposalButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player, tanPlayer), langType));
 
         gui.open(player);
     }

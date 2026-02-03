@@ -3,9 +3,10 @@ package org.leralix.tan.commands.player;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.enums.MapSettings;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.gui.scope.MapSettings;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
@@ -16,46 +17,56 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UnclaimCommand extends PlayerSubCommand {
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public UnclaimCommand(PlayerDataStorage playerDataStorage){
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @Override
     public String getName() {
         return "unclaim";
     }
 
-
     @Override
     public String getDescription() {
         return Lang.UNCLAIM_CHUNK_COMMAND_DESC.getDefault();
     }
-    public int getArguments(){ return 1;}
 
+    public int getArguments() {
+        return 1;
+    }
 
     @Override
     public String getSyntax() {
         return "/tan unclaim <town/region/nation> <x> <z>";
     }
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
         if (args.length == 2) {
-            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+            ITanPlayer tanPlayer = playerDataStorage.get(player);
             return TerritoryCommandUtil.getTerritoryTypeSuggestions(tanPlayer);
         }
         return new ArrayList<>();
     }
-    @Override
-    public void perform(Player player, String[] args){
 
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+    @Override
+    public void perform(Player player, String[] args) {
+
+        LangType langType = playerDataStorage.get(player).getLang();
         if (!(args.length == 1 || args.length == 4)) {
             TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
-            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()) );
+            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
             return;
         }
 
         Chunk chunk = null;
-        if (args.length == 1){
+        if (args.length == 1) {
             chunk = player.getLocation().getChunk();
         }
 
-        if(args.length == 4){
+        if (args.length == 4) {
             String territoryType = args[1].toLowerCase();
             if (!territoryType.equals("town") && !territoryType.equals("region") && !territoryType.equals("nation")) {
                 TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
@@ -68,14 +79,15 @@ public class UnclaimCommand extends PlayerSubCommand {
             }
         }
 
-        if(!NewClaimedChunkStorage.getInstance().isChunkClaimed(chunk)){
+        if (!NewClaimedChunkStorage.getInstance().isChunkClaimed(chunk)) {
             TanChatUtils.message(player, Lang.CHUNK_NOT_CLAIMED.get(langType));
             return;
         }
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
-        claimedChunk.unclaimChunk(player);
-        if(args.length == 4){
-            MapCommand.openMap(player, new MapSettings(args[0], args[1]));
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
+        claimedChunk.unclaimChunk(player, langType);
+        if (args.length == 4) {
+            var mapCommand = new MapCommand(TownsAndNations.getPlugin().getPlayerDataStorage());
+            mapCommand.openMap(player, new MapSettings(args[0], args[1]));
         }
     }
 }

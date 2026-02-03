@@ -1,15 +1,12 @@
 package org.leralix.tan.api.internal.managers;
 
-import org.leralix.tan.api.internal.wrappers.NationDataWrapper;
-import org.leralix.tan.api.internal.wrappers.RegionDataWrapper;
-import org.leralix.tan.api.internal.wrappers.TownDataWrapper;
 import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.tan.api.getters.TanTerritoryManager;
-import org.tan.api.interfaces.TanNation;
-import org.tan.api.interfaces.TanRegion;
-import org.tan.api.interfaces.TanTown;
+import org.tan.api.interfaces.territory.TanNation;
+import org.tan.api.interfaces.territory.TanRegion;
+import org.tan.api.interfaces.territory.TanTown;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -43,8 +40,7 @@ public class TerritoryManager implements TanTerritoryManager {
 
     @Override
     public Optional<TanTown> getTown(String uuid) {
-        TownDataWrapper townDataWrapper = TownDataWrapper.of(townDataStorageInstance.get(uuid));
-        return Optional.ofNullable(townDataWrapper);
+        return Optional.ofNullable(townDataStorageInstance.get(uuid));
     }
 
     @Override
@@ -55,15 +51,13 @@ public class TerritoryManager implements TanTerritoryManager {
     @Override
     public Collection<TanTown> getTowns() {
         return townDataStorageInstance.getAll().values().stream()
-                .map(TownDataWrapper::of)
                 .map(t -> (TanTown) t)
                 .toList();
     }
 
     @Override
     public Optional<TanRegion> getRegion(String uuid) {
-        RegionDataWrapper regionDataWrapper = RegionDataWrapper.of(regionDataStorageInstance.get(uuid));
-        return Optional.ofNullable(regionDataWrapper);
+        return Optional.ofNullable(regionDataStorageInstance.get(uuid));
     }
 
     @Override
@@ -74,15 +68,13 @@ public class TerritoryManager implements TanTerritoryManager {
     @Override
     public Collection<TanRegion> getRegions() {
         return regionDataStorageInstance.getAll().values().stream()
-                .map(RegionDataWrapper::of)
                 .map(TanRegion.class::cast)
                 .toList();
     }
 
     @Override
     public Optional<TanNation> getNation(String nationID) {
-        NationDataWrapper wrapper = NationDataWrapper.of(nationDataStorageInstance.get(nationID));
-        return Optional.ofNullable(wrapper);
+        return Optional.ofNullable(nationDataStorageInstance.get(nationID));
     }
 
     @Override
@@ -93,7 +85,6 @@ public class TerritoryManager implements TanTerritoryManager {
     @Override
     public Collection<TanNation> getNations() {
         return nationDataStorageInstance.getAll().values().stream()
-                .map(NationDataWrapper::of)
                 .map(TanNation.class::cast)
                 .toList();
     }

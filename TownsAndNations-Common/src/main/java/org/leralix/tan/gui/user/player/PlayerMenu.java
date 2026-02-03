@@ -2,6 +2,7 @@ package org.leralix.tan.gui.user.player;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.leralix.tan.data.timezone.TimeZoneManager;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.gui.BasicGui;
@@ -12,7 +13,6 @@ import org.leralix.tan.gui.user.property.PlayerPropertiesMenu;
 import org.leralix.tan.gui.user.territory.history.PlayerTransactionHistory;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.timezone.TimeZoneManager;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class PlayerMenu extends BasicGui {
@@ -36,7 +36,7 @@ public class PlayerMenu extends BasicGui {
         gui.setItem(2, 7, getTimezoneButton());
         gui.setItem(2, 8, getLanguageButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, MainMenu::new));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, MainMenu::new, langType));
 
         gui.open(player);
     }

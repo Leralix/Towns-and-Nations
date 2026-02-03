@@ -2,20 +2,27 @@ package org.leralix.tan.commands.player;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.upgrade.rewards.bool.EnableTownSpawn;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.TeleportationRegister;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.upgrade.rewards.bool.EnableTownSpawn;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
 
 public class TownSpawnCommand extends PlayerSubCommand {
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public TownSpawnCommand(PlayerDataStorage playerDataStorage){
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @Override
     public String getName() {
         return "spawn";
@@ -44,7 +51,7 @@ public class TownSpawnCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args) {
 
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = playerDataStorage.get(player).getLang();
         //Incorrect syntax
         if (args.length != 1) {
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
@@ -52,13 +59,13 @@ public class TownSpawnCommand extends PlayerSubCommand {
         }
 
         //No town
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer playerStat = playerDataStorage.get(player.getUniqueId().toString());
         if (!playerStat.hasTown()) {
             TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
             return;
         }
 
-        TownData townData = TownDataStorage.getInstance().get(player);
+        TownData townData = TownDataStorage.getInstance().get(playerStat);
         EnableTownSpawn enableTownSpawn = townData.getNewLevel().getStat(EnableTownSpawn.class);
         //Spawn Unlocked
         if (!enableTownSpawn.isEnabled()) {

@@ -3,10 +3,10 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.dataclass.territory.economy.Budget;
-import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.economy.Budget;
+import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.history.TerritoryTransactionHistory;
@@ -47,7 +47,7 @@ public class TreasuryMenu extends BasicGui {
         gui.setItem(3,2, getDonationButton());
         gui.setItem(3,4, getRetrieveButton());
 
-        gui.setItem(5,1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player)));
+        gui.setItem(5,1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player, tanPlayer), langType));
 
         gui.open(player);
     }
@@ -79,7 +79,7 @@ public class TreasuryMenu extends BasicGui {
                 .setAction(action -> {
                     if(action.isRightClick()){
                         TanChatUtils.message(player, Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get(tanPlayer));
-                        PlayerChatListenerStorage.register(player, new DonateToTerritory(territoryData));
+                        PlayerChatListenerStorage.register(player, langType, new DonateToTerritory(territoryData));
                     }
                     else {
                         new TerritoryTransactionHistory(player, territoryData, TransactionType.DONATION, p -> new TreasuryMenu(player, territoryData));
@@ -104,7 +104,7 @@ public class TreasuryMenu extends BasicGui {
                         return;
                     }
                     TanChatUtils.message(player, Lang.PLAYER_WRITE_QUANTITY_IN_CHAT.get(tanPlayer));
-                    PlayerChatListenerStorage.register(player,new RetrieveMoney(territoryData));
+                    PlayerChatListenerStorage.register(player, langType, new RetrieveMoney(territoryData));
                 })
 
                 .asGuiItem(player, langType);

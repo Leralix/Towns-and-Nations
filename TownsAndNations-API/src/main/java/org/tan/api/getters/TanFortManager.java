@@ -1,6 +1,6 @@
 package org.tan.api.getters;
 
-import org.tan.api.interfaces.TanFort;
+import org.tan.api.interfaces.buildings.TanFort;
 
 import java.util.List;
 

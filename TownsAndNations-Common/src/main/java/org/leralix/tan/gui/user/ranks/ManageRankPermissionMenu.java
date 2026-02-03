@@ -3,9 +3,9 @@ package org.leralix.tan.gui.user.ranks;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.RankData;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.rank.RankData;
+import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -48,7 +48,7 @@ public class ManageRankPermissionMenu extends IteratorGUI {
                         .setAction(event -> {
                             event.setCancelled(true);
                             if(!territoryData.getRank(player).hasPermission(permission) && !territoryData.isLeader(player)) {
-                                TanChatUtils.message(player, Lang.ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT.get(player), SoundEnum.NOT_ALLOWED);
+                                TanChatUtils.message(player, Lang.ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT.get(langType), SoundEnum.NOT_ALLOWED);
                                 return;
                             }
                             rankData.switchPermission(permission);

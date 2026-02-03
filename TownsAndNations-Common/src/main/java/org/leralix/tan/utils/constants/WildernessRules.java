@@ -3,7 +3,7 @@ package org.leralix.tan.utils.constants;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 
 import java.util.EnumMap;
 import java.util.HashMap;

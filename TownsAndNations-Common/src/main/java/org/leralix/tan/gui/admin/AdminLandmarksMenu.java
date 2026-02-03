@@ -7,9 +7,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.chunk.LandmarkClaimedChunk;
+import org.leralix.tan.data.building.landmark.Landmark;
+import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.LandmarkClaimedChunk;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
@@ -46,10 +46,10 @@ public class AdminLandmarksMenu extends IteratorGUI {
                 .setName(Lang.ADMIN_GUI_CREATE_LANDMARK.get(langType))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
-                    ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getBlock().getChunk());
+                    ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getBlock().getChunk());
 
                     if (claimedChunk instanceof LandmarkClaimedChunk) {
-                        TanChatUtils.message(player, Lang.ADMIN_CHUNK_ALREADY_LANDMARK.get(player));
+                        TanChatUtils.message(player, Lang.ADMIN_CHUNK_ALREADY_LANDMARK.get(langType));
                         return;
                     }
                     Landmark newLandmark = LandmarkStorage.getInstance().addLandmark(player.getLocation());

@@ -2,17 +2,17 @@ package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.building.landmark.Landmark;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.war.War;
-import org.leralix.tan.war.legacy.WarRole;
-import org.leralix.tan.war.legacy.wargoals.CaptureLandmarkWarGoal;
+import org.leralix.tan.war.info.WarRole;
+import org.leralix.tan.war.wargoals.CaptureLandmarkWarGoal;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,9 +2,11 @@ package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.territory.NationData;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.NationData;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.utils.constants.Constants;
@@ -25,7 +27,7 @@ public class ChangeTerritoryName extends ChatListenerEvent {
     }
 
     @Override
-    public boolean execute(Player player, String message) {
+    public boolean execute(Player player, ITanPlayer playerData, String newName) {
 
         int maxSize;
         if (territoryToRename instanceof TownData) {
@@ -36,12 +38,27 @@ public class ChangeTerritoryName extends ChatListenerEvent {
             maxSize = Constants.getRegionMaxNameSize();
         }
 
-        if(message.length() > maxSize){
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(player, Integer.toString(maxSize)));
+        if(newName.length() > maxSize){
+            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(playerData, Integer.toString(maxSize)));
             return false;
         }
 
-        territoryToRename.rename(player, cost, message);
+        if (territoryToRename.getBalance() < cost) {
+            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(
+                    playerData,
+                    territoryToRename.getColoredName(),
+                    Double.toString(cost - territoryToRename.getBalance()))
+            );
+            return true;
+        }
+
+        TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(
+                playerData,
+                territoryToRename.getName(),
+                newName
+        ), SoundEnum.GOOD);
+
+        territoryToRename.rename(player, cost, newName);
         openGui(guiCallback, player);
         return true;
     }

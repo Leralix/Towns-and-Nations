@@ -1,9 +1,9 @@
 package org.leralix.tan.commands.admin;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,16 +67,16 @@ public class NameFilterAdminCommand extends SubCommand {
 
     private void handleReload(CommandSender sender) {
         reloadNameFilter();
-        send(sender, Lang.ADMIN_NAME_FILTER_RELOADED);
+        TanChatUtils.message(sender, Lang.ADMIN_NAME_FILTER_RELOADED);
     }
 
     private void handleList(CommandSender sender) {
         List<String> words = listBlockedWordsOrEmpty();
         if (words.isEmpty()) {
-            send(sender, Lang.ADMIN_NAME_FILTER_LIST_EMPTY);
+            TanChatUtils.message(sender, Lang.ADMIN_NAME_FILTER_LIST_EMPTY);
             return;
         }
-        send(sender, Lang.ADMIN_NAME_FILTER_LIST_HEADER, Integer.toString(words.size()));
+        TanChatUtils.message(sender, Lang.ADMIN_NAME_FILTER_LIST_HEADER.get(Integer.toString(words.size())));
         sender.sendMessage(String.join(", ", words));
     }
 
@@ -92,9 +92,9 @@ public class NameFilterAdminCommand extends SubCommand {
         if (!requireMinArgs(sender, args, 3)) {
             return;
         }
-        String word = joinFrom(args, 2);
+        String word = joinFrom(args);
         boolean ok = invokeBooleanWithStringArg(methodName, word);
-        send(sender, ok ? okMessage : failMessage, word);
+        TanChatUtils.message(sender, ok ? okMessage.get(word) : failMessage.get(word));
     }
 
     private boolean requireMinArgs(CommandSender sender, String[] args, int minArgs) {
@@ -109,16 +109,8 @@ public class NameFilterAdminCommand extends SubCommand {
         if (getNameFilterClass() != null) {
             return true;
         }
-        send(sender, Lang.ADMIN_NAME_FILTER_NOT_AVAILABLE);
+        TanChatUtils.message(sender, Lang.ADMIN_NAME_FILTER_NOT_AVAILABLE);
         return false;
-    }
-
-    private static void send(CommandSender sender, Lang key, String... placeholders) {
-        if (sender instanceof Player player) {
-            sender.sendMessage(key.get(player, placeholders));
-        } else if (sender != null) {
-            sender.sendMessage(key.get(Lang.getServerLang(), placeholders));
-        }
     }
 
     private static Class<?> getNameFilterClass() {
@@ -164,12 +156,12 @@ public class NameFilterAdminCommand extends SubCommand {
         }
     }
 
-    private static String joinFrom(String[] args, int index) {
-        if (args.length <= index) {
+    private static String joinFrom(String[] args) {
+        if (args.length <= 2) {
             return "";
         }
         List<String> parts = new ArrayList<>();
-        for (int i = index; i < args.length; i++) {
+        for (int i = 2; i < args.length; i++) {
             if (args[i] != null && !args[i].isBlank()) {
                 parts.add(args[i]);
             }

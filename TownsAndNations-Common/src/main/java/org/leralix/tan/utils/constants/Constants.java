@@ -4,18 +4,21 @@ import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.Range;
-import org.leralix.tan.dataclass.chunk.ChunkType;
-import org.leralix.tan.dataclass.territory.NationData;
-import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.enums.permissions.GeneralChunkSetting;
+import org.leralix.tan.data.chunk.ChunkType;
+import org.leralix.tan.data.territory.NationData;
+import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.permission.GeneralChunkSetting;
+import org.leralix.tan.data.territory.relation.TownRelation;
+import org.leralix.tan.data.upgrade.NewUpgradeStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
-import org.leralix.tan.upgrade.NewUpgradeStorage;
+import org.leralix.tan.utils.Range;
 import org.leralix.tan.war.WarTimeSlot;
-import org.leralix.tan.war.legacy.InteractionStatus;
+import org.tan.api.interfaces.territory.TanNation;
+import org.tan.api.interfaces.territory.TanRegion;
+import org.tan.api.interfaces.territory.TanTerritory;
+import org.tan.api.interfaces.territory.TanTown;
 
 import java.util.*;
 
@@ -573,14 +576,14 @@ public class Constants {
         return allowNonAdjacentChunksForRegion;
     }
 
-    public static boolean allowNonAdjacentChunksFor(TerritoryData territoryData) {
-        if (territoryData instanceof TownData) {
+    public static boolean allowNonAdjacentChunksFor(TanTerritory territoryData) {
+        if (territoryData instanceof TanTown) {
             return allowNonAdjacentChunksForTown;
         }
-        if (territoryData instanceof RegionData) {
+        if (territoryData instanceof TanRegion) {
             return allowNonAdjacentChunksForRegion;
         }
-        if (territoryData instanceof NationData) {
+        if (territoryData instanceof TanNation) {
             return allowNonAdjacentChunksForNation;
         }
         return false;

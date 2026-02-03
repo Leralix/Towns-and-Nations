@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.PropertyData;
+import org.leralix.tan.data.building.property.PropertyData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.RenterPropertyMenu;
 import org.leralix.tan.lang.Lang;
@@ -34,7 +34,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
             gui.setItem(2,7, getCancelRentButton());
         }
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory, langType));
 
         gui.open(player);
     }
@@ -48,7 +48,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
                 .setDescription(Lang.CONFIRM_SALE_DESC1.get(Double.toString(price)))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
-                    propertyData.buyProperty(player);
+                    propertyData.buyProperty(player, tanPlayer);
                     new PlayerPropertyManager(player, propertyData, p -> player.closeInventory());
                 })
                 .asGuiItem(player, langType);

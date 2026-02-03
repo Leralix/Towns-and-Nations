@@ -1,12 +1,10 @@
 package org.leralix.tan.events.events;
 
-import org.leralix.tan.api.internal.wrappers.NationDataWrapper;
-import org.leralix.tan.api.internal.wrappers.TanPlayerWrapper;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.NationData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.NationData;
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.events.NationEvent;
-import org.tan.api.interfaces.TanNation;
+import org.tan.api.interfaces.territory.TanNation;
 import org.tan.api.interfaces.TanPlayer;
 
 public abstract class AbstractNationInternalEvent extends InternalEvent implements NationEvent {
@@ -21,11 +19,11 @@ public abstract class AbstractNationInternalEvent extends InternalEvent implemen
 
     @Override
     public TanNation getNation() {
-        return NationDataWrapper.of(nationData);
+        return nationData;
     }
 
     @Override
     public TanPlayer getExecutor() {
-        return TanPlayerWrapper.of(executor);
+        return executor;
     }
 }

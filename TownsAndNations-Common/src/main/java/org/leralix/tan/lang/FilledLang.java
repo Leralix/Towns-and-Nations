@@ -1,7 +1,7 @@
 package org.leralix.tan.lang;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.util.Collections;

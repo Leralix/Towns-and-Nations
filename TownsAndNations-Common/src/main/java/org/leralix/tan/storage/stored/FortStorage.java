@@ -2,8 +2,8 @@ package org.leralix.tan.storage.stored;
 
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.war.fort.Fort;
+import org.leralix.tan.data.building.fort.Fort;
+import org.leralix.tan.data.territory.TerritoryData;
 
 import java.util.ArrayList;
 import java.util.List;

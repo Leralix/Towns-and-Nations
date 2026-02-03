@@ -2,8 +2,8 @@ package org.leralix.tan.gui.admin;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;

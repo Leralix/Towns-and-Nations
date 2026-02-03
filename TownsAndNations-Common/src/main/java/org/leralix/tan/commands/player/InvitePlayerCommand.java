@@ -4,9 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.utils.ChatUtils;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
@@ -18,11 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InvitePlayerCommand extends PlayerSubCommand {
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public InvitePlayerCommand(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @Override
     public String getName() {
         return "invite";
     }
-
 
     @Override
     public String getDescription() {
@@ -63,9 +69,9 @@ public class InvitePlayerCommand extends PlayerSubCommand {
         }
     }
 
-    private static void invite(Player player, String playerToInvite) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        TownData townData = TownDataStorage.getInstance().get(player);
+    private void invite(Player player, String playerToInvite) {
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
+        TownData townData = TownDataStorage.getInstance().get(tanPlayer);
         LangType langType = tanPlayer.getLang();
 
         if (townData == null) {
@@ -84,12 +90,12 @@ public class InvitePlayerCommand extends PlayerSubCommand {
         }
 
 
-        TownData town = TownDataStorage.getInstance().get(player);
+        TownData town = TownDataStorage.getInstance().get(tanPlayer);
         if (town.isFull()) {
             TanChatUtils.message(player, Lang.INVITATION_TOWN_FULL.get(langType));
             return;
         }
-        ITanPlayer inviteStat = PlayerDataStorage.getInstance().get(invite);
+        ITanPlayer inviteStat = playerDataStorage.get(invite);
 
         if (inviteStat.getTownId() != null) {
             if (inviteStat.getTownId().equals(town.getID())) {
@@ -104,7 +110,7 @@ public class InvitePlayerCommand extends PlayerSubCommand {
             return;
         }
 
-        TownInviteDataStorage.addInvitation(invite.getUniqueId().toString(), town.getID());
+        TownInviteDataStorage.addInvitation(invite.getUniqueId(), town.getID());
 
         TanChatUtils.message(player, Lang.INVITATION_SENT_SUCCESS.get(langType, invite.getName()));
 

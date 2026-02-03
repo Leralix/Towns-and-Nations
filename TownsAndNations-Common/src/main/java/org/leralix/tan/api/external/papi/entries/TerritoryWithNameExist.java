@@ -2,7 +2,7 @@ package org.leralix.tan.api.external.papi.entries;
 
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
@@ -10,14 +10,17 @@ import org.leralix.tan.utils.constants.Constants;
 public class TerritoryWithNameExist extends PapiEntry {
 
 
-    public TerritoryWithNameExist() {
+    private final PlayerDataStorage playerDataStorage;
+
+    public TerritoryWithNameExist(PlayerDataStorage playerDataStorage) {
         super("territory_with_name_{}_exist");
+        this.playerDataStorage = playerDataStorage;
     }
 
     @Override
     public String getData(OfflinePlayer player, @NotNull String params) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player.getUniqueId());
+        ITanPlayer tanPlayer = playerDataStorage.get(player.getUniqueId());
 
         if (tanPlayer == null) {
             return PLAYER_NOT_FOUND;

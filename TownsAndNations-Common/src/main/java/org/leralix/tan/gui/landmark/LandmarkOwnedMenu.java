@@ -7,10 +7,10 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.data.building.landmark.Landmark;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
@@ -41,7 +41,7 @@ public class LandmarkOwnedMenu extends BasicGui {
         gui.setItem(2, 4, getCollectButton());
         gui.setItem(2, 6, getAbandonButton());
 
-        gui.setItem(3,1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
+        gui.setItem(3,1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory, langType));
 
         GuiItem panelIcon = GuiUtil.getUnnamedItem(Material.GRAY_STAINED_GLASS_PANE);
         gui.getFiller().fillTop(panelIcon);

@@ -1,11 +1,11 @@
 package org.leralix.tan.storage;
 
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.permission.ChunkPermission;
-import org.leralix.tan.dataclass.territory.permission.PermissionGiven;
-import org.leralix.tan.dataclass.territory.permission.RelationPermission;
-import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.permission.ChunkPermission;
+import org.leralix.tan.data.territory.permission.ChunkPermissionType;
+import org.leralix.tan.data.territory.permission.PermissionGiven;
+import org.leralix.tan.data.territory.permission.RelationPermission;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.utils.constants.Constants;
 
 import java.util.EnumMap;

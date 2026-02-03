@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -60,8 +60,8 @@ public class BrowsePlayerWithPermissionMenu extends IteratorGUI {
     private List<GuiItem> getAuthorizedPlayers() {
         List<GuiItem> guiItems = new ArrayList<>();
 
-        for (String authorizedPlayerID : permissionManager.get(chunkPermission).getAuthorizedPlayers()) {
-            OfflinePlayer authorizedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(authorizedPlayerID));
+        for (UUID authorizedPlayerID : permissionManager.get(chunkPermission).getAuthorizedPlayers()) {
+            OfflinePlayer authorizedPlayer = Bukkit.getOfflinePlayer(authorizedPlayerID);
 
             guiItems.add(
                     iconManager.get(authorizedPlayer)

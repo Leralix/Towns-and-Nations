@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.territory.NationData;
-import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.data.territory.NationData;
+import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.RegionDeletednternalEvent;
 import org.leralix.tan.gui.common.ConfirmMenu;
@@ -52,7 +52,7 @@ public class RegionSettingsMenu extends SettingsMenus {
         gui.setItem(2, 7, getChangeOwnershipButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new RegionMenu(player, regionData)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new RegionMenu(player, regionData), langType));
 
         gui.open(player);
     }
@@ -78,13 +78,13 @@ public class RegionSettingsMenu extends SettingsMenus {
                     }
 
                     if (regionData.isCapital()) {
-                        TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_NATION_CAPITAL.get(tanPlayer, regionData.getBaseColoredName()), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_NATION_CAPITAL.get(tanPlayer, regionData.getColoredName()), NOT_ALLOWED);
                         return;
                     }
 
                     new ConfirmMenu(
                             player,
-                            Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(regionData.getBaseColoredName(), nationData.getBaseColoredName()),
+                            Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(regionData.getColoredName(), nationData.getColoredName()),
                             () -> {
                                 regionData.removeOverlord();
                                 regionData.broadcastMessageWithSound(Lang.REGION_BROADCAST_REGION_LEFT_NATION.get(regionData.getName(), nationData.getName()), BAD);
@@ -130,7 +130,7 @@ public class RegionSettingsMenu extends SettingsMenus {
                     event.setCancelled(true);
 
                     if (regionData.isCapital()) {
-                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, regionData.getOverlord().get().getBaseColoredName()));
+                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, regionData.getOverlord().get().getColoredName()));
                         return;
                     }
 

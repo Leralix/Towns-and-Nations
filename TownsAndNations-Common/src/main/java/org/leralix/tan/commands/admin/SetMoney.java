@@ -4,10 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -15,6 +14,12 @@ import org.leralix.tan.utils.text.TanChatUtils;
 import java.util.List;
 
 public class SetMoney extends SubCommand {
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public SetMoney(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
 
     @Override
     public String getName() {
@@ -46,7 +51,7 @@ public class SetMoney extends SubCommand {
             TanChatUtils.message(player, Lang.NOT_ENOUGH_ARGS_ERROR, SoundEnum.NOT_ALLOWED);
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO);
         } else if (args.length == 3) {
-            ITanPlayer target = PlayerDataStorage.getInstance().get(Bukkit.getOfflinePlayer(args[1]));
+            ITanPlayer target = playerDataStorage.get(Bukkit.getOfflinePlayer(args[1]));
             setMoney(player, args, target);
 
         } else {

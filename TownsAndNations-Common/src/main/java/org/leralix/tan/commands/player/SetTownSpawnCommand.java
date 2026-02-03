@@ -2,23 +2,31 @@ package org.leralix.tan.commands.player;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.TownClaimedChunk;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.rank.RolePermission;
+import org.leralix.tan.data.upgrade.rewards.bool.EnableTownSpawn;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.upgrade.rewards.bool.EnableTownSpawn;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 import java.util.List;
 
 public class SetTownSpawnCommand extends PlayerSubCommand {
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public SetTownSpawnCommand(PlayerDataStorage playerDataStorage){
+        this.playerDataStorage = playerDataStorage;
+    }
+
+
     @Override
     public String getName() {
         return "setspawn";
@@ -42,7 +50,7 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args){
 
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = playerDataStorage.get(player).getLang();
 
         //Incorrect syntax
         if (args.length != 1){
@@ -51,14 +59,14 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
         }
 
         //No town
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player.getUniqueId().toString());
+        ITanPlayer playerStat = playerDataStorage.get(player.getUniqueId().toString());
         if(!playerStat.hasTown()){
             TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
             return;
         }
 
         //No permission
-        TownData townData = TownDataStorage.getInstance().get(player);
+        TownData townData = TownDataStorage.getInstance().get(playerStat);
 
         if(!townData.doesPlayerHavePermission(playerStat, RolePermission.TOWN_ADMINISTRATOR)){
             TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType));
@@ -73,7 +81,7 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
             return;
         }
 
-        ClaimedChunk2 currentChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getChunk());
+        ClaimedChunk currentChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getChunk());
         if(!(currentChunk instanceof TownClaimedChunk townChunk && townChunk.getTown().equals(townData))){
             TanChatUtils.message(player, Lang.SPAWN_NEED_TO_BE_IN_CHUNK.get(langType));
             return;

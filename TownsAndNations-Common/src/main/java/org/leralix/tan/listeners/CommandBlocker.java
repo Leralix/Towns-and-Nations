@@ -6,8 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -18,6 +18,11 @@ import java.util.Set;
 
 public class CommandBlocker implements Listener {
 
+    private final PlayerDataStorage playerDataStorage;
+
+    public CommandBlocker(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
@@ -25,56 +30,59 @@ public class CommandBlocker implements Listener {
         Player player = event.getPlayer();
         String inputCommand = event.getMessage();
 
-        if(isPlayerInAnAttack(player, inputCommand) || relationForbidCommandWithPlayer(player, inputCommand, Constants.getAllRelationBlacklistedCommands())){
+        if (isPlayerInAnAttack(player, inputCommand) || relationForbidCommandWithPlayer(player, inputCommand,
+                Constants.getAllRelationBlacklistedCommands())) {
             event.setCancelled(true);
         }
     }
 
     /**
-     * Detect if the input command is blocked depending on the relation between two players.
+     * Detect if the input command is blocked depending on the relation between two
+     * players.
      *
-     * @param sender The player executing the command.
+     * @param sender       The player executing the command.
      * @param inputCommand The raw command (ex: "/tan pay joe 10").
      * @return The target player name if the command is blocked, otherwise null.
      */
-    static boolean relationForbidCommandWithPlayer(Player sender, String inputCommand, Set<String> allBlacklistedCommands) {
+    boolean relationForbidCommandWithPlayer(Player sender, String inputCommand,
+            Set<String> allBlacklistedCommands) {
 
         // Normalize command
         String normalizedInput = inputCommand.trim();
         String[] inputParts = normalizedInput.split(" ");
 
-
-        for(String blackListedCommand : allBlacklistedCommands){
+        for (String blackListedCommand : allBlacklistedCommands) {
             boolean nextCommand = false;
             String selectedPlayer = null;
             String[] blackListedParts = blackListedCommand.split(" ");
-            if(blackListedParts.length > inputParts.length){
+            if (blackListedParts.length > inputParts.length) {
                 continue;
             }
-            for(int i = 0; i < blackListedParts.length; i++){
+            for (int i = 0; i < blackListedParts.length; i++) {
 
-                if(blackListedParts[i].equals("%PLAYER%")){
+                if (blackListedParts[i].equals("%PLAYER%")) {
                     selectedPlayer = inputParts[i];
-                }
-                else if(!blackListedParts[i].equals(inputParts[i])){
+                } else if (!blackListedParts[i].equals(inputParts[i])) {
                     nextCommand = true;
                     break;
                 }
             }
-            if(nextCommand || selectedPlayer == null){
+            if (nextCommand || selectedPlayer == null) {
                 continue;
             }
             Player receiver = Bukkit.getPlayer(selectedPlayer);
-            if(receiver == null){
+            if (receiver == null) {
                 continue;
             }
 
-            ITanPlayer senderData = PlayerDataStorage.getInstance().get(sender);
-            ITanPlayer receiverData = PlayerDataStorage.getInstance().get(receiver);
+            ITanPlayer senderData = playerDataStorage.get(sender);
+            ITanPlayer receiverData = playerDataStorage.get(receiver);
             TownRelation worstRelationWithPlayer = senderData.getRelationWithPlayer(receiverData);
-            if(Constants.getRelationConstants(worstRelationWithPlayer).getBlockedCommands().contains(blackListedCommand)){
+            if (Constants.getRelationConstants(worstRelationWithPlayer).getBlockedCommands()
+                    .contains(blackListedCommand)) {
                 LangType lang = senderData.getLang();
-                TanChatUtils.message(sender, Lang.CANNOT_CAST_COMMAND_ON_PLAYER_WITH_SPECIFIC_RELATION.get(lang, receiver.getName(),worstRelationWithPlayer.getColoredName(lang)), SoundEnum.NOT_ALLOWED);
+                TanChatUtils.message(sender, Lang.CANNOT_CAST_COMMAND_ON_PLAYER_WITH_SPECIFIC_RELATION.get(lang,
+                        receiver.getName(), worstRelationWithPlayer.getColoredName(lang)), SoundEnum.NOT_ALLOWED);
                 return true;
             }
         }
@@ -82,16 +90,18 @@ public class CommandBlocker implements Listener {
     }
 
     /**
-     * If the player is involved in an attack, check if the command is blacklisted during attacks.
-     * @param player        the player executing the command
-     * @param inputCommand  the raw command
+     * If the player is involved in an attack, check if the command is blacklisted
+     * during attacks.
+     * 
+     * @param player       the player executing the command
+     * @param inputCommand the raw command
      * @return true if the command is blacklisted during attacks, false otherwise
      */
-    private static boolean isPlayerInAnAttack(Player player, String inputCommand) {
+    private boolean isPlayerInAnAttack(Player player, String inputCommand) {
 
-        if(!PlayerDataStorage.getInstance().get(player).getAttackInvolvedIn().isEmpty()){
-            for(String blackListedCommands : Constants.getBlacklistedCommandsDuringAttacks()){
-                if(blackListedCommands.startsWith(inputCommand)){
+        if (!playerDataStorage.get(player).getAttackInvolvedIn().isEmpty()) {
+            for (String blackListedCommands : Constants.getBlacklistedCommandsDuringAttacks()) {
+                if (blackListedCommands.startsWith(inputCommand)) {
                     TanChatUtils.message(player, Lang.CANNOT_CAST_COMMAND_DURING_ATTACK, SoundEnum.NOT_ALLOWED);
                     return true;
                 }
@@ -99,6 +109,5 @@ public class CommandBlocker implements Listener {
         }
         return false;
     }
-
 
 }

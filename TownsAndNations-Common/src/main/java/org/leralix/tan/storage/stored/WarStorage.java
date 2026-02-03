@@ -2,8 +2,8 @@ package org.leralix.tan.storage.stored;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.WarStartInternalEvent;
 import org.leralix.tan.storage.typeadapter.AttackResultAdapter;
@@ -12,8 +12,8 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.info.AttackResult;
-import org.leralix.tan.war.legacy.WarRole;
-import org.leralix.tan.war.legacy.wargoals.WarGoal;
+import org.leralix.tan.war.info.WarRole;
+import org.leralix.tan.war.wargoals.WarGoal;
 
 import java.util.ArrayList;
 import java.util.Collection;

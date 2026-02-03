@@ -13,6 +13,12 @@ import java.util.List;
 
 public class OpenNewsletterCommand extends PlayerSubCommand {
 
+    private final PlayerDataStorage playerDataStorage ;
+
+    public OpenNewsletterCommand(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @Override
     public String getName() {
         return "newsletter";
@@ -22,23 +28,27 @@ public class OpenNewsletterCommand extends PlayerSubCommand {
     public String getDescription() {
         return Lang.OPEN_NEWSLETTER_DESC.getDefault();
     }
-    public int getArguments(){ return 1;}
+
+    public int getArguments() {
+        return 1;
+    }
 
 
     @Override
     public String getSyntax() {
         return "/tan newsletter";
     }
+
     @Override
-    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args){
+    public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
         return Collections.emptyList();
     }
 
     @Override
-    public void perform(Player player, String[] args){
+    public void perform(Player player, String[] args) {
 
         if (args.length != 1) {
-            LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+            LangType langType = playerDataStorage.get(player).getLang();
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
             return;
         }

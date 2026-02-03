@@ -4,8 +4,8 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -35,7 +35,7 @@ public class AdminManagePlayer extends BasicGui {
         gui.setItem(2, 4, getBalanceButton());
         gui.setItem(2, 6, getTownButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminBrowsePlayers(player)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminBrowsePlayers(player), langType));
 
         gui.open(player);
     }
@@ -49,7 +49,7 @@ public class AdminManagePlayer extends BasicGui {
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(action -> {
                     player.closeInventory();
-                    PlayerChatListenerStorage.register(player, new AdminSetPlayerBalance(targetPlayer));
+                    PlayerChatListenerStorage.register(player, langType, new AdminSetPlayerBalance(targetPlayer));
                 })
                 .asGuiItem(player, langType);
     }

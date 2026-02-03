@@ -10,16 +10,14 @@ import org.leralix.tan.commands.admin.AdminCommandManager;
 import org.leralix.tan.commands.debug.DebugCommandManager;
 import org.leralix.tan.commands.player.PlayerCommandManager;
 import org.leralix.tan.commands.server.ServerCommandManager;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.tasks.SaveStats;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,10 +29,12 @@ class CommandPermissionConsistencyTest extends BasicTest {
         ConfigurationSection permissionsSection = pluginYml.getConfigurationSection("permissions");
         assertNotNull(permissionsSection, "plugin.yml must contain a permissions section");
 
-        assertPermissionsExist(permissionsSection, "tan.base.commands", new PlayerCommandManager());
-        assertPermissionsExist(permissionsSection, "tan.admin.commands", new AdminCommandManager());
-        assertPermissionsExist(permissionsSection, "tan.admin.commands", new DebugCommandManager());
-        assertPermissionsExist(permissionsSection, "tan.server.commands", new ServerCommandManager());
+        PlayerDataStorage playerDataStorage = new PlayerDataStorage();
+
+        assertPermissionsExist(permissionsSection, "tan.base.commands", new PlayerCommandManager(playerDataStorage));
+        assertPermissionsExist(permissionsSection, "tan.admin.commands", new AdminCommandManager(playerDataStorage));
+        assertPermissionsExist(permissionsSection, "tan.admin.commands", new DebugCommandManager(new SaveStats(townsAndNations), null));
+        assertPermissionsExist(permissionsSection, "tan.server.commands", new ServerCommandManager(playerDataStorage));
     }
 
     private static YamlConfiguration loadPluginYml() {

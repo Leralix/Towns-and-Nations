@@ -1,17 +1,15 @@
 package org.leralix.tan.events.events;
 
-import org.leralix.tan.api.internal.wrappers.TerritoryDataWrapper;
-import org.leralix.tan.dataclass.territory.TerritoryData;
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.events.TerritoryVassalProposalEvent;
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 public class TerritoryVassalProposalInternalEvent extends InternalEvent implements TerritoryVassalProposalEvent {
 
-    private final TerritoryData territoryData;
-    private final TerritoryData potentialOverlordData;
+    private final TanTerritory territoryData;
+    private final TanTerritory potentialOverlordData;
 
-    public TerritoryVassalProposalInternalEvent(TerritoryData vassal, TerritoryData potentialOverlordData) {
+    public TerritoryVassalProposalInternalEvent(TanTerritory vassal, TanTerritory potentialOverlordData) {
         this.territoryData = vassal;
         this.potentialOverlordData = potentialOverlordData;
     }
@@ -19,11 +17,11 @@ public class TerritoryVassalProposalInternalEvent extends InternalEvent implemen
 
     @Override
     public TanTerritory getTerritory() {
-        return TerritoryDataWrapper.of(territoryData);
+        return territoryData;
     }
 
     @Override
     public TanTerritory getPotentialOverlord() {
-        return TerritoryDataWrapper.of(potentialOverlordData);
+        return potentialOverlordData;
     }
 }

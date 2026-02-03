@@ -3,7 +3,7 @@ package org.leralix.tan.gui.user.war;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.SelectWarGoals;
 import org.leralix.tan.gui.user.territory.WarsMenu;
@@ -14,8 +14,8 @@ import org.leralix.tan.listeners.chat.events.ChangeWarName;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.War;
-import org.leralix.tan.war.legacy.WarRole;
-import org.leralix.tan.war.legacy.wargoals.WarGoal;
+import org.leralix.tan.war.info.WarRole;
+import org.leralix.tan.war.wargoals.WarGoal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ public class WarMenu extends AbstractWarMenu {
         gui.setItem(2, 7, getEnemyWargoalsIcon());
         gui.setItem(2, 8, getSurrenderButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new WarsMenu(player, territoryData)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new WarsMenu(player, territoryData), langType));
         gui.open(player);
     }
 
@@ -58,7 +58,7 @@ public class WarMenu extends AbstractWarMenu {
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_RENAME)
                 .setAction(action -> {
                     TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(tanPlayer));
-                    PlayerChatListenerStorage.register(player, new ChangeWarName(war, p -> open()));
+                    PlayerChatListenerStorage.register(player, langType, new ChangeWarName(war, p -> open()));
                 })
                 .asGuiItem(player, langType);
     }

@@ -2,7 +2,7 @@ package org.leralix.tan.commands.server;
 
 import org.bukkit.command.CommandSender;
 import org.leralix.lib.commands.SubCommand;
-import org.leralix.tan.dataclass.Landmark;
+import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.utils.text.TanChatUtils;

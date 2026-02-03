@@ -7,8 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.timezone.TimeZoneEnum;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
@@ -16,19 +17,28 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.WarStorage;
-import org.leralix.tan.timezone.TimeZoneEnum;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.war.attack.CurrentAttack;
 import org.leralix.tan.war.info.AttackNotYetStarted;
 import org.leralix.tan.war.info.AttackResult;
 import org.leralix.tan.war.info.AttackResultCancelled;
-import org.leralix.tan.war.legacy.CurrentAttack;
-import org.leralix.tan.war.legacy.WarRole;
+import org.leralix.tan.war.info.WarRole;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 public class PlannedAttack {
 
+    /**
+     * The ID of the attack
+     */
     private final String ID;
+
+    /**
+     * Additional information about the attack
+     */
     private AttackResult attackResult;
 
     /**
@@ -299,5 +309,17 @@ public class PlannedAttack {
 
     public boolean isInstantInAttack(long epochMilli) {
         return epochMilli > startTime && (endTime < 0 || epochMilli < endTime);
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public AttackResult getAttackResult() {
+        return attackResult;
     }
 }

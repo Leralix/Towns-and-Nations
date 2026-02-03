@@ -6,7 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -14,7 +15,7 @@ import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -56,7 +57,7 @@ public class AttackDeclaredNewsletter extends Newsletter {
         ItemStack icon = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
                 Lang.ATTACK_DECLARED_TITLE.getDefault(),
                 Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.ATTACK_DECLARED.get(lang, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()),
+                Lang.ATTACK_DECLARED.get(lang, attackingTerritory.getColoredName(), defendingTerritory.getColoredName()),
                 Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.getDefault());
 
         return ItemBuilder.from(icon).asGuiItem(event -> {
@@ -90,17 +91,15 @@ public class AttackDeclaredNewsletter extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
         TerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
         TerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
         if(attackingTerritory == null || defendingTerritory == null)
             return;
 
-        TanChatUtils.message(player, Lang.ATTACK_DECLARED.get(player, attackingTerritory.getBaseColoredName(), defendingTerritory.getBaseColoredName()), SoundEnum.MINOR_GOOD);
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
+        TanChatUtils.message(player, Lang.ATTACK_DECLARED.get(
+                attackingTerritory.getColoredName(),
+                defendingTerritory.getColoredName()
+        ), SoundEnum.MINOR_GOOD);
     }
 }

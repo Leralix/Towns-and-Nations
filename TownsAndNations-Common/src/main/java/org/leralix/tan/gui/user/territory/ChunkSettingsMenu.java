@@ -4,15 +4,15 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.rank.RolePermission;
+import org.leralix.tan.data.upgrade.rewards.bool.EnableMobBan;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.BooleanStatRequirement;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.upgrade.rewards.bool.EnableMobBan;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -35,7 +35,7 @@ public class ChunkSettingsMenu extends BasicGui {
         gui.setItem(2, 5, getChunkGeneralSettings());
         gui.setItem(2, 7, getChunkMobSpawnSettings());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, territoryData::openMainMenu));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, player1 -> territoryData.openMainMenu(player1, tanPlayer), langType));
 
         gui.open(player);
     }

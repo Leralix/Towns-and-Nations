@@ -1,17 +1,18 @@
 package org.leralix.tan.events.newsletter.news;
 
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.NationData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.NationData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NationDataStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.tan.api.interfaces.TanNation;
+import org.tan.api.interfaces.territory.TanNation;
 import org.tan.api.interfaces.TanPlayer;
 
 import java.util.UUID;
@@ -24,7 +25,7 @@ public class NationCreationNews extends Newsletter {
 
     public NationCreationNews(TanNation nationData, TanPlayer player) {
         super();
-        playerID = player.getUUID().toString();
+        playerID = player.getID().toString();
         nationID = nationData.getID();
     }
 
@@ -48,30 +49,19 @@ public class NationCreationNews extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
-        if (tanPlayer == null) {
-            return;
-        }
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
         NationData nationData = NationDataStorage.getInstance().get(nationID);
         if (nationData == null) {
             return;
         }
-        TanChatUtils.message(player, Lang.NATION_CREATED_NEWSLETTER.get(player, tanPlayer.getNameStored(), nationData.getBaseColoredName()));
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
+        TanChatUtils.message(player, Lang.NATION_CREATED_NEWSLETTER.get(tanPlayer, tanPlayer.getNameStored(), nationData.getColoredName()));
     }
 
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
-        if (tanPlayer == null) {
-            return null;
-        }
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
+
         NationData nationData = NationDataStorage.getInstance().get(nationID);
         if (nationData == null) {
             return null;
@@ -83,7 +73,7 @@ public class NationCreationNews extends Newsletter {
                 getDate(),
                 IconKey.BROWSE_NATION_ICON,
                 Lang.NATION_CREATED_NEWSLETTER_TITLE.get(lang),
-                Lang.NATION_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), nationData.getBaseColoredName()),
+                Lang.NATION_CREATED_NEWSLETTER.get(offlinePlayer.getName(), nationData.getColoredName()),
                 this::markAsRead,
                 onClick
         );

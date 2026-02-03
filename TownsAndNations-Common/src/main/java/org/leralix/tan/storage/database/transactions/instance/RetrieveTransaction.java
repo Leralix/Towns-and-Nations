@@ -2,7 +2,7 @@ package org.leralix.tan.storage.database.transactions.instance;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;

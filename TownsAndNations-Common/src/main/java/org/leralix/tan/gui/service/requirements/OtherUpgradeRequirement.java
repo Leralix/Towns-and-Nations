@@ -1,9 +1,9 @@
 package org.leralix.tan.gui.service.requirements;
 
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.upgrade.Upgrade;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.upgrade.Upgrade;
 
 public class OtherUpgradeRequirement extends IndividualRequirement{
 

@@ -1,7 +1,7 @@
 package org.tan.api.getters;
 
 import org.bukkit.Location;
-import org.tan.api.interfaces.TanLandmark;
+import org.tan.api.interfaces.buildings.TanLandmark;
 
 import java.util.Collection;
 import java.util.Optional;

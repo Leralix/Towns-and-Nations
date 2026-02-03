@@ -3,7 +3,7 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.NationData;
+import org.leralix.tan.data.territory.NationData;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
@@ -35,7 +35,7 @@ public class NationMenu extends TerritoryMenu {
         gui.setItem(3, 3, getAttackButton());
         gui.setItem(3, 4, getHierarchyButton());
 
-        gui.setItem(4, 1, GuiUtil.createBackArrow(player, MainMenu::new));
+        gui.setItem(4, 1, GuiUtil.createBackArrow(player, MainMenu::new, langType));
 
         gui.open(player);
     }

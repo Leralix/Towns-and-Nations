@@ -73,12 +73,12 @@ public class SudoPlayerStorage {
     public static void swap(Player player) {
         if(sudoPlayersID.contains(player.getUniqueId().toString())){
             removeSudoPlayer(player);
-            TanChatUtils.message(player, Lang.SUDO_PLAYER_REMOVED.get(player, player.getName()), SoundEnum.MINOR_GOOD);
+            TanChatUtils.message(player, Lang.SUDO_PLAYER_REMOVED.get(player.getName()), SoundEnum.MINOR_GOOD);
             FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE_REMOVED.get(player.getName(),player.getName()));
         }
         else{
             addSudoPlayer(player);
-            TanChatUtils.message(player, Lang.SUDO_PLAYER_ADDED.get(player, player.getName()), SoundEnum.MINOR_GOOD);
+            TanChatUtils.message(player, Lang.SUDO_PLAYER_ADDED.get(player.getName()), SoundEnum.MINOR_GOOD);
             FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE.get(player.getName(),player.getName()));
         }
     }
@@ -87,13 +87,13 @@ public class SudoPlayerStorage {
         if(sudoPlayersID.contains(target.getUniqueId().toString())){
             removeSudoPlayer(target);
             TanChatUtils.message(commandSender, Lang.SUDO_PLAYER_REMOVED.get(target.getName()), SoundEnum.MINOR_GOOD);
-            TanChatUtils.message(target, Lang.SUDO_PLAYER_REMOVED.get(target, target.getName()), SoundEnum.MINOR_GOOD);
+            TanChatUtils.message(target, Lang.SUDO_PLAYER_REMOVED.get(target.getName()), SoundEnum.MINOR_GOOD);
             FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE_REMOVED.get(commandSender.getName(),target.getName()));
         }
         else{
             addSudoPlayer(target);
             TanChatUtils.message(commandSender, Lang.SUDO_PLAYER_ADDED.get(target.getName()), SoundEnum.MINOR_GOOD);
-            TanChatUtils.message(target, Lang.SUDO_PLAYER_ADDED.get(target, target.getName()), SoundEnum.MINOR_GOOD);
+            TanChatUtils.message(target, Lang.SUDO_PLAYER_ADDED.get(target.getName()), SoundEnum.MINOR_GOOD);
             FileUtil.addLineToHistory(Lang.HISTORY_SUDO_MODE.get(commandSender.getName(),target.getName()));
         }
     }

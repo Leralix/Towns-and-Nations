@@ -7,8 +7,8 @@ import org.leralix.tan.BasicTest;
 import org.leralix.tan.api.external.papi.entries.OtherPlayerChatMode;
 import org.leralix.tan.api.external.papi.entries.PapiEntry;
 import org.leralix.tan.api.external.papi.entries.PlayerBalance;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.enums.ChatScope;
+import org.leralix.tan.commands.player.ChatScope;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
@@ -24,7 +24,7 @@ class PlaceHolderAPITest extends BasicTest {
     protected void setUp() {
         super.setUp();
 
-        placeHolderAPI = new PlaceHolderAPI();
+        placeHolderAPI = new PlaceHolderAPI(townsAndNations.getPlayerDataStorage());
     }
 
 
@@ -86,10 +86,12 @@ class PlaceHolderAPITest extends BasicTest {
     @Test
     void onRequestHitWithParam() {
 
-        Player player = server.addPlayer("playerName");
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        PlayerDataStorage playerDataStorage = townsAndNations.getPlayerDataStorage();
 
-        placeHolderAPI.registerEntry(new OtherPlayerChatMode());
+        Player player = server.addPlayer("playerName");
+        ITanPlayer tanPlayer = playerDataStorage.register(player);
+
+        placeHolderAPI.registerEntry(new OtherPlayerChatMode(playerDataStorage));
 
         assertEquals(ChatScope.GLOBAL.getName(tanPlayer.getLang()), placeHolderAPI.onRequest(player, "chat_mode_{playerName}"));
 

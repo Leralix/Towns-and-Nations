@@ -2,8 +2,8 @@ package org.leralix.tan.gui.user.territory.relation;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.DiplomacyProposal;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.relation.DiplomacyProposal;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;

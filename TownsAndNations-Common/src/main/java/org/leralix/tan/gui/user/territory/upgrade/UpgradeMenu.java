@@ -6,15 +6,15 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.upgrade.TerritoryStats;
+import org.leralix.tan.data.upgrade.Upgrade;
+import org.leralix.tan.data.upgrade.rewards.IndividualStat;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.MoneyRequirement;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.upgrade.TerritoryStats;
-import org.leralix.tan.upgrade.Upgrade;
-import org.leralix.tan.upgrade.rewards.IndividualStat;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -150,7 +150,7 @@ public class UpgradeMenu extends BasicGui {
         gui.setItem(6, 8, getRightButton());
         gui.setItem(6, 7, getLeftButton());
 
-        gui.setItem(6, 1, GuiUtil.createBackArrow(player, territoryData::openMainMenu));
+        gui.setItem(6, 1, GuiUtil.createBackArrow(player, player1 -> territoryData.openMainMenu(player1, tanPlayer), langType));
     }
 
     private @NotNull GuiItem getUpgradeTownButton() {

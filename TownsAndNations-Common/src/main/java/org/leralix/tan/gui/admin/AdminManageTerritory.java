@@ -3,13 +3,13 @@ package org.leralix.tan.gui.admin;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.history.TerritoryTransactionHistory;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.listeners.AdminSetTerritoryBalance;
+import org.leralix.tan.listeners.chat.AdminSetTerritoryBalance;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
@@ -33,8 +33,8 @@ public abstract class AdminManageTerritory extends BasicGui {
                 .setDescription(Lang.GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC1.get(territoryData.getName()))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(action -> {
-                    TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(player));
-                    PlayerChatListenerStorage.register(player, new ChangeTerritoryName(territoryData, 0, p -> open()));
+                    TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
+                    PlayerChatListenerStorage.register(player, langType, new ChangeTerritoryName(territoryData, 0, p -> open()));
                 })
                 .asGuiItem(player, langType);
     }
@@ -46,7 +46,7 @@ public abstract class AdminManageTerritory extends BasicGui {
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(action -> {
                     TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(tanPlayer));
-                    PlayerChatListenerStorage.register(player, new ChangeTerritoryDescription(territoryData, p -> open()));
+                    PlayerChatListenerStorage.register(player, langType, new ChangeTerritoryDescription(territoryData, p -> open()));
                 })
                 .asGuiItem(player, langType);
     }
@@ -59,7 +59,7 @@ public abstract class AdminManageTerritory extends BasicGui {
                    FileUtil.addLineToHistory(Lang.REGION_DELETED_NEWSLETTER.get(player.getName(), territoryData.getName()));
                    if (territoryData.isCapital()) {
                        territoryData.getOverlord().ifPresent(overlord ->
-                               TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(langType, overlord.getBaseColoredName()), SoundEnum.NOT_ALLOWED)
+                               TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(langType, overlord.getColoredName()), SoundEnum.NOT_ALLOWED)
                        );
                        return;
                    }
@@ -90,7 +90,7 @@ public abstract class AdminManageTerritory extends BasicGui {
                 .setDescription(Lang.GUI_YOUR_BALANCE_DESC1.get(Double.toString(territoryData.getBalance())))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_OPEN)
                 .setAction(action ->
-                        PlayerChatListenerStorage.register(player, new AdminSetTerritoryBalance(territoryData, p -> open())))
+                        PlayerChatListenerStorage.register(player, langType, new AdminSetTerritoryBalance(territoryData, p -> open())))
                 .asGuiItem(player, langType);
     }
 

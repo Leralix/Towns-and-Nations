@@ -1,7 +1,7 @@
 package org.leralix.tan.gui.user.territory.history;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.storage.database.transactions.EntityScope;
 import org.leralix.tan.storage.database.transactions.TransactionType;
 
@@ -31,7 +31,6 @@ public class PlayerTransactionHistory extends AbstractTransactionHistory {
         this.playerData = playerData;
     }
 
-
     @Override
     protected EntityScope getScope() {
         return EntityScope.PLAYER;
@@ -39,6 +38,6 @@ public class PlayerTransactionHistory extends AbstractTransactionHistory {
 
     @Override
     protected String getID() {
-        return playerData.getID();
+        return playerData.getID().toString();
     }
 }

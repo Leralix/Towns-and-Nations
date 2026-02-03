@@ -1,8 +1,8 @@
 package org.leralix.tan.events.newsletter;
 
+import org.leralix.tan.gui.scope.DisplayableEnum;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.utils.deprecated.DisplayableEnum;
 
 public enum NewsletterScope implements DisplayableEnum {
     SHOW_ALL(Lang.NEWSLETTER_SHOW_ALL),

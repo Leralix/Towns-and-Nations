@@ -5,33 +5,32 @@ import com.google.gson.GsonBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.NoPlayerData;
-import org.leralix.tan.dataclass.PlayerData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.player.NoPlayerData;
+import org.leralix.tan.data.player.PlayerData;
 
 import java.util.HashMap;
 import java.util.UUID;
 
 public class PlayerDataStorage extends JsonStorage<ITanPlayer> {
 
-    private static final String ERROR_MESSAGE = "Error while creating player storage";
-
+    private static final ITanPlayer NO_PLAYER = new NoPlayerData();
+    
     private static PlayerDataStorage instance;
 
-    private static ITanPlayer NO_PLAYER;
-
-    private PlayerDataStorage() {
+    public PlayerDataStorage() {
         super("TAN - Players.json",
                 new TypeToken<HashMap<String, PlayerData>>() {}.getType(),
                 new GsonBuilder()
                         .setPrettyPrinting()
                         .create());
+        instance = this;
     }
 
+    @Deprecated(since = "0.17.0", forRemoval = true)
     public static synchronized PlayerDataStorage getInstance() {
         if (instance == null) {
             instance = new PlayerDataStorage();
-            NO_PLAYER = new NoPlayerData();
         }
         return instance;
     }
@@ -42,7 +41,7 @@ public class PlayerDataStorage extends JsonStorage<ITanPlayer> {
         return register(tanPlayer);
     }
     ITanPlayer register(ITanPlayer p) {
-        put(p.getID(), p);
+        put(p.getID().toString(), p);
         return p;
     }
 
@@ -56,31 +55,6 @@ public class PlayerDataStorage extends JsonStorage<ITanPlayer> {
 
     public ITanPlayer get(UUID playerID) {
         return get(playerID.toString());
-    }
-
-    public ITanPlayer getOrNull(String id) {
-        if (id == null) {
-            return null;
-        }
-
-        ITanPlayer res = dataMap.get(id);
-        if (res != null) {
-            return res;
-        }
-
-        UUID uuid;
-        try {
-            uuid = UUID.fromString(id);
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
-
-        Player newPlayer = Bukkit.getPlayer(uuid);
-        if (newPlayer != null) {
-            return register(newPlayer);
-        }
-
-        return null;
     }
 
     @Override

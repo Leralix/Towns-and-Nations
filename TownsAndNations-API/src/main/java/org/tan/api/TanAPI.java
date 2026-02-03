@@ -74,7 +74,12 @@ public abstract class TanAPI {
     public abstract TanFortManager getFortManager();
 
     /**
-     * @return Get the plugin version
+     * @return the war manager, responsible for war access
+     */
+    public abstract TanWarManager getWarManager();
+
+    /**
+     * @return Get the version of Towns and Nations linked to this API
      */
     public abstract PluginVersion getPluginVersion();
 

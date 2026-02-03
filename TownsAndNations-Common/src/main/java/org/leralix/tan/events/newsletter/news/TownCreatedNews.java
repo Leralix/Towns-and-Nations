@@ -1,21 +1,22 @@
 package org.leralix.tan.events.newsletter.news;
 
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanPlayer;
-import org.tan.api.interfaces.TanTown;
+import org.tan.api.interfaces.territory.TanTown;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -27,7 +28,7 @@ public class TownCreatedNews extends Newsletter {
     private final String townID;
 
     public TownCreatedNews(TanTown townData, TanPlayer player) {
-        this(townData.getID(), player.getUUID().toString());
+        this(townData.getID(), player.getID().toString());
     }
 
     public TownCreatedNews(String townID, String playerID) {
@@ -52,9 +53,7 @@ public class TownCreatedNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
-        if (tanPlayer == null)
-            return null;
+        OfflinePlayer townCreator = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
 
         TownData townData = TownDataStorage.getInstance().get(townID);
         if (townData == null)
@@ -64,7 +63,7 @@ public class TownCreatedNews extends Newsletter {
                 .setName(Lang.TOWN_CREATED_NEWSLETTER_TITLE.get(lang))
                 .setDescription(
                         Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
-                        Lang.TOWN_CREATED_NEWSLETTER.get(tanPlayer.getNameStored(), townData.getBaseColoredName()),
+                        Lang.TOWN_CREATED_NEWSLETTER.get(townCreator.getName(), townData.getColoredName()),
                         Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
                 )
                 .setAction(action -> {
@@ -93,19 +92,12 @@ public class TownCreatedNews extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().getOrNull(playerID);
-        if (tanPlayer == null)
-            return;
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
+        OfflinePlayer townCreator = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
 
         TownData townData = TownDataStorage.getInstance().get(townID);
         if (townData == null)
             return;
-        TanChatUtils.message(player, Lang.TOWN_CREATED_NEWSLETTER.get(player, tanPlayer.getNameStored(), townData.getBaseColoredName()), SoundEnum.GOOD);
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
+        TanChatUtils.message(player, Lang.TOWN_CREATED_NEWSLETTER.get(tanPlayer, townCreator.getName(), townData.getColoredName()), SoundEnum.GOOD);
     }
 }

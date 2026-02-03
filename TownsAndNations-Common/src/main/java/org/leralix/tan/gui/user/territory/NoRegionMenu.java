@@ -2,10 +2,10 @@ package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.BrowseScope;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.scope.BrowseScope;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
@@ -31,7 +31,7 @@ public class NoRegionMenu extends BasicGui {
 
         gui.setItem(2, 3, getCreateRegionButton());
         gui.setItem(2, 7, getBrowseRegionsButton());
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(player).open()));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(player), langType));
 
         gui.open(player);
     }
@@ -55,13 +55,13 @@ public class NoRegionMenu extends BasicGui {
                         TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer), NOT_ALLOWED);
                         return;
                     }
-                    TownData townData = TownDataStorage.getInstance().get(player);
+                    TownData townData = TownDataStorage.getInstance().get(tanPlayer);
                     double townMoney = townData.getBalance();
                     if (townMoney < regionCost) {
                         TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), Double.toString(regionCost - townMoney)));
                     } else {
                         TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_REGION_NAME.get(tanPlayer));
-                        PlayerChatListenerStorage.register(player, new CreateRegion(regionCost));
+                        PlayerChatListenerStorage.register(player, langType, new CreateRegion(regionCost));
                     }
                 }).asGuiItem(player, langType);
     }

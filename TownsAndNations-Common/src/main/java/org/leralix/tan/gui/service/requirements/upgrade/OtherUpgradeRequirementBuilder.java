@@ -1,11 +1,11 @@
 package org.leralix.tan.gui.service.requirements.upgrade;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.upgrade.Upgrade;
 import org.leralix.tan.gui.service.requirements.IndividualRequirement;
 import org.leralix.tan.gui.service.requirements.OtherUpgradeRequirement;
 import org.leralix.tan.gui.service.requirements.UpgradeErrorRequirement;
-import org.leralix.tan.upgrade.Upgrade;
 import org.leralix.tan.utils.constants.Constants;
 
 public class OtherUpgradeRequirementBuilder extends UpgradeRequirement {

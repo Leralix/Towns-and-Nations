@@ -396,6 +396,7 @@ language:
   GUI_PROPERTY_NOT_FOR_SALE: "§c✘ Not for sale"
   GUI_PROPERTY_FOR_RENT: "§a✔ For rent"
   GUI_PROPERTY_NOT_FOR_RENT: "§c✘ Not for rent"
+  GUI_UNKOWN_OWNER_OR_RENTER: "§cUnknown"
   GUI_PROPERTY_RENTED_BY: "§f➥Rented by: §3{0}"
   PROPERTY_BELONGS_TO: "§f➥Owned by: §3{0}"
   PROPERTY_RENTED_BY: "§f➥Rented by: §3{0}"
@@ -569,6 +570,7 @@ language:
   HEADER_ADMIN_PLAYER_MENU: "Players - Admin"
   HEADER_ADMIN_SET_PLAYER_TOWN: "Set {0} town - Admin"
   HEADER_BUILDING_MENU: "Buildings"
+  HEADER_TERRITORY_SELECT_OVERLORD: "Select overlord"
   GUI_TOWN_INFO_DESC0: "§7§o\"{0}\"" #town's quote
   GUI_TOWN_INFO_DESC1: "§fLeader: §3{0}"
   GUI_TOWN_INFO_DESC2: "§fMembers: §9{0}♣"

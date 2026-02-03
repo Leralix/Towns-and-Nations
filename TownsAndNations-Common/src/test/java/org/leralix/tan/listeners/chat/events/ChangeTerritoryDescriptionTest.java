@@ -1,48 +1,37 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.leralix.lib.SphereLib;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
-import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.BasicTest;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.mockbukkit.mockbukkit.MockBukkit;
-import org.mockbukkit.mockbukkit.ServerMock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class ChangeTerritoryDescriptionTest {
+class ChangeTerritoryDescriptionTest extends BasicTest {
 
     private static Player player;
+    private static ITanPlayer tanPlayer;
     private static TownData townData;
 
+    @Override
     @BeforeEach
-    void setUp() {
-
-        ServerMock server = MockBukkit.mock();
-
-        MockBukkit.load(SphereLib.class);
-        MockBukkit.load(TownsAndNations.class);
+    protected void setUp() {
+        super.setUp();
 
         player = server.addPlayer();
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
         townData = TownDataStorage.getInstance().newTown("town 1", tanPlayer);
     }
 
-    @AfterEach
-    public void tearDown() {
-        MockBukkit.unmock();
-    }
 
     @Test
     void nominalCaseTown() {
@@ -50,7 +39,7 @@ class ChangeTerritoryDescriptionTest {
         ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(townData, null);
         String description = "new description 1";
 
-        changeDescription.execute(player, description);
+        changeDescription.execute(player, tanPlayer, description);
 
         assertEquals(description, townData.getDescription());
     }
@@ -62,7 +51,7 @@ class ChangeTerritoryDescriptionTest {
         ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(regionData, null);
         String description = "new description 2";
 
-        changeDescription.execute(player, description);
+        changeDescription.execute(player, tanPlayer, description);
 
         assertEquals(description, regionData.getDescription());
     }
@@ -74,7 +63,7 @@ class ChangeTerritoryDescriptionTest {
         ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(territoryData, null);
         String description = "new description 3";
 
-        changeDescription.execute(player, description);
+        changeDescription.execute(player, tanPlayer, description);
 
         assertEquals(description, territoryData.getDescription());
     }
@@ -87,7 +76,7 @@ class ChangeTerritoryDescriptionTest {
         description.append("a".repeat(maxDescriptionLength));
 
         ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(townData, null);
-        changeDescription.execute(player, description.toString());
+        changeDescription.execute(player, tanPlayer, description.toString());
 
         assertNotEquals(description.toString(), townData.getDescription());
     }

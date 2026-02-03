@@ -9,7 +9,7 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.war.War;
-import org.leralix.tan.war.legacy.WarRole;
+import org.leralix.tan.war.info.WarRole;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class AdminManageWarMenu extends BasicGui {
                 IconKey.WAR_DEFENDER_SIDE_ICON
         ));
         gui.setItem(2, 7, getAuthorizeAttacksButton());
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> returnGui.open()));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> returnGui.open(), langType));
         gui.open(player);
     }
 

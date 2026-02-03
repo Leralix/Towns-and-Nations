@@ -5,14 +5,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.property.AbstractOwner;
-import org.leralix.tan.dataclass.property.PlayerOwned;
+import org.leralix.tan.data.building.property.PropertyData;
+import org.leralix.tan.data.building.property.owner.PlayerOwned;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.property.PropertyMenus;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
+import org.tan.api.interfaces.buildings.TanOwner;
 
 import java.util.UUID;
 
@@ -35,7 +35,7 @@ public class RenterPropertyMenu extends PropertyMenus {
         gui.setItem(2, 4, getAuthorizedPlayersButton());
         gui.setItem(2, 6, getStopRentPropertyButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory, langType));
         gui.open(player);
     }
 
@@ -48,10 +48,10 @@ public class RenterPropertyMenu extends PropertyMenus {
 
                     TanChatUtils.message(player, Lang.PROPERTY_RENTER_LEAVE_RENTER_SIDE.get(tanPlayer, propertyData.getName()), MINOR_GOOD);
 
-                    AbstractOwner owner = propertyData.getOwner();
+                    TanOwner owner = propertyData.getOwner();
                     if(owner instanceof PlayerOwned playerOwned){
-                        Player playerOwn = Bukkit.getPlayer(UUID.fromString(playerOwned.getPlayerID()));
-                        TanChatUtils.message(playerOwn, Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(playerOwn, player.getName(), propertyData.getName()), MINOR_BAD);
+                        Player playerOwn = Bukkit.getPlayer(UUID.fromString(playerOwned.getID()));
+                        TanChatUtils.message(playerOwn, Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(langType, player.getName(), propertyData.getName()), MINOR_BAD);
                     }
 
                     player.closeInventory();

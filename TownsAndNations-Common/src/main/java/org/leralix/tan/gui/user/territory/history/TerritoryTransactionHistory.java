@@ -1,7 +1,7 @@
 package org.leralix.tan.gui.user.territory.history;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.storage.database.transactions.AbstractTransaction;
 import org.leralix.tan.storage.database.transactions.EntityScope;
 import org.leralix.tan.storage.database.transactions.TransactionType;

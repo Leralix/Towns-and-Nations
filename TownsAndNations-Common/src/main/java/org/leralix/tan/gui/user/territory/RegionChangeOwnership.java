@@ -4,8 +4,8 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.admin.AdminManageRegion;
 import org.leralix.tan.gui.common.ConfirmMenu;
@@ -38,10 +38,10 @@ public class RegionChangeOwnership extends IteratorGUI {
 
     private List<GuiItem> getCandidates() {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (String playerID : regionData.getPlayerIDList()) {
+        for (UUID playerID : regionData.getPlayerIDList()) {
 
             ITanPlayer iterateTanPlayer = PlayerDataStorage.getInstance().get(playerID);
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerID);
             guiItems.add(
                     iconManager.get(offlinePlayer)
                             .setName(offlinePlayer.getName())

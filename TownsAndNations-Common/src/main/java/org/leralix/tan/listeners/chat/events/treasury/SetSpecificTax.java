@@ -2,7 +2,7 @@ package org.leralix.tan.listeners.chat.events.treasury;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -19,18 +19,18 @@ public abstract class SetSpecificTax extends ChatListenerEvent {
     }
 
     @Override
-    public boolean execute(Player player, String message) {
+    public boolean execute(Player player, ITanPlayer playerData, String message) {
         Double amount = parseStringToDouble(message);
         if (amount == null) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(player));
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(playerData));
             return false;
         }
         if (amount < 0) {
-            TanChatUtils.message(player, Lang.VALUE_CANNOT_BE_NEGATIVE_ERROR.get(player));
+            TanChatUtils.message(player, Lang.VALUE_CANNOT_BE_NEGATIVE_ERROR.get(playerData));
             return false;
         }
 
-        TanChatUtils.message(player, Lang.TOWN_SET_TAX_SUCCESS.get(player, Double.toString(amount)), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player, Lang.TOWN_SET_TAX_SUCCESS.get(playerData, Double.toString(amount)), SoundEnum.MINOR_GOOD);
         setTax(amount);
 
         openGui(guiCallback, player);

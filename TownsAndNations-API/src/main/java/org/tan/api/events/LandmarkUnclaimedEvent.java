@@ -1,7 +1,7 @@
 package org.tan.api.events;
 
-import org.tan.api.interfaces.TanLandmark;
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.buildings.TanLandmark;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 public interface LandmarkUnclaimedEvent extends TanEvent {
 

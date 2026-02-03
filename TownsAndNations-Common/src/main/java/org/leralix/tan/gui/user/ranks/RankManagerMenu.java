@@ -5,10 +5,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.RankData;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.enums.RankEnum;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.rank.RankData;
+import org.leralix.tan.data.territory.rank.RankEnum;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.TerritoryRanksMenu;
@@ -58,7 +58,7 @@ public class RankManagerMenu extends BasicGui {
 
         gui.setItem(3, 6, deleteRankIcon());
 
-        gui.setItem(4, 1, GuiUtil.createBackArrow(player,p -> new TerritoryRanksMenu(player, territoryData).open()));
+        gui.setItem(4, 1, GuiUtil.createBackArrow(player,p -> new TerritoryRanksMenu(player, territoryData).open(), langType));
         gui.open(player);
 
     }
@@ -143,7 +143,7 @@ public class RankManagerMenu extends BasicGui {
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(event -> {
                     TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(tanPlayer));
-                    PlayerChatListenerStorage.register(player, new RenameRank(territoryData , rankData));
+                    PlayerChatListenerStorage.register(player, langType, new RenameRank(territoryData , rankData));
                 })
                 .asGuiItem(player, langType);
     }

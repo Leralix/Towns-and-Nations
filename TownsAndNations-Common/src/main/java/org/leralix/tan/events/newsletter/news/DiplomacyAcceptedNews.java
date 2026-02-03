@@ -5,19 +5,18 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.enums.EDiplomacyState;
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -67,7 +66,7 @@ public class DiplomacyAcceptedNews extends Newsletter {
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast(Player player, ITanPlayer tanPlayer) {
         TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         if(proposingTerritory == null)
             return;
@@ -75,12 +74,12 @@ public class DiplomacyAcceptedNews extends Newsletter {
         if(receivingTerritory == null)
             return;
 
-        LangType lang = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType lang = tanPlayer.getLang();
 
         if(isRelationWorse){
             TanChatUtils.message(player,
                     Lang.BROADCAST_RELATION_WORSEN.get(
-                            player,
+                            lang,
                             proposingTerritory.getCustomColoredName().toLegacyText(),
                             receivingTerritory.getCustomColoredName().toLegacyText(),
                             wantedRelation.getColoredName(lang)),
@@ -89,7 +88,7 @@ public class DiplomacyAcceptedNews extends Newsletter {
         else{
             TanChatUtils.message(player,
                     Lang.BROADCAST_RELATION_IMPROVE.get(
-                            player,
+                            lang,
                             proposingTerritory.getCustomColoredName().toLegacyText(),
                             receivingTerritory.getCustomColoredName().toLegacyText(),
                             wantedRelation.getColoredName(lang)),
@@ -134,12 +133,6 @@ public class DiplomacyAcceptedNews extends Newsletter {
         TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if(receivingTerritory == null)
             return false;
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        return receivingTerritory.isPlayerIn(tanPlayer) || proposingTerritory.isPlayerIn(tanPlayer);
-    }
-
-    @Override
-    public void broadcastConcerned(Player player) {
-        broadcast(player);
+        return receivingTerritory.isPlayerIn(player) || proposingTerritory.isPlayerIn(player);
     }
 }

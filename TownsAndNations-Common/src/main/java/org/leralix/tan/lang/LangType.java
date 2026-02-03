@@ -1,8 +1,6 @@
 package org.leralix.tan.lang;
 
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.deprecated.HeadUtils;
 
 import java.util.HashMap;
@@ -59,10 +57,6 @@ public enum LangType {
         this.locale = locale;
         this.code = code;
         this.url = url;
-    }
-
-    public static LangType of(Player player) {
-        return PlayerDataStorage.getInstance().get(player).getLang();
     }
 
     public String getCode() {

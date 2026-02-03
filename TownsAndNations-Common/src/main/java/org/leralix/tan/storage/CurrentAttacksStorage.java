@@ -1,11 +1,11 @@
 package org.leralix.tan.storage;
 
-import org.leralix.tan.dataclass.ITanPlayer;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.war.PlannedAttack;
-import org.leralix.tan.war.legacy.CurrentAttack;
-import org.leralix.tan.war.legacy.InfiniteCurrentAttack;
-import org.leralix.tan.war.legacy.TemporalCurrentAttack;
-import org.leralix.tan.war.legacy.WarRole;
+import org.leralix.tan.war.attack.CurrentAttack;
+import org.leralix.tan.war.attack.InfiniteCurrentAttack;
+import org.leralix.tan.war.attack.TemporalCurrentAttack;
+import org.leralix.tan.war.info.WarRole;
 
 import java.util.Collection;
 import java.util.HashMap;

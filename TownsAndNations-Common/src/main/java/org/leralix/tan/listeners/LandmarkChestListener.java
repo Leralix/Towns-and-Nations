@@ -8,15 +8,22 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.MetadataValue;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.data.building.landmark.Landmark;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.gui.common.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class LandmarkChestListener implements Listener {
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public LandmarkChestListener(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -27,7 +34,7 @@ public class LandmarkChestListener implements Listener {
                 clickedBlock.getType() == Material.CHEST &&
                 clickedBlock.hasMetadata("LandmarkChest")) {
             event.setCancelled(true);
-            ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+            ITanPlayer tanPlayer = playerDataStorage.get(player);
             for (MetadataValue value : clickedBlock.getMetadata("LandmarkChest")) {
                 String customData = value.asString();
                 Landmark landmark = LandmarkStorage.getInstance().get(customData);
@@ -35,10 +42,9 @@ public class LandmarkChestListener implements Listener {
                     TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer.getLang()));
                     return;
                 }
-                PlayerGUI.dispatchLandmarkGui(player, landmark);
+                PlayerGUI.dispatchLandmarkGui(player, tanPlayer, landmark);
             }
         }
-
 
     }
 

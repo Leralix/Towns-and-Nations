@@ -4,9 +4,9 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.enums.ClaimAction;
-import org.leralix.tan.enums.ClaimType;
-import org.leralix.tan.enums.MapSettings;
+import org.leralix.tan.gui.scope.ClaimAction;
+import org.leralix.tan.gui.scope.ClaimType;
+import org.leralix.tan.gui.scope.MapSettings;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -19,6 +19,12 @@ import java.util.List;
 import java.util.Map;
 
 public class MapCommand extends PlayerSubCommand {
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public MapCommand(PlayerDataStorage playerDataStorage){
+        this.playerDataStorage = playerDataStorage;
+    }
 
     @Override
     public String getName() {
@@ -54,13 +60,13 @@ public class MapCommand extends PlayerSubCommand {
             openMap(player, new MapSettings(args[1], args[2]));
             return;
         }
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = playerDataStorage.get(player).getLang();
         TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.get(langType), SoundEnum.NOT_ALLOWED);
         TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
     }
 
-    public static void openMap(Player player, MapSettings settings) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+    public void openMap(Player player, MapSettings settings) {
+        LangType langType = playerDataStorage.get(player).getLang();
         int radius = 4;
         Map<Integer, TextComponent> text = new HashMap<>();
         TextComponent claimType = new TextComponent(Lang.MAP_CLAIM_TYPE.get(langType));

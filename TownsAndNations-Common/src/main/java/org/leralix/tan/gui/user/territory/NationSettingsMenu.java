@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.territory.NationData;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.NationData;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.NationDeletedInternalEvent;
 import org.leralix.tan.gui.common.ConfirmMenu;
@@ -45,7 +45,7 @@ public class NationSettingsMenu extends SettingsMenus {
         gui.setItem(2, 7, getChangeCapitalButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new NationMenu(player, nationData)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new NationMenu(player, nationData), langType));
 
         gui.open(player);
     }

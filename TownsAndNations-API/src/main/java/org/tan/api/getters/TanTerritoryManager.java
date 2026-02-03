@@ -1,8 +1,8 @@
 package org.tan.api.getters;
 
-import org.tan.api.interfaces.TanNation;
-import org.tan.api.interfaces.TanRegion;
-import org.tan.api.interfaces.TanTown;
+import org.tan.api.interfaces.territory.TanNation;
+import org.tan.api.interfaces.territory.TanRegion;
+import org.tan.api.interfaces.territory.TanTown;
 
 import java.util.Collection;
 import java.util.Optional;

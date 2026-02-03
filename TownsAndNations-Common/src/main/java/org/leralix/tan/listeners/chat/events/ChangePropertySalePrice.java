@@ -2,7 +2,8 @@ package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.PropertyData;
+import org.leralix.tan.data.building.property.PropertyData;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -20,7 +21,7 @@ public class ChangePropertySalePrice extends ChatListenerEvent {
     }
 
     @Override
-    public boolean execute(Player player, String message) {
+    public boolean execute(Player player, ITanPlayer playerData, String message) {
         int amount;
         try {
             amount = Integer.parseInt(message);
@@ -28,7 +29,7 @@ public class ChangePropertySalePrice extends ChatListenerEvent {
                 amount = 0;
             }
         } catch (NumberFormatException e) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(player));
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(playerData));
             return false;
         }
         propertyData.setSalePrice(amount);

@@ -5,18 +5,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.building.property.PropertyData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
-import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.storage.stored.TributePlayerDailyStorage;
-import org.leralix.tan.storage.stored.TributeVassalDailyStorage;
+import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.ArchiveUtil;
 
@@ -25,10 +20,12 @@ import java.util.GregorianCalendar;
 
 public class DailyTasks {
 
+    private final PlayerDataStorage playerDataStorage;
     private final int hourTime;
     private final int minuteTime;
 
-    public DailyTasks(int hourTime, int minuteTime) {
+    public DailyTasks(PlayerDataStorage playerDataStorage, int hourTime, int minuteTime) {
+        this.playerDataStorage = playerDataStorage;
         this.hourTime = hourTime;
         this.minuteTime = minuteTime;
     }
@@ -47,7 +44,7 @@ public class DailyTasks {
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 1200L); // Execute every 1200 ticks (1 minute)
     }
 
-    public static void executeMidnightTasks() {
+    public void executeMidnightTasks() {
         propertyRent();
 
         for(TownData town : TownDataStorage.getInstance().getAll().values()){
@@ -70,15 +67,15 @@ public class DailyTasks {
         ArchiveUtil.archiveFiles();
     }
 
-    private static void updatePlayerUsernames() {
-        for(ITanPlayer player : PlayerDataStorage.getInstance().getAll().values()){
+    private void updatePlayerUsernames() {
+        for(ITanPlayer player : playerDataStorage.getAll().values()){
             player.clearName();
         }
     }
 
-    private static void propertyRent() {
+    private void propertyRent() {
         for (TownData town : TownDataStorage.getInstance().getAll().values()) {
-            for (PropertyData property : town.getProperties()) {
+            for (PropertyData property : town.getPropertiesInternal()) {
                 if (property.isRented()) {
                     property.payRent();
                 }

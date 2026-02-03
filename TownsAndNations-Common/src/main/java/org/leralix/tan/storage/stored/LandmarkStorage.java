@@ -4,8 +4,8 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import org.bukkit.Location;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.building.landmark.Landmark;
+import org.leralix.tan.data.territory.TerritoryData;
 
 import java.util.HashMap;
 import java.util.List;

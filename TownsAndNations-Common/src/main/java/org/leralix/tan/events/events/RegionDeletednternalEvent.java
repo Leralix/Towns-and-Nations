@@ -1,18 +1,16 @@
 package org.leralix.tan.events.events;
 
-import org.leralix.tan.api.internal.wrappers.RegionDataWrapper;
-import org.leralix.tan.api.internal.wrappers.TanPlayerWrapper;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.events.RegionDeletedEvent;
 import org.tan.api.interfaces.TanPlayer;
-import org.tan.api.interfaces.TanRegion;
+import org.tan.api.interfaces.territory.TanRegion;
 
 public class RegionDeletednternalEvent extends InternalEvent implements RegionDeletedEvent {
 
-    private final RegionData region;
-    private final ITanPlayer player;
+    private final TanRegion region;
+    private final TanPlayer player;
 
 
     public RegionDeletednternalEvent(RegionData region, ITanPlayer player) {
@@ -22,11 +20,11 @@ public class RegionDeletednternalEvent extends InternalEvent implements RegionDe
     
     @Override
     public TanRegion getRegion() {
-        return RegionDataWrapper.of(region);
+        return region;
     }
 
     @Override
     public TanPlayer getExecutor() {
-        return TanPlayerWrapper.of(player);
+        return player;
     }
 }

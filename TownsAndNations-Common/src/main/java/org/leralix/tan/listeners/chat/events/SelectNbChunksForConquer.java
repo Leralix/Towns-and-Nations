@@ -5,14 +5,15 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.War;
-import org.leralix.tan.war.legacy.WarRole;
-import org.leralix.tan.war.legacy.wargoals.ConquerWarGoal;
+import org.leralix.tan.war.info.WarRole;
+import org.leralix.tan.war.wargoals.ConquerWarGoal;
 
 public class SelectNbChunksForConquer extends ChatListenerEvent {
 
@@ -28,16 +29,16 @@ public class SelectNbChunksForConquer extends ChatListenerEvent {
     }
 
     @Override
-    protected boolean execute(Player player, String message) {
+    protected boolean execute(Player player, ITanPlayer playerData, String message) {
         Integer amount = parseStringToInt(message);
         if (amount == null) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(player));
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(playerData));
             return false;
         }
 
         int maxAmountOfChunkToCapture = Constants.getNbChunkToCaptureMax();
         if (amount > maxAmountOfChunkToCapture) {
-            TanChatUtils.message(player, Lang.VALUE_EXCEED_MAXIMUM_ERROR.get(player, Integer.toString(maxAmountOfChunkToCapture)));
+            TanChatUtils.message(player, Lang.VALUE_EXCEED_MAXIMUM_ERROR.get(playerData, Integer.toString(maxAmountOfChunkToCapture)));
             return false;
         }
 

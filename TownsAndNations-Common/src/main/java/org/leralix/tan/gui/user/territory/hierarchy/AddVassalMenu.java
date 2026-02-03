@@ -4,8 +4,8 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.territory.NationData;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.NationData;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 
@@ -32,7 +32,7 @@ public class AddVassalMenu extends IteratorGUI {
         List<GuiItem> guiItems = new ArrayList<>();
 
         for (TerritoryData potentialVassal : territoryData.getPotentialVassals()) {
-            if (territoryData.isVassal(potentialVassal) || potentialVassal.containsVassalisationProposal(territoryData))
+            if (territoryData.getVassalsInternal().contains(potentialVassal) || potentialVassal.containsVassalisationProposal(territoryData))
                 continue;
 
             guiItems.add(potentialVassal.getIconWithInformationAndRelation(territoryData, tanPlayer.getLang())

@@ -3,8 +3,8 @@ package org.leralix.tan.gui.admin;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.SelectNewOwnerForTownMenu;
 import org.leralix.tan.lang.Lang;
@@ -36,7 +36,7 @@ public class AdminManageTown extends AdminManageTerritory {
         gui.setItem(2, 7, getTransactionHistory());
         gui.setItem(2, 8, getDelete());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminBrowseTown(player)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminBrowseTown(player), langType));
 
         gui.open(player);
     }

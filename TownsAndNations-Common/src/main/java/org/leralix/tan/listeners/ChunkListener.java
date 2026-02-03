@@ -22,11 +22,11 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.FurnaceInventory;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.chunk.TerritoryChunk;
-import org.leralix.tan.enums.TownRelation;
-import org.leralix.tan.enums.permissions.ChunkPermissionType;
+import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.TerritoryChunk;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.permission.ChunkPermissionType;
+import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.storage.SudoPlayerStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -34,6 +34,14 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.info.SideStatus;
 
 public class ChunkListener implements Listener {
+
+    private static final String PROPERTY_SIGN_METADATA = "propertySign";
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public ChunkListener(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
@@ -43,7 +51,7 @@ public class ChunkListener implements Listener {
         Location loc = breakedBlock.getLocation();
 
         //Check if the block is a property sign
-        if (breakedBlock.hasMetadata("propertySign")) {
+        if (breakedBlock.hasMetadata(PROPERTY_SIGN_METADATA)) {
             event.setCancelled(true);
             return;
         }
@@ -97,7 +105,7 @@ public class ChunkListener implements Listener {
         //Check if the block is a property sign
         if (block.getType() == Material.OAK_SIGN) {
             Sign sign = (Sign) block.getState();
-            if (sign.hasMetadata("propertySign")) {
+            if (sign.hasMetadata(PROPERTY_SIGN_METADATA)) {
                 event.setCancelled(true);
                 return;
             }
@@ -339,8 +347,8 @@ public class ChunkListener implements Listener {
             return false;
         }
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(aggressor);
-        ITanPlayer tanPlayer2 = PlayerDataStorage.getInstance().get(receiver);
+        ITanPlayer tanPlayer = playerDataStorage.get(aggressor);
+        ITanPlayer tanPlayer2 = playerDataStorage.get(receiver);
         TownRelation relation = tanPlayer.getRelationWithPlayer(tanPlayer2);
 
         return Constants.getRelationConstants(relation).canPvP();
@@ -528,19 +536,20 @@ public class ChunkListener implements Listener {
         if (SudoPlayerStorage.isSudoPlayer(player))
             return true;
 
-        ClaimedChunk2 claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
 
-        // Check if player is involved in a war with this territory. Additional actions may be authorized
+        // Check if a player is involved in a war with this territory. Additional actions may be authorized
         if (claimedChunk instanceof TerritoryChunk territoryChunk) {
-            SideStatus side = tanPlayer.getWarSideWith(territoryChunk.getOwner());
-            if (side == SideStatus.ALLY && Constants.getPermissionAtWars().canAllyDoAction(permissionType)) {
-                return true;
-            } else if (side == SideStatus.ENEMY && Constants.getPermissionAtWars().canEnemyDoAction(permissionType)) {
+            SideStatus side = tanPlayer.getWarSideWith(territoryChunk.getOwnerInternal());
+            if (
+                    (side == SideStatus.ALLY && Constants.getPermissionAtWars().canAllyDoAction(permissionType)) ||
+                    (side == SideStatus.ENEMY && Constants.getPermissionAtWars().canEnemyDoAction(permissionType))
+            ) {
                 return true;
             }
         }
 
-        return claimedChunk.canPlayerDo(player, permissionType, location);
+        return claimedChunk.canPlayerDo(player, tanPlayer, permissionType, location);
     }
 }

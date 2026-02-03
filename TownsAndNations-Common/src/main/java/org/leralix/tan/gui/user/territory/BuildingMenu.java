@@ -4,10 +4,11 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.building.Building;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
-import org.leralix.tan.enums.RolePermission;
+import org.leralix.tan.data.building.Building;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.rank.RolePermission;
+import org.leralix.tan.data.upgrade.rewards.numeric.PropertyCap;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -16,7 +17,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.CreateFortEvent;
 import org.leralix.tan.listeners.interact.events.property.CreateTerritoryPropertyEvent;
-import org.leralix.tan.upgrade.rewards.numeric.PropertyCap;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -74,7 +74,7 @@ public class BuildingMenu extends IteratorGUI {
                         TanChatUtils.message(player, Lang.GUI_PROPERTY_CAP_FULL.get(langType, Integer.toString(nbProperties), Integer.toString(maxNbProperties)), SoundEnum.NOT_ALLOWED);
                         return;
                     }
-                    RightClickListener.register(player, new CreateTerritoryPropertyEvent(player, townData));
+                    RightClickListener.register(player, langType, new CreateTerritoryPropertyEvent(player, tanPlayer, townData));
                 })
                 .asGuiItem(player, langType);
     }
@@ -92,7 +92,7 @@ public class BuildingMenu extends IteratorGUI {
                     }
 
                     TanChatUtils.message(player, Lang.RIGHT_CLICK_TO_PLACE_FORT.get(langType));
-                    RightClickListener.register(player, new CreateFortEvent(territoryData));
+                    RightClickListener.register(player, langType, new CreateFortEvent(territoryData));
                     player.closeInventory();
                 })
                 .asGuiItem(player, langType);

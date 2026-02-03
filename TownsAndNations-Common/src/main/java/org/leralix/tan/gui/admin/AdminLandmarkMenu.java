@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.dataclass.Landmark;
+import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
@@ -36,7 +36,7 @@ public class AdminLandmarkMenu extends BasicGui {
         gui.setItem(2, 5, getManageProductionButton());
         gui.setItem(2, 7, getDeleteLandmarkButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminLandmarksMenu(player)));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminLandmarksMenu(player), langType));
         gui.open(player);
     }
 
@@ -66,7 +66,7 @@ public class AdminLandmarkMenu extends BasicGui {
                     if (itemOnCursor.getType() == Material.AIR) {
                         return;
                     }
-                    TanChatUtils.message(player, Lang.ADMIN_GUI_LANDMARK_REWARD_SET.get(player, Integer.toString(itemOnCursor.getAmount()), itemOnCursor.getType().name()), GOOD);
+                    TanChatUtils.message(player, Lang.ADMIN_GUI_LANDMARK_REWARD_SET.get(langType, Integer.toString(itemOnCursor.getAmount()), itemOnCursor.getType().name()), GOOD);
                     landmark.setReward(itemOnCursor);
                     open();
                 })
@@ -78,8 +78,8 @@ public class AdminLandmarkMenu extends BasicGui {
                 .setName(Lang.ADMIN_GUI_CHANGE_LANDMARK_NAME.get(langType))
                 .setDescription(Lang.ADMIN_GUI_CHANGE_LANDMARK_NAME_DESC1.get())
                 .setAction(action -> {
-                    TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(player));
-                    PlayerChatListenerStorage.register(player, new ChangeLandmarkName(landmark, Constants.getLandmarkMaxNameSize(), p -> open()));
+                    TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
+                    PlayerChatListenerStorage.register(player, langType, new ChangeLandmarkName(landmark, Constants.getLandmarkMaxNameSize(), p -> open()));
                 })
                 .asGuiItem(player, langType);
     }

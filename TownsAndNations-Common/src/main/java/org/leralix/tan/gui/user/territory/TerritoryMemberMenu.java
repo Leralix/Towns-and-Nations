@@ -5,13 +5,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.NationData;
-import org.leralix.tan.dataclass.territory.RegionData;
-import org.leralix.tan.dataclass.territory.TerritoryData;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.NationData;
+import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.enums.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -51,7 +51,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
     @Override
     public void open() {
 
-        iterator(getMemberList(), p -> territoryData.openMainMenu(player));
+        iterator(getMemberList(), p -> territoryData.openMainMenu(player, tanPlayer));
 
         gui.setItem(6, 4, getManageRankButton());
         if (territoryData instanceof TownData townData) {
@@ -65,8 +65,8 @@ public class TerritoryMemberMenu extends IteratorGUI {
         List<GuiItem> players = new ArrayList<>();
         PlayerDataStorage playerDataStorage = PlayerDataStorage.getInstance();
 
-        for (String playerUUID : territoryData.getOrderedPlayerIDList()) {
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
+        for (UUID playerUUID : territoryData.getOrderedPlayerIDList()) {
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
 
             ITanPlayer playerToIterate = playerDataStorage.get(offlinePlayer);
 

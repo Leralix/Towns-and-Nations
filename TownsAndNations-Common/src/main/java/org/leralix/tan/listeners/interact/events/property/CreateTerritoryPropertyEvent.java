@@ -2,22 +2,20 @@ package org.leralix.tan.listeners.interact.events.property;
 
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.building.property.PropertyData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 
 public class CreateTerritoryPropertyEvent extends CreatePropertyEvent {
 
-    private final TownData territoryData;
-
-    public CreateTerritoryPropertyEvent(Player player, TownData townData) {
-        super(player);
-        territoryData = townData;
+    public CreateTerritoryPropertyEvent(Player player, ITanPlayer playerData, TownData townData) {
+        super(player, playerData, townData);
     }
 
     @Override
     protected PropertyData createProperty() {
-        PropertyData property = territoryData.registerNewProperty(position1, position2, territoryData);
+        PropertyData property = townData.registerNewProperty(position1, position2);
         new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
         return property;
     }

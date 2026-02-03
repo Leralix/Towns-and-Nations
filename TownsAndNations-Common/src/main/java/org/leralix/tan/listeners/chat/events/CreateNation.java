@@ -1,12 +1,12 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.NationData;
-import org.leralix.tan.dataclass.territory.RegionData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.NationData;
+import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.NationCreatedInternalEvent;
-import org.leralix.tan.gui.legacy.PlayerGUI;
+import org.leralix.tan.gui.common.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.storage.stored.NationDataStorage;
@@ -26,7 +26,7 @@ public class CreateNation extends ChatListenerEvent {
     }
 
     @Override
-    public boolean execute(Player player, String message) {
+    public boolean execute(Player player, ITanPlayer playerData, String message) {
 
         ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
@@ -76,6 +76,6 @@ public class CreateNation extends ChatListenerEvent {
         EventManager.getInstance().callEvent(new NationCreatedInternalEvent(nation, playerData));
         FileUtil.addLineToHistory(Lang.NATION_CREATED_NEWSLETTER.get(player.getName(), nation.getName()));
 
-        openGui(p -> PlayerGUI.dispatchPlayerNation(player), player);
+        openGui(p -> PlayerGUI.dispatchPlayerNation(player, playerData), player);
     }
 }

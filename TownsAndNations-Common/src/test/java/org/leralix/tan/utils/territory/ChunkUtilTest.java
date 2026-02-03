@@ -5,9 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.BasicTest;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.TownClaimedChunk;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
@@ -29,7 +29,7 @@ class ChunkUtilTest extends BasicTest {
     @Test
     void testIsChunkEncirecledByValid() {
 
-        ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(world.getChunkAt(0, 0));
+        ClaimedChunk claimedChunk2 = NewClaimedChunkStorage.getInstance().get(world.getChunkAt(0, 0));
 
         assertTrue(ChunkUtil.isChunkEncirecledBy(claimedChunk2, claimedChunk -> !claimedChunk.isClaimed()));
     }
@@ -51,9 +51,9 @@ class ChunkUtilTest extends BasicTest {
         newClaimedChunkStorage.claimTownChunk(world.getChunkAt(1, 1), townData.getID());
 
 
-        ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(world.getChunkAt(0, 0));
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(world.getChunkAt(0, 0));
 
-        assertTrue(ChunkUtil.isChunkEncirecledBy(claimedChunk2, ClaimedChunk2::isClaimed));
+        assertTrue(ChunkUtil.isChunkEncirecledBy(claimedChunk, ClaimedChunk::isClaimed));
     }
 
 
@@ -67,13 +67,13 @@ class ChunkUtilTest extends BasicTest {
         newClaimedChunkStorage.claimTownChunk(world.getChunkAt(-1, 0), townData.getID());
         newClaimedChunkStorage.claimTownChunk(world.getChunkAt(-1, 1), townData.getID());
         newClaimedChunkStorage.claimTownChunk(world.getChunkAt(0, -1), townData.getID());
-        ClaimedChunk2 chunkWithoutBorders = newClaimedChunkStorage.claimTownChunk(world.getChunkAt(0, 0), townData.getID());
+        ClaimedChunk chunkWithoutBorders = newClaimedChunkStorage.claimTownChunk(world.getChunkAt(0, 0), townData.getID());
         newClaimedChunkStorage.claimTownChunk(world.getChunkAt(0, 1), townData.getID());
         newClaimedChunkStorage.claimTownChunk(world.getChunkAt(1, -1), townData.getID());
         newClaimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
         newClaimedChunkStorage.claimTownChunk(world.getChunkAt(1, 1), townData.getID());
 
-        Collection<ClaimedChunk2> borderChunks = ChunkUtil.getBorderChunks(townData);
+        Collection<ClaimedChunk> borderChunks = ChunkUtil.getBorderChunks(townData);
 
         assertEquals(8, borderChunks.size());
         assertFalse(borderChunks.contains(chunkWithoutBorders));
@@ -122,8 +122,8 @@ class ChunkUtilTest extends BasicTest {
 
         newClaimedChunkStorage.claimTownChunk(world.getChunkAt(x, z), townDataBuffer.getID());
 
-        ClaimedChunk2 chunkInBuffer = newClaimedChunkStorage.get(world.getChunkAt(x + buffer, z));
-        ClaimedChunk2 chunkOutsideBuffer = newClaimedChunkStorage.get(world.getChunkAt(x + buffer + 1, z));
+        ClaimedChunk chunkInBuffer = newClaimedChunkStorage.get(world.getChunkAt(x + buffer, z));
+        ClaimedChunk chunkOutsideBuffer = newClaimedChunkStorage.get(world.getChunkAt(x + buffer + 1, z));
 
 
         assertTrue(ChunkUtil.isInBufferZone(chunkInBuffer, townToClaim, buffer));

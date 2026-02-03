@@ -4,10 +4,9 @@ import org.bukkit.entity.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,11 +24,11 @@ class OtherPlayerTownNameTest extends BasicTest {
     void nominalTest() {
 
         Player player = server.addPlayer("player name");
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
 
         TownData townData = TownDataStorage.getInstance().newTown("Town", tanPlayer);
 
-        OtherPlayerTownName entry = new OtherPlayerTownName();
+        OtherPlayerTownName entry = new OtherPlayerTownName(townsAndNations.getPlayerDataStorage());
 
         String name = entry.getData(player, "player_{player name}_town_name");
 
@@ -40,13 +39,13 @@ class OtherPlayerTownNameTest extends BasicTest {
     void noTownTest() {
 
         Player player = server.addPlayer("player name");
-        PlayerDataStorage.getInstance().get(player);
+        townsAndNations.getPlayerDataStorage().get(player);
 
-        OtherPlayerTownName entry = new OtherPlayerTownName();
+        OtherPlayerTownName entry = new OtherPlayerTownName(townsAndNations.getPlayerDataStorage());
 
         String name = entry.getData(player, "player_{player name}_town_name");
 
-        assertEquals(Lang.NO_TOWN.get(player), name);
+        assertEquals(Lang.NO_TOWN.get(langType), name);
     }
 
 }

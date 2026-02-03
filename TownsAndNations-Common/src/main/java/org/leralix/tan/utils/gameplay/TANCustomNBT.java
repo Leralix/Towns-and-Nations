@@ -11,13 +11,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.building.fort.Fort;
+import org.leralix.tan.data.building.landmark.Landmark;
+import org.leralix.tan.data.building.property.PropertyData;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.war.fort.Fort;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,6 +29,8 @@ import java.util.Optional;
  * This class is used to add custom NBT tags to items
  */
 public class TANCustomNBT {
+
+    private static final String PROPERTY_SIGN_METADATA = "propertySign";
 
     private TANCustomNBT() {
         throw new IllegalStateException("Utility class");
@@ -127,8 +129,8 @@ public class TANCustomNBT {
                     Location blockBeneathLocation = block.getLocation().add(0,-1,0);
                     Block blockBeneath = blockBeneathLocation.getWorld().getBlockAt(blockBeneathLocation);
 
-                    setBockMetaData(block, "propertySign", propertyData.getTotalID());
-                    setBockMetaData(blockBeneath, "propertySign", propertyData.getTotalID());
+                    setBockMetaData(block, PROPERTY_SIGN_METADATA, propertyData.getTotalID());
+                    setBockMetaData(blockBeneath, PROPERTY_SIGN_METADATA, propertyData.getTotalID());
                 } else {
                     iterator.remove();
                 }

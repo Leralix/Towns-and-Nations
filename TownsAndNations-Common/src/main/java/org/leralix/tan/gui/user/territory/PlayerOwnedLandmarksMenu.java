@@ -3,8 +3,8 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.dataclass.Landmark;
-import org.leralix.tan.dataclass.territory.TownData;
+import org.leralix.tan.data.building.landmark.Landmark;
+import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
@@ -25,7 +25,7 @@ public class PlayerOwnedLandmarksMenu extends IteratorGUI {
     @Override
     public void open() {
 
-        iterator(getLandmarks(), p -> townData.openMainMenu(player));
+        iterator(getLandmarks(), p -> townData.openMainMenu(player, tanPlayer));
 
         gui.open(player);
     }

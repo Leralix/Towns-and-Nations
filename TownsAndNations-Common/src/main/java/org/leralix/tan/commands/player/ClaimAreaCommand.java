@@ -3,15 +3,20 @@ package org.leralix.tan.commands.player;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.dataclass.territory.TerritoryData;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.ChatChunkMapRenderer;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
 
 public class ClaimAreaCommand extends AbstractTerritoryClaimCommand {
+
+    public ClaimAreaCommand(PlayerDataStorage playerDataStorage) {
+        super(playerDataStorage);
+    }
 
     @Override
     public String getName() {
@@ -46,8 +51,8 @@ public class ClaimAreaCommand extends AbstractTerritoryClaimCommand {
         openClaimAreaMap(player, territoryArg);
     }
 
-    public static void openClaimAreaMap(Player player, String territoryArg) {
-        LangType langType = LangType.of(player);
+    public void openClaimAreaMap(Player player, String territoryArg) {
+        LangType langType = playerDataStorage.get(player).getLang();
         int radius = 4;
 
         ChatChunkMapRenderer.sendChunkMap(

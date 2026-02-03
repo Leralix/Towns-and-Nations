@@ -10,11 +10,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.MetadataValue;
-import org.leralix.tan.dataclass.ITanPlayer;
-import org.leralix.tan.dataclass.PropertyData;
-import org.leralix.tan.dataclass.chunk.ClaimedChunk2;
-import org.leralix.tan.dataclass.chunk.TownClaimedChunk;
-import org.leralix.tan.enums.TownRelation;
+import org.leralix.tan.data.building.property.PropertyData;
+import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.TownClaimedChunk;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.gui.user.RenterPropertyMenu;
 import org.leralix.tan.gui.user.property.BuyOrRentPropertyMenu;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
@@ -27,6 +27,15 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class PropertySignListener implements Listener {
+
+    private static final String PROPERTY_SIGN_METADATA = "propertySign";
+
+    private final PlayerDataStorage playerDataStorage;
+
+    public PropertySignListener(PlayerDataStorage playerDataStorage) {
+        this.playerDataStorage = playerDataStorage;
+    }
+
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -37,15 +46,15 @@ public class PropertySignListener implements Listener {
                 (clickedBlock.getType() == Material.OAK_SIGN || clickedBlock.getType() == Material.OAK_WALL_SIGN)) {
 
             Sign sign = (Sign) clickedBlock.getState();
-            if (sign.hasMetadata("propertySign")) {
+            if (sign.hasMetadata(PROPERTY_SIGN_METADATA)) {
                 event.setCancelled(true);
-                for (MetadataValue value : sign.getMetadata("propertySign")) {
+                for (MetadataValue value : sign.getMetadata(PROPERTY_SIGN_METADATA)) {
                     String customData = value.asString();
                     String[] ids = customData.split("_");
                     PropertyData propertyData = TownDataStorage.getInstance().get(ids[0]).getProperty(ids[1]);
                     if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
-                        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+                        ITanPlayer tanPlayer = playerDataStorage.get(player);
                         LangType langType = tanPlayer.getLang();
 
                         if (!canPlayerOpenMenu(player, clickedBlock)) {
@@ -54,7 +63,8 @@ public class PropertySignListener implements Listener {
                         }
                         if (propertyData.getOwner().canAccess(tanPlayer)) {
                             new PlayerPropertyManager(player, propertyData, HumanEntity::closeInventory);
-                        } else if (propertyData.isRented() && propertyData.getRenterID().equals(player.getUniqueId().toString())) {
+                        } else if (propertyData.isRented()
+                                && propertyData.getRenterID().equals(player.getUniqueId().toString())) {
                             new RenterPropertyMenu(player, propertyData);
                         } else {
                             if (propertyData.isForRent() || propertyData.isForSale()) {
@@ -73,9 +83,9 @@ public class PropertySignListener implements Listener {
     }
 
     private boolean canPlayerOpenMenu(Player player, Block clickedBlock) {
-        ClaimedChunk2 claimedChunk2 = NewClaimedChunkStorage.getInstance().get(clickedBlock.getChunk());
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-        if (tanPlayer.hasTown() && claimedChunk2 instanceof TownClaimedChunk townClaimedChunk) {
+        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(clickedBlock.getChunk());
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
+        if (tanPlayer.hasTown() && claimedChunk instanceof TownClaimedChunk townClaimedChunk) {
             TownRelation territoryRelation = townClaimedChunk.getTown().getWorstRelationWith(tanPlayer);
             return Constants.getRelationConstants(territoryRelation).canInteractWithProperty();
         }
