@@ -47,9 +47,9 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.tan.api.interfaces.TanOwner;
+import org.tan.api.interfaces.buildings.TanOwner;
 import org.tan.api.interfaces.TanPlayer;
-import org.tan.api.interfaces.TanProperty;
+import org.tan.api.interfaces.buildings.TanProperty;
 
 import java.util.ArrayList;
 import java.util.List;

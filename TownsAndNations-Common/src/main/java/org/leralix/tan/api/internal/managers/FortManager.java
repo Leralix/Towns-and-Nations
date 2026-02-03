@@ -3,7 +3,7 @@ package org.leralix.tan.api.internal.managers;
 import org.leralix.tan.storage.impl.FortDataStorage;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.tan.api.getters.TanFortManager;
-import org.tan.api.interfaces.TanFort;
+import org.tan.api.interfaces.buildings.TanFort;
 
 import java.util.List;
 

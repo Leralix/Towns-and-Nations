@@ -4,7 +4,7 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.events.PlayerJoinRequestEvent;
 import org.tan.api.interfaces.TanPlayer;
-import org.tan.api.interfaces.TanTown;
+import org.tan.api.interfaces.territory.TanTown;
 
 public class PlayerJoinTownRequestInternalEvent extends InternalEvent implements PlayerJoinRequestEvent {
 

@@ -22,7 +22,7 @@ import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.territory.ChunkUtil;
-import org.tan.api.interfaces.TanFort;
+import org.tan.api.interfaces.buildings.TanFort;
 
 public abstract class Fort extends Building implements TanFort {
 

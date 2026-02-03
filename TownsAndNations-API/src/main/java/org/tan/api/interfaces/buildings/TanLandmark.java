@@ -1,7 +1,8 @@
-package org.tan.api.interfaces;
+package org.tan.api.interfaces.buildings;
 
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.UUID;
 

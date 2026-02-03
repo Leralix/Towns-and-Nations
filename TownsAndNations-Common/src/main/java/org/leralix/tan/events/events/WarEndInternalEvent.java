@@ -2,7 +2,7 @@ package org.leralix.tan.events.events;
 
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.events.WarEndEvent;
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.territory.TanTerritory;
 import org.tan.api.interfaces.war.wargoals.TanWargoal;
 
 import java.util.ArrayList;

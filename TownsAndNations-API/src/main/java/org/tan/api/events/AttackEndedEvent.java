@@ -1,7 +1,7 @@
 package org.tan.api.events;
 
-import org.tan.api.interfaces.TanTerritory;
-import org.tan.api.interfaces.war.TanAttackResults;
+import org.tan.api.interfaces.territory.TanTerritory;
+import org.tan.api.interfaces.war.attack.TanAttackResults;
 
 /**
  * This event will only fire if the attack end in a normal way. Cancelling an attack will not fire any events

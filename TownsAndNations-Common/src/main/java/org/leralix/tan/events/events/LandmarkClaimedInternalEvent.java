@@ -2,8 +2,8 @@ package org.leralix.tan.events.events;
 
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.events.LandmarkClaimedEvent;
-import org.tan.api.interfaces.TanLandmark;
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.buildings.TanLandmark;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 public class LandmarkClaimedInternalEvent extends InternalEvent implements LandmarkClaimedEvent {
 

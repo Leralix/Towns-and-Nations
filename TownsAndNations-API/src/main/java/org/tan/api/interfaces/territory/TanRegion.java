@@ -1,4 +1,4 @@
-package org.tan.api.interfaces;
+package org.tan.api.interfaces.territory;
 
 public interface TanRegion extends TanTerritory {
 

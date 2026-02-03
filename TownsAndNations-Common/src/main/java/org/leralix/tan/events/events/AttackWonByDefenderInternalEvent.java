@@ -2,7 +2,7 @@ package org.leralix.tan.events.events;
 
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.events.AttackWonByDefenderEvent;
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 public class AttackWonByDefenderInternalEvent extends InternalEvent implements AttackWonByDefenderEvent {
 

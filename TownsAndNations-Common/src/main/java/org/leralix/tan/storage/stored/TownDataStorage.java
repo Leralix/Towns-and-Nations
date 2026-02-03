@@ -15,7 +15,7 @@ import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.storage.typeadapter.EnumMapKeyValueDeserializer;
 import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.storage.typeadapter.OwnerDeserializer;
-import org.tan.api.interfaces.TanProperty;
+import org.tan.api.interfaces.buildings.TanProperty;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

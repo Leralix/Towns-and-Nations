@@ -35,9 +35,9 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.tan.api.interfaces.TanLandmark;
-import org.tan.api.interfaces.TanProperty;
-import org.tan.api.interfaces.TanTown;
+import org.tan.api.interfaces.buildings.TanLandmark;
+import org.tan.api.interfaces.buildings.TanProperty;
+import org.tan.api.interfaces.territory.TanTown;
 
 import java.util.*;
 

@@ -27,8 +27,8 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.territory.ChunkUtil;
-import org.tan.api.interfaces.TanLandmark;
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.buildings.TanLandmark;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.ArrayList;
 import java.util.List;

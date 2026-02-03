@@ -3,7 +3,7 @@ package org.leralix.tan.events.events;
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.events.TownCreatedEvent;
 import org.tan.api.interfaces.TanPlayer;
-import org.tan.api.interfaces.TanTown;
+import org.tan.api.interfaces.territory.TanTown;
 
 public class TownCreatedInternalEvent extends InternalEvent implements TownCreatedEvent {
 

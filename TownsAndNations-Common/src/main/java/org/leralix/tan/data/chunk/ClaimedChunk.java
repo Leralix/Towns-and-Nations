@@ -20,6 +20,10 @@ import org.leralix.tan.utils.constants.Constants;
 import org.tan.api.enums.EChunkPermission;
 import org.tan.api.interfaces.*;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
+import org.tan.api.interfaces.territory.TanNation;
+import org.tan.api.interfaces.territory.TanRegion;
+import org.tan.api.interfaces.territory.TanTerritory;
+import org.tan.api.interfaces.territory.TanTown;
 
 import java.util.UUID;
 

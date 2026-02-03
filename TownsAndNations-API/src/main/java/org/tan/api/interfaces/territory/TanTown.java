@@ -1,6 +1,8 @@
-package org.tan.api.interfaces;
+package org.tan.api.interfaces.territory;
 
 import org.leralix.lib.position.Vector2D;
+import org.tan.api.interfaces.buildings.TanLandmark;
+import org.tan.api.interfaces.buildings.TanProperty;
 
 import java.util.Collection;
 import java.util.Optional;

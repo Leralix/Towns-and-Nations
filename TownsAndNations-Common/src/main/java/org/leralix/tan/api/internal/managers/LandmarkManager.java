@@ -3,7 +3,7 @@ package org.leralix.tan.api.internal.managers;
 import org.bukkit.Location;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.tan.api.getters.TanLandmarkManager;
-import org.tan.api.interfaces.TanLandmark;
+import org.tan.api.interfaces.buildings.TanLandmark;
 
 import java.util.Collection;
 import java.util.Optional;

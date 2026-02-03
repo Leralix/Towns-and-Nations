@@ -13,7 +13,7 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanPlayer;
-import org.tan.api.interfaces.TanRegion;
+import org.tan.api.interfaces.territory.TanRegion;
 
 import java.util.UUID;
 import java.util.function.Consumer;

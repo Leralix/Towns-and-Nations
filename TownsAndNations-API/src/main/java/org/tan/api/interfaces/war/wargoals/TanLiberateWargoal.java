@@ -1,6 +1,6 @@
 package org.tan.api.interfaces.war.wargoals;
 
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 public interface TanLiberateWargoal extends TanWargoal {
 

@@ -25,7 +25,7 @@ import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.text.StringUtil;
-import org.tan.api.interfaces.TanRegion;
+import org.tan.api.interfaces.territory.TanRegion;
 
 import java.util.*;
 

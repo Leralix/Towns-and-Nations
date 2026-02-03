@@ -15,10 +15,10 @@ import org.leralix.tan.data.upgrade.NewUpgradeStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.utils.Range;
 import org.leralix.tan.war.WarTimeSlot;
-import org.tan.api.interfaces.TanNation;
-import org.tan.api.interfaces.TanRegion;
-import org.tan.api.interfaces.TanTerritory;
-import org.tan.api.interfaces.TanTown;
+import org.tan.api.interfaces.territory.TanNation;
+import org.tan.api.interfaces.territory.TanRegion;
+import org.tan.api.interfaces.territory.TanTerritory;
+import org.tan.api.interfaces.territory.TanTown;
 
 import java.util.*;
 

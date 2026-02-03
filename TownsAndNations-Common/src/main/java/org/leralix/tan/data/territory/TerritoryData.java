@@ -72,7 +72,7 @@ import org.leralix.tan.war.attack.CurrentAttack;
 import org.leralix.tan.war.info.WarRole;
 import org.tan.api.enums.TerritoryPermission;
 import org.tan.api.interfaces.TanPlayer;
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.territory.TanTerritory;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
 
 import java.util.*;

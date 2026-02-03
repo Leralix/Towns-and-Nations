@@ -15,7 +15,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.war.attack.CurrentAttack;
 import org.leralix.tan.war.info.SideStatus;
-import org.tan.api.interfaces.TanProperty;
+import org.tan.api.interfaces.buildings.TanProperty;
 
 import java.util.Collection;
 import java.util.List;

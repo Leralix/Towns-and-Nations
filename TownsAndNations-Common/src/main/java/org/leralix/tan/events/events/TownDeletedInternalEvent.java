@@ -4,7 +4,7 @@ import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.events.TownDeletedEvent;
 import org.tan.api.interfaces.TanPlayer;
-import org.tan.api.interfaces.TanTown;
+import org.tan.api.interfaces.territory.TanTown;
 
 public class TownDeletedInternalEvent extends InternalEvent implements TownDeletedEvent {
 

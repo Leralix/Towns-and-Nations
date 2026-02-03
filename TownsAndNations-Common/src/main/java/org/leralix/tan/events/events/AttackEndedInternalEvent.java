@@ -2,8 +2,8 @@ package org.leralix.tan.events.events;
 
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.events.AttackEndedEvent;
-import org.tan.api.interfaces.TanTerritory;
-import org.tan.api.interfaces.war.TanAttackResults;
+import org.tan.api.interfaces.territory.TanTerritory;
+import org.tan.api.interfaces.war.attack.TanAttackResults;
 
 public class AttackEndedInternalEvent extends InternalEvent implements AttackEndedEvent {
 

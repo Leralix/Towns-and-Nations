@@ -23,7 +23,7 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
-import org.tan.api.interfaces.TanNation;
+import org.tan.api.interfaces.territory.TanNation;
 
 import java.util.*;
 

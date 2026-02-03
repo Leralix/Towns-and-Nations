@@ -1,6 +1,6 @@
 package org.tan.api.events;
 
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.territory.TanTerritory;
 import org.tan.api.interfaces.war.wargoals.TanWargoal;
 
 import java.util.List;

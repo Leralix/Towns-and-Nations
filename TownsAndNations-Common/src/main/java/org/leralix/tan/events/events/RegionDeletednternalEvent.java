@@ -5,7 +5,7 @@ import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.events.RegionDeletedEvent;
 import org.tan.api.interfaces.TanPlayer;
-import org.tan.api.interfaces.TanRegion;
+import org.tan.api.interfaces.territory.TanRegion;
 
 public class RegionDeletednternalEvent extends InternalEvent implements RegionDeletedEvent {
 

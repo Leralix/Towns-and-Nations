@@ -1,4 +1,6 @@
-package org.tan.api.interfaces;
+package org.tan.api.interfaces.buildings;
+
+import org.tan.api.interfaces.TanPlayer;
 
 public interface TanOwner {
 

@@ -1,4 +1,4 @@
-package org.tan.api.interfaces;
+package org.tan.api.interfaces.buildings;
 
 import org.leralix.lib.position.Vector3D;
 

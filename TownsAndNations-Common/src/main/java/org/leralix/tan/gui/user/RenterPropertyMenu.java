@@ -12,7 +12,7 @@ import org.leralix.tan.gui.user.property.PropertyMenus;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.tan.api.interfaces.TanOwner;
+import org.tan.api.interfaces.buildings.TanOwner;
 
 import java.util.UUID;
 

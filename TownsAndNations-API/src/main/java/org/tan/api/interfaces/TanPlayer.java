@@ -1,5 +1,10 @@
 package org.tan.api.interfaces;
 
+import org.tan.api.interfaces.buildings.TanProperty;
+import org.tan.api.interfaces.territory.TanRegion;
+import org.tan.api.interfaces.territory.TanTown;
+import org.tan.api.interfaces.war.TanWar;
+
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,12 +17,6 @@ public interface TanPlayer {
      * @return The name stored in the configuration.
      */
     String getNameStored();
-
-    /**
-     * Set the player name stored in the configuration.
-     * @param name The new name of the player.
-     */
-    void setNameStored(String name);
 
     /**
      * Get the player UUID.
@@ -61,4 +60,9 @@ public interface TanPlayer {
      * @return A collection of all the properties owned by the player for sale.
      */
     Collection<TanProperty> getPropertiesForSale();
+
+    /**
+     * @return A collection of all the wars the player is participating in.
+     */
+    Collection<TanWar> getWarsParticipatingIn();
 }

@@ -4,7 +4,7 @@ import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.enums.EDiplomacyState;
 import org.tan.api.events.DiplomacyProposalEvent;
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 public class DiplomacyProposalInternalEvent extends InternalEvent implements DiplomacyProposalEvent {
 

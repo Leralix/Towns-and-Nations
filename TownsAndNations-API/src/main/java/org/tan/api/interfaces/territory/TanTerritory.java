@@ -1,9 +1,10 @@
-package org.tan.api.interfaces;
+package org.tan.api.interfaces.territory;
 
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.tan.api.enums.TerritoryPermission;
+import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
 
 import java.util.Collection;

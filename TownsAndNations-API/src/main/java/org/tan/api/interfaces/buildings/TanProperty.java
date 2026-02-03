@@ -1,6 +1,7 @@
-package org.tan.api.interfaces;
+package org.tan.api.interfaces.buildings;
 
 import org.leralix.lib.position.Vector3D;
+import org.tan.api.interfaces.TanPlayer;
 
 import java.util.Optional;
 

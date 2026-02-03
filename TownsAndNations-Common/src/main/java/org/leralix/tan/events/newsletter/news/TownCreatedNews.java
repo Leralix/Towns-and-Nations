@@ -16,7 +16,7 @@ import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanPlayer;
-import org.tan.api.interfaces.TanTown;
+import org.tan.api.interfaces.territory.TanTown;
 
 import java.util.UUID;
 import java.util.function.Consumer;

@@ -1,6 +1,6 @@
 package org.leralix.tan.data.building.property.owner;
 
-import org.tan.api.interfaces.TanOwner;
+import org.tan.api.interfaces.buildings.TanOwner;
 
 public abstract class AbstractOwner implements TanOwner {
 

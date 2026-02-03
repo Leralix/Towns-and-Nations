@@ -8,7 +8,7 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.impl.FortDataStorage;
-import org.tan.api.interfaces.TanFort;
+import org.tan.api.interfaces.buildings.TanFort;
 import org.tan.api.interfaces.war.wargoals.TanCaptureFortWargoal;
 
 import java.util.ArrayList;

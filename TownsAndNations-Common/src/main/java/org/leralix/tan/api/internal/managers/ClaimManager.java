@@ -8,7 +8,7 @@ import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.chunk.WildernessChunk;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.tan.api.getters.TanClaimManager;
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.territory.TanTerritory;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
 
 import java.util.Optional;

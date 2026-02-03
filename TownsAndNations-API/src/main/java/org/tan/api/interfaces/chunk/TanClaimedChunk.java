@@ -3,7 +3,7 @@ package org.tan.api.interfaces.chunk;
 import org.bukkit.Location;
 import org.tan.api.enums.EChunkPermission;
 import org.tan.api.interfaces.TanPlayer;
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.UUID;
 

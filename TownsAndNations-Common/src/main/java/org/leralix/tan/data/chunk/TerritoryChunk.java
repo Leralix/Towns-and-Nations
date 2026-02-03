@@ -28,7 +28,7 @@ import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.attack.CurrentAttack;
 import org.tan.api.enums.TerritoryPermission;
-import org.tan.api.interfaces.TanTerritory;
+import org.tan.api.interfaces.territory.TanTerritory;
 import org.tan.api.interfaces.chunk.TanTerritoryChunk;
 
 import java.util.Optional;

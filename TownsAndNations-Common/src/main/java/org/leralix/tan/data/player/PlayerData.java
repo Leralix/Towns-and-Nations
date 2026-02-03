@@ -24,7 +24,7 @@ import org.leralix.tan.war.War;
 import org.leralix.tan.war.attack.CurrentAttack;
 import org.leralix.tan.war.info.SideStatus;
 import org.leralix.tan.war.info.WarRole;
-import org.tan.api.interfaces.TanProperty;
+import org.tan.api.interfaces.buildings.TanProperty;
 
 import java.util.*;
 import java.util.stream.Collectors;

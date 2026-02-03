@@ -4,9 +4,9 @@ import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.tan.api.getters.TanTerritoryManager;
-import org.tan.api.interfaces.TanNation;
-import org.tan.api.interfaces.TanRegion;
-import org.tan.api.interfaces.TanTown;
+import org.tan.api.interfaces.territory.TanNation;
+import org.tan.api.interfaces.territory.TanRegion;
+import org.tan.api.interfaces.territory.TanTown;
 
 import java.util.Collection;
 import java.util.Optional;
