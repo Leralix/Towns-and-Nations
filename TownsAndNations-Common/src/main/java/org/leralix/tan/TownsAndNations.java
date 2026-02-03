@@ -133,6 +133,11 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Loading Lang");
 
+        File langConfig = new File(getDataFolder(), "lang.yml");
+        ConfigUtil.saveAndUpdateResource(this, "lang.yml");
+
+
+
         ConfigUtil.saveAndUpdateResource(this, "lang.yml");
         ConfigUtil.addCustomConfig(this, "lang.yml", ConfigTag.LANG);
         String lang = ConfigUtil.getCustomConfig(ConfigTag.LANG).getString("language");
@@ -219,7 +224,7 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Registering API");
 
-        TanAPI.register(new InternalAPI(CURRENT_VERSION, MINIMUM_SUPPORTING_DYNMAP, this));
+        TanAPI.register(new InternalAPI(CURRENT_VERSION, this));
 
         initBStats();
 

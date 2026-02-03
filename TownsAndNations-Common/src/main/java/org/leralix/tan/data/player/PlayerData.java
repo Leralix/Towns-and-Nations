@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.api.internal.wrappers.WarWrapper;
 import org.leralix.tan.data.building.property.PropertyData;
 import org.leralix.tan.data.territory.NationData;
 import org.leralix.tan.data.territory.RegionData;
@@ -25,6 +26,7 @@ import org.leralix.tan.war.attack.CurrentAttack;
 import org.leralix.tan.war.info.SideStatus;
 import org.leralix.tan.war.info.WarRole;
 import org.tan.api.interfaces.buildings.TanProperty;
+import org.tan.api.interfaces.war.TanWar;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -220,6 +222,15 @@ public class PlayerData implements ITanPlayer {
         return getProperties().stream()
                 .filter(PropertyData::isForSale)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<TanWar> getWarsParticipatingIn() {
+        List<TanWar> wars = new ArrayList<>();
+        for(TerritoryData territoryData : getAllTerritoriesPlayerIsIn()){
+            wars.addAll(WarStorage.getInstance().getWarsOfTerritory(territoryData).stream().map(WarWrapper::new).toList());
+        }
+        return wars;
     }
 
     public void removeProperty(PropertyData propertyData) {

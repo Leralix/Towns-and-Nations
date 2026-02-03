@@ -5,7 +5,6 @@ import org.tan.api.interfaces.war.attack.TanAttack;
 import org.tan.api.interfaces.war.wargoals.TanWargoal;
 
 import java.util.Collection;
-import java.util.Optional;
 
 public interface TanWar {
 
@@ -60,8 +59,8 @@ public interface TanWar {
     Collection<TanTerritory> getDefenders();
 
     /**
-     * @return the attack result if the war is over, otherwise an empty optional.
+     * @return a collection of all attacks that took place during the war and
      */
-    Optional<TanAttack> getAttackStatus();
+    Collection<TanAttack> getAllAttack();
 
 }

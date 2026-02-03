@@ -4,25 +4,25 @@ import org.leralix.lib.data.PluginVersion;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.api.internal.managers.*;
 import org.leralix.tan.events.EventManager;
+import org.leralix.tan.storage.stored.WarStorage;
 import org.tan.api.TanAPI;
 import org.tan.api.getters.*;
 
 public class InternalAPI extends TanAPI {
 
     private final PlayerManager playerManager;
-    TerritoryManager territoryManager = TerritoryManager.getInstance();
-    ClaimManager claimManager = ClaimManager.getInstance();
-    LandmarkManager landmarkManager = LandmarkManager.getInstance();
-    EventManager eventManager = EventManager.getInstance();
-    FortManager fortManager = FortManager.getInstance();
+    private final TerritoryManager territoryManager;
+    private final ClaimManager claimManager;
+    private final LandmarkManager landmarkManager;
+    private final EventManager eventManager;
+    private final FortManager fortManager;
+    private final WarManager warManager;
 
-    PluginVersion pluginVersion;
-    PluginVersion minimumSupportingMapPlugin;
+    private final PluginVersion pluginVersion;
 
-    public InternalAPI(PluginVersion pluginVersion, PluginVersion minimumSupportingMapPlugin, TownsAndNations plugin) {
+    public InternalAPI(PluginVersion pluginVersion, TownsAndNations plugin) {
         super();
         this.pluginVersion = pluginVersion;
-        this.minimumSupportingMapPlugin = minimumSupportingMapPlugin;
 
         playerManager = new PlayerManager(plugin.getPlayerDataStorage());
         territoryManager = TerritoryManager.getInstance();
@@ -30,7 +30,9 @@ public class InternalAPI extends TanAPI {
         landmarkManager = LandmarkManager.getInstance();
         eventManager = EventManager.getInstance();
         fortManager = FortManager.getInstance();
+        warManager = new WarManager(WarStorage.getInstance());
     }
+
 
     @Override
     public TanPlayerManager getPlayerManager() {
@@ -63,8 +65,13 @@ public class InternalAPI extends TanAPI {
     }
 
     @Override
+    public TanWarManager getWarManager() {
+        return warManager;
+    }
+
+    @Override
     public PluginVersion getPluginVersion() {
-        return new PluginVersion("0.14.0");
+        return pluginVersion;
     }
 
     @Override

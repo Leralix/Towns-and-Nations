@@ -16,6 +16,7 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.war.attack.CurrentAttack;
 import org.leralix.tan.war.info.SideStatus;
 import org.tan.api.interfaces.buildings.TanProperty;
+import org.tan.api.interfaces.war.TanWar;
 
 import java.util.Collection;
 import java.util.List;
@@ -116,6 +117,11 @@ public class NoPlayerData implements ITanPlayer {
 
     @Override
     public Collection<TanProperty> getPropertiesForSale() {
+        return List.of();
+    }
+
+    @Override
+    public Collection<TanWar> getWarsParticipatingIn() {
         return List.of();
     }
 

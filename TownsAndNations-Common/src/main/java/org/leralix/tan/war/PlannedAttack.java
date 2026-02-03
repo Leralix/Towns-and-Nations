@@ -31,7 +31,14 @@ import java.util.Objects;
 
 public class PlannedAttack {
 
+    /**
+     * The ID of the attack
+     */
     private final String ID;
+
+    /**
+     * Additional information about the attack
+     */
     private AttackResult attackResult;
 
     /**
@@ -302,5 +309,17 @@ public class PlannedAttack {
 
     public boolean isInstantInAttack(long epochMilli) {
         return epochMilli > startTime && (endTime < 0 || epochMilli < endTime);
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public AttackResult getAttackResult() {
+        return attackResult;
     }
 }

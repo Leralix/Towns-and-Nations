@@ -16,6 +16,11 @@ public interface TanAttack {
     Instant getEndTime();
 
     /**
+     * @return true if this attack already ended
+     */
+    boolean isFinished();
+
+    /**
      * @return the results of the attack, if it has been resolved
      */
     Optional<TanAttackResults> getResults();
