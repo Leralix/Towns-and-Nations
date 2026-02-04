@@ -521,9 +521,6 @@ landmarkEncircleToCapture: true
 # The default value is the maximum amount of resources to store. (amount * storageLimit)
 landmarkStorageCapacity: 7
 
-# Midnight generate resource
-enableMidnightGenerateResource: true
-
 ########################
 ##       Claims       ##
 ########################

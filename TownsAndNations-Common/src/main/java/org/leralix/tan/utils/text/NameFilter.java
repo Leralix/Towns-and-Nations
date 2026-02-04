@@ -4,8 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.lang.Lang;
 
@@ -30,7 +28,7 @@ public class NameFilter {
     private static volatile boolean applyToRegion = true;
     private static volatile boolean applyToNation = true;
 
-    private static volatile Set<String> blockedWords = Collections.emptySet();
+    private static Set<String> blockedWords = Collections.emptySet();
 
     private static volatile File activeWordsFile;
 
@@ -46,22 +44,22 @@ public class NameFilter {
         NATION
     }
 
-    public static synchronized void reload() {
-        enabled = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("EnableNameFilter", true);
+    public static synchronized void reload(YamlConfiguration config) {
+        enabled = config.getBoolean("EnableNameFilter", true);
 
-        normalizeDiacritics = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("NameFilterNormalizeDiacritics", true);
-        normalizeLeetspeak = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("NameFilterNormalizeLeetspeak", false);
+        normalizeDiacritics = config.getBoolean("NameFilterNormalizeDiacritics", true);
+        normalizeLeetspeak = config.getBoolean("NameFilterNormalizeLeetspeak", false);
 
-        applyToTown = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("NameFilterApplyToTown", true);
-        applyToRegion = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("NameFilterApplyToRegion", true);
-        applyToNation = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("NameFilterApplyToNation", true);
+        applyToTown = config.getBoolean("NameFilterApplyToTown", true);
+        applyToRegion = config.getBoolean("NameFilterApplyToRegion", true);
+        applyToNation = config.getBoolean("NameFilterApplyToNation", true);
 
         if (!enabled) {
             blockedWords = Collections.emptySet();
             return;
         }
 
-        String fileName = ConfigUtil.getCustomConfig(ConfigTag.MAIN).getString("NameFilterFile", DEFAULT_WORDS_FILE);
+        String fileName = config.getString("NameFilterFile", DEFAULT_WORDS_FILE);
         if (fileName == null || fileName.isBlank()) {
             fileName = DEFAULT_WORDS_FILE;
         }
@@ -71,9 +69,9 @@ public class NameFilter {
 
         File wordsFile = ensureWordsFileExists(plugin, fileName);
         activeWordsFile = wordsFile;
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(wordsFile);
+        YamlConfiguration bannedWordConfig = YamlConfiguration.loadConfiguration(wordsFile);
 
-        List<String> words = config.getStringList("blockedWords");
+        List<String> words = bannedWordConfig.getStringList("blockedWords");
         Set<String> normalized = new HashSet<>();
         for (String w : words) {
             if (w == null) {
@@ -166,81 +164,6 @@ public class NameFilter {
             TanChatUtils.message(player, Lang.NAME_FILTER_BLOCKED_NAME.get());
         } else if (sender != null) {
             sender.sendMessage(Lang.NAME_FILTER_BLOCKED_NAME.getDefault());
-        }
-    }
-
-    public static synchronized List<String> listBlockedWords() {
-        List<String> list = new ArrayList<>(blockedWords);
-        Collections.sort(list);
-        return list;
-    }
-
-    public static synchronized boolean addBlockedWord(String rawWord) {
-        if (rawWord == null) {
-            return false;
-        }
-        String toStore = rawWord.trim();
-        if (toStore.isEmpty()) {
-            return false;
-        }
-        ensureActiveFile();
-        if (activeWordsFile == null) {
-            return false;
-        }
-
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(activeWordsFile);
-        List<String> words = config.getStringList("blockedWords");
-        if (!words.contains(toStore)) {
-            words.add(toStore);
-            config.set("blockedWords", words);
-            try {
-                config.save(activeWordsFile);
-            } catch (IOException e) {
-                return false;
-            }
-        }
-
-        reload();
-        return true;
-    }
-
-    public static synchronized boolean removeBlockedWord(String rawWord) {
-        if (rawWord == null) {
-            return false;
-        }
-        String toRemove = rawWord.trim();
-        if (toRemove.isEmpty()) {
-            return false;
-        }
-        ensureActiveFile();
-        if (activeWordsFile == null) {
-            return false;
-        }
-
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(activeWordsFile);
-        List<String> words = config.getStringList("blockedWords");
-        boolean removed = words.removeIf(w -> w != null && w.equalsIgnoreCase(toRemove));
-        if (!removed) {
-            return false;
-        }
-        config.set("blockedWords", words);
-        try {
-            config.save(activeWordsFile);
-        } catch (IOException e) {
-            return false;
-        }
-
-        reload();
-        return true;
-    }
-
-    private static void ensureActiveFile() {
-        if (activeWordsFile != null) {
-            return;
-        }
-        try {
-            reload();
-        } catch (Exception ignored) {
         }
     }
 

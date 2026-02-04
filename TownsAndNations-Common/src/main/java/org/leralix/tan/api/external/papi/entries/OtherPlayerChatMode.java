@@ -12,10 +12,12 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 public class OtherPlayerChatMode extends PapiEntry {
 
     private final PlayerDataStorage playerDataStorage;
+    private final LocalChatStorage localChatStorage;
 
-    public OtherPlayerChatMode (PlayerDataStorage playerDataStorage) {
+    public OtherPlayerChatMode(PlayerDataStorage playerDataStorage, LocalChatStorage localChatStorage) {
         super("chat_mode_{}");
         this.playerDataStorage = playerDataStorage;
+        this.localChatStorage = localChatStorage;
     }
 
     @Override
@@ -29,9 +31,9 @@ public class OtherPlayerChatMode extends PapiEntry {
         LangType langType = tanPlayer.getLang();
         String[] values = extractValues(params);
         OfflinePlayer playerSelected = Bukkit.getOfflinePlayer(values[0]);
-        if(!playerSelected.isOnline()){
+        if (!playerSelected.isOnline()) {
             return Lang.INVALID_PLAYER_NAME.get(langType);
         }
-        return LocalChatStorage.getPlayerChatScope(playerSelected.getUniqueId().toString()).getName(langType);
+        return localChatStorage.getPlayerChatScope(playerSelected.getUniqueId().toString()).getName(langType);
     }
 }

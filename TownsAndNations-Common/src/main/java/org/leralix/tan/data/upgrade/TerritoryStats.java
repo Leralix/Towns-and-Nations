@@ -108,7 +108,7 @@ public class TerritoryStats {
 
 
     public int getMoneyRequiredForLevelUp() {
-        return getRequiredMoney(mainLevel);
+        return Constants.getUpgradeExpression().getRequiredMoney(statsType, mainLevel);
     }
 
     private int getRequiredMoney(int level) {

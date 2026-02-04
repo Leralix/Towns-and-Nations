@@ -2,8 +2,6 @@ package org.leralix.tan.tasks;
 
 
 import org.bukkit.scheduler.BukkitRunnable;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.property.PropertyData;
 import org.leralix.tan.data.player.ITanPlayer;
@@ -61,9 +59,7 @@ public class DailyTasks {
         updatePlayerUsernames();
 
         NewsletterStorage.getInstance().clearOldNewsletters();
-        if (ConfigUtil.getCustomConfig(ConfigTag.MAIN).getBoolean("enableMidnightGenerateResource", true)) {
-          LandmarkStorage.getInstance().generateAllResources();
-        }
+        LandmarkStorage.getInstance().generateAllResources();
         ArchiveUtil.archiveFiles();
     }
 

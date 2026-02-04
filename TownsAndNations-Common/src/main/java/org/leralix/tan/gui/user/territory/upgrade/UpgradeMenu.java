@@ -65,10 +65,10 @@ public class UpgradeMenu extends BasicGui {
         var lockedLevels = iconManager.get(Material.RED_STAINED_GLASS_PANE);
 
         for(int i = 2; i < 10; i++){
-            int adaptedCursor = i - 3 + scrollIndex;
+            int adaptedCursor = i - 2 + scrollIndex;
             if(adaptedCursor > townLevel){
                 gui.getFiller().fillBetweenPoints(1, i, 4, i, lockedFiller);
-                gui.setItem(5, i, lockedLevels.setName(Lang.LEVEL_LOCKED_WITH_LEVEL.get(langType, Integer.toString(i))).asGuiItem(player, langType));
+                gui.setItem(5, i, lockedLevels.setName(Lang.LEVEL_LOCKED_WITH_LEVEL.get(langType, Integer.toString(i - 1))).asGuiItem(player, langType));
             }
             else if(adaptedCursor == townLevel){
                 gui.getFiller().fillBetweenPoints(1, i, 4, i, lockedFiller);
@@ -76,7 +76,7 @@ public class UpgradeMenu extends BasicGui {
             }
             else {
                 gui.getFiller().fillBetweenPoints(1, i, 4, i, unlockedFiller);
-                gui.setItem(5, i, unlockedLevels.setName(Lang.LEVEL_UNLOCKED_WITH_LEVEL.get(langType,Integer.toString(i))).asGuiItem(player, langType));
+                gui.setItem(5, i, unlockedLevels.setName(Lang.LEVEL_UNLOCKED_WITH_LEVEL.get(langType,Integer.toString(i - 1))).asGuiItem(player, langType));
             }
         }
 

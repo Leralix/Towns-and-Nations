@@ -5,11 +5,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.lib.SphereLib;
 import org.leralix.lib.data.PluginVersion;
-import org.leralix.lib.utils.config.ConfigTag;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.api.external.papi.PlaceHolderAPI;
 import org.leralix.tan.api.external.worldguard.WorldGuardManager;
@@ -31,6 +31,7 @@ import org.leralix.tan.listeners.*;
 import org.leralix.tan.listeners.chat.ChatListener;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
+import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.database.MySqlHandler;
 import org.leralix.tan.storage.database.SQLiteHandler;
@@ -42,6 +43,7 @@ import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.tasks.SecondTask;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.constants.DatabaseConstants;
+import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.text.NameFilter;
 import org.leralix.tan.utils.text.NumberUtil;
@@ -53,7 +55,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -90,7 +92,7 @@ public class TownsAndNations extends JavaPlugin {
 
     private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0, 15, 0);
 
-    private static final PluginVersion MINIMUM_SUPPORTING_SPHERELIB = new PluginVersion(0, 6, 0);
+    private static final PluginVersion MINIMUM_SUPPORTING_SPHERELIB = new PluginVersion(0, 6, 1);
 
     /**
      * The Latest version of the plugin on GitHub.
@@ -109,7 +111,12 @@ public class TownsAndNations extends JavaPlugin {
      */
     private DatabaseHandler databaseHandler;
 
+    /**
+     * The storage of all playerData
+     */
     private PlayerDataStorage playerDataStorage;
+
+    private LocalChatStorage localChatStorage;
 
     private SaveStats saveStats;
 
@@ -133,14 +140,8 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Loading Lang");
 
-        File langConfig = new File(getDataFolder(), "lang.yml");
-        ConfigUtil.saveAndUpdateResource(this, "lang.yml");
-
-
-
-        ConfigUtil.saveAndUpdateResource(this, "lang.yml");
-        ConfigUtil.addCustomConfig(this, "lang.yml", ConfigTag.LANG);
-        String lang = ConfigUtil.getCustomConfig(ConfigTag.LANG).getString("language");
+        YamlConfiguration langConfig = ConfigUtil.saveAndUpdateResource(this, "lang.yml", Collections.emptyList());
+        String lang = langConfig.getString("language", "en");
 
         File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
         Lang.loadTranslations(langFolder, lang);
@@ -149,26 +150,19 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Loading Configs");
 
-        List<String> mainBlackList = new ArrayList<>();
-        mainBlackList.add("claimBlacklist");
-        mainBlackList.add("wildernessRules");
-        mainBlackList.add("townPermissions");
-        mainBlackList.add("regionPermissions");
-        mainBlackList.add("propertyPermissions");
-        ConfigUtil.saveAndUpdateResource(this, "config.yml", mainBlackList);
-        ConfigUtil.addCustomConfig(this, "config.yml", ConfigTag.MAIN);
+        List<String> mainBlackList = List.of(
+                "claimBlacklist",
+                "wildernessRules",
+                "townPermissions",
+                "regionPermissions",
+                "propertyPermissions"
+        );
+        YamlConfiguration mainConfig = ConfigUtil.saveAndUpdateResource(this, "config.yml", mainBlackList);
+        YamlConfiguration upgradesConfig =  ConfigUtil.saveAndUpdateResource(this, "upgrades.yml", Collections.singletonList("upgrades"));
 
-        List<String> upgradeBlackList = new ArrayList<>();
-        upgradeBlackList.add("upgrades");
-        ConfigUtil.saveAndUpdateResource(this, "upgrades.yml", upgradeBlackList);
-        ConfigUtil.addCustomConfig(this, "upgrades.yml", ConfigTag.UPGRADE);
-
-
-        getLogger().log(Level.INFO, "[TaN] -Loading Configs");
-
-        Constants.init(ConfigUtil.getCustomConfig(ConfigTag.MAIN), ConfigUtil.getCustomConfig(ConfigTag.UPGRADE));
-        NameFilter.reload();
-        ClaimBlacklistStorage.init();
+        Constants.init(mainConfig, upgradesConfig);
+        NameFilter.reload(mainConfig);
+        ClaimBlacklistStorage.init(mainConfig);
         IconManager.getInstance();
         NumberUtil.init();
         FortStorage.init(new FortDataStorage());
@@ -183,6 +177,8 @@ public class TownsAndNations extends JavaPlugin {
 
         playerDataStorage = new PlayerDataStorage();
 
+        localChatStorage = new LocalChatStorage(playerDataStorage, mainConfig.getBoolean("sendPrivateMessagesToConsole", true));
+
         NationDataStorage.getInstance();
         RegionDataStorage.getInstance();
         NewClaimedChunkStorage.getInstance();
@@ -195,6 +191,7 @@ public class TownsAndNations extends JavaPlugin {
         WarStorage.getInstance();
         EventManager.getInstance().registerEvents(new NewsletterEvents());
         TruceStorage.getInstance();
+        FileUtil.setEnable(mainConfig.getBoolean("archiveHistory", false));
 
         FortStorage.getInstance().checkValidWorlds();
         TownDataStorage.getInstance().checkValidWorlds();
@@ -211,7 +208,8 @@ public class TownsAndNations extends JavaPlugin {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             getLogger().log(Level.INFO, "[TaN] -Registering PlaceholderAPI");
             new PlaceHolderAPI(
-                    playerDataStorage
+                    playerDataStorage,
+                    localChatStorage
             ).register();
         }
 
@@ -238,7 +236,7 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Loading commands");
         enableEventList();
-        getCommand("tan").setExecutor(new PlayerCommandManager(playerDataStorage));
+        getCommand("tan").setExecutor(new PlayerCommandManager(playerDataStorage, localChatStorage));
         getCommand("tanadmin").setExecutor(new AdminCommandManager(playerDataStorage));
         getCommand("tandebug").setExecutor(new DebugCommandManager(saveStats, dailyTasks));
         getCommand("tanserver").setExecutor(new ServerCommandManager(playerDataStorage));
@@ -333,7 +331,7 @@ public class TownsAndNations extends JavaPlugin {
         pluginManager.registerEvents(new ChunkListener(playerDataStorage), this);
         pluginManager.registerEvents(new PlayerJoinListener(playerDataStorage), this);
         pluginManager.registerEvents(new PlayerEnterChunkListener(playerDataStorage), this);
-        pluginManager.registerEvents(new ChatScopeListener(playerDataStorage), this);
+        pluginManager.registerEvents(new ChatScopeListener(localChatStorage), this);
         pluginManager.registerEvents(new MobSpawnListener(), this);
         pluginManager.registerEvents(new SpawnListener(playerDataStorage), this);
         pluginManager.registerEvents(new PropertySignListener(playerDataStorage), this);

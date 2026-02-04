@@ -45,7 +45,7 @@ public class Constants {
     private static int nbDigits;
     //Cosmetic
     /**
-     * If Enabled, player username will have a 3 letter prefix of their town name.
+     * If Enabled, player username will have a prefix of their town name.
      * This option cannot be enabled with allowColorCodes.
      */
     private static boolean allowTownTag;
@@ -153,6 +153,7 @@ public class Constants {
     private static int townMaxLevel;
     private static int regionMaxLevel;
     private static int nationMaxLevel;
+    private static UpgradeExpression upgradeExpression;
 
     public static void init(FileConfiguration config, FileConfiguration upgradeConfig) {
 
@@ -309,7 +310,7 @@ public class Constants {
         townMaxLevel = upgradeConfig.getInt("TownMaxLevel", 10);
         regionMaxLevel = upgradeConfig.getInt("RegionMaxLevel", 10);
         nationMaxLevel = upgradeConfig.getInt("NationMaxLevel", 10);
-
+        upgradeExpression = new UpgradeExpression(upgradeConfig);
     }
 
     private static TownRelation getRelation(String relationAfterSurrender) {
@@ -725,6 +726,10 @@ public class Constants {
             return nationMaxLevel;
         }
         return regionMaxLevel;
+    }
+
+    public static UpgradeExpression getUpgradeExpression() {
+        return upgradeExpression;
     }
 
     public static boolean isCancelTeleportOnMovePosition() {

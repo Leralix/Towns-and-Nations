@@ -72,8 +72,8 @@ import org.leralix.tan.war.attack.CurrentAttack;
 import org.leralix.tan.war.info.WarRole;
 import org.tan.api.enums.TerritoryPermission;
 import org.tan.api.interfaces.TanPlayer;
-import org.tan.api.interfaces.territory.TanTerritory;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -472,6 +472,13 @@ public abstract class TerritoryData implements TanTerritory {
 
     public void addVassal(TerritoryData vassal) {
         EventManager.getInstance().callEvent(new TerritoryVassalAcceptedInternalEvent(vassal, this));
+
+        RankData regionDefaultRank = getDefaultRank();
+        for(ITanPlayer player : vassal.getITanPlayerList()){
+            player.setRegionRankID(regionDefaultRank.getID());
+            regionDefaultRank.addPlayer(player);
+        }
+
         addVassalPrivate(vassal);
     }
 
@@ -1010,7 +1017,7 @@ public abstract class TerritoryData implements TanTerritory {
         return !WarStorage.getInstance().getWarsOfTerritory(this).isEmpty();
     }
 
-    protected RankData getDefaultRank() {
+    public RankData getDefaultRank() {
         return getRank(getDefaultRankID());
     }
 

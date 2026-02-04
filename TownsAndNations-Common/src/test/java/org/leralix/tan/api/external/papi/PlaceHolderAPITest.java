@@ -24,7 +24,7 @@ class PlaceHolderAPITest extends BasicTest {
     protected void setUp() {
         super.setUp();
 
-        placeHolderAPI = new PlaceHolderAPI(townsAndNations.getPlayerDataStorage());
+        placeHolderAPI = new PlaceHolderAPI(townsAndNations.getPlayerDataStorage(), null);
     }
 
 
@@ -91,11 +91,13 @@ class PlaceHolderAPITest extends BasicTest {
         Player player = server.addPlayer("playerName");
         ITanPlayer tanPlayer = playerDataStorage.register(player);
 
-        placeHolderAPI.registerEntry(new OtherPlayerChatMode(playerDataStorage));
+        LocalChatStorage localChatStorage = new LocalChatStorage(playerDataStorage, false);
+
+        placeHolderAPI.registerEntry(new OtherPlayerChatMode(playerDataStorage, localChatStorage));
 
         assertEquals(ChatScope.GLOBAL.getName(tanPlayer.getLang()), placeHolderAPI.onRequest(player, "chat_mode_{playerName}"));
 
-        LocalChatStorage.setPlayerChatScope(player, ChatScope.ALLIANCE);
+        localChatStorage.setPlayerChatScope(player, ChatScope.ALLIANCE);
 
         assertEquals(ChatScope.ALLIANCE.getName(tanPlayer.getLang()), placeHolderAPI.onRequest(player, "chat_mode_{playerName}"));
     }
