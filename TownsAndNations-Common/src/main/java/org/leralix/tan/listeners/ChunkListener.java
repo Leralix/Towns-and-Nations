@@ -339,7 +339,7 @@ public class ChunkListener implements Listener {
 
     private boolean canPvpHappen(Player aggressor, Player receiver) {
 
-        if (SudoPlayerStorage.isSudoPlayer(aggressor)){
+        if (SudoPlayerStorage.isSudoPlayer(aggressor)) {
             return true;
         }
 
@@ -516,15 +516,22 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onWitherBlockBreak(EntityChangeBlockEvent event) {
 
+        // Ignore gravity physics only
+        if (event.getEntity() instanceof FallingBlock) {
+            return;
+        }
+
         Chunk chunk = event.getBlock().getChunk();
 
-        if(event.getEntity() instanceof Player player){
-            if(!canPlayerDoAction(event.getBlock().getLocation(), player, ChunkPermissionType.BREAK_BLOCK)){
+        if (event.getEntity() instanceof Player player) {
+            if (!canPlayerDoAction(event.getBlock().getLocation(), player, ChunkPermissionType.BREAK_BLOCK)) {
                 event.setCancelled(true);
             }
         }
-        // Wither & enderman grief
-        else if (!NewClaimedChunkStorage.getInstance().get(chunk).canMobGrief()) {
+        // Wither & Enderman grief
+        else if (!NewClaimedChunkStorage.getInstance()
+                .get(chunk)
+                .canMobGrief()) {
             event.setCancelled(true);
         }
     }
@@ -544,7 +551,7 @@ public class ChunkListener implements Listener {
             SideStatus side = tanPlayer.getWarSideWith(territoryChunk.getOwnerInternal());
             if (
                     (side == SideStatus.ALLY && Constants.getPermissionAtWars().canAllyDoAction(permissionType)) ||
-                    (side == SideStatus.ENEMY && Constants.getPermissionAtWars().canEnemyDoAction(permissionType))
+                            (side == SideStatus.ENEMY && Constants.getPermissionAtWars().canEnemyDoAction(permissionType))
             ) {
                 return true;
             }
