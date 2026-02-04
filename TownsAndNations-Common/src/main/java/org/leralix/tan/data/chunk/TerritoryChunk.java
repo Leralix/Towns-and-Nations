@@ -1,6 +1,5 @@
 package org.leralix.tan.data.chunk;
 
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
@@ -28,8 +27,8 @@ import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.attack.CurrentAttack;
 import org.tan.api.enums.TerritoryPermission;
-import org.tan.api.interfaces.territory.TanTerritory;
 import org.tan.api.interfaces.chunk.TanTerritoryChunk;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.Optional;
 
@@ -140,14 +139,14 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
         String text;
         if (isOccupied()) {
             textComponent = new TextComponent("🟧");
-            textComponent.setColor(ChatColor.valueOf(getOccupier().getChunkColorInHex()));
+            textComponent.setColor(getOccupierInternal().getChunkColor());
             text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
                     getOwner().getColoredName() + "\n" +
                     getOccupier().getColoredName() + "\n" +
                     Lang.LEFT_CLICK_TO_CLAIM.get(langType);
         } else {
             textComponent = new TextComponent("⬛");
-            textComponent.setColor(ChatColor.valueOf(getOwner().getChunkColorInHex()));
+            textComponent.setColor(getOccupierInternal().getChunkColor());
             text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
                     getOwner().getColoredName() + "\n" +
                     Lang.LEFT_CLICK_TO_CLAIM.get(langType);
