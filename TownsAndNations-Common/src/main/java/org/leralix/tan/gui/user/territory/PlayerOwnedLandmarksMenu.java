@@ -1,6 +1,5 @@
 package org.leralix.tan.gui.user.territory;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.building.landmark.Landmark;
@@ -33,7 +32,7 @@ public class PlayerOwnedLandmarksMenu extends IteratorGUI {
     private List<GuiItem> getLandmarks() {
         ArrayList<GuiItem> res = new ArrayList<>();
         for (Landmark landmark : LandmarkStorage.getInstance().getLandmarkOf(townData)) {
-            GuiItem landmarkButton = ItemBuilder.from(landmark.getIcon(tanPlayer.getLang())).asGuiItem(event -> event.setCancelled(true));
+            GuiItem landmarkButton = landmark.getIcon(tanPlayer.getLang()).asGuiItem(player, langType);
             res.add(landmarkButton);
         }
         return res;

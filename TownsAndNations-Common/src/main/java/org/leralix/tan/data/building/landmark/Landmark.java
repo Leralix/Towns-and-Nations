@@ -1,13 +1,11 @@
 package org.leralix.tan.data.building.landmark;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.data.chunk.ClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
@@ -18,6 +16,9 @@ import org.leralix.tan.data.upgrade.rewards.percentage.LandmarkBonus;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.LandmarkClaimedInternalEvent;
 import org.leralix.tan.events.events.LandmarkUnclaimedInternalEvent;
+import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.gui.cosmetic.type.IconBuilder;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.LandmarkStorage;
@@ -159,28 +160,24 @@ public class Landmark implements TanLandmark {
     }
 
 
-    public ItemStack getIcon(LangType langType) {
-        Material rewardMaterial = Material.valueOf(materialName);
-        ItemStack icon = new ItemStack(rewardMaterial, amount);
-        ItemMeta meta = icon.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(ChatColor.GREEN + getName());
-            List<String> description = getBaseDescription(langType);
-            if (isOwned())
-                description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_OWNER.get(langType, getOwner().getName()));
-            else
-                description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER.get(langType));
+    public IconBuilder getIcon(LangType langType) {
 
-            meta.setLore(description);
-        }
-        icon.setItemMeta(meta);
-        return icon;
+        List<FilledLang> description = getBaseDescription();
+        if (isOwned())
+            description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_OWNER.get(getOwner().getName()));
+        else
+            description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER.get());
+
+
+        return IconManager.getInstance().get(Material.valueOf(materialName))
+                .setName(Lang.SPECIFIC_LANDMARK_NAME.get(langType, getName()))
+                .setDescription(description);
     }
 
-    public List<String> getBaseDescription(LangType langType) {
-        List<String> description = new ArrayList<>();
-        description.add(Lang.DISPLAY_COORDINATES.get(langType, Integer.toString(position.getX()), Integer.toString(position.getY()), Integer.toString(position.getZ())));
-        description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(langType, Integer.toString(amount), materialName.toLowerCase()));
+    public List<FilledLang> getBaseDescription() {
+        List<FilledLang> description = new ArrayList<>();
+        description.add(Lang.DISPLAY_COORDINATES.get(Integer.toString(position.getX()), Integer.toString(position.getY()), Integer.toString(position.getZ())));
+        description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(Integer.toString(amount), materialName.toLowerCase()));
         return description;
     }
 

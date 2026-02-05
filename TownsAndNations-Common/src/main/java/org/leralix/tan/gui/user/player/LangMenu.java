@@ -1,11 +1,9 @@
 package org.leralix.tan.gui.user.player;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -41,13 +39,18 @@ public class LangMenu extends IteratorGUI {
     private List<GuiItem> getLangItems() {
         List<GuiItem> guiItems = new ArrayList<>();
         for(LangType lang : LangType.values()){
-            ItemStack langIcon = lang.getIcon(langType);
-            GuiItem langGui = ItemBuilder.from(langIcon).asGuiItem(event -> {
-                tanPlayer.setLang(lang);
-                TanChatUtils.message(player, Lang.GUI_LANGUAGE_CHANGED.get(tanPlayer, lang.getName()));
-                new PlayerMenu(player);
-            });
-            guiItems.add(langGui);
+
+            guiItems.add(iconManager.get(lang.getIconKey())
+                    .setName(lang.getName())
+                    .setDescription(Lang.PERCENT_COMPLETED.get(Integer.toString(Lang.getCompletionPercentage(lang))))
+                    .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
+                    .setAction(action -> {
+                        tanPlayer.setLang(lang);
+                        TanChatUtils.message(player, Lang.GUI_LANGUAGE_CHANGED.get(tanPlayer, lang.getName()));
+                        new PlayerMenu(player);
+                    })
+                    .asGuiItem(player, langType)
+            );
         }
         return guiItems;
     }

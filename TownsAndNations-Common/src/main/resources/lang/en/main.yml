@@ -831,7 +831,7 @@ language:
   #Select language
   HELP_US_TRANSLATE: "§fHelp us translate the plugin in your language"
   PERCENT_COMPLETED: "§6{0}%§f completed"
-  CLICK_HERE_TO_OPEN_BROWSER: "§fClick here to open crowdin in your browser"
+  CLICK_HERE_TO_OPEN_BROWSER: "§6§l[Click here to open crowdin in your browser]"
   #Region GUI
   GUI_ADMIN_PLAYER_ICON: "§aManage player"
   GUI_REGION_CREATE: "§aCreate a region"
@@ -892,6 +892,7 @@ language:
   GUI_REMOVE_LANDMARK: "§cUnclaim landmark"
   SPECIFIC_LANDMARK_ICON_DEFAULT_NAME: "Landmark n°{0}"
   LANDMARK_PRODUCTION_NAME: "§aConfigure production"
+  SPECIFIC_LANDMARK_NAME: "§a{0}"
   SPECIFIC_LANDMARK_ICON_DESC1: "§fProducing : §6{0}x §e{1}"
   SPECIFIC_LANDMARK_ICON_DESC2_OWNER: "§fControlled by : §9{0}"
   SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER: "§fNot claimed"

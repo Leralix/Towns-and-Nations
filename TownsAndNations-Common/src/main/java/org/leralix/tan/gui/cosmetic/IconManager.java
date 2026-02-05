@@ -89,9 +89,6 @@ public class IconManager {
             else {
                 return new ItemIconBuilder(iconMaterial);
             }
-
-
-
         }
         return switch (value) {
             case "PLAYER_HEAD" -> new PlayerHeadIconType();

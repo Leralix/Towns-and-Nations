@@ -35,6 +35,7 @@ MARK_ALL_AS_READ_ICON: "minecraft:BOOK"
 CHANGE_NEWSLETTER_SCOPE_ICON: "minecraft:NAME_TAG"
 #Newsletter icons
 NEWSLETTER_PLAYER_JOIN_TOWN_ICON: "https://textures.minecraft.net/texture/16338322d26c6a7c08fb9fd22959a136728fa2d4dccd22b1563eb1bbaa1d5471"
+NEWSLETTER_DIPLOMACY_ACCEPTED_ICON : "http://textures.minecraft.net/texture/b62c08805bd9c957da3450554a09e994042f54695db855c1c2cb47ef442e1bf6"
 #Town menu - Player with no town
 CREATE_TOWN_ICON: "minecraft:GRASS_BLOCK"
 BROWSE_TOWN_ICON: "minecraft:ANVIL"
@@ -56,6 +57,7 @@ TERRITORY_BUILDING_ICON: "https://textures.minecraft.net/texture/4a89218d2671035
 TERRITORY_WAR_ICON: "https://textures.minecraft.net/texture/25de4ff8be70eee4d103b1eedf454f0abb9f0568f5f326ecba7cab6a47f9ade4"
 TERRITORY_HIERARCHY_ICON: "minecraft:GOLDEN_HELMET"
 
+DIPLOMACY_PROPOSAL_ICON: "https://textures.minecraft.net/texture/1818d1cc53c275c294f5dfb559174dd931fc516a85af61a1de256aed8bca5e7"
 #Treasury menu
 CHUNK_UPKEEP_ICON: "https://textures.minecraft.net/texture/17980b940af858f910943464ee00359287cb0b5810680b60b89be4210dda0ed1"
 TAX_DECREASE_ICON: "https://textures.minecraft.net/texture/4e4b8b8d2362c864e062301487d94d3272a6b570afbf80c2c5b148c954579d46"
@@ -63,6 +65,9 @@ TAX_INCREASE_ICON: "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98
 TAX_INFO_ICON: "https://textures.minecraft.net/texture/198df42f477f213ff5e9d7fa5a4cc4a69f20d9cef2b90c4ae4f29bd17287b5"
 SALARY_INFO_ICON: "https://textures.minecraft.net/texture/69a600ab0a83097065b95ae284f8059961774609adb3dbd3a4ca269d44409551"
 
+CREATE_TAX_ICON: "https://textures.minecraft.net/texture/97f82aceb98fe069e8c166ced00242a76660bbe07091c92cdde54c6ed10dcff9"
+PROPERTY_RENT_TAX_ICON: "https://textures.minecraft.net/texture/e19997593f2c592b9fbd4f15ead1673b76f519d7ab3efa15edd19448d1a20bfc"
+PROPERTY_SELL_TAX_ICON: "https://textures.minecraft.net/texture/97f82aceb98fe069e8c166ced00242a76660bbe07091c92cdde54c6ed10dcff9"
 
 #Town menu
 TOWN_LANDMARKS_ICON: "https://textures.minecraft.net/texture/fd761cc16562c88d2fbe40ad38502bc3b4a87859887dbc35f272e30d8070eeec"
@@ -266,6 +271,39 @@ ADD_VASSALS_ICON: "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c
 # Confirm menu
 CONFIRM_ICON: "https://textures.minecraft.net/texture/4312ca4632def5ffaf2eb0d9d7cc7b55a50c4e3920d90372aab140781f5dfbc4"
 CANCEL_ICON: "https://textures.minecraft.net/texture/beb588b21a6f98ad1ff4e085c552dcb050efc9cab427f46048f18fc803475f7"
+
+# Flag icons
+FLAG_AF_ICON: "https://textures.minecraft.net/texture/961a1eacc10524d1f45f23b0e487bb2fc33948d9676b418b19a3da0b109d0e3c"
+FLAG_AR_ICON: "https://textures.minecraft.net/texture/a4be759a9cf7f0a19a7e8e62f23789ad1d21cebae38af9d9541676a3db001572"
+FLAG_CA_ICON: "https://textures.minecraft.net/texture/8dc57d3c83daf66d03677737d9769eae36b5b478d052759b0b4479fc16d55a02"
+FLAG_CS_ICON: "https://textures.minecraft.net/texture/79bbccc2102644d4e36dfabe735f0f9307adc5c84e20a0fdc5b3fa3de480d498"
+FLAG_DA_ICON: "https://textures.minecraft.net/texture/10c23055c392606f7e531daa2676ebe2e348988810c15f15dc5b3733998232"
+FLAG_DE_ICON: "https://textures.minecraft.net/texture/21c23097ef1762d51df297f9c445708d9439ff91746d2f677b28dddfa27316"
+FLAG_EL_ICON: "https://textures.minecraft.net/texture/1514de6dd2b7682b1d3ebcd10291ae1f021e3012b5c8beffeb75b1819eb4259d"
+FLAG_EN_ICON: "https://textures.minecraft.net/texture/879d99d9c46474e2713a7e84a95e4ce7e8ff8ea4d164413a592e4435d2c6f9dc"
+FLAG_ES_ES_ICON: "https://textures.minecraft.net/texture/32bd4521983309e0ad76c1ee29874287957ec3d96f8d889324da8c887e485ea8"
+FLAG_FI_ICON: "https://textures.minecraft.net/texture/59f2349729a7ec8d4b1478adfe5ca8af96479e983fbad238ccbd81409b4ed"
+FLAG_FR_ICON: "https://textures.minecraft.net/texture/51269a067ee37e63635ca1e723b676f139dc2dbddff96bbfef99d8b35c996bc"
+FLAG_HE_ICON: "https://textures.minecraft.net/texture/5a1b4fa09b3a63273cb2a7cde2f5cd62c3218faca7525d9d4a44c2eee3a2963c"
+FLAG_HU_ICON: "https://textures.minecraft.net/texture/4a9c3c4b6c5031332dd2bfece5e31e999f8deff55474065cc86993d7bdcdbd0"
+FLAG_IT_ICON: "https://textures.minecraft.net/texture/85ce89223fa42fe06ad65d8d44ca412ae899c831309d68924dfe0d142fdbeea4"
+FLAG_JA_ICON: "https://textures.minecraft.net/texture/d640ae466162a47d3ee33c4076df1cab96f11860f07edb1f0832c525a9e33323"
+FLAG_KO_ICON: "https://textures.minecraft.net/texture/fc1be5f12f45e413eda56f3de94e08d90ede8e339c7b1e8f32797390e9a5f"
+FLAG_NL_ICON: "https://textures.minecraft.net/texture/c23cf210edea396f2f5dfbced69848434f93404eefeabf54b23c073b090adf"
+FLAG_NO_ICON: "https://textures.minecraft.net/texture/fda048bc153b38467e76a3347f38396860a8bc68603931e91f7af58bec57383d"
+FLAG_PL_ICON: "https://textures.minecraft.net/texture/7fa269b8a663f52d6323dcd92edcc83d5f91d508afa819882deda15375f03d"
+FLAG_PT_PT_ICON: "https://textures.minecraft.net/texture/ebd51f4693af174e6fe1979233d23a40bb987398e3891665fafd2ba567b5a53a"
+FLAG_PT_BR_ICON: "https://textures.minecraft.net/texture/9a46475d5dcc815f6c5f2859edbb10611f3e861c0eb14f088161b3c0ccb2b0d9"
+FLAG_VI_ICON: "https://textures.minecraft.net/texture/8a57b9d7dd04169478cfdb8d0b6fd0b8c82b6566bb28371ee9a7c7c1671ad0bb"
+FLAG_RO_ICON: "https://textures.minecraft.net/texture/dceb1708d5404ef326103e7b60559c9178f3dce729007ac9a0b498bdebe46107"
+FLAG_RU_ICON: "https://textures.minecraft.net/texture/16eafef980d6117dabe8982ac4b4509887e2c4621f6a8fe5c9b735a83d775ad"
+FLAG_SR_ICON: "https://textures.minecraft.net/texture/76461165e48b86c56bb98f48b201aef05a30c914e90f4515f05219c6827e7e1d"
+FLAG_SV_SE_ICON: "https://textures.minecraft.net/texture/1b85f8114dea93cdee01ab8fe5cfca09c984c2459776bf626e349503702f21eb"
+FLAG_TH_ICON: "http://textures.minecraft.net/texture/b15be3cdc1af14ca15155517110ba326d9945007a889e6681999c37d07bd65f5"
+FLAG_TR_ICON: "https://textures.minecraft.net/texture/9852b9aba3482348514c1034d0affe73545c9de679ae4647f99562b5e5f47d09"
+FLAG_UK_ICON: "https://textures.minecraft.net/texture/28b9f52e36aa5c7caaa1e7f26ea97e28f635e8eac9aef74cec97f465f5a6b51"
+FLAG_ZH_CN_ICON: "https://textures.minecraft.net/texture/7f9bc035cdc80f1ab5e1198f29f3ad3fdd2b42d9a69aeb64de990681800b98dc"
+FLAG_ZH_TW_ICON: "https://textures.minecraft.net/texture/702a4afb2e1e2e3a1894a8b74272f95cfa994ce53907f9ac140bd3c932f9f"
 
 # Mob head icons
 AXOLOTL_HEAD_ICON: "https://textures.minecraft.net/texture/d704254139a0b1a926e7552482dd67679c6ae0dc8335c980dbd1c0d99634a708"

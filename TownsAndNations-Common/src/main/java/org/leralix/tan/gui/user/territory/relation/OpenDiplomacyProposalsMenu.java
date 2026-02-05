@@ -32,7 +32,7 @@ public class OpenDiplomacyProposalsMenu extends IteratorGUI {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
         for (DiplomacyProposal diplomacyProposal : territoryData.getAllDiplomacyProposal()) {
-            guiItems.add(diplomacyProposal.createGuiItem(this, langType));
+            guiItems.add(diplomacyProposal.createGuiItem(this, langType).asGuiItem(player, langType));
         }
         return guiItems;
     }

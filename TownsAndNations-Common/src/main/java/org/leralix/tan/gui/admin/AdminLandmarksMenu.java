@@ -1,9 +1,7 @@
 package org.leralix.tan.gui.admin;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.TownsAndNations;
@@ -15,7 +13,6 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -62,30 +59,29 @@ public class AdminLandmarksMenu extends IteratorGUI {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
 
         for (Landmark landmark : LandmarkStorage.getInstance().getAll().values()) {
-            ItemStack icon = landmark.getIcon(langType);
-            HeadUtils.addLore(icon,
-                    "",
-                    Lang.CLICK_TO_OPEN_LANDMARK_MENU.get(langType),
-                    Lang.GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT.get(langType));
 
-            GuiItem item = ItemBuilder.from(icon).asGuiItem(event -> {
-                event.setCancelled(true);
-                if (!event.isShiftClick()) {
-                    new AdminLandmarkMenu(player, landmark);
-                } else {
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            player.closeInventory();
-                            player.teleport(landmark.getLocation());
-                        }
-                    }.runTaskLater(TownsAndNations.getPlugin(), 1L);
-
-
-                    SoundUtil.playSound(player, GOOD);
-                }
-            });
-            guiItems.add(item);
+            guiItems.add(landmark.getIcon(langType)
+                    .setClickToAcceptMessage(
+                            Lang.CLICK_TO_OPEN_LANDMARK_MENU,
+                            Lang.GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT
+                    )
+                    .setAction(action -> {
+                                action.setCancelled(true);
+                                if (!action.isShiftClick()) {
+                                    new AdminLandmarkMenu(player, landmark);
+                                } else {
+                                    new BukkitRunnable() {
+                                        @Override
+                                        public void run() {
+                                            player.closeInventory();
+                                            player.teleport(landmark.getLocation());
+                                        }
+                                    }.runTaskLater(TownsAndNations.getPlugin(), 1L);
+                                    SoundUtil.playSound(player, GOOD);
+                                }
+                            }
+                    )
+                    .asGuiItem(player, langType));
         }
         return guiItems;
     }

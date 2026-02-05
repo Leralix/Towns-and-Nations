@@ -35,7 +35,7 @@ public class LandmarkOwnedMenu extends BasicGui {
     @Override
     public void open() {
 
-        GuiItem landmarkIcon = iconManager.get(landmark.getIcon(langType)).asGuiItem(player, langType);
+        GuiItem landmarkIcon = landmark.getIcon(langType).asGuiItem(player, langType);
         gui.setItem(1, 5, landmarkIcon);
 
         gui.setItem(2, 4, getCollectButton());

@@ -45,7 +45,7 @@ public class SelectLandmarkForCapture extends IteratorGUI {
         List<GuiItem> items = new ArrayList<>();
 
         for(Landmark landmark : LandmarkStorage.getInstance().getLandmarkOf(enemyTownData)) {
-            GuiItem item = iconManager.get(landmark.getIcon(langType))
+            GuiItem item = landmark.getIcon(langType)
                     .setName(landmark.getName())
                     .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                     .setAction(event -> {
