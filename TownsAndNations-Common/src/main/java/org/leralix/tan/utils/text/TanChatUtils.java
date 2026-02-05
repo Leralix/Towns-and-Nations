@@ -33,7 +33,9 @@ public class TanChatUtils {
             ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
             message(player, message.get(playerData), soundEnum);
         }
-        commandSender.sendMessage(message.getDefault());
+        else {
+            commandSender.sendMessage(message.getDefault());
+        }
     }
 
     public static void message(CommandSender commandSender, FilledLang message) {
