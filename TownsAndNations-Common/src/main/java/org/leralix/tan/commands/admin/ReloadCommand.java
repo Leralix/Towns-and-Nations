@@ -7,6 +7,7 @@ import org.leralix.lib.commands.SubCommand;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.lang.DynamicLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.impl.FortDataStorage;
@@ -17,6 +18,7 @@ import org.leralix.tan.utils.text.NameFilter;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,6 +52,12 @@ public class ReloadCommand extends SubCommand {
     public void perform(CommandSender commandSender, String[] args) {
         if (args.length == 1) {
             Plugin plugin = TownsAndNations.getPlugin();
+
+            YamlConfiguration langConfig = ConfigUtil.saveAndUpdateResource(TownsAndNations.getPlugin(), "lang.yml", Collections.emptyList());
+            String lang = langConfig.getString("language", "en");
+            File langFolder = new File(TownsAndNations.getPlugin().getDataFolder(), "lang");
+            Lang.loadTranslations(langFolder, lang);
+            DynamicLang.loadTranslations(langFolder, lang);
 
             List<String> mainBlackList = List.of(
                     "claimBlacklist",
