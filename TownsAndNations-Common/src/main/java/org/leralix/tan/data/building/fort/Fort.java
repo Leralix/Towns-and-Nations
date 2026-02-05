@@ -43,11 +43,6 @@ public abstract class Fort extends Building implements TanFort {
         }
     }
 
-    @Override
-    public Vector3D getFlagPosition() {
-        return getPosition();
-    }
-
     public void spawnFlag() {
         updateFlag();
         TANCustomNBT.setProtectedBlockData(this);
