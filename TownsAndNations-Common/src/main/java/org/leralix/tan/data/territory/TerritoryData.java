@@ -369,7 +369,7 @@ public abstract class TerritoryData implements TanTerritory {
     public TownRelation getRelationWith(String territoryID) {
         if (getID().equals(territoryID)) return TownRelation.SELF;
 
-        Optional<TerritoryData> overlord = getOverlord();
+        Optional<TerritoryData> overlord = getOverlordInternal();
         if (overlord.isPresent() && overlord.get().getID().equals(territoryID)) return TownRelation.OVERLORD;
 
         if (getVassalsID().contains(territoryID)) return TownRelation.VASSAL;
@@ -441,7 +441,7 @@ public abstract class TerritoryData implements TanTerritory {
         overlord.addVassal(this);
     }
 
-    public Optional<TerritoryData> getOverlord() {
+    public Optional<TerritoryData> getOverlordInternal() {
         if (overlordID == null) {
             return Optional.empty();
         }
@@ -454,13 +454,24 @@ public abstract class TerritoryData implements TanTerritory {
 
     }
 
+    @Override
+    public Optional<TanTerritory> getOverlord(){
+        var optOverlord = getOverlordInternal();
+        if(optOverlord.isEmpty()){
+            return Optional.empty();
+        }
+        else {
+            return Optional.of(optOverlord.get());
+        }
+    }
+
     /**
      * @return All potential overlords of this territory (Nation and region)
      */
     protected abstract Collection<TerritoryData> getOverlords();
 
     public void removeOverlord() {
-        getOverlord().ifPresent(overlord -> {
+        getOverlordInternal().ifPresent(overlord -> {
             overlord.removeVassal(this);
             removeOverlordPrivate();
             this.overlordID = null;
@@ -487,7 +498,7 @@ public abstract class TerritoryData implements TanTerritory {
     protected abstract void removeVassal(TerritoryData vassalID);
 
     public boolean isCapital() {
-        Optional<TerritoryData> capital = getOverlord();
+        Optional<TerritoryData> capital = getOverlordInternal();
         return capital.map(overlord -> {
             TerritoryData overlordCapital = overlord.getCapital();
             return overlordCapital != null && Objects.equals(overlordCapital.getID(), getID());
@@ -517,7 +528,7 @@ public abstract class TerritoryData implements TanTerritory {
     }
 
     public boolean haveOverlord() {
-        return getOverlord().isPresent();
+        return getOverlordInternal().isPresent();
     }
 
 
@@ -1219,5 +1230,10 @@ public abstract class TerritoryData implements TanTerritory {
             bannerBuilder = new BannerBuilder();
         }
         return bannerBuilder;
+    }
+
+    @Override
+    public int getLevel(){
+        return getNewLevel().getMainLevel();
     }
 }

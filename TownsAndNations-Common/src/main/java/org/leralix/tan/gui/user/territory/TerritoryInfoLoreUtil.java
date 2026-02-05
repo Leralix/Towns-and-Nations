@@ -23,11 +23,11 @@ public final class TerritoryInfoLoreUtil {
         lore.add(Lang.GUI_TOWN_INFO_DESC2.get(Integer.toString(territoryData.getPlayerIDList().size())));
         lore.add(Lang.GUI_TOWN_INFO_DESC3.get(Integer.toString(territoryData.getNumberOfClaimedChunk())));
         if (territoryData instanceof TownData) {
-            lore.add(territoryData.getOverlord()
+            lore.add(territoryData.getOverlordInternal()
                     .map(overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(overlord.getName()))
                     .orElseGet(Lang.GUI_TOWN_INFO_DESC5_NO_REGION::get));
         } else if (territoryData instanceof RegionData) {
-            lore.add(territoryData.getOverlord()
+            lore.add(territoryData.getOverlordInternal()
                     .map(overlord -> Lang.GUI_REGION_INFO_DESC6_NATION.get(overlord.getName()))
                     .orElseGet(Lang.GUI_REGION_INFO_DESC6_NO_NATION::get));
         } else if (territoryData instanceof NationData) {

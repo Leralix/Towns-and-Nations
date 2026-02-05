@@ -41,10 +41,10 @@ class RegionDataTest extends BasicTest {
 
         assertEquals(2, regionData.getSubjects().size());
         assertTrue(regionData.getSubjects().contains(newTown));
-        assertTrue(townData.getOverlord().isPresent());
-        assertSame(regionData, townData.getOverlord().get());
-        assertTrue(newTown.getOverlord().isPresent());
-        assertSame(regionData, newTown.getOverlord().get());
+        assertTrue(townData.getOverlordInternal().isPresent());
+        assertSame(regionData, townData.getOverlordInternal().get());
+        assertTrue(newTown.getOverlordInternal().isPresent());
+        assertSame(regionData, newTown.getOverlordInternal().get());
     }
 
     @Test

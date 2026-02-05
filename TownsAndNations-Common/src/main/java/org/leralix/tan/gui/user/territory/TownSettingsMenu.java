@@ -138,7 +138,7 @@ public class TownSettingsMenu extends SettingsMenus {
                         return;
                     }
 
-                    var optOverlord = territoryData.getOverlord();
+                    var optOverlord = territoryData.getOverlordInternal();
                     if (optOverlord.isPresent() && optOverlord.get().isLeader(tanPlayer)) {
                         TanChatUtils.message(player, Lang.CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER.get(tanPlayer), NOT_ALLOWED);
                     }
@@ -173,7 +173,7 @@ public class TownSettingsMenu extends SettingsMenus {
                 .setAction(event -> {
                     event.setCancelled(true);
                     if (townData.isCapital()) {
-                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, townData.getOverlord().get().getColoredName()));
+                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, townData.getOverlordInternal().get().getColoredName()));
                         return;
                     }
 

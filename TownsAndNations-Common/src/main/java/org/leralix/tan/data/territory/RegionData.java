@@ -129,7 +129,7 @@ public class RegionData extends TerritoryData implements TanRegion {
         if (!haveOverlord()) {
             return new ArrayList<>();
         }
-        return Collections.singletonList(getOverlord().orElse(null));
+        return Collections.singletonList(getOverlordInternal().orElse(null));
     }
 
     public List<TerritoryData> getSubjects() {
@@ -286,7 +286,7 @@ public class RegionData extends TerritoryData implements TanRegion {
     }
 
     public Optional<NationData> getNation() {
-        var optNation = getOverlord();
+        var optNation = getOverlordInternal();
         if (optNation.isPresent() && optNation.get() instanceof NationData nationData) {
             return Optional.of(nationData);
         }

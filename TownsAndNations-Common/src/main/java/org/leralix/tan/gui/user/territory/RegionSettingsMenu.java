@@ -43,7 +43,7 @@ public class RegionSettingsMenu extends SettingsMenus {
 
         gui.setItem(2, 5, setBannerButton());
 
-        regionData.getOverlord().ifPresent(overlord -> {
+        regionData.getOverlordInternal().ifPresent(overlord -> {
             if (overlord instanceof NationData nationData) {
                 gui.setItem(2, 6, getLeaveNationButton(nationData));
             }
@@ -130,7 +130,7 @@ public class RegionSettingsMenu extends SettingsMenus {
                     event.setCancelled(true);
 
                     if (regionData.isCapital()) {
-                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, regionData.getOverlord().get().getColoredName()));
+                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, regionData.getOverlordInternal().get().getColoredName()));
                         return;
                     }
 

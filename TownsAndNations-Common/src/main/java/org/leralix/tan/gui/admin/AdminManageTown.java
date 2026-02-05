@@ -42,7 +42,7 @@ public class AdminManageTown extends AdminManageTerritory {
     }
 
     private @NotNull GuiItem getChangeRegion() {
-        String name = townData.getOverlord()
+        String name = townData.getOverlordInternal()
                 .map(TerritoryData::getName)
                 .orElseGet(() -> Lang.NO_REGION.get(langType));
 

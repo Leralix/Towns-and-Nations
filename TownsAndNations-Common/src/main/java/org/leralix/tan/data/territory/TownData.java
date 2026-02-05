@@ -151,7 +151,7 @@ public class TownData extends TerritoryData implements TanTown {
                         Lang.GUI_TOWN_INFO_DESC1.get(getLeaderName()),
                         Lang.GUI_TOWN_INFO_DESC2.get(Integer.toString(getPlayerIDList().size())),
                         Lang.GUI_TOWN_INFO_DESC3.get(Integer.toString(getNumberOfClaimedChunk())),
-                        getOverlord().map(overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(overlord.getName()))
+                        getOverlordInternal().map(overlord -> Lang.GUI_TOWN_INFO_DESC5_REGION.get(overlord.getName()))
                                 .orElseGet(Lang.GUI_TOWN_INFO_DESC5_NO_REGION::get)
                 );
     }
@@ -198,7 +198,7 @@ public class TownData extends TerritoryData implements TanTown {
         if (optRegion.isPresent()) {
             RegionData regionData = optRegion.get();
             overlords.add(regionData);
-            regionData.getOverlord().ifPresent(overlords::add);
+            regionData.getOverlordInternal().ifPresent(overlords::add);
         }
 
         return overlords;
@@ -330,7 +330,7 @@ public class TownData extends TerritoryData implements TanTown {
     }
 
     public Optional<RegionData> getRegion() {
-        var optRegion = getOverlord();
+        var optRegion = getOverlordInternal();
         if (optRegion.isPresent() && optRegion.get() instanceof RegionData regionData) {
             return Optional.of(regionData);
         }
@@ -372,7 +372,7 @@ public class TownData extends TerritoryData implements TanTown {
     @Override
     protected void addSpecificTaxes(Budget budget) {
         budget.addProfitLine(new PlayerTaxLine(this));
-        getOverlord().ifPresent(overlord -> budget.addProfitLine(new OverlordTaxLine(this, overlord)));
+        getOverlordInternal().ifPresent(overlord -> budget.addProfitLine(new OverlordTaxLine(this, overlord)));
         budget.addProfitLine(new PropertyRentTaxLine(this));
         budget.addProfitLine(new PropertySellTaxLine(this));
         budget.addProfitLine(new PropertyCreationTaxLine(this));

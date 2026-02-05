@@ -8,6 +8,7 @@ import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface TanTerritory {
@@ -106,11 +107,10 @@ public interface TanTerritory {
      */
     String getChunkColorInHex();
 
-    //TODO : uncomment this method when TownData is fixed
-//    /**
-//     * @return the overlord of the territory
-//     */
-//    Optional<TanTerritory> getOverlord();
+    /**
+     * @return the overlord of the territory
+     */
+    Optional<TanTerritory> getOverlord();
 
     /**
      * Check if the player has the permission to do the action in the territory
@@ -135,4 +135,9 @@ public interface TanTerritory {
      * @return  true if the player has the specified permission, false otherwise
      */
     boolean checkPlayerPermission(TanPlayer player, TerritoryPermission rolePermission);
+
+    /**
+     * @return the main level of the territory
+     */
+    int getLevel();
 }

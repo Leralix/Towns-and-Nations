@@ -56,7 +56,7 @@ public class HierarchyMenu extends BasicGui {
             return info;
         }
 
-        Optional<TerritoryData> overlordOptional = territoryData.getOverlord();
+        Optional<TerritoryData> overlordOptional = territoryData.getOverlordInternal();
         if (overlordOptional.isPresent()) {
             TerritoryData overlord = overlordOptional.get();
             GuiItem info = createOverlordInfo(overlord);
