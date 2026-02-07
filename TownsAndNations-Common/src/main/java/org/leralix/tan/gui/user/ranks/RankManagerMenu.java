@@ -40,7 +40,7 @@ public class RankManagerMenu extends BasicGui {
     @Override
     public void open() {
 
-        fillTopLayer(rankData.getRankEnum().getRankColorGuiIcon());
+        fillTopLayer(getPane());
 
         gui.setItem(1, 5, getRankIcon());
 
@@ -61,6 +61,12 @@ public class RankManagerMenu extends BasicGui {
         gui.setItem(4, 1, GuiUtil.createBackArrow(player,p -> new TerritoryRanksMenu(player, territoryData).open(), langType));
         gui.open(player);
 
+    }
+
+    private GuiItem getPane() {
+        return iconManager.get(rankData.getRankEnum().getRankColorPane())
+                .setName("")
+                .asGuiItem(player, langType);
     }
 
     private void fillTopLayer(GuiItem rankColorGuiIcon) {

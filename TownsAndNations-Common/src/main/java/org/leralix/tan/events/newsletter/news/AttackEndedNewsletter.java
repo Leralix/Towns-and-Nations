@@ -53,19 +53,14 @@ public class AttackEndedNewsletter extends Newsletter {
         if(attackingTerritory == null || defendingTerritory == null)
             return null;
 
-        ItemStack icon = HeadUtils.createCustomItemStack(Material.SHIELD,
-                Lang.ATTACK_ENDED_TITLE.get(lang),
-                Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.ATTACK_ENDED.get(lang, attackingTerritory.getColoredName(), defendingTerritory.getColoredName()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.getDefault());
-
-        return ItemBuilder.from(icon).asGuiItem(event -> {
-            event.setCancelled(true);
-            if(event.isRightClick()){
-                markAsRead(player);
-                onClick.accept(player);
-            }
-        });
+        return createBasicNewsletter(
+                Material.SHIELD,
+                Lang.ATTACK_ENDED_TITLE.get(),
+                Lang.ATTACK_ENDED.get(attackingTerritory.getColoredName(), defendingTerritory.getColoredName()),
+                lang,
+                onClick,
+                player
+        );
     }
 
     @Override

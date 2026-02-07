@@ -1,19 +1,15 @@
 package org.leralix.tan.events.newsletter.news;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
-import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.territory.TanTerritory;
 
@@ -54,19 +50,14 @@ public class AttackDeclaredNewsletter extends Newsletter {
         if(attackingTerritory == null || defendingTerritory == null)
             return null;
 
-        ItemStack icon = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
-                Lang.ATTACK_DECLARED_TITLE.getDefault(),
-                Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.ATTACK_DECLARED.get(lang, attackingTerritory.getColoredName(), defendingTerritory.getColoredName()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.getDefault());
-
-        return ItemBuilder.from(icon).asGuiItem(event -> {
-            event.setCancelled(true);
-            if(event.isRightClick()){
-                markAsRead(player);
-                onClick.accept(player);
-            }
-        });
+        return createBasicNewsletter(
+                Material.IRON_SWORD,
+                Lang.ATTACK_DECLARED_TITLE.get(),
+                Lang.ATTACK_DECLARED.get(attackingTerritory.getColoredName(), defendingTerritory.getColoredName()),
+                lang,
+                onClick,
+                player
+        );
     }
 
     @Override

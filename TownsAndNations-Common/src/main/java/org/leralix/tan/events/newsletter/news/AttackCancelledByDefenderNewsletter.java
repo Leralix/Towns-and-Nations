@@ -9,6 +9,7 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.deprecated.HeadUtils;
@@ -53,19 +54,14 @@ public class AttackCancelledByDefenderNewsletter extends Newsletter {
         if (attackingTerritory == null || defendingTerritory == null)
             return null;
 
-        ItemStack icon = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
-                Lang.ATTACK_CANCELLED_TITLE.get(lang),
-                Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.ATTACK_CANCELLED.get(lang, attackingTerritory.getColoredName(), defendingTerritory.getColoredName()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
-
-        return ItemBuilder.from(icon).asGuiItem(event -> {
-            event.setCancelled(true);
-            if (event.isRightClick()) {
-                markAsRead(player);
-                onClick.accept(player);
-            }
-        });
+        return createBasicNewsletter(
+                Material.IRON_SWORD,
+                Lang.ATTACK_CANCELLED_TITLE.get(),
+                Lang.ATTACK_CANCELLED.get(attackingTerritory.getColoredName(), defendingTerritory.getColoredName()),
+                lang,
+                onClick,
+                player
+        );
     }
 
     @Override

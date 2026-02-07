@@ -1,12 +1,21 @@
 package org.leralix.tan.events.newsletter.news;
 
+import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.events.newsletter.NewsletterType;
+import org.leralix.tan.lang.FilledLang;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.utils.deprecated.HeadUtils;
+import org.leralix.tan.utils.text.DateUtil;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -73,4 +82,26 @@ public abstract class Newsletter {
         broadcast(player, playerData);
     }
 
+    protected GuiItem createBasicNewsletter(
+            Material material,
+            FilledLang title,
+            FilledLang fillDescription,
+            LangType lang,
+            Consumer<Player> onClick,
+            Player player
+    ) {
+        ItemStack icon = HeadUtils.createCustomItemStack(material,
+                title.get(lang),
+                Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
+                fillDescription.get(lang),
+                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
+
+        return ItemBuilder.from(icon).asGuiItem(event -> {
+            event.setCancelled(true);
+            if (event.isRightClick()) {
+                markAsRead(player);
+                onClick.accept(player);
+            }
+        });
+    }
 }
