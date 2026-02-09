@@ -155,7 +155,6 @@ public abstract class TerritoryMenu extends BasicGui {
         return iconManager.get(IconKey.TERRITORY_SETTINGS_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(langType))
                 .setDescription(filledLang)
-                .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
                 .setAction(event -> action.accept(player))
                 .asGuiItem(player, langType);
     }
