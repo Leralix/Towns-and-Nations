@@ -1,11 +1,5 @@
 package org.leralix.tan.data.upgrade;
 
-import net.objecthunter.exp4j.Expression;
-import net.objecthunter.exp4j.ExpressionBuilder;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.leralix.lib.utils.config.ConfigTag;
-import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.data.upgrade.rewards.AggregatableStat;
 import org.leralix.tan.data.upgrade.rewards.IndividualStat;
 import org.leralix.tan.data.upgrade.rewards.StatsType;
@@ -109,34 +103,5 @@ public class TerritoryStats {
 
     public int getMoneyRequiredForLevelUp() {
         return Constants.getUpgradeExpression().getRequiredMoney(statsType, mainLevel);
-    }
-
-    private int getRequiredMoney(int level) {
-        FileConfiguration fg = ConfigUtil.getCustomConfig(ConfigTag.UPGRADE);
-        String sectionName = switch (statsType) {
-            case REGION -> "regionLevelExpression";
-            case NATION -> "nationLevelExpression";
-            case TOWN -> "townLevelExpression";
-        };
-        ConfigurationSection section = fg.getConfigurationSection(sectionName);
-        String expressionString = section.getString("LevelExpression");
-        String squareMultName = "squareMultiplier";
-        String flatMultName = "flatMultiplier";
-
-        double squareMultiplier = section.getDouble(squareMultName);
-        double flatMultiplier = section.getDouble(flatMultName);
-        double base = section.getDouble("base");
-
-        Expression expression = new ExpressionBuilder(expressionString)
-                .variable("level")
-                .variable(squareMultName)
-                .variable(flatMultName)
-                .variable("base")
-                .build()
-                .setVariable("level", level)
-                .setVariable(squareMultName, squareMultiplier)
-                .setVariable(flatMultName, flatMultiplier)
-                .setVariable("base", base);
-        return (int) expression.evaluate();
     }
 }
