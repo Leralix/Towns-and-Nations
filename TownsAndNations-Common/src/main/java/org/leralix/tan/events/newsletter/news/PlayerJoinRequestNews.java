@@ -132,7 +132,7 @@ public class PlayerJoinRequestNews extends Newsletter {
                 .setAction(action -> {
                     action.setCancelled(true);
                     if (action.isLeftClick()) {
-                        new PlayerApplicationMenu(player, townData).open();
+                        new PlayerApplicationMenu(player, townData);
                     }
                     if (action.isRightClick()) {
                         markAsRead(player);

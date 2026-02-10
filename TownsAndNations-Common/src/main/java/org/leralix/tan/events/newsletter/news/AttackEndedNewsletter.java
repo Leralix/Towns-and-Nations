@@ -1,19 +1,15 @@
 package org.leralix.tan.events.newsletter.news;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
-import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.territory.TanTerritory;
 

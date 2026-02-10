@@ -1,17 +1,15 @@
 package org.leralix.tan.events.newsletter.news;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.newsletter.NewsletterType;
+import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -50,22 +48,24 @@ public class WarDeclaredNewsletter extends Newsletter {
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         TerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
         TerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
-        if(attackingTerritory == null || defendingTerritory == null)
+        if (attackingTerritory == null || defendingTerritory == null)
             return null;
 
-        ItemStack icon = HeadUtils.createCustomItemStack(Material.IRON_SWORD,
-                Lang.WAR_DECLARED_TITLE.get(lang),
-                Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                Lang.WAR_DECLARED.get(lang, attackingTerritory.getColoredName(), defendingTerritory.getColoredName()),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.getDefault());
-
-        return ItemBuilder.from(icon).asGuiItem(event -> {
-            event.setCancelled(true);
-            if(event.isRightClick()){
-                markAsRead(player);
-                onClick.accept(player);
-            }
-        });
+        return IconManager.getInstance().get(Material.IRON_SWORD)
+                .setName(Lang.WAR_DECLARED_TITLE.get(lang))
+                .setDescription(
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
+                        Lang.WAR_DECLARED.get(attackingTerritory.getColoredName(), defendingTerritory.getColoredName())
+                )
+                .setClickToAcceptMessage(Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ)
+                .setAction(action -> {
+                    action.setCancelled(true);
+                    if (action.isRightClick()) {
+                        markAsRead(player);
+                        onClick.accept(player);
+                    }
+                })
+                .asGuiItem(player, lang);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class WarDeclaredNewsletter extends Newsletter {
     public void broadcast(Player player, ITanPlayer tanPlayer) {
         TerritoryData attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryID);
         TerritoryData defendingTerritory = TerritoryUtil.getTerritory(defendingTerritoryID);
-        if(attackingTerritory == null || defendingTerritory == null)
+        if (attackingTerritory == null || defendingTerritory == null)
             return;
 
         TanChatUtils.message(player, Lang.WAR_DECLARED.get(tanPlayer, attackingTerritory.getColoredName(), defendingTerritory.getColoredName()), SoundEnum.WAR);

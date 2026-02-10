@@ -1,12 +1,8 @@
 package org.leralix.tan.data.territory.rank;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.gui.cosmetic.IconManager;
-import org.leralix.tan.gui.cosmetic.type.IconBuilder;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 
 public enum RankEnum {
 

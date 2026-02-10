@@ -1,11 +1,9 @@
 package org.leralix.tan.gui.user.territory.hierarchy;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
@@ -14,13 +12,11 @@ import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.DonateToTerritory;
 import org.leralix.tan.utils.deprecated.GuiUtil;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Optional;

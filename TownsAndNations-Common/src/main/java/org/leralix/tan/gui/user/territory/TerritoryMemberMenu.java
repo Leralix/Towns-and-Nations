@@ -33,6 +33,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
     public TerritoryMemberMenu(Player player, TerritoryData territoryData) {
         super(player, getTitleFor(territoryData), 6);
         this.territoryData = territoryData;
+        open();
     }
 
     private static Lang getTitleFor(TerritoryData territoryData) {
@@ -138,7 +139,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
                 .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.get(langType))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.INVITE_PLAYER))
                 .setDescription(Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(Integer.toString(townData.getPlayerJoinRequestSet().size())))
-                .setAction(p -> new PlayerApplicationMenu(player, townData).open())
+                .setAction(p -> new PlayerApplicationMenu(player, townData))
                 .asGuiItem(player, langType);
     }
 }

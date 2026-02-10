@@ -1,21 +1,17 @@
 package org.leralix.tan.events.newsletter.news;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.events.newsletter.NewsletterType;
+import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 import org.leralix.tan.utils.text.DateUtil;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -50,24 +46,24 @@ public abstract class Newsletter {
 
     public abstract NewsletterType getType();
 
-    public void markAsRead(Player player){
+    public void markAsRead(Player player) {
         markAsRead(player.getUniqueId());
     }
 
-    public void markAsRead(ITanPlayer tanPlayer){
+    public void markAsRead(ITanPlayer tanPlayer) {
         markAsRead(tanPlayer.getID());
     }
 
-    public void markAsRead(UUID playerID){
+    public void markAsRead(UUID playerID) {
         NewsletterStorage.getInstance().getNewsletterDAO().markAsRead(id, playerID);
     }
 
-    public boolean isRead(Player player){
+    public boolean isRead(Player player) {
         return isRead(player.getUniqueId());
     }
 
     public boolean isRead(UUID playerID) {
-       return NewsletterStorage.getInstance().getNewsletterDAO().hasRead(id, playerID);
+        return NewsletterStorage.getInstance().getNewsletterDAO().hasRead(id, playerID);
     }
 
     public abstract void broadcast(Player player, ITanPlayer tanPlayer);
@@ -75,10 +71,11 @@ public abstract class Newsletter {
     /**
      * Defines if the newsletter should be broadcasted to the player.
      * By default, it calls the broadcast method (everyone is concerned).
-     * @param player        The player to check.
-     * @param playerData    The player data.
+     *
+     * @param player     The player to check.
+     * @param playerData The player data.
      */
-    public void broadcastConcerned(Player player, ITanPlayer playerData){
+    public void broadcastConcerned(Player player, ITanPlayer playerData) {
         broadcast(player, playerData);
     }
 
@@ -90,18 +87,20 @@ public abstract class Newsletter {
             Consumer<Player> onClick,
             Player player
     ) {
-        ItemStack icon = HeadUtils.createCustomItemStack(material,
-                title.get(lang),
-                Lang.NEWSLETTER_DATE.get(lang, DateUtil.getRelativeTimeDescription(lang, getDate())),
-                fillDescription.get(lang),
-                Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get(lang));
-
-        return ItemBuilder.from(icon).asGuiItem(event -> {
-            event.setCancelled(true);
-            if (event.isRightClick()) {
-                markAsRead(player);
-                onClick.accept(player);
-            }
-        });
+        return IconManager.getInstance().get(material)
+                .setName(title.get(lang))
+                .setDescription(
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
+                        fillDescription
+                )
+                .setClickToAcceptMessage(Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ)
+                .setAction(action -> {
+                    action.setCancelled(true);
+                    if (action.isRightClick()) {
+                        markAsRead(player);
+                        onClick.accept(player);
+                    }
+                })
+                .asGuiItem(player, lang);
     }
 }

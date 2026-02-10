@@ -19,7 +19,6 @@ import org.leralix.tan.gui.scope.DisplayableEnum;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,12 +63,13 @@ public class GuiUtil {
             List<GuiItem> guItems,
             int page,
             Player player,
+            ITanPlayer tanPlayer,
             Consumer<Player> backArrowAction,
             Consumer<Player> nextPageAction,
             Consumer<Player> previousPageAction
     ) {
 
-        createIterator(gui, guItems, page, player, backArrowAction, nextPageAction, previousPageAction, Material.GRAY_STAINED_GLASS_PANE);
+        createIterator(gui, guItems, page, player, tanPlayer, backArrowAction, nextPageAction, previousPageAction, Material.GRAY_STAINED_GLASS_PANE);
     }
 
     public static void createIterator(
@@ -77,6 +77,7 @@ public class GuiUtil {
             List<GuiItem> guItems,
             int page,
             Player player,
+            ITanPlayer tanPlayer,
             Consumer<Player> backArrowAction,
             Consumer<Player> nextPageAction,
             Consumer<Player> previousPageAction,
@@ -86,7 +87,7 @@ public class GuiUtil {
         ItemMeta itemMeta = decorativeGlassPane.getItemMeta();
         itemMeta.setDisplayName("");
         decorativeGlassPane.setItemMeta(itemMeta);
-        createIterator(gui, guItems, page, player, backArrowAction, nextPageAction, previousPageAction, decorativeGlassPane);
+        createIterator(gui, guItems, page, player, tanPlayer, backArrowAction, nextPageAction, previousPageAction, decorativeGlassPane);
     }
 
     public static void createIterator(
@@ -94,6 +95,7 @@ public class GuiUtil {
             List<GuiItem> guItems,
             int page,
             Player player,
+            ITanPlayer tanPlayer,
             Consumer<Player> backArrowAction,
             Consumer<Player> nextPageAction,
             Consumer<Player> previousPageAction,
@@ -125,7 +127,6 @@ public class GuiUtil {
             slot++;
         }
         GuiItem panel = ItemBuilder.from(decorativeGlassPane).asGuiItem(event -> event.setCancelled(true));
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         int lastRow = gui.getRows();
 

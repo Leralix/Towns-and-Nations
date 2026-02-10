@@ -1,6 +1,5 @@
 package org.leralix.tan.gui.landmark;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,6 +14,7 @@ import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.common.PlayerGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
@@ -22,7 +22,6 @@ import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
-import org.leralix.tan.utils.deprecated.HeadUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +50,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, Player::closeInventory, langType));
 
 
-        GuiItem panelGui = ItemBuilder.from(HeadUtils.createCustomItemStack(Material.GRAY_STAINED_GLASS_PANE, "")).asGuiItem(event -> event.setCancelled(true));
+        GuiItem panelGui = IconManager.getInstance().get(Material.GRAY_STAINED_GLASS_PANE).asGuiItem(player, langType);
         gui.getFiller().fillBottom(panelGui);
         gui.open(player);
     }

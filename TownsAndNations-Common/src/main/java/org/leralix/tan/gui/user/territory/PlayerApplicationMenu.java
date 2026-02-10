@@ -2,7 +2,6 @@ package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.player.ITanPlayer;
@@ -11,7 +10,6 @@ import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -27,17 +25,12 @@ public class PlayerApplicationMenu extends IteratorGUI {
     public PlayerApplicationMenu(Player player, TownData townData) {
         super(player, Lang.HEADER_TOWN_APPLICATIONS, 3);
         this.townData = townData;
+        open();
     }
 
     @Override
     public void open() {
-
-        GuiUtil.createIterator(gui, getApplicationList(), page, player,
-                p -> new TerritoryMemberMenu(player, townData).open(),
-                p -> nextPage(),
-                p -> previousPage(),
-                Material.LIME_STAINED_GLASS_PANE
-        );
+        iterator(getApplicationList(), p -> new TerritoryMemberMenu(player, townData));
         gui.open(player);
     }
 
