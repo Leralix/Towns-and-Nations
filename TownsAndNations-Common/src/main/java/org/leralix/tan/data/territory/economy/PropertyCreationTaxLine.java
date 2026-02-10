@@ -15,7 +15,6 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.treasury.SetCreatePropertyTax;
 import org.leralix.tan.storage.database.transactions.TransactionType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 
@@ -37,9 +36,7 @@ public class PropertyCreationTaxLine extends ProfitLine {
     }
 
     @Override
-    public void addItems(Gui gui, Player player, LangType lang) {
-
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+    public void addItems(Gui gui, Player player, ITanPlayer tanPlayer, LangType lang) {
 
         gui.setItem(4, 2,
                 IconManager.getInstance().get(IconKey.CREATE_TAX_ICON)

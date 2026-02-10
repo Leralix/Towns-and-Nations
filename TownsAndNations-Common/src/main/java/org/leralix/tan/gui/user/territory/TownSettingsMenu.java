@@ -66,7 +66,7 @@ public class TownSettingsMenu extends SettingsMenus {
         gui.setItem(2, 7, getQuitButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> new TownMenu(player, townData), langType));
+        gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> new TownMenu(player, tanPlayer, townData), langType));
 
         gui.open(player);
     }

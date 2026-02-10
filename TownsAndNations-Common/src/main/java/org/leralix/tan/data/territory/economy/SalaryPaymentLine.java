@@ -2,6 +2,7 @@ package org.leralix.tan.data.territory.economy;
 
 import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.rank.RankData;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -37,7 +38,7 @@ public class SalaryPaymentLine extends ProfitLine {
     }
 
     @Override
-    public void addItems(Gui gui, Player player, LangType lang) {
+    public void addItems(Gui gui, Player player, ITanPlayer playerData, LangType lang) {
 
         gui.setItem(2, 6, IconManager.getInstance().get(IconKey.SALARY_INFO_ICON)
                 .setName(Lang.GUI_TREASURY_SALARY_HISTORY.get(lang))

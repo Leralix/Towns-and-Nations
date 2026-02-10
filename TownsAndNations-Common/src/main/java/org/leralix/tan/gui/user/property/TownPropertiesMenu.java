@@ -29,7 +29,7 @@ public class TownPropertiesMenu extends IteratorGUI {
     @Override
     public void open() {
 
-        iterator(getProperties(), p -> new TownMenu(player, townData));
+        iterator(getProperties(), p -> new TownMenu(player, tanPlayer, townData));
 
         gui.open(player);
     }

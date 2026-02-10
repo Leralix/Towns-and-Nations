@@ -2,7 +2,6 @@ package org.leralix.tan.storage.stored;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.RegionData;
@@ -57,10 +56,6 @@ public class RegionDataStorage extends JsonStorage<RegionData> {
         String regionID = "R"+nextID;
         nextID++;
         return regionID;
-    }
-
-    public RegionData get(Player player){
-        return get(PlayerDataStorage.getInstance().get(player));
     }
 
     public RegionData get(ITanPlayer tanPlayer){

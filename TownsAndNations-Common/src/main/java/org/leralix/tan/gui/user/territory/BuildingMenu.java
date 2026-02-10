@@ -92,7 +92,7 @@ public class BuildingMenu extends IteratorGUI {
                     }
 
                     TanChatUtils.message(player, Lang.RIGHT_CLICK_TO_PLACE_FORT.get(langType));
-                    RightClickListener.register(player, langType, new CreateFortEvent(territoryData));
+                    RightClickListener.register(player, langType, new CreateFortEvent(territoryData, tanPlayer));
                     player.closeInventory();
                 })
                 .asGuiItem(player, langType);

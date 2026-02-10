@@ -10,7 +10,6 @@ import org.leralix.tan.gui.common.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.storage.stored.NationDataStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.NameFilter;
@@ -26,9 +25,7 @@ public class CreateNation extends ChatListenerEvent {
     }
 
     @Override
-    public boolean execute(Player player, ITanPlayer playerData, String message) {
-
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+    public boolean execute(Player player, ITanPlayer tanPlayer, String message) {
 
         if (!tanPlayer.hasRegion()) {
             TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(tanPlayer));
@@ -64,15 +61,14 @@ public class CreateNation extends ChatListenerEvent {
             return false;
         }
 
-        createNation(player, nationName, regionData);
+        createNation(player, tanPlayer, nationName, regionData);
         return true;
     }
 
-    private void createNation(Player player, String nationName, RegionData capital) {
+    private void createNation(Player player, ITanPlayer playerData, String nationName, RegionData capital) {
         capital.removeFromBalance(cost);
         NationData nation = NationDataStorage.getInstance().createNewNation(nationName, capital);
 
-        ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
         EventManager.getInstance().callEvent(new NationCreatedInternalEvent(nation, playerData));
         FileUtil.addLineToHistory(Lang.NATION_CREATED_NEWSLETTER.get(player.getName(), nation.getName()));
 

@@ -4,6 +4,7 @@ import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -30,7 +31,7 @@ public abstract class ProfitLine implements Comparable<ProfitLine> {
 
     public abstract FilledLang getLine();
 
-    public abstract void addItems(Gui gui, Player player, LangType langType);
+    public abstract void addItems(Gui gui, Player player, ITanPlayer playerData, LangType langType);
 
     @Override
     public int compareTo(ProfitLine otherLine) {

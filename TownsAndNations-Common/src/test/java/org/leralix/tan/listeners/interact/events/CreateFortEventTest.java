@@ -42,7 +42,7 @@ class CreateFortEventTest extends BasicTest {
         TownData townData = TownDataStorage.getInstance().newTown("town", tanPlayer);
         townData.addToBalance(5000.);
 
-        CreateFortEvent createfortEvent = new CreateFortEvent(townData);
+        CreateFortEvent createfortEvent = new CreateFortEvent(townData, tanPlayer);
         createfortEvent.execute(new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, null, world.getBlockAt(-1,0,-1), BlockFace.UP));
 
         assertEquals(1, FortDataStorage.getInstance().getOwnedFort(townData).size());

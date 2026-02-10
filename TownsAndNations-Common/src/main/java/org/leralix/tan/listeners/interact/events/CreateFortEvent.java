@@ -16,23 +16,23 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.ListenerState;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class CreateFortEvent extends RightClickListenerEvent {
 
     private final TerritoryData tanTerritory;
+    private final ITanPlayer tanPlayer;
 
-    public CreateFortEvent(TerritoryData tanTerritory) {
+    public CreateFortEvent(TerritoryData tanTerritory, ITanPlayer tanPlayer) {
         this.tanTerritory = tanTerritory;
+        this.tanPlayer = tanPlayer;
     }
 
     @Override
     public ListenerState execute(PlayerInteractEvent event) {
 
         Player player = event.getPlayer();
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
 
         Block block = event.getClickedBlock();
         if (block == null) {

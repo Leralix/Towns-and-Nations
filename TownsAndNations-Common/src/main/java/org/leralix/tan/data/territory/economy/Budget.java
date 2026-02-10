@@ -2,6 +2,7 @@ package org.leralix.tan.data.territory.economy;
 
 import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -40,9 +41,9 @@ public class Budget {
         return lore;
     }
 
-    public void createGui(Gui gui, Player player, LangType langType) {
+    public void createGui(Gui gui, Player player, ITanPlayer tanPlayer, LangType langType) {
         for (ProfitLine profitLine : profitList) {
-            profitLine.addItems(gui, player, langType);
+            profitLine.addItems(gui, player, tanPlayer, langType);
         }
     }
 }

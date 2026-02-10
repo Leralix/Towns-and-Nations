@@ -15,7 +15,6 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.treasury.SetBuyPropertyRate;
 import org.leralix.tan.storage.database.transactions.TransactionType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 
@@ -37,9 +36,7 @@ public class PropertySellTaxLine extends ProfitLine {
     }
 
     @Override
-    public void addItems(Gui gui, Player player, LangType lang) {
-
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+    public void addItems(Gui gui, Player player, ITanPlayer playerData, LangType lang) {
 
         gui.setItem(4, 4, IconManager.getInstance().get(IconKey.PROPERTY_SELL_TAX_ICON)
                 .setName(Lang.GUI_TREASURY_BUY_PROPERTY_TAX.get(lang))
@@ -50,7 +47,7 @@ public class PropertySellTaxLine extends ProfitLine {
                 )
                 .setAction(event -> {
                             event.setCancelled(true);
-                            if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
+                            if (!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)) {
                                 TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
                                 return;
                             }

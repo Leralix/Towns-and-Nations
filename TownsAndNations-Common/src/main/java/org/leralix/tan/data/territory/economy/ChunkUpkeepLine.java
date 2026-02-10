@@ -2,6 +2,7 @@ package org.leralix.tan.data.territory.economy;
 
 import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.upgrade.rewards.numeric.ChunkUpkeepCost;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -33,7 +34,7 @@ public class ChunkUpkeepLine extends ProfitLine {
     }
 
     @Override
-    public void addItems(Gui gui, Player player, LangType lang) {
+    public void addItems(Gui gui, Player player, ITanPlayer playerData, LangType lang) {
         gui.setItem(2, 7, IconManager.getInstance().get(IconKey.CHUNK_UPKEEP_ICON)
                 .setName(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(lang))
                 .setDescription(

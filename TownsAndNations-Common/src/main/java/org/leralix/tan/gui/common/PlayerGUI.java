@@ -43,7 +43,7 @@ public class PlayerGUI {
     public static void dispatchPlayerTown(Player player, ITanPlayer playerData) {
         TownData townData = TownDataStorage.getInstance().get(playerData);
         if (townData != null) {
-            new TownMenu(player, townData);
+            new TownMenu(player, playerData, townData);
         } else {
             new NoTownMenu(player);
         }

@@ -19,7 +19,6 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.treasury.SetTerritoryTax;
 import org.leralix.tan.storage.database.transactions.TransactionType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -60,14 +59,11 @@ public class PlayerTaxLine extends ProfitLine {
     }
 
     @Override
-    public void addItems(Gui gui, Player player, LangType lang) {
+    public void addItems(Gui gui, Player player, ITanPlayer playerData, LangType lang) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
-
-
-        gui.setItem(2, 2, getDecreaseButton(player, lang, tanPlayer));
-        gui.setItem(2, 3, getInfoIcon(player, lang, tanPlayer));
-        gui.setItem(2, 4, getIncreaseButton(player, lang, tanPlayer));
+        gui.setItem(2, 2, getDecreaseButton(player, lang, playerData));
+        gui.setItem(2, 3, getInfoIcon(player, lang, playerData));
+        gui.setItem(2, 4, getIncreaseButton(player, lang, playerData));
     }
 
     private GuiItem getIncreaseButton(Player player, LangType lang, ITanPlayer tanPlayer) {

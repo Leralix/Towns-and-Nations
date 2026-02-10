@@ -2,6 +2,7 @@ package org.leralix.tan.data.territory.economy;
 
 import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
@@ -27,7 +28,7 @@ public class OverlordTaxLine extends ProfitLine {
     }
 
     @Override
-    public void addItems(Gui gui, Player player, LangType langType) {
+    public void addItems(Gui gui, Player player, ITanPlayer playerData, LangType langType) {
 
     }
 

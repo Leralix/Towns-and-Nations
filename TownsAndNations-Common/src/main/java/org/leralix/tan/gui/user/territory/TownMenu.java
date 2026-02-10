@@ -3,18 +3,18 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 public class TownMenu extends TerritoryMenu {
 
     private final TownData townData;
 
-    public TownMenu(Player player, TownData townData) {
-        super(player, Lang.HEADER_TOWN_MENU.get(PlayerDataStorage.getInstance().get(player).getTown().getName()), townData);
+    public TownMenu(Player player, ITanPlayer tanPlayer, TownData townData) {
+        super(player, Lang.HEADER_TOWN_MENU.get(tanPlayer.getTown().getName()), townData);
         this.townData = townData;
         open();
     }
