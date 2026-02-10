@@ -16,7 +16,6 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.property.CreatePlayerPropertyEvent;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -32,10 +31,7 @@ public class PlayerPropertiesMenu extends IteratorGUI {
     @Override
     public void open() {
 
-        GuiUtil.createIterator(gui, getProperties(), page, player,
-                p -> new PlayerMenu(player).open(),
-                p -> nextPage(),
-                p -> previousPage());
+        iterator(getProperties(), p -> new PlayerMenu(player).open());
 
         gui.setItem(3, 5, getNewPropertyButton());
 

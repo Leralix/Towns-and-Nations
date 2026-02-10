@@ -9,7 +9,6 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -25,11 +24,7 @@ public class LangMenu extends IteratorGUI {
     @Override
     public void open() {
 
-        GuiUtil.createIterator(gui, getLangItems(), page, player,
-                p -> new PlayerMenu(player),
-                p -> nextPage(),
-                p -> previousPage()
-        );
+        iterator(getLangItems(), p -> new PlayerMenu(player));
 
         gui.setItem(3, 6, getPlayerGUI());
 

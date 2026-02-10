@@ -8,7 +8,6 @@ import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.user.territory.TownMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -30,10 +29,7 @@ public class TownPropertiesMenu extends IteratorGUI {
     @Override
     public void open() {
 
-        GuiUtil.createIterator(gui, getProperties(), page, player,
-                p -> new TownMenu(player, townData),
-                p -> nextPage(),
-                p -> previousPage());
+        iterator(getProperties(), p -> new TownMenu(player, townData));
 
         gui.open(player);
     }

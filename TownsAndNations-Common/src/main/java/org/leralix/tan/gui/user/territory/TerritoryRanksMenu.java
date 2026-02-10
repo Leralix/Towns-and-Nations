@@ -14,7 +14,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.CreateRank;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -32,11 +31,7 @@ public class TerritoryRanksMenu extends IteratorGUI {
     @Override
     public void open() {
 
-        GuiUtil.createIterator(gui, getRanks(), page, player,
-                p -> territoryData.openMainMenu(player, tanPlayer),
-                p -> nextPage(),
-                p -> previousPage()
-        );
+        iterator(getRanks(),  p -> territoryData.openMainMenu(player, tanPlayer));
 
         gui.setItem(4, 5, getCreateNewRoleButton());
 

@@ -17,8 +17,14 @@ import org.leralix.tan.utils.constants.Constants;
  */
 public class TeamUtils {
 
+    static PlayerDataStorage playerDataStorage;
+
     private TeamUtils() {
         throw new IllegalStateException("Utility class");
+    }
+
+    public static void init(PlayerDataStorage playerDataStorageInstance){
+        playerDataStorage = playerDataStorageInstance;
     }
 
     /**

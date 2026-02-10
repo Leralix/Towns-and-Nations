@@ -10,7 +10,6 @@ import org.leralix.tan.data.territory.rank.RankData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -32,10 +31,8 @@ public class AssignPlayerToRankMenu extends IteratorGUI {
 
     @Override
     public void open() {
-        GuiUtil.createIterator(gui, getAvailablePlayers(), page, player,
-                p -> new RankManagerMenu(player, territoryData, rankData),
-                p -> nextPage(),
-                p -> previousPage());
+
+        iterator(getAvailablePlayers(), p -> new RankManagerMenu(player, territoryData, rankData));
 
         gui.open(player);
     }

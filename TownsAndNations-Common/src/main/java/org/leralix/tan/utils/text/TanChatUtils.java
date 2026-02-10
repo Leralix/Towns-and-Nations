@@ -14,8 +14,14 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
  */
 public class TanChatUtils {
 
+    private static PlayerDataStorage playerDataStorage;
+
     private TanChatUtils() {
         throw new IllegalStateException("Utility class");
+    }
+
+    public static void init(PlayerDataStorage playerDataStorageInstance){
+        playerDataStorage = playerDataStorageInstance;
     }
 
 
@@ -30,7 +36,7 @@ public class TanChatUtils {
         }
 
         if (commandSender instanceof Player player) {
-            ITanPlayer playerData = PlayerDataStorage.getInstance().get(player);
+            ITanPlayer playerData = playerDataStorage.get(player);
             message(player, message.get(playerData), soundEnum);
         }
         else {

@@ -7,7 +7,6 @@ import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.user.territory.NoTownMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -26,10 +25,7 @@ public class ApplyToTownMenu extends IteratorGUI {
     @Override
     public void open() {
 
-        GuiUtil.createIterator(gui, getTowns(), page, player,
-                p -> new NoTownMenu(player),
-                p -> nextPage(),
-                p -> previousPage());
+        iterator(getTowns(), p -> new NoTownMenu(player));
 
         gui.open(player);
     }

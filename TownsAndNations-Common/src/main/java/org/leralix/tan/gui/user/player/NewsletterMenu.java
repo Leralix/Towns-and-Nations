@@ -4,7 +4,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.events.newsletter.NewsletterScope;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
-import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -25,11 +24,7 @@ public class NewsletterMenu extends IteratorGUI {
     @Override
     public void open() {
 
-        GuiUtil.createIterator(gui, getNewsletters(), page, player,
-                p -> new PlayerMenu(player),
-                p -> nextPage(),
-                p -> previousPage()
-        );
+        iterator(getNewsletters(), p -> new PlayerMenu(player));
 
         gui.setItem(6,4, getMarkAllAsReadButton());
         gui.setItem(6,5, getCheckScopeGui());
@@ -61,11 +56,5 @@ public class NewsletterMenu extends IteratorGUI {
                 langType,
                 player
         );
-    }
-
-
-    public BasicGui setScope(NewsletterScope newsletterScope) {
-        this.scope = newsletterScope;
-        return this;
     }
 }
