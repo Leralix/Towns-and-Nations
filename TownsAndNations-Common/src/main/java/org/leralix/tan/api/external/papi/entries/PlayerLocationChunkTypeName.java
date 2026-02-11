@@ -6,12 +6,22 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.chunk.ClaimedChunk;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.*;
 
 public class PlayerLocationChunkTypeName extends PapiEntry{
 
-    public PlayerLocationChunkTypeName() {
-        super("player_location_chunk_type_name");
+    public PlayerLocationChunkTypeName(
+            PlayerDataStorage playerDataStorage,
+            TownDataStorage townDataStorage,
+            RegionDataStorage regionDataStorage,
+            NationDataStorage nationDataStorage
+    ) {
+        super("player_location_chunk_type_name",
+                playerDataStorage,
+                townDataStorage,
+                regionDataStorage,
+                nationDataStorage
+        );
     }
 
     @Override

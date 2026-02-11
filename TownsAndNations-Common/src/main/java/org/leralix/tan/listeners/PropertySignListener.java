@@ -31,9 +31,11 @@ public class PropertySignListener implements Listener {
     private static final String PROPERTY_SIGN_METADATA = "propertySign";
 
     private final PlayerDataStorage playerDataStorage;
+    private final TownDataStorage townDataStorage;
 
-    public PropertySignListener(PlayerDataStorage playerDataStorage) {
+    public PropertySignListener(PlayerDataStorage playerDataStorage, TownDataStorage townDataStorage) {
         this.playerDataStorage = playerDataStorage;
+        this.townDataStorage = townDataStorage;
     }
 
     @EventHandler
@@ -51,7 +53,7 @@ public class PropertySignListener implements Listener {
                 for (MetadataValue value : sign.getMetadata(PROPERTY_SIGN_METADATA)) {
                     String customData = value.asString();
                     String[] ids = customData.split("_");
-                    PropertyData propertyData = TownDataStorage.getInstance().get(ids[0]).getProperty(ids[1]);
+                    PropertyData propertyData = townDataStorage.get(ids[0]).getProperty(ids[1]);
                     if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
                         ITanPlayer tanPlayer = playerDataStorage.get(player);

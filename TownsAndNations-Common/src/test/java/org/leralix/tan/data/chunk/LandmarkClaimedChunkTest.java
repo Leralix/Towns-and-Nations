@@ -11,7 +11,6 @@ import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,7 +60,7 @@ class LandmarkClaimedChunkTest extends BasicTest {
                 (double) chunk.getZ() * 16)
         );
 
-        TownData townData = TownDataStorage.getInstance().newTown("town");
+        TownData townData = townDataStorage.newTown("town");
         landmark.setOwner(townData);
 
         assertTrue(landmark.isOwned());
@@ -90,7 +89,7 @@ class LandmarkClaimedChunkTest extends BasicTest {
                 (double) chunk.getZ() * 16)
         );
 
-        TownData townData = TownDataStorage.getInstance().newTown("town");
+        TownData townData = townDataStorage.newTown("town");
 
 
         for(ClaimedChunk adjacent : claimedChunkStorage.getEightAjacentChunks(claimedChunkStorage.get(chunk))){

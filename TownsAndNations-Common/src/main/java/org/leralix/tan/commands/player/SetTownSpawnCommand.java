@@ -21,9 +21,11 @@ import java.util.List;
 public class SetTownSpawnCommand extends PlayerSubCommand {
 
     private final PlayerDataStorage playerDataStorage;
+    private final TownDataStorage townDataStorage;
 
-    public SetTownSpawnCommand(PlayerDataStorage playerDataStorage){
+    public SetTownSpawnCommand(PlayerDataStorage playerDataStorage, TownDataStorage townDataStorage){
         this.playerDataStorage = playerDataStorage;
+        this.townDataStorage = townDataStorage;
     }
 
 
@@ -66,7 +68,7 @@ public class SetTownSpawnCommand extends PlayerSubCommand {
         }
 
         //No permission
-        TownData townData = TownDataStorage.getInstance().get(playerStat);
+        TownData townData = townDataStorage.get(playerStat);
 
         if(!townData.doesPlayerHavePermission(playerStat, RolePermission.TOWN_ADMINISTRATOR)){
             TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType));

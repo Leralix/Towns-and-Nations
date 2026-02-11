@@ -11,7 +11,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.CreateRegion;
 import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -55,7 +54,7 @@ public class NoRegionMenu extends BasicGui {
                         TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer), NOT_ALLOWED);
                         return;
                     }
-                    TownData townData = TownDataStorage.getInstance().get(tanPlayer);
+                    TownData townData = tanPlayer.getTown();
                     double townMoney = townData.getBalance();
                     if (townMoney < regionCost) {
                         TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, townData.getColoredName(), Double.toString(regionCost - townMoney)));

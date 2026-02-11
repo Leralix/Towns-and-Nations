@@ -9,7 +9,6 @@ import org.leralix.tan.BasicTest;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,7 +31,7 @@ class TownClaimedChunkTest extends BasicTest {
     @Test
     void notifyUpdate() {
 
-        TownData townData = TownDataStorage.getInstance().newTown("Town");
+        TownData townData = townDataStorage.newTown("Town");
 
         claimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
         claimedChunkStorage.claimTownChunk(world.getChunkAt(0, 1), townData.getID());
@@ -46,7 +45,7 @@ class TownClaimedChunkTest extends BasicTest {
     @Test
     void notifyUpdateWithCapital() {
 
-        TownData townData = TownDataStorage.getInstance().newTown("Town");
+        TownData townData = townDataStorage.newTown("Town");
 
         claimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
         townData.setCapitalLocation(new Vector2D(1,0, world.getUID().toString()));
@@ -61,7 +60,7 @@ class TownClaimedChunkTest extends BasicTest {
     @Test
     void notifyUpdateWithOneFort() {
 
-        TownData townData = TownDataStorage.getInstance().newTown("Town");
+        TownData townData = townDataStorage.newTown("Town");
 
         claimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
         ClaimedChunk claimedChunkToKeep = claimedChunkStorage.claimTownChunk(world.getChunkAt(0, 1), townData.getID());

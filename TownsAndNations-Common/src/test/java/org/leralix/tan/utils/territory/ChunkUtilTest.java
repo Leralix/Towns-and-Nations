@@ -9,7 +9,6 @@ import org.leralix.tan.data.chunk.ClaimedChunk;
 import org.leralix.tan.data.chunk.TownClaimedChunk;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 
 import java.util.Collection;
 
@@ -37,7 +36,7 @@ class ChunkUtilTest extends BasicTest {
     @Test
     void testIsChunkEncirecledByInvalid() {
 
-        TownData townData = TownDataStorage.getInstance().newTown("town");
+        TownData townData = townDataStorage.newTown("town");
 
         NewClaimedChunkStorage newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
 
@@ -59,7 +58,7 @@ class ChunkUtilTest extends BasicTest {
 
     @Test
     void testGetBorderChunks() {
-        TownData townData = TownDataStorage.getInstance().newTown("town");
+        TownData townData = townDataStorage.newTown("town");
 
         NewClaimedChunkStorage newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
 
@@ -81,7 +80,7 @@ class ChunkUtilTest extends BasicTest {
 
     @Test
     void test_chunkContainsBuildings_noBuilding() {
-        TownData townData = TownDataStorage.getInstance().newTown("town");
+        TownData townData = townDataStorage.newTown("town");
         NewClaimedChunkStorage newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
 
         TownClaimedChunk chunkFreeFromBuildings = newClaimedChunkStorage.claimTownChunk(world.getChunkAt(0, 0), townData.getID());
@@ -91,7 +90,7 @@ class ChunkUtilTest extends BasicTest {
 
     @Test
     void test_chunkContainsBuildings_withBuilding() {
-        TownData townData = TownDataStorage.getInstance().newTown("town");
+        TownData townData = townDataStorage.newTown("town");
         NewClaimedChunkStorage newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
 
         TownClaimedChunk chunkWithBuilding = newClaimedChunkStorage.claimTownChunk(world.getChunkAt(0, 0), townData.getID());
@@ -110,8 +109,8 @@ class ChunkUtilTest extends BasicTest {
 
     @Test
     void test_isChunkInBufferZone() {
-        TownData townDataBuffer = TownDataStorage.getInstance().newTown("townBuffer");
-        TownData townToClaim = TownDataStorage.getInstance().newTown("townToClaim");
+        TownData townDataBuffer = townDataStorage.newTown("townBuffer");
+        TownData townToClaim = townDataStorage.newTown("townToClaim");
 
         NewClaimedChunkStorage newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
 

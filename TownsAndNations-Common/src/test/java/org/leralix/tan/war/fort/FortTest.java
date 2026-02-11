@@ -10,7 +10,6 @@ import org.leralix.tan.data.building.fort.FortData;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,9 +23,9 @@ class FortTest extends BasicTest {
         World world = server.addSimpleWorld("world");
 
 
-        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
-        TownData defenderTown = TownDataStorage.getInstance().newTown("defender", tanPlayer);
-        TownData attackerTown = TownDataStorage.getInstance().newTown("attacker");
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
+        TownData defenderTown = townDataStorage.newTown("defender", tanPlayer);
+        TownData attackerTown = townDataStorage.newTown("attacker");
 
         Fort fort = new FortData("0", new Vector3D(world.getBlockAt(100 * 16, 0, 0).getLocation()), "fort", defenderTown);
 

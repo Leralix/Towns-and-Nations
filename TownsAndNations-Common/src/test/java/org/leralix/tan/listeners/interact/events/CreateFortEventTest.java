@@ -12,7 +12,6 @@ import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.impl.FortDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,9 +36,9 @@ class CreateFortEventTest extends BasicTest {
 
         world.setBlockData(-1, 1, -1, Bukkit.createBlockData(Material.AIR));
 
-        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
 
-        TownData townData = TownDataStorage.getInstance().newTown("town", tanPlayer);
+        TownData townData = townDataStorage.newTown("town", tanPlayer);
         townData.addToBalance(5000.);
 
         CreateFortEvent createfortEvent = new CreateFortEvent(townData, tanPlayer);

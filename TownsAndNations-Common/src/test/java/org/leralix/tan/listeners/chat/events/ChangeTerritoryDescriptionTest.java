@@ -9,7 +9,6 @@ import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,8 +26,8 @@ class ChangeTerritoryDescriptionTest extends BasicTest {
         super.setUp();
 
         player = server.addPlayer();
-        tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
-        townData = TownDataStorage.getInstance().newTown("town 1", tanPlayer);
+        tanPlayer = playerDataStorage.get(player);
+        townData = townDataStorage.newTown("town 1", tanPlayer);
     }
 
 

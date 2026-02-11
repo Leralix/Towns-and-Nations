@@ -8,13 +8,23 @@ import org.leralix.tan.data.building.property.PropertyData;
 import org.leralix.tan.data.chunk.ClaimedChunk;
 import org.leralix.tan.data.chunk.TownClaimedChunk;
 import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.constants.Constants;
 
 public class PlayerLocationPropertyIsOwner extends PapiEntry{
 
-    public PlayerLocationPropertyIsOwner() {
-        super("player_location_property_is_owner");
+    public PlayerLocationPropertyIsOwner(
+            PlayerDataStorage playerDataStorage,
+            TownDataStorage townDataStorage,
+            RegionDataStorage regionDataStorage,
+            NationDataStorage nationDataStorage
+    ) {
+        super("player_location_property_is_owner",
+                playerDataStorage,
+                townDataStorage,
+                regionDataStorage,
+                nationDataStorage
+        );
     }
 
     @Override

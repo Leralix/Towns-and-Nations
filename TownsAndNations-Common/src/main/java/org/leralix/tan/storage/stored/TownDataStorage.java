@@ -28,7 +28,7 @@ public class TownDataStorage extends JsonStorage<TownData>{
 
     private int newTownId;
 
-    private TownDataStorage() {
+    public TownDataStorage() {
         super("TAN - Towns.json",
                 new TypeToken<LinkedHashMap<String, TownData>>() {}.getType(),
                 new GsonBuilder()
@@ -39,6 +39,7 @@ public class TownDataStorage extends JsonStorage<TownData>{
                         .registerTypeAdapter(ICustomIcon.class, new IconAdapter())
                         .setPrettyPrinting()
                         .create());
+        instance = this;
     }
 
     @Override
@@ -67,6 +68,7 @@ public class TownDataStorage extends JsonStorage<TownData>{
     }
 
 
+    @Deprecated
     public static TownDataStorage getInstance() {
         if (instance == null)
             instance = new TownDataStorage();

@@ -6,13 +6,23 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.chunk.ClaimedChunk;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.constants.Constants;
 
 public class PlayerLocationPvpEnabled extends PapiEntry {
 
-    public PlayerLocationPvpEnabled() {
-        super("player_location_pvp_enabled");
+    public PlayerLocationPvpEnabled(
+            PlayerDataStorage playerDataStorage,
+            TownDataStorage townDataStorage,
+            RegionDataStorage regionDataStorage,
+            NationDataStorage nationDataStorage
+    ) {
+        super("player_location_pvp_enabled",
+                playerDataStorage,
+                townDataStorage,
+                regionDataStorage,
+                nationDataStorage
+        );
     }
 
     @Override

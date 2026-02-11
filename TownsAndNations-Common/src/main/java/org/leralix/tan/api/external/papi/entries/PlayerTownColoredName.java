@@ -4,15 +4,25 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 
 public class PlayerTownColoredName extends PapiEntry {
 
-    private final PlayerDataStorage playerDataStorage;
-
-    public PlayerTownColoredName(PlayerDataStorage playerDataStorage) {
-        super("player_town_colored_name");
-        this.playerDataStorage = playerDataStorage;
+    public PlayerTownColoredName(
+            PlayerDataStorage playerDataStorage,
+            TownDataStorage townDataStorage,
+            RegionDataStorage regionDataStorage,
+            NationDataStorage nationDataStorage
+    ) {
+        super("player_town_colored_name",
+                playerDataStorage,
+                townDataStorage,
+                regionDataStorage,
+                nationDataStorage
+        );
     }
 
     @Override

@@ -4,7 +4,6 @@ import org.bukkit.World;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.territory.ChunkUtil;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 
@@ -18,10 +17,10 @@ class ShowBoundariesTest extends BasicTest {
     void test_getChunksInRadius_no_chunks() {
 
         PlayerMock defender = server.addPlayer();
-        ITanPlayer tanDefender = townsAndNations.getPlayerDataStorage().get(defender);
+        ITanPlayer tanDefender = playerDataStorage.get(defender);
         World world = server.addSimpleWorld("world");
 
-        var townDefender = TownDataStorage.getInstance().newTown("DefenderTown", tanDefender);
+        var townDefender = townDataStorage.newTown("DefenderTown", tanDefender);
 
         townDefender.addToBalance(townDefender.getClaimCost() * 10);
 

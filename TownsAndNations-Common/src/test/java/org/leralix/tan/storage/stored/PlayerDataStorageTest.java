@@ -11,7 +11,7 @@ class PlayerDataStorageTest extends BasicTest {
 
     @Test
     void testCreatePlayerData() {
-        PlayerDataStorage storage = townsAndNations.getPlayerDataStorage();
+        PlayerDataStorage storage = playerDataStorage;
 
         PlayerMock player = server.addPlayer("TestPlayer");
 

@@ -19,7 +19,6 @@ import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
@@ -60,7 +59,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
     }
 
     private @NotNull GuiItem getClaimButton() {
-        TownData playerTown = TownDataStorage.getInstance().get(tanPlayer);
+        TownData playerTown = tanPlayer.getTown();
         double cost = Constants.getClaimLandmarkCost();
         List<FilledLang> description = new ArrayList<>();
 

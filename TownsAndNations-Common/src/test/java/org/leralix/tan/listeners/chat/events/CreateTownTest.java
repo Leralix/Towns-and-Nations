@@ -13,7 +13,7 @@ class CreateTownTest extends BasicTest {
     @Test
     void nominalCase() {
 
-        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
+        ITanPlayer tanPlayer = playerDataStorage.get(server.addPlayer());
 
         CreateTown createTown = new CreateTown(10);
         createTown.execute(tanPlayer.getPlayer(),tanPlayer, "town-A");
@@ -29,7 +29,7 @@ class CreateTownTest extends BasicTest {
     @Test
     void notEnoughMoney() {
 
-        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
+        ITanPlayer tanPlayer = playerDataStorage.get(server.addPlayer());
 
         CreateTown createTown = new CreateTown((int) (tanPlayer.getBalance() + 1));
         createTown.execute(tanPlayer.getPlayer(), tanPlayer, "anotherName");
@@ -40,7 +40,7 @@ class CreateTownTest extends BasicTest {
     @Test
     void nameTooLong() {
 
-        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
+        ITanPlayer tanPlayer = playerDataStorage.get(server.addPlayer());
 
         int maxSize = Constants.getTownMaxNameSize();
 
@@ -53,8 +53,8 @@ class CreateTownTest extends BasicTest {
     @Test
     void nameAlreadyUsed() {
 
-        ITanPlayer tanPlayer1 = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
-        ITanPlayer tanPlayer2 = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
+        ITanPlayer tanPlayer1 = playerDataStorage.get(server.addPlayer());
+        ITanPlayer tanPlayer2 = playerDataStorage.get(server.addPlayer());
 
         String townName = "townWithDuplicateName";
 

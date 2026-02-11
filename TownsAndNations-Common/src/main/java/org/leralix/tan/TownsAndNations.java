@@ -118,6 +118,11 @@ public class TownsAndNations extends JavaPlugin {
      */
     private PlayerDataStorage playerDataStorage;
 
+    /**
+     * The storage of all towns
+     */
+    private TownDataStorage townDataStorage;
+
     private LocalChatStorage localChatStorage;
 
     private SaveStats saveStats;
@@ -184,7 +189,8 @@ public class TownsAndNations extends JavaPlugin {
         NationDataStorage.getInstance();
         RegionDataStorage.getInstance();
         NewClaimedChunkStorage.getInstance();
-        TownDataStorage.getInstance();
+        townDataStorage = new TownDataStorage();
+        townDataStorage.checkValidWorlds();
         if (Constants.enableNation()) {
             NationDataStorage.getInstance();
         }
@@ -198,13 +204,12 @@ public class TownsAndNations extends JavaPlugin {
         TeamUtils.init(playerDataStorage);
 
         FortStorage.getInstance().checkValidWorlds();
-        TownDataStorage.getInstance().checkValidWorlds();
         NewClaimedChunkStorage.getInstance().checkValidWorlds();
 
         this.saveStats = new SaveStats(this);
 
         getLogger().log(Level.INFO, "[TaN] -Loading blocks data");
-        TANCustomNBT.setBlocsData();
+        TANCustomNBT.setBlocsData(townDataStorage);
 
 
         getLogger().log(Level.INFO, "[TaN] -Registering Dependencies");
@@ -213,8 +218,11 @@ public class TownsAndNations extends JavaPlugin {
             getLogger().log(Level.INFO, "[TaN] -Registering PlaceholderAPI");
             new PlaceHolderAPI(
                     playerDataStorage,
+                    townDataStorage,
+                    RegionDataStorage.getInstance(),
+                    NationDataStorage.getInstance(),
                     localChatStorage
-            ).register();
+                    ).register();
         }
 
         if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
@@ -240,10 +248,10 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Loading commands");
         enableEventList();
-        getCommand("tan").setExecutor(new PlayerCommandManager(playerDataStorage, localChatStorage));
+        getCommand("tan").setExecutor(new PlayerCommandManager(playerDataStorage, townDataStorage, localChatStorage));
         getCommand("tanadmin").setExecutor(new AdminCommandManager(playerDataStorage));
         getCommand("tandebug").setExecutor(new DebugCommandManager(saveStats, dailyTasks));
-        getCommand("tanserver").setExecutor(new ServerCommandManager(playerDataStorage));
+        getCommand("tanserver").setExecutor(new ServerCommandManager(playerDataStorage, townDataStorage));
 
         loadedSuccessfully = true;
         getLogger().log(Level.INFO, "[TaN] Plugin loaded successfully");
@@ -338,7 +346,7 @@ public class TownsAndNations extends JavaPlugin {
         pluginManager.registerEvents(new ChatScopeListener(localChatStorage), this);
         pluginManager.registerEvents(new MobSpawnListener(), this);
         pluginManager.registerEvents(new SpawnListener(playerDataStorage), this);
-        pluginManager.registerEvents(new PropertySignListener(playerDataStorage), this);
+        pluginManager.registerEvents(new PropertySignListener(playerDataStorage, townDataStorage), this);
         pluginManager.registerEvents(new LandmarkChestListener(playerDataStorage), this);
         pluginManager.registerEvents(new EconomyInitialiser(), this);
         pluginManager.registerEvents(new CommandBlocker(playerDataStorage), this);
@@ -453,7 +461,6 @@ public class TownsAndNations extends JavaPlugin {
      */
     public void resetSingletonForTests() {
         RegionDataStorage.getInstance().reset();
-        TownDataStorage.getInstance().reset();
         if (Constants.enableNation()) {
             NationDataStorage.getInstance().reset();
         }
@@ -464,6 +471,10 @@ public class TownsAndNations extends JavaPlugin {
 
     public PlayerDataStorage getPlayerDataStorage() {
         return playerDataStorage;
+    }
+
+    public TownDataStorage getTownDataStorage() {
+        return townDataStorage;
     }
 }
 

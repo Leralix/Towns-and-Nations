@@ -60,7 +60,7 @@ public class PlayerJoinRequestNews extends Newsletter {
     public void broadcast(Player player, ITanPlayer tanPlayer) {
         OfflinePlayer playerJoinRequest = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
 
-        TownData townData = TownDataStorage.getInstance().get(townID);
+        TownData townData = getTownData();
         if (townData == null)
             return;
         TanChatUtils.message(player,

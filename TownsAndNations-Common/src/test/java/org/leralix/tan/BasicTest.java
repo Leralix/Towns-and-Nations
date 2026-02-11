@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.leralix.lib.SphereLib;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 
@@ -14,6 +15,7 @@ public abstract class BasicTest {
     protected SphereLib sphereLib;
     protected TownsAndNations townsAndNations;
     protected PlayerDataStorage playerDataStorage;
+    protected TownDataStorage townDataStorage;
     protected LangType langType = LangType.ENGLISH;
 
     @BeforeEach
@@ -22,6 +24,7 @@ public abstract class BasicTest {
         sphereLib = MockBukkit.load(SphereLib.class);
         townsAndNations = MockBukkit.load(TownsAndNations.class);
         playerDataStorage = townsAndNations.getPlayerDataStorage();
+        townDataStorage = townsAndNations.getTownDataStorage();
     }
 
     @AfterEach

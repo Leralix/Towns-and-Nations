@@ -31,10 +31,10 @@ class CommandPermissionConsistencyTest extends BasicTest {
 
         PlayerDataStorage playerDataStorage = new PlayerDataStorage();
 
-        assertPermissionsExist(permissionsSection, "tan.base.commands", new PlayerCommandManager(playerDataStorage, null));
+        assertPermissionsExist(permissionsSection, "tan.base.commands", new PlayerCommandManager(playerDataStorage, townDataStorage, null));
         assertPermissionsExist(permissionsSection, "tan.admin.commands", new AdminCommandManager(playerDataStorage));
         assertPermissionsExist(permissionsSection, "tan.admin.commands", new DebugCommandManager(new SaveStats(townsAndNations), null));
-        assertPermissionsExist(permissionsSection, "tan.server.commands", new ServerCommandManager(playerDataStorage));
+        assertPermissionsExist(permissionsSection, "tan.server.commands", new ServerCommandManager(playerDataStorage, townDataStorage));
     }
 
     private static YamlConfiguration loadPluginYml() {

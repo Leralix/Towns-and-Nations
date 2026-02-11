@@ -20,7 +20,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.territory.ChunkUtil;
@@ -120,15 +119,15 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
 
         TerritoryEnterMessageUtil.sendEnterTerritoryMessage(player, territoryData, displayTerritoryColor, tanPlayer.getLang());
 
-        TownData playerTown = tanPlayer.getTown();
-        if (playerTown == null) {
+        TownData enteringPlayerTown = tanPlayer.getTown();
+        if (enteringPlayerTown == null) {
             return;
         }
-        TownRelation relation = playerTown.getRelationWith(territoryData);
+        TownRelation relation = enteringPlayerTown.getRelationWith(territoryData);
 
         if (relation == TownRelation.WAR && Constants.notifyWhenEnemyEnterTerritory()) {
             TanChatUtils.message(player, Lang.CHUNK_ENTER_TOWN_AT_WAR.get(tanPlayer.getLang()), SoundEnum.BAD);
-            territoryData.broadcastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(TownDataStorage.getInstance().get(tanPlayer).getName(), player.getName()), SoundEnum.BAD);
+            territoryData.broadcastMessageWithSound(Lang.CHUNK_INTRUSION_ALERT.get(enteringPlayerTown.getName(), player.getName()), SoundEnum.BAD);
         }
     }
 

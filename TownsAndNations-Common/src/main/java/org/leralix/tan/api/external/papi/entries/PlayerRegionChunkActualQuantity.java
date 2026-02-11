@@ -4,15 +4,25 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 
 public class PlayerRegionChunkActualQuantity extends PapiEntry {
 
-
-    private final PlayerDataStorage playerDataStorage;
-    public PlayerRegionChunkActualQuantity(PlayerDataStorage playerDataStorage) {
-        super("player_region_chunk_actual_quantity");
-        this.playerDataStorage = playerDataStorage;
+    public PlayerRegionChunkActualQuantity(
+            PlayerDataStorage playerDataStorage,
+            TownDataStorage townDataStorage,
+            RegionDataStorage regionDataStorage,
+            NationDataStorage nationDataStorage
+    ) {
+        super("player_region_chunk_actual_quantity",
+                playerDataStorage,
+                townDataStorage,
+                regionDataStorage,
+                nationDataStorage
+        );
     }
 
     @Override

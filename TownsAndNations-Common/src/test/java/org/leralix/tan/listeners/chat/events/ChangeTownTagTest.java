@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.mockbukkit.mockbukkit.MockBukkit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,8 +23,8 @@ class ChangeTownTagTest extends BasicTest {
     protected void setUp() {
         super.setUp();
         player = server.addPlayer();
-        tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
-        townData = TownDataStorage.getInstance().newTown("town 1", tanPlayer);
+        tanPlayer = playerDataStorage.get(player);
+        townData = townDataStorage.newTown("town 1", tanPlayer);
     }
 
     @AfterEach

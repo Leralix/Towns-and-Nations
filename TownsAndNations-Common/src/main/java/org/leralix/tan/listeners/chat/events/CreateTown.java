@@ -19,7 +19,8 @@ import org.leralix.tan.utils.text.NameFilter;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class CreateTown extends ChatListenerEvent {
-    int cost;
+
+    private final int cost;
 
     public CreateTown(int cost) {
         super();

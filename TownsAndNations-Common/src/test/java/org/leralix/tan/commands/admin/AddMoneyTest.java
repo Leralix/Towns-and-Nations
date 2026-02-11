@@ -24,7 +24,7 @@ class AddMoneyTest extends BasicTest {
         playerMock = server.addPlayer("TestPlayer");
         playerMock.setOp(true);
 
-        tanPlayer = townsAndNations.getPlayerDataStorage().get(playerMock);
+        tanPlayer = playerDataStorage.get(playerMock);
     }
 
     @Test

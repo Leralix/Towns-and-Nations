@@ -41,7 +41,7 @@ public class PlayerGUI {
     }
 
     public static void dispatchPlayerTown(Player player, ITanPlayer playerData) {
-        TownData townData = TownDataStorage.getInstance().get(playerData);
+        TownData townData = playerData.getTown();
         if (townData != null) {
             new TownMenu(player, playerData, townData);
         } else {
@@ -51,7 +51,7 @@ public class PlayerGUI {
 
     public static void dispatchLandmarkGui(Player player, ITanPlayer playerData, Landmark landmark) {
 
-        TownData townData = TownDataStorage.getInstance().get(playerData);
+        TownData townData = playerData.getTown();
         if (!landmark.isOwned()) {
             new LandmarkNoOwnerMenu(player, landmark);
             return;

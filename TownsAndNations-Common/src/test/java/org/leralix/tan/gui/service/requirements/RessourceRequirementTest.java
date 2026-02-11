@@ -23,7 +23,7 @@ class RessourceRequirementTest extends BasicTest {
     void testRessourceRequirement_invalid() {
 
         PlayerMock player = server.addPlayer();
-        TerritoryData territoryData = TownDataStorage.getInstance().newTown("test");
+        TerritoryData territoryData = townDataStorage.newTown("test");
         ItemRequirementBuilder itemRequirementBuilder =
                 new ItemRequirementBuilder(
                         new MaterialScope(Material.COBBLESTONE),
@@ -45,7 +45,7 @@ class RessourceRequirementTest extends BasicTest {
 
         PlayerMock player = server.addPlayer();
         int quantity = 10;
-        TerritoryData territoryData = TownDataStorage.getInstance().newTown("test");
+        TerritoryData territoryData = townDataStorage.newTown("test");
 
         player.getInventory().addItem(new ItemStack(Material.COBBLESTONE, quantity));
         ItemRequirementBuilder itemRequirementBuilder =
@@ -67,7 +67,7 @@ class RessourceRequirementTest extends BasicTest {
     void testRessourceRequirement_customScope_valid() {
 
         PlayerMock player = server.addPlayer();
-        TerritoryData territoryData = TownDataStorage.getInstance().newTown("test");
+        TerritoryData territoryData = townDataStorage.newTown("test");
         int quantity = 10;
 
         player.getInventory().addItem(new ItemStack(Material.OAK_LOG, quantity));
@@ -91,7 +91,7 @@ class RessourceRequirementTest extends BasicTest {
     void testRessourceRequirement_customScope_isDone() {
 
         PlayerMock player = server.addPlayer();
-        TerritoryData territoryData = TownDataStorage.getInstance().newTown("test");
+        TerritoryData territoryData = townDataStorage.newTown("test");
         int quantity = 10;
 
         player.getInventory().addItem(new ItemStack(Material.OAK_LOG, quantity + 1));
@@ -116,7 +116,7 @@ class RessourceRequirementTest extends BasicTest {
     void testRessourceRequirement_customScope_multipleStacks() {
 
         PlayerMock player = server.addPlayer();
-        TerritoryData territoryData = TownDataStorage.getInstance().newTown("test");
+        TerritoryData territoryData = townDataStorage.newTown("test");
         int quantity = 64;
 
         player.getInventory().addItem(new ItemStack(Material.OAK_LOG, quantity * 2));

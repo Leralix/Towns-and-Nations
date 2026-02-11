@@ -5,14 +5,25 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 
 public class OtherPlayerTownTag extends PapiEntry {
 
-    private final PlayerDataStorage playerDataStorage;
-    public OtherPlayerTownTag(PlayerDataStorage playerDataStorage) {
-        super("player_{}_town_tag");
-        this.playerDataStorage = playerDataStorage;
+    public OtherPlayerTownTag(
+            PlayerDataStorage playerDataStorage,
+            TownDataStorage townDataStorage,
+            RegionDataStorage regionDataStorage,
+            NationDataStorage nationDataStorage
+    ) {
+        super("player_{}_town_tag",
+                playerDataStorage,
+                townDataStorage,
+                regionDataStorage,
+                nationDataStorage
+        );
     }
 
     @Override

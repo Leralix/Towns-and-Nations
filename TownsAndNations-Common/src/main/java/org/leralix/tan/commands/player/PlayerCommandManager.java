@@ -4,14 +4,15 @@ import org.leralix.lib.commands.CommandManager;
 import org.leralix.lib.commands.MainHelpCommand;
 import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 
 public class PlayerCommandManager extends CommandManager {
 
-    public PlayerCommandManager(PlayerDataStorage playerDataStorage, LocalChatStorage localChatStorage){
+    public PlayerCommandManager(PlayerDataStorage playerDataStorage, TownDataStorage townDataStorage, LocalChatStorage localChatStorage){
         super("tan.base.commands");
-        addSubCommand(new InvitePlayerCommand(playerDataStorage));
-        addSubCommand(new JoinTownCommand(playerDataStorage));
+        addSubCommand(new InvitePlayerCommand(playerDataStorage, townDataStorage));
+        addSubCommand(new JoinTownCommand(playerDataStorage, townDataStorage));
         addSubCommand(new ClaimCommand(playerDataStorage));
         addSubCommand(new ClaimAreaCommand(playerDataStorage));
         addSubCommand(new EnableBoundaryCommand(playerDataStorage));
@@ -23,8 +24,8 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new OpenNewsletterCommand(playerDataStorage));
         addSubCommand(new ChannelChatScopeCommand(playerDataStorage, localChatStorage));
         addSubCommand(new AutoClaimCommand(playerDataStorage));
-        addSubCommand(new TownSpawnCommand(playerDataStorage));
-        addSubCommand(new SetTownSpawnCommand(playerDataStorage));
+        addSubCommand(new TownSpawnCommand(playerDataStorage, townDataStorage));
+        addSubCommand(new SetTownSpawnCommand(playerDataStorage, townDataStorage));
         addSubCommand(new MainHelpCommand(this));
     }
 

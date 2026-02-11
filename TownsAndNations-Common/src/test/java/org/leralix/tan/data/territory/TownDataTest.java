@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.rank.RankData;
-import org.leralix.tan.storage.stored.TownDataStorage;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,7 +13,7 @@ class TownDataTest extends BasicTest {
 
     @Test
     void createTown(){
-        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
+        ITanPlayer tanPlayer = playerDataStorage.get(server.addPlayer());
         TownData townData = new TownData("T1", "testTown", tanPlayer);
 
         assertEquals("T1", townData.getID());
@@ -27,8 +26,8 @@ class TownDataTest extends BasicTest {
 
     @Test
     void addRank(){
-        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
-        TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer);
+        ITanPlayer tanPlayer = playerDataStorage.get(server.addPlayer());
+        TownData townData = townDataStorage.newTown("testTown", tanPlayer);
 
         assertEquals(townData.getTownDefaultRank(), tanPlayer.getTownRank());
 
@@ -46,9 +45,9 @@ class TownDataTest extends BasicTest {
 
     @Test
     void deleteTownWithPlayers(){
-        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
-        ITanPlayer tanPlayer2 = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
-        TownData townData = TownDataStorage.getInstance().newTown("testTown", tanPlayer);
+        ITanPlayer tanPlayer = playerDataStorage.get(server.addPlayer());
+        ITanPlayer tanPlayer2 = playerDataStorage.get(server.addPlayer());
+        TownData townData = townDataStorage.newTown("testTown", tanPlayer);
 
         assertEquals(1, townData.getPlayerIDList().size());
         assertEquals(townData.getID(), tanPlayer.getTownId());
@@ -61,7 +60,7 @@ class TownDataTest extends BasicTest {
         assertTrue(townData.getTownDefaultRank().getPlayersID().contains(tanPlayer2.getID()));
 
         townData.delete();
-        TownData otherTownData = TownDataStorage.getInstance().newTown("townToShowPlayerRank");
+        TownData otherTownData = townDataStorage.newTown("townToShowPlayerRank");
 
         assertNull(tanPlayer.getTownId());
         assertNull(tanPlayer2.getTownId());
@@ -71,7 +70,7 @@ class TownDataTest extends BasicTest {
 
     @Test
     void createGhostTown(){
-        TownData townData = TownDataStorage.getInstance().newTown("ghost town");
+        TownData townData = townDataStorage.newTown("ghost town");
 
         assertEquals(0, townData.getITanPlayerList().size());
         assertEquals(0, townData.getBalance());

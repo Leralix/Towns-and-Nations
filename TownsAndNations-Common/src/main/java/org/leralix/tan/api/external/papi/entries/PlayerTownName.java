@@ -4,15 +4,20 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 
 public class PlayerTownName extends PapiEntry {
 
-    private final PlayerDataStorage playerDataStorage;
-
-    public PlayerTownName(PlayerDataStorage playerDataStorage) {
-        super("player_town_name");
-        this.playerDataStorage = playerDataStorage;
+    public PlayerTownName(
+            PlayerDataStorage playerDataStorage,
+            TownDataStorage townDataStorage,
+            RegionDataStorage regionDataStorage,
+            NationDataStorage nationDataStorage)
+    {
+        super("player_town_name", playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage);
     }
 
     @Override
@@ -24,8 +29,6 @@ public class PlayerTownName extends PapiEntry {
             return PLAYER_NOT_FOUND;
         }
 
-        return tanPlayer.hasTown() ?
-                tanPlayer.getTown().getName() :
-                Lang.NO_TOWN.get(tanPlayer);
+        return tanPlayer.hasTown() ? tanPlayer.getTown().getName() : Lang.NO_TOWN.get(tanPlayer);
     }
 }

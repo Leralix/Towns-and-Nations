@@ -4,7 +4,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.mockbukkit.mockbukkit.MockBukkit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,8 +17,8 @@ class DonateToTerritoryTest extends BasicTest {
 
     @Test
     void nominalCase() {
-        var tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
-        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", tanPlayer);
+        var tanPlayer = playerDataStorage.get(server.addPlayer());
+        TownData townData = townDataStorage.newTown("townToDonate", tanPlayer);
         int amount = 1;
         tanPlayer.addToBalance(amount);
 
@@ -31,8 +30,8 @@ class DonateToTerritoryTest extends BasicTest {
 
     @Test
     void notEnoughMoney() {
-        var tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
-        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", tanPlayer);
+        var tanPlayer = playerDataStorage.get(server.addPlayer());
+        TownData townData = townDataStorage.newTown("townToDonate", tanPlayer);
 
         int amount = (int) (tanPlayer.getBalance() + 1);
 
@@ -44,8 +43,8 @@ class DonateToTerritoryTest extends BasicTest {
 
     @Test
     void notANumber() {
-        var tanPlayer = townsAndNations.getPlayerDataStorage().get(server.addPlayer());
-        TownData townData = TownDataStorage.getInstance().newTown("townToDonate", tanPlayer);
+        var tanPlayer = playerDataStorage.get(server.addPlayer());
+        TownData townData = townDataStorage.newTown("townToDonate", tanPlayer);
 
         String amount = "notANumber";
 

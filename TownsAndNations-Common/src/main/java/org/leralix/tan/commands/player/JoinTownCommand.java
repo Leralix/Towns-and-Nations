@@ -18,9 +18,14 @@ import java.util.List;
 public class JoinTownCommand extends PlayerSubCommand {
 
     private final PlayerDataStorage playerDataStorage;
+    private final TownDataStorage townDataStorage;
 
-    public JoinTownCommand(PlayerDataStorage playerDataStorage) {
+    public JoinTownCommand(
+            PlayerDataStorage playerDataStorage,
+            TownDataStorage townDataStorage
+    ) {
         this.playerDataStorage = playerDataStorage;
+        this.townDataStorage = townDataStorage;
     }
 
     @Override
@@ -74,7 +79,7 @@ public class JoinTownCommand extends PlayerSubCommand {
                 return;
             }
 
-            TownData townData = TownDataStorage.getInstance().get(townID);
+            TownData townData = townDataStorage.get(townID);
             ITanPlayer tanPlayer = playerDataStorage.get(player);
 
             if (townData.isFull()) {

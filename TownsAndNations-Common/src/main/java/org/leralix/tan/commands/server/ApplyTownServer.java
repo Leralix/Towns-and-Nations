@@ -17,9 +17,11 @@ public class ApplyTownServer extends SubCommand {
 
 
     private final PlayerDataStorage playerDataStorage;
+    private final TownDataStorage townDataStorage;
 
-    public ApplyTownServer(PlayerDataStorage playerDataStorage){
+    public ApplyTownServer(PlayerDataStorage playerDataStorage, TownDataStorage townDataStorage){
         this.playerDataStorage = playerDataStorage;
+        this.townDataStorage = townDataStorage;
     }
 
     @Override
@@ -69,7 +71,7 @@ public class ApplyTownServer extends SubCommand {
             TanChatUtils.message(commandSender, Lang.PLAYER_ALREADY_HAVE_TOWN);
             return;
         }
-        TownData townData = TownDataStorage.getInstance().get(townID);
+        TownData townData = townDataStorage.get(townID);
         townData.addPlayerJoinRequest(p);
     }
 }

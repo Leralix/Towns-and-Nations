@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.war.War;
 
 import java.util.Collections;
@@ -19,10 +18,10 @@ class ChangeWarNameTest extends BasicTest {
     void nominalCase() {
 
         Player player = server.addPlayer();
-        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
 
-        TownData town1 = TownDataStorage.getInstance().newTown("town 1");
-        TownData town2 = TownDataStorage.getInstance().newTown("town 2");
+        TownData town1 = townDataStorage.newTown("town 1");
+        TownData town2 = townDataStorage.newTown("town 2");
 
         War war = new War("W1", town1, town2, Collections.emptyList());
 

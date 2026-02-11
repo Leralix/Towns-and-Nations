@@ -5,15 +5,28 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 
 public class GetFirstTerritoryIdWithName extends PapiEntry {
 
     PlayerDataStorage playerDataStorage;
 
-    public GetFirstTerritoryIdWithName(PlayerDataStorage playerDataStorage) {
-        super("server_get_first_territory_id_with_name_{}");
-        this.playerDataStorage = playerDataStorage;
+    public GetFirstTerritoryIdWithName(
+            PlayerDataStorage playerDataStorage,
+            TownDataStorage townDataStorage,
+            RegionDataStorage regionDataStorage,
+            NationDataStorage nationDataStorage
+    ) {
+        super(
+                "server_get_first_territory_id_with_name_{}",
+                playerDataStorage,
+                townDataStorage,
+                regionDataStorage,
+                nationDataStorage
+        );
     }
 
     @Override

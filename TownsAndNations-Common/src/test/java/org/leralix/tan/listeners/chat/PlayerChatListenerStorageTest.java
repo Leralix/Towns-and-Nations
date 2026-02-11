@@ -28,7 +28,7 @@ class PlayerChatListenerStorageTest extends BasicTest {
     void messageSuccess(){
 
         Player player = server.addPlayer();
-        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
         ChatListenerEvent mockedChatListenerEvent = mock(ChatListenerEvent.class);
         when(mockedChatListenerEvent.execute(any(Player.class), eq(tanPlayer), anyString())).thenReturn(true);
         PlayerChatListenerStorage.register(player, langType, mockedChatListenerEvent);
@@ -45,7 +45,7 @@ class PlayerChatListenerStorageTest extends BasicTest {
     void messageError(){
 
         Player player = server.addPlayer();
-        ITanPlayer tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
 
         ChatListenerEvent mockedChatListenerEvent = mock(ChatListenerEvent.class);
         when(mockedChatListenerEvent.execute(any(Player.class), eq(tanPlayer), anyString())).thenReturn(false);

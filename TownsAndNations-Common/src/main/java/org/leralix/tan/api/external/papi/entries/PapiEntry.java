@@ -7,6 +7,7 @@ import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.NationDataStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
@@ -21,8 +22,23 @@ public abstract class PapiEntry {
 
     private final String identifier;
 
-    protected PapiEntry(String identifier) {
+    protected final PlayerDataStorage playerDataStorage;
+    protected final TownDataStorage townDataStorage;
+    protected final RegionDataStorage regionDataStorage;
+    protected final NationDataStorage nationDataStorage;
+
+    protected PapiEntry(
+            String identifier,
+            PlayerDataStorage playerDataStorage,
+            TownDataStorage townDataStorage,
+            RegionDataStorage regionDataStorage,
+            NationDataStorage nationDataStorage
+    ) {
         this.identifier = identifier;
+        this.playerDataStorage = playerDataStorage;
+        this.townDataStorage = townDataStorage;
+        this.regionDataStorage = regionDataStorage;
+        this.nationDataStorage = nationDataStorage;
     }
 
     public String getIdentifier() {
@@ -45,17 +61,17 @@ public abstract class PapiEntry {
     }
 
     protected TerritoryData getTerritoryByName(String name) {
-        for(TownData townData : TownDataStorage.getInstance().getAll().values()){
+        for(TownData townData : townDataStorage.getAll().values()){
             if(townData.getName().equalsIgnoreCase(name)){
                 return townData;
             }
         }
-        for(RegionData regionData : RegionDataStorage.getInstance().getAll().values()){
+        for(RegionData regionData : regionDataStorage.getAll().values()){
             if(regionData.getName().equalsIgnoreCase(name)){
                 return regionData;
             }
         }
-        for(NationData nationData : NationDataStorage.getInstance().getAll().values()){
+        for(NationData nationData : nationDataStorage.getAll().values()){
             if(nationData.getName().equalsIgnoreCase(name)){
                 return nationData;
             }

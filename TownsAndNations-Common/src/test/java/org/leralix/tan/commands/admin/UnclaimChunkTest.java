@@ -19,7 +19,7 @@ import org.mockbukkit.mockbukkit.world.WorldMock;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class UnclaimChunkTest {
+class UnclaimChunkTest {
 
     private ServerMock server;
 

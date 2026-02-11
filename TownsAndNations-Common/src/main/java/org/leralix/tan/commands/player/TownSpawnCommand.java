@@ -18,9 +18,11 @@ import java.util.List;
 public class TownSpawnCommand extends PlayerSubCommand {
 
     private final PlayerDataStorage playerDataStorage;
+    private final TownDataStorage townDataStorage;
 
-    public TownSpawnCommand(PlayerDataStorage playerDataStorage){
+    public TownSpawnCommand(PlayerDataStorage playerDataStorage, TownDataStorage townDataStorage){
         this.playerDataStorage = playerDataStorage;
+        this.townDataStorage = townDataStorage;
     }
 
     @Override
@@ -65,7 +67,7 @@ public class TownSpawnCommand extends PlayerSubCommand {
             return;
         }
 
-        TownData townData = TownDataStorage.getInstance().get(playerStat);
+        TownData townData = townDataStorage.get(playerStat);
         EnableTownSpawn enableTownSpawn = townData.getNewLevel().getStat(EnableTownSpawn.class);
         //Spawn Unlocked
         if (!enableTownSpawn.isEnabled()) {

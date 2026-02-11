@@ -19,11 +19,11 @@ class ChatListenerTest extends BasicTest {
     void playerTypedCancel(){
 
         Player player = server.addPlayer();
-        ITanPlayer playerData = townsAndNations.getPlayerDataStorage().register(player);
+        ITanPlayer playerData = playerDataStorage.register(player);
         ChatListenerEvent mockedChatListenerEvent = mock(ChatListenerEvent.class);
         PlayerChatListenerStorage.register(player, playerData.getLang(), mockedChatListenerEvent);
         var asyncPlayerChatEvent = new AsyncPlayerChatEvent(false, player, Lang.CANCEL_WORD.get(langType), Set.of() );
-        ChatListener chatListener = new ChatListener(townsAndNations.getPlayerDataStorage());
+        ChatListener chatListener = new ChatListener(playerDataStorage);
 
         chatListener.checkForCancelWord(asyncPlayerChatEvent);
 

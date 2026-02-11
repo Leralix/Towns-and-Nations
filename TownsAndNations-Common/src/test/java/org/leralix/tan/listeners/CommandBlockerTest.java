@@ -6,7 +6,6 @@ import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.data.territory.relation.TownRelation;
-import org.leralix.tan.storage.stored.TownDataStorage;
 
 import java.util.Collections;
 
@@ -19,15 +18,15 @@ class CommandBlockerTest extends BasicTest {
         Player sender = server.addPlayer("sender");
         Player target = server.addPlayer("target");
 
-        ITanPlayer tanSender = townsAndNations.getPlayerDataStorage().get(sender);
-        TownData town1 = TownDataStorage.getInstance().newTown("town1", tanSender);
+        ITanPlayer tanSender = playerDataStorage.get(sender);
+        TownData town1 = townDataStorage.newTown("town1", tanSender);
 
-        ITanPlayer tanTarget = townsAndNations.getPlayerDataStorage().get(target);
-        TownData town2 = TownDataStorage.getInstance().newTown("town2", tanTarget);
+        ITanPlayer tanTarget = playerDataStorage.get(target);
+        TownData town2 = townDataStorage.newTown("town2", tanTarget);
 
         town1.setRelation(town2, TownRelation.EMBARGO);
 
-        CommandBlocker commandBlocker = new CommandBlocker(townsAndNations.getPlayerDataStorage());
+        CommandBlocker commandBlocker = new CommandBlocker(playerDataStorage);
         assertTrue(commandBlocker.relationForbidCommandWithPlayer(sender, "/tpa target",
                 Collections.singleton("/tpa %PLAYER%")));
     }

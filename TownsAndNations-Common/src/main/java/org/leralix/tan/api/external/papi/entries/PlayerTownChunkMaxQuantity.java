@@ -5,15 +5,25 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.TownDataStorage;
 
 public class PlayerTownChunkMaxQuantity extends PapiEntry {
 
-    private final PlayerDataStorage playerDataStorage;
-
-    public PlayerTownChunkMaxQuantity(PlayerDataStorage playerDataStorage) {
-        super("player_town_chunk_max_quantity");
-        this.playerDataStorage = playerDataStorage;
+    public PlayerTownChunkMaxQuantity(
+            PlayerDataStorage playerDataStorage,
+            TownDataStorage townDataStorage,
+            RegionDataStorage regionDataStorage,
+            NationDataStorage nationDataStorage
+    ) {
+        super("player_town_chunk_max_quantity",
+                playerDataStorage,
+                townDataStorage,
+                regionDataStorage,
+                nationDataStorage
+        );
     }
 
 

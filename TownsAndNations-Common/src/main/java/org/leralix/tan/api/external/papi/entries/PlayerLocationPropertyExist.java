@@ -7,13 +7,23 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.chunk.ClaimedChunk;
 import org.leralix.tan.data.chunk.TownClaimedChunk;
 import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.constants.Constants;
 
 public class PlayerLocationPropertyExist extends PapiEntry{
 
-    public PlayerLocationPropertyExist() {
-        super("player_location_property_exist");
+    public PlayerLocationPropertyExist(
+            PlayerDataStorage playerDataStorage,
+            TownDataStorage townDataStorage,
+            RegionDataStorage regionDataStorage,
+            NationDataStorage nationDataStorage
+    ) {
+        super("player_location_property_exist",
+                playerDataStorage,
+                townDataStorage,
+                regionDataStorage,
+                nationDataStorage
+        );
     }
 
     @Override

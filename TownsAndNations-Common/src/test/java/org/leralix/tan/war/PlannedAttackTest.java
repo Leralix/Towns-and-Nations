@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.CurrentAttacksStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.war.info.WarRole;
 
 import java.util.Collections;
@@ -17,8 +16,8 @@ class PlannedAttackTest extends BasicTest {
     @Test
     public void test_correctTimestamp() {
 
-        TownData town1 = TownDataStorage.getInstance().newTown("town1");
-        TownData town2 = TownDataStorage.getInstance().newTown("town2");
+        TownData town1 = townDataStorage.newTown("town1");
+        TownData town2 = townDataStorage.newTown("town2");
 
         War war = new War("0", town1, town2, Collections.emptyList());
         PlannedAttack plannedAttack = new PlannedAttack("0", war, WarRole.MAIN_ATTACKER, 0, 30);

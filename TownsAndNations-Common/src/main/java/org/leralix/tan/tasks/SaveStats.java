@@ -25,7 +25,7 @@ public class SaveStats {
     public void saveAll() {
         NationDataStorage.getInstance().save();
         RegionDataStorage.getInstance().save();
-        TownDataStorage.getInstance().save();
+        plugin.getTownDataStorage().save();
         plugin.getPlayerDataStorage().save();
         NewClaimedChunkStorage.getInstance().save();
         LandmarkStorage.getInstance().save();

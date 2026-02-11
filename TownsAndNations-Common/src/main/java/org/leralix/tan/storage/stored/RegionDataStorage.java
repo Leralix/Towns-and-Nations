@@ -59,7 +59,7 @@ public class RegionDataStorage extends JsonStorage<RegionData> {
     }
 
     public RegionData get(ITanPlayer tanPlayer){
-        TownData town = TownDataStorage.getInstance().get(tanPlayer);
+        TownData town = tanPlayer.getTown();
         if(town == null)
             return null;
         return town.getRegion().orElse(null);

@@ -20,9 +20,14 @@ import java.util.List;
 public class InvitePlayerCommand extends PlayerSubCommand {
 
     private final PlayerDataStorage playerDataStorage;
+    private final TownDataStorage townDataStorage;
 
-    public InvitePlayerCommand(PlayerDataStorage playerDataStorage) {
+    public InvitePlayerCommand(
+            PlayerDataStorage playerDataStorage,
+            TownDataStorage townDataStorage
+    ) {
         this.playerDataStorage = playerDataStorage;
+        this.townDataStorage = townDataStorage;
     }
 
     @Override
@@ -71,7 +76,7 @@ public class InvitePlayerCommand extends PlayerSubCommand {
 
     private void invite(Player player, String playerToInvite) {
         ITanPlayer tanPlayer = playerDataStorage.get(player);
-        TownData townData = TownDataStorage.getInstance().get(tanPlayer);
+        TownData townData = townDataStorage.get(tanPlayer);
         LangType langType = tanPlayer.getLang();
 
         if (townData == null) {
@@ -90,15 +95,14 @@ public class InvitePlayerCommand extends PlayerSubCommand {
         }
 
 
-        TownData town = TownDataStorage.getInstance().get(tanPlayer);
-        if (town.isFull()) {
+        if (townData.isFull()) {
             TanChatUtils.message(player, Lang.INVITATION_TOWN_FULL.get(langType));
             return;
         }
         ITanPlayer inviteStat = playerDataStorage.get(invite);
 
         if (inviteStat.getTownId() != null) {
-            if (inviteStat.getTownId().equals(town.getID())) {
+            if (inviteStat.getTownId().equals(townData.getID())) {
                 TanChatUtils.message(player, Lang.INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN.get(langType, invite.getName()));
                 return;
             }
@@ -110,13 +114,13 @@ public class InvitePlayerCommand extends PlayerSubCommand {
             return;
         }
 
-        TownInviteDataStorage.addInvitation(invite.getUniqueId(), town.getID());
+        TownInviteDataStorage.addInvitation(invite.getUniqueId(), townData.getID());
 
         TanChatUtils.message(player, Lang.INVITATION_SENT_SUCCESS.get(langType, invite.getName()));
 
         LangType receiverLang = inviteStat.getLang();
-        TanChatUtils.message(invite, Lang.INVITATION_RECEIVED_1.get(receiverLang, player.getName(), town.getName()));
-        ChatUtils.sendClickableCommand(invite, Lang.INVITATION_RECEIVED_2.get(receiverLang), "tan join " + town.getID());
+        TanChatUtils.message(invite, Lang.INVITATION_RECEIVED_1.get(receiverLang, player.getName(), townData.getName()));
+        ChatUtils.sendClickableCommand(invite, Lang.INVITATION_RECEIVED_2.get(receiverLang), "tan join " + townData.getID());
     }
 }
 
