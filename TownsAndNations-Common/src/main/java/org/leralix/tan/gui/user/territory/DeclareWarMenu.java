@@ -79,6 +79,11 @@ public class DeclareWarMenu extends IteratorGUI {
                             confirmDescription,
                             () -> {
                                 War newWar = warStorage.newWar(territoryData, iterateTerritory);
+                                if (newWar == null) {
+                                    TanChatUtils.message(player, Lang.DECLARE_WAR_POWER_IMBALANCE.get(tanPlayer));
+                                    SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                                    return;
+                                }
                                 WarMenuDispatch.openMenu(player, newWar, territoryData);
                             },
                             this::open
