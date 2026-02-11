@@ -37,6 +37,9 @@ public abstract class BasicGui {
                 .create();
 
         gui.setDefaultClickAction(event -> {
+            if(event.isShiftClick()){
+                event.setCancelled(true);
+            }
             if(event.getClickedInventory().getType() != InventoryType.PLAYER){
                 event.setCancelled(true);
             }
