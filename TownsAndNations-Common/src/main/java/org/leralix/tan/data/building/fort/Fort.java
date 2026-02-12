@@ -150,7 +150,9 @@ public abstract class Fort extends Building implements TanFort {
 
     @Override
     public void delete() {
-        getOccupier().removeOwnedFort(this);
+        if(isOccupied()){
+            getOccupier().removeOwnedFort(this);
+        }
         deleteFlag();
 
     }
