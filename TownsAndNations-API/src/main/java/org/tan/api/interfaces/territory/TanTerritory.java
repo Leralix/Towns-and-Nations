@@ -3,11 +3,14 @@ package org.tan.api.interfaces.territory;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.tan.api.enums.EDiplomacyState;
 import org.tan.api.enums.TerritoryPermission;
 import org.tan.api.interfaces.TanPlayer;
+import org.tan.api.interfaces.buildings.TanProperty;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -140,4 +143,18 @@ public interface TanTerritory {
      * @return the main level of the territory
      */
     int getLevel();
+
+    /**
+     *
+     * @param playerData    the player to check
+     * @return the worst relation a player has with the territory
+     */
+    EDiplomacyState getRelationWith(TanPlayer playerData);
+
+
+    /**
+     * @return all properties in the territory
+     */
+    List<TanProperty> getProperties();
+
 }

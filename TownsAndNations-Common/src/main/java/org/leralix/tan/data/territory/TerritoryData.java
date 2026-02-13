@@ -70,6 +70,7 @@ import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.attack.CurrentAttack;
 import org.leralix.tan.war.info.WarRole;
+import org.tan.api.enums.EDiplomacyState;
 import org.tan.api.enums.TerritoryPermission;
 import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
@@ -1236,4 +1237,10 @@ public abstract class TerritoryData implements TanTerritory {
     public int getLevel(){
         return getNewLevel().getMainLevel();
     }
+
+    @Override
+    public EDiplomacyState getRelationWith(TanPlayer playerData){
+        return getWorstRelationWith(PlayerDataStorage.getInstance().get(playerData.getID())).toAPI();
+    }
+
 }

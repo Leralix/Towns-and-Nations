@@ -4,10 +4,13 @@ import net.luckperms.api.context.ContextCalculator;
 import net.luckperms.api.context.ContextConsumer;
 import net.luckperms.api.context.ContextSet;
 import net.luckperms.api.context.ImmutableContextSet;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.tan.api.TanAPI;
+import org.tan.api.enums.EDiplomacyState;
+import org.tan.api.interfaces.buildings.TanProperty;
 import org.tan.api.interfaces.territory.TanNation;
 import org.tan.api.interfaces.territory.TanRegion;
 import org.tan.api.interfaces.territory.TanTerritory;
@@ -68,7 +71,8 @@ public class HasTownCalculator implements ContextCalculator<Player> {
         consumer.accept(IS_NATION_LEADER, isTerritoryLeader(player, playerNation));
         consumer.accept(IS_PART_OF_NATION, getNameOfTerritory(playerNation));
 
-        var optionalTerritoryOwningChunk = TanAPI.getInstance().getClaimManager().getTerritoryOfChunk(player.getChunk());
+        Location location = player.getLocation();
+        var optionalTerritoryOwningChunk = TanAPI.getInstance().getClaimManager().getTerritoryOfChunk(location.getChunk());
 
         if(optionalTerritoryOwningChunk.isEmpty()){
             consumer.accept(IS_IN_FRIENDLY_CLAIM, FALSE);
@@ -80,12 +84,33 @@ public class HasTownCalculator implements ContextCalculator<Player> {
         }
         else {
             TanTerritory territory = optionalTerritoryOwningChunk.get();
-            consumer.accept(IS_IN_FRIENDLY_CLAIM, ""); //TODO : finish
-            consumer.accept(IS_IN_NEUTRAL_CLAIM, ""); //TODO : finish
-            consumer.accept(IS_IN_HOSTILE_CLAIM, ""); //TODO : finish
+
+            EDiplomacyState diplomacyState = territory.getRelationWith(playerData);
+            boolean isFriendlyClaim = diplomacyState == EDiplomacyState.ALLIANCE || diplomacyState == EDiplomacyState.NON_AGGRESSION;
+            boolean isHostileClaim = diplomacyState == EDiplomacyState.WAR || diplomacyState == EDiplomacyState.EMBARGO;
+            boolean isNeutralClaim = diplomacyState == EDiplomacyState.NEUTRAL;
+
+            var villes = territory.getProperties();
+            String isInOwnedProperty = FALSE;
+            String isInRentedProperty = FALSE;
+            for(TanProperty property : villes){
+                if(property.isLocationInside(location)){
+                    if(property.getOwner().getID().equals(playerData.getID())){
+                        isInOwnedProperty = TRUE;
+                    }
+                    var optRenter = property.getRenter();
+                    if(optRenter.isPresent() && optRenter.get().getID().equals(playerData.getID())){
+                        isInRentedProperty = FALSE;
+                    }
+                }
+            }
+
+            consumer.accept(IS_IN_FRIENDLY_CLAIM, Boolean.toString(isFriendlyClaim));
+            consumer.accept(IS_IN_NEUTRAL_CLAIM, Boolean.toString(isNeutralClaim));
+            consumer.accept(IS_IN_HOSTILE_CLAIM, Boolean.toString(isHostileClaim));
             consumer.accept(IS_IN_WILDERNESS_CLAIM, FALSE);
-            consumer.accept(IS_IN_OWNED_PROPERTY, ""); //TODO : finish
-            consumer.accept(IS_IN_RENTED_PROPERTY, ""); //TODO : finish
+            consumer.accept(IS_IN_OWNED_PROPERTY, isInOwnedProperty);
+            consumer.accept(IS_IN_RENTED_PROPERTY, isInRentedProperty);
         }
     }
 
