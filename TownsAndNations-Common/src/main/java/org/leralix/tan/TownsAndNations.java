@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.lib.SphereLib;
 import org.leralix.lib.data.PluginVersion;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.api.external.luckperms.LuckpermAPI;
 import org.leralix.tan.api.external.papi.PlaceHolderAPI;
 import org.leralix.tan.api.external.worldguard.WorldGuardManager;
 import org.leralix.tan.api.internal.InternalAPI;
@@ -138,7 +139,7 @@ public class TownsAndNations extends JavaPlugin {
 
         if (SphereLib.getPluginVersion().isOlderThan(MINIMUM_SUPPORTING_SPHERELIB)) {
             getLogger().log(Level.SEVERE, "[TaN] You need to update SphereLib to use this version of Towns and Nations");
-            getLogger().log(Level.SEVERE, "[TaN] Please update SphereLib to version " + MINIMUM_SUPPORTING_SPHERELIB + " or higher");
+            getLogger().log(Level.SEVERE, "[TaN] Please update SphereLib to version {} or higher", MINIMUM_SUPPORTING_SPHERELIB);
             getLogger().log(Level.SEVERE, "[TaN] Disabling plugin");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
@@ -228,6 +229,11 @@ public class TownsAndNations extends JavaPlugin {
         if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
             getLogger().log(Level.INFO, "[TaN] -Registering WorldGuard");
             WorldGuardManager.getInstance().register();
+        }
+
+        if(Bukkit.getPluginManager().isPluginEnabled("LuckPerms")){
+            var luckpermAPI = new LuckpermAPI();
+            luckpermAPI.createContexts();
         }
 
         checkForUpdate();

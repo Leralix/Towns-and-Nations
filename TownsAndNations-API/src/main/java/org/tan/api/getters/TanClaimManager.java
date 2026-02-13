@@ -1,9 +1,10 @@
 package org.tan.api.getters;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.tan.api.interfaces.territory.TanTerritory;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.Optional;
 
@@ -37,4 +38,12 @@ public interface TanClaimManager {
      */
     Optional<TanTerritory> getTerritoryOfBlock(Block block);
 
+    /**
+     * Get the territory owning a chunk.
+     * <br>
+     * If the chunk is claimed by a landmark, the territory owning the landmark will be returned.
+     * @param chunk The block to check.
+     * @return The territory owning the chunk, or {@link Optional#empty()} if the chunk is not claimed.
+     */
+    Optional<TanTerritory> getTerritoryOfChunk(Chunk chunk);
 }

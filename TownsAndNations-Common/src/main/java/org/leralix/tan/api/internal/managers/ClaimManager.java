@@ -1,5 +1,6 @@
 package org.leralix.tan.api.internal.managers;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.leralix.tan.data.chunk.ClaimedChunk;
@@ -8,8 +9,8 @@ import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.chunk.WildernessChunk;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.tan.api.getters.TanClaimManager;
-import org.tan.api.interfaces.territory.TanTerritory;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.Optional;
 
@@ -43,7 +44,11 @@ public class ClaimManager implements TanClaimManager {
 
     @Override
     public Optional<TanTerritory> getTerritoryOfBlock(Block block) {
-        ClaimedChunk claimedChunk = newClaimedChunkStorage.get(block.getChunk());
+        return getTerritoryOfChunk(block.getChunk());
+    }
+
+    public Optional<TanTerritory> getTerritoryOfChunk(Chunk chunk) {
+        ClaimedChunk claimedChunk = newClaimedChunkStorage.get(chunk);
 
         return switch (claimedChunk){
             case WildernessChunk ignored -> Optional.empty();
