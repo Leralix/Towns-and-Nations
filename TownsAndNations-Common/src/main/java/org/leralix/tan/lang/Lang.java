@@ -9,6 +9,8 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.utils.constants.Constants;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -1186,7 +1188,7 @@ public enum Lang {
             File file = new File(specificLangFolder, "main.yml");
 
 
-            ConfigUtil.saveAndUpdateResource(TownsAndNations.getPlugin(), "lang/" + langType.getCode() + "/main.yml");
+            ConfigUtil.saveAndUpdateResource(TownsAndNations.getPlugin(), "lang/" + langType.getCode() + "/main.yml", Collections.emptyList());
 
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 

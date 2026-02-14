@@ -20,7 +20,6 @@ public class LuckpermAPI {
     }
 
     public void createContexts(){
-        System.out.println("Creating contexts...");
         luckPerms.getContextManager().registerCalculator(new HasTownCalculator());
     }
 
