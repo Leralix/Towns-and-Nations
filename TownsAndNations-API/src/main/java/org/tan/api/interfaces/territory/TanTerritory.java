@@ -155,6 +155,6 @@ public interface TanTerritory {
     /**
      * @return all properties in the territory
      */
-    List<TanProperty> getProperties();
+    Collection<TanProperty> getProperties();
 
 }
