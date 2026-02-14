@@ -268,7 +268,7 @@ public class TownsAndNations extends JavaPlugin {
         try {
             new Metrics(this, 20527);
         } catch (IllegalStateException e) {
-            getLogger().log(Level.WARNING, "[TaN] Failed to submit stats to bStats");
+            getLogger().log(Level.WARNING, "[TaN] Failed to submit stats to bStats : " + e.getMessage());
         }
     }
 

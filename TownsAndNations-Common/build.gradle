@@ -14,6 +14,7 @@ shadowJar {
 
 tasks.shadowJar {
     archiveClassifier.set('')
+    relocate 'org.bstats', 'org.leralix.tan.bstat'
 }
 
 tasks.build {
