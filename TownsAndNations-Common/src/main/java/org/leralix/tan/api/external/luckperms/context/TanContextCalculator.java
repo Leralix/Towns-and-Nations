@@ -99,6 +99,7 @@ public class TanContextCalculator implements ContextCalculator<Player> {
         consumer.accept(HAS_REGION, Boolean.toString(hasRegion));
         consumer.accept(HAS_NATION, Boolean.toString(hasNation));
 
+        consumer.accept(IS_AT_WAR, playerData.getWarsParticipatingIn().isEmpty() ? FALSE : TRUE);
 
         TownData playerTown = townDataStorage.get(playerData);
         consumer.accept(IS_TOWN_LEADER, isTerritoryLeader(player, playerTown));
