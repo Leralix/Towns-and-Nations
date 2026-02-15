@@ -1,5 +1,6 @@
 package org.tan.api.interfaces.buildings;
 
+import org.bukkit.Location;
 import org.leralix.lib.position.Vector3D;
 import org.tan.api.interfaces.TanPlayer;
 
@@ -59,4 +60,22 @@ public interface TanProperty extends TanBuilding {
      * Even if the property is not for sale every property has a sale price
      */
     double getSalePrice();
+
+    @Override
+    default boolean isLocationInside(Location location){
+        var p1 = getFirstCorner().getLocation();
+        var p2 =  getSecondCorner().getLocation();
+
+        var minX = Math.min(p1.getX(), p2.getX());
+        var maxX = Math.max(p1.getX(), p2.getX());
+        var minY = Math.min(p1.getY(), p2.getY());
+        var maxY = Math.max(p1.getY(), p2.getY());
+        var minZ = Math.min(p1.getZ(), p2.getZ());
+        var maxZ = Math.max(p1.getZ(), p2.getZ());
+
+
+        return minX <= location.getX() && location.getX() <= maxX &&
+                minY <= location.getY() && location.getY() <= maxY &&
+                minZ <= location.getZ() && location.getZ() <= maxZ;
+    }
 }

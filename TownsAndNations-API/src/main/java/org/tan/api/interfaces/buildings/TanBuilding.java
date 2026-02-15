@@ -1,5 +1,6 @@
 package org.tan.api.interfaces.buildings;
 
+import org.bukkit.Location;
 import org.leralix.lib.position.Vector3D;
 
 public interface TanBuilding {
@@ -23,4 +24,7 @@ public interface TanBuilding {
      * @return the position of the building
      */
     Vector3D getPosition();
+
+    boolean isLocationInside(Location location);
+
 }

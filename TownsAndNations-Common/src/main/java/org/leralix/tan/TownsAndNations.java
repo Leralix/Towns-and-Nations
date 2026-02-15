@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.leralix.lib.SphereLib;
 import org.leralix.lib.data.PluginVersion;
 import org.leralix.lib.utils.config.ConfigUtil;
+import org.leralix.tan.api.external.luckperms.LuckpermAPI;
 import org.leralix.tan.api.external.papi.PlaceHolderAPI;
 import org.leralix.tan.api.external.worldguard.WorldGuardManager;
 import org.leralix.tan.api.internal.InternalAPI;
@@ -18,6 +19,7 @@ import org.leralix.tan.commands.admin.AdminCommandManager;
 import org.leralix.tan.commands.debug.DebugCommandManager;
 import org.leralix.tan.commands.player.PlayerCommandManager;
 import org.leralix.tan.commands.server.ServerCommandManager;
+import org.leralix.tan.data.upgrade.NewUpgradeStorage;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.economy.TanEconomyStandalone;
 import org.leralix.tan.economy.VaultManager;
@@ -138,7 +140,7 @@ public class TownsAndNations extends JavaPlugin {
 
         if (SphereLib.getPluginVersion().isOlderThan(MINIMUM_SUPPORTING_SPHERELIB)) {
             getLogger().log(Level.SEVERE, "[TaN] You need to update SphereLib to use this version of Towns and Nations");
-            getLogger().log(Level.SEVERE, "[TaN] Please update SphereLib to version " + MINIMUM_SUPPORTING_SPHERELIB + " or higher");
+            getLogger().log(Level.SEVERE, "[TaN] Please update SphereLib to version {} or higher", MINIMUM_SUPPORTING_SPHERELIB);
             getLogger().log(Level.SEVERE, "[TaN] Disabling plugin");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
@@ -230,6 +232,18 @@ public class TownsAndNations extends JavaPlugin {
             WorldGuardManager.getInstance().register();
         }
 
+        if(Bukkit.getPluginManager().isPluginEnabled("LuckPerms")){
+            getLogger().log(Level.INFO, "[TaN] -Registering LuckPerms");
+            var luckpermAPI = new LuckpermAPI();
+            luckpermAPI.createContexts(
+                    playerDataStorage,
+                    townDataStorage,
+                    RegionDataStorage.getInstance(),
+                    NationDataStorage.getInstance(),
+                    NewClaimedChunkStorage.getInstance()
+            );
+        }
+
         checkForUpdate();
 
         getLogger().log(Level.INFO, "[TaN] -Registering API");
@@ -262,7 +276,7 @@ public class TownsAndNations extends JavaPlugin {
         try {
             new Metrics(this, 20527);
         } catch (IllegalStateException e) {
-            getLogger().log(Level.WARNING, "[TaN] Failed to submit stats to bStats");
+            getLogger().log(Level.WARNING, "[TaN] Failed to submit stats to bStats : " + e.getMessage());
         }
     }
 

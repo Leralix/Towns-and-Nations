@@ -2,6 +2,7 @@ package org.leralix.tan.data.territory;
 
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
@@ -335,6 +336,10 @@ public class TownData extends TerritoryData implements TanTown {
             return Optional.of(regionData);
         }
         return Optional.empty();
+    }
+
+    public @Nullable String getRegionID(){
+        return overlordID;
     }
 
 
