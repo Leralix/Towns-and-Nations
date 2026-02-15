@@ -63,10 +63,16 @@ public class UpgradeMenu extends BasicGui {
                 .setName(Lang.LEVEL_LOCKED.get(langType))
                 .asGuiItem(player, langType);
         var lockedLevels = iconManager.get(Material.RED_STAINED_GLASS_PANE);
+        var aboveMaxLevel = iconManager.get(Material.BLACK_STAINED_GLASS_PANE);
 
         for(int i = 2; i < 10; i++){
             int adaptedCursor = i - 2 + scrollIndex;
-            if(adaptedCursor > townLevel){
+
+            if(adaptedCursor >= maxLevel){
+                gui.getFiller().fillBetweenPoints(1, i, 4, i, lockedFiller);
+                gui.setItem(5, i, aboveMaxLevel.setName(Lang.MAX_LEVEL_REACHED.get(langType, Integer.toString(adaptedCursor + 1))).asGuiItem(player, langType));
+            }
+            else if(adaptedCursor > townLevel){
                 gui.getFiller().fillBetweenPoints(1, i, 4, i, lockedFiller);
                 gui.setItem(5, i, lockedLevels.setName(Lang.LEVEL_LOCKED_WITH_LEVEL.get(langType, Integer.toString(adaptedCursor + 1))).asGuiItem(player, langType));
             }
@@ -176,13 +182,22 @@ public class UpgradeMenu extends BasicGui {
     }
 
     private @NotNull GuiItem getRightButton() {
+
+        int maxScroll = maxLevel - 8;
+        int minScroll = 0;
+
         return iconManager.get(IconKey.RIGHT_ARROW)
                 .setName(Lang.GUI_GENERIC_UP.get(langType))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction( action -> {
-                    scrollIndex = Math.min(maxLevel, scrollIndex + 1);
-                    generateUpgrades();
-                    gui.open(player);
+                    if(maxScroll < minScroll){
+                        action.setCancelled(true);
+                    }
+                    else {
+                        scrollIndex = Math.clamp(scrollIndex + 1, 0, maxScroll);
+                        generateUpgrades();
+                        gui.open(player);
+                    }
                 })
                 .asGuiItem(player, langType);
     }

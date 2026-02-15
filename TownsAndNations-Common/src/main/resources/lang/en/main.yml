@@ -630,6 +630,7 @@ language:
   #Upgrades
   GUI_GENERIC_UP: "§aUp"
   GUI_GENERIC_DOWN: "§aDown"
+  MAX_LEVEL_REACHED: "§cMax level reached"
   LEVEL_LOCKED: "§cLevel locked"
   LEVEL_LOCKED_WITH_LEVEL: "§cLevel {0} locked"
   LEVEL_UNLOCKED_WITH_LEVEL: "§aLevel {0}"
