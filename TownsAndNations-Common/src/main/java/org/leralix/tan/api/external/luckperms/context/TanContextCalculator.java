@@ -4,10 +4,8 @@ import net.luckperms.api.context.ContextCalculator;
 import net.luckperms.api.context.ContextConsumer;
 import net.luckperms.api.context.ContextSet;
 import net.luckperms.api.context.ImmutableContextSet;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.leralix.tan.data.building.property.PropertyData;
@@ -25,9 +23,6 @@ import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.war.info.BoundaryType;
-import org.tan.api.TanAPI;
-import org.tan.api.enums.EDiplomacyState;
-import org.tan.api.interfaces.buildings.TanProperty;
 import org.tan.api.interfaces.territory.TanNation;
 import org.tan.api.interfaces.territory.TanRegion;
 import org.tan.api.interfaces.territory.TanTerritory;
@@ -197,7 +192,7 @@ public class TanContextCalculator implements ContextCalculator<Player> {
                 consumerKey = NATION_HAS_UNLOCKED_UPGRADE;
             }
             default -> throw new IllegalStateException("Unexpected value: " + territory);
-        };
+        }
 
         TerritoryData territoryData = TerritoryUtil.getTerritory(territory.getID());
         if(territoryData == null){
