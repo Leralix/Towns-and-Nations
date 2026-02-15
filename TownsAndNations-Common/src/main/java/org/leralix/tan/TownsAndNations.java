@@ -19,6 +19,7 @@ import org.leralix.tan.commands.admin.AdminCommandManager;
 import org.leralix.tan.commands.debug.DebugCommandManager;
 import org.leralix.tan.commands.player.PlayerCommandManager;
 import org.leralix.tan.commands.server.ServerCommandManager;
+import org.leralix.tan.data.upgrade.NewUpgradeStorage;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.economy.TanEconomyStandalone;
 import org.leralix.tan.economy.VaultManager;
@@ -232,8 +233,15 @@ public class TownsAndNations extends JavaPlugin {
         }
 
         if(Bukkit.getPluginManager().isPluginEnabled("LuckPerms")){
+            getLogger().log(Level.INFO, "[TaN] -Registering LuckPerms");
             var luckpermAPI = new LuckpermAPI();
-            luckpermAPI.createContexts();
+            luckpermAPI.createContexts(
+                    playerDataStorage,
+                    townDataStorage,
+                    RegionDataStorage.getInstance(),
+                    NationDataStorage.getInstance(),
+                    NewClaimedChunkStorage.getInstance()
+            );
         }
 
         checkForUpdate();

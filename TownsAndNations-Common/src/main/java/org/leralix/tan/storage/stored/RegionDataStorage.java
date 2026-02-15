@@ -65,6 +65,13 @@ public class RegionDataStorage extends JsonStorage<RegionData> {
         return town.getRegion().orElse(null);
     }
 
+    public RegionData get(TownData townData){
+        if(townData == null){
+            return null;
+        }
+        return dataMap.get(townData.getRegionID());
+    }
+
     public void deleteRegion(RegionData region){
         delete(region.getID());
     }

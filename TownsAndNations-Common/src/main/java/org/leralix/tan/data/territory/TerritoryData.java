@@ -85,7 +85,7 @@ public abstract class TerritoryData implements TanTerritory {
     protected String id;
     protected String name;
     protected String description;
-    private String overlordID;
+    protected String overlordID;
     private Double treasury;
     private final Long dateTimeCreated;
     private ICustomIcon customIcon;

@@ -2,7 +2,8 @@ package org.leralix.tan.api.external.luckperms;
 
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import org.leralix.tan.api.external.luckperms.context.HasTownCalculator;
+import org.leralix.tan.api.external.luckperms.context.TanContextCalculator;
+import org.leralix.tan.storage.stored.*;
 
 /**
  * The Main class of the Luckperms API integration into Towns and Nations
@@ -19,8 +20,22 @@ public class LuckpermAPI {
         this.luckPerms = LuckPermsProvider.get();
     }
 
-    public void createContexts(){
-        luckPerms.getContextManager().registerCalculator(new HasTownCalculator());
+    public void createContexts(
+                               PlayerDataStorage playerDataStorage,
+                               TownDataStorage townDataStorage,
+                               RegionDataStorage regionDataStorage,
+                               NationDataStorage nationDataStorage,
+                               NewClaimedChunkStorage chunkStorage
+    ){
+        luckPerms.getContextManager().registerCalculator(
+                new TanContextCalculator(
+                        playerDataStorage,
+                        townDataStorage,
+                        regionDataStorage,
+                        nationDataStorage,
+                        chunkStorage
+                )
+        );
     }
 
 

@@ -67,11 +67,11 @@ public interface TanProperty extends TanBuilding {
         var p2 =  getSecondCorner().getLocation();
 
         var minX = Math.min(p1.getX(), p2.getX());
-        var maxX = Math.min(p1.getX(), p2.getX());
+        var maxX = Math.max(p1.getX(), p2.getX());
         var minY = Math.min(p1.getY(), p2.getY());
-        var maxY = Math.min(p1.getY(), p2.getY());
+        var maxY = Math.max(p1.getY(), p2.getY());
         var minZ = Math.min(p1.getZ(), p2.getZ());
-        var maxZ = Math.min(p1.getZ(), p2.getZ());
+        var maxZ = Math.max(p1.getZ(), p2.getZ());
 
 
         return minX <= location.getX() && location.getX() <= maxX &&

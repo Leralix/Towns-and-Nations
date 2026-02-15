@@ -3,6 +3,7 @@ package org.leralix.tan.data.territory;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.economy.Budget;
@@ -292,5 +293,9 @@ public class RegionData extends TerritoryData implements TanRegion {
         }
         return Optional.empty();
 
+    }
+
+    public @Nullable String getNationID() {
+        return overlordID;
     }
 }
