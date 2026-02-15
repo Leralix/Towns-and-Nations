@@ -89,6 +89,8 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
         registerEntry(new PlayerTownResidentQuantity(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
         registerEntry(new PlayerTownTag(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
         registerEntry(new PlayerColoredTownTag(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerColoredTownTagOrEmpty(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerColoredTownTagOrCustomText(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
         registerEntry(new TerritoryWithIdExist(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
         registerEntry(new TerritoryWithIdLeaderName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
         registerEntry(new TerritoryWithNameExist(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
