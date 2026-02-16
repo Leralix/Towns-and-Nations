@@ -9,6 +9,7 @@ import org.leralix.tan.events.events.WarStartInternalEvent;
 import org.leralix.tan.storage.typeadapter.AttackResultAdapter;
 import org.leralix.tan.storage.typeadapter.WargoalTypeAdapter;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.war.WarPowerBalance;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.info.AttackResult;
@@ -49,6 +50,9 @@ public class WarStorage extends JsonStorage<War>{
     }
 
     public War newWar(TerritoryData attackingTerritory, TerritoryData defendingTerritory) {
+        if (!WarPowerBalance.isWarAllowed(attackingTerritory, defendingTerritory)) {
+            return null;
+        }
         String newID = getNewID();
         War newWar = new War(
                 newID,
