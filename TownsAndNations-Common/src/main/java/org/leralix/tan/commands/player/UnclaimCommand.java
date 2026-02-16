@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.LandmarkClaimedChunk;
+import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.gui.scope.MapSettings;
 import org.leralix.tan.lang.Lang;
@@ -54,7 +56,8 @@ public class UnclaimCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args) {
 
-        LangType langType = playerDataStorage.get(player).getLang();
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
+        LangType langType = tanPlayer.getLang();
         if (!(args.length == 1 || args.length == 4)) {
             TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
@@ -79,15 +82,19 @@ public class UnclaimCommand extends PlayerSubCommand {
             }
         }
 
-        if (!NewClaimedChunkStorage.getInstance().isChunkClaimed(chunk)) {
-            TanChatUtils.message(player, Lang.CHUNK_NOT_CLAIMED.get(langType));
-            return;
-        }
         ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
-        claimedChunk.unclaimChunk(player, langType);
-        if (args.length == 4) {
-            var mapCommand = new MapCommand(TownsAndNations.getPlugin().getPlayerDataStorage());
-            mapCommand.openMap(player, new MapSettings(args[0], args[1]));
+        if (claimedChunk instanceof TerritoryChunk territoryChunk) {
+            territoryChunk.unclaimChunk(player, tanPlayer, langType);
+            if (args.length == 4) {
+                var mapCommand = new MapCommand(TownsAndNations.getPlugin().getPlayerDataStorage());
+                mapCommand.openMap(player, new MapSettings(args[0], args[1]));
+            }
+        }
+        else if (claimedChunk instanceof LandmarkClaimedChunk){
+            TanChatUtils.message(player, Lang.CANNOT_CLAIM_LANDMARK.get(langType));
+        }
+        else {
+            TanChatUtils.message(player, Lang.CHUNK_NOT_CLAIMED.get(langType));
         }
     }
 }

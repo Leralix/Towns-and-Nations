@@ -448,6 +448,12 @@ attackersPermissions:
 ##  General settings  ##
 ########################
 
+# This section defines double permission for certain actions. They can be disabled.
+doublePermissionCheck:
+  BREAK_CHEST_NEED_INTERACT_CHEST_PERMISSION : true # Breaking a chest in a claimed chunk will require INTERACT_CHEST permission in addition to BREAK_BLOCK
+  BREAK_FURNACE_NEED_BREAK_FURNACE_PERMISSION : true # Breaking a furnace in a claimed chunk will require INTERACT_FURNACE permission in addition to BREAK_BLOCK
+
+
 #Entering claim message
 #Should a territory name be shown with its own color (true) or the default hierarchy color (false) when a
 #player enter claimed chunks.

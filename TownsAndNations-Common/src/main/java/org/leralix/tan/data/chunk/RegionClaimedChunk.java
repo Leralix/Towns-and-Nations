@@ -1,13 +1,9 @@
 package org.leralix.tan.data.chunk;
 
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.territory.ChunkUtil;
@@ -24,11 +20,6 @@ public class RegionClaimedChunk extends TerritoryChunk {
 
     public String getName() {
         return getOwner().getName();
-    }
-
-    @Override
-    protected boolean canPlayerDoInternal(Player player, ITanPlayer tanPlayer, ChunkPermissionType permissionType, Location location) {
-        return commonTerritoryCanPlayerDo(player, permissionType, tanPlayer);
     }
 
     public RegionData getRegion() {

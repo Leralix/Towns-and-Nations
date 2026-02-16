@@ -18,7 +18,7 @@ import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.tan.api.enums.EChunkPermission;
-import org.tan.api.interfaces.*;
+import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
 import org.tan.api.interfaces.territory.TanNation;
 import org.tan.api.interfaces.territory.TanRegion;
@@ -107,8 +107,6 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
     protected abstract boolean canPlayerDoInternal(Player player, ITanPlayer tanPlayer, ChunkPermissionType permissionType, Location location);
 
     protected abstract void playerCantPerformAction(Player player, LangType langType);
-
-    public abstract void unclaimChunk(Player player, LangType langType);
 
     public abstract void playerEnterClaimedArea(Player player, ITanPlayer tanPlayer, boolean displayTerritoryColor);
 
