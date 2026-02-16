@@ -33,11 +33,16 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.info.SideStatus;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 public class ChunkListener implements Listener {
 
     private static final String PROPERTY_SIGN_METADATA = "propertySign";
 
     private final PlayerDataStorage playerDataStorage;
+
+    private final Set<Material> furnaceList = Set.of(Material.FURNACE, Material.BLAST_FURNACE, Material.SMOKER);
 
     public ChunkListener(PlayerDataStorage playerDataStorage) {
         this.playerDataStorage = playerDataStorage;
@@ -62,8 +67,22 @@ public class ChunkListener implements Listener {
             return;
         }
 
-        if (!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK))
+        if (breakedBlock.getType() == Material.CHEST && Constants.getDoublePermissionCheck().isBreackChestNeedinteractChestPermission()
+                && !canPlayerDoAction(loc, player, EnumSet.of(ChunkPermissionType.BREAK_BLOCK, ChunkPermissionType.INTERACT_CHEST))
+        ) {
             event.setCancelled(true);
+        }
+
+
+        if (furnaceList.contains(breakedBlock.getType()) && Constants.getDoublePermissionCheck().isBreackChestNeedinteractChestPermission() &&
+                !canPlayerDoAction(loc, player, EnumSet.of(ChunkPermissionType.BREAK_BLOCK, ChunkPermissionType.INTERACT_FURNACE))
+        ) {
+            event.setCancelled(true);
+        }
+
+        if(!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)){
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
@@ -537,7 +556,11 @@ public class ChunkListener implements Listener {
     }
 
     private boolean canPlayerDoAction(Location location, Player player, ChunkPermissionType permissionType) {
+        return canPlayerDoAction(location, player, EnumSet.of(permissionType));
+    }
 
+
+    private boolean canPlayerDoAction(Location location, Player player, Set<ChunkPermissionType> permissions) {
 
         //Player in admin mode
         if (SudoPlayerStorage.isSudoPlayer(player))
@@ -546,17 +569,24 @@ public class ChunkListener implements Listener {
         ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
         ITanPlayer tanPlayer = playerDataStorage.get(player);
 
+        for(var permission : permissions){
+            if(!test(location, player, permission, claimedChunk, tanPlayer)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean test(Location location, Player player, ChunkPermissionType permission, ClaimedChunk claimedChunk, ITanPlayer tanPlayer) {
         // Check if a player is involved in a war with this territory. Additional actions may be authorized
         if (claimedChunk instanceof TerritoryChunk territoryChunk) {
             SideStatus side = tanPlayer.getWarSideWith(territoryChunk.getOwnerInternal());
-            if (
-                    (side == SideStatus.ALLY && Constants.getPermissionAtWars().canAllyDoAction(permissionType)) ||
-                            (side == SideStatus.ENEMY && Constants.getPermissionAtWars().canEnemyDoAction(permissionType))
-            ) {
+            if (side == SideStatus.ALLY && Constants.getPermissionAtWars().canAllyDoAction(permission) ||
+                    side == SideStatus.ENEMY && Constants.getPermissionAtWars().canEnemyDoAction(permission)) {
                 return true;
             }
         }
 
-        return claimedChunk.canPlayerDo(player, tanPlayer, permissionType, location);
+        return claimedChunk.canPlayerDo(player, tanPlayer, permission, location);
     }
 }

@@ -132,7 +132,7 @@ public class Constants {
     private static GeneralChunkSettings generalChunkSettings;
     private static WildernessRules wildernessRules;
 
-
+    private static DoublePermissionCheck doublePermissionCheck;
     private static boolean allowNonAdjacentChunksForTown;
     private static boolean allowNonAdjacentChunksForRegion;
     private static boolean allowNonAdjacentChunksForNation;
@@ -291,6 +291,7 @@ public class Constants {
         generalChunkSettings = new GeneralChunkSettings(config.getConfigurationSection("chunkGeneralSettings"));
         wildernessRules = new WildernessRules(config.getConfigurationSection("wildernessRules"));
 
+        doublePermissionCheck = new DoublePermissionCheck(config.getConfigurationSection("doublePermissionCheck"));
         allowNonAdjacentChunksForRegion = config.getBoolean("RegionAllowNonAdjacentChunks", false);
         allowNonAdjacentChunksForTown = config.getBoolean("TownAllowNonAdjacentChunks", false);
         allowNonAdjacentChunksForNation = config.getBoolean("NationAllowNonAdjacentChunks", allowNonAdjacentChunksForRegion);
@@ -569,12 +570,8 @@ public class Constants {
         return wildernessRules;
     }
 
-    public static boolean allowNonAdjacentChunksForTown() {
-        return allowNonAdjacentChunksForTown;
-    }
-
-    public static boolean allowNonAdjacentChunksForRegion() {
-        return allowNonAdjacentChunksForRegion;
+    public static DoublePermissionCheck getDoublePermissionCheck() {
+        return doublePermissionCheck;
     }
 
     public static boolean allowNonAdjacentChunksFor(TanTerritory territoryData) {

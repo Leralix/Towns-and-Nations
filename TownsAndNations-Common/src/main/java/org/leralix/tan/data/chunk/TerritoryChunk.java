@@ -4,6 +4,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.building.fort.Fort;
@@ -19,12 +20,12 @@ import org.leralix.tan.data.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.attack.CurrentAttack;
+import org.leralix.tan.war.info.SideStatus;
 import org.tan.api.enums.TerritoryPermission;
 import org.tan.api.interfaces.chunk.TanTerritoryChunk;
 import org.tan.api.interfaces.territory.TanTerritory;
@@ -164,15 +165,13 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
      * @param player   the player trying to unclaim this chunk
      * @param langType the display language for all messages sent to the player
      */
-    public void unclaimChunk(Player player, LangType langType) {
-
-        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(player);
+    public void unclaimChunk(Player player, ITanPlayer tanPlayer, LangType langType) {
 
         TerritoryData ownerTerritory = getOwnerInternal();
 
         //If owner territory contains the player, regular check
         if (ownerTerritory.isPlayerIn(player)) {
-            if (!ownerTerritory.checkPlayerPermission(playerStat, TerritoryPermission.UNCLAIM_CHUNK)) {
+            if (!ownerTerritory.checkPlayerPermission(tanPlayer, TerritoryPermission.UNCLAIM_CHUNK)) {
                 TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), SoundEnum.NOT_ALLOWED);
                 return;
             }
@@ -216,7 +215,7 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
             }
         } else {
             // Special case: one of the player's territories can conquer chunks due to a past war.
-            for (TerritoryData territoryData : playerStat.getAllTerritoriesPlayerIsIn()) {
+            for (TerritoryData territoryData : tanPlayer.getAllTerritoriesPlayerIsIn()) {
                 if (territoryData.canConquerChunk(this)) {
 
                     if (isOccupied()) {
@@ -297,7 +296,27 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
         return !ownerID.equals(occupierID);
     }
 
-    protected boolean commonTerritoryCanPlayerDo(Player player, ChunkPermissionType permissionType, ITanPlayer tanPlayer) {
+    @Override
+    protected boolean canPlayerDoInternal(Player player, ITanPlayer tanPlayer, ChunkPermissionType permissionType, Location location) {
+        SideStatus side = tanPlayer.getWarSideWith(getOwnerInternal());
+        if (side == SideStatus.ALLY && Constants.getPermissionAtWars().canAllyDoAction(permissionType) ||
+                side == SideStatus.ENEMY && Constants.getPermissionAtWars().canEnemyDoAction(permissionType)) {
+            return true;
+        }
+
+        if(this instanceof TownClaimedChunk townClaimedChunk){
+            TownData ownerTown = townClaimedChunk.getTown();
+            PropertyData property = ownerTown.getProperty(location);
+            if (property != null) {
+                //Location is in a property
+                if (property.isPlayerAllowed(permissionType, tanPlayer)) {
+                    return true;
+                } else {
+                    TanChatUtils.message(player, property.getDenyMessage(tanPlayer.getLang()));
+                    return false;
+                }
+            }
+        }
 
         TerritoryData territoryOfChunk = getOwnerInternal();
         //Player is at war with the town

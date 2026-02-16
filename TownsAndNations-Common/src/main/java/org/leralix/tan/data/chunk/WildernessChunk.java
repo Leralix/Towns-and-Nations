@@ -47,11 +47,6 @@ public class WildernessChunk extends ClaimedChunk {
     }
 
     @Override
-    public void unclaimChunk(Player player, LangType langType) {
-        //No need to unclaim wilderness chunks
-    }
-
-    @Override
     public void playerEnterClaimedArea(Player player, ITanPlayer tanPlayer, boolean displayTerritoryColor) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.WILDERNESS.get(tanPlayer)));
     }
