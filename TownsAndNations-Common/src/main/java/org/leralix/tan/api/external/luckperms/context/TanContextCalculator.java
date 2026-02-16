@@ -200,7 +200,6 @@ public class TanContextCalculator implements ContextCalculator<Player> {
         }
         for(Upgrade upgrade : Constants.getUpgradeStorage().getUpgrades(statsType)){
             String key = consumerKey.replace("<upgrade_id>", upgrade.getID());
-            System.out.println(key);
             if(territoryData.getNewLevel().getLevel(upgrade) > 0){
                 consumer.accept(key, TRUE);
             }
