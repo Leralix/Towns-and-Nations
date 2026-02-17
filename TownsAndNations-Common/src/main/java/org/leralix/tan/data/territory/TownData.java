@@ -125,7 +125,9 @@ public class TownData extends TerritoryData implements TanTown {
         townPlayerListId.remove(tanPlayer.getID());
         tanPlayer.leaveTown();
         TownDataStorage.getInstance().save();
-        PrefixUtil.updatePrefix(tanPlayer.getPlayer());
+        Player player = tanPlayer.getPlayer();
+        TeamUtils.setIndividualScoreBoard(player);
+        PrefixUtil.updatePrefix(player);
     }
 
     @Override

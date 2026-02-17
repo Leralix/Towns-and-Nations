@@ -68,7 +68,7 @@ public class TeamUtils {
 
         for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
 
-            if(PlayerDataStorage.getInstance().get(otherPlayer).hasTown()){
+            if(playerDataStorage.get(otherPlayer).hasTown()){
                 addPlayerToCorrectTeam(otherPlayer, player);
                 if(!otherPlayer.getUniqueId().equals(player.getUniqueId())) //If player is not himself, no need to do it twice
                     addPlayerToCorrectTeam(player, otherPlayer);
@@ -83,7 +83,6 @@ public class TeamUtils {
      */
     public static void addPlayerToCorrectTeam(Player player, Player playerToAdd) {
 
-        PlayerDataStorage playerDataStorage = PlayerDataStorage.getInstance();
         ITanPlayer tanPlayer = playerDataStorage.get(player);
         ITanPlayer tanPlayerToAdd = playerDataStorage.get(playerToAdd);
 
