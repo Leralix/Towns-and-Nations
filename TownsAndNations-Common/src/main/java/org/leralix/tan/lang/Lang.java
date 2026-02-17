@@ -9,7 +9,6 @@ import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.utils.constants.Constants;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
@@ -290,6 +289,7 @@ public enum Lang {
     GUI_TOWN_LEVEL_ICON,
     GUI_TOWN_LEVEL_ICON_DESC1,
     GUI_TERRITORY_LEVEL_ICON_DESC1,
+    GUI_TERRITORY_LEVEL_LOCKED,
     GUI_TOWN_SETTINGS_ICON,
     GUI_TOWN_SETTINGS_ICON_DESC1,
     GUI_REGION_SETTINGS_ICON_DESC1,

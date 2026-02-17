@@ -72,7 +72,7 @@ nationLevelExpression:
   base: 400.0
 
 # Town upgrades
-TownMaxLevel: 8
+TownMaxLevel: 8 # "0" will lock the upgrade menu.
 upgrades:
 
   CITY_HALL: #"City hall" tag is already unlocked when creating a town. Use it to store default values of yur towns
@@ -505,7 +505,7 @@ upgrades:
     benefits:
       LANDMARK_BONUS: 50
 
-RegionMaxLevel: 10
+RegionMaxLevel: 0 # "0" will lock the upgrade menu.
 region_upgrades:
 
   CITY_HALL:
@@ -522,7 +522,7 @@ region_upgrades:
       AUTHORIZED_BIOMES: [ 'ALL' ]
       CHUNK_UPKEEP_COST: 0.05
 
-NationMaxLevel: 12
+NationMaxLevel: 0 # "0" will lock the upgrade menu.
 nation_upgrades:
 
   CITY_HALL:

@@ -4,7 +4,9 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.data.territory.cosmetic.CustomIcon;
@@ -20,6 +22,7 @@ import org.leralix.tan.gui.user.territory.relation.OpenDiplomacyMenu;
 import org.leralix.tan.gui.user.territory.upgrade.UpgradeMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -75,12 +78,31 @@ public abstract class TerritoryMenu extends BasicGui {
     }
 
     protected GuiItem getLevelButton() {
+
+        boolean canTerritoryBeUpgraded = Constants.getTerritoryMaxLevel(territoryData) > 0;
+
         return IconManager.getInstance().get(IconKey.TERRITORY_LEVEL_ICON)
                 .setName(Lang.GUI_TOWN_LEVEL_ICON.get(tanPlayer.getLang()))
-                .setDescription(territoryData instanceof TownData ? Lang.GUI_TOWN_LEVEL_ICON_DESC1.get() : Lang.GUI_TERRITORY_LEVEL_ICON_DESC1.get())
+                .setDescription(getUpgradeDescription(canTerritoryBeUpgraded))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.UPGRADE_TOWN))
-                .setAction(event -> new UpgradeMenu(player, territoryData))
+                .setAction(event -> {
+                    if (canTerritoryBeUpgraded) {
+                        new UpgradeMenu(player, territoryData);
+                    } else {
+                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                        event.setCancelled(true);
+                    }
+                })
                 .asGuiItem(player, langType);
+    }
+
+    private @NotNull FilledLang getUpgradeDescription(boolean canTerritoryBeUpgraded) {
+        if(canTerritoryBeUpgraded){
+            return territoryData instanceof TownData ?
+                    Lang.GUI_TOWN_LEVEL_ICON_DESC1.get() :
+                    Lang.GUI_TERRITORY_LEVEL_ICON_DESC1.get();
+        }
+        return Lang.GUI_TERRITORY_LEVEL_LOCKED.get();
     }
 
     protected GuiItem getTownTreasuryButton() {
@@ -151,7 +173,7 @@ public abstract class TerritoryMenu extends BasicGui {
                 .asGuiItem(player, langType);
     }
 
-    GuiItem createSettingsButton(FilledLang filledLang, Consumer<Player> action){
+    GuiItem createSettingsButton(FilledLang filledLang, Consumer<Player> action) {
         return iconManager.get(IconKey.TERRITORY_SETTINGS_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(langType))
                 .setDescription(filledLang)
