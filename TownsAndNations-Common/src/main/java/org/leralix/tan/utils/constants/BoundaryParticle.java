@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class BoundaryParticle {
 
-    private static Map<BoundaryType, Particle> boundaries;
+    private final Map<BoundaryType, Particle> boundaries;
 
     public BoundaryParticle(ConfigurationSection config){
         boundaries = new EnumMap<>(BoundaryType.class);
