@@ -19,7 +19,6 @@ import org.leralix.tan.commands.admin.AdminCommandManager;
 import org.leralix.tan.commands.debug.DebugCommandManager;
 import org.leralix.tan.commands.player.PlayerCommandManager;
 import org.leralix.tan.commands.server.ServerCommandManager;
-import org.leralix.tan.data.upgrade.NewUpgradeStorage;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.economy.TanEconomyStandalone;
 import org.leralix.tan.economy.VaultManager;
@@ -140,7 +139,7 @@ public class TownsAndNations extends JavaPlugin {
 
         if (SphereLib.getPluginVersion().isOlderThan(MINIMUM_SUPPORTING_SPHERELIB)) {
             getLogger().log(Level.SEVERE, "[TaN] You need to update SphereLib to use this version of Towns and Nations");
-            getLogger().log(Level.SEVERE, "[TaN] Please update SphereLib to version {} or higher", MINIMUM_SUPPORTING_SPHERELIB);
+            getLogger().log(Level.SEVERE, "[TaN] Please update SphereLib to version {0} or higher", MINIMUM_SUPPORTING_SPHERELIB);
             getLogger().log(Level.SEVERE, "[TaN] Disabling plugin");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
@@ -346,6 +345,7 @@ public class TownsAndNations extends JavaPlugin {
         }
 
         getLogger().info("[TaN] Plugin disabled");
+        getLogger().info("[00:23:37 INFO]: ----------------Towns & Nations------------------\n");
     }
 
     /**
