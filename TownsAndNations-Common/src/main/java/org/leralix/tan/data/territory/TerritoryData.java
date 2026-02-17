@@ -11,8 +11,6 @@ import org.bukkit.block.banner.Pattern;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.lib.position.Vector2D;
-import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.RandomUtil;
 import org.leralix.tan.data.building.Building;
 import org.leralix.tan.data.building.fort.Fort;
@@ -1061,15 +1059,6 @@ public abstract class TerritoryData implements TanTerritory {
     public String getLeaderName() {
         if (this.haveNoLeader()) return Lang.NO_LEADER.getDefault();
         return getLeaderData().getNameStored();
-    }
-
-    public void registerFort(Vector3D location) {
-        Fort fort = FortStorage.getInstance().register(location, this);
-
-        Vector2D flagPosition = fort.getPosition();
-        flagPosition.getWorld().getChunkAt(flagPosition.getX(), flagPosition.getZ());
-
-        addOwnedFort(fort);
     }
 
     public List<String> getOwnedFortIDs() {

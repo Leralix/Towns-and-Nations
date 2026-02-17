@@ -7,7 +7,9 @@ import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.building.fort.Fort;
 import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -64,7 +66,8 @@ class TownClaimedChunkTest extends BasicTest {
 
         claimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
         ClaimedChunk claimedChunkToKeep = claimedChunkStorage.claimTownChunk(world.getChunkAt(0, 1), townData.getID());
-        townData.registerFort(new Vector3D(10, 0, 20, world.getUID().toString()));
+        Fort fort = FortStorage.getInstance().register(new Vector3D(10, 0, 20, world.getUID().toString()), townData);
+        townData.addOwnedFort(fort);
 
         TerritoryChunk townClaimedChunk = new TownClaimedChunk(world.getChunkAt(0, 0), townData.getID());
         townClaimedChunk.notifyUpdate();

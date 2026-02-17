@@ -22,7 +22,6 @@ public class FortData extends Fort{
         this.name = name;
         this.ownerID = owningTerritory.getID();
         this.occupierID = owningTerritory.getID();
-        spawnFlag();
     }
 
 

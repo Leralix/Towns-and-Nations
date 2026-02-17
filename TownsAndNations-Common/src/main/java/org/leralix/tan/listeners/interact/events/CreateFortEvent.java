@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.leralix.lib.position.Vector3D;
+import org.leralix.tan.data.building.fort.Fort;
 import org.leralix.tan.data.chunk.ClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.chunk.WildernessChunk;
@@ -15,6 +16,7 @@ import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.ListenerState;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
+import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -87,7 +89,9 @@ public class CreateFortEvent extends RightClickListenerEvent {
 
     private void createFort(Block block) {
         Vector3D position = new Vector3D(block.getLocation());
-        tanTerritory.registerFort(position);
+        Fort fort = FortStorage.getInstance().register(position, tanTerritory);
+        fort.spawnFlag();
+        tanTerritory.addOwnedFort(fort);
     }
 
 
