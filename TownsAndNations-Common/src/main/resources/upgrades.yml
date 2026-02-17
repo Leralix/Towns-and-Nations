@@ -534,7 +534,4 @@ nation_upgrades:
     prerequisites:
       TOWN_LEVEL: 0
     benefits:
-      CHUNK_CAP: infinity
-      CHUNK_COST: 1
-      AUTHORIZED_BIOMES: [ 'ALL' ]
-      CHUNK_UPKEEP_COST: 0.1
+      CHUNK_CAP: 0
