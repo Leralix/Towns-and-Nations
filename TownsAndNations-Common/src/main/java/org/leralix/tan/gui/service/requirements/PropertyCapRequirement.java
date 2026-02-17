@@ -28,6 +28,6 @@ public class PropertyCapRequirement extends IndividualRequirement{
 
     @Override
     public boolean isInvalid() {
-        return territoryData.getProperties().size() > maxAmount;
+        return territoryData.getProperties().size() >= maxAmount;
     }
 }
