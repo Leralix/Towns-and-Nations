@@ -36,10 +36,10 @@ class TownClaimedChunkTest extends BasicTest {
         TownData townData = townDataStorage.newTown("Town");
 
         claimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
-        claimedChunkStorage.claimTownChunk(world.getChunkAt(0, 1), townData.getID());
-        TerritoryChunk townClaimedChunk = new TownClaimedChunk(world.getChunkAt(0, 0), townData.getID());
+        var middleChunk = claimedChunkStorage.claimTownChunk(world.getChunkAt(2, 0), townData.getID());
+        claimedChunkStorage.claimTownChunk(world.getChunkAt(3, 0), townData.getID());
 
-        townClaimedChunk.notifyUpdate();
+        claimedChunkStorage.unclaimChunkAndUpdate(middleChunk);
 
         assertEquals(0, claimedChunkStorage.getClaimedChunksMap().size());
     }
@@ -51,10 +51,10 @@ class TownClaimedChunkTest extends BasicTest {
 
         claimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
         townData.setCapitalLocation(new Vector2D(1,0, world.getUID().toString()));
-        claimedChunkStorage.claimTownChunk(world.getChunkAt(0, 1), townData.getID());
+        var chunk = claimedChunkStorage.claimTownChunk(world.getChunkAt(2, 0), townData.getID());
+        claimedChunkStorage.claimTownChunk(world.getChunkAt(3, 0), townData.getID());
 
-        TerritoryChunk townClaimedChunk = new TownClaimedChunk(world.getChunkAt(0, 0), townData.getID());
-        townClaimedChunk.notifyUpdate();
+        NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(chunk);
 
         assertEquals(1, claimedChunkStorage.getClaimedChunksMap().size());
     }
@@ -64,9 +64,8 @@ class TownClaimedChunkTest extends BasicTest {
 
         TownData townData = townDataStorage.newTown("Town");
 
-        claimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
         ClaimedChunk claimedChunkToKeep = claimedChunkStorage.claimTownChunk(world.getChunkAt(0, 1), townData.getID());
-        Fort fort = FortStorage.getInstance().register(new Vector3D(10, 0, 20, world.getUID().toString()), townData);
+        Fort fort = FortStorage.getInstance().register(new Vector3D(0, 0, 0, world.getUID().toString()), townData);
         townData.addOwnedFort(fort);
 
         TerritoryChunk townClaimedChunk = new TownClaimedChunk(world.getChunkAt(0, 0), townData.getID());
