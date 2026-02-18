@@ -35,6 +35,7 @@ import org.leralix.tan.utils.Range;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
+import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.buildings.TanLandmark;
 import org.tan.api.interfaces.buildings.TanProperty;
@@ -319,6 +320,28 @@ public class TownData extends TerritoryData implements TanTown {
         if (getNumberOfClaimedChunk() == 1) {
             setCapitalLocation(chunkClaimed.getVector2D());
         }
+    }
+
+    @Override
+    protected boolean isPositionClaimable(Player player, Chunk chunk, ClaimedChunk chunkData, LangType langType) {
+
+        // Rules are different for the first claimed chunk.
+        if (getNumberOfClaimedChunk() == 0) {
+            int bufferZone = Constants.territoryClaimBufferZone();
+            // If the chunk is in the buffer zone of another territory, it cannot be claimed.
+            if (ChunkUtil.isInBufferZone(chunkData, this, bufferZone)) {
+                TanChatUtils.message(player, Lang.CHUNK_IN_BUFFER_ZONE.get(langType, Integer.toString(bufferZone)));
+                return false;
+            }
+            return true;
+        }
+
+        // Else, the chunk must be adjacent to at least one chunk of the territory.
+        if (!NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
+            TanChatUtils.message(player, Lang.CHUNK_NOT_ADJACENT.get(langType));
+            return false;
+        }
+        return true;
     }
 
 
