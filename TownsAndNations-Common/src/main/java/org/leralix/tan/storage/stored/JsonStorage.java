@@ -112,12 +112,10 @@ public abstract class JsonStorage<T> {
 
     public void delete(String id) {
         dataMap.remove(id);
-        save();
     }
 
     public void put(String id, T obj) {
         dataMap.put(id, obj);
-        save();
     }
 
     public abstract void reset();

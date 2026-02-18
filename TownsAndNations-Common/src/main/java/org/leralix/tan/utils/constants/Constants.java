@@ -15,10 +15,6 @@ import org.leralix.tan.data.upgrade.NewUpgradeStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.utils.Range;
 import org.leralix.tan.war.WarTimeSlot;
-import org.tan.api.interfaces.territory.TanNation;
-import org.tan.api.interfaces.territory.TanRegion;
-import org.tan.api.interfaces.territory.TanTerritory;
-import org.tan.api.interfaces.territory.TanTown;
 
 import java.util.*;
 
@@ -574,17 +570,34 @@ public class Constants {
         return doublePermissionCheck;
     }
 
-    public static boolean allowNonAdjacentChunksFor(TanTerritory territoryData) {
-        if (territoryData instanceof TanTown) {
-            return allowNonAdjacentChunksForTown;
+    public static boolean allowNonAdjacentChunksFor(TerritoryData territoryData) {
+
+        ChunkType chunkType = switch (territoryData){
+            case TownData ignored -> ChunkType.TOWN;
+            case RegionData ignored -> ChunkType.REGION;
+            case NationData ignored -> ChunkType.NATION;
+            default -> throw new IllegalArgumentException("Unknown territory data type: " + territoryData.getClass().getName());
+        };
+
+        return allowNonAdjacentChunksFor(chunkType);
+    }
+
+    public static boolean allowNonAdjacentChunksFor(ChunkType chunkType) {
+
+        switch (chunkType){
+            case TOWN -> {
+                return allowNonAdjacentChunksForTown;
+            }
+            case REGION -> {
+                return allowNonAdjacentChunksForRegion;
+            }
+            case NATION -> {
+                return allowNonAdjacentChunksForNation;
+            }
+            default -> {
+                return false;
+            }
         }
-        if (territoryData instanceof TanRegion) {
-            return allowNonAdjacentChunksForRegion;
-        }
-        if (territoryData instanceof TanNation) {
-            return allowNonAdjacentChunksForNation;
-        }
-        return false;
     }
 
     public static boolean useStandaloneEconomy() {

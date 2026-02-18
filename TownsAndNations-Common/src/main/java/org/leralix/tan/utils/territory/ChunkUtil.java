@@ -50,28 +50,19 @@ public class ChunkUtil {
     }
 
     /**
-     * This method iterate over all chunks around a newly unclaimed chunk and verify is they should be unclaimed.
+     * Check all chunk around the unclaimed chunk to see if they are still supplied.
      *
-     * @param unclaimedChunk the newly unclaimed chunk
+     * @param chunkToAnalyse the newly unclaimed chunk
      */
-    public static void unclaimIfNoLongerSupplied(TerritoryChunk unclaimedChunk) {
+    public static void unclaimIfNoLongerSupplied(TerritoryChunk chunkToAnalyse) {
 
-        List<ChunkPolygon> polygonsAnalysed = new ArrayList<>();
-
-        for (ClaimedChunk claimedChunk : NewClaimedChunkStorage.getInstance().getEightAjacentChunks(unclaimedChunk)) {
-
-            if (claimedChunk instanceof TerritoryChunk territoryChunk) {
-                if (alreadyAnalysed(territoryChunk, polygonsAnalysed)) {
-                    continue;
-                }
-
-                ChunkPolygon chunkPolygon = ChunkUtil.getPolygon(territoryChunk);
-
-                if (!chunkPolygon.isSupplied()) {
-                    chunkPolygon.unclaimAll();
-                }
-                polygonsAnalysed.add(chunkPolygon);
-            }
+        // It is possible that this chunk has already been unclaimed. If so, do not analyse
+        if(!NewClaimedChunkStorage.getInstance().isChunkClaimed(chunkToAnalyse)){
+            return;
+        }
+        ChunkPolygon chunkPolygon = ChunkUtil.getPolygon(chunkToAnalyse);
+        if (!chunkPolygon.isSupplied()) {
+            chunkPolygon.unclaimAll();
         }
     }
 

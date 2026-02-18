@@ -101,7 +101,6 @@ public class TownDataStorage extends JsonStorage<TownData>{
 
     public void deleteTown(TownData townData) {
         dataMap.remove(townData.getID());
-        save();
     }
 
 

@@ -195,7 +195,7 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
                 return;
             }
             if (Constants.preventOrphanChunks() &&
-                    !Constants.allowNonAdjacentChunksFor(ownerTerritory) &&
+                    !Constants.allowNonAdjacentChunksFor(getType()) &&
                     ChunkUtil.doesUnclaimCauseOrphan(this)
             ) {
                 TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_BECAUSE_CREATE_ORPHAN.get(langType));
@@ -356,5 +356,12 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
 
         //This chunk is held by a vassal of the territory
         return territoryToAllow.getVassalsID().contains(ownerID);
+    }
+
+    @Override
+    public void notifyUpdate() {
+        if (!Constants.allowNonAdjacentChunksFor(getType())) {
+            ChunkUtil.unclaimIfNoLongerSupplied(this);
+        }
     }
 }

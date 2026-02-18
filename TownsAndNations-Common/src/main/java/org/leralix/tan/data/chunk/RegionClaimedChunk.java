@@ -5,8 +5,6 @@ import org.bukkit.entity.EntityType;
 import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.territory.ChunkUtil;
 
 public class RegionClaimedChunk extends TerritoryChunk {
 
@@ -44,12 +42,4 @@ public class RegionClaimedChunk extends TerritoryChunk {
     public ChunkType getType() {
         return ChunkType.REGION;
     }
-
-    @Override
-    public void notifyUpdate() {
-        if (!Constants.allowNonAdjacentChunksFor(getOwner())) {
-            ChunkUtil.unclaimIfNoLongerSupplied(this);
-        }
-    }
-
 }

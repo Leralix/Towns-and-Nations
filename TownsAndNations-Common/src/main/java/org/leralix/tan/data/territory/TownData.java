@@ -113,7 +113,6 @@ public class TownData extends TerritoryData implements TanTown {
         EventManager.getInstance().callEvent(new PlayerJoinTownAcceptedInternalEvent(tanNewPlayer, this));
         TeamUtils.updateAllScoreboardColor();
         PrefixUtil.updatePrefix(tanNewPlayer.getPlayer());
-        TownDataStorage.getInstance().save();
     }
 
     public void removePlayer(ITanPlayer tanPlayer) {
@@ -124,7 +123,6 @@ public class TownData extends TerritoryData implements TanTown {
         getRank(tanPlayer).removePlayer(tanPlayer);
         townPlayerListId.remove(tanPlayer.getID());
         tanPlayer.leaveTown();
-        TownDataStorage.getInstance().save();
         Player player = tanPlayer.getPlayer();
         TeamUtils.setIndividualScoreBoard(player);
         PrefixUtil.updatePrefix(player);

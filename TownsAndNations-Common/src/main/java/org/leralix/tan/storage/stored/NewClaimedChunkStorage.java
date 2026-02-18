@@ -58,6 +58,10 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk> {
         return dataMap.containsKey(getChunkKey(chunk));
     }
 
+    public boolean isChunkClaimed(ClaimedChunk chunk) {
+        return dataMap.containsKey(getChunkKey(chunk));
+    }
+
     public Collection<TerritoryChunk> getAllChunkFrom(TerritoryData territoryData) {
         return getAllChunkFrom(territoryData.getID());
     }
@@ -75,23 +79,19 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk> {
     public TownClaimedChunk claimTownChunk(Chunk chunk, String ownerID) {
         TownClaimedChunk townClaimedChunk = new TownClaimedChunk(chunk, ownerID);
         dataMap.put(getChunkKey(chunk), townClaimedChunk);
-        save();
         return townClaimedChunk;
     }
 
     public void claimRegionChunk(Chunk chunk, String ownerID) {
         dataMap.put(getChunkKey(chunk), new RegionClaimedChunk(chunk, ownerID));
-        save();
     }
 
     public void claimNationChunk(Chunk chunk, String ownerID) {
         dataMap.put(getChunkKey(chunk), new NationClaimedChunk(chunk, ownerID));
-        save();
     }
 
     public void claimLandmarkChunk(Chunk chunk, String ownerID) {
         dataMap.put(getChunkKey(chunk), new LandmarkClaimedChunk(chunk, ownerID));
-        save();
     }
 
     public boolean isAllAdjacentChunksClaimedBySameTerritory(Chunk chunk, String territoryID) {
@@ -140,12 +140,13 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk> {
 
     public void unclaimChunkAndUpdate(ClaimedChunk claimedChunk) {
         unclaimChunk(claimedChunk);
-        claimedChunk.notifyUpdate();
+        for(ClaimedChunk adjacentChunk : getEightAjacentChunks(claimedChunk)) {
+            adjacentChunk.notifyUpdate();
+        }
     }
 
     public void unclaimChunk(ClaimedChunk claimedChunk) {
         dataMap.remove(getChunkKey(claimedChunk));
-        save();
     }
 
     public void unclaimChunk(Chunk chunk) {
@@ -271,7 +272,7 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk> {
         for (ClaimedChunk chunk : new ArrayList<>(dataMap.values())) {
             if (chunk.getWorld() == null) {
                 unclaimChunk(chunk);
-                TownsAndNations.getPlugin().getLogger().warning("Deleted claimed chunk " + chunk.getX() + "," + chunk.getZ() + " due to invalid world.");
+                TownsAndNations.getPlugin().getLogger().warning("Deleted claimed chunk " + chunk.getX() + "," + chunk.getZ() + " due to invalid world."); //TODO : only one log at the end of the loop
             }
         }
     }

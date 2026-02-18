@@ -206,7 +206,6 @@ public class Landmark implements TanLandmark {
     public void setReward(ItemStack itemOnCursor) {
         this.amount = itemOnCursor.getAmount();
         this.materialName = itemOnCursor.getType().name();
-        LandmarkStorage.getInstance().save();
     }
 
     public Location getLocation() {

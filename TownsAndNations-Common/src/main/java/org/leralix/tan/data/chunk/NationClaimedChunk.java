@@ -3,8 +3,6 @@ package org.leralix.tan.data.chunk;
 import org.bukkit.Chunk;
 import org.bukkit.entity.EntityType;
 import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.territory.ChunkUtil;
 
 public class NationClaimedChunk extends TerritoryChunk {
 
@@ -37,12 +35,5 @@ public class NationClaimedChunk extends TerritoryChunk {
     @Override
     public ChunkType getType() {
         return ChunkType.NATION;
-    }
-
-    @Override
-    public void notifyUpdate() {
-        if (!Constants.allowNonAdjacentChunksFor(getOwner())) {
-            ChunkUtil.unclaimIfNoLongerSupplied(this);
-        }
     }
 }
