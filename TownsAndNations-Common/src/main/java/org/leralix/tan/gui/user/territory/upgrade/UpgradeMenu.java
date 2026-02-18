@@ -194,7 +194,7 @@ public class UpgradeMenu extends BasicGui {
                         action.setCancelled(true);
                     }
                     else {
-                        scrollIndex = Math.clamp(scrollIndex + 1, 0, maxScroll);
+                        scrollIndex = Math.min(scrollIndex + 1, maxScroll);
                         generateUpgrades();
                         gui.open(player);
                     }
