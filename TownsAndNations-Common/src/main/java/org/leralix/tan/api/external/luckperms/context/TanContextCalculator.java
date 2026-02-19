@@ -30,35 +30,35 @@ import org.tan.api.interfaces.territory.TanTown;
 
 public class TanContextCalculator implements ContextCalculator<Player> {
 
-    private static final String IS_AT_WAR = "is at war";
+    private static final String IS_AT_WAR = "tan:is-at-war";
 
-    private static final String HAS_TOWN = "has town";
-    private static final String HAS_REGION = "has region";
-    private static final String HAS_NATION = "has nation";
+    private static final String HAS_TOWN = "tan:has-town";
+    private static final String HAS_REGION = "tan:has-region";
+    private static final String HAS_NATION = "tan:has-nation";
 
-    private static final String IS_TOWN_LEADER = "is town leader";
-    private static final String IS_REGION_LEADER = "is region leader";
-    private static final String IS_NATION_LEADER = "is nation leader";
+    private static final String IS_TOWN_LEADER = "tan:is-town-leader";
+    private static final String IS_REGION_LEADER = "tan:is-region-leader";
+    private static final String IS_NATION_LEADER = "tan:is-nation-leader";
 
-    private static final String IS_IN_FRIENDLY_CLAIM = "is in friendly claims";
-    private static final String IS_IN_NEUTRAL_CLAIM = "is in neutral claims";
-    private static final String IS_IN_HOSTILE_CLAIM = "is in enemy claims";
-    private static final String IS_IN_WILDERNESS_CLAIM = "is in wilderness claims";
+    private static final String IS_IN_FRIENDLY_CLAIM = "tan:is-in-friendly-claims";
+    private static final String IS_IN_NEUTRAL_CLAIM = "tan:is-in-neutral-claims";
+    private static final String IS_IN_HOSTILE_CLAIM = "tan:is-in-enemy-claims";
+    private static final String IS_IN_WILDERNESS_CLAIM = "tan:is-in-wilderness-claims";
 
-    private static final String IS_IN_OWNED_PROPERTY = "is in owned property";
-    private static final String IS_IN_RENTED_PROPERTY = "is in rented property";
+    private static final String IS_IN_OWNED_PROPERTY = "tan:is-in-owned-property";
+    private static final String IS_IN_RENTED_PROPERTY = "tan:is-in-rented-property";
 
-    private static final String IS_PART_OF_TOWN = "is part of town";
-    private static final String IS_PART_OF_REGION = "is part of region";
-    private static final String IS_PART_OF_NATION = "is part of nation";
-    private static final String TERRITORY_NAME = "territory name";
+    private static final String IS_PART_OF_TOWN = "tan:is-part-of-town";
+    private static final String IS_PART_OF_REGION = "tan:is-part-of-region";
+    private static final String IS_PART_OF_NATION = "tan:is-part-of-nation";
+    private static final String TERRITORY_NAME = "tan:territory-name";
 
-    private static final String TOWN_HAS_UNLOCKED_UPGRADE = "town has unlocked <upgrade_id>";
-    private static final String REGION_HAS_UNLOCKED_UPGRADE = "region has unlocked <upgrade_id>";
-    private static final String NATION_HAS_UNLOCKED_UPGRADE = "nation has unlocked <upgrade_id>";
-    private static final String UPGRADE_NAME = "upgrade ID";
+    private static final String TOWN_HAS_UNLOCKED_UPGRADE = "tan:town-has-unlocked-<upgrade_id>";
+    private static final String REGION_HAS_UNLOCKED_UPGRADE = "tan:region-has-unlocked-<upgrade_id>";
+    private static final String NATION_HAS_UNLOCKED_UPGRADE = "tan:nation-has-unlocked-<upgrade_id>";
 
 
+    private static final String UPGRADE_NAME = "tan:upgrade ID";
     private static final String TRUE = "true";
     private static final String FALSE = "false";
 
@@ -199,7 +199,7 @@ public class TanContextCalculator implements ContextCalculator<Player> {
             return;
         }
         for(Upgrade upgrade : Constants.getUpgradeStorage().getUpgrades(statsType)){
-            String key = consumerKey.replace("<upgrade_id>", upgrade.getID());
+            String key = consumerKey.replace("upgrade_id", upgrade.getID());
             if(territoryData.getNewLevel().getLevel(upgrade) > 0){
                 consumer.accept(key, TRUE);
             }
