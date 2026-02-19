@@ -82,8 +82,10 @@ public class NewClaimedChunkStorage extends JsonStorage<ClaimedChunk> {
         return townClaimedChunk;
     }
 
-    public void claimRegionChunk(Chunk chunk, String ownerID) {
-        dataMap.put(getChunkKey(chunk), new RegionClaimedChunk(chunk, ownerID));
+    public RegionClaimedChunk claimRegionChunk(Chunk chunk, String ownerID) {
+        RegionClaimedChunk regionClaimedChunk = new RegionClaimedChunk(chunk, ownerID);
+        dataMap.put(getChunkKey(chunk), regionClaimedChunk);
+        return regionClaimedChunk;
     }
 
     public void claimNationChunk(Chunk chunk, String ownerID) {

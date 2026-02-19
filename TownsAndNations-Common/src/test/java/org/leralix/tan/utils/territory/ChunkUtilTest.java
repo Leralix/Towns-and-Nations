@@ -3,12 +3,18 @@ package org.leralix.tan.utils.territory;
 import org.bukkit.World;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.BasicTest;
+import org.leralix.tan.data.building.fort.Fort;
 import org.leralix.tan.data.chunk.ClaimedChunk;
 import org.leralix.tan.data.chunk.TownClaimedChunk;
+import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.RegionDataStorage;
 
 import java.util.Collection;
 
@@ -94,7 +100,10 @@ class ChunkUtilTest extends BasicTest {
         NewClaimedChunkStorage newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
 
         TownClaimedChunk chunkWithBuilding = newClaimedChunkStorage.claimTownChunk(world.getChunkAt(0, 0), townData.getID());
-        townData.registerFort(new Vector3D(0, 0, 0, world.getUID().toString()));
+        Fort fort = FortStorage.getInstance().register(new Vector3D(0, 0, 0, world.getUID().toString()), townData);
+        fort.spawnFlag();
+        townData.addOwnedFort(fort);
+
 
         assertTrue(ChunkUtil.chunkContainsBuildings(chunkWithBuilding, townData));
     }
@@ -128,5 +137,67 @@ class ChunkUtilTest extends BasicTest {
         assertTrue(ChunkUtil.isInBufferZone(chunkInBuffer, townToClaim, buffer));
         assertFalse(ChunkUtil.isInBufferZone(chunkOutsideBuffer, townToClaim, buffer));
 
+    }
+
+    @Test
+    void unclaimIfNoLongerSupplied_town(){
+        TownData townToClaim = townDataStorage.newTown("town");
+        NewClaimedChunkStorage newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
+
+        var firstChunk = newClaimedChunkStorage.claimTownChunk(world.getChunkAt(0, 0), townToClaim.getID());
+        townToClaim.setCapitalLocation(new Vector2D(0, 0, world.getUID().toString()));
+        var middleChunk = newClaimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townToClaim.getID());
+        newClaimedChunkStorage.claimTownChunk(world.getChunkAt(2, 0), townToClaim.getID());
+
+        newClaimedChunkStorage.unclaimChunkAndUpdate(middleChunk);
+
+        assertEquals(1, newClaimedChunkStorage.getAll().size());
+        assertEquals(firstChunk, newClaimedChunkStorage.getAll().values().iterator().next());
+    }
+
+    /**
+     * Testing that chunk not linked to any vassal claims are unclaimed.
+     */
+    @Test
+    void unclaimIfNoLongerSupplied_region_notLinkedToTown(){
+        ITanPlayer player = playerDataStorage.register(server.addPlayer("player"));
+        TownData townToClaim = townDataStorage.newTown("town", player);
+        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("region", townToClaim);
+
+        NewClaimedChunkStorage newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
+
+        var firstChunk = newClaimedChunkStorage.claimTownChunk(world.getChunkAt(0, 0), townToClaim.getID());
+        townToClaim.setCapitalLocation(new Vector2D(0, 0, world.getUID().toString()));
+
+        var middleChunk = newClaimedChunkStorage.claimRegionChunk(world.getChunkAt(1, 0), regionData.getID());
+        newClaimedChunkStorage.claimRegionChunk(world.getChunkAt(2, 0), regionData.getID());
+
+        newClaimedChunkStorage.unclaimChunkAndUpdate(middleChunk);
+
+        assertEquals(1, newClaimedChunkStorage.getAll().size());
+        assertEquals(firstChunk, newClaimedChunkStorage.getAll().values().iterator().next());
+    }
+
+    /**
+     * Testing that chunk not linked to any vassal claims are unclaimed.
+     */
+    @Test
+    void unclaimIfNoLongerSupplied_region_LinkedToTown(){
+        ITanPlayer player = playerDataStorage.register(server.addPlayer("player"));
+        TownData townToClaim = townDataStorage.newTown("town", player);
+        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("region", townToClaim);
+
+        NewClaimedChunkStorage newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
+        townToClaim.setCapitalLocation(new Vector2D(0, 0, world.getUID().toString()));
+
+        var firstChunk = newClaimedChunkStorage.claimTownChunk(world.getChunkAt(0, 0), townToClaim.getID());
+        var middleChunk = newClaimedChunkStorage.claimRegionChunk(world.getChunkAt(1, 0), regionData.getID());
+        var lastChunk = newClaimedChunkStorage.claimRegionChunk(world.getChunkAt(2, 0), regionData.getID());
+
+        newClaimedChunkStorage.unclaimChunkAndUpdate(lastChunk);
+
+        assertEquals(2, newClaimedChunkStorage.getAll().size());
+        assertTrue(newClaimedChunkStorage.getAll().containsValue(firstChunk));
+        assertTrue(newClaimedChunkStorage.getAll().containsValue(middleChunk));
     }
 }

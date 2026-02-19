@@ -649,24 +649,34 @@ public abstract class TerritoryData implements TanTerritory {
         if (ignoreAdjacent) {
             return true;
         }
+        return isPositionClaimable(player, chunk, chunkData, tanPlayer.getLang());
+    }
 
-        // If first claim of the territory and in a buffer zone of another territory, deny the claim
-        if (getNumberOfClaimedChunk() == 0) {
-            int bufferZone = Constants.territoryClaimBufferZone();
-            if (ChunkUtil.isInBufferZone(chunkData, this, bufferZone)) {
-                TanChatUtils.message(player, Lang.CHUNK_IN_BUFFER_ZONE.get(tanPlayer.getLang(), Integer.toString(bufferZone)));
-                return false;
+    /**
+     * Check if the chunk can be claimed
+     * @return true if the position can be claimed, false otherwise
+     */
+    protected boolean isPositionClaimable(Player player, Chunk chunk, ClaimedChunk chunkData, LangType langType){
+
+        for(ClaimedChunk claimedChunk : NewClaimedChunkStorage.getInstance().getFourAjacentChunks(chunkData)) {
+            if(claimedChunk instanceof TerritoryChunk territoryChunk){
+
+                String ownerID = territoryChunk.getOwnerID();
+
+                if(ownerID.equals(getID()) || getVassalsID().contains(ownerID)) {
+                    return true;
+                }
             }
-            return true;
         }
 
-
+        // The chunk must be adjacent to at least one chunk from the territory of one of its vassals.
         if (!NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
-            TanChatUtils.message(player, Lang.CHUNK_NOT_ADJACENT.get(tanPlayer.getLang()));
+            TanChatUtils.message(player, Lang.CHUNK_NOT_ADJACENT.get(langType));
             return false;
         }
         return true;
     }
+
 
     public int getClaimCost() {
         return getNewLevel().getStat(ChunkCost.class).getCost();

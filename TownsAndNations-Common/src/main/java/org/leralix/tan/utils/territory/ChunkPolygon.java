@@ -3,6 +3,7 @@ package org.leralix.tan.utils.territory;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.tan.data.building.fort.Fort;
 import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.FortStorage;
@@ -40,7 +41,26 @@ public class ChunkPolygon {
             if(capitalChunk.isPresent() && claimedChunk.getVector2D().equals(capitalChunk.get())){
                 return true;
             }
+            if(isNextToVassal(claimedChunk)){
+                return true;
+            }
         }
+        return false;
+    }
+
+    private boolean isNextToVassal(ClaimedChunk claimedChunk) {
+
+        var vassalIDs = territoryOwner.getVassalsID();
+        if(vassalIDs.isEmpty()){
+            return false;
+        }
+
+        for(ClaimedChunk chunkAround : NewClaimedChunkStorage.getInstance().getFourAjacentChunks(claimedChunk)){
+            if(chunkAround instanceof TerritoryChunk territoryChunk && vassalIDs.contains(territoryChunk.getOwnerID())){
+                return true;
+            }
+        }
+
         return false;
     }
 
