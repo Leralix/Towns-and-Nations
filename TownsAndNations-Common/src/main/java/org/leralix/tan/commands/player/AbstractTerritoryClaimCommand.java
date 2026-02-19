@@ -49,7 +49,7 @@ public abstract class AbstractTerritoryClaimCommand extends PlayerSubCommand {
         }
 
         if (size == 2) {
-            onNoCoordinates(player, territoryData, langType, territoryArg, args);
+            onNoCoordinates(player, tanPlayer, territoryData, langType, territoryArg, args);
             onEnd(player, territoryData, langType, territoryArg, args);
             return;
         }
@@ -59,13 +59,13 @@ public abstract class AbstractTerritoryClaimCommand extends PlayerSubCommand {
             return;
         }
 
-        onCoordinates(player, territoryData, chunk, langType, territoryArg, args);
+        onCoordinates(player, tanPlayer, territoryData, chunk, langType, territoryArg, args);
         onEnd(player, territoryData, langType, territoryArg, args);
     }
 
-    protected abstract void onNoCoordinates(Player player, TerritoryData territoryData, LangType langType, String territoryArg, String[] args);
+    protected abstract void onNoCoordinates(Player player, ITanPlayer tanPlayer, TerritoryData territoryData, LangType langType, String territoryArg, String[] args);
 
-    protected abstract void onCoordinates(Player player, TerritoryData territoryData, Chunk chunk, LangType langType, String territoryArg, String[] args);
+    protected abstract void onCoordinates(Player player, ITanPlayer tanPlayer, TerritoryData territoryData, Chunk chunk, LangType langType, String territoryArg, String[] args);
 
     protected abstract void onEnd(Player player, TerritoryData territoryData, LangType langType, String territoryArg, String[] args);
 

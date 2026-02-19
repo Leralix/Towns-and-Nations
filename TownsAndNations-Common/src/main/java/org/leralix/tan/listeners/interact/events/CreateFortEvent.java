@@ -61,7 +61,7 @@ public class CreateFortEvent extends RightClickListenerEvent {
         switch (claimedChunk){
             case WildernessChunk ignored when Constants.enableFortOutpost() -> {
 
-                boolean wasAbleToClaim = tanTerritory.claimChunk(player, chunk, true);
+                boolean wasAbleToClaim = tanTerritory.claimChunk(player, tanPlayer, chunk, true);
 
                 if (wasAbleToClaim) {
                     createFort(block);

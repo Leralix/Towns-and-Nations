@@ -553,8 +553,8 @@ public abstract class TerritoryData implements TanTerritory {
      * @param player The player wishing to claim a chunk
      * @return True if the chunk has been claimed successfully, false otherwise
      */
-    public boolean claimChunk(Player player) {
-        return claimChunk(player, player.getLocation().getChunk());
+    public boolean claimChunk(Player player, ITanPlayer tanPlayer) {
+        return claimChunk(player, tanPlayer, player.getLocation().getChunk());
     }
 
     /**
@@ -564,8 +564,8 @@ public abstract class TerritoryData implements TanTerritory {
      * @param chunk  The chunk to claim
      * @return True if the chunk has been claimed successfully, false otherwise
      */
-    public boolean claimChunk(Player player, Chunk chunk) {
-        return claimChunk(player, chunk, Constants.allowNonAdjacentChunksFor(this));
+    public boolean claimChunk(Player player, ITanPlayer tanPlayer, Chunk chunk) {
+        return claimChunk(player, tanPlayer, chunk, Constants.allowNonAdjacentChunksFor(this));
     }
 
     /**
@@ -576,12 +576,12 @@ public abstract class TerritoryData implements TanTerritory {
      * @param ignoreAdjacent Defines whether the chunk to claim should respect adjacent claiming
      * @return True if the chunk has been claimed successfully, false otherwise
      */
-    public boolean claimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
-        if (!canClaimChunk(player, chunk, ignoreAdjacent)) {
+    public boolean claimChunk(Player player, ITanPlayer playerData, Chunk chunk, boolean ignoreAdjacent) {
+        if (!canClaimChunk(player, playerData, chunk, ignoreAdjacent)) {
             return false;
         }
 
-        abstractClaimChunk(player, chunk, ignoreAdjacent);
+        abstractClaimChunk(chunk, ignoreAdjacent);
 
         ChunkCap chunkCap = getNewLevel().getStat(ChunkCap.class);
 
@@ -603,14 +603,12 @@ public abstract class TerritoryData implements TanTerritory {
     /**
      * Claim the chunk for the territory
      *
-     * @param player         The player wishing to claim a chunk
      * @param chunk          The chunk to claim
      * @param ignoreAdjacent Defines if the chunk to claim should respect adjacent claiming
      */
-    protected abstract void abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent);
+    protected abstract void abstractClaimChunk(Chunk chunk, boolean ignoreAdjacent);
 
-    public boolean canClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+    public boolean canClaimChunk(Player player, ITanPlayer tanPlayer, Chunk chunk, boolean ignoreAdjacent) {
 
         if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
             TanChatUtils.message(player, Lang.CHUNK_IS_BLACKLISTED.get(tanPlayer.getLang()));

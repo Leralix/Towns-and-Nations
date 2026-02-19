@@ -201,7 +201,7 @@ public class NationData extends TerritoryData implements TanNation {
     }
 
     @Override
-    protected void abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
+    protected void abstractClaimChunk(Chunk chunk, boolean ignoreAdjacent) {
         removeFromBalance(getClaimCost());
         NewClaimedChunkStorage.getInstance().claimNationChunk(chunk, getID());
     }

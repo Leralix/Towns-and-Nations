@@ -310,7 +310,7 @@ public class TownData extends TerritoryData implements TanTown {
     }
 
     @Override
-    public void abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
+    public void abstractClaimChunk(Chunk chunk, boolean ignoreAdjacent) {
 
         removeFromBalance(getClaimCost());
         NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(NewClaimedChunkStorage.getInstance().get(chunk));

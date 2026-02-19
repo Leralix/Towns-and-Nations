@@ -93,21 +93,21 @@ public class PlayerEnterChunkListener implements Listener {
                 TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(playerStat));
                 return;
             }
-            playerStat.getTown().claimChunk(player, nextChunk);
+            playerStat.getTown().claimChunk(player, playerStat, nextChunk);
         }
         if (chunkType == ClaimType.REGION) {
             if (!playerStat.hasRegion()) {
                 TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(playerStat));
                 return;
             }
-            playerStat.getRegion().claimChunk(player, nextChunk);
+            playerStat.getRegion().claimChunk(player, playerStat, nextChunk);
         }
         if (chunkType == ClaimType.NATION) {
             if (!playerStat.hasNation()) {
                 TanChatUtils.message(player, Lang.PLAYER_NO_NATION.get(playerStat));
                 return;
             }
-            playerStat.getNation().claimChunk(player, nextChunk);
+            playerStat.getNation().claimChunk(player, playerStat, nextChunk);
         }
     }
 

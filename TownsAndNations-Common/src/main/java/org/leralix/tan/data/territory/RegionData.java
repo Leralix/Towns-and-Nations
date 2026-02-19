@@ -119,7 +119,7 @@ public class RegionData extends TerritoryData implements TanRegion {
     }
 
     @Override
-    public void abstractClaimChunk(Player player, Chunk chunk, boolean ignoreAdjacent) {
+    public void abstractClaimChunk(Chunk chunk, boolean ignoreAdjacent) {
 
         removeFromBalance(getClaimCost());
         NewClaimedChunkStorage.getInstance().claimRegionChunk(chunk, getID());

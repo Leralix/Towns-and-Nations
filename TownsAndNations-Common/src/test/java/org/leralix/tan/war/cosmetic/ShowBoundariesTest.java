@@ -24,8 +24,8 @@ class ShowBoundariesTest extends BasicTest {
 
         townDefender.addToBalance(townDefender.getClaimCost() * 10);
 
-        townDefender.claimChunk(defender, world.getChunkAt(0, 0));
-        townDefender.claimChunk(defender, world.getChunkAt(0, 1));
+        townDefender.claimChunk(defender, tanDefender, world.getChunkAt(0, 0));
+        townDefender.claimChunk(defender, tanDefender, world.getChunkAt(0, 1));
 
 
         var list = ChunkUtil.getChunksInRadius(world.getChunkAt(0, 0), 1);

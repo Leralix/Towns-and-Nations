@@ -3,6 +3,7 @@ package org.leralix.tan.commands.player;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -38,12 +39,12 @@ public class ClaimAreaCommand extends AbstractTerritoryClaimCommand {
     }
 
     @Override
-    protected void onNoCoordinates(Player player, TerritoryData territoryData, LangType langType, String territoryArg, String[] args) {
+    protected void onNoCoordinates(Player player, ITanPlayer tanPlayer, TerritoryData territoryData, LangType langType, String territoryArg, String[] args) {
     }
 
     @Override
-    protected void onCoordinates(Player player, TerritoryData territoryData, Chunk chunk, LangType langType, String territoryArg, String[] args) {
-        territoryData.claimChunk(player, chunk);
+    protected void onCoordinates(Player player, ITanPlayer tanPlayer, TerritoryData territoryData, Chunk chunk, LangType langType, String territoryArg, String[] args) {
+        territoryData.claimChunk(player, tanPlayer, chunk);
     }
 
     @Override
