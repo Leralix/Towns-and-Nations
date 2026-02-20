@@ -82,6 +82,7 @@ public class FortDataStorage extends FortStorage {
         FortData fort = new FortData("F" + newFortID, position, Lang.DEFAULT_FORT_NAME.get(Lang.getServerLang(), Integer.toString(newFortID)), owningTerritory);
         forts.put(fort.getID(), fort);
         save();
+        newFortID++;
         return fort;
     }
 
