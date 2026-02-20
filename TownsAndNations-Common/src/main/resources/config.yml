@@ -299,6 +299,8 @@ MaxPropertySize: 50000
 # Particle used to show property boundaries
 propertyBoundaryParticles : "HAPPY_VILLAGER"
 
+# Enable protection of property sign and holding block against breaking. It can still be griefed by explosions, fire, etc.
+enablePropertySignProtection: true
 
 ########################
 ##       Ranks        ##

@@ -11,7 +11,6 @@ import org.bukkit.block.sign.Side;
 import org.bukkit.block.sign.SignSide;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
@@ -575,13 +574,11 @@ public class PropertyData extends Building implements TanProperty {
 
         sign.update();
 
-        // Ajout des métadonnées aux blocs
-        block.setMetadata(PROPERTY_SIGN_METADATA, new FixedMetadataValue(TownsAndNations.getPlugin(), getTotalID()));
-        sign.getBlock().setMetadata(PROPERTY_SIGN_METADATA, new FixedMetadataValue(TownsAndNations.getPlugin(), getTotalID()));
-
         this.signLocation = new Vector3D(selectedSignLocation);
         this.supportLocation = new Vector3D(block.getLocation());
-        setSignData();
+        if(Constants.enablePropertySignProtection()){
+            setSignData();
+        }
         updateSign();
     }
 

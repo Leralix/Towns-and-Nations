@@ -97,6 +97,7 @@ public class Constants {
     private static int maxPropertySignMargin;
     private static int maxPropertySize;
     private static Particle propertyBoundaryParticles;
+    private static boolean enablePropertySignProtection;
     private static boolean payRentAtStart;
 
     //Wars
@@ -238,6 +239,7 @@ public class Constants {
         maxPropertySize = config.getInt("MaxPropertySize", 50000);
         payRentAtStart = config.getBoolean("payRentAtStart", true);
         propertyBoundaryParticles = getParticle(config, "propertyBoundaryParticles");
+        enablePropertySignProtection = config.getBoolean("enablePropertySignProtection", true);
 
         //Attacks
         simpleWarMode = config.getBoolean("simpleWarMode");
@@ -501,6 +503,10 @@ public class Constants {
 
     public static Particle getPropertyBoundaryParticles() {
         return propertyBoundaryParticles;
+    }
+
+    public static boolean enablePropertySignProtection() {
+        return enablePropertySignProtection;
     }
 
     public static boolean shouldPayRentAtStart() {
