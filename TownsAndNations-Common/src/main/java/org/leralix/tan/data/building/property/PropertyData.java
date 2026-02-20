@@ -47,8 +47,8 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.tan.api.interfaces.buildings.TanOwner;
 import org.tan.api.interfaces.TanPlayer;
+import org.tan.api.interfaces.buildings.TanOwner;
 import org.tan.api.interfaces.buildings.TanProperty;
 
 import java.util.ArrayList;
@@ -426,7 +426,7 @@ public class PropertyData extends Building implements TanProperty {
         }
     }
 
-    private void removeSign() {
+    public void removeSign() {
         World world = Bukkit.getWorld(signLocation.getWorldID());
         if (world == null) {
             return;
@@ -614,5 +614,9 @@ public class PropertyData extends Building implements TanProperty {
         return getRenter()
                 .map(TanPlayer::getNameStored)
                 .orElse(Lang.GUI_UNKOWN_OWNER_OR_RENTER.get(langType));
+    }
+
+    public Vector3D getSignLocation() {
+        return signLocation;
     }
 }

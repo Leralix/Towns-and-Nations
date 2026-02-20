@@ -19,6 +19,7 @@ import org.leralix.tan.listeners.interact.ListenerState;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
 import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.territory.PropertyUtil;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -87,7 +88,7 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
         }
 
         int margin = Constants.getMaxPropertySignMargin();
-        if (!isNearProperty(block.getLocation(), position1, position2, margin)) {
+        if (!PropertyUtil.isNearProperty(block.getLocation(), position1, position2, margin)) {
             TanChatUtils.message(player, Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(langType, Integer.toString(margin)), SoundEnum.NOT_ALLOWED);
             return ListenerState.CONTINUE;
         }
@@ -105,23 +106,6 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
     private double getTotalCost() {
         double costPerBlock = townData.getTaxOnCreatingProperty();
         return costPerBlock * position1.getArea(position2);
-    }
-
-    boolean isNearProperty(Location blockLocation, Vector3D p1, Vector3D p2, int margin) {
-        int minX = Math.min(p1.getX(), p2.getX()) - margin;
-        int minY = Math.min(p1.getY(), p2.getY()) - margin;
-        int minZ = Math.min(p1.getZ(), p2.getZ()) - margin;
-        int maxX = Math.max(p1.getX(), p2.getX()) + margin;
-        int maxY = Math.max(p1.getY(), p2.getY()) + margin;
-        int maxZ = Math.max(p1.getZ(), p2.getZ()) + margin;
-
-        double blockX = blockLocation.getX();
-        double blockY = blockLocation.getY();
-        double blockZ = blockLocation.getZ();
-
-        return blockX >= minX && blockX <= maxX &&
-                blockY >= minY && blockY <= maxY &&
-                blockZ >= minZ && blockZ <= maxZ;
     }
 
 

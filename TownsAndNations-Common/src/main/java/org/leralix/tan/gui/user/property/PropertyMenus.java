@@ -14,6 +14,8 @@ import org.leralix.tan.listeners.chat.events.ChangePropertyDescription;
 import org.leralix.tan.listeners.chat.events.ChangePropertyName;
 import org.leralix.tan.listeners.chat.events.ChangePropertyRentPrice;
 import org.leralix.tan.listeners.chat.events.ChangePropertySalePrice;
+import org.leralix.tan.listeners.interact.RightClickListener;
+import org.leralix.tan.listeners.interact.events.property.RelocateSignEvent;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -198,6 +200,23 @@ public abstract class PropertyMenus extends BasicGui {
                     }
 
                     open();
+                })
+                .asGuiItem(player, langType);
+    }
+
+    protected GuiItem getRelocateSignButton() {
+
+        FilledLang description = propertyData.getSign().isEmpty() ?
+                Lang.   GUI_PROPERTY_RELOCATE_SIGN_DESC1_NO_SIGN.get() :
+                Lang.GUI_PROPERTY_RELOCATE_SIGN_DESC1.get(propertyData.getSignLocation().toString());
+
+        return iconManager.get(IconKey.RELOCATE_SIGN_ICON)
+                .setName(Lang.GUI_PROPERTY_RELOCATE_SIGN.get(langType))
+                .setDescription(description)
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
+                .setAction(event -> {
+                    player.closeInventory();
+                    RightClickListener.register(player, langType, new RelocateSignEvent(propertyData, langType, this));
                 })
                 .asGuiItem(player, langType);
     }

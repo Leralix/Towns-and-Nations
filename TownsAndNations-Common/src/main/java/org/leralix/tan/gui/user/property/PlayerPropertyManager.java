@@ -41,6 +41,7 @@ public class PlayerPropertyManager extends PropertyMenus {
             gui.setItem(2, 7, forSaleButton());
         }
         gui.setItem(2, 8, getDeleteButton());
+        gui.setItem(2, 9, getRelocateSignButton());
 
 
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, onClose, langType));

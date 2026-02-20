@@ -244,6 +244,7 @@ language:
   PLAYER_PLACE_SIGN: "Right click to place a sign on top of a block"
   PLAYER_PROPERTY_SIGN_TOO_FAR: "§cThe sign is too far from the property. It needs to be at maximum {0} blocks away"
   PLAYER_PROPERTY_CREATED: "Property created"
+  PLAYER_PROPERTY_SIGN_RELOCATED: "Property sign relocated"
   PROPERTY_DELETED: "Property successfully deleted"
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Set the town spawn"
@@ -402,6 +403,9 @@ language:
   PROPERTY_RENTED_BY: "§f➥Rented by: §3{0}"
   PROPERTY_NOT_FOR_SALE_OR_RENT: "§cThis property is not available for sale or rent"
   PROPERTY_ALREADY_RENTED: "§cThis property is already rented"
+  GUI_PROPERTY_RELOCATE_SIGN: "§aRelocate the property sign"
+  GUI_PROPERTY_RELOCATE_SIGN_DESC1: "§fCurrent sign location: §9{0}"
+  GUI_PROPERTY_RELOCATE_SIGN_DESC1_NO_SIGN: "§fNo sign currently set"
   GUI_PROPERTY_DELETE_PROPERTY: "§aDelete"
   GUI_PROPERTY_DELETE_PROPERTY_CONFIRM: "§fDelete the property : §e{0}"
   GUI_PROPERTY_PLAYER_LIST: "§aManage authorisations"

@@ -122,6 +122,7 @@ RENT_PROPERTY_ICON_NOT_FOR_RENT: "https://textures.minecraft.net/texture/eef0708
 RENT_PROPERTY_ICON_FOR_RENT: "https://textures.minecraft.net/texture/ce2a530f42726fa7a31efab8e43dadee188937cf824af88ea8e4c93a49c57294"
 RENT_PROPERTY_ICON_RENTED: "https://textures.minecraft.net/texture/ce2a530f42726fa7a31efab8e43dadee188937cf824af88ea8e4c93a49c57294"
 AUTHORIZED_PLAYERS_ICON: "https://textures.minecraft.net/texture/7b43b23189dcf1326da4253d1d7582ef5ad29f6c27b171feb17e31d084e3a7d"
+RELOCATE_SIGN_ICON: "minecraft:OAK_SIGN"
 DELETE_PROPERTY_ICON: "minecraft:BARRIER"
 #Add player to property
 ADD_PLAYER_ICON: "https://textures.minecraft.net/texture/5ff31431d64587ff6ef98c0675810681f8c13bf96f51d9cb07ed7852b2ffd1"
