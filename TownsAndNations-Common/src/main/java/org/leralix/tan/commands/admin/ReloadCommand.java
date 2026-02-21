@@ -67,7 +67,7 @@ public class ReloadCommand extends SubCommand {
                     "propertyPermissions"
             );
             YamlConfiguration mainConfig = ConfigUtil.saveAndUpdateResource(plugin, "config.yml", mainBlackList);
-            YamlConfiguration upgradesConfig =  ConfigUtil.saveAndUpdateResource(plugin, "upgrades.yml", Collections.singletonList("upgrades"));
+            YamlConfiguration upgradesConfig =  ConfigUtil.saveAndUpdateResource(plugin, "upgrades.yml", List.of("upgrades", "region_upgrades", "nation_upgrades"));
 
             Constants.init(mainConfig, upgradesConfig);
             NameFilter.reload(mainConfig);

@@ -166,7 +166,7 @@ public class TownsAndNations extends JavaPlugin {
                 "propertyPermissions"
         );
         YamlConfiguration mainConfig = ConfigUtil.saveAndUpdateResource(this, "config.yml", mainBlackList);
-        YamlConfiguration upgradesConfig =  ConfigUtil.saveAndUpdateResource(this, "upgrades.yml", Collections.singletonList("upgrades"));
+        YamlConfiguration upgradesConfig =  ConfigUtil.saveAndUpdateResource(plugin, "upgrades.yml", List.of("upgrades", "region_upgrades", "nation_upgrades"));
 
         Constants.init(mainConfig, upgradesConfig);
         NameFilter.reload(mainConfig);
