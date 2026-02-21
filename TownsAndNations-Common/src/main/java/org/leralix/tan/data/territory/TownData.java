@@ -13,7 +13,6 @@ import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.economy.*;
 import org.leralix.tan.data.territory.rank.RankData;
-import org.leralix.tan.data.territory.teleportation.TeleportationPosition;
 import org.leralix.tan.data.upgrade.rewards.numeric.TownPlayerCap;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.events.EventManager;
@@ -51,7 +50,6 @@ public class TownData extends TerritoryData implements TanTown {
     private boolean isRecruiting;
     private final Set<UUID> PlayerJoinRequestSet;
     private Map<String, PropertyData> propertyDataMap;
-    private TeleportationPosition teleportationPosition;
     private final Set<UUID> townPlayerListId;
     private Vector2D capitalLocation;
 
@@ -295,18 +293,6 @@ public class TownData extends TerritoryData implements TanTown {
                 TransactionManager.getInstance().register(new PlayerTaxTransaction(this, tanPlayer.getID().toString(), tax, true));
             }
         }
-    }
-
-    public void setSpawn(Location location) {
-        this.teleportationPosition = new TeleportationPosition(location);
-    }
-
-    public boolean isSpawnSet() {
-        return this.teleportationPosition != null;
-    }
-
-    public TeleportationPosition getSpawn() {
-        return this.teleportationPosition;
     }
 
     @Override

@@ -39,6 +39,13 @@ public class NationDataStorage extends JsonStorage<NationData> {
         return dataMap.get(regionData.getNationID());
     }
 
+    public NationData get(ITanPlayer playerData){
+        if(playerData == null){
+            return null;
+        }
+        return get(playerData.getRegion());
+    }
+
     public NationData createNewNation(String name, @NotNull RegionData capital) {
         ITanPlayer leader = capital.getLeaderData();
 

@@ -1,9 +1,8 @@
 package org.leralix.tan.commands.player;
 
 import org.bukkit.entity.Player;
-import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.upgrade.rewards.bool.EnableTownSpawn;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -15,14 +14,10 @@ import org.leralix.tan.utils.text.TanChatUtils;
 import java.util.Collections;
 import java.util.List;
 
-public class TownSpawnCommand extends PlayerSubCommand {
+public class SpawnCommand extends AbstractSpawnCommand {
 
-    private final PlayerDataStorage playerDataStorage;
-    private final TownDataStorage townDataStorage;
-
-    public TownSpawnCommand(PlayerDataStorage playerDataStorage, TownDataStorage townDataStorage){
-        this.playerDataStorage = playerDataStorage;
-        this.townDataStorage = townDataStorage;
+    public SpawnCommand(PlayerDataStorage playerDataStorage, TownDataStorage townDataStorage){
+        super(playerDataStorage, townDataStorage);
     }
 
     @Override
@@ -47,41 +42,43 @@ public class TownSpawnCommand extends PlayerSubCommand {
 
     @Override
     public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
+        if(args.length == 2){
+            return List.of("town", "region", "nation");
+        }
         return Collections.emptyList();
     }
 
     @Override
     public void perform(Player player, String[] args) {
 
-        LangType langType = playerDataStorage.get(player).getLang();
+        ITanPlayer playerData = playerDataStorage.get(player);
+        LangType langType = playerData.getLang();
         //Incorrect syntax
-        if (args.length != 1) {
+        if (!(args.length == 1 || args.length == 2)) {
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
             return;
         }
 
-        //No town
-        ITanPlayer playerStat = playerDataStorage.get(player.getUniqueId().toString());
-        if (!playerStat.hasTown()) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
+
+        var optTerritory = getTerritoryDataFromArgs(player, playerData, args);
+        if(optTerritory.isEmpty()){
             return;
         }
 
-        TownData townData = townDataStorage.get(playerStat);
-        EnableTownSpawn enableTownSpawn = townData.getNewLevel().getStat(EnableTownSpawn.class);
+        TerritoryData territoryData = optTerritory.get();
+        EnableTownSpawn enableTownSpawn = territoryData.getNewLevel().getStat(EnableTownSpawn.class);
         //Spawn Unlocked
         if (!enableTownSpawn.isEnabled()) {
-            TanChatUtils.message(player, Lang.SPAWN_NOT_UNLOCKED.get(langType));
             return;
         }
 
         //Spawn set
-        if (!townData.isSpawnSet()) {
+        if (!territoryData.isSpawnSet()) {
             TanChatUtils.message(player, Lang.SPAWN_NOT_SET.get(langType));
             return;
         }
 
-        TeleportationRegister.teleportToTownSpawn(playerStat, townData);
+        TeleportationRegister.teleportToTownSpawn(playerData, territoryData);
 
 
     }

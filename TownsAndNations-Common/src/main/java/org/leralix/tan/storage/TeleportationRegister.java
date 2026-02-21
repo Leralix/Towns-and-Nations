@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.teleportation.TeleportationData;
 import org.leralix.tan.data.territory.teleportation.TeleportationPosition;
 import org.leralix.tan.lang.Lang;
@@ -36,8 +36,8 @@ public class TeleportationRegister {
      * @param player The player that is teleporting.
      * @param town   The town the player is teleporting to.
      */
-    public static void registerSpawn(ITanPlayer player, TownData town) {
-        spawnRegister.put(player.getID(), new TeleportationData(town.getSpawn()));
+    public static void registerSpawn(ITanPlayer player, TerritoryData territoryData) {
+        spawnRegister.put(player.getID(), new TeleportationData(territoryData.getSpawn()));
     }
 
     public static void removePlayer(ITanPlayer player) {
@@ -60,7 +60,7 @@ public class TeleportationRegister {
         return getTeleportationData(player.getUniqueId());
     }
 
-    public static void teleportToTownSpawn(ITanPlayer tanPlayer, TownData townData) {
+    public static void teleportToTownSpawn(ITanPlayer tanPlayer, TerritoryData territoryData) {
         int secondBeforeTeleport = Constants.getTimeBeforeTeleport();
 
         Player player = Bukkit.getPlayer(tanPlayer.getID());
@@ -80,7 +80,7 @@ public class TeleportationRegister {
                 TanChatUtils.message(player, Lang.TELEPORTATION_IN_X_SECONDS.get(langType, Integer.toString(secondBeforeTeleport)));
             }
 
-            registerSpawn(tanPlayer, townData);
+            registerSpawn(tanPlayer, territoryData);
         }
         Bukkit.getScheduler().runTaskLater(TownsAndNations.getPlugin(),
                 () -> confirmTeleportation(tanPlayer), secondBeforeTeleport * 20L);

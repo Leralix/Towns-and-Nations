@@ -24,8 +24,8 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new OpenNewsletterCommand(playerDataStorage));
         addSubCommand(new ChannelChatScopeCommand(playerDataStorage, localChatStorage));
         addSubCommand(new AutoClaimCommand(playerDataStorage));
-        addSubCommand(new TownSpawnCommand(playerDataStorage, townDataStorage));
-        addSubCommand(new SetTownSpawnCommand(playerDataStorage, townDataStorage));
+        addSubCommand(new SpawnCommand(playerDataStorage, townDataStorage));
+        addSubCommand(new SetSpawnCommand(playerDataStorage, townDataStorage));
         addSubCommand(new MainHelpCommand(this));
     }
 

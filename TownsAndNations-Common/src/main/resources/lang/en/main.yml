@@ -7,8 +7,8 @@ language:
   NEWSLETTER_STRING: "§6[TaN - Newsletter]§f "
   #Common errors
   PLAYER_NO_TOWN: "§cYou do not have a town"
-  PLAYER_NO_REGION: "§cYou don't have a region"
-  PLAYER_NO_NATION: "§cYou don't have a nation"
+  PLAYER_NO_REGION: "§cYou do not have a region"
+  PLAYER_NO_NATION: "§cYou do not have a nation"
   VALUE_EXCEED_MAXIMUM_ERROR: "§cThe value exceed the maximum authorized ({0})"
   VALUE_CANNOT_BE_NEGATIVE_ERROR: "§cThe value cannot be negative"
   TOWN_NO_REGION: "§cYour town does not belongs to a region"
@@ -248,12 +248,12 @@ language:
   PROPERTY_DELETED: "Property successfully deleted"
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Set the town spawn"
-  SPAWN_SET_SUCCESS: "Town spawn set"
+  SPAWN_SET_SUCCESS: "Spawn set"
   SPAWN_COMMAND_DESC: "Teleport to the town spawn"
   SPAWN_TELEPORTED: "Teleported to the town spawn"
-  SPAWN_NOT_SET: "§cThe town spawn is not set"
-  SPAWN_NOT_UNLOCKED: "§cThe town spawn is not unlocked"
-  SPAWN_NEED_TO_BE_IN_CHUNK: "§cYou need to be in a claimed chunk to set the spawn"
+  SPAWN_NOT_SET: "§cSpawn is not set"
+  SPAWN_NOT_UNLOCKED: "§cSpawn is not unlocked"
+  SPAWN_NEED_TO_BE_IN_CHUNK: "§cYou need to be in a claimed chunk of {0}§c to set the spawn"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Neutral"

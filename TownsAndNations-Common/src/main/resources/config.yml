@@ -510,6 +510,16 @@ cancelTeleportOnMovePosition: true
 #Cancel teleportation if player take damage
 cancelTeleportOnDamage: true
 
+# Authorize territory spawn in claimed chunks of territory.
+# If enabled, players will be able to set territory spawns inside claimed chunk of their territory.
+allowSpawnTown: true
+allowSpawnRegion: false
+allowSpawnNation: false
+
+# Authorize territory to grant teleportation permission to other territories.
+# If enabled, territories will be able to grant teleportation permission to other territories.
+# Players from these territories will then be able to teleport to the territory spawn.
+allowShareOfTeleportation: true
 
 ########################
 ##      Landmarks     ##
