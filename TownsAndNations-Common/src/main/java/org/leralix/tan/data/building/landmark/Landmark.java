@@ -204,8 +204,8 @@ public class Landmark implements TanLandmark {
 
 
     public void setReward(ItemStack itemOnCursor) {
-        this.amount = itemOnCursor.getAmount();
-        this.materialName = itemOnCursor.getType().name();
+        setQuantity(itemOnCursor.getAmount());
+        setItem(itemOnCursor);
     }
 
     public Location getLocation() {
@@ -214,22 +214,22 @@ public class Landmark implements TanLandmark {
 
     @Override
     public void setQuantity(int quantity) {
-
+        this.amount = quantity;
     }
 
     @Override
     public int getQuantity() {
-        return 0;
+        return this.amount;
     }
 
     @Override
     public void setItem(ItemStack item) {
-
+        this.materialName = item.getType().name();
     }
 
     @Override
     public ItemStack getItem() {
-        return null;
+        return new ItemStack(getRessourceMaterial());
     }
 
     /**
