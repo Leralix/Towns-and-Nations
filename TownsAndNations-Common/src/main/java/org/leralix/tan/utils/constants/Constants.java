@@ -113,6 +113,9 @@ public class Constants {
     private static int captureCapitalBonusPercentage;
     private static PermissionAtWars permissionAtWars;
 
+    private static boolean enableWarPowerBalance;
+    private static double maxWarPowerRatio;
+
     private static int attackDuration;
     private static int minTimeBeforeAttack;
     private static int maxTimeBeforeAttack;
@@ -268,6 +271,12 @@ public class Constants {
         capturePercentageToSurrender = config.getInt("capturePercentageToSurrender");
         captureCapitalBonusPercentage = config.getInt("captureCapitalBonusPercentage");
         permissionAtWars = new PermissionAtWars(config.getConfigurationSection("attackersPermissions"));
+
+        enableWarPowerBalance = config.getBoolean("enableWarPowerBalance", false);
+        maxWarPowerRatio = config.getDouble("maxWarPowerRatio", 2.0);
+        if (maxWarPowerRatio < 1.0) {
+            maxWarPowerRatio = 1.0;
+        }
         attackDuration = config.getInt("WarDuration", 30);
         minTimeBeforeAttack = config.getInt("MinimumTimeBeforeAttack", 120);
         maxTimeBeforeAttack = config.getInt("MaximumTimeBeforeAttack", 4320);
@@ -696,6 +705,14 @@ public class Constants {
 
     public static int getCaptureCapitalBonusPercentage() {
         return captureCapitalBonusPercentage;
+    }
+
+    public static boolean isWarPowerBalanceEnabled() {
+        return enableWarPowerBalance;
+    }
+
+    public static double getMaxWarPowerRatio() {
+        return maxWarPowerRatio;
     }
 
     public static PermissionAtWars getPermissionAtWars() {

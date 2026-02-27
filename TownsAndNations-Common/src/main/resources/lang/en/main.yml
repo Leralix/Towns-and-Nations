@@ -493,6 +493,7 @@ language:
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cClick to declare war"
   DECLARE_WAR_CONFIRM_MESSAGE: "{0}§f will start a war against {1}"
   DECLARE_WAR_NUMBER_OF_ALLIES: "{0}§f has §9{1}§f allies"
+  DECLARE_WAR_POWER_IMBALANCE: "§cYou cannot declare war because the enemy territory is too weak."
   DECLARE_WAR_BUTTON: "§aDeclare a war"
   OPEN_ATTACK_BUTTON: "§aOpen attacks"
   #War menu
