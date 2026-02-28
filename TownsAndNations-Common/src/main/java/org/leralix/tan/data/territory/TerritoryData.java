@@ -2,6 +2,7 @@ package org.leralix.tan.data.territory;
 
 
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.banner.Pattern;
@@ -1259,4 +1260,13 @@ public abstract class TerritoryData implements TanTerritory {
         return this.teleportationPosition;
     }
 
+    public void broadCastBarMessage(FilledLang filledLang) {
+
+        for(Player player : getPlayers()){
+            TextComponent message = new TextComponent(filledLang.get(player));
+            message.setColor(ChatColor.GRAY);
+            message.setItalic(true);
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, message);
+        }
+    }
 }

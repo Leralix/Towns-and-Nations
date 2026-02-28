@@ -978,7 +978,7 @@ language:
   PLAYER_ENTER_LANDMARK_CHUNK: "§fEntering : §6Landmark"
   PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION: "You cannot enter in {0}§f because your relation with the territory is {1}"
   CHUNK_ENTER_TOWN_AT_WAR: "§cYou are at war with this town. Players have been alerted that you crossed the border"
-  CHUNK_INTRUSION_ALERT: "§cAn enemy from the town {0} has entered your borders: {1}"
+  CHUNK_INTRUSION_ALERT: "§c{1} ({0}) has entered your borders"
   WILDERNESS_NO_PERMISSION: "§cYou do not have permission to do this action in the wilderness"
   #History
   HISTORY_TOWN_LEADER_CHANGED: "{0} has changed the town leader from {1} to {2}"
