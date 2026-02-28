@@ -15,6 +15,7 @@ import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.storage.typeadapter.EnumMapKeyValueDeserializer;
 import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.storage.typeadapter.OwnerDeserializer;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.tan.api.interfaces.buildings.TanProperty;
 
 import java.util.ArrayList;
@@ -114,11 +115,7 @@ public class TownDataStorage extends JsonStorage<TownData>{
     }
 
     public boolean isNameUsed(String townName){
-        for (TownData town : dataMap.values()){
-            if(townName.equals(town.getName()))
-                return true;
-        }
-        return false;
+        return TerritoryUtil.isNameUsed(townName, dataMap.values());
     }
 
     public void checkValidWorlds() {

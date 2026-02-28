@@ -8,6 +8,7 @@ import org.leralix.tan.data.territory.NationData;
 import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.data.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.storage.typeadapter.IconAdapter;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 import java.util.LinkedHashMap;
 
@@ -59,12 +60,7 @@ public class NationDataStorage extends JsonStorage<NationData> {
     }
 
     public boolean isNameUsed(String name) {
-        for (NationData nation : getAll().values()) {
-            if (nation.getName().equalsIgnoreCase(name)) {
-                return true;
-            }
-        }
-        return false;
+        return TerritoryUtil.isNameUsed(name, dataMap.values());
     }
 
     private @NotNull String generateNextID() {

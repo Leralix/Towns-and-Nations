@@ -5,6 +5,9 @@ import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
+import java.util.Collection;
+import java.util.List;
+
 public class TerritoryUtil {
 
     private TerritoryUtil() {
@@ -21,6 +24,16 @@ public class TerritoryUtil {
             return NationDataStorage.getInstance().get(id);
         }
         return null;
+    }
+
+    public static boolean isNameUsed(String name, Collection<? extends TerritoryData> territories){
+        String territoryName = name.replaceAll(" ", "-");
+        for(TerritoryData territory : territories){
+            if(territoryName.equals(territory.getName().replaceAll(" ", "-"))){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

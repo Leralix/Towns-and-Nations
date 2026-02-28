@@ -12,6 +12,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.utils.file.FileUtil;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -77,11 +78,7 @@ public class RegionDataStorage extends JsonStorage<RegionData> {
     }
 
     public boolean isNameUsed(String name){
-        for (RegionData region : getAll().values()){
-            if(region.getName().equalsIgnoreCase(name))
-                return true;
-        }
-        return false;
+        return TerritoryUtil.isNameUsed(name, dataMap.values());
     }
 
     @Override
