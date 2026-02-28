@@ -51,6 +51,10 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
 
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
+
         Player player = event.getPlayer();
         Block breakedBlock = event.getBlock();
         Location loc = breakedBlock.getLocation();
@@ -87,6 +91,11 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onBucketFillEvent(PlayerBucketFillEvent event) {
+
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
+
         Player player = event.getPlayer();
         Location loc = event.getBlock().getLocation();
 
@@ -98,6 +107,11 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onBucketEmptyEvent(PlayerBucketEmptyEvent event) {
+
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
+
         Player player = event.getPlayer();
         Location loc = event.getBlock().getLocation();
 
@@ -109,6 +123,11 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
+
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
+
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();
 
@@ -226,6 +245,10 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onBlocPlaced(BlockPlaceEvent event) {
 
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
+
         Player player = event.getPlayer();
         Location loc = event.getBlock().getLocation();
 
@@ -238,6 +261,10 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
 
         if (event.getDamager() instanceof Player player) {
             Entity entity = event.getEntity();
@@ -375,6 +402,11 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
+
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
+
         if (event.getPlayer() instanceof Player player &&
                 (event.getInventory() instanceof FurnaceInventory ||
                         event.getInventory() instanceof BlastFurnace ||
@@ -392,6 +424,10 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
 
         Player player = event.getPlayer();
 
@@ -422,6 +458,11 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
+
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
+
         if (event.getRightClicked() instanceof ArmorStand armorStand) {
             Player player = event.getPlayer();
             Location loc = armorStand.getLocation();
@@ -434,6 +475,11 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onPlayerLeashEntityEvent(PlayerLeashEntityEvent event) {
+
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
+
         Player player = event.getPlayer();
         Entity entity = event.getEntity();
         Location loc = entity.getLocation();
@@ -447,6 +493,11 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onHangingBreakByEntityEvent(HangingBreakByEntityEvent event) {
+
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
+
         Entity remover = event.getRemover();
         if (remover instanceof Player player) {
             Entity entity = event.getEntity();
@@ -481,6 +532,11 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onHangingPlaceEvent(HangingPlaceEvent event) {
+
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
+
         Player player = event.getPlayer();
         Block block = event.getBlock();
         Location loc = block.getLocation();
@@ -499,6 +555,11 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onPlayerShearEntityEvent(PlayerShearEntityEvent event) {
+
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
+
         Player player = event.getPlayer();
         Location loc = event.getEntity().getLocation();
 
@@ -509,11 +570,21 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onExplosion(EntityExplodeEvent event) {
+
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
+
         event.blockList().removeIf(block -> !NewClaimedChunkStorage.getInstance().get(block.getChunk()).canExplosionGrief());
     }
 
     @EventHandler
     public void onBurning(BlockBurnEvent event) {
+
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
+
         Chunk chunk = event.getBlock().getChunk();
 
         if (!NewClaimedChunkStorage.getInstance().get(chunk).canFireGrief()) {
@@ -523,6 +594,10 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onFireSpreading(BlockSpreadEvent event) {
+
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
 
         if (event.getSource().getType() == Material.FIRE) {
             Chunk chunk = event.getBlock().getChunk();
@@ -534,6 +609,10 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onWitherBlockBreak(EntityChangeBlockEvent event) {
+
+        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+            return;
+        }
 
         // Ignore gravity physics only
         if (event.getEntity() instanceof FallingBlock) {

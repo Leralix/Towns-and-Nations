@@ -125,6 +125,7 @@ public class Constants {
     private static List<String> perPlayerEndCommands;
 
     //Claims
+    private static boolean noCheckIfEventCancelled;
     private static ChunkPermissionConfig chunkPermissionConfig;
     private static GeneralChunkSettings generalChunkSettings;
     private static WildernessRules wildernessRules;
@@ -285,6 +286,7 @@ public class Constants {
         perPlayerEndCommands = config.getStringList("commandToExecutePerPlayerWhenAttackEnd");
 
         //Claims
+        noCheckIfEventCancelled = config.getBoolean("noCheckIfEventCancelled");
         chunkPermissionConfig = new ChunkPermissionConfig(config.getConfigurationSection("chunkPermissionConfig"));
         generalChunkSettings = new GeneralChunkSettings(config.getConfigurationSection("chunkGeneralSettings"));
         wildernessRules = new WildernessRules(config.getConfigurationSection("wildernessRules"));
@@ -562,6 +564,10 @@ public class Constants {
 
     public static InteractionStatus getChunkSettings(GeneralChunkSetting generalChunkSetting) {
         return generalChunkSettings.getAction(generalChunkSetting);
+    }
+
+    public static boolean noCheckIfEventCancelled() {
+        return noCheckIfEventCancelled;
     }
 
     public static ChunkPermissionConfig getChunkPermissionConfig(){

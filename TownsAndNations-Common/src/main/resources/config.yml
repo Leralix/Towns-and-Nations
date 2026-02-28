@@ -461,6 +461,10 @@ doublePermissionCheck:
 #player enter claimed chunks.
 displayTerritoryNameWithOwnColor: false
 
+# If enabled, bukkit events (break block, hit creature...)
+# already cancelled by other plugins will not be analysed by chunk protection.
+noCheckIfEventCancelled: true
+
 # Chunk permission defines what players can do in a area.
 # The same system is used for territory chunks and properties.
 # You can set the default permission for every claimed chunk of territory
