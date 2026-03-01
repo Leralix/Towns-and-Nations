@@ -2,6 +2,7 @@ package org.leralix.tan.gui.user.player;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.timezone.TimeZoneManager;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
@@ -31,7 +32,7 @@ public class PlayerMenu extends BasicGui {
         gui.setItem(2, 2, getBalanceButton());
         gui.setItem(2, 3, getPropertyButton());
         gui.setItem(2, 4, getNewsletterButton());
-
+        gui.setItem(2, 5, getWarpButton());
         gui.setItem(2, 6, getTransactionHistory());
         gui.setItem(2, 7, getTimezoneButton());
         gui.setItem(2, 8, getLanguageButton());
@@ -42,20 +43,20 @@ public class PlayerMenu extends BasicGui {
     }
 
     private GuiItem getPlayerHeadIcon() {
-        return IconManager.getInstance().get(IconKey.PLAYER_HEAD_ICON)
+        return iconManager.get(IconKey.PLAYER_HEAD_ICON)
                 .setName(Lang.GUI_PLAYER_ICON.get(tanPlayer, player.getName()))
                 .asGuiItem(player, langType);
     }
 
     private GuiItem getBalanceButton() {
-        return IconManager.getInstance().get(IconKey.PLAYER_BALANCE_ICON)
+        return iconManager.get(IconKey.PLAYER_BALANCE_ICON)
                 .setName(Lang.GUI_YOUR_BALANCE.get(langType, player.getName()))
                 .setDescription(Lang.GUI_YOUR_BALANCE_DESC1.get(Double.toString(EconomyUtil.getBalance(player))))
                 .asGuiItem(player, langType);
     }
 
     private GuiItem getPropertyButton() {
-        return IconManager.getInstance().get(IconKey.PLAYER_PROPERTY_ICON)
+        return iconManager.get(IconKey.PLAYER_PROPERTY_ICON)
                 .setName(Lang.GUI_PLAYER_MANAGE_PROPERTIES.get(langType))
                 .setDescription(Lang.GUI_PLAYER_MANAGE_PROPERTIES_DESC1.get())
                 .setAction(event -> new PlayerPropertiesMenu(player).open())
@@ -63,7 +64,7 @@ public class PlayerMenu extends BasicGui {
     }
 
     private GuiItem getNewsletterButton() {
-        return IconManager.getInstance().get(IconKey.NEWSLETTER_ICON)
+        return iconManager.get(IconKey.NEWSLETTER_ICON)
                 .setName(Lang.GUI_PLAYER_NEWSLETTER.get(tanPlayer))
                 .setDescription(
                         Lang.GUI_PLAYER_NEWSLETTER_DESC1.get(Integer.toString(NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player)))
@@ -91,7 +92,7 @@ public class PlayerMenu extends BasicGui {
         LangType serverLang = Lang.getServerLang();
         LangType playerLang = tanPlayer.getLang();
 
-        return IconManager.getInstance().get(IconKey.LANGUAGE_ICON)
+        return iconManager.get(IconKey.LANGUAGE_ICON)
                 .setName(Lang.GUI_LANGUAGE_BUTTON.get(tanPlayer))
                 .setDescription(
                         Lang.GUI_LANGUAGE_BUTTON_DESC1.get(serverLang.getName()),
@@ -101,7 +102,7 @@ public class PlayerMenu extends BasicGui {
                 .asGuiItem(player, langType);
     }
 
-    protected GuiItem getTransactionHistory(){
+    protected GuiItem getTransactionHistory() {
         return iconManager.get(IconKey.MISCELLANEOUS_SPENDING_ICON)
                 .setName(Lang.GUI_TREASURY_MISCELLANEOUS_SPENDING.get(tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY)
@@ -111,5 +112,11 @@ public class PlayerMenu extends BasicGui {
                 .asGuiItem(player, langType);
     }
 
-
+    protected GuiItem getWarpButton() {
+        return iconManager.get(IconKey.WARP_ICON)
+                .setName(Lang.GUI_WARP_BUTTON.get(langType))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_OPEN)
+                .setAction(action -> new WarpMenu(player, p -> open()))
+                .asGuiItem(player, langType);
+    }
 }

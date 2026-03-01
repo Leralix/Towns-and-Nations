@@ -1269,4 +1269,8 @@ public abstract class TerritoryData implements TanTerritory {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, message);
         }
     }
+
+    public boolean authorizeTeleportation(TerritoryData territoryData) {
+        return getRelationWith(territoryData).isSuperiorTo(TownRelation.NEUTRAL);
+    }
 }

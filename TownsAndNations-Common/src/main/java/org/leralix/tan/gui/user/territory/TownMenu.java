@@ -22,9 +22,9 @@ public class TownMenu extends TerritoryMenu {
     @Override
     public void open() {
         setupCommonLayout(Material.BLUE_STAINED_GLASS_PANE);
-        setRow2Column4(getLandButton());
-        setRow3Column8(getLandmarksButton());
+        gui.setItem(2, 4, getLandButton());
         gui.setItem(2, 8, getSettingsButton());
+        gui.setItem(3, 8, getLandmarksButton());
         gui.open(player);
     }
 
