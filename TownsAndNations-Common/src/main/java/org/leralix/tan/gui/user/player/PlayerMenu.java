@@ -2,13 +2,11 @@ package org.leralix.tan.gui.user.player;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.timezone.TimeZoneManager;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.gui.user.property.PlayerPropertiesMenu;
 import org.leralix.tan.gui.user.territory.history.PlayerTransactionHistory;
@@ -115,6 +113,7 @@ public class PlayerMenu extends BasicGui {
     protected GuiItem getWarpButton() {
         return iconManager.get(IconKey.WARP_ICON)
                 .setName(Lang.GUI_WARP_BUTTON.get(langType))
+                .setDescription(Lang.GUI_WARP_BUTTON_DESC.get())
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_OPEN)
                 .setAction(action -> new WarpMenu(player, p -> open()))
                 .asGuiItem(player, langType);

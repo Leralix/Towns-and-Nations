@@ -91,12 +91,13 @@ public class TeleportationRegister {
         if (!spawnRegister.containsKey(tanPlayer.getID())) {
             return;
         }
-        if (spawnRegister.get(tanPlayer.getID()).isCancelled()) {
+        TeleportationData teleportationData = spawnRegister.get(tanPlayer.getID());
+        if (teleportationData == null || teleportationData.isCancelled()) {
             removePlayer(tanPlayer);
             return;
         }
 
-        TeleportationPosition teleportationPosition = spawnRegister.get(tanPlayer.getID()).getTeleportationPosition();
+        TeleportationPosition teleportationPosition = teleportationData.getTeleportationPosition();
 
         Player player = Bukkit.getPlayer(tanPlayer.getID());
         if (player != null) {

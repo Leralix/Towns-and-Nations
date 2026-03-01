@@ -1,15 +1,14 @@
 package org.leralix.tan.utils.gameplay;
 
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.gui.scope.BrowseScope;
 import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.storage.stored.TownDataStorage;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class TerritoryUtil {
 
@@ -49,6 +48,24 @@ public class TerritoryUtil {
         if(scope == BrowseScope.ALL || scope == BrowseScope.NATIONS && org.leralix.tan.utils.constants.Constants.enableNation())
             territoryList.addAll(org.leralix.tan.storage.stored.NationDataStorage.getInstance().getAll().values());
         return territoryList;
+    }
+
+    public static Set<TerritoryData> getTerritoriesAuthorizingTeleportation(ITanPlayer tanPlayer) {
+
+        List<TerritoryData> allTerritories = TerritoryUtil.getTerritories(BrowseScope.ALL);
+        Set<TerritoryData> authorizedTerritories = new HashSet<>();
+
+        for (TerritoryData territoryData : tanPlayer.getAllTerritoriesPlayerIsIn()) {
+            for (TerritoryData iterateTerritoryData : allTerritories) {
+                if (!authorizedTerritories.contains(iterateTerritoryData)
+                        && iterateTerritoryData.authorizeTeleportation(territoryData)
+                        && iterateTerritoryData.isSpawnSet()
+                ) {
+                    authorizedTerritories.add(iterateTerritoryData);
+                }
+            }
+        }
+        return authorizedTerritories;
     }
 
 }
