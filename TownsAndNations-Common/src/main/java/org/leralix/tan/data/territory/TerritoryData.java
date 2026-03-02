@@ -4,7 +4,10 @@ package org.leralix.tan.data.territory;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -29,7 +32,7 @@ import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.data.territory.relation.DiplomacyProposal;
 import org.leralix.tan.data.territory.relation.RelationData;
 import org.leralix.tan.data.territory.relation.TownRelation;
-import org.leralix.tan.data.territory.teleportation.TeleportationPosition;
+import org.leralix.tan.data.territory.teleportation.TeleportationData;
 import org.leralix.tan.data.upgrade.TerritoryStats;
 import org.leralix.tan.data.upgrade.rewards.StatsType;
 import org.leralix.tan.data.upgrade.rewards.list.BiomeStat;
@@ -103,8 +106,7 @@ public abstract class TerritoryData implements TanTerritory {
     protected TerritoryStats upgradesStatus;
     protected BannerBuilder bannerBuilder;
 
-    protected TeleportationPosition teleportationPosition;
-    protected TownRelation relationToAllowTeleportation;
+    protected TeleportationData teleportationPosition;
 
     protected TerritoryData(String id, String name, ITanPlayer owner) {
         this.id = id;
@@ -131,6 +133,7 @@ public abstract class TerritoryData implements TanTerritory {
         overlordsProposals = new ArrayList<>();
 
         chunkSettings = new ClaimedChunkSettings(PermissionGiven.ofTerritory(this));
+        this.teleportationPosition = new TeleportationData();
 
         color = StringUtil.randomColor();
     }
@@ -1248,15 +1251,10 @@ public abstract class TerritoryData implements TanTerritory {
         return Collections.emptyList();
     }
 
-    public void setSpawn(Location location) {
-        this.teleportationPosition = new TeleportationPosition(location);
-    }
-
-    public boolean isSpawnSet() {
-        return this.teleportationPosition != null;
-    }
-
-    public TeleportationPosition getSpawn() {
+    public TeleportationData getTeleportationData() {
+        if(this.teleportationPosition == null){
+            this.teleportationPosition = new TeleportationData();
+        }
         return this.teleportationPosition;
     }
 
@@ -1271,6 +1269,6 @@ public abstract class TerritoryData implements TanTerritory {
     }
 
     public boolean authorizeTeleportation(TerritoryData territoryData) {
-        return getRelationWith(territoryData).isSuperiorTo(TownRelation.NEUTRAL);
+        return getTeleportationData().isTeleportationAllowed(getRelationWith(territoryData));
     }
 }

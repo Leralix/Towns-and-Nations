@@ -59,7 +59,7 @@ public class TerritoryUtil {
             for (TerritoryData iterateTerritoryData : allTerritories) {
                 if (!authorizedTerritories.contains(iterateTerritoryData)
                         && iterateTerritoryData.authorizeTeleportation(territoryData)
-                        && iterateTerritoryData.isSpawnSet()
+                        && iterateTerritoryData.getTeleportationData().isSpawnSet()
                 ) {
                     authorizedTerritories.add(iterateTerritoryData);
                 }

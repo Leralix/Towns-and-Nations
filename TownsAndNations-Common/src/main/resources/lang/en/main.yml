@@ -825,6 +825,8 @@ language:
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR: "§aChange chunk color"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1: "§fChange the color of claimed chunks on the map"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2: "§fCurrent color: §9{0}"
+  GUI_TERRITORY_SETTINGS_AUTHORIZED_TELEPORTATION: "§aManage authorized teleportation"
+  GUI_TERRITORY_SETTINGS_AUTHORIZED_TELEPORTATION_DESC: "§fEnabled for : {0}§f and above"
   GUI_TOWN_SETTINGS_CHANGE_CAPITAL: "§aChange capital chunk"
   GUI_TOWN_SETTINGS_CHANGE_TAG: "§aChange town tag"
   GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1: "§fCurrent tag: {0}"

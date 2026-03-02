@@ -90,7 +90,7 @@ public class SetSpawnCommand extends AbstractSpawnCommand {
             return;
         }
 
-        territoryData.setSpawn(player.getLocation());
+        territoryData.getTeleportationData().setPosition(player.getLocation());
         TanChatUtils.message(player, Lang.SPAWN_SET_SUCCESS.get(langType));
     }
 

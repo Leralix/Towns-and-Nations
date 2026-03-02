@@ -73,12 +73,6 @@ public class SpawnCommand extends AbstractSpawnCommand {
             return;
         }
 
-        //Spawn set
-        if (!territoryData.isSpawnSet()) {
-            TanChatUtils.message(player, Lang.SPAWN_NOT_SET.get(langType));
-            return;
-        }
-
         TeleportationRegister.teleportToTownSpawn(playerData, territoryData);
 
 

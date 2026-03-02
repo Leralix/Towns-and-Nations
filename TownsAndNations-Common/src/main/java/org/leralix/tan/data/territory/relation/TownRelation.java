@@ -51,6 +51,10 @@ public enum TownRelation {
         return rank > oldRelation.rank;
     }
 
+    public boolean isSuperiorOrEqualsTo(TownRelation oldRelation) {
+        return rank >= oldRelation.rank;
+    }
+
     public EDiplomacyState toAPI() {
         return switch (this) {
             case ALLIANCE -> EDiplomacyState.ALLIANCE;
@@ -82,6 +86,17 @@ public enum TownRelation {
             case ALLIANCE, NON_AGGRESSION, SELF, VASSAL, OVERLORD -> BoundaryType.ALLY;
             case NEUTRAL -> BoundaryType.NEUTRAL;
             case WAR, EMBARGO -> BoundaryType.ENEMY;
+        };
+    }
+
+    public TownRelation iterateOverRelation() {
+        return switch (this) {
+            case SELF -> ALLIANCE;
+            case ALLIANCE -> NON_AGGRESSION;
+            case NON_AGGRESSION -> NEUTRAL;
+            case NEUTRAL -> EMBARGO;
+            case EMBARGO -> WAR;
+            default -> SELF;
         };
     }
 }
