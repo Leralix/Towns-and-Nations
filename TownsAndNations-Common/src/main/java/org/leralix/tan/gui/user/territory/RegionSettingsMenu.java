@@ -27,7 +27,7 @@ public class RegionSettingsMenu extends SettingsMenus {
     private final RegionData regionData;
 
     public RegionSettingsMenu(Player player, RegionData regionData) {
-        super(player, Lang.HEADER_SETTINGS, regionData, 3);
+        super(player, Lang.HEADER_SETTINGS, regionData, 4);
         this.regionData = regionData;
         open();
     }
@@ -41,18 +41,16 @@ public class RegionSettingsMenu extends SettingsMenus {
         gui.setItem(2, 3, getChangeDescriptionButton());
         gui.setItem(2, 4, getChangeColorButton());
 
-        gui.setItem(2, 5, setBannerButton());
+        gui.setItem(3, 2, setBannerButton());
+        gui.setItem(3, 3, getAuthorizedTeleportationButton());
 
-        regionData.getOverlordInternal().ifPresent(overlord -> {
-            if (overlord instanceof NationData nationData) {
-                gui.setItem(2, 6, getLeaveNationButton(nationData));
-            }
-        });
+
+        regionData.getNation().ifPresent(overlord -> gui.setItem(2, 6, getLeaveNationButton(overlord)));
 
         gui.setItem(2, 7, getChangeOwnershipButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new RegionMenu(player, regionData), langType));
+        gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> new RegionMenu(player, regionData), langType));
 
         gui.open(player);
     }

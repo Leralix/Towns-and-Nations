@@ -69,12 +69,7 @@ public class SpawnCommand extends AbstractSpawnCommand {
         EnableTownSpawn enableTownSpawn = territoryData.getNewLevel().getStat(EnableTownSpawn.class);
         //Spawn Unlocked
         if (!enableTownSpawn.isEnabled()) {
-            return;
-        }
-
-        //Spawn set
-        if (!territoryData.isSpawnSet()) {
-            TanChatUtils.message(player, Lang.SPAWN_NOT_SET.get(langType));
+            TanChatUtils.message(player, Lang.SPAWN_NOT_UNLOCKED.get(langType));
             return;
         }
 

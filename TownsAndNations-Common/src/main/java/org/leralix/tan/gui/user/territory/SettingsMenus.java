@@ -10,6 +10,7 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.data.building.fort.Fort;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.rank.RolePermission;
+import org.leralix.tan.data.territory.teleportation.TeleportationData;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -25,6 +26,7 @@ import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SettingsMenus extends BasicGui {
@@ -98,7 +100,7 @@ public abstract class SettingsMenus extends BasicGui {
                 .asGuiItem(player, langType);
     }
 
-    protected GuiItem setBannerButton(){
+    protected GuiItem setBannerButton() {
         return iconManager.get(territoryData.getBanner().buildItemStack())
                 .setName(Lang.GUI_TERRITORY_SETTINGS_SET_BANNER.get(tanPlayer))
                 .setRequirements(
@@ -108,23 +110,52 @@ public abstract class SettingsMenus extends BasicGui {
                         Lang.GUI_SETTINGS_SET_FLAG_ACTION
                 )
                 .setAction(
-                    action -> {
+                        action -> {
 
-                        if(action.getCursor() == null){
-                            return;
-                        }
-                        ItemStack itemMaterial = action.getCursor();
+                            if (action.getCursor() == null) {
+                                return;
+                            }
+                            ItemStack itemMaterial = action.getCursor();
 
-                        if(Tag.BANNERS.isTagged(itemMaterial.getType())) {
-                            BannerMeta meta = (BannerMeta) itemMaterial.getItemMeta();
-                            territoryData.setBanner(itemMaterial.getType(), meta.getPatterns());
-                            FortStorage.getInstance().getOwnedFort(territoryData).forEach(Fort::updateFlag);
-                            SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
-                            open();
+                            if (Tag.BANNERS.isTagged(itemMaterial.getType())) {
+                                BannerMeta meta = (BannerMeta) itemMaterial.getItemMeta();
+                                territoryData.setBanner(itemMaterial.getType(), meta.getPatterns());
+                                FortStorage.getInstance().getOwnedFort(territoryData).forEach(Fort::updateFlag);
+                                SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
+                                open();
+                            }
+                            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                         }
-                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
-                    }
                 )
+                .asGuiItem(player, langType);
+    }
+
+    protected GuiItem getAuthorizedTeleportationButton() {
+
+        TeleportationData teleportationData = territoryData.getTeleportationData();
+
+        List<FilledLang> description = new ArrayList<>();
+
+        description.add(Lang.GUI_TERRITORY_SETTINGS_AUTHORIZED_TELEPORTATION_DESC.get(
+                territoryData.getTeleportationData().getRelationTeleportationAllowed().getColoredName(langType))
+        );
+
+        if (teleportationData.isSpawnSet()) {
+            description.add(Lang.SPAWN_NOT_SET.get());
+        }
+
+        return iconManager.get(IconKey.TERRITORY_TELEPORTATION_ICON)
+                .setName(Lang.GUI_TERRITORY_SETTINGS_AUTHORIZED_TELEPORTATION.get(tanPlayer))
+                .setDescription(description)
+                .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
+                .setClickToAcceptMessage(Lang.LEFT_CLICK_TO_MODIFY)
+                .setAction(action -> {
+                    if (action.isLeftClick()) {
+                        teleportationData.setRelationTeleportationAllowed(teleportationData.getRelationTeleportationAllowed().iterateOverRelation());
+                        SoundUtil.playSound(player, SoundEnum.ADD);
+                        open();
+                    }
+                })
                 .asGuiItem(player, langType);
     }
 }

@@ -26,7 +26,7 @@ public class NationSettingsMenu extends SettingsMenus {
     private final NationData nationData;
 
     public NationSettingsMenu(Player player, NationData nationData) {
-        super(player, Lang.HEADER_SETTINGS, nationData, 3);
+        super(player, Lang.HEADER_SETTINGS, nationData, 4);
         this.nationData = nationData;
         open();
     }
@@ -39,7 +39,9 @@ public class NationSettingsMenu extends SettingsMenus {
         gui.setItem(2, 2, getRenameButton());
         gui.setItem(2, 3, getChangeDescriptionButton());
         gui.setItem(2, 4, getChangeColorButton());
-        gui.setItem(2, 5, setBannerButton());
+
+        gui.setItem(3, 2, setBannerButton());
+        gui.setItem(3, 3, getAuthorizedTeleportationButton());
 
         gui.setItem(2, 6, getChangeOwnershipButton());
         gui.setItem(2, 7, getChangeCapitalButton());

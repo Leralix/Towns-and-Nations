@@ -6,8 +6,8 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.teleportation.PlannedTeleportation;
 import org.leralix.tan.data.territory.teleportation.TeleportationData;
-import org.leralix.tan.data.territory.teleportation.TeleportationPosition;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.constants.Constants;
@@ -28,7 +28,7 @@ public class TeleportationRegister {
     /**
      * This HashMap contains the player's ID and the TeleportationData object.
      */
-    private static final HashMap<UUID, TeleportationData> spawnRegister = new HashMap<>();
+    private static final HashMap<UUID, PlannedTeleportation> spawnRegister = new HashMap<>();
 
     /**
      * This method is used to register a player to teleport to a town.
@@ -37,7 +37,7 @@ public class TeleportationRegister {
      * @param town   The town the player is teleporting to.
      */
     public static void registerSpawn(ITanPlayer player, TerritoryData territoryData) {
-        spawnRegister.put(player.getID(), new TeleportationData(territoryData.getSpawn()));
+        spawnRegister.put(player.getID(), new PlannedTeleportation(territoryData.getTeleportationData()));
     }
 
     public static void removePlayer(ITanPlayer player) {
@@ -48,15 +48,15 @@ public class TeleportationRegister {
         return spawnRegister.containsKey(playerID);
     }
 
-    public static TeleportationData getTeleportationData(UUID playerID) {
+    public static PlannedTeleportation getTeleportationData(UUID playerID) {
         return spawnRegister.get(playerID);
     }
 
-    public static TeleportationData getTeleportationData(ITanPlayer tanPlayer) {
+    public static PlannedTeleportation getTeleportationData(ITanPlayer tanPlayer) {
         return getTeleportationData(tanPlayer.getID());
     }
 
-    public static TeleportationData getTeleportationData(Player player) {
+    public static PlannedTeleportation getTeleportationData(Player player) {
         return getTeleportationData(player.getUniqueId());
     }
 
@@ -73,6 +73,13 @@ public class TeleportationRegister {
             TanChatUtils.message(player, Lang.WAIT_BEFORE_ANOTHER_TELEPORTATION.get(langType));
             return;
         }
+
+        TeleportationData teleportationData = territoryData.getTeleportationData();
+        if(teleportationData == null){
+            TanChatUtils.message(player, Lang.SPAWN_NOT_SET.get(langType));
+            return;
+        }
+
         if (secondBeforeTeleport > 0) {
             if (Constants.isCancelTeleportOnMovePosition()) {
                 TanChatUtils.message(player, Lang.TELEPORTATION_IN_X_SECONDS_NOT_MOVE.get(langType, Integer.toString(secondBeforeTeleport)));
@@ -91,12 +98,13 @@ public class TeleportationRegister {
         if (!spawnRegister.containsKey(tanPlayer.getID())) {
             return;
         }
-        if (spawnRegister.get(tanPlayer.getID()).isCancelled()) {
+        PlannedTeleportation plannedTeleportation = spawnRegister.get(tanPlayer.getID());
+        if (plannedTeleportation == null || plannedTeleportation.isCancelled()) {
             removePlayer(tanPlayer);
             return;
         }
 
-        TeleportationPosition teleportationPosition = spawnRegister.get(tanPlayer.getID()).getTeleportationPosition();
+        TeleportationData teleportationPosition = plannedTeleportation.getTeleportationPosition();
 
         Player player = Bukkit.getPlayer(tanPlayer.getID());
         if (player != null) {

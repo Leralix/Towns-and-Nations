@@ -76,6 +76,7 @@ TERRITORY_RENAME_ICON: "minecraft:NAME_TAG"
 TERRITORY_DESCRIPTION_ICON: "minecraft:WRITABLE_BOOK"
 TERRITORY_CHANGE_OWNER_ICON: "https://textures.minecraft.net/texture/45587da7fe7336e8ab9f791ea5e2cfc8a827ca959567eb9d53a647babf948d5"
 TERRITORY_CHANGE_COLOR_ICON: "https://textures.minecraft.net/texture/bf9d42b674a920f849107413ba40727eb1551d7d54591f4e1e5cbc6c0287a87"
+TERRITORY_TELEPORTATION_ICON: "minecraft:SADDLE"
 #Town settings menu
 TOWN_CHANGE_OWNERSHIP_ICON: "minecraft:LECTERN"
 TOWN_ALLOW_APPLICATION_ICON: "minecraft:WRITABLE_BOOK"
@@ -141,6 +142,7 @@ BUDGET_ICON: "https://textures.minecraft.net/texture/75c9cccf61a6e6284fe9bbe6491
 MISCELLANEOUS_SPENDING_ICON: "https://textures.minecraft.net/texture/4c36045208f9b5ddcf8c4433e424b1ca17b94f6b96202fb1e5270ee8d53881b1"
 DONATION_ICON: "minecraft:DIAMOND"
 RETRIEVE_MONEY_ICON: "https://textures.minecraft.net/texture/86bd920b402815ad89018df82977be9f7ea19e799ecf016f7f0da4ab47ca23c5"
+WARP_ICON: "minecraft:SADDLE"
 #Chunk settings
 LANDS_PERMISSION_ICON: "minecraft:PLAYER_HEAD"
 GENERAL_SETTINGS_ICON: "https://textures.minecraft.net/texture/5f8c703105180d2586d7f96019dac489776ae488dd6ceb981d08fae4325ea4d1"
