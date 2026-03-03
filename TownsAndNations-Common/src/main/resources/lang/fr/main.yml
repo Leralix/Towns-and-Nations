@@ -10,6 +10,7 @@ language:
   VALUE_EXCEED_MAXIMUM_ERROR: "§cLa valeur dépasse le maximum autorisé ({0})"
   VALUE_CANNOT_BE_NEGATIVE_ERROR: "§cLa valeur ne peut pas être négative"
   TOWN_NO_REGION: "§cVotre ville ne fait pas partie d'une région"
+  PLAYER_NOT_IN_TERRITORY: "§cVous ne faites pas partie de {0}"
   LEADER_CANNOT_QUIT_TOWN: "§cLe chef ne peut pas quitter une ville"
   TOWN_ALREADY_HAVE_OVERLORD: "§cCette ville a déjà un Suzerain"
   PLAYER_NO_PERMISSION: "§cVous n'avez pas la permission d'exécuter cette commande"
@@ -106,6 +107,7 @@ language:
   CHUNK_BIOME_NOT_ALLOWED: "§cVous ne pouvez pas revendiquer de chunks dans ce biome."
   CHUNK_IN_BUFFER_ZONE: "§cVous ne pouvez pas revendiquer un premier chunk trop proche d'un autre territoire (minimum §e{0}§c)"
   MAX_CHUNK_LIMIT_REACHED: "§cVous avez atteint le nombre maximum de chunks revendicables. Améliorez la ville pour en obtenir davantage"
+  CHUNK_NOT_ADJACENT: "§cCe chunk n'est pas adjacent à votre territoire"
   CHUNK_CLAIMED_SUCCESS_UNLIMITED: "Chunk revendiqué pour {0}"
   CHUNK_CLAIMED_SUCCESS_LIMITED: "Chunk revendiqué pour {0} §f(§2{1}/{2}♦§f)"
   #Invite player to town command
@@ -141,6 +143,10 @@ language:
   REGION_SCOPE: "région"
   ALLIANCE_SCOPE: "alliance"
   GLOBAL_SCOPE: "global"
+  #See border command
+  SEE_BORDER_COMMAND_DESC: "Activer/Désactiver les bordures du territoire"
+  ENABLE_BORDER_INFO: "Affichage des bordures"
+  DISABLE_BORDER_INFO: "Les bordures sont maintenant cachées"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "Ajout de §6+{0}{MONEY_CHAR}§f à §3{1}"
   SET_MONEY_COMMAND_SUCCESS: "L'argent de §3{0}§f a été fixé à §6{1}{MONEY_CHAR}"
@@ -165,6 +171,8 @@ language:
   DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION: "Chunk abandonné ! Nombre actuel de chunks revendiqués par §9{0} §f: §2{1}♦"
   PROPERTY_IN_CHUNK: "§cCe chunk contient une propriété §f({0})"
   BUILDINGS_OR_CAPITAL_IN_CHUNK: "§cCe chunk contient au moins un bâtiment ou est un chunk de la capitale"
+  CHUNK_OCCUPIED_CANT_UNCLAIM: "§cCe chunk est actuellement occupé et ne peut pas être abandonné"
+  CANNOT_UNCLAIM_BECAUSE_CREATE_ORPHAN: "§cCe chunk ne peut pas être supprimé car il est lié à d'autres chunks"
   #Map command
   MAP_COMMAND_DESC: "Dessine une carte de l'état des chunks présents autour du joueur"
   #Debug commands
@@ -252,19 +260,21 @@ language:
   GUI_GENERIC_RIGHT_CLICK_TO_BACK: "§7▶ Clic droit pour le précédent"
   GUI_GENERIC_RIGHT_CLICK_TO_DELETE: "§7▶ Clic droit pour supprimer"
   GUI_GENERIC_RIGHT_CLICK_TO_REMOVE: "§7▶ Clic droit pour retirer"
+  GUI_GENERIC_RIGHT_CLICK_TO_CANCEL: "§7▶ Clic droit pour annuler"
   GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT: "§7▶ Shift + clic pour se téléporter"
   GUI_GENERIC_ADD_BUTTON: "§7▶ Clic pour ajouter"
   GUI_GENERIC_CLICK_TO_UPGRADE: "§7▶ Cliquez pour améliorer"
   LEFT_CLICK_TO_AUTHORIZE: "§7▶ Clic gauche pour autoriser"
   LEFT_CLICK_TO_MODIFY: "§7▶ Clic gauche pour modifier"
   GUI_GENERIC_LEFT_CLICK_TO_ACCEPT: "§7▶ Clic gauche pour accepter"
+  RIGHT_CLICK_TO_REFUSE: "§7▶ Clic droit pour refuser"
   GUI_GENERIC_NEW_BALANCE_MENU: "§fÉvolution du solde : §e{0}{MONEY_CHAR} §f→ §e{1}{MONEY_CHAR}"
   CANNOT_BE_MODIFIED: "§cCeci ne peut pas être modifié"
   #Main menu
   GUI_SERVER_TIME: "§aDate"
   CURRENT_SERVER_TIME: "§fHeure du serveur : §e{0}"
   CURRENT_PLAYER_TIME: "§fHeure du Joueur : §e{0}"
-  GUI_NATION_ICON: "§aRoyaume"
+  GUI_KINGDOM_ICON: "§aRoyaume"
   GUI_REGION_ICON: "§aRégion"
   GUI_REGION_ICON_DESC1_REGION: "§fRégion actuelle : {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fRang : {0}"
@@ -446,6 +456,12 @@ language:
   CREATE_PUBLIC_PROPERTY_COST: "§fCoût : §eGratuit"
   CREATE_FORT_ICON: "§aCréer un nouveau fort"
   CREATE_FORT_DESC1: "§fCoût : §e{0}{MONEY_CHAR}"
+  #Wars menu
+  GUI_TOWN_ATTACK_TOWN_DESC1: "§c▶ Clic pour déclarer la guerre"
+  DECLARE_WAR_CONFIRM_MESSAGE: "{0}§f commencera une guerre contre {1}"
+  DECLARE_WAR_NUMBER_OF_ALLIES: "{0}§f a §9{1}§f alliés"
+  DECLARE_WAR_BUTTON: "§aDéclarer une guerre"
+  OPEN_ATTACK_BUTTON: "§aOuvre les attaques"
   #War menu
   WAR_GOAL_LIST_BUTTON: "§aObjectifs de guerre"
   WAR_GOAL_LIST_BUTTON_DESC1: "§fObjectifs de guerre actuels : "
@@ -457,6 +473,9 @@ language:
   WAR_SURRENDER: "§cCapituler"
   WAR_SURRENDER_DESC1: "§fSe rendre à l'ennemi et mettre fin à la guerre"
   WAR_SURRENDER_DESC2: "§fLes objectifs de guerre suivants seront appliqués :"
+  SURRENDER_PROGRESS_DESCRIPTION: "{0}§f est à §e{1}%§f de la capitulation"
+  SURRENDER_PROGRESS_CAPITAL_OCCUPIED: "§f- La capitale est occupée (§e+{0}%§f)"
+  SURRENDER_PROGRESS_CAPITAL_OWNED: "§f- La capitale est libre (§e+0%)"
   #War goals menu
   GUI_ADD_WAR_GOAL: "§aAjouter un objectif de guerre"
   #GUI
@@ -473,6 +492,7 @@ language:
   HEADER_TOWN_MENU: "Ville : {0}"
   HEADER_SELECT_ICON: "Sélectionnez la nouvelle icône"
   HEADER_WARS_MENU: "Guerres"
+  HEADER_DECLARE_WAR: "Déclarer la guerre"
   HEADER_CREATE_WAR_MANAGER: "Déclarer une attaque sur {0}"
   HEADER_SELECT_WARGOAL: "Sélectionnez l'objectif de guerre"
   HEADER_TOWN_OWNED_LANDMARK: "Point d'intérêts appartenant à la ville"
@@ -741,7 +761,10 @@ language:
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_SUCCESS: "§fLa couleur a été modifiée avec succès"
   GUI_TOWN_SETTINGS_WRITE_NEW_COLOR_IN_CHAT_ERROR: "§cLe code couleur saisi ne suit pas le format attendu (0xRRVVBB)"
   GUI_TOWN_SETTINGS_NEW_TOWN_COLOR_HISTORY: "§fModification du code couleur : §9{0}§f -> §9{1}"
+  GUI_TERRITORY_SETTINGS_SET_BANNER: "§aDéfinir la bannière"
+  GUI_SETTINGS_SET_FLAG_ACTION: "§7▶️ Glissez et déposez une bannière pour définir la nouvelle bannière"
   GUI_CAPITAL_CHUNK_ACTUAL_POSITION: "§fChunk de la capitale : §9{0}"
+  CANNOT_MOVE_CAPITAL_WHILE_AT_WAR: "§cImpossible de déplacer la capitale pendant la guerre"
   GUI_NO_CAPITAL_CHUNK: "§cLa ville n'a aucun chunk"
   #Select language
   HELP_US_TRANSLATE: "§fAidez-nous à traduire le plugin dans votre langue"
@@ -804,6 +827,10 @@ language:
   ADMIN_GUI_LANDMARK_ICON: "§aPoints d'intérêt"
   ADMIN_GUI_LANDMARK_DESC1: "§fClic gauche pour gérer les points d'intérêt"
   ADMIN_GUI_WAR_ICON: "§aGuerre"
+  ADMIN_ATTACKS_NEED_APPROVALS: "§e{0}§f attacks need admin approval"
+  ADMIN_FORCE_SURRENDER_ATTACK_SIDE: "§aForcer la capitulation des attaquants"
+  ADMIN_FORCE_SURRENDER_DEFENSIVE_SIDE: "§aForcer la capitulation des défenseurs"
+  ADMIN_GUI_MANAGE_ATTACKS: "§aGérer les attaques"
   ADMIN_GUI_CREATE_LANDMARK: "Créer un nouveau point d'intérêt"
   GUI_LANDMARK_LEFT_CLICK_TO_CLAIM: "§7▶ Cliquez pour revendiquer le point d'intérêt"
   GUI_LANDMARK_CLAIM_COST: "§fCout : §6{0}{MONEY_CHAR}"
@@ -932,10 +959,13 @@ language:
   LIBERATE_SUBJECT_WAR_GOAL: "§aLibération"
   LIBERATE_SUBJECT_WAR_GOAL_DESC: "§fLibérer un territoire spécifique de son suzerain actuel"
   LIBERATE_SUBJECT_WAR_GOAL_DESC1: "§fTerritoire à libérer: §9{0}"
+  GUI_WARGOAL_LIBERATE_CANNOT_BE_USED: "§cAucun territoire ne peut être libéré"
   GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT: "§f{0} sera libéré"
   GUI_WARGOAL_OUTSIDE_AUTHORIZED_SLOTS: "§cLa guerre doit commencer dans les créneaux autorisés"
+  GUI_ATTACK_ALREADY_PLANNED_IN_TIME: "§cUne attaque est déjà prévue dans ce créneau horaire"
   ALL_ATTACK_SCOPE: "Toutes les attaques"
   UNFINISHED_ATTACK_SCOPE: "Attaques en cours"
+  GUI_RENAME_WAR: "§aRenomer la guerre"
   DEFENSIVE_SIDE_HAS_SURRENDER: "{0}§f s’est rendu face à {1}§f. Par conséquent, l’attaque a été annulé"
   #Brose scope
   BROWSE_SELECT: "§aSélectionnez le filtre :"
@@ -991,6 +1021,7 @@ language:
   GUI_DEFENDING_SIDE_ICON: "§aDéfenseurs"
   GUI_DEFENDING_SIDE_ICON_DESC1: "§fListe de tous les défenseurs :"
   GUI_ICON_LIST: "§f- {0}"
+  CLICK_TO_JOIN_SIDE: "§7▶ Clic pour rejoindre la guerre"
   #Map
   MAP_CLAIM_TYPE: "    Type de revendication : "
   MAP_TOWN: "    §9[Ville]"
@@ -1104,3 +1135,8 @@ language:
   #Capital
   CHANGE_CAPITAL_NOT_OWNED_TOWN_CHUNK: "§cCe chunk appartenant à {0}"
   CHANGE_CAPITAL_NOT_TOWN_CHUNK: "§cCe chunk n'est pas un chunk de ville"
+  #Wars
+  WAR_INFO_CHUNK_PROTECTED: "§f🌑§f Protégé ({0}§f) - [Atk : §e{1}§f, Def : §e{2}§f]"
+  WAR_INFO_CHUNK_OWNED: "§4🌑§f Possédé par {0}§f - [Atk : §e{1}§f, Def : §e{2}§f]"
+  WAR_INFO_CONTESTED: "§6🌑§f Contesté par {0}§f (§e{1}%§f) - [Atk : §e{2}§f, Def : §e{3}§f]"
+  WAR_INFO_FORT_STATUS: "{0}§f - (Atk : §e{1}§f / Def: §e{2}§f)"

@@ -1,0 +1,6 @@
+#Upgrades.yml is used to define the names of upgrades and their benefits in the game.
+#To add a name to a new upgrade, add it to the customLang section.
+customLang:
+  #Names
+  CITY_HALL: "Belediye binası"
+  BARRACKS: "Kışla"
