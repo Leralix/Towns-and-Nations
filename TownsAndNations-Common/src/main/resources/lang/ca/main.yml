@@ -1,4 +1,5 @@
 language:
+  STRING: "§f{0}"
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] Llengua Catalana carregada amb èxit"
   PLUGIN_STRING: "§6[TaN]§f "
   PLUGIN_DEBUG_STRING: "§c[TaN - Debug]§f "
@@ -6,17 +7,24 @@ language:
   #Common errors
   PLAYER_NO_TOWN: "§cTu no tens una localitat"
   PLAYER_NO_REGION: "§cTu no tens una regió"
+  VALUE_EXCEED_MAXIMUM_ERROR: "§cEl valor ha excedit el màxim autoritzat ({0})"
+  VALUE_CANNOT_BE_NEGATIVE_ERROR: "§cEl valor no pot ser negatiu"
   TOWN_NO_REGION: "§cLa teva localitat no pertany a una regió"
+  PLAYER_NOT_IN_TERRITORY: "§cNo formes part de {0}"
   LEADER_CANNOT_QUIT_TOWN: "§cEl líder no pot abandonar una localitat"
   TOWN_ALREADY_HAVE_OVERLORD: "§cAquesta localitat ja té un alcalde"
   PLAYER_NO_PERMISSION: "§cNo tens permís per executar aquesta ordre"
   PLAYER_NO_PERMISSION_RANK_DIFFERENCE: "§cNo tens permís per executar aquesta acció sobre un rang igual o superior al teu"
+  CANNOT_CAST_COMMAND_DURING_ATTACK: "§cNo pots fer servir aquesta comanda durant un atac"
+  CANNOT_CAST_COMMAND_ON_PLAYER_WITH_SPECIFIC_RELATION: "§cNo pots fer servir aquesta comanda sobre §e{0}§c perquè compartiu una relació: {1}"
   PLAYER_ACTION_NO_PERMISSION: "§cNo tens permís per fer aquesta acció"
   PLAYER_NOT_FOUND: "§cNom incorrecte, o el jugador no està connectat"
   TOWN_NOT_ENOUGH_LEVEL: "§cLa teva localitat no té el nivell correcte: §a{0}"
   PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION: "§cNomes el líder de la localitat pot fer aquesta acció"
   CHUNK_NOT_CLAIMED: "§cAquesta regió no està reclamada"
   CANT_KICK_REGIONAL_CAPITAL: "§cNo pots treure la capital de la regió fora de la regió"
+  CONFIRM_VASSAL_KICK: "{0} §cJa no forma part de {1}"
+  MESSAGE_NOT_RIGHT_SIZE: "§cEl missatge ha de ser {0} - {1} llarg"
   NO_TRADE_ALLOWED_EMBARGO: "§cNo pots comerciar amb una localitat sota embargament"
   NO_LEADER: "§cNo líder"
   TOWN_DIPLOMATIC_INVITATION_NO_LEADER: "§cLa localitat no té un líder amb el qual poder dur a terme relacions diplomàtiques"
@@ -25,7 +33,11 @@ language:
   LANDMARK_ALREADY_CLAIMED: "§cAquesta regió ja ha estat reclamada per §9{0}"
   INTERACTION_TOO_FAR_ERROR: "§cEstàs massa lluny per poder dur a terme aquesta acció"
   CANNOT_DELETE_TERRITORY_IF_CAPITAL: "§cAquest territori no es pot eliminar perquè és el líder de {0}"
+  CANNOT_DELETE_TERRITORY_IF_AT_WAR: "§cUn territori en guerra no pot ser eliminat"
+  ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT: "§cTu no pots interactuar amb aquest permís perquè el teu rang no el te"
   TOWN_NOT_FOUND: "§cLocalitat no trobada"
+  UPGRADE_NOT_FOUND: "§cNo s'ha trobat la millora"
+  PROPERTY_NOT_FOUND: "§cNo s'ha trobat la propietat"
   TERRITORY_NOT_FOUND: "§cTerritori no trobat"
   INVALID_ARGUMENTS: "§cArguments invàlids"
   PLAYER_ALREADY_HAVE_TOWN: "§cAquest jugador ja té una localitat"
@@ -41,10 +53,12 @@ language:
   INVALID_PLAYER_NAME: "Nom de jugador invàlid"
   #Common uses
   DISPLAY_COORDINATES: "§fCoordenades: §d[{0}, {1}, {2}]"
+  DISPLAY_2D_COORDINATES: "§d[x: {0}, z : {1}]"
   GUI_BASIC_NAME: "§a{0}"
   CURRENT_STATE: "§fEstat actual: §a{0}"
   ENABLED: "§aHabilitat"
   DISABLED: "§cDeshabilitat"
+  ENTER_NEW_VALUE: "Escriu un nou missatge o valor al xat"
   #Common default messages
   DEFAULT_DESCRIPTION: "Descripció per defecte"
   #Chat scope
@@ -57,6 +71,21 @@ language:
   #Help command
   HELP_DESC: "Mostra una llista explicant totes les comandes"
   CLICK_TO_GO_NEXT_PAGE: "§fFes clic per anar a la següent pàgina"
+  CLICK_TO_GO_PREVIOUS_PAGE: "§fClica per anar a la pàgina anterior"
+  PAGE_NUMBER: "§fPàgina {0}/{1}"
+  #Level up
+  BASIC_LEVEL_UP: "§aPujada de nivell !"
+  #Teleportation
+  WAIT_BEFORE_ANOTHER_TELEPORTATION: "§cSiusplau espera abans de teletransportarte un altre cop"
+  TELEPORTATION_CANCELLED: "§cTeletransport cancel·lat"
+  TELEPORTATION_IN_X_SECONDS: "§fTeletransport en §a{0}§f segons"
+  TELEPORTATION_IN_X_SECONDS_NOT_MOVE: "§fTeletransport en §a{0}§f segons. No et moguis"
+  #ChunkListener
+  CHUNK_BELONGS_TO: "§cAquesta parcel·la pertany a: §9{0}"
+  #Commands
+  NOT_ENOUGH_ARGS_ERROR: "§cNo hi ha suficients arguments"
+  TOO_MANY_ARGS_ERROR: "§cMasses arguments"
+  SYNTAX_ERROR: "§cSintaxi incorrecta"
   INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN: "§3{0}§f ja forma part de la teva localitat"
   INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN: "§3{0}§f ja té una localitat: §9{1}"
   INVITATION_RECEIVED_1: "Has sigut convidat per §3{0}§f a la localitat: §9{1}"

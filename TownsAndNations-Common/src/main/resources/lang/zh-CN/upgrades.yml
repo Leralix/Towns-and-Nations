@@ -1,0 +1,25 @@
+#Upgrades.yml is used to define the names of upgrades and their benefits in the game.
+#To add a name to a new upgrade, add it to the customLang section.
+customLang:
+  #Names
+  CITY_HALL: "城镇中心"
+  BARRACKS: "营地"
+  ADMINISTRATION: "行政管理处"
+  WATCHTOWER: "塔楼"
+  PORTAL: "传送门"
+  GUARDS: "哨所"
+  COUNCIL_CHAMBER: "议会"
+  NOTARY_HOUSE: "房产公证处"
+  EXTRACTION_TEAM: "资源采集小组"
+  BETTER_TOOLS: "优质工具"
+  #Prerequisites
+  TOWN_LEVEL: "城镇等级"
+  #Benefits
+  PLAYER_CAP: "玩家数量上限"
+  CHUNK_CAP: "领地区块规模"
+  PROPERTY_CAP: "房产数量配额"
+  UNLOCK_TOWN_SPAWN: "解锁城镇出生点"
+  UNLOCK_MOB_BAN: "解锁生物禁止生成选项"
+  UNLOCK_REGION_CREATION: "解锁“成立地区”功能"
+  MAX_LANDMARKS: "解锁地区旗帜"
+  LANDMARK_BONUS: "% 地标资源产出"
