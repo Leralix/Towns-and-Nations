@@ -99,6 +99,15 @@ public class TownDataStorage extends JsonStorage<TownData>{
         return newTown;
     }
 
+    public TownData getByName(String townName){
+        for(TownData town: dataMap.values()){
+            if(town.getName().equalsIgnoreCase(townName)){
+                return town;
+            }
+        }
+        return null;
+    }
+
 
     public void deleteTown(TownData townData) {
         dataMap.remove(townData.getID());

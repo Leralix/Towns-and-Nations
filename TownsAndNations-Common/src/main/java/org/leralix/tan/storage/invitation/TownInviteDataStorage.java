@@ -1,9 +1,6 @@
 package org.leralix.tan.storage.invitation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class TownInviteDataStorage {
 
@@ -18,6 +15,10 @@ public class TownInviteDataStorage {
         else{
             townInviteList.get(playerID).add(townId);
         }
+    }
+
+    public static List<String> getInvitations(UUID playerUUID){
+        return townInviteList.getOrDefault(playerUUID, new ArrayList<>());
     }
 
 
