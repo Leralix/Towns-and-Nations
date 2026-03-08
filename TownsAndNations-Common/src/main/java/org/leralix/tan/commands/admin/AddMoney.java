@@ -60,12 +60,12 @@ public class AddMoney extends SubCommand {
         }
     }
 
-    static void addMoney(CommandSender commandSender, String[] args, ITanPlayer target) {
+    void addMoney(CommandSender commandSender, String[] args, ITanPlayer target) {
         double amount;
         try {
             amount = Double.parseDouble(args[2]);
         } catch (NumberFormatException e) {
-            TanChatUtils.message(commandSender, Lang.SYNTAX_ERROR_AMOUNT);
+            TanChatUtils.message(commandSender, Lang.SYNTAX_ERROR_AMOUNT.get(getSyntax()));
             return;
         }
         EconomyUtil.addFromBalance(target, amount);
