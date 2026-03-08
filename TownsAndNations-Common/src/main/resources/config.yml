@@ -318,6 +318,9 @@ RankNameSize: 25
 #Enable war
 EnableWar: true
 
+#WarDeclareCost
+warDeclareCost: 1000
+
 # Simple war mode
 # If enabled, a war will not require attacks to capture chunks.
 # As soon as the war is declared, an attack will start and last until one side surrenders.

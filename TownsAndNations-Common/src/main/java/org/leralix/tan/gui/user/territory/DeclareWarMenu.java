@@ -9,10 +9,12 @@ import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
+import org.leralix.tan.gui.service.requirements.MoneyRequirement;
 import org.leralix.tan.gui.user.war.WarMenuDispatch;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.WarStorage;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.War;
@@ -71,6 +73,9 @@ public class DeclareWarMenu extends IteratorGUI {
                             Lang.DECLARE_WAR_NUMBER_OF_ALLIES.get(
                                     iterateTerritory.getColoredName(),
                                     Integer.toString(nbAllies)
+                            ),
+                            Lang.REQUIREMENT_COST_POSITIVE.get(
+                                    Integer.toString(Constants.getWarDeclareCost())
                             )
                     );
 
@@ -78,6 +83,18 @@ public class DeclareWarMenu extends IteratorGUI {
                             player,
                             confirmDescription,
                             () -> {
+                                MoneyRequirement requirement =
+                                        new MoneyRequirement(territoryData, Constants.getWarDeclareCost());
+                                if (requirement.isInvalid()) {
+                                    TanChatUtils.message(player, requirement.getLine(langType), SoundEnum.NOT_ALLOWED);
+                                    SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                                    return;
+                                }
+
+                                requirement.actionDone();
+
+                                SoundUtil.playSound(player, SoundEnum.WAR);
+
                                 War newWar = warStorage.newWar(territoryData, iterateTerritory);
                                 WarMenuDispatch.openMenu(player, newWar, territoryData);
                             },
