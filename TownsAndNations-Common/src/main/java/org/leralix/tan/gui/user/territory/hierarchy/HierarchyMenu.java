@@ -33,11 +33,8 @@ public class HierarchyMenu extends BasicGui {
 
     @Override
     public void open() {
-        Gui gui = GuiUtil.createChestGui(Lang.HEADER_HIERARCHY.get(tanPlayer), 3);
-
-
-        gui.setItem(1, 3, setupOverlordSection());
-        gui.setItem(1, 7, setupVassalSection());
+        setupOverlordSection();
+        setupVassalSection();
 
         fillDecorations(gui, Material.LIGHT_BLUE_STAINED_GLASS_PANE);
 
@@ -45,29 +42,27 @@ public class HierarchyMenu extends BasicGui {
         gui.open(player);
     }
 
-    private GuiItem setupOverlordSection() {
+    private void setupOverlordSection() {
         if (!territoryData.canHaveOverlord()) {
             GuiItem info = createNoOverlordPossibleInfo();
+            gui.setItem(1, 3, info);
             gui.setItem(2, 2, info);
             gui.setItem(2, 3, info);
             gui.setItem(2, 4, info);
-            return info;
         }
 
         Optional<TerritoryData> overlordOptional = territoryData.getOverlordInternal();
         if (overlordOptional.isPresent()) {
             TerritoryData overlord = overlordOptional.get();
-            GuiItem info = createOverlordInfo(overlord);
             GuiItem button = createDeclareIndependenceButton(player, territoryData, tanPlayer, overlord);
+            gui.setItem(1, 3, createOverlordInfo(overlord));
             gui.setItem(2, 2, button);
             gui.setItem(2, 3, createDonateToOverlordButton(player, tanPlayer, overlord));
-            return info;
         }
-
-        GuiItem info = createNoCurrentOverlordInfo(tanPlayer);
-
-        gui.setItem(2, 2, getJoinOverlordButton());
-        return info;
+        else {
+            gui.setItem(1, 3, createNoCurrentOverlordInfo(tanPlayer));
+            gui.setItem(2, 2, getJoinOverlordButton());
+        }
     }
 
     private @NotNull GuiItem getJoinOverlordButton() {
@@ -79,7 +74,7 @@ public class HierarchyMenu extends BasicGui {
                 )
                 .setAction(action -> {
                     action.setCancelled(true);
-                    new TerritoryChooseOverlordMenu(player, territoryData, p -> setupOverlordSection());
+                    new TerritoryChooseOverlordMenu(player, territoryData, p -> open());
                 })
                 .asGuiItem(player, langType);
     }
@@ -163,7 +158,7 @@ public class HierarchyMenu extends BasicGui {
                 .asGuiItem(player, langType);
     }
 
-    private GuiItem setupVassalSection() {
+    private void setupVassalSection() {
         if (territoryData.canHaveVassals()) {
 
             IconKey iconKey = (territoryData instanceof NationData) ? IconKey.REGION_BASE_ICON : IconKey.TOWN_BASE_ICON;
@@ -176,21 +171,23 @@ public class HierarchyMenu extends BasicGui {
                     .setAction(event -> new VassalsMenu(player, territoryData))
                     .asGuiItem(player, tanPlayer.getLang()));
 
-            return iconManager.get(Material.GOLDEN_SWORD)
+            gui.setItem(1, 7, iconManager.get(Material.GOLDEN_SWORD)
                     .setName(Lang.VASSAL_GUI.get(tanPlayer))
                     .setDescription(Lang.VASSAL_GUI_DESC1.get(territoryData.getColoredName(), Integer.toString(territoryData.getVassalCount())))
-                    .asGuiItem(player, langType);
+                    .asGuiItem(player, langType));
         }
 
-        var info = iconManager.get(Material.IRON_BARS)
-                .setName(Lang.VASSAL_GUI.get(tanPlayer))
-                .setDescription(Lang.CANNOT_HAVE_VASSAL.get())
-                .asGuiItem(player, langType);
+        else {
+            var info = iconManager.get(Material.IRON_BARS)
+                    .setName(Lang.VASSAL_GUI.get(tanPlayer))
+                    .setDescription(Lang.CANNOT_HAVE_VASSAL.get())
+                    .asGuiItem(player, langType);
 
-        gui.setItem(2, 6, info);
-        gui.setItem(2, 7, info);
-        gui.setItem(2, 8, info);
-        return info;
+            gui.setItem(1, 7, info);
+            gui.setItem(2, 6, info);
+            gui.setItem(2, 7, info);
+            gui.setItem(2, 8, info);
+        }
     }
 
     private void fillDecorations(Gui gui, Material material) {
