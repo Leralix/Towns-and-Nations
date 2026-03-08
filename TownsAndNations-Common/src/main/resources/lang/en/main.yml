@@ -648,8 +648,6 @@ language:
   GUI_TOWN_LEVEL_UP_DESC2: "§fLevel §a{0}§f upgrade cost: §e{1}{MONEY_CHAR}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nPrerequisites:"
   GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§nRewards:"
-  TOWN_UPGRADE_MAX_LEVEL: "§cYou reached the maximum level of the upgrade"
-  TERRITORY_UPGRADE_MAX_LEVEL: "§cYou reached the maximum level of the upgrade"
   ANY_WOOD_SCOPE_NAME: "Any wood"
   ANY_LOG_SCOPE_NAME: "Any log"
   ANY_PLANK_SCOPE_NAME: "Any planks"

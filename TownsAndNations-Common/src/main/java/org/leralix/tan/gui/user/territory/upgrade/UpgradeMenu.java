@@ -120,10 +120,6 @@ public class UpgradeMenu extends BasicGui {
                             .setRequirements(upgrade.getRequirements(territoryData, player))
                             .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_UPGRADE)
                             .setAction( action -> {
-                                if(levelOfUpgrade >= maxLevelOfUpgrade){
-                                    TanChatUtils.message(player, Lang.TERRITORY_UPGRADE_MAX_LEVEL.get(langType), SoundEnum.NOT_ALLOWED);
-                                    return;
-                                }
                                 TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
                                 territoryData.getNewLevel().levelUp(upgrade);
                                 open();
