@@ -426,6 +426,9 @@ public class PropertyData extends Building implements TanProperty {
     }
 
     public void removeSign() {
+        if(signLocation == null ){
+            return;
+        }
         World world = Bukkit.getWorld(signLocation.getWorldID());
         if (world == null) {
             return;

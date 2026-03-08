@@ -3,6 +3,7 @@ package org.leralix.tan.listeners.interact.events.property;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.leralix.lib.data.SoundEnum;
@@ -13,6 +14,7 @@ import org.leralix.tan.data.chunk.TownClaimedChunk;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.interact.ListenerState;
@@ -96,6 +98,8 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
         PropertyData property = createProperty();
         property.createPropertySign(player, block, event.getBlockFace());
         property.updateSign();
+
+        new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
 
         TanChatUtils.message(player, Lang.PLAYER_PROPERTY_CREATED.get(langType), SoundEnum.MINOR_GOOD);
         return ListenerState.SUCCESS;

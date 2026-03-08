@@ -121,7 +121,7 @@ public class TownDataStorage extends JsonStorage<TownData>{
     public void checkValidWorlds() {
         for (TownData town : new ArrayList<>(getAll().values())) {
             for (TanProperty property : town.getProperties()) {
-                if (property.getPosition().getWorld() == null) {
+                if (property.getPosition() == null || property.getPosition().getWorld() == null) {
                     property.delete();
                     TownsAndNations.getPlugin().getLogger().warning("Deleted property " + property.getName() + " due to invalid world.");
                 }
