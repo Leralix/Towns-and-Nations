@@ -21,6 +21,7 @@ import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.vehicle.VehicleDestroyEvent;
 import org.bukkit.inventory.FurnaceInventory;
 import org.leralix.tan.data.chunk.ClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
@@ -44,6 +45,8 @@ public class ChunkListener implements Listener {
 
     private final Set<Material> furnaceList = Set.of(Material.FURNACE, Material.BLAST_FURNACE, Material.SMOKER);
 
+    private final Set<Material> minecartList = Set.of(Material.MINECART, Material.CHEST_MINECART, Material.FURNACE_MINECART, Material.TNT_MINECART, Material.HOPPER_MINECART);
+
     public ChunkListener(PlayerDataStorage playerDataStorage) {
         this.playerDataStorage = playerDataStorage;
     }
@@ -51,7 +54,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -84,7 +87,7 @@ public class ChunkListener implements Listener {
             event.setCancelled(true);
         }
 
-        if(!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)){
+        if (!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)) {
             event.setCancelled(true);
         }
     }
@@ -92,7 +95,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onBucketFillEvent(PlayerBucketFillEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -108,7 +111,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onBucketEmptyEvent(PlayerBucketEmptyEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -124,7 +127,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -226,10 +229,10 @@ public class ChunkListener implements Listener {
         } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.SWEET_BERRY_BUSH) {
             if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_BERRIES))
                 event.setCancelled(true);
-        } else if ((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && player.getItemInHand().getType() == Material.OAK_BOAT) {
+        } else if ((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && Tag.ITEMS_BOATS.isTagged(player.getItemInHand().getType())) {
             if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_BOAT))
                 event.setCancelled(true);
-        } else if ((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && (player.getItemInHand().getType() == Material.MINECART)) {
+        } else if ((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && minecartList.contains(player.getItemInHand().getType())) {
             if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_MINECART))
                 event.setCancelled(true);
         } else if (event.getAction() == Action.PHYSICAL &&
@@ -245,7 +248,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onBlocPlaced(BlockPlaceEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -262,7 +265,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -403,7 +406,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -425,7 +428,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -453,13 +456,46 @@ public class ChunkListener implements Listener {
                     event.setCancelled(true);
                 }
             }
+        } else if (event.getRightClicked() instanceof Boat boat) {
+            Location loc = boat.getLocation();
+
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_BOAT)) {
+                event.setCancelled(true);
+            }
+        } else if (event.getRightClicked() instanceof Minecart minecart) {
+            Location loc = minecart.getLocation();
+
+            if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_MINECART)) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onVeicleBreak(VehicleDestroyEvent event) {
+
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
+            return;
+        }
+
+        if (event.getAttacker() instanceof Player player) {
+            Entity vehicle = event.getVehicle();
+            Location loc = vehicle.getLocation();
+
+            if (vehicle instanceof Boat) {
+                if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_BOAT)) {
+                    event.setCancelled(true);
+                }
+            } else if (vehicle instanceof Minecart && !canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_MINECART)) {
+                event.setCancelled(true);
+            }   
         }
     }
 
     @EventHandler
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -476,7 +512,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onPlayerLeashEntityEvent(PlayerLeashEntityEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -494,7 +530,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onHangingBreakByEntityEvent(HangingBreakByEntityEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -533,7 +569,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onHangingPlaceEvent(HangingPlaceEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -556,7 +592,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onPlayerShearEntityEvent(PlayerShearEntityEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -571,7 +607,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onExplosion(EntityExplodeEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -581,7 +617,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onBurning(BlockBurnEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -595,7 +631,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onFireSpreading(BlockSpreadEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -610,7 +646,7 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onWitherBlockBreak(EntityChangeBlockEvent event) {
 
-        if(Constants.noCheckIfEventCancelled() && event.isCancelled()){
+        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
 
@@ -648,8 +684,8 @@ public class ChunkListener implements Listener {
         ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
         ITanPlayer tanPlayer = playerDataStorage.get(player);
 
-        for(var permission : permissions){
-            if(!test(location, player, permission, claimedChunk, tanPlayer)){
+        for (var permission : permissions) {
+            if (!test(location, player, permission, claimedChunk, tanPlayer)) {
                 return false;
             }
         }
