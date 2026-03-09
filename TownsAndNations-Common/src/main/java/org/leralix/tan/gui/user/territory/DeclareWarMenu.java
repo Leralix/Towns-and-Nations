@@ -65,19 +65,29 @@ public class DeclareWarMenu extends IteratorGUI {
 
                     int nbAllies = iterateTerritory.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE).size();
 
-                    List<FilledLang> confirmDescription = List.of(
+                    List<FilledLang> confirmDescription = new ArrayList<>();
+
+                    confirmDescription.add(
                             Lang.DECLARE_WAR_CONFIRM_MESSAGE.get(
                                     territoryData.getColoredName(),
                                     iterateTerritory.getColoredName()
-                            ),
+                            )
+                    );
+                    confirmDescription.add(
                             Lang.DECLARE_WAR_NUMBER_OF_ALLIES.get(
                                     iterateTerritory.getColoredName(),
                                     Integer.toString(nbAllies)
-                            ),
-                            Lang.REQUIREMENT_COST_POSITIVE.get(
-                                    Integer.toString(Constants.getWarDeclareCost())
                             )
                     );
+
+                    if (Constants.getWarDeclareCost() > 0) {
+                        confirmDescription.add(
+                                Lang.REQUIREMENT_COST_POSITIVE.get(
+                                        Integer.toString(Constants.getWarDeclareCost())
+                                )
+                        );
+                    }
+
 
                     new ConfirmMenu(
                             player,
