@@ -102,6 +102,7 @@ public class Constants {
 
     //Wars
     private static boolean simpleWarMode;
+    private static int warDeclareCost;
     private static boolean enableLeavingWars;
     private static WarTimeSlot warTimeSlot;
     private static double warBoundaryRadius;
@@ -244,6 +245,7 @@ public class Constants {
 
         //Attacks
         simpleWarMode = config.getBoolean("simpleWarMode");
+        warDeclareCost = config.getInt("warDeclareCost", 1000);
         enableLeavingWars = config.getBoolean("enableLeavingWars", true);
         warTimeSlot = new WarTimeSlot(
                 config.getStringList("allowedTimeSlotsWar"),
@@ -706,6 +708,10 @@ public class Constants {
 
     public static PermissionAtWars getPermissionAtWars() {
         return permissionAtWars;
+    }
+
+    public static int getWarDeclareCost() {
+        return warDeclareCost;
     }
 
     public static List<String> getPerPlayerEndCommands() {
