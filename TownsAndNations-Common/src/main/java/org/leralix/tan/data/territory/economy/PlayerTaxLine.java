@@ -94,9 +94,11 @@ public class PlayerTaxLine extends ProfitLine {
         return IconManager.getInstance().get(IconKey.TAX_INFO_ICON)
                 .setName(Lang.GUI_TREASURY_FLAT_TAX.get(lang))
                 .setDescription(
-                        Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(StringUtil.formatMoney(territoryData.getTax())),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get(),
-                        Lang.RIGHT_CLICK_TO_SET_TAX.get()
+                        Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(StringUtil.formatMoney(territoryData.getTax()))
+                )
+                .setClickToAcceptMessage(
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY,
+                        Lang.RIGHT_CLICK_TO_SET_TAX
                 )
                 .setAction(action -> {
                     action.setCancelled(true);

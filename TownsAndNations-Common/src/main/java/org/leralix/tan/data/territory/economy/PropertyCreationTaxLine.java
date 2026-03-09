@@ -42,10 +42,12 @@ public class PropertyCreationTaxLine extends ProfitLine {
                 IconManager.getInstance().get(IconKey.CREATE_TAX_ICON)
                         .setName(Lang.GUI_TREASURY_CREATE_PROPERTY_TAX.get(lang))
                         .setDescription(
-                                Lang.GUI_TREASURY_CREATE_PROPERTY_TAX_DESC1.get(Double.toString(territoryData.getTaxOnCreatingProperty())),
-                                Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get()
+                                Lang.GUI_TREASURY_CREATE_PROPERTY_TAX_DESC1.get(Double.toString(territoryData.getTaxOnCreatingProperty()))
                         )
-                        .setClickToAcceptMessage(Lang.RIGHT_CLICK_TO_SET_TAX)
+                        .setClickToAcceptMessage(
+                                Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY,
+                                Lang.RIGHT_CLICK_TO_SET_TAX
+                        )
                         .setAction(action -> {
                             action.setCancelled(true);
                             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {

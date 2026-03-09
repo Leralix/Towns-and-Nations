@@ -593,7 +593,6 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fRight click to§c refuse"
   GUI_LANGUAGE_CHANGED: "§aLanguage changed to: {0}"
   GUI_TOWN_LEVEL_ICON: "§aTown level"
-  GUI_TOWN_LEVEL_ICON_DESC1: "§fUpgrade the town"
   GUI_TERRITORY_LEVEL_ICON_DESC1: "§fUpgrade the territory"
   GUI_TERRITORY_LEVEL_LOCKED: "§cNo upgrades"
   GUI_TOWN_SETTINGS_ICON: "§aSettings"

@@ -4,7 +4,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.data.territory.TerritoryData;
@@ -83,7 +82,7 @@ public abstract class TerritoryMenu extends BasicGui {
 
         return IconManager.getInstance().get(IconKey.TERRITORY_LEVEL_ICON)
                 .setName(Lang.GUI_TOWN_LEVEL_ICON.get(tanPlayer.getLang()))
-                .setDescription(getUpgradeDescription(canTerritoryBeUpgraded))
+                .setDescription( canTerritoryBeUpgraded ? Lang.GUI_TERRITORY_LEVEL_ICON_DESC1.get() : Lang.GUI_TERRITORY_LEVEL_LOCKED.get())
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.UPGRADE_TOWN))
                 .setAction(event -> {
                     if (canTerritoryBeUpgraded) {
@@ -94,15 +93,6 @@ public abstract class TerritoryMenu extends BasicGui {
                     }
                 })
                 .asGuiItem(player, langType);
-    }
-
-    private @NotNull FilledLang getUpgradeDescription(boolean canTerritoryBeUpgraded) {
-        if(canTerritoryBeUpgraded){
-            return territoryData instanceof TownData ?
-                    Lang.GUI_TOWN_LEVEL_ICON_DESC1.get() :
-                    Lang.GUI_TERRITORY_LEVEL_ICON_DESC1.get();
-        }
-        return Lang.GUI_TERRITORY_LEVEL_LOCKED.get();
     }
 
     protected GuiItem getTownTreasuryButton() {
