@@ -129,7 +129,17 @@ public class LandmarkClaimedChunk extends ClaimedChunk {
     }
 
     @Override
-    public boolean canMobGrief() {
+    public boolean canHostileGrief() {
+        return false;
+    }
+
+    @Override
+    public boolean canVillagerGrief() {
+        return false;
+    }
+
+    @Override
+    public boolean canPassiveGrief() {
         return false;
     }
 

@@ -15,8 +15,8 @@ public enum InteractionStatus {
         return switch (this) {
             case ALWAYS -> true;
             case WAR_ONLY -> territoryData.attackInProgress();
-            case PLAYER_CHOICE_AND_WAR -> territoryData.attackInProgress() || territoryData.getChunkSettings().getChunkSetting().get(action);
-            case PLAYER_CHOICE -> territoryData.getChunkSettings().getChunkSetting().get(action);
+            case PLAYER_CHOICE_AND_WAR -> territoryData.attackInProgress() || territoryData.getChunkSettings().getChunkSetting().getOrDefault(action, false);
+            case PLAYER_CHOICE -> territoryData.getChunkSettings().getChunkSetting().getOrDefault(action, false);
             case NEVER -> false;
         };
     }

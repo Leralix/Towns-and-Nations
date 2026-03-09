@@ -488,7 +488,7 @@ public class ChunkListener implements Listener {
                 }
             } else if (vehicle instanceof Minecart && !canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_MINECART)) {
                 event.setCancelled(true);
-            }   
+            }
         }
     }
 
@@ -644,8 +644,7 @@ public class ChunkListener implements Listener {
     }
 
     @EventHandler
-    public void onWitherBlockBreak(EntityChangeBlockEvent event) {
-
+    public void onEntityChangeBlock(EntityChangeBlockEvent event) {
         if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
@@ -657,16 +656,35 @@ public class ChunkListener implements Listener {
 
         Chunk chunk = event.getBlock().getChunk();
 
-        if (event.getEntity() instanceof Player player) {
-            if (!canPlayerDoAction(event.getBlock().getLocation(), player, ChunkPermissionType.BREAK_BLOCK)) {
-                event.setCancelled(true);
+
+        switch (event.getEntity().getType()) {
+            case PLAYER -> {
+                Player player = (Player) event.getEntity();
+                if (!canPlayerDoAction(event.getBlock().getLocation(), player, ChunkPermissionType.BREAK_BLOCK)) {
+                    event.setCancelled(true);
+                }
             }
-        }
-        // Wither & Enderman grief
-        else if (!NewClaimedChunkStorage.getInstance()
-                .get(chunk)
-                .canMobGrief()) {
-            event.setCancelled(true);
+            case VILLAGER -> {
+                if(!NewClaimedChunkStorage.getInstance()
+                        .get(chunk)
+                        .canVillagerGrief()){
+                    event.setCancelled(true);
+                }
+            }
+            case SHEEP, RABBIT -> {
+                if(!NewClaimedChunkStorage.getInstance()
+                        .get(chunk)
+                        .canPassiveGrief()){
+                    event.setCancelled(true);
+                }
+            }
+            case DRAGON_FIREBALL, FIREBALL, WITHER, ENDERMAN, RAVAGER, SILVERFISH -> {
+                if(!NewClaimedChunkStorage.getInstance()
+                        .get(chunk)
+                        .canHostileGrief()){
+                    event.setCancelled(true);
+                }
+            }
         }
     }
 

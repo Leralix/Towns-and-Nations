@@ -116,7 +116,17 @@ public class WildernessChunk extends ClaimedChunk {
     }
 
     @Override
-    public boolean canMobGrief() {
+    public boolean canHostileGrief() {
+        return true;
+    }
+
+    @Override
+    public boolean canVillagerGrief() {
+        return true;
+    }
+
+    @Override
+    public boolean canPassiveGrief() {
         return true;
     }
 

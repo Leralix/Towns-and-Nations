@@ -50,7 +50,7 @@ public class TerritoryChunkGeneralSettings extends IteratorGUI {
                             TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
                             return;
                         }
-                        generalSettings.put(generalChunkSetting, !generalSettings.get(generalChunkSetting));
+                        generalSettings.put(generalChunkSetting, !generalSettings.getOrDefault(generalChunkSetting, false));
                         SoundUtil.playSound(player, ADD);
                         open();
                     })

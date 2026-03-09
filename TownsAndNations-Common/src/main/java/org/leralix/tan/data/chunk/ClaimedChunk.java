@@ -154,7 +154,11 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
 
     public abstract boolean canPVPHappen();
 
-    public abstract boolean canMobGrief();
+    public abstract boolean canHostileGrief();
+
+    public abstract boolean canVillagerGrief();
+
+    public abstract boolean canPassiveGrief();
 
     public Chunk getChunk() {
         World world = vector2D.getWorld();

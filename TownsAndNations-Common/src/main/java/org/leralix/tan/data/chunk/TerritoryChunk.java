@@ -276,8 +276,18 @@ public abstract class TerritoryChunk extends ClaimedChunk implements TanTerritor
     }
 
     @Override
-    public boolean canMobGrief() {
-        return Constants.getChunkSettings(GeneralChunkSetting.MOB_GRIEF).canGrief(getOwnerInternal(), GeneralChunkSetting.MOB_GRIEF);
+    public boolean canHostileGrief() {
+        return Constants.getChunkSettings(GeneralChunkSetting.HOSTILE_MOB_GRIEF).canGrief(getOwnerInternal(), GeneralChunkSetting.HOSTILE_MOB_GRIEF);
+    }
+
+    @Override
+    public boolean canVillagerGrief() {
+        return Constants.getChunkSettings(GeneralChunkSetting.VILLAGER_GRIEF).canGrief(getOwnerInternal(), GeneralChunkSetting.VILLAGER_GRIEF);
+    }
+
+    @Override
+    public boolean canPassiveGrief() {
+        return Constants.getChunkSettings(GeneralChunkSetting.PASSIVE_MOB_GRIEF).canGrief(getOwnerInternal(), GeneralChunkSetting.PASSIVE_MOB_GRIEF);
     }
 
     public void setOccupier(TerritoryData occupier) {

@@ -495,7 +495,9 @@ chunkGeneralSettings:
   fire: "PLAYER_CHOICE_AND_WAR" #burning and spreading
   explosion: "PLAYER_CHOICE_AND_WAR" #Explosion (creeper included)
   pvp: "ALWAYS"
-  mob: "PLAYER_CHOICE"  #Ender
+  hostile_mob: "PLAYER_CHOICE" #Enderman picking up blocks, Wither breaking blocks...
+  passive_mob: "PLAYER_CHOICE" #sheep eating grass
+  villager: "PLAYER_CHOICE" #Villager farming
 
 ########################
 ##    TELEPORTATION   ##
