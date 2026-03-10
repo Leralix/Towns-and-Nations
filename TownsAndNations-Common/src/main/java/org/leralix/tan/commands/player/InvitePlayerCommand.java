@@ -120,7 +120,7 @@ public class InvitePlayerCommand extends PlayerSubCommand {
 
         LangType receiverLang = inviteStat.getLang();
         TanChatUtils.message(invite, Lang.INVITATION_RECEIVED_1.get(receiverLang, player.getName(), townData.getName()));
-        ChatUtils.sendClickableCommand(invite, Lang.INVITATION_RECEIVED_2.get(receiverLang), "tan join " + townData.getName());
+        ChatUtils.sendClickableCommand(invite, Lang.INVITATION_RECEIVED_2.get(receiverLang), "tan join " + townData.getName().replaceAll(" ", "-"));
     }
 }
 

@@ -55,7 +55,7 @@ public class JoinTownCommand extends PlayerSubCommand {
         for(String townId:TownInviteDataStorage.getInvitations(player.getUniqueId())) {
             TownData town= townDataStorage.get(townId);
             if(town!=null) {
-                suggestions.add(town.getName());
+                suggestions.add(town.getName().replaceAll(" ", "-"));
             }
         }
 
@@ -78,7 +78,7 @@ public class JoinTownCommand extends PlayerSubCommand {
             }
 
 
-            String townName = args[1];
+            String townName = args[1].replaceAll(" ", "-");
             TownData townData = townDataStorage.getByName(townName); // find town by name
             if(townData == null || !TownInviteDataStorage.isInvited(player.getUniqueId(), townData.getID())) {
                 TanChatUtils.message(player, Lang.TOWN_INVITATION_NO_INVITATION.get(lang));
