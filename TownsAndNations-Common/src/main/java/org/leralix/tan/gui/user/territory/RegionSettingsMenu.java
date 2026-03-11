@@ -108,7 +108,7 @@ public class RegionSettingsMenu extends SettingsMenus {
                         TanChatUtils.message(player, Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
                         return;
                     }
-                    new RegionChangeOwnership(player, regionData);
+                    new RegionChangeOwnership(player, regionData, this);
                 })
                 .asGuiItem(player, langType);
     }

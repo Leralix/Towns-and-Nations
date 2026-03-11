@@ -24,7 +24,7 @@ public class NationChangeCapitalMenu extends IteratorGUI {
 
     @Override
     public void open() {
-        iterator(getCandidates(), p -> new NationSettingsMenu(player, nationData));
+        iterator(getCandidates(), p -> new NationSettingsMenu(player, nationData, this));
         gui.open(player);
     }
 
@@ -46,7 +46,7 @@ public class NationChangeCapitalMenu extends IteratorGUI {
                                         Lang.GUI_CONFIRM_CHANGE_NATION_CAPITAL.get(regionData.getName()),
                                         () -> {
                                             nationData.setCapital(regionData.getID());
-                                            new NationSettingsMenu(player, nationData);
+                                            new NationSettingsMenu(player, nationData, this);
                                         },
                                         this::open
                                 );

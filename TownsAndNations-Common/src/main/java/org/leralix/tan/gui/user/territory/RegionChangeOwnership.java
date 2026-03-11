@@ -6,8 +6,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
-import org.leralix.tan.gui.admin.AdminManageRegion;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -22,17 +22,18 @@ import static org.leralix.lib.data.SoundEnum.GOOD;
 public class RegionChangeOwnership extends IteratorGUI {
 
     private final RegionData regionData;
+    private final BasicGui returnGUI;
 
-    public RegionChangeOwnership(Player player, RegionData regionData){
+    public RegionChangeOwnership(Player player, RegionData regionData, BasicGui returnGUI) {
         super(player, Lang.HEADER_CHANGE_OWNERSHIP, 6);
         this.regionData = regionData;
+        this.returnGUI = returnGUI;
         open();
     }
 
     @Override
     public void open() {
-
-        iterator(getCandidates(), p -> new AdminManageRegion(player, regionData));
+        iterator(getCandidates(), p -> returnGUI.open());
         gui.open(player);
     }
 

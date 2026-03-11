@@ -65,6 +65,7 @@ import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.territory.ChunkUtil;
+import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.War;
@@ -422,7 +423,7 @@ public abstract class TerritoryData implements TanTerritory {
 
     public double getBalance() {
         if (treasury == null) treasury = 0.;
-        return treasury;
+        return NumberUtil.roundWithDigits(treasury);
     }
 
     public void addToBalance(double balance) {

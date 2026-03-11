@@ -42,7 +42,7 @@ public class AdminManageRegion extends AdminManageTerritory {
                         Lang.GUI_REGION_CHANGE_CAPITAL_DESC1.get(regionData.getCapital().getColoredName())
                 )
                 .setClickToAcceptMessage(Lang.GUI_REGION_CHANGE_CAPITAL_DESC2)
-                    .setAction(action -> new RegionChangeOwnership(player, regionData))
+                    .setAction(action -> new RegionChangeOwnership(player, regionData, this))
                 .asGuiItem(player, langType);
     }
 

@@ -1,5 +1,6 @@
 package org.leralix.tan.gui.user.territory;
 
+import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -9,6 +10,7 @@ import org.leralix.tan.data.territory.NationData;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.NationDeletedInternalEvent;
+import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.LeaderRequirement;
@@ -24,10 +26,12 @@ import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 public class NationSettingsMenu extends SettingsMenus {
 
     private final NationData nationData;
+    private final BasicGui returnGUI;
 
-    public NationSettingsMenu(Player player, NationData nationData) {
+    public NationSettingsMenu(Player player, NationData nationData, BasicGui returnGUI) {
         super(player, Lang.HEADER_SETTINGS, nationData, 4);
         this.nationData = nationData;
+        this.returnGUI = returnGUI;
         open();
     }
 
@@ -47,12 +51,12 @@ public class NationSettingsMenu extends SettingsMenus {
         gui.setItem(2, 7, getChangeCapitalButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new NationMenu(player, nationData), langType));
+        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> returnGUI.open(), langType));
 
         gui.open(player);
     }
 
-    private @NotNull dev.triumphteam.gui.guis.GuiItem getChangeOwnershipButton() {
+    private @NotNull GuiItem getChangeOwnershipButton() {
         return iconManager.get(IconKey.TERRITORY_CHANGE_OWNER_ICON)
                 .setName(Lang.GUI_NATION_SETTINGS_TRANSFER_OWNERSHIP.get(tanPlayer))
                 .setRequirements(new LeaderRequirement(territoryData, tanPlayer))
@@ -64,7 +68,7 @@ public class NationSettingsMenu extends SettingsMenus {
                 .asGuiItem(player, langType);
     }
 
-    private @NotNull dev.triumphteam.gui.guis.GuiItem getChangeCapitalButton() {
+    private @NotNull GuiItem getChangeCapitalButton() {
         TerritoryData capital = nationData.getCapital();
         String capitalName = capital == null ? Lang.NO_REGION.get(tanPlayer) : capital.getName();
 
@@ -85,7 +89,7 @@ public class NationSettingsMenu extends SettingsMenus {
                 .asGuiItem(player, langType);
     }
 
-    private @NotNull dev.triumphteam.gui.guis.GuiItem getDeleteButton() {
+    private @NotNull GuiItem getDeleteButton() {
         return iconManager.get(IconKey.NATION_DELETE_NATION_ICON)
                 .setName(Lang.GUI_NATION_DELETE.get(tanPlayer))
                 .setDescription(

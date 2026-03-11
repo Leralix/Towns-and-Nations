@@ -41,6 +41,6 @@ public class NationMenu extends TerritoryMenu {
     }
 
     private GuiItem getSettingsButton() {
-        return createSettingsButton(Lang.GUI_NATION_SETTINGS_ICON_DESC1.get(), p -> new NationSettingsMenu(player, nationData));
+        return createSettingsButton(Lang.GUI_NATION_SETTINGS_ICON_DESC1.get(), p -> new NationSettingsMenu(player, nationData, this));
     }
 }
