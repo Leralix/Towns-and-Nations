@@ -45,15 +45,20 @@ public class JoinTownCommand extends PlayerSubCommand {
 
     @Override
     public String getSyntax() {
-        return "/tan join <Town ID>";
+        return "/tan join <Town Name>";
     }
 
     @Override
     public List<String> getTabCompleteSuggestions(Player player, String lowerCase, String[] args) {
         List<String> suggestions = new ArrayList<>();
-        if (args.length == 2) {
-            suggestions.add("<Town ID>");
+        // Get All town IDs that invited this player
+        for(String townId:TownInviteDataStorage.getInvitations(player.getUniqueId())) {
+            TownData town= townDataStorage.get(townId);
+            if(town!=null) {
+                suggestions.add(town.getName().replaceAll(" ", "-"));
+            }
         }
+
         return suggestions;
     }
 
@@ -72,14 +77,13 @@ public class JoinTownCommand extends PlayerSubCommand {
                 return;
             }
 
-            String townID = args[1];
 
-            if (!TownInviteDataStorage.isInvited(player.getUniqueId(), townID)) {
+            String townName = args[1].replaceAll(" ", "-");
+            TownData townData = townDataStorage.getByName(townName); // find town by name
+            if(townData == null || !TownInviteDataStorage.isInvited(player.getUniqueId(), townData.getID())) {
                 TanChatUtils.message(player, Lang.TOWN_INVITATION_NO_INVITATION.get(lang));
                 return;
             }
-
-            TownData townData = townDataStorage.get(townID);
             ITanPlayer tanPlayer = playerDataStorage.get(player);
 
             if (townData.isFull()) {
