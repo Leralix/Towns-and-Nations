@@ -96,7 +96,7 @@ public class DeclareWarMenu extends IteratorGUI {
                                 MoneyRequirement requirement =
                                         new MoneyRequirement(territoryData, Constants.getWarDeclareCost());
                                 if (requirement.isInvalid()) {
-                                    TanChatUtils.message(player, requirement.getLine(langType), SoundEnum.NOT_ALLOWED);
+                                    TanChatUtils.message(player, Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET, SoundEnum.NOT_ALLOWED);
                                     SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                                     return;
                                 }
