@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public abstract class JsonStorage<T> {
 
@@ -76,31 +77,11 @@ public abstract class JsonStorage<T> {
     }
 
     public void save() {
-        try {
-            Files.createDirectories(file.getParentFile().toPath());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        File tempFile = new File(file.getParent(), file.getName() + ".tmp");
-        try (Writer writer = new FileWriter(tempFile, false)) {
-            gson.toJson(dataMap, type, writer);
-        } catch (IOException e) {
-            Bukkit.getLogger().severe("Error saving " + file.getName() + " : " + e.getMessage());
-            return;
-        }
 
-        try {
-            Files.move(
-                    tempFile.toPath(),
-                    file.toPath(),
-                    StandardCopyOption.REPLACE_EXISTING,
-                    StandardCopyOption.ATOMIC_MOVE // si supporté
-            );
-        } catch (IOException e) {
-            Bukkit.getLogger().severe("Failed to replace old file with new one: " + file.getName() + " : " + e.getMessage());
-        }
+        // Copy the map to avoid concurrent modification
+        Map<String, T> snapshot = new LinkedHashMap<>(dataMap);
+        CompletableFuture.runAsync(() -> saveSnapshot(snapshot));
     }
-
 
     public Map<String, T> getAll() {
         return dataMap;
@@ -119,5 +100,34 @@ public abstract class JsonStorage<T> {
     }
 
     public abstract void reset();
+
+    private void saveSnapshot(Map<String, T> snapshot) {
+
+        try {
+            Files.createDirectories(file.getParentFile().toPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        File tempFile = new File(file.getParent(), file.getName() + ".tmp");
+
+        try (Writer writer = new FileWriter(tempFile, false)) {
+            gson.toJson(snapshot, type, writer);
+        } catch (IOException e) {
+            Bukkit.getLogger().severe("Error saving " + file.getName() + " : " + e.getMessage());
+            return;
+        }
+
+        try {
+            Files.move(
+                    tempFile.toPath(),
+                    file.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING,
+                    StandardCopyOption.ATOMIC_MOVE
+            );
+        } catch (IOException e) {
+            Bukkit.getLogger().severe("Failed to replace old file with new one: " + file.getName());
+        }
+    }
 
 }
