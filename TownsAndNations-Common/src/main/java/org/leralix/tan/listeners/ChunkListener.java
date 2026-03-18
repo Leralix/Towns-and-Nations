@@ -29,8 +29,8 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.storage.SudoPlayerStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.NewClaimedChunkStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.info.SideStatus;
 

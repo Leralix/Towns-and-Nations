@@ -8,7 +8,7 @@ import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.gui.scope.BrowseAttackScope;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.WarStorage;
+import org.leralix.tan.storage.stored.json.WarStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.info.AttackResultCancelled;

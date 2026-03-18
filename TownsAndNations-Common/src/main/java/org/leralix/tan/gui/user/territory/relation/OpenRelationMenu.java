@@ -9,7 +9,7 @@ import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -22,7 +22,7 @@ public class OpenRelationMenu extends IteratorGUI {
     private final TownRelation relation;
 
     public OpenRelationMenu(Player player, TerritoryData territoryData, TownRelation relation) {
-        super(player, Lang.HEADER_RELATION_WITH.get(relation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
+        super(player, Lang.HEADER_RELATION_WITH.get(relation.getName(PlayerJsonStorage.getInstance().get(player).getLang())), 6);
         this.territoryData = territoryData;
         this.relation = relation;
         open();

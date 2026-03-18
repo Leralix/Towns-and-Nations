@@ -10,7 +10,7 @@ import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 import org.leralix.tan.utils.file.FileUtil;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class RegionChangeOwnership extends IteratorGUI {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for (UUID playerID : regionData.getPlayerIDList()) {
 
-            ITanPlayer iterateTanPlayer = PlayerDataStorage.getInstance().get(playerID);
+            ITanPlayer iterateTanPlayer = PlayerJsonStorage.getInstance().get(playerID);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerID);
             guiItems.add(
                     iconManager.get(offlinePlayer)

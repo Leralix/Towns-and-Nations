@@ -19,10 +19,10 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.TerritoryTaxTransaction;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.json.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
+import org.leralix.tan.storage.stored.json.RegionDataStorage;
+import org.leralix.tan.storage.stored.json.TownDataStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.text.StringUtil;
@@ -64,7 +64,7 @@ public class RegionData extends TerritoryData implements TanRegion {
 
     @Override
     public ITanPlayer getLeaderData() {
-        return PlayerDataStorage.getInstance().get(getLeaderID());
+        return PlayerJsonStorage.getInstance().get(getLeaderID());
     }
 
     @Override
@@ -91,7 +91,7 @@ public class RegionData extends TerritoryData implements TanRegion {
     public Collection<ITanPlayer> getITanPlayerList() {
         ArrayList<ITanPlayer> tanPlayerList = new ArrayList<>();
         for (UUID playerID : getPlayerIDList()) {
-            tanPlayerList.add(PlayerDataStorage.getInstance().get(playerID));
+            tanPlayerList.add(PlayerJsonStorage.getInstance().get(playerID));
         }
         return tanPlayerList;
     }

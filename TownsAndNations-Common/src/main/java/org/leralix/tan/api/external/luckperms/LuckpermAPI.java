@@ -3,7 +3,11 @@ package org.leralix.tan.api.external.luckperms;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import org.leralix.tan.api.external.luckperms.context.TanContextCalculator;
-import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.NationDataStorage;
+import org.leralix.tan.storage.stored.json.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.json.RegionDataStorage;
+import org.leralix.tan.storage.stored.json.TownDataStorage;
 
 /**
  * The Main class of the Luckperms API integration into Towns and Nations
@@ -21,11 +25,11 @@ public class LuckpermAPI {
     }
 
     public void createContexts(
-                               PlayerDataStorage playerDataStorage,
-                               TownDataStorage townDataStorage,
-                               RegionDataStorage regionDataStorage,
-                               NationDataStorage nationDataStorage,
-                               NewClaimedChunkStorage chunkStorage
+            PlayerDataStorage playerDataStorage,
+            TownDataStorage townDataStorage,
+            RegionDataStorage regionDataStorage,
+            NationDataStorage nationDataStorage,
+            NewClaimedChunkStorage chunkStorage
     ){
         luckPerms.getContextManager().registerCalculator(
                 new TanContextCalculator(

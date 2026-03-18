@@ -13,7 +13,7 @@ import org.leralix.tan.listeners.chat.AdminSetTerritoryBalance;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
-import org.leralix.tan.storage.stored.WarStorage;
+import org.leralix.tan.storage.stored.json.WarStorage;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 

@@ -10,7 +10,7 @@ import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.storage.stored.json.LandmarkStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.DateUtil;
 import org.tan.api.interfaces.buildings.TanLandmark;

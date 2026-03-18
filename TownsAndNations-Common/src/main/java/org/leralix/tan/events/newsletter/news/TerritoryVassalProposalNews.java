@@ -12,7 +12,7 @@ import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.territory.hierarchy.TerritoryChooseOverlordMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -97,7 +97,7 @@ public class TerritoryVassalProposalNews extends Newsletter {
         TerritoryData territoryData = TerritoryUtil.getTerritory(receivingTerritoryID);
         if (territoryData == null)
             return false;
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerJsonStorage.getInstance().get(player);
         if (!territoryData.isPlayerIn(tanPlayer))
             return false;
         return territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR);

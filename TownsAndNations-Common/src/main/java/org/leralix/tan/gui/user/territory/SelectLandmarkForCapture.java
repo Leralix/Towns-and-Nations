@@ -9,7 +9,7 @@ import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.storage.stored.json.LandmarkStorage;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.info.WarRole;
 import org.leralix.tan.war.wargoals.CaptureLandmarkWarGoal;

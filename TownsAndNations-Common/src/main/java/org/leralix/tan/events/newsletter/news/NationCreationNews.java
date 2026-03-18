@@ -10,7 +10,7 @@ import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.NationDataStorage;
+import org.leralix.tan.storage.stored.json.NationDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.territory.TanNation;
 import org.tan.api.interfaces.TanPlayer;

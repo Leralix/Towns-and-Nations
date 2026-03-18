@@ -9,7 +9,12 @@ import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
-import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.LandmarkStorage;
+import org.leralix.tan.storage.stored.json.RegionDataStorage;
+import org.leralix.tan.storage.stored.json.TownDataStorage;
+import org.leralix.tan.storage.stored.tribute.TributePlayerDailyStorage;
+import org.leralix.tan.storage.stored.tribute.TributeVassalDailyStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.ArchiveUtil;
 
@@ -64,7 +69,7 @@ public class DailyTasks {
     }
 
     private void updatePlayerUsernames() {
-        for(ITanPlayer player : playerDataStorage.getAll().values()){
+        for(ITanPlayer player : playerDataStorage.getAllPlayers()){
             player.clearName();
         }
     }

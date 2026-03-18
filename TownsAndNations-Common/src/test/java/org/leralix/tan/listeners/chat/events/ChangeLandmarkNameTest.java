@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.storage.stored.json.LandmarkStorage;
 import org.mockbukkit.mockbukkit.MockBukkit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

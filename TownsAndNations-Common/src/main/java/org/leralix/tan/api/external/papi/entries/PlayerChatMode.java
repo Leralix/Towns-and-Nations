@@ -4,10 +4,10 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.storage.LocalChatStorage;
-import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.json.NationDataStorage;
+import org.leralix.tan.storage.stored.json.RegionDataStorage;
+import org.leralix.tan.storage.stored.json.TownDataStorage;
 
 public class PlayerChatMode extends PapiEntry{
 

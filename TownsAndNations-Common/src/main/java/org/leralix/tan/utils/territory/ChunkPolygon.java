@@ -7,7 +7,7 @@ import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.FortStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.json.NewClaimedChunkStorage;
 
 import java.util.HashSet;
 import java.util.Optional;

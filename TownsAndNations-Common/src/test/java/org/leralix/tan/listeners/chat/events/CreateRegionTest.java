@@ -3,7 +3,7 @@ package org.leralix.tan.listeners.chat.events;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.json.RegionDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 
 import static org.junit.jupiter.api.Assertions.*;

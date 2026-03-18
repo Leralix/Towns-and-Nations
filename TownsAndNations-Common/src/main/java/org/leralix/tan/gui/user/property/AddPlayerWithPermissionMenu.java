@@ -12,7 +12,7 @@ import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.PermissionManager;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
         List<GuiItem> guiItems = new ArrayList<>();
         for (Player playerToAdd : Bukkit.getOnlinePlayers()) {
 
-            ITanPlayer playerToAddData = PlayerDataStorage.getInstance().get(playerToAdd);
+            ITanPlayer playerToAddData = PlayerJsonStorage.getInstance().get(playerToAdd);
             ChunkPermission permission = permissionManager.get(chunkPermission);
 
             //If player has already been added, do not show

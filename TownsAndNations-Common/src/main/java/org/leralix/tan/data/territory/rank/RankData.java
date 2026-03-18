@@ -4,7 +4,7 @@ import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.cosmetic.CustomIcon;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 
 import java.util.*;
 
@@ -90,7 +90,7 @@ public class RankData {
     public List<ITanPlayer> getPlayers() {
         List<ITanPlayer> playerList = new ArrayList<>();
         for (UUID playerID : this.players) {
-            playerList.add(PlayerDataStorage.getInstance().get(playerID));
+            playerList.add(PlayerJsonStorage.getInstance().get(playerID));
         }
         return playerList;
     }

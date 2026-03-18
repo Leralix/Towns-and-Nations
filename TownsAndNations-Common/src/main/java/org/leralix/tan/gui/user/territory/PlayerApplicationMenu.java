@@ -9,7 +9,7 @@ import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class PlayerApplicationMenu extends IteratorGUI {
         for (UUID playerUUID : new ArrayList<>(townData.getPlayerJoinRequestSet())) {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(playerUUID);
-            ITanPlayer playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
+            ITanPlayer playerIterateData = PlayerJsonStorage.getInstance().get(playerUUID);
             guiItems.add(iconManager.get(playerIterate)
                     .setClickToAcceptMessage(
                             Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC2,

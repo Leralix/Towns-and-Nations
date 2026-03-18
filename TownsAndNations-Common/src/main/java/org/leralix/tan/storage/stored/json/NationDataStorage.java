@@ -1,4 +1,4 @@
-package org.leralix.tan.storage.stored;
+package org.leralix.tan.storage.stored.json;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
@@ -70,7 +70,7 @@ public class NationDataStorage extends JsonStorage<NationData> {
     }
 
     @Override
-    public void load() {
+    protected void load() {
         super.load();
         int id = 0;
         for (String keys : getAll().keySet()) {

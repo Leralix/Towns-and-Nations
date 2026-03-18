@@ -10,7 +10,7 @@ import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 
 public abstract class BasicGui {
 
@@ -26,7 +26,7 @@ public abstract class BasicGui {
 
     protected BasicGui(Player player, FilledLang title, int rows){
         this.player = player;
-        this.tanPlayer = PlayerDataStorage.getInstance().get(player);
+        this.tanPlayer = PlayerJsonStorage.getInstance().get(player);
         this.langType = tanPlayer.getLang();
         this.iconManager = IconManager.getInstance();
 

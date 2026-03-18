@@ -11,8 +11,8 @@ import org.leralix.tan.data.chunk.LandmarkClaimedChunk;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.json.LandmarkStorage;
+import org.leralix.tan.storage.stored.json.NewClaimedChunkStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;

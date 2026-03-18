@@ -3,15 +3,16 @@ package org.leralix.tan.storage.stored;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class PlayerDataStorageTest extends BasicTest {
+class PlayerJsonStorageTest extends BasicTest {
 
     @Test
     void testCreatePlayerData() {
-        PlayerDataStorage storage = playerDataStorage;
+        PlayerJsonStorage storage = playerDataStorage;
 
         PlayerMock player = server.addPlayer("TestPlayer");
 

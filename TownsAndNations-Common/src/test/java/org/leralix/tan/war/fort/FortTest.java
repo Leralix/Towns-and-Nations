@@ -9,7 +9,7 @@ import org.leralix.tan.data.building.fort.Fort;
 import org.leralix.tan.data.building.fort.FortData;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.json.NewClaimedChunkStorage;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

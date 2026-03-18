@@ -8,7 +8,7 @@ import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.storage.stored.json.LandmarkStorage;
 import org.tan.api.interfaces.buildings.TanLandmark;
 import org.tan.api.interfaces.war.wargoals.TanCaptureLandmarkWargoal;
 

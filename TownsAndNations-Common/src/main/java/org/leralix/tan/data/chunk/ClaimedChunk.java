@@ -14,8 +14,8 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.tan.api.enums.EChunkPermission;
 import org.tan.api.interfaces.TanPlayer;
@@ -199,7 +199,7 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
         if (player == null) {
             return false;
         }
-        ITanPlayer iTanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer iTanPlayer = PlayerJsonStorage.getInstance().get(player);
         return canPlayerDo(player, iTanPlayer, ChunkPermissionType.valueOf(permission.name()), location);
     }
 

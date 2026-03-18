@@ -7,7 +7,7 @@ import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 import org.leralix.tan.storage.stored.truce.ActiveTruce;
 import org.leralix.tan.storage.stored.truce.TruceStorage;
 import org.leralix.tan.utils.constants.Constants;
@@ -26,7 +26,7 @@ public class RemoveRelationMenu extends IteratorGUI {
     private final TownRelation relation;
 
     public RemoveRelationMenu(Player player, TerritoryData territoryData, TownRelation relation){
-        super(player, Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(relation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
+        super(player, Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(relation.getName(PlayerJsonStorage.getInstance().get(player).getLang())), 6);
         this.territoryData = territoryData;
         this.relation = relation;
         open();

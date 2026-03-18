@@ -37,7 +37,9 @@ import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.database.MySqlHandler;
 import org.leralix.tan.storage.database.SQLiteHandler;
 import org.leralix.tan.storage.impl.FortDataStorage;
-import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.storage.stored.FortStorage;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.*;
 import org.leralix.tan.storage.stored.truce.TruceStorage;
 import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
@@ -183,7 +185,7 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Loading Local data");
 
-        playerDataStorage = new PlayerDataStorage();
+        playerDataStorage = new PlayerJsonStorage();
 
         localChatStorage = new LocalChatStorage(playerDataStorage, mainConfig.getBoolean("sendPrivateMessagesToConsole", true));
 
@@ -201,6 +203,7 @@ public class TownsAndNations extends JavaPlugin {
         EventManager.getInstance().registerEvents(new NewsletterEvents());
         TruceStorage.getInstance();
         FileUtil.setEnable(mainConfig.getBoolean("archiveHistory", false));
+        EconomyUtil.init(playerDataStorage);
         TanChatUtils.init(playerDataStorage);
         TeamUtils.init(playerDataStorage);
 

@@ -9,7 +9,6 @@ import org.leralix.tan.data.upgrade.Upgrade;
 import org.leralix.tan.gui.service.requirements.model.AnyLogScope;
 import org.leralix.tan.gui.service.requirements.model.MaterialScope;
 import org.leralix.tan.gui.service.requirements.upgrade.ItemRequirementBuilder;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 
 import java.util.List;

@@ -15,7 +15,7 @@ import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.LeaderRequirement;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.WarStorage;
+import org.leralix.tan.storage.stored.json.WarStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;

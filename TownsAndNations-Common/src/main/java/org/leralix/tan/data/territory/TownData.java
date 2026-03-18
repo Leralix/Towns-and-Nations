@@ -26,10 +26,10 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.PlayerTaxTransaction;
-import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.json.LandmarkStorage;
+import org.leralix.tan.storage.stored.json.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
+import org.leralix.tan.storage.stored.json.TownDataStorage;
 import org.leralix.tan.utils.Range;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.graphic.PrefixUtil;
@@ -136,7 +136,7 @@ public class TownData extends TerritoryData implements TanTown {
     public Collection<ITanPlayer> getITanPlayerList() {
         ArrayList<ITanPlayer> res = new ArrayList<>();
         for (UUID playerID : getPlayerIDList()) {
-            res.add(PlayerDataStorage.getInstance().get(playerID));
+            res.add(PlayerJsonStorage.getInstance().get(playerID));
         }
         return res;
     }
@@ -175,7 +175,7 @@ public class TownData extends TerritoryData implements TanTown {
 
     @Override
     public ITanPlayer getLeaderData() {
-        return PlayerDataStorage.getInstance().get(this.UuidLeader);
+        return PlayerJsonStorage.getInstance().get(this.UuidLeader);
     }
 
     @Override
@@ -238,7 +238,7 @@ public class TownData extends TerritoryData implements TanTown {
     }
 
     public void addPlayerJoinRequest(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerJsonStorage.getInstance().get(player);
         EventManager.getInstance().callEvent(new PlayerJoinTownRequestInternalEvent(tanPlayer, this));
         addPlayerJoinRequest(tanPlayer.getID());
     }
@@ -457,7 +457,7 @@ public class TownData extends TerritoryData implements TanTown {
 
 
     public void kickPlayer(OfflinePlayer kickedPlayer) {
-        ITanPlayer kickedITanPlayer = PlayerDataStorage.getInstance().get(kickedPlayer);
+        ITanPlayer kickedITanPlayer = PlayerJsonStorage.getInstance().get(kickedPlayer);
 
         removePlayer(kickedITanPlayer);
 

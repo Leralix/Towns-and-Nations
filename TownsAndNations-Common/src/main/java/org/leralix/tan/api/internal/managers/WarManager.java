@@ -1,7 +1,7 @@
 package org.leralix.tan.api.internal.managers;
 
 import org.leralix.tan.api.internal.wrappers.WarWrapper;
-import org.leralix.tan.storage.stored.WarStorage;
+import org.leralix.tan.storage.stored.json.WarStorage;
 import org.tan.api.getters.TanWarManager;
 import org.tan.api.interfaces.war.TanWar;
 

@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.json.LandmarkStorage;
+import org.leralix.tan.storage.stored.json.NewClaimedChunkStorage;
 
 import static org.junit.jupiter.api.Assertions.*;
 

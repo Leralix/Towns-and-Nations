@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.data.territory.NationData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.NationDataStorage;
+import org.leralix.tan.storage.stored.json.NationDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;

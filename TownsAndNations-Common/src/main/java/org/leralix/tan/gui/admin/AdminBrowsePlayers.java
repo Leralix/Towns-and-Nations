@@ -8,7 +8,7 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 import org.leralix.tan.utils.text.StringUtil;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class AdminBrowsePlayers extends IteratorGUI {
 
     private List<GuiItem> getPlayers() {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (ITanPlayer tanPlayer : PlayerDataStorage.getInstance().getAll().values()) {
+        for (ITanPlayer tanPlayer : PlayerJsonStorage.getInstance().getAll().values()) {
 
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(tanPlayer.getID());
 

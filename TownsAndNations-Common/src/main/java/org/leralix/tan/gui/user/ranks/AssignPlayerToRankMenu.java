@@ -9,7 +9,7 @@ import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.rank.RankData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class AssignPlayerToRankMenu extends IteratorGUI {
     private List<GuiItem> getAvailablePlayers() {
         List<GuiItem> playersToAdd = new ArrayList<>();
         for (UUID otherPlayerUUID : territoryData.getPlayerIDList()) {
-            ITanPlayer otherITanPlayer = PlayerDataStorage.getInstance().get(otherPlayerUUID);
+            ITanPlayer otherITanPlayer = PlayerJsonStorage.getInstance().get(otherPlayerUUID);
 
             if(Objects.equals(otherITanPlayer.getRankID(territoryData), rankData.getID())){
                 continue;
@@ -57,7 +57,7 @@ public class AssignPlayerToRankMenu extends IteratorGUI {
                             return;
                         }
 
-                        ITanPlayer playerStat = PlayerDataStorage.getInstance().get(otherPlayerUUID);
+                        ITanPlayer playerStat = PlayerJsonStorage.getInstance().get(otherPlayerUUID);
                         territoryData.setPlayerRank(playerStat, rankData);
                         new RankManagerMenu(player, territoryData, rankData).open();
                     })

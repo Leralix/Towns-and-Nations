@@ -1,4 +1,4 @@
-package org.leralix.tan.storage.stored;
+package org.leralix.tan.storage.stored.tribute;
 
 public class TributeVassalDailyStorage extends AbstractTributeDailyStorage {
 

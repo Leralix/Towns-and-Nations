@@ -4,7 +4,7 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.EntityType;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.json.TownDataStorage;
 
 public class TownClaimedChunk extends TerritoryChunk {
 

@@ -12,8 +12,8 @@ import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.gui.common.PlayerGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.LandmarkStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class LandmarkChestListener implements Listener {

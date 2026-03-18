@@ -2,7 +2,7 @@ package org.leralix.tan.lang;
 
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +35,6 @@ public class FilledLang {
     }
 
     public String get(Player player) {
-        return lang.get(PlayerDataStorage.getInstance().get(player).getLang(), placeholders);
+        return lang.get(PlayerJsonStorage.getInstance().get(player).getLang(), placeholders);
     }
 }

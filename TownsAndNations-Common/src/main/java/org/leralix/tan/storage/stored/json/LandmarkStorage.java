@@ -1,4 +1,4 @@
-package org.leralix.tan.storage.stored;
+package org.leralix.tan.storage.stored.json;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
@@ -64,7 +64,7 @@ public class LandmarkStorage extends JsonStorage<Landmark> {
     }
 
     @Override
-    public void load(){
+    protected void load(){
         super.load();
 
         int ID = 0;

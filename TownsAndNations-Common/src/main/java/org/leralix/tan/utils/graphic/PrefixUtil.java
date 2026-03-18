@@ -2,7 +2,7 @@ package org.leralix.tan.utils.graphic;
 
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 import org.leralix.tan.utils.constants.Constants;
 
 /**
@@ -22,7 +22,7 @@ public class PrefixUtil {
         if(!Constants.enableTownTag()){
             return;
         }
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerJsonStorage.getInstance().get(player);
 
         if (tanPlayer.getTown() != null){
 

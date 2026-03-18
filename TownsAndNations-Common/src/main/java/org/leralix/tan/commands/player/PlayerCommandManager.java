@@ -4,7 +4,7 @@ import org.leralix.lib.commands.CommandManager;
 import org.leralix.lib.commands.MainHelpCommand;
 import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.json.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 
 public class PlayerCommandManager extends CommandManager {

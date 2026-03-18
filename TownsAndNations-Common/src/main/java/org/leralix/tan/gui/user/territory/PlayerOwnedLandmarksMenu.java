@@ -6,7 +6,7 @@ import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.storage.stored.json.LandmarkStorage;
 
 import java.util.ArrayList;
 import java.util.List;

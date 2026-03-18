@@ -16,7 +16,7 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
-import org.leralix.tan.storage.stored.WarStorage;
+import org.leralix.tan.storage.stored.json.WarStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.attack.CurrentAttack;
 import org.leralix.tan.war.info.AttackNotYetStarted;

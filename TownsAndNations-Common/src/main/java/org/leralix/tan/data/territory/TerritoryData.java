@@ -56,9 +56,9 @@ import org.leralix.tan.storage.database.transactions.instance.DonationTransactio
 import org.leralix.tan.storage.database.transactions.instance.SalaryTransaction;
 import org.leralix.tan.storage.database.transactions.instance.TerritoryChunkUpkeepTransaction;
 import org.leralix.tan.storage.stored.FortStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.WarStorage;
+import org.leralix.tan.storage.stored.json.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
+import org.leralix.tan.storage.stored.json.WarStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
@@ -182,7 +182,7 @@ public abstract class TerritoryData implements TanTerritory {
     @Override
     public boolean canPlayerDoAction(TanPlayer player, TerritoryPermission permission) {
         return doesPlayerHavePermission(
-                PlayerDataStorage.getInstance().get(player.getID()),
+                PlayerJsonStorage.getInstance().get(player.getID()),
                 RolePermission.valueOf(permission.name())
         );
     }
@@ -722,7 +722,7 @@ public abstract class TerritoryData implements TanTerritory {
     }
 
     public void addDonation(Player player, double amount) {
-        LangType langType = PlayerDataStorage.getInstance().get(player).getLang();
+        LangType langType = PlayerJsonStorage.getInstance().get(player).getLang();
         double playerBalance = EconomyUtil.getBalance(player);
 
         if (playerBalance < amount) {
@@ -827,13 +827,13 @@ public abstract class TerritoryData implements TanTerritory {
 
     //TODO : enable TanPlayer to be used directly
     public RankData getRank(TanPlayer tanPlayer){
-        return getRank(PlayerDataStorage.getInstance().get(tanPlayer.getID()));
+        return getRank(PlayerJsonStorage.getInstance().get(tanPlayer.getID()));
     }
 
     public abstract RankData getRank(ITanPlayer tanPlayer);
 
     public RankData getRank(Player player) {
-        return getRank(PlayerDataStorage.getInstance().get(player));
+        return getRank(PlayerJsonStorage.getInstance().get(player));
     }
 
     public int getNumberOfRank() {
@@ -881,7 +881,7 @@ public abstract class TerritoryData implements TanTerritory {
 
 
     public boolean doesPlayerHavePermission(Player player, RolePermission townRolePermission) {
-        return doesPlayerHavePermission(PlayerDataStorage.getInstance().get(player), townRolePermission);
+        return doesPlayerHavePermission(PlayerJsonStorage.getInstance().get(player), townRolePermission);
     }
 
     public boolean doesPlayerHavePermission(TanPlayer tanPlayer, RolePermission townRolePermission) {
@@ -953,7 +953,7 @@ public abstract class TerritoryData implements TanTerritory {
             }
             removeFromBalance(costOfSalary);
             for (UUID playerId : playerIdList) {
-                ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(playerId);
+                ITanPlayer tanPlayer = PlayerJsonStorage.getInstance().get(playerId);
                 EconomyUtil.addFromBalance(tanPlayer, rankSalary);
                 TransactionManager.getInstance().register(new SalaryTransaction(getID(), playerId.toString(), costOfSalary));
             }
@@ -1244,7 +1244,7 @@ public abstract class TerritoryData implements TanTerritory {
 
     @Override
     public EDiplomacyState getRelationWith(TanPlayer playerData){
-        return getWorstRelationWith(PlayerDataStorage.getInstance().get(playerData.getID())).toAPI();
+        return getWorstRelationWith(PlayerJsonStorage.getInstance().get(playerData.getID())).toAPI();
     }
 
     @Override

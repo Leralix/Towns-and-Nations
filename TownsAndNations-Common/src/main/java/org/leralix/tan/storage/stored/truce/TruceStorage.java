@@ -2,7 +2,7 @@ package org.leralix.tan.storage.stored.truce;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
-import org.leralix.tan.storage.stored.JsonStorage;
+import org.leralix.tan.storage.stored.json.JsonStorage;
 import org.leralix.tan.data.territory.TerritoryData;
 
 import java.time.Instant;

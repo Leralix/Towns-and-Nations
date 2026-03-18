@@ -11,8 +11,8 @@ import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.data.building.property.PropertyData;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.storage.stored.FortStorage;
-import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.json.LandmarkStorage;
+import org.leralix.tan.storage.stored.json.TownDataStorage;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -1,7 +1,8 @@
-package org.leralix.tan.storage.stored;
+package org.leralix.tan.storage.stored.tribute;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
+import org.leralix.tan.storage.stored.json.JsonStorage;
 
 import java.util.LinkedHashMap;
 

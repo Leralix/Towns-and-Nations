@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.rank.RankData;
-import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.json.RegionDataStorage;
 
 import static org.junit.jupiter.api.Assertions.*;
 

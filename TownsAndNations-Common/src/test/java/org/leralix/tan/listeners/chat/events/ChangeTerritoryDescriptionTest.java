@@ -8,7 +8,7 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.storage.stored.json.RegionDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

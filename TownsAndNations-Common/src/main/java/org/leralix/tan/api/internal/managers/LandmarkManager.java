@@ -1,7 +1,7 @@
 package org.leralix.tan.api.internal.managers;
 
 import org.bukkit.Location;
-import org.leralix.tan.storage.stored.LandmarkStorage;
+import org.leralix.tan.storage.stored.json.LandmarkStorage;
 import org.tan.api.getters.TanLandmarkManager;
 import org.tan.api.interfaces.buildings.TanLandmark;
 

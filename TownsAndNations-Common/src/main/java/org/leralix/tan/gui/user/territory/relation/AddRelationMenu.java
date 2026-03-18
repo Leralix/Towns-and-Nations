@@ -8,9 +8,9 @@ import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
+import org.leralix.tan.storage.stored.json.RegionDataStorage;
+import org.leralix.tan.storage.stored.json.TownDataStorage;
 import org.leralix.tan.storage.stored.truce.ActiveTruce;
 import org.leralix.tan.storage.stored.truce.TruceStorage;
 import org.leralix.tan.utils.constants.Constants;
@@ -30,7 +30,7 @@ public class AddRelationMenu extends IteratorGUI {
 
 
     public AddRelationMenu(Player player, TerritoryData territory, TownRelation wantedRelation) {
-        super(player, Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(wantedRelation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
+        super(player, Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(wantedRelation.getName(PlayerJsonStorage.getInstance().get(player).getLang())), 6);
         this.territoryData = territory;
         this.wantedRelation = wantedRelation;
         open();
@@ -45,7 +45,7 @@ public class AddRelationMenu extends IteratorGUI {
     }
 
     private List<GuiItem> getTerritories() {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerJsonStorage.getInstance().get(player);
 
         List<String> relationListID = territoryData.getRelations().getTerritoriesIDWithRelation(wantedRelation);
         List<GuiItem> guiItems = new ArrayList<>();

@@ -1,8 +1,8 @@
 package org.leralix.tan.api.internal.managers;
 
-import org.leralix.tan.storage.stored.NationDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.json.NationDataStorage;
+import org.leralix.tan.storage.stored.json.RegionDataStorage;
+import org.leralix.tan.storage.stored.json.TownDataStorage;
 import org.tan.api.getters.TanTerritoryManager;
 import org.tan.api.interfaces.territory.TanNation;
 import org.tan.api.interfaces.territory.TanRegion;

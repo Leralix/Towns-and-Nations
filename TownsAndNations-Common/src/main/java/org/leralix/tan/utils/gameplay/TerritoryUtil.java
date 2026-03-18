@@ -4,9 +4,9 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.gui.scope.BrowseScope;
-import org.leralix.tan.storage.stored.NationDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.json.NationDataStorage;
+import org.leralix.tan.storage.stored.json.RegionDataStorage;
+import org.leralix.tan.storage.stored.json.TownDataStorage;
 
 import java.util.*;
 
@@ -46,7 +46,7 @@ public class TerritoryUtil {
         if(scope == BrowseScope.ALL || scope == BrowseScope.REGIONS)
             territoryList.addAll(RegionDataStorage.getInstance().getAll().values());
         if(scope == BrowseScope.ALL || scope == BrowseScope.NATIONS && org.leralix.tan.utils.constants.Constants.enableNation())
-            territoryList.addAll(org.leralix.tan.storage.stored.NationDataStorage.getInstance().getAll().values());
+            territoryList.addAll(NationDataStorage.getInstance().getAll().values());
         return territoryList;
     }
 

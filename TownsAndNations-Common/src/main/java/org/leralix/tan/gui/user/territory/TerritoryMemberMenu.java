@@ -19,7 +19,7 @@ import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
     private List<GuiItem> getMemberList() {
 
         List<GuiItem> players = new ArrayList<>();
-        PlayerDataStorage playerDataStorage = PlayerDataStorage.getInstance();
+        PlayerJsonStorage playerDataStorage = PlayerJsonStorage.getInstance();
 
         for (UUID playerUUID : territoryData.getOrderedPlayerIDList()) {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);

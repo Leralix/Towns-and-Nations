@@ -40,8 +40,8 @@ import org.leralix.tan.storage.PermissionManager;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.RentingPropertyTransaction;
 import org.leralix.tan.storage.database.transactions.instance.SellingPropertyTransaction;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
+import org.leralix.tan.storage.stored.json.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.text.NumberUtil;
@@ -189,7 +189,7 @@ public class PropertyData extends Building implements TanProperty {
             return Optional.empty();
         }
         else {
-            return Optional.of(PlayerDataStorage.getInstance().get(rentingPlayerID));
+            return Optional.of(PlayerJsonStorage.getInstance().get(rentingPlayerID));
         }
     }
 
@@ -407,7 +407,7 @@ public class PropertyData extends Building implements TanProperty {
 
         if (getOwner() instanceof PlayerOwned playerOwnedClass) {
             UUID ownerID = UUID.fromString(playerOwnedClass.getID());
-            ITanPlayer playerOwner = PlayerDataStorage.getInstance().get(ownerID);
+            ITanPlayer playerOwner = PlayerJsonStorage.getInstance().get(ownerID);
 
             playerOwner.removeProperty(this);
 
@@ -461,7 +461,7 @@ public class PropertyData extends Building implements TanProperty {
                 TanChatUtils.message(exOwner, Lang.PROPERTY_SOLD_EX_OWNER.get(langType, getName(), buyer.getName(), Double.toString(getPriceWithTax())), SoundEnum.GOOD);
             }
 
-            ITanPlayer exOwnerData = PlayerDataStorage.getInstance().get(exOwnerID);
+            ITanPlayer exOwnerData = PlayerJsonStorage.getInstance().get(exOwnerID);
             exOwnerData.removeProperty(this);
         }
 
@@ -485,7 +485,7 @@ public class PropertyData extends Building implements TanProperty {
                 )
         );
 
-        ITanPlayer newOwnerData = PlayerDataStorage.getInstance().get(buyer.getUniqueId().toString());
+        ITanPlayer newOwnerData = PlayerJsonStorage.getInstance().get(buyer.getUniqueId().toString());
         newOwnerData.addProperty(this);
         this.owner = new PlayerOwned(buyer.getUniqueId());
 
@@ -520,7 +520,7 @@ public class PropertyData extends Building implements TanProperty {
     public void expelRenter(boolean rentBack) {
         if (!isRented())
             return;
-        ITanPlayer renter = PlayerDataStorage.getInstance().get(rentingPlayerID);
+        ITanPlayer renter = PlayerJsonStorage.getInstance().get(rentingPlayerID);
         if (renter != null) {
             renter.removeProperty(this);
         }
@@ -588,7 +588,7 @@ public class PropertyData extends Building implements TanProperty {
     @Override
     public GuiItem getGuiItem(IconManager iconManager, Player player, BasicGui basicGui, LangType langType) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = PlayerJsonStorage.getInstance().get(player);
         boolean canInteract = getOwner().canAccess(tanPlayer);
 
         return iconManager.get(getIcon())

@@ -2,7 +2,7 @@ package org.leralix.tan.commands.server;
 
 import org.leralix.lib.commands.CommandManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.json.TownDataStorage;
 
 public class ServerCommandManager extends CommandManager {
 
