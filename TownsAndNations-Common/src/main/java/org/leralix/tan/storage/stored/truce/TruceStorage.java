@@ -2,8 +2,8 @@ package org.leralix.tan.storage.stored.truce;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
-import org.leralix.tan.storage.stored.JsonStorage;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.storage.stored.json.JsonStorage;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -24,11 +24,6 @@ public class TruceStorage extends JsonStorage<HashMap<String, ActiveTruce>> {
         return instance;
     }
 
-    @Override
-    public void reset() {
-        dataMap.clear();
-    }
-
     public void add(ActiveTruce activeTruce) {
         String id1 = activeTruce.getTerritoryID1();
         String id2 = activeTruce.getTerritoryID2();
@@ -38,7 +33,7 @@ public class TruceStorage extends JsonStorage<HashMap<String, ActiveTruce>> {
     }
 
 
-    public long getRemainingTruce(TerritoryData territoryData1, TerritoryData territoryData2) {
+    public long getRemainingTruce(Territory territoryData1, Territory territoryData2) {
         String id1 = territoryData1.getID();
         String id2 = territoryData2.getID();
 

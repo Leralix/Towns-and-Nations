@@ -2,7 +2,7 @@ package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.rank.RankData;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
@@ -21,9 +21,9 @@ import java.util.List;
 
 public class TerritoryRanksMenu extends IteratorGUI {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
-    public TerritoryRanksMenu(Player player, TerritoryData territoryData){
+    public TerritoryRanksMenu(Player player, Territory territoryData){
         super(player, Lang.HEADER_TERRITORY_RANKS, 4);
         this.territoryData = territoryData;
     }

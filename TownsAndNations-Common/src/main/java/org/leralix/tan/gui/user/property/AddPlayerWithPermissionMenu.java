@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.permission.ChunkPermission;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
@@ -12,7 +13,6 @@ import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.PermissionManager;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class AddPlayerWithPermissionMenu extends IteratorGUI {
         List<GuiItem> guiItems = new ArrayList<>();
         for (Player playerToAdd : Bukkit.getOnlinePlayers()) {
 
-            ITanPlayer playerToAddData = PlayerDataStorage.getInstance().get(playerToAdd);
+            ITanPlayer playerToAddData = TownsAndNations.getPlugin().getPlayerDataStorage().get(playerToAdd);
             ChunkPermission permission = permissionManager.get(chunkPermission);
 
             //If player has already been added, do not show

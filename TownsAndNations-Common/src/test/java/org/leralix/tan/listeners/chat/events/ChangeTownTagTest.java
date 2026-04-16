@@ -1,13 +1,11 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
-import org.mockbukkit.mockbukkit.MockBukkit;
+import org.leralix.tan.data.territory.Town;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -16,7 +14,7 @@ class ChangeTownTagTest extends BasicTest {
 
     private static Player player;
     private static ITanPlayer tanPlayer;
-    private static TownData townData;
+    private static Town townData;
 
     @Override
     @BeforeEach
@@ -24,12 +22,7 @@ class ChangeTownTagTest extends BasicTest {
         super.setUp();
         player = server.addPlayer();
         tanPlayer = playerDataStorage.get(player);
-        townData = townDataStorage.newTown("town 1", tanPlayer);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        MockBukkit.unmock();
+        townData = townStorage.newTown("town 1", tanPlayer);
     }
 
     @Test

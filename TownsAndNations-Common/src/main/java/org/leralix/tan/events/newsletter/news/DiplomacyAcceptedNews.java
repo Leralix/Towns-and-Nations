@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -66,10 +66,10 @@ public class DiplomacyAcceptedNews extends Newsletter {
 
     @Override
     public void broadcast(Player player, ITanPlayer tanPlayer) {
-        TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
+        Territory proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         if (proposingTerritory == null)
             return;
-        TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
+        Territory receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if (receivingTerritory == null)
             return;
 
@@ -97,10 +97,10 @@ public class DiplomacyAcceptedNews extends Newsletter {
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
 
-        TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
+        Territory proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         if (proposingTerritory == null)
             return null;
-        TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
+        Territory receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if (receivingTerritory == null)
             return null;
 
@@ -124,16 +124,16 @@ public class DiplomacyAcceptedNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+    public GuiItem createConcernedGuiItem(Player player, ITanPlayer playerData, LangType lang, Consumer<Player> onClick) {
         return createGuiItem(player, lang, onClick);
     }
 
     @Override
-    public boolean shouldShowToPlayer(Player player) {
-        TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
+    public boolean shouldShowToPlayer(ITanPlayer player) {
+        Territory proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         if (proposingTerritory == null)
             return false;
-        TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
+        Territory receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if (receivingTerritory == null)
             return false;
         return receivingTerritory.isPlayerIn(player) || proposingTerritory.isPlayerIn(player);

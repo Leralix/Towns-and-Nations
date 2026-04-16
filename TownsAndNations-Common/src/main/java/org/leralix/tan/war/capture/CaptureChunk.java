@@ -3,11 +3,13 @@ package org.leralix.tan.war.capture;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.fort.Fort;
 import org.leralix.tan.data.chunk.TerritoryChunk;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.war.War;
@@ -64,8 +66,6 @@ public class CaptureChunk {
     }
 
     public void update() {
-
-
         Optional<Fort> fortProtectingChunk = territoryChunk.getFortProtecting();
 
         if (fortProtectingChunk.isEmpty()) {
@@ -80,7 +80,8 @@ public class CaptureChunk {
             if (player == null || !player.isOnline() || player.getPlayer() == null) {
                 continue;
             }
-            player.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message.get(player)));
+            LangType langType = TownsAndNations.getPlugin().getPlayerDataStorage().get(player).getLang();
+            player.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message.get(langType)));
         }
     }
 
@@ -163,7 +164,7 @@ public class CaptureChunk {
      *
      * @return The attacking territory
      */
-    public TerritoryData getAttackingTerritory() {
+    public Territory getAttackingTerritory() {
 
         War war = currentAttack.getAttackData().getWar();
 

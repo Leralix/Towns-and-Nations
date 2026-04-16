@@ -23,7 +23,7 @@ class PlaceHolderAPITest extends BasicTest {
     protected void setUp() {
         super.setUp();
 
-        placeHolderAPI = new PlaceHolderAPI(playerDataStorage, townDataStorage,null, null, null);
+        placeHolderAPI = new PlaceHolderAPI(playerDataStorage, townStorage,null, null, null);
     }
 
 
@@ -65,7 +65,7 @@ class PlaceHolderAPITest extends BasicTest {
         Player player = server.addPlayer();
 
 
-        PapiEntry papiEntry = new PlayerBalance(playerDataStorage, townDataStorage, null, null);
+        PapiEntry papiEntry = new PlayerBalance(playerDataStorage, townStorage, null, null);
         placeHolderAPI.registerEntry(papiEntry);
 
         assertEquals(PlaceHolderAPI.PLACEHOLDER_NOT_FOUND, placeHolderAPI.onRequest(player, "player_not_balance"));
@@ -77,7 +77,7 @@ class PlaceHolderAPITest extends BasicTest {
         Player player = server.addPlayer();
 
 
-        placeHolderAPI.registerEntry(new PlayerBalance(playerDataStorage, townDataStorage, null, null));
+        placeHolderAPI.registerEntry(new PlayerBalance(playerDataStorage, townStorage, null, null));
 
         assertNotEquals(PlaceHolderAPI.PLACEHOLDER_NOT_FOUND, placeHolderAPI.onRequest(player, "player_balance"));
     }
@@ -86,11 +86,11 @@ class PlaceHolderAPITest extends BasicTest {
     void onRequestHitWithParam() {
 
         Player player = server.addPlayer("playerName");
-        ITanPlayer tanPlayer = playerDataStorage.register(player);
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
 
         LocalChatStorage localChatStorage = new LocalChatStorage(playerDataStorage, false);
 
-        placeHolderAPI.registerEntry(new OtherPlayerChatMode(playerDataStorage, townDataStorage, null, null, localChatStorage));
+        placeHolderAPI.registerEntry(new OtherPlayerChatMode(playerDataStorage, townStorage, null, null, localChatStorage));
 
         assertEquals(ChatScope.GLOBAL.getName(tanPlayer.getLang()), placeHolderAPI.onRequest(player, "chat_mode_{playerName}"));
 

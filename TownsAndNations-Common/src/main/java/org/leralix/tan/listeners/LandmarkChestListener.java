@@ -8,11 +8,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.MetadataValue;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.gui.common.PlayerGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -37,7 +37,7 @@ public class LandmarkChestListener implements Listener {
             ITanPlayer tanPlayer = playerDataStorage.get(player);
             for (MetadataValue value : clickedBlock.getMetadata("LandmarkChest")) {
                 String customData = value.asString();
-                Landmark landmark = LandmarkStorage.getInstance().get(customData);
+                Landmark landmark = TownsAndNations.getPlugin().getLandmarkStorage().get(customData);
                 if (!tanPlayer.hasTown()) {
                     TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer.getLang()));
                     return;

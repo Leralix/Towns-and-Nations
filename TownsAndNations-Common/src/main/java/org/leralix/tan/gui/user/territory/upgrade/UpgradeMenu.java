@@ -6,7 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.upgrade.TerritoryStats;
 import org.leralix.tan.data.upgrade.Upgrade;
 import org.leralix.tan.data.upgrade.rewards.IndividualStat;
@@ -25,11 +25,11 @@ import java.util.List;
 
 public class UpgradeMenu extends BasicGui {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
     private int scrollIndex;
     private final int maxLevel;
 
-    public UpgradeMenu(Player player, TerritoryData territoryData){
+    public UpgradeMenu(Player player, Territory territoryData){
         super(player, Lang.HEADER_TERRITORY_UPGRADE, 6);
         this.territoryData = territoryData;
         this.scrollIndex = 0;
@@ -129,7 +129,7 @@ public class UpgradeMenu extends BasicGui {
         }
     }
 
-    private @NotNull GuiItem getTerritoryStats(TerritoryData territoryData) {
+    private @NotNull GuiItem getTerritoryStats(Territory territoryData) {
 
         List<FilledLang> desc = new ArrayList<>();
         desc.add(Lang.EMPTY.get());

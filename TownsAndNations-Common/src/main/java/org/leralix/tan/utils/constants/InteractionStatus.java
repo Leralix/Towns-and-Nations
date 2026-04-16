@@ -1,6 +1,6 @@
 package org.leralix.tan.utils.constants;
 
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.permission.GeneralChunkSetting;
 
 public enum InteractionStatus {
@@ -11,7 +11,7 @@ public enum InteractionStatus {
     NEVER;
 
 
-    public boolean canGrief(TerritoryData territoryData, GeneralChunkSetting action){
+    public boolean canGrief(Territory territoryData, GeneralChunkSetting action){
         return switch (this) {
             case ALWAYS -> true;
             case WAR_ONLY -> territoryData.attackInProgress();

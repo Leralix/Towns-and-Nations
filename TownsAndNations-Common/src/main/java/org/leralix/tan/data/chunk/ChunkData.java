@@ -1,21 +1,18 @@
 package org.leralix.tan.data.chunk;
 
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.api.external.worldguard.WorldGuardManager;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.tan.api.enums.EChunkPermission;
 import org.tan.api.interfaces.TanPlayer;
@@ -31,48 +28,54 @@ import java.util.UUID;
  * The Main implementation of a chunk in Towns and Nations.
  * Each minecraft chunk is linked to a ClaimedChunk.
  * <ul>
- *     <li>Claimed by a territory: {@link TerritoryChunk}</li>
- *     <li>Wilderness chunk: {@link WildernessChunk}</li>
+ *     <li>Claimed by a territory: {@link TerritoryChunkData}</li>
+ *     <li>Wilderness chunk: {@link WildernessChunkData}</li>
  *     <li>Landmark chunk {@link LandmarkClaimedChunk}</li>
  * </ul>
  */
-public abstract class ClaimedChunk implements TanClaimedChunk {
+public abstract class ChunkData implements IClaimedChunk, TanClaimedChunk {
 
     private final Vector2D vector2D;
 
-    protected ClaimedChunk(Chunk chunk) {
+    protected ChunkData(Chunk chunk) {
         this(chunk.getX(), chunk.getZ(), chunk.getWorld().getUID().toString());
     }
 
-    protected ClaimedChunk(int x, int z, String worldUUID) {
+    protected ChunkData(int x, int z, String worldUUID) {
         this.vector2D = new Vector2D(x, z, worldUUID);
     }
 
+    @Override
     public Vector2D getVector2D() {
         return vector2D;
     }
 
+    @Override
     public Vector2D getMiddleVector2D() {
         Vector2D vector = getVector2D();
         return new Vector2D(vector.getX() * 16 + 8, vector.getZ() * 16 + 8, vector.getWorldID().toString());
     }
-
+    @Override
     public int getX() {
         return vector2D.getX();
     }
 
+    @Override
     public int getMiddleX() {
         return getX() * 16 + 8;
     }
 
+    @Override
     public int getZ() {
         return vector2D.getZ();
     }
 
+    @Override
     public int getMiddleZ() {
         return getZ() * 16 + 8;
     }
 
+    @Override
     public String getWorldID() {
         return vector2D.getWorldID().toString();
     }
@@ -89,6 +92,7 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
         return world.getName();
     }
 
+    @Override
     public boolean canPlayerDo(Player player, ITanPlayer tanPlayer, ChunkPermissionType permissionType, Location location) {
 
         //If worldguard is enabled and a chunk type is ok, add a worldguard check to the default tan's check.
@@ -108,25 +112,14 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
 
     protected abstract void playerCantPerformAction(Player player, LangType langType);
 
-    public abstract void playerEnterClaimedArea(Player player, ITanPlayer tanPlayer, boolean displayTerritoryColor);
-
-    public abstract String getName();
-
-    public abstract boolean canEntitySpawn(EntityType entityType);
-
+    @Override
     public World getWorld() {
         return vector2D.getWorld();
     }
 
-    public abstract TextComponent getMapIcon(LangType langType);
-
-    public abstract boolean canTerritoryClaim(Player player, TerritoryData territoryData, LangType langType);
-
-    public abstract boolean canTerritoryClaim(TerritoryData territoryData);
-
     @Override
     public boolean canClaim(TanTerritory territory) {
-        if (!(territory instanceof TerritoryData territoryData)) {
+        if (!(territory instanceof Territory territoryData)) {
             return false;
         }
         return canTerritoryClaim(territoryData);
@@ -138,28 +131,17 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
             return;
         }
         if (tanTerritory instanceof TanTown) {
-            NewClaimedChunkStorage.getInstance().claimTownChunk(getChunk(), tanTerritory.getID());
+            TownsAndNations.getPlugin().getClaimStorage().claimTownChunk(getChunk(), tanTerritory.getID());
         }
         if (tanTerritory instanceof TanRegion) {
-            NewClaimedChunkStorage.getInstance().claimRegionChunk(getChunk(), tanTerritory.getID());
+            TownsAndNations.getPlugin().getClaimStorage().claimRegionChunk(getChunk(), tanTerritory.getID());
         }
         if (tanTerritory instanceof TanNation) {
-            NewClaimedChunkStorage.getInstance().claimNationChunk(getChunk(), tanTerritory.getID());
+            TownsAndNations.getPlugin().getClaimStorage().claimNationChunk(getChunk(), tanTerritory.getID());
         }
     }
 
-    public abstract boolean canExplosionGrief();
-
-    public abstract boolean canFireGrief();
-
-    public abstract boolean canPVPHappen();
-
-    public abstract boolean canHostileGrief();
-
-    public abstract boolean canVillagerGrief();
-
-    public abstract boolean canPassiveGrief();
-
+    @Override
     public Chunk getChunk() {
         World world = vector2D.getWorld();
         if (world == null) {
@@ -168,10 +150,7 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
         return world.getChunkAt(vector2D.getX(), vector2D.getZ());
     }
 
-    public abstract ChunkType getType();
-
-    public abstract void notifyUpdate();
-
+    @Override
     public boolean containsPosition(Vector3D position) {
         Chunk chunkToCompare = position.getLocation().getChunk();
         Chunk chunk = getChunk();
@@ -199,12 +178,12 @@ public abstract class ClaimedChunk implements TanClaimedChunk {
         if (player == null) {
             return false;
         }
-        ITanPlayer iTanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer iTanPlayer = TownsAndNations.getPlugin().getPlayerDataStorage().get(player);
         return canPlayerDo(player, iTanPlayer, ChunkPermissionType.valueOf(permission.name()), location);
     }
 
     @Override
     public void unclaim() {
-        NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(this);
+        TownsAndNations.getPlugin().getClaimStorage().unclaimChunkAndUpdate(this);
     }
 }

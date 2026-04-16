@@ -7,7 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TownDeletedInternalEvent;
@@ -21,7 +22,6 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeTownTag;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.ChangeCapital;
-import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.file.FileUtil;
@@ -35,9 +35,9 @@ import static org.leralix.lib.data.SoundEnum.*;
 
 public class TownSettingsMenu extends SettingsMenus {
 
-    private final TownData townData;
+    private final Town townData;
 
-    public TownSettingsMenu(Player player, TownData townData) {
+    public TownSettingsMenu(Player player, Town townData) {
         super(player, Lang.HEADER_SETTINGS, townData, 4);
         this.townData = townData;
         open();
@@ -178,7 +178,7 @@ public class TownSettingsMenu extends SettingsMenus {
                         return;
                     }
 
-                    if (!WarStorage.getInstance().getWarsOfTerritory(territoryData).isEmpty()) {
+                    if (!TownsAndNations.getPlugin().getWarStorage().getWarsOfTerritory(territoryData).isEmpty()) {
                         TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR.get(langType), SoundEnum.NOT_ALLOWED);
                         return;
                     }

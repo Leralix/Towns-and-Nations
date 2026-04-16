@@ -8,18 +8,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.property.PropertyData;
-import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TownClaimedChunk;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.interact.ListenerState;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.territory.PropertyUtil;
 import org.leralix.tan.utils.text.NumberUtil;
@@ -28,13 +28,13 @@ import org.leralix.tan.utils.text.TanChatUtils;
 public abstract class CreatePropertyEvent extends RightClickListenerEvent {
 
     protected final Player player;
-    protected final TownData townData;
+    protected final Town townData;
     protected final ITanPlayer tanPlayer;
     protected Vector3D position1;
     protected Vector3D position2;
     protected double cost;
 
-    protected CreatePropertyEvent(Player player, ITanPlayer playerData, TownData townData) {
+    protected CreatePropertyEvent(Player player, ITanPlayer playerData, Town townData) {
         this.player = player;
         this.townData = townData;
         this.tanPlayer = playerData;
@@ -50,7 +50,7 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
         if (block == null)
             return ListenerState.CONTINUE;
 
-        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(block.getChunk());
+        IClaimedChunk claimedChunk = TownsAndNations.getPlugin().getClaimStorage().get(block.getChunk());
         if (!(claimedChunk instanceof TownClaimedChunk townClaimedChunk && townClaimedChunk.getTown().isPlayerIn(player))) {
             TanChatUtils.message(player, Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(langType));
             return ListenerState.FAILURE;

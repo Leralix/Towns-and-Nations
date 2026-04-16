@@ -7,6 +7,7 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 /**
@@ -50,7 +51,8 @@ public class TanChatUtils {
 
     public static void message(CommandSender commandSender, FilledLang message, SoundEnum soundEnum) {
         if (commandSender instanceof Player player) {
-            message(player, message.get(player), soundEnum);
+            LangType langType = playerDataStorage.get(player).getLang();
+            message(player, message.get(langType), soundEnum);
         }
         else if(commandSender != null){
             commandSender.sendMessage(message.getDefault());

@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.cosmetic.CustomIcon;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.BasicGui;
@@ -31,9 +31,9 @@ import java.util.function.Consumer;
 
 public abstract class TerritoryMenu extends BasicGui {
 
-    protected final TerritoryData territoryData;
+    protected final Territory territoryData;
 
-    protected TerritoryMenu(Player player, FilledLang name, TerritoryData territoryData) {
+    protected TerritoryMenu(Player player, FilledLang name, Territory territoryData) {
         super(player, name, 4);
         this.territoryData = territoryData;
     }
@@ -98,7 +98,7 @@ public abstract class TerritoryMenu extends BasicGui {
     protected GuiItem getTownTreasuryButton() {
         return iconManager.get(IconKey.TERRITORY_TREASURY_ICON)
                 .setName(Lang.GUI_TOWN_TREASURY_ICON.get(langType))
-                .setDescription(territoryData instanceof TownData ? Lang.GUI_TOWN_TREASURY_ICON_DESC1.get() : Lang.GUI_TERRITORY_TREASURY_ICON_DESC1.get())
+                .setDescription(territoryData instanceof Town ? Lang.GUI_TOWN_TREASURY_ICON_DESC1.get() : Lang.GUI_TERRITORY_TREASURY_ICON_DESC1.get())
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_TAXES))
                 .setAction(event -> new TreasuryMenu(player, territoryData))
                 .asGuiItem(player, langType);
@@ -107,7 +107,7 @@ public abstract class TerritoryMenu extends BasicGui {
     protected GuiItem getMemberButton() {
         return iconManager.get(IconKey.TERRITORY_MEMBER_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_ICON.get(langType))
-                .setDescription(territoryData instanceof TownData ? Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get() : Lang.GUI_TERRITORY_MEMBERS_ICON_DESC1.get())
+                .setDescription(territoryData instanceof Town ? Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get() : Lang.GUI_TERRITORY_MEMBERS_ICON_DESC1.get())
                 .setAction(event -> new TerritoryMemberMenu(player, territoryData).open())
                 .asGuiItem(player, langType);
     }
@@ -115,7 +115,7 @@ public abstract class TerritoryMenu extends BasicGui {
     protected GuiItem getLandButton() {
         return iconManager.get(IconKey.TERRITORY_LAND_ICON)
                 .setName(Lang.GUI_CLAIM_ICON.get(langType))
-                .setDescription(territoryData instanceof TownData ? Lang.GUI_CLAIM_ICON_DESC1.get() : Lang.GUI_TERRITORY_CLAIM_ICON_DESC1.get())
+                .setDescription(territoryData instanceof Town ? Lang.GUI_CLAIM_ICON_DESC1.get() : Lang.GUI_TERRITORY_CLAIM_ICON_DESC1.get())
                 .setAction(event -> new ChunkSettingsMenu(player, territoryData))
                 .asGuiItem(player, langType);
     }

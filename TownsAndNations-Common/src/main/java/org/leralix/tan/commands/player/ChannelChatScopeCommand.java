@@ -4,21 +4,19 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Region;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class ChannelChatScopeCommand extends PlayerSubCommand {
 
@@ -177,14 +175,14 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
             return;
         }
 
-        TownData playerTown = tanPlayer.getTown();
+        Town playerTown = tanPlayer.getTown();
         if (playerTown == null) {
             return;
         }
 
-        playerTown.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE)
-                .forEach(territoryID -> Objects.requireNonNull(TerritoryUtil.getTerritory(territoryID))
-                        .broadCastMessage(Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(playerTown.getName(), player.getName(), message))
+        playerTown.getRelations().getTerritoriesWithRelation(TownRelation.ALLIANCE)
+                .forEach(territory -> territory.broadCastMessage(
+                        Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(playerTown.getName(), player.getName(), message))
                 );
     }
 
@@ -194,7 +192,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
             return;
         }
 
-        RegionData regionData = tanPlayer.getRegion();
+        Region regionData = tanPlayer.getRegion();
         if (regionData == null) {
             return;
         }
@@ -208,7 +206,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
             return;
         }
 
-        NationData nationData = tanPlayer.getNation();
+        Nation nationData = tanPlayer.getNation();
         if (nationData == null) {
             return;
         }
@@ -222,7 +220,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
             return;
         }
 
-        TownData townData = tanPlayer.getTown();
+        Town townData = tanPlayer.getTown();
         if (townData == null) {
             return;
         }

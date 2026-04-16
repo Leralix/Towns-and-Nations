@@ -5,10 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.data.territory.Region;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.utils.constants.Constants;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +17,7 @@ class ChangeTerritoryDescriptionTest extends BasicTest {
 
     private static Player player;
     private static ITanPlayer tanPlayer;
-    private static TownData townData;
+    private static Town townData;
 
     @Override
     @BeforeEach
@@ -27,7 +26,7 @@ class ChangeTerritoryDescriptionTest extends BasicTest {
 
         player = server.addPlayer();
         tanPlayer = playerDataStorage.get(player);
-        townData = townDataStorage.newTown("town 1", tanPlayer);
+        townData = townStorage.newTown("town 1", tanPlayer);
     }
 
 
@@ -45,7 +44,7 @@ class ChangeTerritoryDescriptionTest extends BasicTest {
     @Test
     void nominalCaseRegion() {
 
-        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("nation 1", townData);
+        Region regionData = regionStorage.newRegion("nation 1", townData);
         ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(regionData, null);
         String description = "new description 2";
 
@@ -57,7 +56,7 @@ class ChangeTerritoryDescriptionTest extends BasicTest {
     @Test
     void nominalCaseTerritory() {
 
-        TerritoryData territoryData = townData;
+        Territory territoryData = townData;
         ChangeTerritoryDescription changeDescription = new ChangeTerritoryDescription(territoryData, null);
         String description = "new description 3";
 

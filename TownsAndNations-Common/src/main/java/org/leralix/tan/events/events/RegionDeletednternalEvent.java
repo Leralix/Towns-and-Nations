@@ -1,7 +1,7 @@
 package org.leralix.tan.events.events;
 
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.events.RegionDeletedEvent;
 import org.tan.api.interfaces.TanPlayer;
@@ -13,7 +13,7 @@ public class RegionDeletednternalEvent extends InternalEvent implements RegionDe
     private final TanPlayer player;
 
 
-    public RegionDeletednternalEvent(RegionData region, ITanPlayer player) {
+    public RegionDeletednternalEvent(Region region, ITanPlayer player) {
         this.region = region;
         this.player = player;
     }

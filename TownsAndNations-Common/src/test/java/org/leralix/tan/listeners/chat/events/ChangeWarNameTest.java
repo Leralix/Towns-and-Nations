@@ -4,10 +4,8 @@ import org.bukkit.entity.Player;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.war.War;
-
-import java.util.Collections;
+import org.leralix.tan.data.territory.Town;
+import org.leralix.tan.war.WarData;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -20,10 +18,10 @@ class ChangeWarNameTest extends BasicTest {
         Player player = server.addPlayer();
         ITanPlayer tanPlayer = playerDataStorage.get(player);
 
-        TownData town1 = townDataStorage.newTown("town 1");
-        TownData town2 = townDataStorage.newTown("town 2");
+        Town town1 = townStorage.newTown("town 1");
+        Town town2 = townStorage.newTown("town 2");
 
-        War war = new War("W1", town1, town2, Collections.emptyList());
+        WarData war = new WarData("W1", town1, town2);
 
         ChangeWarName changeWarName = new ChangeWarName(war, null);
 

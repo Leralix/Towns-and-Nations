@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.building.property.PropertyData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.data.upgrade.rewards.numeric.PropertyCap;
 import org.leralix.tan.gui.IteratorGUI;
@@ -43,7 +43,7 @@ public class PlayerPropertiesMenu extends IteratorGUI {
         List<FilledLang> description = new ArrayList<>();
         List<IndividualRequirement> requirements = new ArrayList<>();
         if(tanPlayer.hasTown()){
-            TownData townData = tanPlayer.getTown();
+            Town townData = tanPlayer.getTown();
 
             double costPerBlock = townData.getTaxOnCreatingProperty();
 

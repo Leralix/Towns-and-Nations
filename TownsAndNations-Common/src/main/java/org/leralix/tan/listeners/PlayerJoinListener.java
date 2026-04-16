@@ -14,7 +14,7 @@ import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.PremiumStorage;
+import org.leralix.tan.storage.stored.json.PremiumStorage;
 import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -47,7 +47,7 @@ public class PlayerJoinListener implements Listener {
             TanChatUtils.message(player, Lang.NEW_VERSION_AVAILABLE_2.get(langType));
         }
 
-        int nbNewsletterForPlayer = NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player);
+        int nbNewsletterForPlayer = NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player, tanPlayer);
         if (nbNewsletterForPlayer > 0) {
             TanChatUtils.message(player, Lang.NEWSLETTER_STRING.get(langType) + Lang.NEWSLETTER_GREETING.get(langType, Integer.toString(nbNewsletterForPlayer)));
             TextComponent message = new TextComponent(Lang.CLICK_TO_OPEN_NEWSLETTER.get(langType));

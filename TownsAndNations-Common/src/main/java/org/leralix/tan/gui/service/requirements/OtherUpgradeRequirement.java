@@ -1,6 +1,6 @@
 package org.leralix.tan.gui.service.requirements;
 
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.upgrade.Upgrade;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -9,9 +9,9 @@ public class OtherUpgradeRequirement extends IndividualRequirement{
 
     private final Upgrade otherUpgrade;
     private final int requiredLevel;
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
-    public OtherUpgradeRequirement(Upgrade otherUpgrade, int requiredLevel, TerritoryData territoryData) {
+    public OtherUpgradeRequirement(Upgrade otherUpgrade, int requiredLevel, Territory territoryData) {
         this.otherUpgrade = otherUpgrade;
         this.requiredLevel = requiredLevel;
         this.territoryData = territoryData;

@@ -1,24 +1,17 @@
 package org.leralix.tan.listeners.chat.events;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
-import org.leralix.tan.data.territory.TownData;
-import org.mockbukkit.mockbukkit.MockBukkit;
+import org.leralix.tan.data.territory.Town;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DonateToTerritoryTest extends BasicTest {
 
-    @AfterEach
-    public void tearDown() {
-        MockBukkit.unmock();
-    }
-
     @Test
     void nominalCase() {
         var tanPlayer = playerDataStorage.get(server.addPlayer());
-        TownData townData = townDataStorage.newTown("townToDonate", tanPlayer);
+        Town townData = townStorage.newTown("townToDonate", tanPlayer);
         int amount = 1;
         tanPlayer.addToBalance(amount);
 
@@ -31,7 +24,7 @@ class DonateToTerritoryTest extends BasicTest {
     @Test
     void notEnoughMoney() {
         var tanPlayer = playerDataStorage.get(server.addPlayer());
-        TownData townData = townDataStorage.newTown("townToDonate", tanPlayer);
+        Town townData = townStorage.newTown("townToDonate", tanPlayer);
 
         int amount = (int) (tanPlayer.getBalance() + 1);
 
@@ -44,7 +37,7 @@ class DonateToTerritoryTest extends BasicTest {
     @Test
     void notANumber() {
         var tanPlayer = playerDataStorage.get(server.addPlayer());
-        TownData townData = townDataStorage.newTown("townToDonate", tanPlayer);
+        Town townData = townStorage.newTown("townToDonate", tanPlayer);
 
         String amount = "notANumber";
 

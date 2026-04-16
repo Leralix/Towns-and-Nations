@@ -3,7 +3,7 @@ package org.leralix.tan.gui.user.war;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.SelectWarGoals;
 import org.leralix.tan.gui.user.territory.WarsMenu;
@@ -25,10 +25,10 @@ import java.util.List;
  */
 public class WarMenu extends AbstractWarMenu {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
     private final WarRole warRole;
 
-    WarMenu(Player player, TerritoryData territoryData, War war) {
+    WarMenu(Player player, Territory territoryData, War war) {
         super(player, Lang.HEADER_WARS_MENU, 3, war);
         this.territoryData = territoryData;
         this.warRole = war.getTerritoryRole(territoryData);

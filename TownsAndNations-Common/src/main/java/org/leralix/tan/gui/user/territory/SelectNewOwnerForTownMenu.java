@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.lang.Lang;
@@ -16,11 +16,11 @@ import java.util.UUID;
 
 public class SelectNewOwnerForTownMenu extends IteratorGUI {
 
-    private final TownData townData;
+    private final Town townData;
     private final Runnable backMenu;
 
 
-    public SelectNewOwnerForTownMenu(Player player, TownData townData, Runnable backMenu) {
+    public SelectNewOwnerForTownMenu(Player player, Town townData, Runnable backMenu) {
         super(player, Lang.HEADER_CHANGE_OWNERSHIP, 3);
         this.townData = townData;
         this.backMenu = backMenu;

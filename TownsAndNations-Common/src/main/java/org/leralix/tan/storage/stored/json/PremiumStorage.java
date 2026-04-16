@@ -1,4 +1,4 @@
-package org.leralix.tan.storage.stored;
+package org.leralix.tan.storage.stored.json;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
@@ -49,7 +49,6 @@ public class PremiumStorage extends JsonStorage<Boolean> {
 
         boolean premium = fetchPremium(playerName);
         dataMap.put(key, premium);
-        save();
         return premium;
     }
 
@@ -75,8 +74,4 @@ public class PremiumStorage extends JsonStorage<Boolean> {
         return false;
     }
 
-    @Override
-    public void reset() {
-        instance = null;
-    }
 }

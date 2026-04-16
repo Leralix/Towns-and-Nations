@@ -4,7 +4,7 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -43,7 +43,7 @@ public abstract class AbstractTerritoryClaimCommand extends PlayerSubCommand {
         }
 
         String territoryArg = args[1];
-        TerritoryData territoryData = TerritoryCommandUtil.resolveTerritory(player, tanPlayer, territoryArg, getSyntax());
+        Territory territoryData = TerritoryCommandUtil.resolveTerritory(player, tanPlayer, territoryArg, getSyntax());
         if (territoryData == null) {
             return;
         }
@@ -63,10 +63,10 @@ public abstract class AbstractTerritoryClaimCommand extends PlayerSubCommand {
         onEnd(player, territoryData, langType, territoryArg, args);
     }
 
-    protected abstract void onNoCoordinates(Player player, ITanPlayer tanPlayer, TerritoryData territoryData, LangType langType, String territoryArg, String[] args);
+    protected abstract void onNoCoordinates(Player player, ITanPlayer tanPlayer, Territory territoryData, LangType langType, String territoryArg, String[] args);
 
-    protected abstract void onCoordinates(Player player, ITanPlayer tanPlayer, TerritoryData territoryData, Chunk chunk, LangType langType, String territoryArg, String[] args);
+    protected abstract void onCoordinates(Player player, ITanPlayer tanPlayer, Territory territoryData, Chunk chunk, LangType langType, String territoryArg, String[] args);
 
-    protected abstract void onEnd(Player player, TerritoryData territoryData, LangType langType, String territoryArg, String[] args);
+    protected abstract void onEnd(Player player, Territory territoryData, LangType langType, String territoryArg, String[] args);
 
 }

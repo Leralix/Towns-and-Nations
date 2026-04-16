@@ -1,4 +1,4 @@
-package org.leralix.tan.storage.stored;
+package org.leralix.tan.storage.stored.json;
 
 import com.google.gson.Gson;
 import org.bukkit.Bukkit;
@@ -27,7 +27,21 @@ public abstract class JsonStorage<T> {
 
         this.type = type;
         this.gson = gson;
-        load();
+
+        loadDatamap();
+    }
+
+    public void loadDatamap() {
+        if (!file.exists()) {
+            dataMap = new LinkedHashMap<>();
+        }
+        else {
+            try (Reader reader = new FileReader(file)) {
+                dataMap = gson.fromJson(reader, type);
+            } catch (IOException e) {
+                TownsAndNations.getPlugin().getLogger().severe("Error loading " + file.getName());
+            }
+        }
     }
 
     static @NotNull File getFile(String fileName) {
@@ -62,22 +76,7 @@ public abstract class JsonStorage<T> {
         return newFile;
     }
 
-
-    protected void load() {
-        if (!file.exists()) {
-            dataMap = new LinkedHashMap<>();
-        }
-        else {
-            try (Reader reader = new FileReader(file)) {
-                dataMap = gson.fromJson(reader, type);
-            } catch (IOException e) {
-                TownsAndNations.getPlugin().getLogger().severe("Error loading " + file.getName());
-            }
-        }
-    }
-
     public void save() {
-
         // Copy the map to avoid concurrent modification
         Map<String, T> snapshot = new LinkedHashMap<>(dataMap);
         CompletableFuture.runAsync(() -> saveSnapshot(snapshot));
@@ -98,8 +97,6 @@ public abstract class JsonStorage<T> {
     public void put(String id, T obj) {
         dataMap.put(id, obj);
     }
-
-    public abstract void reset();
 
     private void saveSnapshot(Map<String, T> snapshot) {
 

@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.NationData;
+import org.leralix.tan.data.territory.Nation;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.lang.Lang;
@@ -18,10 +18,10 @@ import static org.leralix.lib.data.SoundEnum.GOOD;
 
 public class SelectNewOwnerForNationMenu extends IteratorGUI {
 
-    private final NationData nationData;
+    private final Nation nationData;
     private final Runnable backMenu;
 
-    public SelectNewOwnerForNationMenu(Player player, NationData nationData, Runnable backMenu) {
+    public SelectNewOwnerForNationMenu(Player player, Nation nationData, Runnable backMenu) {
         super(player, Lang.HEADER_CHANGE_OWNERSHIP, 3);
         this.nationData = nationData;
         this.backMenu = backMenu;

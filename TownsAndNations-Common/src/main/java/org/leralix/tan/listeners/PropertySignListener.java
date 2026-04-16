@@ -11,7 +11,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.MetadataValue;
 import org.leralix.tan.data.building.property.PropertyData;
-import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TownClaimedChunk;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.relation.TownRelation;
@@ -20,9 +20,9 @@ import org.leralix.tan.gui.user.property.BuyOrRentPropertyMenu;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.ClaimStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.TownStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -31,11 +31,13 @@ public class PropertySignListener implements Listener {
     private static final String PROPERTY_SIGN_METADATA = "propertySign";
 
     private final PlayerDataStorage playerDataStorage;
-    private final TownDataStorage townDataStorage;
+    private final TownStorage townStorage;
+    private final ClaimStorage claimStorage;
 
-    public PropertySignListener(PlayerDataStorage playerDataStorage, TownDataStorage townDataStorage) {
+    public PropertySignListener(PlayerDataStorage playerDataStorage, TownStorage townStorage, ClaimStorage claimStorage) {
         this.playerDataStorage = playerDataStorage;
-        this.townDataStorage = townDataStorage;
+        this.townStorage = townStorage;
+        this.claimStorage = claimStorage;
     }
 
     @EventHandler
@@ -53,7 +55,7 @@ public class PropertySignListener implements Listener {
                 for (MetadataValue value : sign.getMetadata(PROPERTY_SIGN_METADATA)) {
                     String customData = value.asString();
                     String[] ids = customData.split("_");
-                    PropertyData propertyData = townDataStorage.get(ids[0]).getProperty(ids[1]);
+                    PropertyData propertyData = townStorage.get(ids[0]).getProperty(ids[1]);
                     if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
                         ITanPlayer tanPlayer = playerDataStorage.get(player);
@@ -85,7 +87,7 @@ public class PropertySignListener implements Listener {
     }
 
     private boolean canPlayerOpenMenu(Player player, Block clickedBlock) {
-        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(clickedBlock.getChunk());
+        IClaimedChunk claimedChunk = claimStorage.get(clickedBlock.getChunk());
         ITanPlayer tanPlayer = playerDataStorage.get(player);
         if (tanPlayer.hasTown() && claimedChunk instanceof TownClaimedChunk townClaimedChunk) {
             TownRelation territoryRelation = townClaimedChunk.getTown().getWorstRelationWith(tanPlayer);

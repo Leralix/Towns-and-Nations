@@ -4,10 +4,10 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -36,7 +36,7 @@ public final class ChatChunkMapRenderer {
                 int chunkX = currentChunk.getX() + dx;
                 int chunkZ = currentChunk.getZ() + dz;
 
-                ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(chunkX, chunkZ, player.getWorld().getUID().toString());
+                IClaimedChunk claimedChunk = TownsAndNations.getPlugin().getClaimStorage().get(chunkX, chunkZ, player.getWorld().getUID().toString());
                 TextComponent icon = claimedChunk.getMapIcon(langType);
 
                 if (dx == 0 && dz == 0) {

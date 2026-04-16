@@ -4,8 +4,8 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
@@ -20,12 +20,12 @@ import org.leralix.tan.war.wargoals.SubjugateWarGoal;
 
 public class ChooseWarGoal extends BasicGui {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
     private final War war;
     private final WarRole warRole;
     private final BasicGui returnGui;
 
-    public ChooseWarGoal(Player player, TerritoryData territoryData, War war, WarRole warRole, BasicGui returnGui) {
+    public ChooseWarGoal(Player player, Territory territoryData, War war, WarRole warRole, BasicGui returnGui) {
         super(player, Lang.HEADER_SELECT_WARGOAL, 3);
         this.territoryData = territoryData;
         this.war = war;
@@ -78,7 +78,7 @@ public class ChooseWarGoal extends BasicGui {
 
     private @NotNull GuiItem getcaptureLandmarkButton() {
 
-        boolean isTown = territoryData instanceof TownData;
+        boolean isTown = territoryData instanceof Town;
 
         return iconManager.get(IconKey.WAR_GOAL_CAPTURE_LANDMARK_ICON)
                 .setName(Lang.CAPTURE_LANDMARK_WAR_GOAL.get(langType))

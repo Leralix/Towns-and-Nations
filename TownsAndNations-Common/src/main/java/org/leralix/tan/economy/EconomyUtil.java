@@ -12,11 +12,18 @@ import org.leralix.tan.storage.stored.PlayerDataStorage;
  */
 public class EconomyUtil {
 
+    private static AbstractTanEcon econ;
+
+    private static PlayerDataStorage playerDataStorage;
+
     private EconomyUtil(){
         throw new AssertionError("Static class");
     }
 
-    private static AbstractTanEcon econ;
+    public static void init(PlayerDataStorage instance) {
+        playerDataStorage = instance;
+    }
+
 
     public static void register(AbstractTanEcon newEcon) {
         econ = newEcon;
@@ -32,7 +39,7 @@ public class EconomyUtil {
      * @return              The player's current balance.
      */
     public static double getBalance(OfflinePlayer offlinePlayer){
-        return econ.getBalance(PlayerDataStorage.getInstance().get(offlinePlayer));
+        return econ.getBalance(playerDataStorage.get(offlinePlayer));
     }
     /**
      * Retrieves the current balance of the specified player.
@@ -48,7 +55,7 @@ public class EconomyUtil {
      * @return          The player's current balance.
      */
     public static double getBalance(Player player){
-        return econ.getBalance(PlayerDataStorage.getInstance().get(player));
+        return econ.getBalance(playerDataStorage.get(player));
     }
 
     /**
@@ -65,7 +72,7 @@ public class EconomyUtil {
      * @param amount            The amount of money to be subtracted
      */
     public static void removeFromBalance(OfflinePlayer offlinePlayer, double amount){
-        econ.withdrawPlayer(PlayerDataStorage.getInstance().get(offlinePlayer), amount);
+        econ.withdrawPlayer(playerDataStorage.get(offlinePlayer), amount);
     }
 
     /**
@@ -74,7 +81,7 @@ public class EconomyUtil {
      * @param amount     The amount of money to be subtracted
      */
     public static void removeFromBalance(Player player, double amount) {
-        econ.withdrawPlayer(PlayerDataStorage.getInstance().get(player), amount);
+        econ.withdrawPlayer(playerDataStorage.get(player), amount);
     }
     /**
      * Add the given amount of money to a player balance
@@ -90,7 +97,7 @@ public class EconomyUtil {
      * @param amount     The amount of money to be added
      */
     public static void addFromBalance(Player player, double amount){
-        econ.depositPlayer(PlayerDataStorage.getInstance().get(player), amount);
+        econ.depositPlayer(playerDataStorage.get(player), amount);
     }
     /**
      * Add the given amount of money to a player balance
@@ -98,7 +105,7 @@ public class EconomyUtil {
      * @param amount            The amount of money to be added
      */
     public static void addFromBalance(OfflinePlayer offlinePlayer, double amount) {
-        econ.depositPlayer(PlayerDataStorage.getInstance().get(offlinePlayer), amount);
+        econ.depositPlayer(playerDataStorage.get(offlinePlayer), amount);
     }
 
     public static String getMoneyIcon() {

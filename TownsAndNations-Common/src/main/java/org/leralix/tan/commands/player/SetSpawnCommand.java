@@ -1,17 +1,19 @@
 package org.leralix.tan.commands.player;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.data.upgrade.rewards.bool.EnableTownSpawn;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.NationStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.RegionStorage;
+import org.leralix.tan.storage.stored.TownStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
@@ -19,8 +21,13 @@ import java.util.List;
 
 public class SetSpawnCommand extends AbstractSpawnCommand {
 
-    public SetSpawnCommand(PlayerDataStorage playerDataStorage, TownDataStorage townDataStorage) {
-       super(playerDataStorage, townDataStorage);
+    public SetSpawnCommand(
+            PlayerDataStorage playerDataStorage,
+            TownStorage townStorage,
+            RegionStorage regionDataStorage,
+            NationStorage nationDataStorage
+    ) {
+       super(playerDataStorage, townStorage, regionDataStorage, nationDataStorage);
     }
 
     @Override
@@ -69,7 +76,7 @@ public class SetSpawnCommand extends AbstractSpawnCommand {
         }
 
         //No permission
-        TerritoryData territoryData = optTerritory.get();
+        Territory territoryData = optTerritory.get();
 
         if (!territoryData.doesPlayerHavePermission(playerStat, RolePermission.TOWN_ADMINISTRATOR)) {
             TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType));
@@ -84,7 +91,7 @@ public class SetSpawnCommand extends AbstractSpawnCommand {
             return;
         }
 
-        ClaimedChunk currentChunk = NewClaimedChunkStorage.getInstance().get(player.getLocation().getChunk());
+        IClaimedChunk currentChunk = TownsAndNations.getPlugin().getClaimStorage().get(player.getLocation().getChunk());
         if (!(currentChunk instanceof TerritoryChunk territoryChunk && territoryChunk.getOwner().equals(territoryData))) {
             TanChatUtils.message(player, Lang.SPAWN_NEED_TO_BE_IN_CHUNK.get(langType, territoryData.getColoredName()));
             return;

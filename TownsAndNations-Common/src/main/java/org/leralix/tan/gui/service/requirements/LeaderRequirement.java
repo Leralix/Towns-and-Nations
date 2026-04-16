@@ -1,16 +1,16 @@
 package org.leralix.tan.gui.service.requirements;
 
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 
 public class LeaderRequirement extends IndividualRequirement {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
     private final ITanPlayer tanPlayer;
 
-    public LeaderRequirement(TerritoryData territoryData, ITanPlayer tanPlayer) {
+    public LeaderRequirement(Territory territoryData, ITanPlayer tanPlayer) {
         this.territoryData = territoryData;
         this.tanPlayer = tanPlayer;
     }

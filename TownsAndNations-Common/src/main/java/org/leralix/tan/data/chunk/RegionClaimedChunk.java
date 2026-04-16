@@ -2,11 +2,11 @@ package org.leralix.tan.data.chunk;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.EntityType;
-import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.territory.Region;
+import org.leralix.tan.data.territory.Territory;
 
-public class RegionClaimedChunk extends TerritoryChunk {
+public class RegionClaimedChunk extends TerritoryChunkData implements RegionChunk {
 
     public RegionClaimedChunk(Chunk chunk, String owner) {
         super(chunk, owner);
@@ -16,12 +16,14 @@ public class RegionClaimedChunk extends TerritoryChunk {
         super(x, z, worldUUID, ownerID);
     }
 
+    @Override
     public String getName() {
         return getOwner().getName();
     }
 
-    public RegionData getRegion() {
-        return RegionDataStorage.getInstance().get(getOwnerID());
+    @Override
+    public Region getRegion() {
+        return TownsAndNations.getPlugin().getRegionStorage().get(getOwnerID());
     }
 
     @Override
@@ -30,7 +32,7 @@ public class RegionClaimedChunk extends TerritoryChunk {
     }
 
     @Override
-    public boolean canTerritoryClaim(TerritoryData territoryData) {
+    public boolean canTerritoryClaim(Territory territoryData) {
         if (territoryData.canConquerChunk(this))
             return true;
 

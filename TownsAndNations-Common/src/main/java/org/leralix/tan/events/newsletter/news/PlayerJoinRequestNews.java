@@ -5,14 +5,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.territory.PlayerApplicationMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanPlayer;
@@ -44,8 +44,8 @@ public class PlayerJoinRequestNews extends Newsletter {
         return NewsletterType.PLAYER_APPLICATION;
     }
 
-    private TownData getTownData() {
-        return TownDataStorage.getInstance().get(townID);
+    private Town getTownData() {
+        return TownsAndNations.getPlugin().getTownStorage().get(townID);
     }
 
     public String getPlayerID() {
@@ -60,7 +60,7 @@ public class PlayerJoinRequestNews extends Newsletter {
     public void broadcast(Player player, ITanPlayer tanPlayer) {
         OfflinePlayer playerJoinRequest = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
 
-        TownData townData = getTownData();
+        Town townData = getTownData();
         if (townData == null)
             return;
         TanChatUtils.message(player,
@@ -74,7 +74,7 @@ public class PlayerJoinRequestNews extends Newsletter {
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
 
-        TownData townData = getTownData();
+        Town townData = getTownData();
         if (townData == null) {
             return null;
         }
@@ -106,9 +106,9 @@ public class PlayerJoinRequestNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+    public GuiItem createConcernedGuiItem(Player player, ITanPlayer playerData, LangType lang, Consumer<Player> onClick) {
 
-        TownData townData = getTownData();
+        Town townData = getTownData();
         if (townData == null) {
             return null;
         }
@@ -143,8 +143,8 @@ public class PlayerJoinRequestNews extends Newsletter {
     }
 
     @Override
-    public boolean shouldShowToPlayer(Player player) {
-        TownData townData = getTownData();
+    public boolean shouldShowToPlayer(ITanPlayer player) {
+        Town townData = getTownData();
         if (townData == null) {
             return false;
         }

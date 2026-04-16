@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.storage.stored.PremiumStorage;
+import org.leralix.tan.storage.stored.json.PremiumStorage;
 
 import java.util.UUID;
 

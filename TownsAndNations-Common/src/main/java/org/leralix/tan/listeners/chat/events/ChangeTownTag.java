@@ -2,7 +2,7 @@ package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.utils.Range;
@@ -13,10 +13,10 @@ import java.util.function.Consumer;
 
 public class ChangeTownTag extends ChatListenerEvent {
 
-    private final TownData townData;
+    private final Town townData;
     private final Consumer<Player> guiCallback;
 
-    public ChangeTownTag(TownData townData, Consumer<Player> guiCallback) {
+    public ChangeTownTag(Town townData, Consumer<Player> guiCallback) {
         this.townData = townData;
         this.guiCallback = guiCallback;
     }

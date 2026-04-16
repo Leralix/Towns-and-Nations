@@ -3,14 +3,14 @@ package org.leralix.tan.events.newsletter.news;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.DateUtil;
 import org.tan.api.interfaces.buildings.TanLandmark;
@@ -48,8 +48,8 @@ public class LandmarkUnclaimedNewsletter extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, LangType langType, Consumer<Player> onClick) {
-        TerritoryData oldOwner = TerritoryUtil.getTerritory(oldOwnerID);
-        Landmark landmark = LandmarkStorage.getInstance().get(landmarkID);
+        Territory oldOwner = TerritoryUtil.getTerritory(oldOwnerID);
+        Landmark landmark = TownsAndNations.getPlugin().getLandmarkStorage().get(landmarkID);
 
         if (landmark == null || oldOwner == null) {
             return null;
@@ -72,13 +72,13 @@ public class LandmarkUnclaimedNewsletter extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+    public GuiItem createConcernedGuiItem(Player player, ITanPlayer playerData, LangType lang, Consumer<Player> onClick) {
         return createGuiItem(player, lang, onClick);
     }
 
     @Override
-    public boolean shouldShowToPlayer(Player player) {
-        TerritoryData territoryData = TerritoryUtil.getTerritory(oldOwnerID);
+    public boolean shouldShowToPlayer(ITanPlayer player) {
+        Territory territoryData = TerritoryUtil.getTerritory(oldOwnerID);
         if (territoryData == null) return false;
         return territoryData.isPlayerIn(player);
     }
@@ -90,8 +90,8 @@ public class LandmarkUnclaimedNewsletter extends Newsletter {
 
     @Override
     public void broadcast(Player player, ITanPlayer tanPlayer) {
-        TerritoryData oldOwner = TerritoryUtil.getTerritory(oldOwnerID);
-        Landmark landmark = LandmarkStorage.getInstance().get(landmarkID);
+        Territory oldOwner = TerritoryUtil.getTerritory(oldOwnerID);
+        Landmark landmark = TownsAndNations.getPlugin().getLandmarkStorage().get(landmarkID);
         Lang.LANDMARK_UNCLAIMED_NEWSLETTER.get(tanPlayer, oldOwner.getColoredName(), landmark.getName());
     }
 }

@@ -3,11 +3,11 @@ package org.leralix.tan.gui.admin;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Region;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.utils.file.FileUtil;
 
 import java.util.ArrayList;
@@ -15,9 +15,9 @@ import java.util.List;
 
 public class NationChangeOwnership extends IteratorGUI {
 
-    private final NationData nationData;
+    private final Nation nationData;
 
-    public NationChangeOwnership(Player player, NationData nationData){
+    public NationChangeOwnership(Player player, Nation nationData){
         super(player, Lang.HEADER_CHANGE_OWNERSHIP, 6);
         this.nationData = nationData;
         open();
@@ -31,8 +31,8 @@ public class NationChangeOwnership extends IteratorGUI {
 
     private List<GuiItem> getCandidates() {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (TerritoryData territoryData : nationData.getVassalsInternal()) {
-            if (territoryData instanceof RegionData regionData) {
+        for (Territory territoryData : nationData.getVassalsInternal()) {
+            if (territoryData instanceof Region regionData) {
                 ITanPlayer regionLeader = regionData.getLeaderData();
                 if (regionLeader != null) {
                     guiItems.add(

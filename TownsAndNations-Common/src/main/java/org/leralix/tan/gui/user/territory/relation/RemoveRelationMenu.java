@@ -3,11 +3,11 @@ package org.leralix.tan.gui.user.territory.relation;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.truce.ActiveTruce;
 import org.leralix.tan.storage.stored.truce.TruceStorage;
 import org.leralix.tan.utils.constants.Constants;
@@ -22,11 +22,11 @@ import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
 
 public class RemoveRelationMenu extends IteratorGUI {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
     private final TownRelation relation;
 
-    public RemoveRelationMenu(Player player, TerritoryData territoryData, TownRelation relation){
-        super(player, Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(relation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
+    public RemoveRelationMenu(Player player, Territory territoryData, TownRelation relation){
+        super(player, Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(relation.getName(TownsAndNations.getPlugin().getPlayerDataStorage().get(player).getLang())), 6);
         this.territoryData = territoryData;
         this.relation = relation;
         open();
@@ -40,17 +40,10 @@ public class RemoveRelationMenu extends IteratorGUI {
     }
 
     private List<GuiItem> getTerritories() {
-        List<String> relationListID = territoryData.getRelations().getTerritoriesIDWithRelation(relation);
         List<GuiItem> guiItems = new ArrayList<>();
 
 
-        for (String otherTownUUID : relationListID) {
-            TerritoryData otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
-
-            if(otherTerritory == null){
-                continue;
-            }
-
+        for (Territory otherTerritory : territoryData.getRelations().getTerritoriesWithRelation(relation)) {
             guiItems.add(otherTerritory.getIconWithInformationAndRelation(territoryData, tanPlayer.getLang())
                     .setAction(event -> {
                         event.setCancelled(true);
@@ -64,9 +57,9 @@ public class RemoveRelationMenu extends IteratorGUI {
                                 TruceStorage.getInstance().add(activeTruce);
                             }
 
-                            territoryData.setRelation(otherTerritory, TownRelation.NEUTRAL);
+                            TerritoryUtil.setRelation(territoryData, otherTerritory, TownRelation.NEUTRAL);
                         } else {
-                            otherTerritory.receiveDiplomaticProposal(territoryData, TownRelation.NEUTRAL);
+                            otherTerritory.addDiplomaticProposal(territoryData, TownRelation.NEUTRAL);
                             TanChatUtils.message(player, Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(tanPlayer, otherTerritory.getName()), MINOR_GOOD);
                         }
                         new OpenRelationMenu(player, territoryData, relation);

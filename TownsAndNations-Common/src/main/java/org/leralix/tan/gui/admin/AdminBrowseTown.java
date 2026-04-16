@@ -2,10 +2,10 @@ package org.leralix.tan.gui.admin;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.TownDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class AdminBrowseTown extends IteratorGUI {
 
     private List<GuiItem> getTowns() {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (TownData townData : TownDataStorage.getInstance().getAll().values()) {
+        for (Town townData : TownsAndNations.getPlugin().getTownStorage().getAll().values()) {
 
             guiItems.add(
                     townData.getIconWithInformations(tanPlayer.getLang())

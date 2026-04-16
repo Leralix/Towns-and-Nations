@@ -1,7 +1,7 @@
 package org.leralix.tan.data.territory.rank;
 
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -38,8 +38,8 @@ public enum RolePermission {
         this.name = name;
     }
 
-    public boolean isForTerritory(TerritoryData territoryData) {
-        if (territoryData instanceof TownData) {
+    public boolean isForTerritory(Territory territoryData) {
+        if (territoryData instanceof Town) {
             return true;
         }
         return !onlyTown;

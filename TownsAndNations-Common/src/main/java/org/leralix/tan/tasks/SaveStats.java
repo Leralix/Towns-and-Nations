@@ -2,7 +2,7 @@ package org.leralix.tan.tasks;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.storage.stored.json.PremiumStorage;
 import org.leralix.tan.storage.stored.truce.TruceStorage;
 
 public class SaveStats {
@@ -23,14 +23,14 @@ public class SaveStats {
     }
 
     public void saveAll() {
-        NationDataStorage.getInstance().save();
-        RegionDataStorage.getInstance().save();
-        plugin.getTownDataStorage().save();
+        plugin.getNationStorage().save();
+        plugin.getRegionStorage().save();
+        plugin.getTownStorage().save();
         plugin.getPlayerDataStorage().save();
-        NewClaimedChunkStorage.getInstance().save();
-        LandmarkStorage.getInstance().save();
-        WarStorage.getInstance().save();
-        FortStorage.getInstance().save();
+        plugin.getClaimStorage().save();
+        plugin.getLandmarkStorage().save();
+        plugin.getWarStorage().save();
+        plugin.getFortStorage().save();
         PremiumStorage.getInstance().save();
         TruceStorage.getInstance().save();
     }

@@ -9,9 +9,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.impl.FortDataStorage;
+import org.leralix.tan.data.territory.Town;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,13 +38,13 @@ class CreateFortEventTest extends BasicTest {
 
         ITanPlayer tanPlayer = playerDataStorage.get(player);
 
-        TownData townData = townDataStorage.newTown("town", tanPlayer);
+        Town townData = townStorage.newTown("town", tanPlayer);
         townData.addToBalance(5000.);
 
         CreateFortEvent createfortEvent = new CreateFortEvent(townData, tanPlayer);
         createfortEvent.execute(new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, null, world.getBlockAt(-1,0,-1), BlockFace.UP));
 
-        assertEquals(1, FortDataStorage.getInstance().getOwnedFort(townData).size());
+        assertEquals(1, TownsAndNations.getPlugin().getFortStorage().getOwnedFort(townData).size());
     }
 
 

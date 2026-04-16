@@ -4,13 +4,13 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.file.FileUtil;
 
 import java.util.ArrayList;
@@ -21,10 +21,10 @@ import static org.leralix.lib.data.SoundEnum.GOOD;
 
 public class RegionChangeOwnership extends IteratorGUI {
 
-    private final RegionData regionData;
+    private final Region regionData;
     private final BasicGui returnGUI;
 
-    public RegionChangeOwnership(Player player, RegionData regionData, BasicGui returnGUI) {
+    public RegionChangeOwnership(Player player, Region regionData, BasicGui returnGUI) {
         super(player, Lang.HEADER_CHANGE_OWNERSHIP, 6);
         this.regionData = regionData;
         this.returnGUI = returnGUI;
@@ -41,7 +41,7 @@ public class RegionChangeOwnership extends IteratorGUI {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
         for (UUID playerID : regionData.getPlayerIDList()) {
 
-            ITanPlayer iterateTanPlayer = PlayerDataStorage.getInstance().get(playerID);
+            ITanPlayer iterateTanPlayer = TownsAndNations.getPlugin().getPlayerDataStorage().get(playerID);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerID);
             guiItems.add(
                     iconManager.get(offlinePlayer)

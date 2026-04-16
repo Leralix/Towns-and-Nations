@@ -2,14 +2,14 @@ package org.leralix.tan.api.external.papi.entries;
 
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.NationDataStorage;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Region;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
+import org.leralix.tan.storage.stored.NationStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.RegionStorage;
+import org.leralix.tan.storage.stored.TownStorage;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -23,20 +23,20 @@ public abstract class PapiEntry {
     private final String identifier;
 
     protected final PlayerDataStorage playerDataStorage;
-    protected final TownDataStorage townDataStorage;
-    protected final RegionDataStorage regionDataStorage;
-    protected final NationDataStorage nationDataStorage;
+    protected final TownStorage townStorage;
+    protected final RegionStorage regionDataStorage;
+    protected final NationStorage nationDataStorage;
 
     protected PapiEntry(
             String identifier,
             PlayerDataStorage playerDataStorage,
-            TownDataStorage townDataStorage,
-            RegionDataStorage regionDataStorage,
-            NationDataStorage nationDataStorage
+            TownStorage townStorage,
+            RegionStorage regionDataStorage,
+            NationStorage nationDataStorage
     ) {
         this.identifier = identifier;
         this.playerDataStorage = playerDataStorage;
-        this.townDataStorage = townDataStorage;
+        this.townStorage = townStorage;
         this.regionDataStorage = regionDataStorage;
         this.nationDataStorage = nationDataStorage;
     }
@@ -60,18 +60,18 @@ public abstract class PapiEntry {
         return values.toArray(new String[0]);
     }
 
-    protected TerritoryData getTerritoryByName(String name) {
-        for(TownData townData : townDataStorage.getAll().values()){
+    protected Territory getTerritoryByName(String name) {
+        for(Town townData : townStorage.getAll().values()){
             if(townData.getName().equalsIgnoreCase(name)){
                 return townData;
             }
         }
-        for(RegionData regionData : regionDataStorage.getAll().values()){
+        for(Region regionData : regionDataStorage.getAll().values()){
             if(regionData.getName().equalsIgnoreCase(name)){
                 return regionData;
             }
         }
-        for(NationData nationData : nationDataStorage.getAll().values()){
+        for(Nation nationData : nationDataStorage.getAll().values()){
             if(nationData.getName().equalsIgnoreCase(name)){
                 return nationData;
             }

@@ -1,14 +1,14 @@
 package org.leralix.tan.war.wargoals;
 
 import org.bukkit.Material;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.landmark.Landmark;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.tan.api.interfaces.buildings.TanLandmark;
 import org.tan.api.interfaces.war.wargoals.TanCaptureLandmarkWargoal;
 
@@ -25,7 +25,7 @@ public class CaptureLandmarkWarGoal extends WarGoal implements TanCaptureLandmar
     }
 
     private Landmark getLandmark(){
-        return LandmarkStorage.getInstance().get(landmarkToCaptureID);
+        return TownsAndNations.getPlugin().getLandmarkStorage().get(landmarkToCaptureID);
     }
 
     @Override
@@ -49,11 +49,11 @@ public class CaptureLandmarkWarGoal extends WarGoal implements TanCaptureLandmar
     }
 
     @Override
-    public void applyWarGoal(TerritoryData winner, TerritoryData looser) {
+    public void applyWarGoal(Territory winner, Territory looser) {
 
         Landmark landmark = getLandmark();
 
-        if(winner instanceof TownData winnerTown && 
+        if(winner instanceof Town winnerTown &&
                 landmark.isOwnedBy(looser))
         {
             landmark.removeOwnership();

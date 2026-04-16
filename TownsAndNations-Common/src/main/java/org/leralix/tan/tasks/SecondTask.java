@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.storage.stored.ClaimStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.war.capture.CaptureManager;
 import org.leralix.tan.war.cosmetic.BoundaryRegister;
@@ -18,9 +19,9 @@ public class SecondTask {
 
     private final CaptureManager captureManager;
 
-    public SecondTask(PlayerDataStorage playerDataStorage){
+    public SecondTask(PlayerDataStorage playerDataStorage, ClaimStorage claimStorage){
         this.playerDataStorage = playerDataStorage;
-        this.captureManager =new CaptureManager(playerDataStorage);
+        this.captureManager = new CaptureManager(playerDataStorage, claimStorage);
     }
 
     public void startScheduler() {

@@ -1,13 +1,14 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TownCreatedInternalEvent;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.TownStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.NameFilter;
@@ -38,12 +39,13 @@ public class CreateEmptyTown extends ChatListenerEvent {
             return false;
         }
 
-        if (TownDataStorage.getInstance().isNameUsed(safeTownName)) {
+        TownStorage townStorage = TownsAndNations.getPlugin().getTownStorage();
+        if (townStorage.isNameUsed(safeTownName)) {
             TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(playerData));
             return false;
         }
 
-        TownData newTown = TownDataStorage.getInstance().newTown(safeTownName);
+        Town newTown = townStorage.newTown(safeTownName);
 
         EventManager.getInstance().callEvent(new TownCreatedInternalEvent(newTown, playerData));
         FileUtil.addLineToHistory(Lang.TOWN_CREATED_NEWSLETTER.get(player.getName(), newTown.getName()));

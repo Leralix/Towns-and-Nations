@@ -3,7 +3,7 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -17,12 +17,12 @@ import java.util.List;
 
 public class SelectWarGoals extends IteratorGUI {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
     private final War war;
     private final WarRole warRole;
     private final BasicGui returnGui;
 
-    public SelectWarGoals(Player player, TerritoryData territoryData, War war, WarRole warRole, BasicGui returnGui) {
+    public SelectWarGoals(Player player, Territory territoryData, War war, WarRole warRole, BasicGui returnGui) {
         super(player, Lang.HEADER_SELECT_WARGOAL, 3);
         this.territoryData = territoryData;
         this.war = war;

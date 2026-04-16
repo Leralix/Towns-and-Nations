@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -14,7 +14,7 @@ class ChangeTerritoryNameTest extends BasicTest {
 
     private static Player player;
     private static ITanPlayer tanPlayer;
-    private static TownData townData;
+    private static Town townData;
 
     @Override
     @BeforeEach
@@ -23,7 +23,7 @@ class ChangeTerritoryNameTest extends BasicTest {
 
         player = server.addPlayer();
         tanPlayer = playerDataStorage.get(player);
-        townData = townDataStorage.newTown("town 1", tanPlayer);
+        townData = townStorage.newTown("town 1", tanPlayer);
     }
 
     @Test

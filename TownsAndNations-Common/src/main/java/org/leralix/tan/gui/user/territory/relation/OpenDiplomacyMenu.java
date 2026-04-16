@@ -3,7 +3,7 @@ package org.leralix.tan.gui.user.territory.relation;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.gui.BasicGui;
@@ -20,9 +20,9 @@ import java.util.List;
 
 public class OpenDiplomacyMenu extends BasicGui {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
-    public OpenDiplomacyMenu(Player player, TerritoryData territoryData){
+    public OpenDiplomacyMenu(Player player, Territory territoryData){
         super(player, Lang.HEADER_RELATIONS.get(territoryData.getName()), 3);
         this.territoryData = territoryData;
         open();

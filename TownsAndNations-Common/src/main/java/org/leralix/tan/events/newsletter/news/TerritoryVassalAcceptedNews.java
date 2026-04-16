@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -38,10 +38,10 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
-        TerritoryData region = TerritoryUtil.getTerritory(regionID);
+        Territory region = TerritoryUtil.getTerritory(regionID);
         if (region == null)
             return null;
-        TerritoryData town = TerritoryUtil.getTerritory(townID);
+        Territory town = TerritoryUtil.getTerritory(townID);
         if (town == null)
             return null;
 
@@ -62,16 +62,16 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+    public GuiItem createConcernedGuiItem(Player player, ITanPlayer playerData, LangType lang, Consumer<Player> onClick) {
         return createGuiItem(player, lang, onClick);
     }
 
     @Override
-    public boolean shouldShowToPlayer(Player player) {
-        TerritoryData proposingTerritory = TerritoryUtil.getTerritory(regionID);
+    public boolean shouldShowToPlayer(ITanPlayer player) {
+        Territory proposingTerritory = TerritoryUtil.getTerritory(regionID);
         if (proposingTerritory == null)
             return false;
-        TerritoryData receivingTerritory = TerritoryUtil.getTerritory(townID);
+        Territory receivingTerritory = TerritoryUtil.getTerritory(townID);
         if (receivingTerritory == null)
             return false;
         return proposingTerritory.isPlayerIn(player) || receivingTerritory.isPlayerIn(player);
@@ -84,10 +84,10 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
 
     @Override
     public void broadcast(Player player, ITanPlayer tanPlayer) {
-        TerritoryData proposingTerritory = TerritoryUtil.getTerritory(regionID);
+        Territory proposingTerritory = TerritoryUtil.getTerritory(regionID);
         if (proposingTerritory == null)
             return;
-        TerritoryData receivingTerritory = TerritoryUtil.getTerritory(townID);
+        Territory receivingTerritory = TerritoryUtil.getTerritory(townID);
         if (receivingTerritory == null)
             return;
 

@@ -4,7 +4,7 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.scope.MapSettings;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -36,19 +36,19 @@ public class ClaimCommand extends AbstractTerritoryClaimCommand {
     }
 
     @Override
-    protected void onNoCoordinates(Player player, ITanPlayer tanPlayer, TerritoryData territoryData, LangType langType, String territoryArg, String[] args) {
+    protected void onNoCoordinates(Player player, ITanPlayer tanPlayer, Territory territoryData, LangType langType, String territoryArg, String[] args) {
         territoryData.claimChunk(player, tanPlayer);
     }
 
     @Override
-    protected void onCoordinates(Player player, ITanPlayer tanPlayer, TerritoryData territoryData, Chunk chunk, LangType langType, String territoryArg, String[] args) {
+    protected void onCoordinates(Player player, ITanPlayer tanPlayer, Territory territoryData, Chunk chunk, LangType langType, String territoryArg, String[] args) {
         territoryData.claimChunk(player, tanPlayer, chunk);
         var mapCommand = new MapCommand(TownsAndNations.getPlugin().getPlayerDataStorage());
         mapCommand.openMap(player, new MapSettings(args[0], territoryArg));
     }
 
     @Override
-    protected void onEnd(Player player, TerritoryData territoryData, LangType langType, String territoryArg, String[] args) {
+    protected void onEnd(Player player, Territory territoryData, LangType langType, String territoryArg, String[] args) {
 
     }
 

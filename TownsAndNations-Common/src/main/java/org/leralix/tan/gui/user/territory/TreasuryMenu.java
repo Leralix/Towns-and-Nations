@@ -3,8 +3,8 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.economy.Budget;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.BasicGui;
@@ -25,10 +25,10 @@ import java.util.List;
 
 public class TreasuryMenu extends BasicGui {
 
-    protected final TerritoryData territoryData;
+    protected final Territory territoryData;
     protected final Budget budget;
 
-    public TreasuryMenu(Player player, TerritoryData territoryData){
+    public TreasuryMenu(Player player, Territory territoryData){
         super(player, Lang.HEADER_ECONOMY, 5);
         this.territoryData = territoryData;
         this.budget = territoryData.getBudget();
@@ -85,10 +85,10 @@ public class TreasuryMenu extends BasicGui {
                         new TerritoryTransactionHistory(player, territoryData, TransactionType.DONATION, p -> new TreasuryMenu(player, territoryData));
                     }
                 })
-                .setDescription(territoryData instanceof TownData ? Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get() : Lang.GUI_TERRITORY_TREASURY_DONATION_DESC1.get())
+                .setDescription(territoryData instanceof Town ? Lang.GUI_TOWN_TREASURY_DONATION_DESC1.get() : Lang.GUI_TERRITORY_TREASURY_DONATION_DESC1.get())
                 .setClickToAcceptMessage(
                         Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY,
-                        territoryData instanceof TownData ? Lang.GUI_TOWN_TREASURY_RIGHT_CLICK_TO_DONATE : Lang.GUI_TERRITORY_TREASURY_RIGHT_CLICK_TO_DONATE
+                        territoryData instanceof Town ? Lang.GUI_TOWN_TREASURY_RIGHT_CLICK_TO_DONATE : Lang.GUI_TERRITORY_TREASURY_RIGHT_CLICK_TO_DONATE
                 )
                 .asGuiItem(player, langType);
     }

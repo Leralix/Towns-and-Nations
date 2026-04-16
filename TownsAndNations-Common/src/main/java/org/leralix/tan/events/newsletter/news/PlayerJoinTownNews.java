@@ -5,15 +5,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanPlayer;
@@ -56,7 +56,7 @@ public class PlayerJoinTownNews extends Newsletter {
     @Override
     public void broadcast(Player player, ITanPlayer tanPlayer) {
         OfflinePlayer playerJoiningTown = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
-        TownData townData = TownDataStorage.getInstance().get(townID);
+        Town townData = TownsAndNations.getPlugin().getTownStorage().get(townID);
         if (townData == null)
             return;
         TanChatUtils.message(player, Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(tanPlayer, playerJoiningTown.getName(), townData.getColoredName()), SoundEnum.MINOR_GOOD);
@@ -66,7 +66,7 @@ public class PlayerJoinTownNews extends Newsletter {
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         OfflinePlayer playerJoiningTown = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
 
-        TownData townData = TownDataStorage.getInstance().get(townID);
+        Town townData = TownsAndNations.getPlugin().getTownStorage().get(townID);
         if (townData == null)
             return null;
 
@@ -91,13 +91,13 @@ public class PlayerJoinTownNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+    public GuiItem createConcernedGuiItem(Player player, ITanPlayer playerData, LangType lang, Consumer<Player> onClick) {
         return createGuiItem(player, lang, onClick);
     }
 
     @Override
-    public boolean shouldShowToPlayer(Player player) {
-        TownData townData = TownDataStorage.getInstance().get(townID);
+    public boolean shouldShowToPlayer(ITanPlayer player) {
+        Town townData = TownsAndNations.getPlugin().getTownStorage().get(townID);
         if (townData == null)
             return false;
         return townData.doesPlayerHavePermission(player, RolePermission.INVITE_PLAYER);

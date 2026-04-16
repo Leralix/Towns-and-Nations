@@ -4,7 +4,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 
@@ -14,7 +14,7 @@ public final class TerritoryEnterMessageUtil {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void sendEnterTerritoryMessage(Player player, TerritoryData territoryData, boolean displayTerritoryColor, LangType langType) {
+    public static void sendEnterTerritoryMessage(Player player, Territory territoryData, boolean displayTerritoryColor, LangType langType) {
         TextComponent name = displayTerritoryColor
                 ? territoryData.getCustomColoredName()
                 : new TextComponent(territoryData.getColoredName());

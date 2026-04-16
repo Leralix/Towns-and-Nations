@@ -4,10 +4,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.building.property.PropertyData;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.*;
 import org.leralix.tan.data.territory.rank.RankData;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.data.timezone.TimeZoneEnum;
@@ -36,7 +33,7 @@ public interface ITanPlayer extends TanPlayer {
 
     String getTownId();
 
-    TownData getTown();
+    Town getTown();
 
     boolean hasTown();
 
@@ -52,7 +49,7 @@ public interface ITanPlayer extends TanPlayer {
 
     boolean hasRegion();
 
-    RegionData getRegion();
+    Region getRegion();
 
     void joinTown(TownData townData);
 
@@ -81,7 +78,7 @@ public interface ITanPlayer extends TanPlayer {
      * @param territoryData The territory to check
      * @return The worst role the player has with the territory
      */
-    SideStatus getWarSideWith(TerritoryData territoryData);
+    SideStatus getWarSideWith(Territory territoryData);
 
     void removeWar(@NotNull CurrentAttack currentAttacks);
 
@@ -91,7 +88,7 @@ public interface ITanPlayer extends TanPlayer {
 
     void setRegionRankID(Integer rankID);
 
-    NationData getNation();
+    Nation getNation();
 
     boolean hasNation();
 
@@ -101,18 +98,18 @@ public interface ITanPlayer extends TanPlayer {
 
     void setNationRankID(Integer rankID);
 
-    Integer getRankID(TerritoryData territoryData);
+    Integer getRankID(Territory territoryData);
 
-    RankData getRank(TerritoryData territoryData);
+    RankData getRank(Territory territoryData);
 
     /**
-     * @return  A list of all territory a player is in, starting from the lowest level.
+     * @return A list of all territory a player is in, starting from the lowest level.
      */
-    List<TerritoryData> getAllTerritoriesPlayerIsIn();
+    List<Territory> getAllTerritoriesPlayerIsIn();
 
     OfflinePlayer getOfflinePlayer();
 
-    LangType getLang();
+    @NotNull LangType getLang();
 
     void setLang(LangType lang);
 
@@ -120,7 +117,7 @@ public interface ITanPlayer extends TanPlayer {
 
     void setRankID(TerritoryData territoryData, Integer defaultRankID);
 
-    TimeZoneEnum getTimeZone();
+    @NotNull TimeZoneEnum getTimeZone();
 
     void setTimeZone(TimeZoneEnum timeZone);
 

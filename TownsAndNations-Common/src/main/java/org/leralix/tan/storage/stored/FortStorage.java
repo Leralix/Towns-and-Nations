@@ -3,52 +3,74 @@ package org.leralix.tan.storage.stored;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.fort.Fort;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class FortStorage {
+public interface FortStorage {
 
-    private static FortStorage instance;
-
-    public static void init(FortStorage newInstance) {
-        instance = newInstance;
-    }
-
-    public static FortStorage getInstance() {
-        if (instance == null) {
-            throw new IllegalStateException("FortStorage has not been initialized.");
+    /**
+     * @return All foreign forts occupied by this territory. Not including forts owned by the territory
+     */
+    default List<Fort> getOccupiedFort(Territory territoryData) {
+        List<Fort> res = new ArrayList<>();
+        for(String fortID : territoryData.getOccupiedFortIds()) {
+            Fort fort = getFort(fortID);
+            if (fort == null) {
+                continue;
+            }
+            res.add(fort);
         }
-        return instance;
+        return res;
     }
 
-    public abstract List<Fort> getOccupiedFort(TerritoryData territoryData);
-
-    public abstract List<Fort> getOwnedFort(TerritoryData territoryData);
-
-    public abstract List<Fort> getAllControlledFort(TerritoryData territoryData);
-
-    public abstract List<Fort> getForts();
-
-    public Fort getFort(Fort fort){
-        return getFort(fort.getID());
+    /**
+     * @return All forts owned by this territory, should they be occupied or not.
+     */
+    default List<Fort> getOwnedFort(Territory territoryData) {
+        List<Fort> res = new ArrayList<>();
+        for(String fortID : territoryData.getOwnedFortIDs()) {
+            Fort fort = getFort(fortID);
+            if (fort == null) {
+                continue;
+            }
+            res.add(fort);
+        }
+        return res;
     }
 
-    public abstract Fort getFort(String fortID);
+    /**
+     * @return All forts occupied by this territory, including forts owned by this territory
+     * and excluding owned forts occupied by other territories
+     */
+    default List<Fort> getAllControlledFort(Territory territoryData) {
+        List<Fort> allForts = new ArrayList<>(getOccupiedFort(territoryData));
 
-    public abstract Fort register(Vector3D position, TerritoryData owningTerritory);
+        for(Fort fort : getOwnedFort(territoryData)) {
+            if(!fort.isOccupied()){
+                allForts.add(fort);
+            }
+        }
+        return allForts;
+    }
 
-    protected abstract void delete(String fortID);
+    List<Fort> getForts();
 
-    public void delete(Fort fort){
+   Fort getFort(String fortID);
+
+    Fort register(Vector3D position, Territory owningTerritory);
+
+    void delete(String fortID);
+
+    default void delete(Fort fort){
         fort.delete();
         delete(fort.getID());
     }
 
-    public abstract void save();
+    void save();
 
-    public void checkValidWorlds() {
+    default void checkValidWorlds() {
         for(Fort fort : new ArrayList<>(getForts())) {
             if(fort.getPosition().getWorld() == null){
                 delete(fort);

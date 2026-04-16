@@ -34,9 +34,9 @@ public abstract class TaxProfitLine extends ProfitLine {
     @Override
     public final void addItems(Gui gui, Player player, ITanPlayer playerData, LangType lang) {
         double taxRate = territoryData.getTax();
-        addDecreaseItem(gui, player, lang, taxRate);
-        addInfoItem(gui, player, lang, taxRate);
-        addIncreaseItem(gui, player, lang);
+        addDecreaseItem(gui, player, playerData, lang, taxRate);
+        addInfoItem(gui, player, lang, playerData, taxRate);
+        addIncreaseItem(gui, player, playerData, lang);
     }
 
     @Override

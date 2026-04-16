@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.teleportation.PlannedTeleportation;
 import org.leralix.tan.data.territory.teleportation.TeleportationData;
 import org.leralix.tan.lang.Lang;
@@ -33,10 +33,10 @@ public class TeleportationRegister {
     /**
      * This method is used to register a player to teleport to a town.
      *
-     * @param player The player that is teleporting.
-     * @param town   The town the player is teleporting to.
+     * @param player          The player that is teleporting.
+     * @param territoryData   The territory the player is teleporting to.
      */
-    public static void registerSpawn(ITanPlayer player, TerritoryData territoryData) {
+    public static void registerSpawn(ITanPlayer player, Territory territoryData) {
         spawnRegister.put(player.getID(), new PlannedTeleportation(territoryData.getTeleportationData()));
     }
 
@@ -60,7 +60,7 @@ public class TeleportationRegister {
         return getTeleportationData(player.getUniqueId());
     }
 
-    public static void teleportToTownSpawn(ITanPlayer tanPlayer, TerritoryData territoryData) {
+    public static void teleportToTownSpawn(ITanPlayer tanPlayer, Territory territoryData) {
         int secondBeforeTeleport = Constants.getTimeBeforeTeleport();
 
         Player player = Bukkit.getPlayer(tanPlayer.getID());

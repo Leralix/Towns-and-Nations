@@ -20,10 +20,11 @@ import org.leralix.tan.data.building.Building;
 import org.leralix.tan.data.building.property.owner.AbstractOwner;
 import org.leralix.tan.data.building.property.owner.PlayerOwned;
 import org.leralix.tan.data.building.property.owner.TerritoryOwned;
-import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.cosmetic.CustomIcon;
 import org.leralix.tan.data.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
@@ -40,8 +41,6 @@ import org.leralix.tan.storage.PermissionManager;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.RentingPropertyTransaction;
 import org.leralix.tan.storage.database.transactions.instance.SellingPropertyTransaction;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.text.NumberUtil;
@@ -140,8 +139,8 @@ public class PropertyData extends Building implements TanProperty {
         return icon.getIcon();
     }
 
-    public TownData getTown() {
-        return TownDataStorage.getInstance().get(getOwningStructureID());
+    public Town getTown() {
+        return TownsAndNations.getPlugin().getTownStorage().get(getOwningStructureID());
     }
 
     private String getOwningStructureID() {
@@ -189,7 +188,7 @@ public class PropertyData extends Building implements TanProperty {
             return Optional.empty();
         }
         else {
-            return Optional.of(PlayerDataStorage.getInstance().get(rentingPlayerID));
+            return Optional.of(TownsAndNations.getPlugin().getPlayerDataStorage().get(rentingPlayerID));
         }
     }
 
@@ -226,7 +225,7 @@ public class PropertyData extends Building implements TanProperty {
         }
 
         OfflinePlayer renter = Bukkit.getOfflinePlayer(renterUuid);
-        TerritoryData town = getTown();
+        Territory territory = getTown();
 
         double baseRent = getRentPrice();
         double rent = getRentPriceWithTax();
@@ -239,16 +238,16 @@ public class PropertyData extends Building implements TanProperty {
 
         EconomyUtil.removeFromBalance(renter, rent);
         getOwner().addToBalance(baseRent);
-        town.addToBalance(taxRent);
+        territory.addToBalance(taxRent);
 
         TransactionManager.getInstance().register(
                 new RentingPropertyTransaction(
-                        town.getID(),
+                        territory.getID(),
                         getPropertyID(),
                         owner.getID(),
                         renter.getUniqueId().toString(),
                         baseRent,
-                        town.getTaxOnRentingProperty()
+                        territory.getTaxOnRentingProperty()
                 )
         );
     }
@@ -399,7 +398,7 @@ public class PropertyData extends Building implements TanProperty {
     }
 
     public void delete() {
-        TownData town = getTown();
+        Town town = getTown();
         expelRenter(false);
         removeSign();
 
@@ -407,7 +406,7 @@ public class PropertyData extends Building implements TanProperty {
 
         if (getOwner() instanceof PlayerOwned playerOwnedClass) {
             UUID ownerID = UUID.fromString(playerOwnedClass.getID());
-            ITanPlayer playerOwner = PlayerDataStorage.getInstance().get(ownerID);
+            ITanPlayer playerOwner = TownsAndNations.getPlugin().getPlayerDataStorage().get(ownerID);
 
             playerOwner.removeProperty(this);
 
@@ -461,13 +460,13 @@ public class PropertyData extends Building implements TanProperty {
                 TanChatUtils.message(exOwner, Lang.PROPERTY_SOLD_EX_OWNER.get(langType, getName(), buyer.getName(), Double.toString(getPriceWithTax())), SoundEnum.GOOD);
             }
 
-            ITanPlayer exOwnerData = PlayerDataStorage.getInstance().get(exOwnerID);
+            ITanPlayer exOwnerData = TownsAndNations.getPlugin().getPlayerDataStorage().get(exOwnerID);
             exOwnerData.removeProperty(this);
         }
 
         TanChatUtils.message(buyer, Lang.PROPERTY_SOLD_NEW_OWNER.get(langType, getName(), Double.toString(getPriceWithTax())), SoundEnum.BAD);
 
-        TownData town = getTown();
+        Town town = getTown();
         double townCut = getPriceWithTax() - getPrice();
 
         EconomyUtil.removeFromBalance(buyer, getPriceWithTax());
@@ -485,7 +484,7 @@ public class PropertyData extends Building implements TanProperty {
                 )
         );
 
-        ITanPlayer newOwnerData = PlayerDataStorage.getInstance().get(buyer.getUniqueId().toString());
+        ITanPlayer newOwnerData = TownsAndNations.getPlugin().getPlayerDataStorage().get(buyer.getUniqueId().toString());
         newOwnerData.addProperty(this);
         this.owner = new PlayerOwned(buyer.getUniqueId());
 
@@ -520,7 +519,7 @@ public class PropertyData extends Building implements TanProperty {
     public void expelRenter(boolean rentBack) {
         if (!isRented())
             return;
-        ITanPlayer renter = PlayerDataStorage.getInstance().get(rentingPlayerID);
+        ITanPlayer renter = TownsAndNations.getPlugin().getPlayerDataStorage().get(rentingPlayerID);
         if (renter != null) {
             renter.removeProperty(this);
         }
@@ -531,7 +530,7 @@ public class PropertyData extends Building implements TanProperty {
         getPermissionManager().setAll(PermissionGiven.PROPERTY);
     }
 
-    public boolean isInChunk(ClaimedChunk chunk) {
+    public boolean isInChunk(IClaimedChunk chunk) {
         int minX = Math.min(p1.getX() >> 4, p2.getX() >> 4);
         int maxX = Math.max(p1.getX() >> 4, p2.getX() >> 4);
         int minZ = Math.min(p1.getZ() >> 4, p2.getZ() >> 4);
@@ -588,7 +587,7 @@ public class PropertyData extends Building implements TanProperty {
     @Override
     public GuiItem getGuiItem(IconManager iconManager, Player player, BasicGui basicGui, LangType langType) {
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = TownsAndNations.getPlugin().getPlayerDataStorage().get(player);
         boolean canInteract = getOwner().canAccess(tanPlayer);
 
         return iconManager.get(getIcon())

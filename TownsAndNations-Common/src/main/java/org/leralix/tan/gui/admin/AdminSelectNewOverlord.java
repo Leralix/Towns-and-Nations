@@ -2,20 +2,20 @@ package org.leralix.tan.gui.admin;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.RegionDataStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdminSelectNewOverlord extends IteratorGUI {
-    private final TownData townData;
+    private final Town townData;
 
-    public AdminSelectNewOverlord(Player player, TownData townData) {
+    public AdminSelectNewOverlord(Player player, Town townData) {
         super(player, Lang.HEADER_ADMIN_CHANGE_OVERLORD.get(townData.getName()), 6);
         this.townData = townData;
         open();
@@ -31,7 +31,7 @@ public class AdminSelectNewOverlord extends IteratorGUI {
     private List<GuiItem> getRegions() {
         List<GuiItem> guiItems = new ArrayList<>();
 
-        for (TerritoryData potentialOverlord : RegionDataStorage.getInstance().getAll().values()) {
+        for (Territory potentialOverlord : TownsAndNations.getPlugin().getRegionStorage().getAll().values()) {
             IconBuilder potentialOverlordIcon = potentialOverlord.getIconWithInformations(tanPlayer.getLang());
             potentialOverlordIcon.addDescription(Lang.GUI_GENERIC_CLICK_TO_SELECT.get());
 

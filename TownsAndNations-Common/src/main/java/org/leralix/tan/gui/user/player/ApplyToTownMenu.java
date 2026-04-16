@@ -2,11 +2,11 @@ package org.leralix.tan.gui.user.player;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.user.territory.NoTownMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class ApplyToTownMenu extends IteratorGUI {
     public List<GuiItem> getTowns() {
         ArrayList<GuiItem> towns = new ArrayList<>();
 
-        for (TownData specificTownData : TownDataStorage.getInstance().getAll().values()) {
+        for (Town specificTownData : TownsAndNations.getPlugin().getTownStorage().getAll().values()) {
 
             towns.add(specificTownData
                     .getIconWithInformations(tanPlayer.getLang())

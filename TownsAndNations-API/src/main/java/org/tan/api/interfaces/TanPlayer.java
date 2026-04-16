@@ -32,6 +32,7 @@ public interface TanPlayer {
 
     /**
      * Get the town the player is part of.
+     *
      * @return The town the player is part of or null if the player is not part of a town.
      */
     TanTown getTown();

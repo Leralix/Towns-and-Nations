@@ -1,10 +1,10 @@
 package org.leralix.tan.listeners.chat.events.treasury;
 
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 
 public class SetBuyPropertyRate extends SetSpecificRate {
 
-    public SetBuyPropertyRate(TerritoryData territoryData){
+    public SetBuyPropertyRate(Territory territoryData){
         super(territoryData);
     }
 

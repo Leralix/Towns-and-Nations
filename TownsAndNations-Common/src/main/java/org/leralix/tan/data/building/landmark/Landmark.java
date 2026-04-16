@@ -2,271 +2,79 @@ package org.leralix.tan.data.building.landmark;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.lib.position.Vector3D;
-import org.leralix.tan.data.chunk.ClaimedChunk;
-import org.leralix.tan.data.chunk.TerritoryChunk;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.data.upgrade.TerritoryStats;
-import org.leralix.tan.data.upgrade.rewards.percentage.LandmarkBonus;
-import org.leralix.tan.events.EventManager;
-import org.leralix.tan.events.events.LandmarkClaimedInternalEvent;
-import org.leralix.tan.events.events.LandmarkUnclaimedInternalEvent;
-import org.leralix.tan.gui.cosmetic.IconManager;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
-import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
-import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.gameplay.TANCustomNBT;
-import org.leralix.tan.utils.gameplay.TerritoryUtil;
-import org.leralix.tan.utils.territory.ChunkUtil;
 import org.tan.api.interfaces.buildings.TanLandmark;
 import org.tan.api.interfaces.territory.TanTerritory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-public class Landmark implements TanLandmark {
+public interface Landmark extends TanLandmark {
+    String getID();
 
-    private final String ID;
-    private String name;
-    private final Vector3D position;
-    private String materialName;
-    private int amount;
-    private String ownerID;
-    private int storedDays;
-    private int storedLimit;
+    String getName();
 
-    public Landmark(String id, Vector3D position) {
-        this.ID = id;
-        this.name = Lang.SPECIFIC_LANDMARK_ICON_DEFAULT_NAME.get(Lang.getServerLang(), getID());
-        this.position = position;
-        this.materialName = "DIAMOND";
-        this.amount = 2;
-        this.storedDays = 0;
-        this.storedLimit = Constants.getLandmarkStorageCapacity();
-        spawnChest();
-    }
+    void setName(String newName);
 
-    public String getID() {
-        return this.ID;
-    }
+    void setOwner(Town newOwner);
 
-    public String getName() {
-        return name;
-    }
+    void setOwner(TanTerritory newOwner);
 
-    public void setName(String newName) {
-        this.name = newName;
-    }
+    void removeOwnership();
 
-    public void setOwner(TownData newOwner) {
-        EventManager.getInstance().callEvent(new LandmarkClaimedInternalEvent(this, newOwner));
-        this.ownerID = newOwner.getID();
-    }
+    String getOwnerID();
 
-    @Override
-    public void setOwner(UUID newOwner) {
-        TownData townData = TownDataStorage.getInstance().get(newOwner.toString());
-        if(townData != null)
-            setOwner(townData);
-    }
+    Vector3D getPosition();
 
-    @Override
-    public void setOwner(TanTerritory newOwner) {
-        if(newOwner instanceof TownData townData){
-            setOwner(townData);
-        }
-    }
+    void spawnChest();
 
-    public void removeOwnership() {
-        EventManager.getInstance().callEvent(new LandmarkUnclaimedInternalEvent(this, getOwner()));
-        this.ownerID = null;
-    }
+    void dispawnChest();
 
-    public String getOwnerID() {
-        return ownerID;
-    }
+    Optional<Block> getChest();
 
-    public Vector3D getPosition() {
-        return position;
-    }
+    Material getRessourceMaterial();
 
-    public void spawnChest() {
-        Block newBlock = position.getWorld().getBlockAt(position.getLocation());
-        newBlock.setType(Material.CHEST);
-        TANCustomNBT.setBockMetaData(newBlock, "LandmarkChest", getID());
-    }
+    ItemStack getResources();
 
-    public void dispawnChest() {
-        Block newBlock = position.getWorld().getBlockAt(position.getLocation());
+    void generateResources();
 
-        TANCustomNBT.removeBockMetaData(newBlock, "LandmarkChest");
-        newBlock.setType(Material.AIR);
-    }
+    void setStoredLimit(int limit);
 
-    public Optional<Block> getChest() {
-        World world = position.getWorld();
-        if (world == null) {
-            return Optional.empty();
-        }
-        return Optional.of(position.getWorld().getBlockAt(position.getLocation()));
-    }
+    boolean isOwned();
 
-    public Material getRessourceMaterial() {
-        return Material.valueOf(materialName);
-    }
+    TanTerritory getOwner();
 
-    public ItemStack getResources() {
-        ItemStack ressourcesItemStack = new ItemStack(getRessourceMaterial());
-        ressourcesItemStack.setAmount(amount);
-        return ressourcesItemStack;
-    }
+    IconBuilder getIcon(LangType langType);
 
-    public void generateResources() {
-        if (!isOwned())
-            return;
-        if (storedDays >= storedLimit)
-            return;
-        storedDays++;
-    }
+    List<FilledLang> getBaseDescription();
 
-    public void setStoredLimit(int limit) {
-        storedLimit = limit;
-    }
+    void deleteLandmark();
 
-    public boolean isOwned() {
-        if (ownerID == null)
-            return false;
-        if (TerritoryUtil.getTerritory(ownerID) == null) {
-            removeOwnership();
-            return false;
-        }
-        return true;
-    }
+    int computeStoredReward(Territory townData);
 
-    public TanTerritory getOwner() {
-        return TownDataStorage.getInstance().get(ownerID);
-    }
+    void giveToPlayer(Player player, int number);
 
+    void setReward(ItemStack itemOnCursor);
 
-    public IconBuilder getIcon(LangType langType) {
+    Location getLocation();
 
-        List<FilledLang> description = getBaseDescription();
-        if (isOwned())
-            description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_OWNER.get(getOwner().getName()));
-        else
-            description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER.get());
+    void setQuantity(int quantity);
 
+    int getQuantity();
 
-        return IconManager.getInstance().get(Material.valueOf(materialName))
-                .setName(Lang.SPECIFIC_LANDMARK_NAME.get(langType, getName()))
-                .setDescription(description);
-    }
+    void setItem(ItemStack item);
 
-    public List<FilledLang> getBaseDescription() {
-        List<FilledLang> description = new ArrayList<>();
-        description.add(Lang.DISPLAY_COORDINATES.get(Integer.toString(position.getX()), Integer.toString(position.getY()), Integer.toString(position.getZ())));
-        description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(Integer.toString(amount), materialName.toLowerCase()));
-        return description;
-    }
+    ItemStack getItem();
 
-    public void deleteLandmark() {
-        dispawnChest();
-        NewClaimedChunkStorage.getInstance().unclaimChunk(position.getLocation().getChunk());
-        LandmarkStorage.getInstance().delete(getID());
+    boolean isEncircledBy(TanTerritory territoryToCompare);
 
-    }
-
-    public int computeStoredReward(TerritoryData townData) {
-        TerritoryStats territoryStats = townData.getNewLevel();
-        LandmarkBonus bonus = territoryStats.getStat(LandmarkBonus.class);
-        return (int) bonus.multiply((double) this.amount * storedDays);
-    }
-
-    public void giveToPlayer(Player player, int number) {
-        if (storedDays == 0)
-            return;
-
-        player.getInventory().addItem(new ItemStack(Material.valueOf(materialName), number));
-        storedDays = 0;
-    }
-
-
-    public void setReward(ItemStack itemOnCursor) {
-        setQuantity(itemOnCursor.getAmount());
-        setItem(itemOnCursor);
-    }
-
-    public Location getLocation() {
-        return new Location(position.getWorld(), position.getX(), position.getY(), position.getZ());
-    }
-
-    @Override
-    public void setQuantity(int quantity) {
-        this.amount = quantity;
-    }
-
-    @Override
-    public int getQuantity() {
-        return this.amount;
-    }
-
-    @Override
-    public void setItem(ItemStack item) {
-        this.materialName = item.getType().name();
-    }
-
-    @Override
-    public ItemStack getItem() {
-        return new ItemStack(getRessourceMaterial());
-    }
-
-    /**
-     * Check if this landmark is encircled by the given territory
-     * @param territoryToCompare the territory to compare
-     * @return  true if the landmark is encircled by the given territory, false otherwise
-     */
-    public boolean isEncircledBy(TanTerritory territoryToCompare) {
-
-        return ChunkUtil.isChunkEncirecledBy(
-                getChunk(),
-                chunk -> {
-                    if (chunk instanceof TerritoryChunk territoryChunk) {
-                        return territoryChunk.getOwnerID().equals(territoryToCompare.getID());
-                    }
-                    return false;
-                });
-    }
-
-    private ClaimedChunk getChunk() {
-        return NewClaimedChunkStorage.getInstance().get(position.getLocation().getChunk());
-    }
-
-    public void setProtectedBlockData() {
-        if (getChest().isEmpty()) {
-            return;
-        }
-        TANCustomNBT.setBockMetaData(getChest().get(), "LandmarkChest", getID());
-    }
-
-    public boolean isOwnedBy(TerritoryData territoryData) {
-        if (territoryData == null) {
-            return false;
-        }
-        if (ownerID == null) {
-            return false;
-        }
-        return ownerID.equals(territoryData.getID());
-    }
+    boolean isOwnedBy(Territory territoryData);
 }

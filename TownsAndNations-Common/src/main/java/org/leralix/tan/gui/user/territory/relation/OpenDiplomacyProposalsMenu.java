@@ -2,7 +2,7 @@ package org.leralix.tan.gui.user.territory.relation;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.relation.DiplomacyProposal;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
@@ -13,9 +13,9 @@ import java.util.List;
 
 public class OpenDiplomacyProposalsMenu extends IteratorGUI {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
-    public OpenDiplomacyProposalsMenu(Player player, TerritoryData territoryData) {
+    public OpenDiplomacyProposalsMenu(Player player, Territory territoryData) {
         super(player, Lang.HEADER_RELATIONS.get(territoryData.getName()), 6);
         this.territoryData = territoryData;
         open();

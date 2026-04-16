@@ -13,7 +13,7 @@ import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.property.PropertyData;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.utils.gameplay.ItemStackSerializer;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
@@ -57,7 +57,7 @@ class ChangePropertyRentPriceTest {
         player = server.addPlayer();
         World world = server.addSimpleWorld("world");
         tanPlayer = townsAndNations.getPlayerDataStorage().get(player);
-        TownData townData = townsAndNations.getTownDataStorage().newTown("town 1");
+        Town townData = townsAndNations.getTownStorage().newTown("town 1");
 
         propertyData = townData.registerNewProperty(
                 new Vector3D(new Location(world, 0, 0, 0)),
@@ -70,7 +70,6 @@ class ChangePropertyRentPriceTest {
     public void tearDown() {
         MockBukkit.unmock();
         mockedSerializer.close();
-        townsAndNations.resetSingletonForTests();
     }
 
     @Test

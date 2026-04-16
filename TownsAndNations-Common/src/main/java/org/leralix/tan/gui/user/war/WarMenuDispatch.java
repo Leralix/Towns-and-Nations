@@ -1,14 +1,14 @@
 package org.leralix.tan.gui.user.war;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.info.WarRole;
 
 public class WarMenuDispatch {
 
 
-    public static void openMenu(Player player, War war, TerritoryData territoryData){
+    public static void openMenu(Player player, War war, Territory territoryData){
 
         WarRole warRole = war.getTerritoryRole(territoryData);
         switch (warRole){

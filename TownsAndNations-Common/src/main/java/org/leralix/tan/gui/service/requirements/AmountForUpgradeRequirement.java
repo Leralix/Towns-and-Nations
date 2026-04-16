@@ -1,6 +1,6 @@
 package org.leralix.tan.gui.service.requirements;
 
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.upgrade.Upgrade;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -12,11 +12,11 @@ import java.util.List;
 
 public class AmountForUpgradeRequirement extends IndividualRequirementWithCost {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
     private final Upgrade upgrade;
     private final List<Integer> costs;
 
-    public AmountForUpgradeRequirement(TerritoryData territoryData, Upgrade upgrade, List<Integer> costs) {
+    public AmountForUpgradeRequirement(Territory territoryData, Upgrade upgrade, List<Integer> costs) {
         this.territoryData = territoryData;
         this.upgrade = upgrade;
         this.costs = costs;

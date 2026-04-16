@@ -1,18 +1,18 @@
 package org.leralix.tan.gui.service.requirements;
 
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 
 public class RankPermissionRequirement extends IndividualRequirement {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
     private final ITanPlayer tanPlayer;
     private final RolePermission requiredPermission;
 
-    public RankPermissionRequirement(TerritoryData territoryData, ITanPlayer tanPlayer, RolePermission requiredPermission) {
+    public RankPermissionRequirement(Territory territoryData, ITanPlayer tanPlayer, RolePermission requiredPermission) {
         this.territoryData = territoryData;
         this.tanPlayer = tanPlayer;
         this.requiredPermission = requiredPermission;

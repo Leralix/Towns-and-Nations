@@ -1,33 +1,30 @@
-package org.leralix.tan.storage.stored;
+package org.leralix.tan.storage.stored.json;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.TownsAndNations;
+import org.jetbrains.annotations.Nullable;
 import org.leralix.tan.data.building.property.owner.AbstractOwner;
 import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.data.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.data.territory.permission.RelationPermission;
 import org.leralix.tan.data.territory.relation.TownRelation;
+import org.leralix.tan.storage.stored.TownStorage;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.storage.typeadapter.EnumMapKeyValueDeserializer;
 import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.storage.typeadapter.OwnerDeserializer;
-import org.leralix.tan.utils.gameplay.TerritoryUtil;
-import org.tan.api.interfaces.buildings.TanProperty;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TownDataStorage extends JsonStorage<TownData>{
+public class TownDataStorage extends JsonStorage<Town> implements TownStorage {
 
-    private static TownDataStorage instance;
-
-    private int newTownId;
+    private int nextID;
 
     public TownDataStorage() {
         super("TAN - Towns.json",
@@ -40,43 +37,28 @@ public class TownDataStorage extends JsonStorage<TownData>{
                         .registerTypeAdapter(ICustomIcon.class, new IconAdapter())
                         .setPrettyPrinting()
                         .create());
-        instance = this;
+        this.nextID = getNextID();
     }
 
-    @Override
-    protected void load() {
-        super.load();
-
+    private int getNextID() {
         int id = 0;
-        for (String cle : dataMap.keySet()) {
+        for (String cle : getAll().keySet()) {
             if (cle != null && cle.length() >= 2) {
                 String suffix = cle.substring(1);
                 boolean isNumeric = suffix.chars().allMatch(Character::isDigit);
                 if (isNumeric) {
                     int newID = Integer.parseInt(suffix);
                     if (newID > id) {
-                        id = newID;
+                        id = newID + 1;
                     }
                 }
             }
         }
-        newTownId = id + 1;
+        return id;
     }
 
     @Override
-    public void reset() {
-        instance = null;
-    }
-
-
-    @Deprecated
-    public static TownDataStorage getInstance() {
-        if (instance == null)
-            instance = new TownDataStorage();
-        return instance;
-    }
-
-    public TownData newTown(String townName, ITanPlayer tanPlayer){
+    public Town newTown(String townName, @Nullable ITanPlayer tanPlayer){
         String townId = getNextTownID();
         TownData newTown = new TownData(townId, townName, tanPlayer);
 
@@ -85,52 +67,13 @@ public class TownDataStorage extends JsonStorage<TownData>{
     }
 
     private @NotNull String getNextTownID() {
-        String townId = "T"+ newTownId;
-        newTownId++;
+        String townId = "T"+ nextID;
+        nextID++;
         return townId;
     }
 
-    public TownData newTown(String townName){
-        String townId = getNextTownID();
-
-        TownData newTown = new TownData(townId, townName);
-
-        put(townId,newTown);
-        return newTown;
-    }
-
-
-    public void deleteTown(TownData townData) {
+    @Override
+    public void deleteTown(Town townData) {
         dataMap.remove(townData.getID());
-    }
-
-
-    public TownData get(ITanPlayer tanPlayer){
-        return get(tanPlayer.getTownId());
-    }
-
-
-    public int getNumberOfTown() {
-        return dataMap.size();
-    }
-
-    public boolean isNameUsed(String townName){
-        return TerritoryUtil.isNameUsed(townName, dataMap.values());
-    }
-
-    public void checkValidWorlds() {
-        for (TownData town : new ArrayList<>(getAll().values())) {
-            for (TanProperty property : town.getProperties()) {
-                if (property.getPosition() == null || property.getPosition().getWorld() == null) {
-                    property.delete();
-                    TownsAndNations.getPlugin().getLogger().warning("Deleted property " + property.getName() + " due to invalid world.");
-                }
-            }
-            var optCapital = town.getCapitalLocation();
-            if (optCapital.isPresent() && optCapital.get().getWorld() == null) {
-                town.setCapitalLocation(null);
-                TownsAndNations.getPlugin().getLogger().warning("Removed capital location for town " + town.getName() + " due to invalid world.");
-            }
-        }
     }
 }

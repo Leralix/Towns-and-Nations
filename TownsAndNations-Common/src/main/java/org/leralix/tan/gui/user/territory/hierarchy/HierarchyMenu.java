@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -23,9 +23,9 @@ import java.util.Optional;
 
 public class HierarchyMenu extends BasicGui {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
-    public HierarchyMenu(Player player, TerritoryData territoryData) {
+    public HierarchyMenu(Player player, Territory territoryData) {
         super(player, Lang.HEADER_HIERARCHY, 3);
         this.territoryData = territoryData;
         open();
@@ -51,9 +51,9 @@ public class HierarchyMenu extends BasicGui {
             gui.setItem(2, 4, info);
         }
 
-        Optional<TerritoryData> overlordOptional = territoryData.getOverlordInternal();
+        Optional<Territory> overlordOptional = territoryData.getOverlordInternal();
         if (overlordOptional.isPresent()) {
-            TerritoryData overlord = overlordOptional.get();
+            Territory overlord = overlordOptional.get();
             GuiItem button = createDeclareIndependenceButton(player, territoryData, tanPlayer, overlord);
             gui.setItem(1, 3, createOverlordInfo(overlord));
             gui.setItem(2, 2, button);
@@ -79,7 +79,7 @@ public class HierarchyMenu extends BasicGui {
                 .asGuiItem(player, langType);
     }
 
-    private GuiItem createOverlordInfo(TerritoryData overlord) {
+    private GuiItem createOverlordInfo(Territory overlord) {
         return iconManager.get(overlord.getIcon())
                 .setName(Lang.OVERLORD_GUI.get(langType))
                 .setDescription(Lang.GUI_OVERLORD_INFO.get(overlord.getName()))
@@ -101,7 +101,7 @@ public class HierarchyMenu extends BasicGui {
                 .asGuiItem(player, langType);
     }
 
-    private GuiItem createDeclareIndependenceButton(Player player, TerritoryData territoryData, ITanPlayer tanPlayer, TerritoryData overlord) {
+    private GuiItem createDeclareIndependenceButton(Player player, Territory territoryData, ITanPlayer tanPlayer, Territory overlord) {
 
         return iconManager.get(Material.SPRUCE_DOOR)
                 .setName(Lang.GUI_OVERLORD_DECLARE_INDEPENDENCE.get(langType))
@@ -116,7 +116,7 @@ public class HierarchyMenu extends BasicGui {
                     }
 
                     if (territoryData.isCapital()) {
-                        if (overlord instanceof NationData) {
+                        if (overlord instanceof Nation) {
                             TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_NATION_CAPITAL.get(tanPlayer, territoryData.getColoredName()));
                         } else {
                             TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL.get(tanPlayer, territoryData.getColoredName()));
@@ -129,7 +129,7 @@ public class HierarchyMenu extends BasicGui {
                             Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(territoryData.getColoredName(), overlord.getColoredName()),
                             () -> {
                                 territoryData.removeOverlord();
-                                if (overlord instanceof NationData) {
+                                if (overlord instanceof Nation) {
                                     territoryData.broadcastMessageWithSound(Lang.REGION_BROADCAST_REGION_LEFT_NATION.get(territoryData.getName(), overlord.getName()), SoundEnum.BAD);
                                     overlord.broadCastMessage(Lang.NATION_BROADCAST_REGION_LEFT_NATION.get(territoryData.getName()));
                                 } else {
@@ -145,7 +145,7 @@ public class HierarchyMenu extends BasicGui {
                 .asGuiItem(player, langType);
     }
 
-    private GuiItem createDonateToOverlordButton(Player player, ITanPlayer tanPlayer, TerritoryData overlord) {
+    private GuiItem createDonateToOverlordButton(Player player, ITanPlayer tanPlayer, Territory overlord) {
         return iconManager.get(Material.DIAMOND)
                 .setName(Lang.GUI_OVERLORD_DONATE.get(langType))
                 .setDescription(Lang.GUI_OVERLORD_DONATE_DESC1.get())
@@ -161,9 +161,9 @@ public class HierarchyMenu extends BasicGui {
     private void setupVassalSection() {
         if (territoryData.canHaveVassals()) {
 
-            IconKey iconKey = (territoryData instanceof NationData) ? IconKey.REGION_BASE_ICON : IconKey.TOWN_BASE_ICON;
-            String name = (territoryData instanceof NationData) ? Lang.GUI_NATION_REGION_LIST.get(tanPlayer) : Lang.GUI_REGION_TOWN_LIST.get(tanPlayer);
-            FilledLang desc = (territoryData instanceof NationData) ? Lang.GUI_NATION_REGION_LIST_DESC1.get() : Lang.GUI_REGION_TOWN_LIST_DESC1.get();
+            IconKey iconKey = (territoryData instanceof Nation) ? IconKey.REGION_BASE_ICON : IconKey.TOWN_BASE_ICON;
+            String name = (territoryData instanceof Nation) ? Lang.GUI_NATION_REGION_LIST.get(tanPlayer) : Lang.GUI_REGION_TOWN_LIST.get(tanPlayer);
+            FilledLang desc = (territoryData instanceof Nation) ? Lang.GUI_NATION_REGION_LIST_DESC1.get() : Lang.GUI_REGION_TOWN_LIST_DESC1.get();
 
             gui.setItem(2, 6, iconManager.get(iconKey)
                     .setName(name)

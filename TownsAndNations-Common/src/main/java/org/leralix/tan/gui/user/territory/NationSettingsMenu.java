@@ -6,8 +6,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.NationDeletedInternalEvent;
 import org.leralix.tan.gui.BasicGui;
@@ -15,7 +16,6 @@ import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.LeaderRequirement;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -25,10 +25,10 @@ import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 public class NationSettingsMenu extends SettingsMenus {
 
-    private final NationData nationData;
+    private final Nation nationData;
     private final BasicGui returnGUI;
 
-    public NationSettingsMenu(Player player, NationData nationData, BasicGui returnGUI) {
+    public NationSettingsMenu(Player player, Nation nationData, BasicGui returnGUI) {
         super(player, Lang.HEADER_SETTINGS, nationData, 4);
         this.nationData = nationData;
         this.returnGUI = returnGUI;
@@ -69,7 +69,7 @@ public class NationSettingsMenu extends SettingsMenus {
     }
 
     private @NotNull GuiItem getChangeCapitalButton() {
-        TerritoryData capital = nationData.getCapital();
+        Territory capital = nationData.getCapital();
         String capitalName = capital == null ? Lang.NO_REGION.get(tanPlayer) : capital.getName();
 
         return iconManager.get(IconKey.NATION_CHANGE_CAPITAL_ICON)
@@ -100,7 +100,7 @@ public class NationSettingsMenu extends SettingsMenus {
                 .setAction(event -> {
                     event.setCancelled(true);
 
-                    if (!WarStorage.getInstance().getWarsOfTerritory(territoryData).isEmpty()) {
+                    if (!TownsAndNations.getPlugin().getWarStorage().getWarsOfTerritory(territoryData).isEmpty()) {
                         TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR.get(langType), SoundEnum.NOT_ALLOWED);
                         return;
                     }

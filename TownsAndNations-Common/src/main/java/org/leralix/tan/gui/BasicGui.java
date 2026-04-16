@@ -5,12 +5,12 @@ import dev.triumphteam.gui.guis.Gui;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 public abstract class BasicGui {
 
@@ -26,7 +26,7 @@ public abstract class BasicGui {
 
     protected BasicGui(Player player, FilledLang title, int rows){
         this.player = player;
-        this.tanPlayer = PlayerDataStorage.getInstance().get(player);
+        this.tanPlayer = TownsAndNations.getPlugin().getPlayerDataStorage().get(player);
         this.langType = tanPlayer.getLang();
         this.iconManager = IconManager.getInstance();
 

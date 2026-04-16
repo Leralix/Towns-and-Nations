@@ -2,12 +2,11 @@ package org.leralix.tan.gui.admin;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.war.War;
-import org.leralix.tan.war.info.AttackResultCancelled;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ public class AdminWarMenu extends IteratorGUI {
 
     private List<GuiItem> getWars() {
         List<GuiItem> res = new ArrayList<>();
-        for (War war : WarStorage.getInstance().getAllWars()) {
+        for (War war : TownsAndNations.getPlugin().getWarStorage().getAllWars()) {
 
             IconBuilder iconBuilder = war.getIcon();
 

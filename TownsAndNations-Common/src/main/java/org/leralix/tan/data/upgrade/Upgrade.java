@@ -2,7 +2,7 @@ package org.leralix.tan.data.upgrade;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.upgrade.rewards.IndividualStat;
 import org.leralix.tan.gui.service.requirements.IndividualRequirement;
 import org.leralix.tan.gui.service.requirements.MaxLevelReachedRequirement;
@@ -84,7 +84,7 @@ public class Upgrade {
         return DynamicLang.get(langType, nameKey);
     }
 
-    public Collection<IndividualRequirement> getRequirements(TerritoryData territoryData, Player player) {
+    public Collection<IndividualRequirement> getRequirements(Territory territoryData, Player player) {
 
         List<IndividualRequirement> res = new ArrayList<>();
 

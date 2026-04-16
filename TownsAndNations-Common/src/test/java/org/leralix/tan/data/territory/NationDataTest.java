@@ -4,8 +4,6 @@ import org.bukkit.entity.Player;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.storage.stored.NationDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -19,9 +17,9 @@ public class NationDataTest extends BasicTest {
 
         Player bukkitPlayer = server.addPlayer();
         ITanPlayer tanPlayer = playerDataStorage.get(bukkitPlayer);
-        TownData townData = townDataStorage.newTown("FirstTown", tanPlayer);
-        RegionData regionData = RegionDataStorage.getInstance().createNewRegion("FirstRegion", townData);
-        NationData nationData = NationDataStorage.getInstance().createNewNation(nationName, regionData);
+        Town townData = townStorage.newTown("FirstTown", tanPlayer);
+        Region regionData = regionStorage.newRegion("FirstRegion", townData);
+        Nation nationData = nationStorage.newNation(nationName, regionData);
 
 
         assertEquals(nationName, nationData.getName());

@@ -1,17 +1,16 @@
 package org.leralix.tan.gui.common;
 
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Region;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.gui.landmark.LandmarkNoOwnerMenu;
 import org.leralix.tan.gui.landmark.LandmarkOwnedMenu;
 import org.leralix.tan.gui.user.territory.*;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.MINOR_BAD;
@@ -23,7 +22,7 @@ public class PlayerGUI {
     }
 
     public static void dispatchPlayerNation(Player player, ITanPlayer playerData) {
-        NationData nationData = playerData.getNation();
+        Nation nationData = playerData.getNation();
         if (nationData != null) {
             new NationMenu(player, nationData);
         } else {
@@ -32,7 +31,7 @@ public class PlayerGUI {
     }
 
     public static void dispatchPlayerRegion(Player player, ITanPlayer playerData) {
-        RegionData regionData = RegionDataStorage.getInstance().get(playerData);
+        Region regionData = TownsAndNations.getPlugin().getRegionStorage().get(playerData);
         if (regionData != null) {
             new RegionMenu(player, regionData);
         } else {
@@ -41,7 +40,7 @@ public class PlayerGUI {
     }
 
     public static void dispatchPlayerTown(Player player, ITanPlayer playerData) {
-        TownData townData = playerData.getTown();
+        Town townData = playerData.getTown();
         if (townData != null) {
             new TownMenu(player, playerData, townData);
         } else {
@@ -51,7 +50,7 @@ public class PlayerGUI {
 
     public static void dispatchLandmarkGui(Player player, ITanPlayer playerData, Landmark landmark) {
 
-        TownData townData = playerData.getTown();
+        Town townData = playerData.getTown();
         if (!landmark.isOwned()) {
             new LandmarkNoOwnerMenu(player, landmark);
             return;
@@ -60,7 +59,7 @@ public class PlayerGUI {
             new LandmarkOwnedMenu(player, townData, landmark);
             return;
         }
-        TownData owner = TownDataStorage.getInstance().get(landmark.getOwnerID());
+        Town owner = TownsAndNations.getPlugin().getTownStorage().get(landmark.getOwnerID());
         TanChatUtils.message(player, Lang.LANDMARK_ALREADY_CLAIMED.get(playerData, owner.getName()), MINOR_BAD);
     }
 

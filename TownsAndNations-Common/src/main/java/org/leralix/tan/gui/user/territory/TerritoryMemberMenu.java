@@ -5,11 +5,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Region;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.IteratorGUI;
@@ -28,22 +29,22 @@ import java.util.UUID;
 
 public class TerritoryMemberMenu extends IteratorGUI {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
-    public TerritoryMemberMenu(Player player, TerritoryData territoryData) {
+    public TerritoryMemberMenu(Player player, Territory territoryData) {
         super(player, getTitleFor(territoryData), 6);
         this.territoryData = territoryData;
         open();
     }
 
-    private static Lang getTitleFor(TerritoryData territoryData) {
-        if (territoryData instanceof TownData) {
+    private static Lang getTitleFor(Territory territoryData) {
+        if (territoryData instanceof Town) {
             return Lang.HEADER_TOWN_MEMBERS;
         }
-        if (territoryData instanceof RegionData) {
+        if (territoryData instanceof Region) {
             return Lang.HEADER_REGION_MEMBERS;
         }
-        if (territoryData instanceof NationData) {
+        if (territoryData instanceof Nation) {
             return Lang.HEADER_NATION_MEMBERS;
         }
         return Lang.HEADER_TOWN_MEMBERS;
@@ -55,7 +56,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
         iterator(getMemberList(), p -> territoryData.openMainMenu(player, tanPlayer));
 
         gui.setItem(6, 4, getManageRankButton());
-        if (territoryData instanceof TownData townData) {
+        if (territoryData instanceof Town townData) {
             gui.setItem(6, 5, getManageApplicationsButton(townData));
         }
         gui.open(player);
@@ -64,7 +65,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
     private List<GuiItem> getMemberList() {
 
         List<GuiItem> players = new ArrayList<>();
-        PlayerDataStorage playerDataStorage = PlayerDataStorage.getInstance();
+        PlayerDataStorage playerDataStorage = TownsAndNations.getPlugin().getPlayerDataStorage();
 
         for (UUID playerUUID : territoryData.getOrderedPlayerIDList()) {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
@@ -78,7 +79,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
                             Lang.GUI_TOWN_MEMBER_DESC2.get(Double.toString(EconomyUtil.getBalance(playerToIterate)))
                     );
 
-            if (territoryData instanceof TownData townData) {
+            if (territoryData instanceof Town townData) {
                 addKickPlayerOption(townData, iconBuilder, playerToIterate, offlinePlayer);
             }
             players.add(iconBuilder.asGuiItem(player, langType));
@@ -86,7 +87,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
         return players;
     }
 
-    private void addKickPlayerOption(TownData townData, IconBuilder iconBuilder, ITanPlayer playerToIterate, OfflinePlayer offlinePlayer) {
+    private void addKickPlayerOption(Town townData, IconBuilder iconBuilder, ITanPlayer playerToIterate, OfflinePlayer offlinePlayer) {
         iconBuilder
                 .setClickToAcceptMessage(
                         Lang.GUI_TOWN_MEMBER_DESC3
@@ -134,7 +135,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
                 .asGuiItem(player, langType);
     }
 
-    private GuiItem getManageApplicationsButton(TownData townData) {
+    private GuiItem getManageApplicationsButton(Town townData) {
         return IconManager.getInstance().get(IconKey.MANAGE_APPLICATIONS_ICON)
                 .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.get(langType))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.INVITE_PLAYER))

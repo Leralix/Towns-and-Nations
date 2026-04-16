@@ -8,8 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.data.building.landmark.Landmark;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -22,10 +22,10 @@ import static org.leralix.lib.data.SoundEnum.GOOD;
 
 public class LandmarkOwnedMenu extends BasicGui {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
     private final Landmark landmark;
 
-    public LandmarkOwnedMenu(Player player, TownData townData, Landmark landmark){
+    public LandmarkOwnedMenu(Player player, Town townData, Landmark landmark){
         super(player, Lang.HEADER_LANDMARK_CLAIMED.get(townData.getName()), 3);
         this.territoryData = townData;
         this.landmark = landmark;

@@ -23,13 +23,13 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleDestroyEvent;
 import org.bukkit.inventory.FurnaceInventory;
-import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.storage.SudoPlayerStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.info.SideStatus;
@@ -392,7 +392,7 @@ public class ChunkListener implements Listener {
             return true;
         }
 
-        if (!NewClaimedChunkStorage.getInstance().get(receiver.getLocation().getChunk()).canPVPHappen()) {
+        if (!TownsAndNations.getPlugin().getClaimStorage().get(receiver.getLocation().getChunk()).canPVPHappen()) {
             return false;
         }
 
@@ -611,7 +611,7 @@ public class ChunkListener implements Listener {
             return;
         }
 
-        event.blockList().removeIf(block -> !NewClaimedChunkStorage.getInstance().get(block.getChunk()).canExplosionGrief());
+        event.blockList().removeIf(block -> !TownsAndNations.getPlugin().getClaimStorage().get(block.getChunk()).canExplosionGrief());
     }
 
     @EventHandler
@@ -623,7 +623,7 @@ public class ChunkListener implements Listener {
 
         Chunk chunk = event.getBlock().getChunk();
 
-        if (!NewClaimedChunkStorage.getInstance().get(chunk).canFireGrief()) {
+        if (!TownsAndNations.getPlugin().getClaimStorage().get(chunk).canFireGrief()) {
             event.setCancelled(true);
         }
     }
@@ -637,7 +637,7 @@ public class ChunkListener implements Listener {
 
         if (event.getSource().getType() == Material.FIRE) {
             Chunk chunk = event.getBlock().getChunk();
-            if (!NewClaimedChunkStorage.getInstance().get(chunk).canFireGrief()) {
+            if (!TownsAndNations.getPlugin().getClaimStorage().get(chunk).canFireGrief()) {
                 event.setCancelled(true);
             }
         }
@@ -665,21 +665,21 @@ public class ChunkListener implements Listener {
                 }
             }
             case VILLAGER -> {
-                if(!NewClaimedChunkStorage.getInstance()
+                if(!TownsAndNations.getPlugin().getClaimStorage()
                         .get(chunk)
                         .canVillagerGrief()){
                     event.setCancelled(true);
                 }
             }
             case SHEEP, RABBIT -> {
-                if(!NewClaimedChunkStorage.getInstance()
+                if(!TownsAndNations.getPlugin().getClaimStorage()
                         .get(chunk)
                         .canPassiveGrief()){
                     event.setCancelled(true);
                 }
             }
             case DRAGON_FIREBALL, FIREBALL, WITHER, ENDERMAN, RAVAGER, SILVERFISH -> {
-                if(!NewClaimedChunkStorage.getInstance()
+                if(!TownsAndNations.getPlugin().getClaimStorage()
                         .get(chunk)
                         .canHostileGrief()){
                     event.setCancelled(true);
@@ -699,7 +699,7 @@ public class ChunkListener implements Listener {
         if (SudoPlayerStorage.isSudoPlayer(player))
             return true;
 
-        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(location.getChunk());
+        IClaimedChunk claimedChunk = TownsAndNations.getPlugin().getClaimStorage().get(location.getChunk());
         ITanPlayer tanPlayer = playerDataStorage.get(player);
 
         for (var permission : permissions) {
@@ -710,7 +710,7 @@ public class ChunkListener implements Listener {
         return true;
     }
 
-    private static boolean test(Location location, Player player, ChunkPermissionType permission, ClaimedChunk claimedChunk, ITanPlayer tanPlayer) {
+    private static boolean test(Location location, Player player, ChunkPermissionType permission, IClaimedChunk claimedChunk, ITanPlayer tanPlayer) {
         // Check if a player is involved in a war with this territory. Additional actions may be authorized
         if (claimedChunk instanceof TerritoryChunk territoryChunk) {
             SideStatus side = tanPlayer.getWarSideWith(territoryChunk.getOwnerInternal());

@@ -40,7 +40,7 @@ public class PlayerManager implements TanPlayerManager {
 
     @Override
     public Collection<TanPlayer> getAll() {
-        return playerDataStorage.getAll().values().stream()
+        return playerDataStorage.getAllPlayers().stream()
                 .map(p -> (TanPlayer) p)
                 .toList();
     }

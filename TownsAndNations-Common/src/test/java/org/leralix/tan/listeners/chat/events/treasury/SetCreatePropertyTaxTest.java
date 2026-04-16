@@ -2,7 +2,7 @@ package org.leralix.tan.listeners.chat.events.treasury;
 
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,7 +13,7 @@ class SetCreatePropertyTaxTest extends BasicTest {
     void nominalTest(){
 
         double wantedBuyRate = 1.2;
-        TownData townData = townDataStorage.newTown("town");
+        Town townData = townStorage.newTown("town");
 
         SetCreatePropertyTax command = new SetCreatePropertyTax(townData, null);
         command.setTax(wantedBuyRate);

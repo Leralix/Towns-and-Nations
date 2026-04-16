@@ -8,17 +8,17 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.Building;
-import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.cosmetic.BannerBuilder;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.territory.ChunkUtil;
@@ -50,13 +50,13 @@ public abstract class Fort extends Building implements TanFort {
 
     public abstract Vector3D getPosition();
 
-    public abstract TerritoryData getOwner();
+    public abstract Territory getOwner();
 
-    public abstract TerritoryData getOccupier();
+    public abstract Territory getOccupier();
 
-    protected abstract void setOccupierInternal(TerritoryData newOwner);
+    protected abstract void setOccupierInternal(Territory newOwner);
 
-    public void setOccupier(TerritoryData newOwner) {
+    public void setOccupier(Territory newOwner) {
         newOwner.addOccupiedFort(this);
         setOccupierInternal(newOwner);
         // If "claim all" is enabled, all claims in the Fort radius not protected by others fort will be occupied
@@ -72,7 +72,7 @@ public abstract class Fort extends Building implements TanFort {
                         territoryChunk.getFortProtecting().isEmpty()
         );
 
-        for (ClaimedChunk claimedChunk : chunks) {
+        for (IClaimedChunk claimedChunk : chunks) {
             if (claimedChunk instanceof TerritoryChunk territoryChunk) {
                 territoryChunk.setOccupier(newOwner);
             }
@@ -97,7 +97,7 @@ public abstract class Fort extends Building implements TanFort {
                             territoryChunk.getFortProtecting().isEmpty()
         );
 
-        for (ClaimedChunk claimedChunk : chunks) {
+        for (IClaimedChunk claimedChunk : chunks) {
             if (claimedChunk instanceof TerritoryChunk territoryChunk) {
                 territoryChunk.liberate();
             }
@@ -122,7 +122,7 @@ public abstract class Fort extends Building implements TanFort {
                 .setAction(
                         action -> {
                             if (action.isRightClick()) {
-                                FortStorage.getInstance().delete(this);
+                                TownsAndNations.getPlugin().getFortStorage().delete(this);
                                 SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
                                 basicGui.open();
                             }
@@ -157,5 +157,5 @@ public abstract class Fort extends Building implements TanFort {
 
     }
 
-    public abstract void setOwner(TerritoryData newOwner);
+    public abstract void setOwner(Territory newOwner);
 }

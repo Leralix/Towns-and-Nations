@@ -27,7 +27,7 @@ class TownDataTest extends BasicTest {
     @Test
     void addRank(){
         ITanPlayer tanPlayer = playerDataStorage.get(server.addPlayer());
-        TownData townData = townDataStorage.newTown("testTown", tanPlayer);
+        Town townData = townStorage.newTown("testTown", tanPlayer);
 
         assertEquals(townData.getTownDefaultRank(), tanPlayer.getTownRank());
 
@@ -47,7 +47,7 @@ class TownDataTest extends BasicTest {
     void deleteTownWithPlayers(){
         ITanPlayer tanPlayer = playerDataStorage.get(server.addPlayer());
         ITanPlayer tanPlayer2 = playerDataStorage.get(server.addPlayer());
-        TownData townData = townDataStorage.newTown("testTown", tanPlayer);
+        Town townData = townStorage.newTown("testTown", tanPlayer);
 
         assertEquals(1, townData.getPlayerIDList().size());
         assertEquals(townData.getID(), tanPlayer.getTownId());
@@ -60,7 +60,7 @@ class TownDataTest extends BasicTest {
         assertTrue(townData.getTownDefaultRank().getPlayersID().contains(tanPlayer2.getID()));
 
         townData.delete();
-        TownData otherTownData = townDataStorage.newTown("townToShowPlayerRank");
+        Town otherTownData = townStorage.newTown("townToShowPlayerRank");
 
         assertNull(tanPlayer.getTownId());
         assertNull(tanPlayer2.getTownId());
@@ -70,7 +70,7 @@ class TownDataTest extends BasicTest {
 
     @Test
     void createGhostTown(){
-        TownData townData = townDataStorage.newTown("ghost town");
+        Town townData = townStorage.newTown("ghost town");
 
         assertEquals(0, townData.getITanPlayerList().size());
         assertEquals(0, townData.getBalance());

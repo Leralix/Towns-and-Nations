@@ -1,6 +1,6 @@
 package org.leralix.tan.data.upgrade.rewards.numeric;
 
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.upgrade.rewards.AggregatableStat;
 import org.leralix.tan.gui.service.requirements.IndividualRequirement;
 import org.leralix.tan.gui.service.requirements.PropertyCapRequirement;
@@ -42,7 +42,7 @@ public class PropertyCap extends NumericStat implements AggregatableStat<Propert
         return new PropertyCap(totalCap, unlimitedFound);
     }
 
-    public IndividualRequirement getRequirement(TownData townData) {
+    public IndividualRequirement getRequirement(Town townData) {
         return new PropertyCapRequirement(townData, maxAmount);
     }
 

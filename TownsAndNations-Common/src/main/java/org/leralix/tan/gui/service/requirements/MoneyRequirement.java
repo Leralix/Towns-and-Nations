@@ -1,16 +1,16 @@
 package org.leralix.tan.gui.service.requirements;
 
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.text.NumberUtil;
 
 public class MoneyRequirement extends IndividualRequirementWithCost {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
     private final double amount;
 
-    public MoneyRequirement(TerritoryData territoryData, double amount) {
+    public MoneyRequirement(Territory territoryData, double amount) {
         this.territoryData = territoryData;
         this.amount = amount;
     }

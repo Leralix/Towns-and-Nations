@@ -1,6 +1,6 @@
 package org.leralix.tan.api.internal.managers;
 
-import org.leralix.tan.storage.impl.FortDataStorage;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.tan.api.getters.TanFortManager;
 import org.tan.api.interfaces.buildings.TanFort;
@@ -15,7 +15,7 @@ public class FortManager implements TanFortManager {
     private static FortManager instance;
 
     private FortManager () {
-        fortStorage = FortDataStorage.getInstance();
+        fortStorage = TownsAndNations.getPlugin().getFortStorage();
     }
 
     public static FortManager getInstance() {

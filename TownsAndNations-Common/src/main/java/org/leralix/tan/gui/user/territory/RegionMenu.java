@@ -3,16 +3,16 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class RegionMenu extends TerritoryMenu {
 
-    private final RegionData regionData;
+    private final Region regionData;
 
-    public RegionMenu(Player player, RegionData regionData){
+    public RegionMenu(Player player, Region regionData){
         super(player, Lang.HEADER_REGION_MENU.get(regionData.getName()), regionData);
         this.regionData = regionData;
         open();
