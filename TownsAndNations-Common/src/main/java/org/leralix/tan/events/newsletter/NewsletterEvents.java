@@ -110,7 +110,8 @@ public class NewsletterEvents implements TanListener {
     public void onWarDeclared(WarStartEvent event) {
         newsletterStorage.register(new WarDeclaredNewsletter(event.getAttacker(), event.getDefender()));
     }
-
+    
+    @EventHandler
     public void onWarEnd(WarEndEvent event) {
         newsletterStorage.register(new WarEndedNewsletter(event.getWinner(), event.getDefeated(), event.getAppliedWargoals().size()));
     }
