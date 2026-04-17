@@ -153,7 +153,6 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cคุณมีเงินไม่เพียงพอที่จะดำเนินการนี้"
   NAME_ALREADY_USED: "§cชื่อนี้ถูกใช้แล้ว"
-  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "พิมพ์ชื่อเมืองในแชท"
   PLAYER_WRITE_QUANTITY_IN_CHAT: "พิมพ์จำนวนในแชท"
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aคุณได้รับเงิน §6{0}{MONEY_CHAR}§a จากเมืองสำเร็จ"
   TOWN_SET_TAX_SUCCESS: "§aคุณตั้งภาษีเป็น §6{0}{MONEY_CHAR} สำเร็จ"
@@ -168,12 +167,8 @@ language:
   PROPERTY_DELETED: "ลบทรัพย์สินสำเร็จ"
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "ตั้งจุดเกิดเมือง"
-  SPAWN_SET_SUCCESS: "ตั้งจุดเกิดเมืองสำเร็จ"
   SPAWN_COMMAND_DESC: "เทเลพอร์ตไปยังจุดเกิดเมือง"
   SPAWN_TELEPORTED: "เทเลพอร์ตไปยังจุดเกิดเมือง"
-  SPAWN_NOT_SET: "§cยังไม่ได้ตั้งจุดเกิดเมือง"
-  SPAWN_NOT_UNLOCKED: "§cยังไม่ได้ปลดล็อกจุดเกิดเมือง"
-  SPAWN_NEED_TO_BE_IN_CHUNK: "§cคุณต้องอยู่ในชังก์ที่อ้างสิทธิ์เพื่อตั้งจุดเกิด"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "เป็นกลาง"
@@ -185,7 +180,6 @@ language:
   RELATION_EMBARGO_NAME: "คว่ำบาตร"
   RELATION_HOSTILE_NAME: "เป็นศัตรู"
   CANNOT_BE_MODIFIED: "§cไม่สามารถแก้ไขได้"
-  GUI_KINGDOM_ICON: "§aอาณาจักร"
   GUI_REGION_ICON: "§aภูมิภาค"
   GUI_REGION_ICON_DESC1_REGION: "§fภูมิภาคปัจจุบัน: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fอันดับภูมิภาค: {0}"
@@ -290,7 +284,6 @@ language:
   HEADER_HISTORY: "ประวัติ"
   HEADER_SETTINGS: "ตั้งค่า"
   HEADER_CHANGE_OWNERSHIP: "เปลี่ยนความเป็นเจ้าของ"
-  HEADER_RELATIONS: "การทูต"
   HEADER_SELECT_ADD_TERRITORY_RELATION: "เพิ่มไปยัง {0}"
   HEADER_SELECT_REMOVE_TERRITORY_RELATION: "ลบออกจาก {0}"
   HEADER_CHUNK_PERMISSION: "สิทธิ์ชังก์"
@@ -324,7 +317,6 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fคลิกขวาเพื่อ§c ปฏิเสธ"
   GUI_LANGUAGE_CHANGED: "§aเปลี่ยนภาษาเป็น: {0}"
   GUI_TOWN_LEVEL_ICON: "§aระดับเมือง"
-  GUI_TOWN_LEVEL_ICON_DESC1: "§fอัปเกรดเมือง"
   GUI_TOWN_SETTINGS_ICON: "§aตั้งค่า"
   GUI_TOWN_SETTINGS_ICON_DESC1: "§fตั้งค่าเมืองทั่วไป"
   GUI_ATTACK_ICON: "§aการโจมตี"
@@ -355,7 +347,6 @@ language:
   GUI_TOWN_LEVEL_UP_DESC1: "§fระดับปัจจุบัน: §e{0}"
   GUI_TOWN_LEVEL_UP_DESC2: "§fอัปเกรดระดับ §a{0}§f ค่าใช้จ่าย: §e{1}{MONEY_CHAR}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nเงื่อนไข:"
-  TOWN_UPGRADE_MAX_LEVEL: "§cคุณถึงระดับสูงสุดของการอัปเกรดแล้ว"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§cคุณไม่ตรงตามเงื่อนไข"
   #Diplomacy
   GUI_TOWN_RELATION_HOSTILE: "§aเป็นศัตรู"
@@ -546,7 +537,6 @@ language:
   WILDERNESS: "§fเข้าสู่พื้นที่ป่า"
   PLAYER_ENTER_LANDMARK_CHUNK: "§fเข้าสู่ : §6สถานที่สำคัญ"
   CHUNK_ENTER_TOWN_AT_WAR: "§cคุณกำลังทำสงครามกับเมืองนี้ ผู้เล่นถูกแจ้งเตือนว่าคุณข้ามพรมแดน"
-  CHUNK_INTRUSION_ALERT: "§cศัตรูจากเมือง {0} เข้ามาในพรมแดนของคุณ: {1}"
   WILDERNESS_NO_PERMISSION: "§cคุณไม่มีสิทธิ์ดำเนินการนี้ในพื้นที่ป่า"
   #History
   HISTORY_TOWN_LEADER_CHANGED: "{0} เปลี่ยนผู้นำเมืองจาก {1} เป็น {2}"

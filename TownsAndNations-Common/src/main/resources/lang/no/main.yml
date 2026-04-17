@@ -70,14 +70,10 @@ language:
   SUDO_PLAYER_REMOVED: "§3{0}§f har blitt fjernet fra sudo modus"
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cDu har ikke nok penger til å utføre denne handlingen"
-  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Skriv navnet på byen i chatten."
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Sett byens spawn"
-  SPAWN_SET_SUCCESS: "Byens spawn satt"
   SPAWN_COMMAND_DESC: "Teleporter til byens spawn"
   SPAWN_TELEPORTED: "Teleportert til byens spawn"
-  SPAWN_NOT_SET: "§cByens spawn er ikke satt"
-  SPAWN_NOT_UNLOCKED: "§cByens spawn er ikke låst opp"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Nøytral"
@@ -85,7 +81,6 @@ language:
   RELATION_ALLIANCE_NAME: "Allianse"
   RELATION_NON_AGGRESSION_NAME: "Ikke-aggresjon"
   RELATION_EMBARGO_NAME: "Embargo"
-  GUI_KINGDOM_ICON: "§aKongerike"
   GUI_REGION_ICON: "§aRegion"
   GUI_REGION_ICON_DESC1_NO_REGION: "§fOpprett eller se på regioner"
   GUI_TOWN_ICON: "§aBy"
@@ -131,7 +126,6 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fVenstreklikk for§a å akseptere"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fHøyreklikk for§c å avslå"
   GUI_TOWN_LEVEL_ICON: "§aBynivå"
-  GUI_TOWN_LEVEL_ICON_DESC1: "§fOppgrader byen"
   GUI_TOWN_SETTINGS_ICON: "§aInnstillinger"
   GUI_TOWN_SETTINGS_ICON_DESC1: "§fGenerelle byinnstillinger"
   GUI_TREASURY_LOWER_TAX: "§aSenk skatten"
@@ -146,7 +140,6 @@ language:
   GUI_TOWN_LEVEL_UP: "§aOppgrader bynivå"
   GUI_TOWN_LEVEL_UP_DESC1: "§fNåværende nivå er: §e{0}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nForutsetninger:"
-  TOWN_UPGRADE_MAX_LEVEL: "§cDu har nådd maksimalt nivå for oppgraderingen"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§cDu oppfyller ikke forutsetningene"
   GUI_TOWN_RELATION_EMBARGO: "§aEmbargo"
   GUI_TOWN_RELATION_NAP: "§aIkke-angrepspakt"

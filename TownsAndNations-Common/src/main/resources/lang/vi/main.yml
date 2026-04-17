@@ -178,7 +178,6 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cBạn không có đủ tiền để thực hiện hành động này"
   NAME_ALREADY_USED: "§cTên này đã được sử dụng"
-  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Viết tên thị trấn trong cuộc trò chuyện."
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Viết số lượng trong cuộc trò chuyện"
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aBạn đã lấy thành công §6{0}{MONEY_CHAR}§a từ thị trấn"
   TOWN_SET_TAX_SUCCESS: "§aBạn đã đặt thuế thành công thành §6{0}{MONEY_CHAR}"
@@ -193,12 +192,8 @@ language:
   PROPERTY_DELETED: "Đã xóa tài sản thành công"
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Đặt điểm hồi sinh của thị trấn"
-  SPAWN_SET_SUCCESS: "Điểm hồi sinh thị trấn đã đặt"
   SPAWN_COMMAND_DESC: "Dịch chuyển đến điểm hồi sinh của thị trấn"
   SPAWN_TELEPORTED: "Đã dịch chuyển đến điểm hồi sinh thị trấn"
-  SPAWN_NOT_SET: "§cĐiểm hồi sinh thị trấn chưa được đặt"
-  SPAWN_NOT_UNLOCKED: "§cĐiểm hồi sinh thị trấn chưa được mở khóa"
-  SPAWN_NEED_TO_BE_IN_CHUNK: "§cBạn cần phải ở trong một khối đã tuyên bố để đặt điểm hồi sinh"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Trung lập"
@@ -220,7 +215,6 @@ language:
   GUI_GENERIC_CLICK_TO_SHOW: "§7▶Bấm để hiển thị"
   GUI_GENERIC_CLICK_TO_RENAME: "§7▶ Bấm để đổi tên"
   CANNOT_BE_MODIFIED: "§cĐiều này không thể sửa đổi"
-  GUI_KINGDOM_ICON: "§aVương quốc"
   GUI_REGION_ICON: "§aVùng"
   GUI_REGION_ICON_DESC1_REGION: "§fVùng hiện tại: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fHạng vùng: {0}"
@@ -395,7 +389,6 @@ language:
   HEADER_HISTORY: "Lịch sử"
   HEADER_SETTINGS: "Cài đặt"
   HEADER_CHANGE_OWNERSHIP: "Thay đổi quyền sở hữu"
-  HEADER_RELATIONS: "Ngoại giao"
   HEADER_SELECT_ADD_TERRITORY_RELATION: "Thêm vào {0}"
   HEADER_SELECT_REMOVE_TERRITORY_RELATION: "Xóa khỏi {0}"
   HEADER_CHUNK_PERMISSION: "Quyền khối"
@@ -431,7 +424,6 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fNhấp chuột phải để§c từ chối"
   GUI_LANGUAGE_CHANGED: "§aNgôn ngữ đã đổi thành: {0}"
   GUI_TOWN_LEVEL_ICON: "§aCấp độ thị trấn"
-  GUI_TOWN_LEVEL_ICON_DESC1: "§fNâng cấp thị trấn"
   GUI_TOWN_SETTINGS_ICON: "§aCài đặt"
   GUI_TOWN_SETTINGS_ICON_DESC1: "§fCài đặt chung của thị trấn"
   GUI_ATTACK_ICON: "§aTấn công"
@@ -462,7 +454,6 @@ language:
   GUI_TOWN_LEVEL_UP_DESC1: "§fCấp độ hiện tại là: §e{0}"
   GUI_TOWN_LEVEL_UP_DESC2: "§fChi phí nâng cấp cấp độ §a{0}§f: §e{1}{MONEY_CHAR}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nĐiều kiện tiên quyết:"
-  TOWN_UPGRADE_MAX_LEVEL: "§cBạn đã đạt đến cấp độ nâng cấp tối đa"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§cBạn không đáp ứng các điều kiện tiên quyết"
   #Diplomacy
   GUI_TOWN_RELATION_HOSTILE: "§aThù địch"
@@ -568,7 +559,6 @@ language:
   #Select language
   HELP_US_TRANSLATE: "§fGiúp chúng tôi dịch plugin sang ngôn ngữ của bạn"
   PERCENT_COMPLETED: "§6{0}%§f đã hoàn thành"
-  CLICK_HERE_TO_OPEN_BROWSER: "§fNhấp vào đây để mở crowdin trong trình duyệt của bạn"
   GUI_REGION_CREATE: "§aTạo một vùng"
   GUI_REGION_CREATE_DESC1: "§fChi phí: §6{0}{MONEY_CHAR}"
   GUI_REGION_CREATE_DESC2: "§fNhấp chuột trái để tạo một vùng mới với thị trấn của bạn làm thủ phủ vùng"
@@ -659,7 +649,6 @@ language:
   PLAYER_ENTER_TERRITORY_CHUNK: "§fĐang vào: {0}"
   PLAYER_ENTER_LANDMARK_CHUNK: "§fĐang vào: §6Địa danh"
   CHUNK_ENTER_TOWN_AT_WAR: "§cBạn đang có chiến tranh với thị trấn này. Người chơi đã được cảnh báo rằng bạn đã vượt qua biên giới"
-  CHUNK_INTRUSION_ALERT: "§cMột kẻ thù từ thị trấn {0} đã xâm nhập biên giới của bạn: {1}"
   WILDERNESS_NO_PERMISSION: "§cBạn không có quyền thực hiện hành động này ở vùng hoang dã"
   #History
   HISTORY_TOWN_LEADER_CHANGED: "{0} đã thay đổi thủ lĩnh thị trấn từ {1} thành {2}"

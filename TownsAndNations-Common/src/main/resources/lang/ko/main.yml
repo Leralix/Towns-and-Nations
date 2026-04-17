@@ -107,7 +107,6 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§c이 작업을 수행할 충분한 돈이 없습니다"
   NAME_ALREADY_USED: "§c이 이름은 이미 사용 중입니다"
-  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "채팅에 마을 이름을 입력하세요."
   PLAYER_WRITE_QUANTITY_IN_CHAT: "채팅에 수량을 입력하세요"
   PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY: "개인 재산을 만들기 위해 두 블록을 우클릭하세요"
   PLAYER_FIRST_POINT_SET: "첫 번째 지점이 §9{0}§f에 설정되었습니다"
@@ -118,11 +117,8 @@ language:
   PROPERTY_DELETED: "재산이 성공적으로 삭제되었습니다"
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "마을의 스폰 지점을 설정합니다"
-  SPAWN_SET_SUCCESS: "마을 스폰 지점이 설정되었습니다"
   SPAWN_COMMAND_DESC: "마을 스폰 지점으로 텔레포트합니다"
   SPAWN_TELEPORTED: "마을 스폰 지점으로 텔레포트되었습니다"
-  SPAWN_NOT_SET: "§c마을 스폰 지점이 설정되지 않았습니다"
-  SPAWN_NOT_UNLOCKED: "§c마을 스폰 지점이 잠금 해제되지 않았습니다"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "중립"
@@ -131,7 +127,6 @@ language:
   RELATION_NON_AGGRESSION_NAME: "불가침"
   RELATION_EMBARGO_NAME: "봉쇄"
   RELATION_HOSTILE_NAME: "적대"
-  GUI_KINGDOM_ICON: "§a왕국"
   GUI_REGION_ICON: "§a지역"
   GUI_REGION_ICON_DESC1_NO_REGION: "§f지역을 생성하거나 확인하세요"
   GUI_TOWN_ICON: "§a마을"
@@ -202,7 +197,6 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§f좌클릭하여 §a수락"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§f우클릭하여 §c거절"
   GUI_TOWN_LEVEL_ICON: "§a마을 레벨"
-  GUI_TOWN_LEVEL_ICON_DESC1: "§f마을을 업그레이드하세요"
   GUI_TOWN_SETTINGS_ICON: "§a설정"
   GUI_TOWN_SETTINGS_ICON_DESC1: "§f일반 마을 설정"
   GUI_ATTACK_ICON: "§a공격"
@@ -225,7 +219,6 @@ language:
   GUI_TOWN_LEVEL_UP: "§a마을 레벨 업그레이드"
   GUI_TOWN_LEVEL_UP_DESC1: "§f현재 레벨: §e{0}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§n필수 조건:"
-  TOWN_UPGRADE_MAX_LEVEL: "§c업그레이드의 최대 레벨에 도달했습니다"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§c필수 조건을 충족하지 못했습니다"
   #Diplomacy
   GUI_TOWN_RELATION_HOSTILE: "§a적대적"
