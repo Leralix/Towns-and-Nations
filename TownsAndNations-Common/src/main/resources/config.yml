@@ -630,9 +630,11 @@ TimeBeforeClearingNewsletter: 7
 #  - Redis (Allow to share data between multiple servers "bungee mode") REQUIRES A REDIS SERVER
 # - Long term storage : Used to store and load data between server restarts.
 #  - JSON storage (default)
-#  - Database (experimental, not fully supported)
+#  - Database (experimental, not yet supported)
 
 ## In game storage
+# WARNING : Reds is in early development and is not yet fully supported. Use at your own risk.
+# It is recommended to use Redis only for testing for now.
 inGameStorageType: "RAM" #RAM or REDIS
 
 # Redis configuration (used only if inGameStorageType is set to REDIS)
@@ -765,7 +767,16 @@ CancelMobSpawnInTown:
   ZOMBIE_VILLAGER: 0
 
 
-
+# Upgrades
+# Everything related to upgrades can be edited from the file "upgrades.yml".
+# - Player cap
+# - Chunk cap
+# - Chunk claim cost
+# - Chunk Upkeep cost
+# - Property cap
+# - Territory spawn
+# - Upgrades cost, position, description, etc.
+# - And more...
 
 
 
