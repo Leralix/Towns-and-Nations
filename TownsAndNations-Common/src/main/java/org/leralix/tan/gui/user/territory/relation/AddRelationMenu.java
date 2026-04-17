@@ -19,6 +19,7 @@ import org.leralix.tan.utils.text.TanChatUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
 import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 public class AddRelationMenu extends IteratorGUI {
@@ -57,6 +58,7 @@ public class AddRelationMenu extends IteratorGUI {
         territories.remove(territoryData.getID()); //Remove itself
 
         for (String otherTownUUID : territories) {
+
             Territory otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
 
             if (otherTerritory == null) {
@@ -71,6 +73,12 @@ public class AddRelationMenu extends IteratorGUI {
 
             guiItems.add(otherTerritory.getIconWithInformationAndRelation(territoryData, tanPlayer.getLang())
                     .setAction(action -> {
+
+                        if(TownsAndNations.getPlugin().getWarStorage().isTerritoryAtWarWith(territoryData, otherTerritory)){
+                            TanChatUtils.message(player, Lang.CANNOT_REMOVE_RELATION_WAR.get(tanPlayer, otherTerritory.getName()), MINOR_GOOD);
+                            return;
+                        }
+
                         if (otherTerritory.haveNoLeader()) {
                             TanChatUtils.message(player, Lang.TERRITORY_DIPLOMATIC_INVITATION_NO_LEADER.get(tanPlayer));
                             return;

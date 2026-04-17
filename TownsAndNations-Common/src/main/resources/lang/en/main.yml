@@ -132,6 +132,7 @@ language:
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f has joined the town !"
   #Relation diplomatique
   DIPLOMATIC_INVITATION_SENT_SUCCESS: "Proposition sent to {0}"
+  CANNOT_REMOVE_RELATION_WAR: "§cYou cannot change relation while being at war with this territory"
   CURRENT_RELATION_REQUIRES_TRUCE: "§cYour current relation requires a truce of §6{0} hours§c. Set a neutral relation first."
   CANNOT_SET_RELATION_TO_NEGATIVE_WHILE_TRUCE: "§cYou still have a §6{0} hour(s)§c truce with {1}."
   ACCEPTED_VASSALISATION_PROPOSAL_ALL: "{0}§f has joined the region {1}"

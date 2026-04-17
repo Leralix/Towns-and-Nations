@@ -48,6 +48,11 @@ public class RemoveRelationMenu extends IteratorGUI {
                     .setAction(event -> {
                         event.setCancelled(true);
 
+                        if(TownsAndNations.getPlugin().getWarStorage().isTerritoryAtWarWith(territoryData, otherTerritory)){
+                            TanChatUtils.message(player, Lang.CANNOT_REMOVE_RELATION_WAR.get(tanPlayer, otherTerritory.getName()), MINOR_GOOD);
+                            return;
+                        }
+
                         if (relation.isSuperiorTo(TownRelation.NEUTRAL)) {
 
                             RelationConstant relationConstant = Constants.getRelationConstants(relation);
