@@ -1,7 +1,7 @@
 package org.leralix.tan.gui.service.requirements.upgrade;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.upgrade.Upgrade;
 import org.leralix.tan.gui.service.requirements.IndividualRequirement;
 import org.leralix.tan.gui.service.requirements.OtherUpgradeRequirement;
@@ -19,7 +19,7 @@ public class OtherUpgradeRequirementBuilder extends UpgradeRequirement {
     }
 
     @Override
-    public IndividualRequirement toIndividualRequirement(Upgrade upgrade, TerritoryData territoryData, Player player) {
+    public IndividualRequirement toIndividualRequirement(Upgrade upgrade, Territory territoryData, Player player) {
         Upgrade otherUpgrade = Constants.getUpgradeStorage().getUpgrade(territoryData, otherUpgradeId);
         if(otherUpgrade == null){
             return new UpgradeErrorRequirement();

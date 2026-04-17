@@ -1,6 +1,6 @@
 package org.leralix.tan.data.territory.relation;
 
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
@@ -23,8 +23,8 @@ public class DiplomacyProposal {
 
     public IconBuilder createGuiItem(OpenDiplomacyProposalsMenu menu, LangType langType) {
 
-        TerritoryData receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
-        TerritoryData askingTerritory = TerritoryUtil.getTerritory(askingTerritoryID);
+        Territory receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
+        Territory askingTerritory = TerritoryUtil.getTerritory(askingTerritoryID);
 
         if (receivingTerritory == null) {
             return null;
@@ -48,7 +48,7 @@ public class DiplomacyProposal {
                 .setAction(event -> {
                     event.setCancelled(true);
                     if (event.isLeftClick()) {
-                        askingTerritory.setRelation(receivingTerritory, relationProposal);
+                        TerritoryUtil.setRelation(askingTerritory, receivingTerritory, relationProposal);
                         receivingTerritory.removeDiplomaticProposal(askingTerritoryID);
                     }
                     menu.open();

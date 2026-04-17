@@ -4,16 +4,16 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.NationData;
+import org.leralix.tan.data.territory.Nation;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.tan.api.interfaces.territory.TanNation;
 import org.tan.api.interfaces.TanPlayer;
+import org.tan.api.interfaces.territory.TanNation;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -50,7 +50,7 @@ public class NationCreationNews extends Newsletter {
 
     @Override
     public void broadcast(Player player, ITanPlayer tanPlayer) {
-        NationData nationData = NationDataStorage.getInstance().get(nationID);
+        Nation nationData = TownsAndNations.getPlugin().getNationStorage().get(nationID);
         if (nationData == null) {
             return;
         }
@@ -62,7 +62,7 @@ public class NationCreationNews extends Newsletter {
 
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
 
-        NationData nationData = NationDataStorage.getInstance().get(nationID);
+        Nation nationData = TownsAndNations.getPlugin().getNationStorage().get(nationID);
         if (nationData == null) {
             return null;
         }
@@ -80,12 +80,12 @@ public class NationCreationNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+    public GuiItem createConcernedGuiItem(Player player, ITanPlayer playerData, LangType lang, Consumer<Player> onClick) {
         return createGuiItem(player, lang, onClick);
     }
 
     @Override
-    public boolean shouldShowToPlayer(Player player) {
+    public boolean shouldShowToPlayer(ITanPlayer player) {
         return true;
     }
 }

@@ -5,14 +5,13 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.commands.player.ChatScope;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Region;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.HashMap;
@@ -84,7 +83,7 @@ public class LocalChatStorage {
             return;
         }
 
-        TownData townData = tanPlayer.getTown();
+        Town townData = tanPlayer.getTown();
         FilledLang messageFormat = Lang.CHAT_SCOPE_TOWN_MESSAGE.get(townData.getName(), player.getName(), message);
         townData.broadCastMessage(messageFormat);
         logIfNeeded(messageFormat, sendLogsToConsole);
@@ -96,7 +95,7 @@ public class LocalChatStorage {
             return;
         }
 
-        RegionData regionData = tanPlayer.getRegion();
+        Region regionData = tanPlayer.getRegion();
         FilledLang messageFormat = Lang.CHAT_SCOPE_REGION_MESSAGE.get(regionData.getName(), player.getName(), message);
         regionData.broadCastMessage(messageFormat);
         logIfNeeded(messageFormat, sendLogsToConsole);
@@ -108,7 +107,7 @@ public class LocalChatStorage {
             return;
         }
 
-        NationData nationData = tanPlayer.getNation();
+        Nation nationData = tanPlayer.getNation();
         FilledLang messageFormat = Lang.CHAT_SCOPE_NATION_MESSAGE.get(nationData.getName(), player.getName(), message);
         nationData.broadCastMessage(messageFormat);
         logIfNeeded(messageFormat, sendLogsToConsole);
@@ -120,12 +119,13 @@ public class LocalChatStorage {
             return;
         }
 
-        TownData playerTown = tanPlayer.getTown();
+        Town playerTown = tanPlayer.getTown();
         FilledLang messageFormat = Lang.CHAT_SCOPE_TOWN_MESSAGE.get(playerTown.getName(), player.getName(), message);
         playerTown.broadCastMessage(messageFormat);
-        playerTown.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE)
-                .forEach(territoryID -> TerritoryUtil.getTerritory(territoryID)
-                        .broadCastMessage(Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(playerTown.getName(), player.getName(), message)));
+        playerTown.getRelations().getTerritoriesWithRelation(TownRelation.ALLIANCE)
+                .forEach(territory -> territory.broadCastMessage(
+                        Lang.CHAT_SCOPE_ALLIANCE_MESSAGE.get(playerTown.getName(), player.getName(), message))
+                );
         logIfNeeded(messageFormat, sendLogsToConsole);
     }
 

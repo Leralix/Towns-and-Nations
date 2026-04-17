@@ -1,7 +1,7 @@
 package org.leralix.tan.war.wargoals;
 
 import org.bukkit.Material;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
@@ -16,7 +16,7 @@ public class LiberateWarGoal extends WarGoal implements TanLiberateWargoal {
 
     private final String territoryToLiberateID;
 
-    public LiberateWarGoal(TerritoryData territoryToLiberate) {
+    public LiberateWarGoal(Territory territoryToLiberate) {
         this.territoryToLiberateID = territoryToLiberate.getID();
     }
 
@@ -36,7 +36,7 @@ public class LiberateWarGoal extends WarGoal implements TanLiberateWargoal {
     }
 
     @Override
-    public void applyWarGoal(TerritoryData winner, TerritoryData loser) {
+    public void applyWarGoal(Territory winner, Territory loser) {
         if(!getTerritoryToLiberate().haveOverlord()){
             return;
         }
@@ -51,7 +51,7 @@ public class LiberateWarGoal extends WarGoal implements TanLiberateWargoal {
     }
 
     @Override
-    public TerritoryData getTerritoryToLiberate() {
+    public Territory getTerritoryToLiberate() {
         return TerritoryUtil.getTerritory(territoryToLiberateID);
     }
 }

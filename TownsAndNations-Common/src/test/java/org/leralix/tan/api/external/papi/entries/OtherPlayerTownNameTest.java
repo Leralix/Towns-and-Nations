@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.lang.Lang;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,9 +25,9 @@ class OtherPlayerTownNameTest extends BasicTest {
         Player player = server.addPlayer("player name");
         ITanPlayer tanPlayer = playerDataStorage.get(player);
 
-        TownData townData = townDataStorage.newTown("Town", tanPlayer);
+        Town townData = townStorage.newTown("Town", tanPlayer);
 
-        OtherPlayerTownName entry = new OtherPlayerTownName(playerDataStorage, townDataStorage, null, null);
+        OtherPlayerTownName entry = new OtherPlayerTownName(playerDataStorage, townStorage, null, null);
 
         String name = entry.getData(player, "player_{player name}_town_name");
 
@@ -40,7 +40,7 @@ class OtherPlayerTownNameTest extends BasicTest {
         Player player = server.addPlayer("player name");
         playerDataStorage.get(player);
 
-        OtherPlayerTownName entry = new OtherPlayerTownName(playerDataStorage, townDataStorage, null, null);
+        OtherPlayerTownName entry = new OtherPlayerTownName(playerDataStorage, townStorage, null, null);
 
         String name = entry.getData(player, "player_{player name}_town_name");
 

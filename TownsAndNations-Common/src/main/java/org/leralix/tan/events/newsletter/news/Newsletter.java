@@ -36,9 +36,9 @@ public abstract class Newsletter {
 
     public abstract GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick);
 
-    public abstract GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick);
+    public abstract GuiItem createConcernedGuiItem(Player player, ITanPlayer playerData, LangType lang, Consumer<Player> onClick);
 
-    public abstract boolean shouldShowToPlayer(Player player);
+    public abstract boolean shouldShowToPlayer(ITanPlayer player);
 
     public long getDate() {
         return date;

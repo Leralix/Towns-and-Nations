@@ -4,10 +4,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.TownStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
@@ -17,11 +17,11 @@ public class ApplyTownServer extends SubCommand {
 
 
     private final PlayerDataStorage playerDataStorage;
-    private final TownDataStorage townDataStorage;
+    private final TownStorage townStorage;
 
-    public ApplyTownServer(PlayerDataStorage playerDataStorage, TownDataStorage townDataStorage){
+    public ApplyTownServer(PlayerDataStorage playerDataStorage, TownStorage townStorage){
         this.playerDataStorage = playerDataStorage;
-        this.townDataStorage = townDataStorage;
+        this.townStorage = townStorage;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ApplyTownServer extends SubCommand {
             TanChatUtils.message(commandSender, Lang.PLAYER_ALREADY_HAVE_TOWN);
             return;
         }
-        TownData townData = townDataStorage.get(townID);
+        Town townData = townStorage.get(townID);
         townData.addPlayerJoinRequest(p);
     }
 }

@@ -7,7 +7,7 @@ import org.mockbukkit.mockbukkit.entity.PlayerMock;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class PlayerDataStorageTest extends BasicTest {
+class PlayerJsonStorageTest extends BasicTest {
 
     @Test
     void testCreatePlayerData() {

@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.cosmetic.PlayerHeadIcon;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
@@ -18,9 +18,9 @@ import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
 
 public class SelectTerritoryHeadMenu extends IteratorGUI {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
-    protected SelectTerritoryHeadMenu(Player player, TerritoryData territoryData) {
+    protected SelectTerritoryHeadMenu(Player player, Territory territoryData) {
         super(player, Lang.HEADER_SELECT_ICON, 4);
 
         this.territoryData = territoryData;

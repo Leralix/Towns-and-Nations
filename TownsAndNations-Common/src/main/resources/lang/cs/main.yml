@@ -212,7 +212,6 @@ language:
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cNemáte dostatek peněz. Potřebujete ještě {0}{MONEY_CHAR}"
   TERRITORY_NOT_ENOUGH_MONEY: "{0}§c nemá dostatek peněz na provedení této akce. Potřebuje ještě {1}{MONEY_CHAR} více"
   NAME_ALREADY_USED: "§cToto jméno je již použito"
-  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Napište jméno města do chatu."
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Napište množství do chatu"
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aÚspěšně jste vybrali §6{0}{MONEY_CHAR}§a z kasy města"
   TOWN_SET_TAX_SUCCESS: "§aDaň byla nastavena na §6{0}{MONEY_CHAR}"
@@ -227,12 +226,8 @@ language:
   PROPERTY_DELETED: "Nemovitost úspěšně smazána"
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Nastavit městský spawn"
-  SPAWN_SET_SUCCESS: "Městský spawn nastaven"
   SPAWN_COMMAND_DESC: "Teleportovat se na městský spawn"
   SPAWN_TELEPORTED: "Teleportováno na městský spawn"
-  SPAWN_NOT_SET: "§cMěstský spawn nebyl nastaven"
-  SPAWN_NOT_UNLOCKED: "§cMěstský spawn není odemčen"
-  SPAWN_NEED_TO_BE_IN_CHUNK: "§cMusíte být ve vlastněném chunku pro nastavení spawnu"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Neutrální"
@@ -274,7 +269,6 @@ language:
   GUI_SERVER_TIME: "§aDatum"
   CURRENT_SERVER_TIME: "§fČas serveru: §e{0}"
   CURRENT_PLAYER_TIME: "§fČas hráče §e{0}"
-  GUI_KINGDOM_ICON: "§aKrálovství"
   GUI_REGION_ICON: "§aRegion"
   GUI_REGION_ICON_DESC1_REGION: "§fAktuální region: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fHodnocení regionu: {0}"
@@ -456,8 +450,6 @@ language:
   CREATE_PUBLIC_PROPERTY_COST: "§fCena : §eZdarma"
   CREATE_FORT_ICON: "§aVytvořit novou pevnost"
   CREATE_FORT_DESC1: "§fCena : §e{0}{MONEY_CHAR}"
-  #Wars menu
-  GUI_TOWN_ATTACK_TOWN_DESC1: "§cKlikni pro vyhlášení války"
   DECLARE_WAR_CONFIRM_MESSAGE: "{0}§f zahájí válku proti {1}"
   DECLARE_WAR_NUMBER_OF_ALLIES: "{0}§f má §9{1}§f spojence"
   DECLARE_WAR_BUTTON: "§aVyhlásit válku"
@@ -507,7 +499,6 @@ language:
   HEADER_TOWN_UPGRADE: "Vylepšení města"
   HEADER_SETTINGS: "Nastavení"
   HEADER_CHANGE_OWNERSHIP: "Změnit vlastnictví"
-  HEADER_RELATIONS: "Diplomacie"
   HEADER_RELATION_WITH: "Vztah : {0}"
   HEADER_SELECT_ADD_TERRITORY_RELATION: "Přidat do {0}"
   HEADER_SELECT_REMOVE_TERRITORY_RELATION: "Odebrat z {0}"
@@ -547,7 +538,6 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fPravým klikem§c odmítnout"
   GUI_LANGUAGE_CHANGED: "§aJazyk změněn na: {0}"
   GUI_TOWN_LEVEL_ICON: "§aÚroveň města"
-  GUI_TOWN_LEVEL_ICON_DESC1: "§fUpgradujte město"
   GUI_TOWN_SETTINGS_ICON: "§aNastavení"
   GUI_TOWN_SETTINGS_ICON_DESC1: "§fObecné nastavení města"
   GUI_ATTACK_ICON: "§aÚtoky"
@@ -592,7 +582,6 @@ language:
   GUI_TOWN_LEVEL_UP_DESC2: "§fNáklady na zvýšení úrovně §a{0}§f: §e{1}{MONEY_CHAR}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nPožadavky:"
   GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§nOdměny:"
-  TOWN_UPGRADE_MAX_LEVEL: "§cDosáhli jste maximální úrovně upgradu"
   ANY_WOOD_SCOPE_NAME: "Jakékoliv dřevo"
   ANY_LOG_SCOPE_NAME: "Jakýkoliv log dřeva"
   ANY_PLANK_SCOPE_NAME: "Jakýkoliv typ prken"
@@ -623,9 +612,6 @@ language:
   UPGRADE_LINE_PERCENT_MAX: "§f- {0} : §e{1}%"
   UPGRADE_LINE_INFINITY_LOCKED: "§f- {0} : 0 §e+∞"
   UPGRADE_LINE_INFINITY_UNLOCKED: "§f- {0} : §e∞"
-  UPGRADE_LINE_LOCKED: "§f- {0} : Uzamčeno"
-  UPGRADE_LINE_LOCKED_UNLOCKED: "§f- {0} : Uzamčeno → §eOdemcěno"
-  UPGRADE_LINE_UNLOCKED: "§f- {0} : §eOdemčeno"
   PLAYER_CAP: "Maximum hráčů"
   CHUNK_CAP: "Maximum chunků"
   PROPERTY_CAP: "Maximum nemovitostí"
@@ -769,7 +755,6 @@ language:
   #Select language
   HELP_US_TRANSLATE: "§fPomozte nám přeložit plugin do vašeho jazyka"
   PERCENT_COMPLETED: "§6{0}%§f dokončeno"
-  CLICK_HERE_TO_OPEN_BROWSER: "§fKlikněte zde pro otevření stránky Crowdin v prohlížeči"
   #Region GUI
   GUI_ADMIN_PLAYER_ICON: "§aSpravovat hráče"
   GUI_REGION_CREATE: "§aVytvořit region"
@@ -883,7 +868,6 @@ language:
   PLAYER_ENTER_LANDMARK_CHUNK: "§fVstupujete do: §6Mezník"
   PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION: "Nemůžeš vstoupit do {0}§f protože tvůj vztah s tímto územím je {1}"
   CHUNK_ENTER_TOWN_AT_WAR: "§cJste ve válce s tímto městem. Hráči byli upozorněni, že jste překročili hranici"
-  CHUNK_INTRUSION_ALERT: "§cNepřítel z města {0} vstoupil do vašich hranic: {1}"
   WILDERNESS_NO_PERMISSION: "§cNemáte oprávnění k této akci v divočině"
   #History
   HISTORY_TOWN_LEADER_CHANGED: "{0} změnil vůdce města z {1} na {2}"

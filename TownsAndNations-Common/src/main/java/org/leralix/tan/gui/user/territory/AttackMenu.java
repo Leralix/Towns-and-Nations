@@ -2,13 +2,13 @@ package org.leralix.tan.gui.user.territory;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.gui.scope.BrowseAttackScope;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.info.AttackResultCancelled;
@@ -20,11 +20,11 @@ import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
 
 public class AttackMenu extends IteratorGUI {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
     private BrowseAttackScope scope;
 
-    public AttackMenu(Player player, TerritoryData territoryData) {
+    public AttackMenu(Player player, Territory territoryData) {
         super(player, Lang.HEADER_WARS_MENU, 6);
         this.territoryData = territoryData;
         this.scope = BrowseAttackScope.UNFINISHED_ONLY;
@@ -54,7 +54,7 @@ public class AttackMenu extends IteratorGUI {
 
     private List<GuiItem> getAttacks(ITanPlayer tanPlayer) {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (PlannedAttack plannedAttack : WarStorage.getInstance().getAllAttacks()) {
+        for (PlannedAttack plannedAttack : TownsAndNations.getPlugin().getWarStorage().getAllAttacks()) {
             if (scope.allowAttack(plannedAttack)) {
 
                 boolean startedAttack = plannedAttack.getSideDeclaring() == plannedAttack.getWar().getTerritoryRole(territoryData);

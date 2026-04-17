@@ -5,13 +5,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -43,8 +42,8 @@ public class TerritoryVassalForcedNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
-        TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
-        TerritoryData forcedTerritory = TerritoryUtil.getTerritory(forcedTerritoryID);
+        Territory proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
+        Territory forcedTerritory = TerritoryUtil.getTerritory(forcedTerritoryID);
         if (proposingTerritory == null || forcedTerritory == null)
             return null;
 
@@ -66,19 +65,18 @@ public class TerritoryVassalForcedNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+    public GuiItem createConcernedGuiItem(Player player, ITanPlayer playerData, LangType lang, Consumer<Player> onClick) {
         return createGuiItem(player, lang, onClick);
     }
 
     @Override
-    public boolean shouldShowToPlayer(Player player) {
-        TerritoryData territoryData = TerritoryUtil.getTerritory(forcedTerritoryID);
+    public boolean shouldShowToPlayer(ITanPlayer tanPlayer) {
+        Territory territoryData = TerritoryUtil.getTerritory(forcedTerritoryID);
         if (territoryData == null)
             return false;
-        TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
+        Territory proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         if (proposingTerritory == null)
             return false;
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
         if (!territoryData.isPlayerIn(tanPlayer))
             return false;
         return territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR) ||
@@ -92,10 +90,10 @@ public class TerritoryVassalForcedNews extends Newsletter {
 
     @Override
     public void broadcast(Player player, ITanPlayer tanPlayer) {
-        TerritoryData proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
+        Territory proposingTerritory = TerritoryUtil.getTerritory(proposingTerritoryID);
         if (proposingTerritory == null)
             return;
-        TerritoryData receivingTerritory = TerritoryUtil.getTerritory(forcedTerritoryID);
+        Territory receivingTerritory = TerritoryUtil.getTerritory(forcedTerritoryID);
         if (receivingTerritory == null)
             return;
         TanChatUtils.message(player, Lang.FORCED_VASSALAGE.get(tanPlayer, receivingTerritory.getColoredName(), proposingTerritory.getColoredName()), SoundEnum.MINOR_BAD);

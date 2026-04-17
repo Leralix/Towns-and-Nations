@@ -7,10 +7,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.landmark.Landmark;
-import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.data.territory.Town;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,7 +29,6 @@ class LandmarkClaimedChunkTest extends BasicTest {
     @AfterEach
     protected void tearDown() {
         super.tearDown();
-        townsAndNations.resetSingletonForTests();
     }
 
     @Test
@@ -38,14 +36,14 @@ class LandmarkClaimedChunkTest extends BasicTest {
 
         Chunk chunk = world.getChunkAt(10, 5);
 
-        LandmarkStorage.getInstance().addLandmark(new Location(
+        TownsAndNations.getPlugin().getLandmarkStorage().addLandmark(new Location(
                 world,
                 (double) chunk.getX() * 16,
                 64,
                 (double) chunk.getZ() * 16)
         );
 
-        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
+        IClaimedChunk claimedChunk = claimStorage.get(chunk);
         assertInstanceOf(LandmarkClaimedChunk.class, claimedChunk);
     }
 
@@ -54,19 +52,19 @@ class LandmarkClaimedChunkTest extends BasicTest {
 
         //Initialisation
         Chunk chunk = world.getChunkAt(20, 20);
-        Landmark landmark = LandmarkStorage.getInstance().addLandmark(new Location(world,
+        Landmark landmark = TownsAndNations.getPlugin().getLandmarkStorage().addLandmark(new Location(world,
                 (double) chunk.getX() * 16,
                 64,
                 (double) chunk.getZ() * 16)
         );
 
-        TownData townData = townDataStorage.newTown("town");
+        Town townData = townStorage.newTown("town");
         landmark.setOwner(townData);
 
         assertTrue(landmark.isOwned());
         assertTrue(landmark.isOwnedBy(townData));
 
-        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
+        IClaimedChunk claimedChunk = claimStorage.get(chunk);
 
         // Simulate an update that would check for encirclement. Since no claimed chunk are adjacent, it should unclaim itself.
         claimedChunk.notifyUpdate();
@@ -78,22 +76,19 @@ class LandmarkClaimedChunkTest extends BasicTest {
     @Test
     void NotUnclaimBecauseEncircledTest() {
 
-        //Initialisation
-        NewClaimedChunkStorage claimedChunkStorage = NewClaimedChunkStorage.getInstance();
-
         Chunk chunk = world.getChunkAt(-5, 5);
 
-        Landmark landmark = LandmarkStorage.getInstance().addLandmark(new Location(world,
+        Landmark landmark = TownsAndNations.getPlugin().getLandmarkStorage().addLandmark(new Location(world,
                 (double) chunk.getX() * 16,
                 64,
                 (double) chunk.getZ() * 16)
         );
 
-        TownData townData = townDataStorage.newTown("town");
+        Town townData = townStorage.newTown("town");
 
 
-        for(ClaimedChunk adjacent : claimedChunkStorage.getEightAjacentChunks(claimedChunkStorage.get(chunk))){
-            claimedChunkStorage.claimTownChunk(adjacent.getChunk(), townData.getID());
+        for(IClaimedChunk adjacent : claimStorage.getEightAjacentChunks(claimStorage.get(chunk))){
+            claimStorage.claimTownChunk(adjacent.getChunk(), townData.getID());
         }
 
         landmark.setOwner(townData);
@@ -101,7 +96,7 @@ class LandmarkClaimedChunkTest extends BasicTest {
         assertTrue(landmark.isOwned());
         assertTrue(landmark.isOwnedBy(townData));
 
-        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
+        IClaimedChunk claimedChunk = claimStorage.get(chunk);
 
         // Simulate an update that would check for encirclement. Since all adjacent chunks are claimed, it should remain claimed.
         claimedChunk.notifyUpdate();

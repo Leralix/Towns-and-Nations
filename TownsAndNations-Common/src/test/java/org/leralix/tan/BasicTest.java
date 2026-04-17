@@ -4,8 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.leralix.lib.SphereLib;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.*;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 
@@ -15,7 +14,12 @@ public abstract class BasicTest {
     protected SphereLib sphereLib;
     protected TownsAndNations townsAndNations;
     protected PlayerDataStorage playerDataStorage;
-    protected TownDataStorage townDataStorage;
+    protected TownStorage townStorage;
+    protected RegionStorage regionStorage;
+    protected NationStorage nationStorage;
+    protected LandmarkStorage landmarkStorage;
+    protected FortStorage fortDataStorage;
+    protected ClaimStorage claimStorage;
     protected LangType langType = LangType.ENGLISH;
 
     @BeforeEach
@@ -24,7 +28,12 @@ public abstract class BasicTest {
         sphereLib = MockBukkit.load(SphereLib.class);
         townsAndNations = MockBukkit.load(TownsAndNations.class);
         playerDataStorage = townsAndNations.getPlayerDataStorage();
-        townDataStorage = townsAndNations.getTownDataStorage();
+        regionStorage = townsAndNations.getRegionStorage();
+        nationStorage = townsAndNations.getNationStorage();
+        townStorage = townsAndNations.getTownStorage();
+        landmarkStorage = townsAndNations.getLandmarkStorage();
+        claimStorage = townsAndNations.getClaimStorage();
+        fortDataStorage = townsAndNations.getFortStorage();
     }
 
     @AfterEach

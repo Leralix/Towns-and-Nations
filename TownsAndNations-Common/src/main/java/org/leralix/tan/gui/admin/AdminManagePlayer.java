@@ -5,7 +5,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -61,7 +61,7 @@ public class AdminManagePlayer extends BasicGui {
 
 
         if(targetPlayer.hasTown()){
-            TownData townData = targetPlayer.getTown();
+            Town townData = targetPlayer.getTown();
             iconBuilder
                     .setName(Lang.ADMIN_GUI_TOWN_PLAYER_TOWN.get(langType, townData.getName()))
                     .setClickToAcceptMessage(

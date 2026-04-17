@@ -4,23 +4,24 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.function.Consumer;
 
 public class ChangeTerritoryName extends ChatListenerEvent {
 
-    private final TerritoryData territoryToRename;
+    private final Territory territoryToRename;
     private final int cost;
     private final Consumer<Player> guiCallback;
 
-    public ChangeTerritoryName(@NotNull TerritoryData territoryToRename, int cost, Consumer<Player> guiCallback) {
+    public ChangeTerritoryName(@NotNull Territory territoryToRename, int cost, Consumer<Player> guiCallback) {
         this.territoryToRename = territoryToRename;
         this.cost = cost;
         this.guiCallback = guiCallback;
@@ -30,9 +31,9 @@ public class ChangeTerritoryName extends ChatListenerEvent {
     public boolean execute(Player player, ITanPlayer playerData, String newName) {
 
         int maxSize;
-        if (territoryToRename instanceof TownData) {
+        if (territoryToRename instanceof Town) {
             maxSize = Constants.getTownMaxNameSize();
-        } else if (territoryToRename instanceof NationData) {
+        } else if (territoryToRename instanceof Nation) {
             maxSize = Constants.getNationMaxNameSize();
         } else {
             maxSize = Constants.getRegionMaxNameSize();
@@ -58,7 +59,9 @@ public class ChangeTerritoryName extends ChatListenerEvent {
                 newName
         ), SoundEnum.GOOD);
 
-        territoryToRename.rename(player, cost, newName);
+        territoryToRename.removeFromBalance(cost);
+        FileUtil.addLineToHistory(Lang.HISTORY_TOWN_NAME_CHANGED.get(player.getName(), territoryToRename.getName(), newName));
+        territoryToRename.setName(newName);
         openGui(guiCallback, player);
         return true;
     }

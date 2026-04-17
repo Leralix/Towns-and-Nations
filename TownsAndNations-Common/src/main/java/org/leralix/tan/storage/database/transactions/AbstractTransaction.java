@@ -6,8 +6,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.building.property.PropertyData;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.upgrade.NewUpgradeStorage;
 import org.leralix.tan.data.upgrade.Upgrade;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -54,7 +54,7 @@ public abstract class AbstractTransaction {
     }
 
     protected String getTerritoryName(String id, LangType langType) {
-        TerritoryData territoryData = TerritoryUtil.getTerritory(id);
+        Territory territoryData = TerritoryUtil.getTerritory(id);
         if(territoryData == null){
             return Lang.TERRITORY_NOT_FOUND.get(langType);
         }
@@ -62,12 +62,12 @@ public abstract class AbstractTransaction {
     }
 
     protected String getPropertyName(String territoryID, String propertyID, LangType langType) {
-        TerritoryData territoryData = TerritoryUtil.getTerritory(territoryID);
+        Territory territoryData = TerritoryUtil.getTerritory(territoryID);
         if(territoryData == null){
             return Lang.TERRITORY_NOT_FOUND.get(langType);
         }
         // As of 0.16.1, Region canot have properties.
-        if(territoryData instanceof TownData townData){
+        if(territoryData instanceof Town townData){
             PropertyData propertyData = townData.getPropertyDataMap().get(propertyID);
             if(propertyData == null){
                 return Lang.PROPERTY_NOT_FOUND.get(langType);
@@ -78,7 +78,7 @@ public abstract class AbstractTransaction {
     }
 
     protected String getUpgradeName(String territoryID, String upgradeID, LangType langType) {
-        TerritoryData territoryData = TerritoryUtil.getTerritory(territoryID);
+        Territory territoryData = TerritoryUtil.getTerritory(territoryID);
         NewUpgradeStorage upgradeStorage = Constants.getUpgradeStorage();
         if(territoryData == null){
             return Lang.TERRITORY_NOT_FOUND.get(langType);

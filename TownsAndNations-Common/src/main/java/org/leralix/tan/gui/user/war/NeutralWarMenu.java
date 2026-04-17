@@ -3,7 +3,7 @@ package org.leralix.tan.gui.user.war;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.war.War;
 
@@ -12,9 +12,9 @@ import org.leralix.tan.war.War;
  */
 public class NeutralWarMenu extends AbstractWarMenu {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
-    NeutralWarMenu(Player player, TerritoryData territoryData, War war) {
+    NeutralWarMenu(Player player, Territory territoryData, War war) {
         super(player, Lang.HEADER_WARS_MENU, 3, war);
         this.territoryData = territoryData;
         open();

@@ -22,7 +22,7 @@ public class VaultManager {
 
 
         if(Constants.useStandaloneEconomy()){
-            TanEconomyVault tanEconomyVault = new TanEconomyVault();
+            TanEconomyVault tanEconomyVault = new TanEconomyVault(TownsAndNations.getPlugin().getPlayerDataStorage());
             EconomyUtil.register(tanEconomyVault);
             Bukkit.getServicesManager().register(Economy.class, tanEconomyVault, TownsAndNations.getPlugin(), ServicePriority.Normal);
             logger.log(Level.INFO,"[TaN] -Vault is detected, registering TaN Economy");

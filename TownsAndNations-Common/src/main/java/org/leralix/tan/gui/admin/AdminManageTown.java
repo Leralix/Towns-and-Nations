@@ -3,8 +3,8 @@ package org.leralix.tan.gui.admin;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.SelectNewOwnerForTownMenu;
 import org.leralix.tan.lang.Lang;
@@ -16,9 +16,9 @@ import java.util.List;
 
 public class AdminManageTown extends AdminManageTerritory {
 
-    private final TownData townData;
+    private final Town townData;
 
-    public AdminManageTown(Player player, TownData townData) {
+    public AdminManageTown(Player player, Town townData) {
         super(player, Lang.HEADER_ADMIN_SPECIFIC_REGION_MENU.get(townData.getName()), 3, townData);
         this.townData = townData;
         open();
@@ -43,7 +43,7 @@ public class AdminManageTown extends AdminManageTerritory {
 
     private @NotNull GuiItem getChangeRegion() {
         String name = townData.getOverlordInternal()
-                .map(TerritoryData::getName)
+                .map(Territory::getName)
                 .orElseGet(() -> Lang.NO_REGION.get(langType));
 
         List<Lang> description = new ArrayList<>();

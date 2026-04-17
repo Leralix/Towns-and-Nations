@@ -3,7 +3,7 @@ package org.leralix.tan.gui.user.war;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
@@ -19,7 +19,7 @@ public abstract class AbstractWarMenu extends BasicGui {
 
     protected final War war;
 
-    public AbstractWarMenu(Player player, Lang lang, int rows, War war) {
+    protected AbstractWarMenu(Player player, Lang lang, int rows, War war) {
         super(player, lang, rows);
         this.war = war;
     }
@@ -30,7 +30,7 @@ public abstract class AbstractWarMenu extends BasicGui {
         List<FilledLang> description = new ArrayList<>(getCapitulationProgress(war.getMainDefender()));
 
         description.add(Lang.GUI_DEFENDING_SIDE_ICON_DESC1.get());
-        for (TerritoryData territoryData : war.getDefendingTerritories()) {
+        for (Territory territoryData : war.getDefendingTerritories()) {
             description.add(Lang.GUI_ICON_LIST.get(territoryData.getColoredName()));
         }
 
@@ -44,7 +44,7 @@ public abstract class AbstractWarMenu extends BasicGui {
         List<FilledLang> description = new ArrayList<>(getCapitulationProgress(war.getMainAttacker()));
 
         description.add(Lang.GUI_ATTACKING_SIDE_ICON_DESC1.get());
-        for (TerritoryData territoryData : war.getAttackingTerritories()) {
+        for (Territory territoryData : war.getAttackingTerritories()) {
             description.add(Lang.GUI_ICON_LIST.get(territoryData.getColoredName()));
         }
 
@@ -61,7 +61,7 @@ public abstract class AbstractWarMenu extends BasicGui {
         return getAttackingSidePanel().asGuiItem(player, langType);
     }
 
-    private List<FilledLang> getCapitulationProgress(TerritoryData territoryData) {
+    private List<FilledLang> getCapitulationProgress(Territory territoryData) {
         int totalChunk = territoryData.getNumberOfClaimedChunk();
         int occupiedChunk = territoryData.getNumberOfOccupiedChunk();
 

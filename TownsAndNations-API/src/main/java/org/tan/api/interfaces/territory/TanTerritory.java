@@ -10,7 +10,6 @@ import org.tan.api.interfaces.buildings.TanProperty;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 

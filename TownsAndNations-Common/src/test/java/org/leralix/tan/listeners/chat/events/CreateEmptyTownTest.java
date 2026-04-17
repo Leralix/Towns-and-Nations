@@ -21,7 +21,7 @@ class CreateEmptyTownTest extends BasicTest {
         CreateEmptyTown createEmptyTown = new CreateEmptyTown(null);
         createEmptyTown.execute(player, tanPlayer, townName);
 
-        assertTrue(townDataStorage.isNameUsed(townName));
+        assertTrue(townStorage.isNameUsed(townName));
     }
 
 }

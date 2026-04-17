@@ -3,14 +3,14 @@ package org.leralix.tan.events.newsletter.news;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.TanPlayer;
@@ -53,7 +53,7 @@ public class RegionCreationNews extends Newsletter {
     @Override
     public void broadcast(Player player, ITanPlayer tanPlayer) {
         OfflinePlayer getRegionCreator = player.getServer().getOfflinePlayer(UUID.fromString(playerID));
-        RegionData regionData = RegionDataStorage.getInstance().get(regionID);
+        Region regionData = TownsAndNations.getPlugin().getRegionStorage().get(regionID);
         if (regionData == null)
             return;
         TanChatUtils.message(player, Lang.REGION_CREATED_NEWSLETTER.get(tanPlayer, getRegionCreator.getName(), regionData.getColoredName()));
@@ -63,7 +63,7 @@ public class RegionCreationNews extends Newsletter {
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
         OfflinePlayer getRegionCreator = player.getServer().getOfflinePlayer(UUID.fromString(playerID));
 
-        RegionData regionData = RegionDataStorage.getInstance().get(regionID);
+        Region regionData = TownsAndNations.getPlugin().getRegionStorage().get(regionID);
         if (regionData == null)
             return null;
 
@@ -85,12 +85,12 @@ public class RegionCreationNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+    public GuiItem createConcernedGuiItem(Player player, ITanPlayer playerData, LangType lang, Consumer<Player> onClick) {
         return createGuiItem(player, lang, onClick);
     }
 
     @Override
-    public boolean shouldShowToPlayer(Player player) {
+    public boolean shouldShowToPlayer(ITanPlayer player) {
         return true;
     }
 }

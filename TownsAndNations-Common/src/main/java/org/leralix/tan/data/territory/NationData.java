@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.economy.Budget;
 import org.leralix.tan.data.territory.economy.SubjectTaxLine;
@@ -18,22 +19,18 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.TerritoryTaxTransaction;
-import org.leralix.tan.storage.stored.NationDataStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.tan.api.interfaces.territory.TanNation;
 
 import java.util.*;
 
-public class NationData extends TerritoryData implements TanNation {
+public class NationData extends TerritoryData implements Nation, TanNation {
 
     private UUID leaderID;
     private String capitalID;
     private final Set<String> regionsInNation;
 
-    public NationData(String id, String name, ITanPlayer leader, RegionData capital) {
+    public NationData(String id, String name, ITanPlayer leader, Region capital) {
         super(id, name, leader);
         this.leaderID = leader.getID();
         this.capitalID = capital.getID();
@@ -52,7 +49,7 @@ public class NationData extends TerritoryData implements TanNation {
     @Override
     public UUID getLeaderID() {
         if (leaderID == null) {
-            TerritoryData capital = getCapital();
+            Territory capital = getCapital();
             if (capital != null) {
                 leaderID = capital.getLeaderID();
             }
@@ -62,7 +59,7 @@ public class NationData extends TerritoryData implements TanNation {
 
     @Override
     public ITanPlayer getLeaderData() {
-        return PlayerDataStorage.getInstance().get(getLeaderID());
+        return TownsAndNations.getPlugin().getPlayerDataStorage().get(getLeaderID());
     }
 
     @Override
@@ -77,8 +74,8 @@ public class NationData extends TerritoryData implements TanNation {
 
     @Override
     public Collection<UUID> getPlayerIDList() {
-        ArrayList<UUID> playerList = new ArrayList<>();
-        for (TerritoryData regionData : getSubjects()) {
+        HashSet<UUID> playerList = new HashSet<>();
+        for (Territory regionData : getSubjects()) {
             if (regionData == null) {
                 continue;
             }
@@ -92,14 +89,14 @@ public class NationData extends TerritoryData implements TanNation {
     public Collection<ITanPlayer> getITanPlayerList() {
         ArrayList<ITanPlayer> players = new ArrayList<>();
         for (UUID playerID : getPlayerIDList()) {
-            players.add(PlayerDataStorage.getInstance().get(playerID));
+            players.add(TownsAndNations.getPlugin().getPlayerDataStorage().get(playerID));
         }
         return players;
     }
 
     @Override
     public void broadCastMessage(FilledLang message) {
-        for (TerritoryData regionData : getSubjects()) {
+        for (Territory regionData : getSubjects()) {
             if (regionData == null) {
                 continue;
             }
@@ -109,7 +106,7 @@ public class NationData extends TerritoryData implements TanNation {
 
     @Override
     public void broadcastMessageWithSound(FilledLang message, SoundEnum soundEnum, boolean addPrefix) {
-        for (TerritoryData regionData : getSubjects()) {
+        for (Territory regionData : getSubjects()) {
             if (regionData == null) {
                 continue;
             }
@@ -119,7 +116,7 @@ public class NationData extends TerritoryData implements TanNation {
 
     @Override
     public void broadcastMessageWithSound(FilledLang message, SoundEnum soundEnum) {
-        for (TerritoryData regionData : getSubjects()) {
+        for (Territory regionData : getSubjects()) {
             if (regionData == null) {
                 continue;
             }
@@ -134,7 +131,7 @@ public class NationData extends TerritoryData implements TanNation {
 
     @Override
     public IconBuilder getIconWithInformations(LangType langType) {
-        TerritoryData capital = getCapital();
+        Territory capital = getCapital();
         String capitalName = capital == null ? Lang.NO_REGION.get(langType) : capital.getName();
         return IconManager.getInstance().get(getIcon())
                 .setName(ChatColor.GOLD + getName())
@@ -148,7 +145,7 @@ public class NationData extends TerritoryData implements TanNation {
     }
 
     @Override
-    protected Collection<TerritoryData> getOverlords() {
+    protected Collection<Territory> getOverlords() {
         return new ArrayList<>();
     }
 
@@ -157,8 +154,8 @@ public class NationData extends TerritoryData implements TanNation {
         // Nations do not have overlords
     }
 
-    public List<TerritoryData> getSubjects() {
-        List<TerritoryData> regions = new ArrayList<>();
+    public List<Territory> getSubjects() {
+        List<Territory> regions = new ArrayList<>();
         for (String regionID : regionsInNation) {
             regions.add(TerritoryUtil.getTerritory(regionID));
         }
@@ -166,16 +163,16 @@ public class NationData extends TerritoryData implements TanNation {
     }
 
     @Override
-    protected void addVassalPrivate(TerritoryData vassal) {
+    protected void addVassalPrivate(Territory vassal) {
         regionsInNation.add(vassal.getID());
     }
 
     @Override
-    protected void removeVassal(TerritoryData vassal) {
+    public void removeVassal(Territory vassal) {
         EventManager.getInstance().callEvent(new TerritoryIndependanceInternalEvent(this, vassal));
         regionsInNation.remove(vassal.getID());
 
-        if (vassal instanceof RegionData regionData) {
+        if (vassal instanceof Region regionData) {
             for (RankData rank : getRanks().values()) {
                 for (UUID playerID : regionData.getPlayerIDList()) {
                     rank.removePlayer(playerID);
@@ -185,7 +182,16 @@ public class NationData extends TerritoryData implements TanNation {
     }
 
     @Override
-    public TerritoryData getCapital() {
+    public int getTotalPlayerCount() {
+        int count = 0;
+        for (Territory vassal : getSubjects()) {
+            count += vassal.getTotalPlayerCount();
+        }
+        return count;
+    }
+
+    @Override
+    public Territory getCapital() {
         if (capitalID == null) {
             if (regionsInNation.isEmpty()) {
                 return null;
@@ -195,15 +201,15 @@ public class NationData extends TerritoryData implements TanNation {
         return TerritoryUtil.getTerritory(capitalID);
     }
 
+    @Override
     public void setCapital(String regionID) {
         this.capitalID = regionID;
-        this.leaderID = null;
     }
 
     @Override
     protected void abstractClaimChunk(Chunk chunk, boolean ignoreAdjacent) {
         removeFromBalance(getClaimCost());
-        NewClaimedChunkStorage.getInstance().claimNationChunk(chunk, getID());
+        TownsAndNations.getPlugin().getClaimStorage().claimNationChunk(chunk, getID());
     }
 
     @Override
@@ -227,8 +233,8 @@ public class NationData extends TerritoryData implements TanNation {
     }
 
     @Override
-    public Collection<TerritoryData> getPotentialVassals() {
-        return new ArrayList<>(RegionDataStorage.getInstance().getAll().values());
+    public Collection<Territory> getPotentialVassals() {
+        return new ArrayList<>(TownsAndNations.getPlugin().getRegionStorage().getAll().values());
     }
 
     @Override
@@ -248,7 +254,7 @@ public class NationData extends TerritoryData implements TanNation {
 
     @Override
     protected void collectTaxes() {
-        for (TerritoryData region : getVassalsInternal()) {
+        for (Territory region : getVassalsInternal()) {
             if (region == null) {
                 continue;
             }
@@ -271,6 +277,6 @@ public class NationData extends TerritoryData implements TanNation {
     @Override
     public synchronized void delete() {
         super.delete();
-        NationDataStorage.getInstance().delete(getID());
+        TownsAndNations.getPlugin().getNationStorage().delete(getID());
     }
 }

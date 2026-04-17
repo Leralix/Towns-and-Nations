@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.permission.ChunkPermission;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.data.territory.rank.RankData;
@@ -17,11 +17,11 @@ import java.util.List;
 
 public class OpenRankListForChunkPermission extends IteratorGUI {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
     private final ChunkPermission chunkPermission;
     private final BasicGui backMenu;
 
-    public OpenRankListForChunkPermission(Player player, TerritoryData territoryData, ChunkPermissionType type, BasicGui backMenu) {
+    public OpenRankListForChunkPermission(Player player, Territory territoryData, ChunkPermissionType type, BasicGui backMenu) {
         super(player, type.getLabel(), 6);
         this.territoryData = territoryData;
         this.chunkPermission = territoryData.getChunkSettings().getChunkPermissions().get(type);

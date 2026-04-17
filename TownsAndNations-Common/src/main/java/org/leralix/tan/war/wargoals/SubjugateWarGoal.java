@@ -1,7 +1,7 @@
 package org.leralix.tan.war.wargoals;
 
 import org.bukkit.Material;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TerritoryVassalForcedInternalEvent;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
@@ -35,7 +35,7 @@ public class SubjugateWarGoal extends WarGoal implements TanSubjugateWargoal {
     }
 
     @Override
-    public void applyWarGoal(TerritoryData winner, TerritoryData territoryToSubjugate) {
+    public void applyWarGoal(Territory winner, Territory territoryToSubjugate) {
         if (territoryToSubjugate == null || winner == null)
             return;
 

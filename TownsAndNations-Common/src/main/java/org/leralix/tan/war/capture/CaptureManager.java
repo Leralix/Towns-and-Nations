@@ -6,12 +6,13 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.fort.Fort;
 import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.storage.CurrentAttacksStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.ClaimStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.War;
+import org.leralix.tan.war.WarData;
 import org.leralix.tan.war.attack.CurrentAttack;
 import org.leralix.tan.war.info.WarRole;
 
@@ -26,14 +27,16 @@ public class CaptureManager {
     private static CaptureManager instance;
 
     private final PlayerDataStorage playerDataStorage;
+    private final ClaimStorage claimStorage;
 
-    public CaptureManager(PlayerDataStorage playerDataStorage) {
+    public CaptureManager(PlayerDataStorage playerDataStorage, ClaimStorage claimStorage) {
         this.playerDataStorage = playerDataStorage;
+        this.claimStorage = claimStorage;
     }
 
     public static CaptureManager getInstance() {
         if(instance == null) {
-            instance = new CaptureManager(TownsAndNations.getPlugin().getPlayerDataStorage());
+            instance = new CaptureManager(TownsAndNations.getPlugin().getPlayerDataStorage(), TownsAndNations.getPlugin().getClaimStorage());
         }
         return instance;
     }
@@ -45,8 +48,10 @@ public class CaptureManager {
         }
 
         for (CurrentAttack currentAttack : CurrentAttacksStorage.getAll()) {
-            handleFortCapture(currentAttack);
-            handleChunkCapture(currentAttack);
+            if(!currentAttack.hasEnded()){
+                handleFortCapture(currentAttack);
+                handleChunkCapture(currentAttack);
+            }
         }
 
         // TODO : how to delete CaptureChunk when they are done ?
@@ -62,7 +67,7 @@ public class CaptureManager {
 
         var attackData = currentAttack.getAttackData();
 
-        for(Fort fortAtWar : attackData.getWar().getMainDefender().getOwnedForts()){
+        for(Fort fortAtWar : TownsAndNations.getPlugin().getFortStorage().getOwnedFort(attackData.getWar().getMainDefender())){
             forts.putIfAbsent(fortAtWar.getID(), new CaptureFort(fortAtWar, currentAttack));
         }
 
@@ -107,11 +112,11 @@ public class CaptureManager {
 
         War warRelatedToAttack = attackData.getWar();
         for(Player player : attackData.getAllOnlinePlayers()){
-            var claimedChunk = NewClaimedChunkStorage.getInstance().get(player);
+            var claimedChunk = claimStorage.get(player);
 
             if(claimedChunk instanceof TerritoryChunk territoryChunk){
                 //If a chunk is surrounded by allied chunks, it cannot be captured.
-                if(NewClaimedChunkStorage.getInstance().isAllAdjacentChunksClaimedBySameTerritory(territoryChunk.getChunk(), territoryChunk.getOccupierID())){
+                if(claimStorage.isAllAdjacentChunksClaimedBySameTerritory(territoryChunk.getChunk(), territoryChunk.getOccupierID())){
                     continue;
                 }
 
@@ -168,7 +173,7 @@ public class CaptureManager {
      * Method used to liberate all chunks and forts captured in a specific war
      * @param warEnded the finished war
      */
-    public void removeCapture(War warEnded){
+    public void removeCapture(WarData warEnded){
         String warID = warEnded.getID();
 
         Iterator<CaptureChunk> captureChunkIterator = captures.values().iterator();
@@ -190,16 +195,16 @@ public class CaptureManager {
             }
         }
 
-        TerritoryData mainAttacker = warEnded.getMainAttacker();
-        TerritoryData mainDefender = warEnded.getMainDefender();
+        Territory mainAttacker = warEnded.getMainAttacker();
+        Territory mainDefender = warEnded.getMainDefender();
 
-        for(TerritoryChunk territoryChunk : NewClaimedChunkStorage.getInstance().getAllChunkFrom(mainAttacker)){
+        for(TerritoryChunk territoryChunk : TownsAndNations.getPlugin().getClaimStorage().getAllChunkFrom(mainAttacker)){
             if(territoryChunk.isOccupied() && territoryChunk.getOccupierID().equals(mainDefender.getID())){
                 territoryChunk.liberate();
             }
         }
 
-        for(TerritoryChunk territoryChunk : NewClaimedChunkStorage.getInstance().getAllChunkFrom(mainDefender)){
+        for(TerritoryChunk territoryChunk : TownsAndNations.getPlugin().getClaimStorage().getAllChunkFrom(mainDefender)){
             if(territoryChunk.isOccupied() && territoryChunk.getOccupierID().equals(mainAttacker.getID())){
                 territoryChunk.liberate();
             }

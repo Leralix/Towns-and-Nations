@@ -1,6 +1,6 @@
 package org.leralix.tan.events.events;
 
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.events.InternalEvent;
 import org.tan.api.events.TownDeletedEvent;
 import org.tan.api.interfaces.TanPlayer;
@@ -12,7 +12,7 @@ public class TownDeletedInternalEvent extends InternalEvent implements TownDelet
     private final TanTown townData;
     private final TanPlayer executor;
 
-    public TownDeletedInternalEvent(TownData townData, TanPlayer executor) {
+    public TownDeletedInternalEvent(Town townData, TanPlayer executor) {
         this.townData = townData;
         this.executor = executor;
     }

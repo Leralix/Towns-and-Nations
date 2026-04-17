@@ -2,8 +2,7 @@ package org.leralix.tan.listeners.chat.events;
 
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
-import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.storage.stored.RegionDataStorage;
+import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.utils.constants.Constants;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +12,7 @@ class CreateRegionTest extends BasicTest {
     @Test
     void nominalCase(){
         var tanPlayer = playerDataStorage.get(server.addPlayer());
-        var townData = townDataStorage.newTown("Town-B", tanPlayer);
+        var townData = townStorage.newTown("Town-B", tanPlayer);
         townData.addToBalance(50);
         String regionName = "Region-B";
 
@@ -22,7 +21,7 @@ class CreateRegionTest extends BasicTest {
 
         assertTrue(townData.haveOverlord());
         assertTrue(townData.getRegion().isPresent());
-        RegionData regionData = townData.getRegion().get();
+        Region regionData = townData.getRegion().get();
         assertFalse(regionData.haveOverlord());
         assertEquals(regionName, regionData.getName());
         assertEquals(1, regionData.getSubjects().size());
@@ -35,7 +34,7 @@ class CreateRegionTest extends BasicTest {
         var tanPlayer = playerDataStorage.get(server.addPlayer());
         var secondTanPlayer = playerDataStorage.get(server.addPlayer());
 
-        var townData = townDataStorage.newTown("Town", tanPlayer);
+        var townData = townStorage.newTown("Town", tanPlayer);
 
         townData.addPlayer(secondTanPlayer);
 
@@ -51,7 +50,7 @@ class CreateRegionTest extends BasicTest {
     void notEnoughMoney(){
         var tanPlayer = playerDataStorage.get(server.addPlayer());
 
-        var townData = townDataStorage.newTown("Town", tanPlayer);
+        var townData = townStorage.newTown("Town", tanPlayer);
 
         CreateRegion createRegion = new CreateRegion(1);
         createRegion.execute(tanPlayer.getPlayer(), tanPlayer, "Region");
@@ -62,7 +61,7 @@ class CreateRegionTest extends BasicTest {
     @Test
     void regionNameTooLong(){
         var tanPlayer = playerDataStorage.get(server.addPlayer());
-        var townData = townDataStorage.newTown("Town", tanPlayer);
+        var townData = townStorage.newTown("Town", tanPlayer);
         townData.addToBalance(50);
 
         int maxSize = Constants.getRegionMaxNameSize();
@@ -76,10 +75,10 @@ class CreateRegionTest extends BasicTest {
     @Test
     void regionNameAlreadyUsed(){
         var tanPlayer1 = playerDataStorage.get(server.addPlayer());
-        var townData1 = townDataStorage.newTown("townData1", tanPlayer1);
+        var townData1 = townStorage.newTown("townData1", tanPlayer1);
 
         var tanPlayer2 = playerDataStorage.get(server.addPlayer());
-        var townData2 = townDataStorage.newTown("townData2", tanPlayer2);
+        var townData2 = townStorage.newTown("townData2", tanPlayer2);
 
         String regionName = "specificRegionName";
 
@@ -94,13 +93,13 @@ class CreateRegionTest extends BasicTest {
     @Test
     void regionRankAssignedAndRemoved(){
         var tanPlayerA = playerDataStorage.get(server.addPlayer());
-        var townDataA = townDataStorage.newTown("Town-A", tanPlayerA);
+        var townDataA = townStorage.newTown("Town-A", tanPlayerA);
 
         var tanPlayerB = playerDataStorage.get(server.addPlayer());
-        var townDataB = townDataStorage.newTown("Town-B", tanPlayerB);
+        var townDataB = townStorage.newTown("Town-B", tanPlayerB);
 
         // Create a region, player A gets a rank
-        var region = RegionDataStorage.getInstance().createNewRegion("region", townDataA);
+        var region = regionStorage.newRegion("region", townDataA);
         assertEquals(1, region.getAllRanks().size());
         assertEquals(1, region.getDefaultRank().getNumberOfPlayer());
         assertNotNull(tanPlayerA.getRegionRankID());

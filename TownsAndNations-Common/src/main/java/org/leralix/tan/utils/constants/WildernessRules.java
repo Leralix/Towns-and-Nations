@@ -47,7 +47,7 @@ public class WildernessRules {
         rules.put(worldName, worldRules);
     }
 
-    public Boolean canPlayerDoInWilderness(World world, ChunkPermissionType permissionType) {
+    public boolean canPlayerDoInWilderness(World world, ChunkPermissionType permissionType) {
         if(!rules.containsKey(world.getName())) {
             return rules.get("default").get(permissionType);
         }

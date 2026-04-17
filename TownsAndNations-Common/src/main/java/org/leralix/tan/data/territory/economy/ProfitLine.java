@@ -40,7 +40,7 @@ public abstract class ProfitLine implements Comparable<ProfitLine> {
 
     public abstract boolean isRecurrent();
 
-    protected void addDecreaseItem(Gui gui, Player player, LangType lang, double taxRate) {
+    protected void addDecreaseItem(Gui gui, Player player, ITanPlayer playerData, LangType lang, double taxRate) {
         gui.setItem(2, 2, IconManager.getInstance().get(IconKey.TAX_DECREASE_ICON)
                 .setName(Lang.GUI_TREASURY_LOWER_TAX.get(lang))
                 .setDescription(
@@ -48,7 +48,7 @@ public abstract class ProfitLine implements Comparable<ProfitLine> {
                         Lang.GUI_DECREASE_10_DESC.get()
                 )
                 .setAction(action -> {
-                    if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_TAXES)) {
+                    if (!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)) {
                         TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
                         return;
                     }
@@ -65,7 +65,7 @@ public abstract class ProfitLine implements Comparable<ProfitLine> {
         );
     }
 
-    protected void addInfoItem(Gui gui, Player player, LangType lang, double taxRate) {
+    protected void addInfoItem(Gui gui, Player player, LangType lang, ITanPlayer playerData, double taxRate) {
         gui.setItem(2, 3, IconManager.getInstance().get(IconKey.TAX_INFO_ICON)
                 .setName(Lang.GUI_TREASURY_FLAT_TAX.get(lang))
                 .setDescription(
@@ -74,7 +74,7 @@ public abstract class ProfitLine implements Comparable<ProfitLine> {
                         Lang.RIGHT_CLICK_TO_SET_TAX.get()
                 )
                 .setAction(action -> {
-                    if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_TAXES)) {
+                    if (!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)) {
                         TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
                         return;
                     }
@@ -90,7 +90,7 @@ public abstract class ProfitLine implements Comparable<ProfitLine> {
         );
     }
 
-    protected void addIncreaseItem(Gui gui, Player player, LangType lang) {
+    protected void addIncreaseItem(Gui gui, Player player, ITanPlayer playerData, LangType lang) {
         gui.setItem(2, 4, IconManager.getInstance().get(IconKey.TAX_INCREASE_ICON)
                 .setName(Lang.GUI_TREASURY_INCREASE_TAX.get(lang))
                 .setDescription(
@@ -98,7 +98,7 @@ public abstract class ProfitLine implements Comparable<ProfitLine> {
                         Lang.GUI_INCREASE_10_DESC.get()
                 )
                 .setAction(action -> {
-                    if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_TAXES)) {
+                    if (!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)) {
                         TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
                         return;
                     }

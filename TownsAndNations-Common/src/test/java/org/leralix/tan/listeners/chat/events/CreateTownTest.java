@@ -3,7 +3,7 @@ package org.leralix.tan.listeners.chat.events;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.utils.constants.Constants;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,7 +19,7 @@ class CreateTownTest extends BasicTest {
         createTown.execute(tanPlayer.getPlayer(),tanPlayer, "town-A");
 
         assertTrue(tanPlayer.hasTown());
-        TownData town = tanPlayer.getTown();
+        Town town = tanPlayer.getTown();
         assertEquals(1, town.getAllRanks().size());
         assertEquals(1, town.getTownDefaultRank().getNumberOfPlayer());
         assertEquals(0, town.getBalance());

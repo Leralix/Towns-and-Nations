@@ -37,7 +37,10 @@ import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.database.MySqlHandler;
 import org.leralix.tan.storage.database.SQLiteHandler;
 import org.leralix.tan.storage.impl.FortDataStorage;
+import org.leralix.tan.storage.impl.FortDatabaseStorage;
 import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.storage.stored.database.*;
+import org.leralix.tan.storage.stored.json.*;
 import org.leralix.tan.storage.stored.truce.TruceStorage;
 import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
@@ -91,7 +94,7 @@ public class TownsAndNations extends JavaPlugin {
      * Used to check if the plugin is up-to-date to the latest version. Also
      * used to check if the plugin has just been updated and config file needs an update
      */
-    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0, 17, 2);
+    private static final PluginVersion CURRENT_VERSION = new PluginVersion(0, 17, 3);
 
     private static final PluginVersion MINIMUM_SUPPORTING_DYNMAP = new PluginVersion(0, 16, 0);
 
@@ -120,9 +123,35 @@ public class TownsAndNations extends JavaPlugin {
     private PlayerDataStorage playerDataStorage;
 
     /**
-     * The storage of all towns
+     * Storage of all towns.
      */
-    private TownDataStorage townDataStorage;
+    private TownStorage townStorage;
+
+    /**
+     * Storage of all regions
+     */
+    private RegionStorage regionStorage;
+    /**
+     * Storage of all nations
+     */
+    private NationStorage nationStorage;
+    /**
+     * Storage of all landmarks
+     */
+    private LandmarkStorage landmarkStorage;
+    /**
+     * Storage of all Wars
+     */
+    private WarStorage warStorage;
+    /**
+     * Storage of all forts
+     */
+    private FortStorage fortStorage;
+
+    /**
+     * Storage of all claims
+     */
+    private ClaimStorage claimStorage;
 
     private LocalChatStorage localChatStorage;
 
@@ -173,7 +202,6 @@ public class TownsAndNations extends JavaPlugin {
         ClaimBlacklistStorage.init(mainConfig);
         IconManager.getInstance();
         NumberUtil.init();
-        FortStorage.init(new FortDataStorage());
 
         getLogger().log(Level.INFO, "[TaN] -Loading Economy");
         setupEconomy();
@@ -183,34 +211,48 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Loading Local data");
 
-        playerDataStorage = new PlayerDataStorage();
+        if(Constants.isUseRedis()){
+            var config = Constants.getRedisConfig();
+            playerDataStorage = new PlayerDatabaseStorage(config);
+            townStorage = new TownDatabaseStorage(config);
+            regionStorage = new RegionDatabaseStorage(config);
+            nationStorage = new NationDatabaseStorage(config);
+            landmarkStorage = new LandmarkDatabaseStorage(config);
+            warStorage = new WarDatabaseStorage(config);
+            fortStorage = new FortDatabaseStorage(config);
+            claimStorage = new ClaimChunkDatabaseStorage(config);
+        }
+        else {
+            playerDataStorage = new PlayerJsonStorage();
+            townStorage = new TownDataStorage();
+            regionStorage = new RegionDataStorage();
+            nationStorage = new NationDataStorage();
+            landmarkStorage = new LandmarkDataStorage();
+            warStorage = new WarDataStorage();
+            fortStorage = new FortDataStorage();
+            claimStorage = new NewClaimedChunkStorage();
+        }
+
 
         localChatStorage = new LocalChatStorage(playerDataStorage, mainConfig.getBoolean("sendPrivateMessagesToConsole", true));
 
-        NationDataStorage.getInstance();
-        RegionDataStorage.getInstance();
-        NewClaimedChunkStorage.getInstance();
-        townDataStorage = new TownDataStorage();
-        townDataStorage.checkValidWorlds();
-        if (Constants.enableNation()) {
-            NationDataStorage.getInstance();
-        }
-        LandmarkStorage.getInstance();
+        townStorage.checkValidWorlds();
         NewsletterStorage.getInstance();
-        WarStorage.getInstance();
         EventManager.getInstance().registerEvents(new NewsletterEvents());
         TruceStorage.getInstance();
         FileUtil.setEnable(mainConfig.getBoolean("archiveHistory", false));
+        EconomyUtil.init(playerDataStorage);
         TanChatUtils.init(playerDataStorage);
         TeamUtils.init(playerDataStorage);
 
-        FortStorage.getInstance().checkValidWorlds();
-        NewClaimedChunkStorage.getInstance().checkValidWorlds();
+        fortStorage.checkValidWorlds();
+        claimStorage.checkValidWorlds();
+        warStorage.updateAttacks();
 
         this.saveStats = new SaveStats(this);
 
         getLogger().log(Level.INFO, "[TaN] -Loading blocks data");
-        TANCustomNBT.setBlocsData(townDataStorage);
+        TANCustomNBT.setBlocsData(townStorage, fortStorage);
 
 
         getLogger().log(Level.INFO, "[TaN] -Registering Dependencies");
@@ -219,9 +261,9 @@ public class TownsAndNations extends JavaPlugin {
             getLogger().log(Level.INFO, "[TaN] -Registering PlaceholderAPI");
             new PlaceHolderAPI(
                     playerDataStorage,
-                    townDataStorage,
-                    RegionDataStorage.getInstance(),
-                    NationDataStorage.getInstance(),
+                    townStorage,
+                    regionStorage,
+                    nationStorage,
                     localChatStorage
                     ).register();
         }
@@ -236,10 +278,10 @@ public class TownsAndNations extends JavaPlugin {
             var luckpermAPI = new LuckpermAPI();
             luckpermAPI.createContexts(
                     playerDataStorage,
-                    townDataStorage,
-                    RegionDataStorage.getInstance(),
-                    NationDataStorage.getInstance(),
-                    NewClaimedChunkStorage.getInstance()
+                    townStorage,
+                    regionStorage,
+                    nationStorage,
+                    TownsAndNations.getPlugin().getClaimStorage()
             );
         }
 
@@ -256,15 +298,15 @@ public class TownsAndNations extends JavaPlugin {
 
         DailyTasks dailyTasks = new DailyTasks(playerDataStorage, Constants.getDailyTaskHour(), Constants.getDailyTaskMinute());
         dailyTasks.scheduleMidnightTask();
-        SecondTask secondTask = new SecondTask(playerDataStorage);
+        SecondTask secondTask = new SecondTask(playerDataStorage, claimStorage);
         secondTask.startScheduler();
 
         getLogger().log(Level.INFO, "[TaN] -Loading commands");
         enableEventList();
-        getCommand("tan").setExecutor(new PlayerCommandManager(playerDataStorage, townDataStorage, localChatStorage));
+        getCommand("tan").setExecutor(new PlayerCommandManager(playerDataStorage, townStorage, regionStorage, nationStorage, localChatStorage));
         getCommand("tanadmin").setExecutor(new AdminCommandManager(playerDataStorage));
         getCommand("tandebug").setExecutor(new DebugCommandManager(saveStats, dailyTasks));
-        getCommand("tanserver").setExecutor(new ServerCommandManager(playerDataStorage, townDataStorage));
+        getCommand("tanserver").setExecutor(new ServerCommandManager(playerDataStorage, townStorage, landmarkStorage));
 
         loadedSuccessfully = true;
         getLogger().log(Level.INFO, "[TaN] Plugin loaded successfully");
@@ -356,11 +398,11 @@ public class TownsAndNations extends JavaPlugin {
         pluginManager.registerEvents(new ChatListener(playerDataStorage), this);
         pluginManager.registerEvents(new ChunkListener(playerDataStorage), this);
         pluginManager.registerEvents(new PlayerJoinListener(playerDataStorage), this);
-        pluginManager.registerEvents(new PlayerEnterChunkListener(playerDataStorage), this);
+        pluginManager.registerEvents(new PlayerEnterChunkListener(playerDataStorage, claimStorage), this);
         pluginManager.registerEvents(new ChatScopeListener(localChatStorage), this);
-        pluginManager.registerEvents(new MobSpawnListener(), this);
+        pluginManager.registerEvents(new MobSpawnListener(claimStorage), this);
         pluginManager.registerEvents(new SpawnListener(playerDataStorage), this);
-        pluginManager.registerEvents(new PropertySignListener(playerDataStorage, townDataStorage), this);
+        pluginManager.registerEvents(new PropertySignListener(playerDataStorage, townStorage, claimStorage), this);
         pluginManager.registerEvents(new LandmarkChestListener(playerDataStorage), this);
         pluginManager.registerEvents(new EconomyInitialiser(), this);
         pluginManager.registerEvents(new CommandBlocker(playerDataStorage), this);
@@ -468,27 +510,36 @@ public class TownsAndNations extends JavaPlugin {
         return databaseHandler;
     }
 
-    /**
-     * Reset the singleton instance of the plugin.
-     * Used for testing purposes only.
-     * Remove it in a future version to replace singletons by dependency injection.
-     */
-    public void resetSingletonForTests() {
-        RegionDataStorage.getInstance().reset();
-        if (Constants.enableNation()) {
-            NationDataStorage.getInstance().reset();
-        }
-        LandmarkStorage.getInstance().reset();
-        WarStorage.getInstance().reset();
-        NewClaimedChunkStorage.getInstance().reset();
-    }
-
     public PlayerDataStorage getPlayerDataStorage() {
         return playerDataStorage;
     }
 
-    public TownDataStorage getTownDataStorage() {
-        return townDataStorage;
+    public TownStorage getTownStorage() {
+        return townStorage;
+    }
+
+    public RegionStorage getRegionStorage() {
+        return regionStorage;
+    }
+
+    public NationStorage getNationStorage() {
+        return nationStorage;
+    }
+
+    public LandmarkStorage getLandmarkStorage() {
+        return landmarkStorage;
+    }
+
+    public WarStorage getWarStorage() {
+        return warStorage;
+    }
+
+    public FortStorage getFortStorage() {
+        return fortStorage;
+    }
+
+    public ClaimStorage getClaimStorage() {
+        return claimStorage;
     }
 }
 

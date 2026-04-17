@@ -4,7 +4,6 @@ import org.leralix.lib.data.PluginVersion;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.api.internal.managers.*;
 import org.leralix.tan.events.EventManager;
-import org.leralix.tan.storage.stored.WarStorage;
 import org.tan.api.TanAPI;
 import org.tan.api.getters.*;
 
@@ -25,12 +24,12 @@ public class InternalAPI extends TanAPI {
         this.pluginVersion = pluginVersion;
 
         playerManager = new PlayerManager(plugin.getPlayerDataStorage());
-        territoryManager = TerritoryManager.getInstance();
+        territoryManager = new TerritoryManager(plugin.getTownStorage(), plugin.getRegionStorage(), plugin.getNationStorage());
         claimManager = ClaimManager.getInstance();
         landmarkManager = LandmarkManager.getInstance();
         eventManager = EventManager.getInstance();
         fortManager = FortManager.getInstance();
-        warManager = new WarManager(WarStorage.getInstance());
+        warManager = new WarManager(plugin.getWarStorage());
     }
 
 

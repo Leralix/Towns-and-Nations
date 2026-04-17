@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
@@ -47,8 +47,8 @@ public class TerritoryIndependentNews extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
-        TerritoryData leavingTown = TerritoryUtil.getTerritory(formerMasterID);
-        TerritoryData region = TerritoryUtil.getTerritory(independentTerritoryID);
+        Territory leavingTown = TerritoryUtil.getTerritory(formerMasterID);
+        Territory region = TerritoryUtil.getTerritory(independentTerritoryID);
         if (leavingTown == null || region == null)
             return null;
 
@@ -71,16 +71,16 @@ public class TerritoryIndependentNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+    public GuiItem createConcernedGuiItem(Player player, ITanPlayer playerData, LangType lang, Consumer<Player> onClick) {
         return createGuiItem(player, lang, onClick);
     }
 
     @Override
-    public boolean shouldShowToPlayer(Player player) {
-        TerritoryData leavingTown = TerritoryUtil.getTerritory(formerMasterID);
+    public boolean shouldShowToPlayer(ITanPlayer player) {
+        Territory leavingTown = TerritoryUtil.getTerritory(formerMasterID);
         if (leavingTown == null)
             return false;
-        TerritoryData region = TerritoryUtil.getTerritory(independentTerritoryID);
+        Territory region = TerritoryUtil.getTerritory(independentTerritoryID);
         if (region == null)
             return false;
         return leavingTown.isPlayerIn(player) || region.isPlayerIn(player);
@@ -93,10 +93,10 @@ public class TerritoryIndependentNews extends Newsletter {
 
     @Override
     public void broadcast(Player player, ITanPlayer tanPlayer) {
-        TerritoryData leavingTown = TerritoryUtil.getTerritory(formerMasterID);
+        Territory leavingTown = TerritoryUtil.getTerritory(formerMasterID);
         if (leavingTown == null)
             return;
-        TerritoryData region = TerritoryUtil.getTerritory(independentTerritoryID);
+        Territory region = TerritoryUtil.getTerritory(independentTerritoryID);
         if (region == null)
             return;
 

@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.AttackEndedInternalEvent;
 import org.leralix.tan.storage.CurrentAttacksStorage;
@@ -16,6 +16,8 @@ import org.leralix.tan.utils.gameplay.CommandExecutor;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.info.AttackResultCompleted;
 import org.leralix.tan.war.info.AttackResultCounter;
+
+import java.util.UUID;
 
 /**
  * Represents an ongoing attack between territories.
@@ -46,7 +48,7 @@ public abstract class CurrentAttack {
      * Constructor of CurrentAttack
      * @param plannedAttack the planned attack data
      */
-    public CurrentAttack(PlannedAttack plannedAttack) {
+    protected CurrentAttack(PlannedAttack plannedAttack) {
 
         this.attackData = plannedAttack;
         this.attackResultCounter = new AttackResultCounter();
@@ -64,31 +66,29 @@ public abstract class CurrentAttack {
     }
 
     private void applyBossBar(PlannedAttack plannedAttack) {
-        for (TerritoryData territoryData : plannedAttack.getWar().getAttackingTerritories()) {
-            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                Player player = tanPlayer.getPlayer();
-                if (player != null) {
-                    bossBar.addPlayer(player);
-                }
+        for (Territory territoryData : plannedAttack.getWar().getAttackingTerritories()) {
+            for(UUID playerUUID : territoryData.getPlayerIDList()){
+                registerBossBar(playerUUID);
             }
         }
-        for (TerritoryData territoryData : plannedAttack.getWar().getDefendingTerritories()) {
-            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                Player player = tanPlayer.getPlayer();
-                if (player != null) {
-                    bossBar.addPlayer(player);
-                }
+        for (Territory territoryData : plannedAttack.getWar().getDefendingTerritories()) {
+            for(UUID playerUUID : territoryData.getPlayerIDList()){
+                registerBossBar(playerUUID);
             }
+        }
+    }
+
+    private void registerBossBar(UUID playerUUID) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player != null) {
+            bossBar.addPlayer(player);
         }
     }
 
     protected abstract void updateBossBar();
 
     public void addPlayer(ITanPlayer tanPlayer) {
-        Player player = tanPlayer.getPlayer();
-        if (player != null) {
-            bossBar.addPlayer(player);
-        }
+        registerBossBar(tanPlayer.getID());
     }
 
     private void start() {
@@ -133,12 +133,12 @@ public abstract class CurrentAttack {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (TerritoryData territoryData : attackData.getWar().getAttackingTerritories()) {
+                for (Territory territoryData : attackData.getWar().getAttackingTerritories()) {
                     for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
                         tanPlayer.removeWar(CurrentAttack.this);
                     }
                 }
-                for (TerritoryData territoryData : attackData.getWar().getDefendingTerritories()) {
+                for (Territory territoryData : attackData.getWar().getDefendingTerritories()) {
                     for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
                         tanPlayer.removeWar(CurrentAttack.this);
                     }
@@ -151,12 +151,12 @@ public abstract class CurrentAttack {
     }
 
     public boolean containsPlayer(ITanPlayer tanPlayer) {
-        for (TerritoryData territoryData : attackData.getWar().getAttackingTerritories()) {
+        for (Territory territoryData : attackData.getWar().getAttackingTerritories()) {
             if (territoryData.isPlayerIn(tanPlayer)) {
                 return true;
             }
         }
-        for (TerritoryData territoryData : attackData.getWar().getDefendingTerritories()) {
+        for (Territory territoryData : attackData.getWar().getDefendingTerritories()) {
             if (territoryData.isPlayerIn(tanPlayer)) {
                 return true;
             }
@@ -175,5 +175,9 @@ public abstract class CurrentAttack {
 
     public void defenderKilled() {
         attackResultCounter.incrementDefendersKilled();
+    }
+
+    public boolean hasEnded() {
+        return end;
     }
 }

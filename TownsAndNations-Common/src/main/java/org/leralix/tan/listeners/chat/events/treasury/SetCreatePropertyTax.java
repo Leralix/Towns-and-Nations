@@ -1,15 +1,15 @@
 package org.leralix.tan.listeners.chat.events.treasury;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 
 import java.util.function.Consumer;
 
 public class SetCreatePropertyTax extends SetSpecificTax{
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
-    public SetCreatePropertyTax(TerritoryData territoryData, Consumer<Player> guiCallback){
+    public SetCreatePropertyTax(Territory territoryData, Consumer<Player> guiCallback){
         super(guiCallback);
         this.territoryData = territoryData;
     }

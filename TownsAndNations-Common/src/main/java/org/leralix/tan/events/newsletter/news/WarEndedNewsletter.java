@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.events.newsletter.NewsletterType;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
@@ -51,8 +51,8 @@ public class WarEndedNewsletter extends Newsletter {
 
     @Override
     public GuiItem createGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
-        TerritoryData winningTerritory = TerritoryUtil.getTerritory(winningTerritoryID);
-        TerritoryData defeatedTerritory = TerritoryUtil.getTerritory(defeatedTerritoryID);
+        Territory winningTerritory = TerritoryUtil.getTerritory(winningTerritoryID);
+        Territory defeatedTerritory = TerritoryUtil.getTerritory(defeatedTerritoryID);
         if (winningTerritory == null || defeatedTerritory == null)
             return null;
 
@@ -78,12 +78,12 @@ public class WarEndedNewsletter extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+    public GuiItem createConcernedGuiItem(Player player, ITanPlayer playerData, LangType lang, Consumer<Player> onClick) {
         return createGuiItem(player, lang, onClick);
     }
 
     @Override
-    public boolean shouldShowToPlayer(Player player) {
+    public boolean shouldShowToPlayer(ITanPlayer player) {
         return true;
     }
 
@@ -94,13 +94,13 @@ public class WarEndedNewsletter extends Newsletter {
 
     @Override
     public void broadcast(Player player, ITanPlayer tanPlayer) {
-        TerritoryData winningTerritory = TerritoryUtil.getTerritory(winningTerritoryID);
-        TerritoryData defeatedTerritory = TerritoryUtil.getTerritory(defeatedTerritoryID);
+        Territory winningTerritory = TerritoryUtil.getTerritory(winningTerritoryID);
+        Territory defeatedTerritory = TerritoryUtil.getTerritory(defeatedTerritoryID);
         if (winningTerritory == null || defeatedTerritory == null)
             return;
 
         TanChatUtils.message(player,
-                Lang.ATTACK_ENDED.get(
+                Lang.WAR_ENDED.get(
                         tanPlayer,
                         winningTerritory.getColoredName(),
                         defeatedTerritory.getColoredName(),

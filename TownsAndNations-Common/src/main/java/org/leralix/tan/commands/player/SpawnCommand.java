@@ -2,13 +2,15 @@ package org.leralix.tan.commands.player;
 
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.upgrade.rewards.bool.EnableTownSpawn;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.TeleportationRegister;
+import org.leralix.tan.storage.stored.NationStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.RegionStorage;
+import org.leralix.tan.storage.stored.TownStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
@@ -16,8 +18,13 @@ import java.util.List;
 
 public class SpawnCommand extends AbstractSpawnCommand {
 
-    public SpawnCommand(PlayerDataStorage playerDataStorage, TownDataStorage townDataStorage){
-        super(playerDataStorage, townDataStorage);
+    public SpawnCommand(
+            PlayerDataStorage playerDataStorage,
+            TownStorage townStorage,
+            RegionStorage regionDataStorage,
+            NationStorage nationDataStorage
+    ) {
+        super(playerDataStorage, townStorage, regionDataStorage, nationDataStorage);
     }
 
     @Override
@@ -65,7 +72,7 @@ public class SpawnCommand extends AbstractSpawnCommand {
             return;
         }
 
-        TerritoryData territoryData = optTerritory.get();
+        Territory territoryData = optTerritory.get();
         EnableTownSpawn enableTownSpawn = territoryData.getNewLevel().getStat(EnableTownSpawn.class);
         //Spawn Unlocked
         if (!enableTownSpawn.isEnabled()) {

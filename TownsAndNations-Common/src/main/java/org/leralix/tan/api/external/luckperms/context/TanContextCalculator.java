@@ -9,13 +9,13 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.leralix.tan.data.building.property.PropertyData;
-import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
-import org.leralix.tan.data.chunk.WildernessChunk;
+import org.leralix.tan.data.chunk.WildernessChunkData;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Region;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.data.upgrade.Upgrade;
 import org.leralix.tan.data.upgrade.rewards.StatsType;
@@ -63,20 +63,20 @@ public class TanContextCalculator implements ContextCalculator<Player> {
     private static final String FALSE = "false";
 
     private final PlayerDataStorage playerDataStorage;
-    private final TownDataStorage townDataStorage;
-    private final RegionDataStorage regionDataStorage;
-    private final NationDataStorage nationDataStorage;
-    private final NewClaimedChunkStorage chunkStorage;
+    private final TownStorage townStorage;
+    private final RegionStorage regionDataStorage;
+    private final NationStorage nationDataStorage;
+    private final ClaimStorage chunkStorage;
 
     public TanContextCalculator(
             PlayerDataStorage playerDataStorage,
-            TownDataStorage townDataStorage,
-            RegionDataStorage regionDataStorage,
-            NationDataStorage nationDataStorage,
-            NewClaimedChunkStorage chunkStorage
+            TownStorage townStorage,
+            RegionStorage regionDataStorage,
+            NationStorage nationDataStorage,
+            ClaimStorage chunkStorage
     ){
         this.playerDataStorage = playerDataStorage;
-        this.townDataStorage = townDataStorage;
+        this.townStorage = townStorage;
         this.regionDataStorage = regionDataStorage;
         this.nationDataStorage = nationDataStorage;
         this.chunkStorage = chunkStorage;
@@ -96,7 +96,7 @@ public class TanContextCalculator implements ContextCalculator<Player> {
 
         consumer.accept(IS_AT_WAR, playerData.getWarsParticipatingIn().isEmpty() ? FALSE : TRUE);
 
-        TownData playerTown = townDataStorage.get(playerData);
+        Town playerTown = townStorage.get(playerData);
         consumer.accept(IS_TOWN_LEADER, isTerritoryLeader(player, playerTown));
         String townName = getNameOfTerritory(playerTown);
         if(townName != null){
@@ -104,7 +104,7 @@ public class TanContextCalculator implements ContextCalculator<Player> {
         }
         registerUpgradesOfTerritory(playerTown, consumer);
 
-        RegionData playerRegion = regionDataStorage.get(playerTown);
+        Region playerRegion = regionDataStorage.get(playerTown);
         consumer.accept(IS_REGION_LEADER, isTerritoryLeader(player, playerRegion));
         String regionName = getNameOfTerritory(playerRegion);
         if(regionName != null){
@@ -123,12 +123,12 @@ public class TanContextCalculator implements ContextCalculator<Player> {
         Location location = player.getLocation();
 
         // Using location.getChunk() will crash the plugin.
-        ClaimedChunk chunk = chunkStorage.get(
+        IClaimedChunk chunk = chunkStorage.get(
                 Math.floorDiv((int) location.getX(), 16),
                 Math.floorDiv((int) location.getZ(), 16),
                 location.getWorld().getUID().toString()
         );
-        if(chunk instanceof WildernessChunk){
+        if(chunk instanceof WildernessChunkData){
             consumer.accept(IS_IN_FRIENDLY_CLAIM, FALSE);
             consumer.accept(IS_IN_NEUTRAL_CLAIM, FALSE);
             consumer.accept(IS_IN_HOSTILE_CLAIM, FALSE);
@@ -137,7 +137,7 @@ public class TanContextCalculator implements ContextCalculator<Player> {
             consumer.accept(IS_IN_RENTED_PROPERTY, FALSE);
         }
         else if (chunk instanceof TerritoryChunk territoryChunk){
-            TerritoryData territory = territoryChunk.getOccupierInternal();
+            Territory territory = territoryChunk.getOccupierInternal();
             TownRelation diplomacyState = territory.getWorstRelationWith(playerData);
 
             boolean isFriendlyClaim = diplomacyState.getBoundaryType() == BoundaryType.ALLY;
@@ -146,7 +146,7 @@ public class TanContextCalculator implements ContextCalculator<Player> {
 
             String isInOwnedProperty = FALSE;
             String isInRentedProperty = FALSE;
-            if(territory instanceof TownData townData){
+            if(territory instanceof Town townData){
                 for(PropertyData property : townData.getPropertiesInternal()){
                     if(property.isLocationInside(location)){
                         if(property.getOwner().canAccess(playerData)){
@@ -194,7 +194,7 @@ public class TanContextCalculator implements ContextCalculator<Player> {
             default -> throw new IllegalStateException("Unexpected value: " + territory);
         }
 
-        TerritoryData territoryData = TerritoryUtil.getTerritory(territory.getID());
+        Territory territoryData = TerritoryUtil.getTerritory(territory.getID());
         if(territoryData == null){
             return;
         }

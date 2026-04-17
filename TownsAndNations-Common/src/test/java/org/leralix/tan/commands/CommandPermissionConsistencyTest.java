@@ -10,7 +10,7 @@ import org.leralix.tan.commands.admin.AdminCommandManager;
 import org.leralix.tan.commands.debug.DebugCommandManager;
 import org.leralix.tan.commands.player.PlayerCommandManager;
 import org.leralix.tan.commands.server.ServerCommandManager;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.json.PlayerJsonStorage;
 import org.leralix.tan.tasks.SaveStats;
 
 import java.io.InputStream;
@@ -29,12 +29,12 @@ class CommandPermissionConsistencyTest extends BasicTest {
         ConfigurationSection permissionsSection = pluginYml.getConfigurationSection("permissions");
         assertNotNull(permissionsSection, "plugin.yml must contain a permissions section");
 
-        PlayerDataStorage playerDataStorage = new PlayerDataStorage();
+        PlayerJsonStorage playerDataStorage = new PlayerJsonStorage();
 
-        assertPermissionsExist(permissionsSection, "tan.base.commands", new PlayerCommandManager(playerDataStorage, townDataStorage, null));
+        assertPermissionsExist(permissionsSection, "tan.base.commands", new PlayerCommandManager(playerDataStorage, townStorage, regionStorage, nationStorage, null));
         assertPermissionsExist(permissionsSection, "tan.admin.commands", new AdminCommandManager(playerDataStorage));
         assertPermissionsExist(permissionsSection, "tan.admin.commands", new DebugCommandManager(new SaveStats(townsAndNations), null));
-        assertPermissionsExist(permissionsSection, "tan.server.commands", new ServerCommandManager(playerDataStorage, townDataStorage));
+        assertPermissionsExist(permissionsSection, "tan.server.commands", new ServerCommandManager(playerDataStorage, townStorage, landmarkStorage));
     }
 
     private static YamlConfiguration loadPluginYml() {

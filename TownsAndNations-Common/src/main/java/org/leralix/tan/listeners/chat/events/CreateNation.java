@@ -1,15 +1,15 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.NationCreatedInternalEvent;
 import org.leralix.tan.gui.common.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.storage.stored.NationDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.NameFilter;
@@ -32,7 +32,7 @@ public class CreateNation extends ChatListenerEvent {
             return false;
         }
 
-        RegionData regionData = tanPlayer.getRegion();
+        Region regionData = tanPlayer.getRegion();
 
         if (!regionData.isLeader(tanPlayer)) {
             TanChatUtils.message(player, Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get(tanPlayer));
@@ -56,7 +56,7 @@ public class CreateNation extends ChatListenerEvent {
             return false;
         }
 
-        if (NationDataStorage.getInstance().isNameUsed(nationName)) {
+        if (TownsAndNations.getPlugin().getNationStorage().isNameUsed(nationName)) {
             TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(tanPlayer));
             return false;
         }
@@ -65,9 +65,9 @@ public class CreateNation extends ChatListenerEvent {
         return true;
     }
 
-    private void createNation(Player player, ITanPlayer playerData, String nationName, RegionData capital) {
+    private void createNation(Player player, ITanPlayer playerData, String nationName, Region capital) {
         capital.removeFromBalance(cost);
-        NationData nation = NationDataStorage.getInstance().createNewNation(nationName, capital);
+        Nation nation = TownsAndNations.getPlugin().getNationStorage().newNation(nationName, capital);
 
         EventManager.getInstance().callEvent(new NationCreatedInternalEvent(nation, playerData));
         FileUtil.addLineToHistory(Lang.NATION_CREATED_NEWSLETTER.get(player.getName(), nation.getName()));

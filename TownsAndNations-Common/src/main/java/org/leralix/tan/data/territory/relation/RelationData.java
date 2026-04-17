@@ -1,6 +1,7 @@
 package org.leralix.tan.data.territory.relation;
 
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
@@ -11,16 +12,11 @@ public class RelationData {
 
     private final Map<TownRelation, List<String>> townRelations = new LinkedHashMap<>();
 
-
     public RelationData() {
         this.townRelations.put(TownRelation.WAR, new ArrayList<>());
         this.townRelations.put(TownRelation.EMBARGO, new ArrayList<>());
         this.townRelations.put(TownRelation.NON_AGGRESSION, new ArrayList<>());
         this.townRelations.put(TownRelation.ALLIANCE, new ArrayList<>());
-    }
-
-    public void setRelation(TownRelation relation, TerritoryData territoryID) {
-        setRelation(relation, territoryID.getID());
     }
 
     public void setRelation(TownRelation relation, String territoryID) {
@@ -30,17 +26,16 @@ public class RelationData {
         addRelation(relation, territoryID);
     }
 
-
-    public void addRelation(TownRelation relation, String townID) {
+    private void addRelation(TownRelation relation, String townID) {
         townRelations.get(relation).add(townID);
     }
 
     public List<String> getTerritoriesIDWithRelation(TownRelation relation) {
-        return townRelations.get(relation);
+        return townRelations.getOrDefault(relation, Collections.emptyList());
     }
 
-    public Map<TownRelation, List<String>> getAll() {
-        return townRelations;
+    public TownRelation getRelationWith(Territory playerTerritory) {
+        return getRelationWith(playerTerritory.getID());
     }
 
     public TownRelation getRelationWith(String territoryID) {
@@ -57,25 +52,9 @@ public class RelationData {
         return TownRelation.NEUTRAL;
     }
 
-    public TownRelation getRelationWith(TerritoryData territory) {
-        return getRelationWith(territory.getID());
-    }
-
     public void cleanAll(TerritoryData territoryData) {
-
         for (TownRelation relation : TownRelation.values()) {
-
-            Collection<String> territories = townRelations.get(relation);
-            if (territories == null) {
-                continue;
-            }
-
-            for (String otherTerritory : territories) {
-
-                TerritoryData otherTerritoryData = TerritoryUtil.getTerritory(otherTerritory);
-                if (otherTerritoryData == null)
-                    continue;
-
+            for (Territory otherTerritoryData : getTerritoriesWithRelation(relation)) {
                 otherTerritoryData.getRelations().removeAllRelationWith(territoryData.getID());
                 otherTerritoryData.broadcastMessageWithSound(
                         Lang.WARNING_OTHER_TOWN_HAS_BEEN_DELETED.get(territoryData.getColoredName(), relation.getColoredName(Lang.getServerLang())),
@@ -91,11 +70,12 @@ public class RelationData {
         }
     }
 
-    public List<TerritoryData> getTerritoriesWithRelation(TownRelation townRelation) {
-        List<TerritoryData> res = new ArrayList<>();
+    public List<Territory> getTerritoriesWithRelation(TownRelation townRelation) {
+        List<Territory> res = new ArrayList<>();
         for(String territoryID : getTerritoriesIDWithRelation(townRelation)){
             res.add(TerritoryUtil.getTerritory(territoryID));
         }
+        res.removeAll(Collections.singleton(null));
         return res;
     }
 }

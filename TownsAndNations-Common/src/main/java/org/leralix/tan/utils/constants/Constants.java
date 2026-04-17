@@ -5,15 +5,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.chunk.ChunkType;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.*;
 import org.leralix.tan.data.territory.permission.GeneralChunkSetting;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.data.upgrade.NewUpgradeStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.utils.Range;
+import org.leralix.tan.utils.constants.database.RedisConfig;
 import org.leralix.tan.war.WarTimeSlot;
 
 import java.util.*;
@@ -102,6 +100,7 @@ public class Constants {
 
     //Wars
     private static boolean simpleWarMode;
+    private static int warDeclareCost;
     private static boolean enableLeavingWars;
     private static WarTimeSlot warTimeSlot;
     private static double warBoundaryRadius;
@@ -145,6 +144,10 @@ public class Constants {
     private static boolean cancelTeleportOnMoveHead;
     private static boolean cancelTeleportOnMovePosition;
     private static boolean cancelTeleportOnDamage;
+
+    //Storage
+    private static boolean useRedis;
+    private static RedisConfig redisConfig;
 
     //Upgrades
     private static NewUpgradeStorage upgradeStorage;
@@ -244,6 +247,7 @@ public class Constants {
 
         //Attacks
         simpleWarMode = config.getBoolean("simpleWarMode");
+        warDeclareCost = config.getInt("warDeclareCost", 1000);
         enableLeavingWars = config.getBoolean("enableLeavingWars", true);
         warTimeSlot = new WarTimeSlot(
                 config.getStringList("allowedTimeSlotsWar"),
@@ -305,6 +309,15 @@ public class Constants {
         cancelTeleportOnMoveHead = config.getBoolean("cancelTeleportOnMoveHead", false);
         cancelTeleportOnMovePosition = config.getBoolean("cancelTeleportOnMovePosition", true);
         cancelTeleportOnDamage = config.getBoolean("cancelTeleportOnDamage", true);
+
+        //Storage
+        useRedis = config.getString("inGameStorageType", "RAM").equalsIgnoreCase("redis");
+        redisConfig = new RedisConfig(
+                config.getString("redis_config.host"),
+                config.getInt("redis_config.port"),
+                config.getString("redis_config.username"),
+                config.getString("redis_config.password")
+        );
 
         //Upgrade
         upgradeStorage = new NewUpgradeStorage(upgradeConfig);
@@ -428,14 +441,14 @@ public class Constants {
         return enableRegion;
     }
 
-    public static int getChangeTerritoryNameCost(TerritoryData territoryData) {
-        if (territoryData instanceof TownData) {
+    public static int getChangeTerritoryNameCost(Territory territoryData) {
+        if (territoryData instanceof Town) {
             return changeTownNameCost;
         }
-        if (territoryData instanceof NationData) {
+        if (territoryData instanceof Nation) {
             return changeNationNameCost;
         }
-        if (territoryData instanceof RegionData) {
+        if (territoryData instanceof Region) {
             return changeRegionNameCost;
         }
         return changeTownNameCost;
@@ -582,7 +595,7 @@ public class Constants {
         return doublePermissionCheck;
     }
 
-    public static boolean allowNonAdjacentChunksFor(TerritoryData territoryData) {
+    public static boolean allowNonAdjacentChunksFor(Territory territoryData) {
 
         ChunkType chunkType = switch (territoryData){
             case TownData ignored -> ChunkType.TOWN;
@@ -708,6 +721,10 @@ public class Constants {
         return permissionAtWars;
     }
 
+    public static int getWarDeclareCost() {
+        return warDeclareCost;
+    }
+
     public static List<String> getPerPlayerEndCommands() {
         return perPlayerEndCommands;
     }
@@ -736,15 +753,23 @@ public class Constants {
         return cancelTeleportOnDamage;
     }
 
+    public static boolean isUseRedis() {
+        return useRedis;
+    }
+
+    public static RedisConfig getRedisConfig() {
+        return redisConfig;
+    }
+
     public static NewUpgradeStorage getUpgradeStorage() {
         return upgradeStorage;
     }
 
-    public static int getTerritoryMaxLevel(TerritoryData territoryData){
-        if(territoryData instanceof TownData){
+    public static int getTerritoryMaxLevel(Territory territoryData){
+        if(territoryData instanceof Town){
             return townMaxLevel;
         }
-        if(territoryData instanceof NationData){
+        if(territoryData instanceof Nation){
             return nationMaxLevel;
         }
         return regionMaxLevel;

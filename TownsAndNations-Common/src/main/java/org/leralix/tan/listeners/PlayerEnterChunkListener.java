@@ -6,16 +6,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
-import org.leralix.tan.data.chunk.WildernessChunk;
+import org.leralix.tan.data.chunk.WildernessChunkData;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.gui.scope.ClaimType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.PlayerAutoClaimStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.storage.stored.ClaimStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -23,12 +23,12 @@ import org.leralix.tan.utils.text.TanChatUtils;
 public class PlayerEnterChunkListener implements Listener {
 
     private final boolean displayTerritoryNamewithColor;
-    private final NewClaimedChunkStorage newClaimedChunkStorage;
+    private final ClaimStorage claimStorage;
     private final PlayerDataStorage playerDataStorage;
 
-    public PlayerEnterChunkListener(PlayerDataStorage playerDataStorage) {
+    public PlayerEnterChunkListener(PlayerDataStorage playerDataStorage, ClaimStorage claimStorage) {
         this.displayTerritoryNamewithColor = Constants.displayTerritoryColor();
-        this.newClaimedChunkStorage = NewClaimedChunkStorage.getInstance();
+        this.claimStorage = claimStorage;
         this.playerDataStorage = playerDataStorage;
     }
 
@@ -45,8 +45,8 @@ public class PlayerEnterChunkListener implements Listener {
         Player player = event.getPlayer();
 
         // If both chunks are not claimed, no need to display anything
-        if (!newClaimedChunkStorage.isChunkClaimed(currentChunk) &&
-                !newClaimedChunkStorage.isChunkClaimed(nextChunk)) {
+        if (!claimStorage.isChunkClaimed(currentChunk) &&
+                !claimStorage.isChunkClaimed(nextChunk)) {
 
             if (PlayerAutoClaimStorage.containsPlayer(event.getPlayer())) {
                 autoClaimChunk(event, nextChunk, player);
@@ -54,8 +54,8 @@ public class PlayerEnterChunkListener implements Listener {
             return;
         }
 
-        ClaimedChunk currentClaimedChunk = newClaimedChunkStorage.get(currentChunk);
-        ClaimedChunk nextClaimedChunk = newClaimedChunkStorage.get(nextChunk);
+        IClaimedChunk currentClaimedChunk = claimStorage.get(currentChunk);
+        IClaimedChunk nextClaimedChunk = claimStorage.get(nextChunk);
 
         // Both chunks have the same owner, no need to change
         if (sameOwner(currentClaimedChunk, nextClaimedChunk)) {
@@ -77,7 +77,7 @@ public class PlayerEnterChunkListener implements Listener {
 
         nextClaimedChunk.playerEnterClaimedArea(player, tanPlayer, displayTerritoryNamewithColor);
 
-        if (nextClaimedChunk instanceof WildernessChunk &&
+        if (nextClaimedChunk instanceof WildernessChunkData &&
                 PlayerAutoClaimStorage.containsPlayer(event.getPlayer())) {
             autoClaimChunk(event, nextChunk, player);
         }
@@ -126,11 +126,12 @@ public class PlayerEnterChunkListener implements Listener {
      *         false otherwise
      */
     public static boolean sameOwner(
-            ClaimedChunk firstClaim,
-            ClaimedChunk secondClaim) {
+            IClaimedChunk firstClaim,
+            IClaimedChunk secondClaim
+    ) {
         if (firstClaim == secondClaim)
             return true;
-        if (firstClaim instanceof WildernessChunk && secondClaim instanceof WildernessChunk)
+        if (firstClaim instanceof WildernessChunkData && secondClaim instanceof WildernessChunkData)
             return true;
         if (firstClaim instanceof TerritoryChunk firstTerritoryChunk
                 && secondClaim instanceof TerritoryChunk secondTerritoryChunk) {

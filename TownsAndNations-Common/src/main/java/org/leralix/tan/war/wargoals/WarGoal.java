@@ -1,7 +1,7 @@
 package org.leralix.tan.war.wargoals;
 
 import org.bukkit.Material;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
@@ -26,7 +26,7 @@ public abstract class WarGoal implements TanWargoal {
 
     public abstract String getDisplayName(LangType langType);
 
-    public abstract void applyWarGoal(TerritoryData winner, TerritoryData loser);
+    public abstract void applyWarGoal(Territory winner, Territory loser);
 
     protected IconBuilder buildIcon(Material material, List<FilledLang> description, LangType langType){
         return IconManager.getInstance().get(material)

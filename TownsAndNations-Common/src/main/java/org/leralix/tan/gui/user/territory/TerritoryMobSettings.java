@@ -4,8 +4,8 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.permission.ClaimedChunkSettings;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.permission.IClaimedChunkSettings;
 import org.leralix.tan.data.territory.permission.MobChunkSpawnEnum;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.data.territory.upgrade.UpgradeStatus;
@@ -24,9 +24,9 @@ import static org.leralix.lib.data.SoundEnum.GOOD;
 
 public class TerritoryMobSettings extends IteratorGUI {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
-    public TerritoryMobSettings(Player player, TerritoryData territoryData) {
+    public TerritoryMobSettings(Player player, Territory territoryData) {
         super(player, Lang.HEADER_MOB_SETTINGS, 6);
         this.territoryData = territoryData;
         open();
@@ -41,7 +41,7 @@ public class TerritoryMobSettings extends IteratorGUI {
     private List<GuiItem> getMobs() {
 
         ArrayList<GuiItem> guiLists = new ArrayList<>();
-        ClaimedChunkSettings chunkSettings = territoryData.getChunkSettings();
+        IClaimedChunkSettings chunkSettings = territoryData.getChunkSettings();
 
         MobChunkSpawnStorage spawnStorage = Constants.getMobChunkSpawnStorage();
 

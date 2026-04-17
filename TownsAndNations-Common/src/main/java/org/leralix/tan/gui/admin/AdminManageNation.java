@@ -2,16 +2,16 @@ package org.leralix.tan.gui.admin;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.NationData;
+import org.leralix.tan.data.territory.Nation;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class AdminManageNation extends AdminManageTerritory {
 
-    private final NationData nationData;
+    private final Nation nationData;
 
-    public AdminManageNation(Player player, NationData nationData) {
+    public AdminManageNation(Player player, Nation nationData) {
         super(player, Lang.HEADER_ADMIN_SPECIFIC_NATION_MENU.get(nationData.getName()), 3, nationData);
         this.nationData = nationData;
         open();

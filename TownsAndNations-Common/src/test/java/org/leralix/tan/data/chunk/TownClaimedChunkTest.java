@@ -6,11 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.BasicTest;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.fort.Fort;
-import org.leralix.tan.data.territory.TownData;
-import org.leralix.tan.storage.stored.FortStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
+import org.leralix.tan.data.territory.Town;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,60 +15,57 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class TownClaimedChunkTest extends BasicTest {
 
 
-    private NewClaimedChunkStorage claimedChunkStorage;
     private World world;
 
     @Override
     @BeforeEach
     protected void setUp() {
         super.setUp();
-        claimedChunkStorage = NewClaimedChunkStorage.getInstance();
         world = server.addSimpleWorld("world");
-        TownsAndNations.getPlugin().resetSingletonForTests();
     }
 
     @Test
     void notifyUpdate() {
 
-        TownData townData = townDataStorage.newTown("Town");
+        Town townData = townStorage.newTown("Town");
 
-        claimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
-        var middleChunk = claimedChunkStorage.claimTownChunk(world.getChunkAt(2, 0), townData.getID());
-        claimedChunkStorage.claimTownChunk(world.getChunkAt(3, 0), townData.getID());
+        claimStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
+        var middleChunk = claimStorage.claimTownChunk(world.getChunkAt(2, 0), townData.getID());
+        claimStorage.claimTownChunk(world.getChunkAt(3, 0), townData.getID());
 
-        claimedChunkStorage.unclaimChunkAndUpdate(middleChunk);
+        claimStorage.unclaimChunkAndUpdate(middleChunk);
 
-        assertEquals(0, claimedChunkStorage.getClaimedChunksMap().size());
+        assertEquals(0, claimStorage.getAllChunks().size());
     }
 
     @Test
     void notifyUpdateWithCapital() {
 
-        TownData townData = townDataStorage.newTown("Town");
+        Town townData = townStorage.newTown("Town");
 
-        claimedChunkStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
+        claimStorage.claimTownChunk(world.getChunkAt(1, 0), townData.getID());
         townData.setCapitalLocation(new Vector2D(1,0, world.getUID().toString()));
-        var chunk = claimedChunkStorage.claimTownChunk(world.getChunkAt(2, 0), townData.getID());
-        claimedChunkStorage.claimTownChunk(world.getChunkAt(3, 0), townData.getID());
+        var chunk = claimStorage.claimTownChunk(world.getChunkAt(2, 0), townData.getID());
+        claimStorage.claimTownChunk(world.getChunkAt(3, 0), townData.getID());
 
-        NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(chunk);
+        claimStorage.unclaimChunkAndUpdate(chunk);
 
-        assertEquals(1, claimedChunkStorage.getClaimedChunksMap().size());
+        assertEquals(1, claimStorage.getAllChunks().size());
     }
 
     @Test
     void notifyUpdateWithOneFort() {
 
-        TownData townData = townDataStorage.newTown("Town");
+        Town townData = townStorage.newTown("Town");
 
-        ClaimedChunk claimedChunkToKeep = claimedChunkStorage.claimTownChunk(world.getChunkAt(0, 1), townData.getID());
-        Fort fort = FortStorage.getInstance().register(new Vector3D(0, 0, 0, world.getUID().toString()), townData);
+        ChunkData claimedChunkToKeep = claimStorage.claimTownChunk(world.getChunkAt(0, 1), townData.getID());
+        Fort fort = fortDataStorage.register(new Vector3D(0, 0, 0, world.getUID().toString()), townData);
         townData.addOwnedFort(fort);
 
-        TerritoryChunk townClaimedChunk = new TownClaimedChunk(world.getChunkAt(0, 0), townData.getID());
+        TerritoryChunkData townClaimedChunk = new TownClaimedChunk(world.getChunkAt(0, 0), townData.getID());
         townClaimedChunk.notifyUpdate();
 
-        assertEquals(1, claimedChunkStorage.getClaimedChunksMap().size());
-        assertTrue(claimedChunkStorage.getClaimedChunksMap().containsValue(claimedChunkToKeep));
+        assertEquals(1, claimStorage.getAllChunks().size());
+        assertTrue(claimStorage.getAllChunks().contains(claimedChunkToKeep));
     }
 }

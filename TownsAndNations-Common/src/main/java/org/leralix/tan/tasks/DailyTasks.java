@@ -5,11 +5,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.property.PropertyData;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Region;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
-import org.leralix.tan.storage.stored.*;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.ArchiveUtil;
 
@@ -45,32 +45,29 @@ public class DailyTasks {
     public void executeMidnightTasks() {
         propertyRent();
 
-        for(TownData town : TownDataStorage.getInstance().getAll().values()){
+        for(Town town : TownsAndNations.getPlugin().getTownStorage().getAll().values()){
             town.executeTasks();
         }
-        for(RegionData regionData : RegionDataStorage.getInstance().getAll().values()){
+        for(Region regionData : TownsAndNations.getPlugin().getRegionStorage().getAll().values()){
             regionData.executeTasks();
         }
-
-        TributePlayerDailyStorage.getInstance().resetDaily();
-        TributeVassalDailyStorage.getInstance().resetDaily();
 
         clearOldTransaction();
         updatePlayerUsernames();
 
         NewsletterStorage.getInstance().clearOldNewsletters();
-        LandmarkStorage.getInstance().generateAllResources();
+        TownsAndNations.getPlugin().getLandmarkStorage().generateAllResources();
         ArchiveUtil.archiveFiles();
     }
 
     private void updatePlayerUsernames() {
-        for(ITanPlayer player : playerDataStorage.getAll().values()){
+        for(ITanPlayer player : playerDataStorage.getAllPlayers()){
             player.clearName();
         }
     }
 
     private void propertyRent() {
-        for (TownData town : TownDataStorage.getInstance().getAll().values()) {
+        for (Town town : TownsAndNations.getPlugin().getTownStorage().getAll().values()) {
             for (PropertyData property : town.getPropertiesInternal()) {
                 if (property.isRented()) {
                     property.payRent();

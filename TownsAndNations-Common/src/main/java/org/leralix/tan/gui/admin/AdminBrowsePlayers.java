@@ -4,11 +4,11 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.StringUtil;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class AdminBrowsePlayers extends IteratorGUI {
 
     private List<GuiItem> getPlayers() {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (ITanPlayer tanPlayer : PlayerDataStorage.getInstance().getAll().values()) {
+        for (ITanPlayer tanPlayer : TownsAndNations.getPlugin().getPlayerDataStorage().getAllPlayers()) {
 
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(tanPlayer.getID());
 

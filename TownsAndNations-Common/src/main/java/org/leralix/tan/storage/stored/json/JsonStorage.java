@@ -1,4 +1,4 @@
-package org.leralix.tan.storage.stored;
+package org.leralix.tan.storage.stored.json;
 
 import com.google.gson.Gson;
 import org.bukkit.Bukkit;
@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public abstract class JsonStorage<T> {
 
@@ -26,7 +27,21 @@ public abstract class JsonStorage<T> {
 
         this.type = type;
         this.gson = gson;
-        load();
+
+        loadDatamap();
+    }
+
+    public void loadDatamap() {
+        if (!file.exists()) {
+            dataMap = new LinkedHashMap<>();
+        }
+        else {
+            try (Reader reader = new FileReader(file)) {
+                dataMap = gson.fromJson(reader, type);
+            } catch (IOException e) {
+                TownsAndNations.getPlugin().getLogger().severe("Error loading " + file.getName());
+            }
+        }
     }
 
     static @NotNull File getFile(String fileName) {
@@ -61,46 +76,11 @@ public abstract class JsonStorage<T> {
         return newFile;
     }
 
-
-    protected void load() {
-        if (!file.exists()) {
-            dataMap = new LinkedHashMap<>();
-        }
-        else {
-            try (Reader reader = new FileReader(file)) {
-                dataMap = gson.fromJson(reader, type);
-            } catch (IOException e) {
-                TownsAndNations.getPlugin().getLogger().severe("Error loading " + file.getName());
-            }
-        }
-    }
-
     public void save() {
-        try {
-            Files.createDirectories(file.getParentFile().toPath());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        File tempFile = new File(file.getParent(), file.getName() + ".tmp");
-        try (Writer writer = new FileWriter(tempFile, false)) {
-            gson.toJson(dataMap, type, writer);
-        } catch (IOException e) {
-            Bukkit.getLogger().severe("Error saving " + file.getName() + " : " + e.getMessage());
-            return;
-        }
-
-        try {
-            Files.move(
-                    tempFile.toPath(),
-                    file.toPath(),
-                    StandardCopyOption.REPLACE_EXISTING,
-                    StandardCopyOption.ATOMIC_MOVE // si supporté
-            );
-        } catch (IOException e) {
-            Bukkit.getLogger().severe("Failed to replace old file with new one: " + file.getName() + " : " + e.getMessage());
-        }
+        // Copy the map to avoid concurrent modification
+        Map<String, T> snapshot = new LinkedHashMap<>(dataMap);
+        CompletableFuture.runAsync(() -> saveSnapshot(snapshot));
     }
-
 
     public Map<String, T> getAll() {
         return dataMap;
@@ -118,6 +98,33 @@ public abstract class JsonStorage<T> {
         dataMap.put(id, obj);
     }
 
-    public abstract void reset();
+    private void saveSnapshot(Map<String, T> snapshot) {
+
+        try {
+            Files.createDirectories(file.getParentFile().toPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        File tempFile = new File(file.getParent(), file.getName() + ".tmp");
+
+        try (Writer writer = new FileWriter(tempFile, false)) {
+            gson.toJson(snapshot, type, writer);
+        } catch (IOException e) {
+            Bukkit.getLogger().severe("Error saving " + file.getName() + " : " + e.getMessage());
+            return;
+        }
+
+        try {
+            Files.move(
+                    tempFile.toPath(),
+                    file.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING,
+                    StandardCopyOption.ATOMIC_MOVE
+            );
+        } catch (IOException e) {
+            Bukkit.getLogger().severe("Failed to replace old file with new one: " + file.getName());
+        }
+    }
 
 }

@@ -1,0 +1,25 @@
+#Upgrades.yml is used to define the names of upgrades and their benefits in the game.
+#To add a name to a new upgrade, add it to the customLang section.
+customLang:
+  #Names
+  CITY_HALL: "Primărie"
+  BARRACKS: "Baracă"
+  ADMINISTRATION: "Administrație"
+  WATCHTOWER: "Turn de veghe"
+  PORTAL: "Portal"
+  GUARDS: "Gărzi"
+  COUNCIL_CHAMBER: "Camera Consiliului"
+  NOTARY_HOUSE: "Notariat"
+  EXTRACTION_TEAM: "Echipă de extracție"
+  BETTER_TOOLS: "Unelte mai bune"
+  #Prerequisites
+  TOWN_LEVEL: "Nivel oraș"
+  #Benefits
+  PLAYER_CAP: "Limită jucători"
+  CHUNK_CAP: "Limită chunk-uri"
+  PROPERTY_CAP: "Limită proprietăți"
+  UNLOCK_TOWN_SPAWN: "Deblocare spawn oraș"
+  UNLOCK_MOB_BAN: "Deblocare mob ban"
+  UNLOCK_REGION_CREATION: "Deblocare creare regiune"
+  MAX_LANDMARKS: "Deblocare flag regiune"
+  LANDMARK_BONUS: "% Recompense marcaj"

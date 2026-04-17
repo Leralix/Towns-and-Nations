@@ -21,16 +21,16 @@ public class LuckpermAPI {
     }
 
     public void createContexts(
-                               PlayerDataStorage playerDataStorage,
-                               TownDataStorage townDataStorage,
-                               RegionDataStorage regionDataStorage,
-                               NationDataStorage nationDataStorage,
-                               NewClaimedChunkStorage chunkStorage
+            PlayerDataStorage playerDataStorage,
+            TownStorage townStorage,
+            RegionStorage regionDataStorage,
+            NationStorage nationDataStorage,
+            ClaimStorage chunkStorage
     ){
         luckPerms.getContextManager().registerCalculator(
                 new TanContextCalculator(
                         playerDataStorage,
-                        townDataStorage,
+                        townStorage,
                         regionDataStorage,
                         nationDataStorage,
                         chunkStorage

@@ -128,6 +128,7 @@ language:
   CURRENT_RELATION_REQUIRES_TRUCE: "§c你当前的外交关系需要先签订§6{0}小时§c的休战协议，请先设置为中立关系。"
   CANNOT_SET_RELATION_TO_NEGATIVE_WHILE_TRUCE: "§c你与 {1} 仍有§6{0}小时§c的休战期。"
   ACCEPTED_VASSALISATION_PROPOSAL_ALL: "{0}§f 已加入 {1} 领地"
+  NATION_ACCEPTED_VASSALISATION_PROPOSAL_ALL: ""
   #Diplomatic relation confirmation
   REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f 邀请 {1}§f 加入该领地"
   #Autoclaim command
@@ -212,7 +213,6 @@ language:
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§c你的货币不足，还需 {0}{MONEY_CHAR}"
   TERRITORY_NOT_ENOUGH_MONEY: "{0}§c 的资金不足，无法执行此操作，还需 {1}{MONEY_CHAR}"
   NAME_ALREADY_USED: "§c该名称已被占用"
-  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "在聊天框中输入城镇名称。"
   PLAYER_WRITE_QUANTITY_IN_CHAT: "在聊天框中输入数量"
   TOWN_RETRIEVE_MONEY_SUCCESS: "§a你已成功从城镇金库提取 §6{0}{MONEY_CHAR}§a"
   TOWN_SET_TAX_SUCCESS: "§a已将税率设置为 §6{0}{MONEY_CHAR}"
@@ -227,12 +227,8 @@ language:
   PROPERTY_DELETED: "房产已成功删除"
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "设置城镇重生点"
-  SPAWN_SET_SUCCESS: "城镇重生点设置成功"
   SPAWN_COMMAND_DESC: "传送到城镇重生点"
   SPAWN_TELEPORTED: "已传送到城镇重生点"
-  SPAWN_NOT_SET: "§c城镇重生点尚未设置"
-  SPAWN_NOT_UNLOCKED: "§c城镇重生点未解锁"
-  SPAWN_NEED_TO_BE_IN_CHUNK: "§c你需要在已占领的区块内设置重生点"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "中立"
@@ -274,7 +270,6 @@ language:
   GUI_SERVER_TIME: "§a日期"
   CURRENT_SERVER_TIME: "§f服务器时间：§e{0}"
   CURRENT_PLAYER_TIME: "§f玩家本地时间：§e{0}"
-  GUI_KINGDOM_ICON: "§a王国"
   GUI_REGION_ICON: "§a领地"
   GUI_REGION_ICON_DESC1_REGION: "§f当前领地：{0}"
   GUI_REGION_ICON_DESC2_REGION: "§f领地等级：{0}"
@@ -375,6 +370,7 @@ language:
   PROPERTY_RENTED_BY: "§f➥承租人：§3{0}"
   PROPERTY_NOT_FOR_SALE_OR_RENT: "§c该房产不对外出售或出租"
   PROPERTY_ALREADY_RENTED: "§c该房产已被租赁"
+  GUI_PROPERTY_RELOCATE_SIGN: "§a重置属性标志"
   GUI_PROPERTY_DELETE_PROPERTY: "§a删除房产"
   GUI_PROPERTY_DELETE_PROPERTY_CONFIRM: "§f确认删除房产：§e{0}"
   GUI_PROPERTY_PLAYER_LIST: "§a权限管理"
@@ -456,8 +452,6 @@ language:
   CREATE_PUBLIC_PROPERTY_COST: "§f创建成本：§e免费"
   CREATE_FORT_ICON: "§a创建新要塞"
   CREATE_FORT_DESC1: "§f创建成本：§e{0}{MONEY_CHAR}"
-  #Wars menu
-  GUI_TOWN_ATTACK_TOWN_DESC1: "§c点击宣战"
   DECLARE_WAR_CONFIRM_MESSAGE: "{0}§f 将向 {1}§f 宣战"
   DECLARE_WAR_NUMBER_OF_ALLIES: "{0}§f 拥有 §9{1}§f 个盟友"
   DECLARE_WAR_BUTTON: "§a宣战"
@@ -507,7 +501,6 @@ language:
   HEADER_TOWN_UPGRADE: "城镇升级"
   HEADER_SETTINGS: "设置"
   HEADER_CHANGE_OWNERSHIP: "转让所有权"
-  HEADER_RELATIONS: "外交关系"
   HEADER_RELATION_WITH: "与 {0} 的关系"
   HEADER_SELECT_ADD_TERRITORY_RELATION: "添加至 {0}"
   HEADER_SELECT_REMOVE_TERRITORY_RELATION: "从 {0} 移除"
@@ -547,7 +540,6 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§f右键点击§c 拒绝§f 申请"
   GUI_LANGUAGE_CHANGED: "§a语言已切换为：{0}"
   GUI_TOWN_LEVEL_ICON: "§a城镇等级"
-  GUI_TOWN_LEVEL_ICON_DESC1: "§f升级城镇等级"
   GUI_TOWN_SETTINGS_ICON: "§a城镇设置"
   GUI_TOWN_SETTINGS_ICON_DESC1: "§f城镇通用设置"
   GUI_ATTACK_ICON: "§a攻击管理"
@@ -592,7 +584,6 @@ language:
   GUI_TOWN_LEVEL_UP_DESC2: "§f升级至 §a{0}§f 级所需费用：§e{1}{MONEY_CHAR}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§n升级条件："
   GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§n升级奖励："
-  TOWN_UPGRADE_MAX_LEVEL: "§c该升级项已达最高等级"
   ANY_WOOD_SCOPE_NAME: "任意木材"
   ANY_LOG_SCOPE_NAME: "任意原木"
   ANY_PLANK_SCOPE_NAME: "任意木板"
@@ -623,9 +614,6 @@ language:
   UPGRADE_LINE_PERCENT_MAX: "§f- {0}：§e{1}%"
   UPGRADE_LINE_INFINITY_LOCKED: "§f- {0}：0 §e+∞"
   UPGRADE_LINE_INFINITY_UNLOCKED: "§f- {0}：§e无上限"
-  UPGRADE_LINE_LOCKED: "§f- {0}：未解锁"
-  UPGRADE_LINE_LOCKED_UNLOCKED: "§f- {0}：未解锁 → §e已解锁"
-  UPGRADE_LINE_UNLOCKED: "§f- {0}：§e已解锁"
   PLAYER_CAP: "最大玩家数"
   CHUNK_CAP: "最大区块数"
   PROPERTY_CAP: "最大房产数"
@@ -769,7 +757,6 @@ language:
   #Select language
   HELP_US_TRANSLATE: "§f帮助我们将插件翻译成你的语言"
   PERCENT_COMPLETED: "§6{0}%§f 完成度"
-  CLICK_HERE_TO_OPEN_BROWSER: "§f点击此处在浏览器中打开crowdin"
   #Region GUI
   GUI_ADMIN_PLAYER_ICON: "§a管理玩家"
   GUI_REGION_CREATE: "§a创建联盟"
@@ -883,7 +870,6 @@ language:
   PLAYER_ENTER_LANDMARK_CHUNK: "§f进入：§6地标区域"
   PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION: "你无法进入 {0}§f，因为你与该领地的关系是 {1}"
   CHUNK_ENTER_TOWN_AT_WAR: "§c你与该城镇处于战争状态。玩家已收到你越界的警报"
-  CHUNK_INTRUSION_ALERT: "§c来自 {0} 城镇的敌人已进入你的边境：{1}"
   WILDERNESS_NO_PERMISSION: "§c你无权在荒野中执行此操作"
   #History
   HISTORY_TOWN_LEADER_CHANGED: "{0} 将城镇领袖从 {1} 更换为 {2}"

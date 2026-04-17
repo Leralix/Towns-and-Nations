@@ -181,7 +181,6 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cBu işlemi yapmak için yeterli paran yok"
   NAME_ALREADY_USED: "§cBu isim zaten kullanılıyor"
-  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Sohbete kasabanın adını yaz"
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Sohbete miktarı yaz"
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aKasabadan §6{0}{MONEY_CHAR}§a başarıyla çekildi"
   TOWN_SET_TAX_SUCCESS: "§aVergi oranı başarıyla §6{0}{MONEY_CHAR}§a olarak ayarlandı"
@@ -196,12 +195,8 @@ language:
   PROPERTY_DELETED: "Mülk başarıyla silindi"
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Kasabanın doğma noktasını ayarla"
-  SPAWN_SET_SUCCESS: "Kasaba doğma noktası ayarlandı"
   SPAWN_COMMAND_DESC: "Kasaba doğma noktasına ışınlan"
   SPAWN_TELEPORTED: "Kasaba doğma noktasına ışınlandın"
-  SPAWN_NOT_SET: "§cKasaba doğma noktası ayarlanmamış"
-  SPAWN_NOT_UNLOCKED: "§cKasaba doğma noktası henüz açılmamış"
-  SPAWN_NEED_TO_BE_IN_CHUNK: "§cDoğma noktası ayarlamak için claimlenmiş bir arazi içinde olmalısın"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Tarafsız"
@@ -227,7 +222,6 @@ language:
   GUI_GENERIC_SHIFT_CLICK_TO_TELEPORT: "§7▶ Işınlanmak için Shift + Tıkla"
   GUI_GENERIC_ADD_BUTTON: "§7▶ Eklemek için tıkla"
   CANNOT_BE_MODIFIED: "§cBu değiştirilemez"
-  GUI_KINGDOM_ICON: "§aKrallık"
   GUI_REGION_ICON: "§aBölge"
   GUI_REGION_ICON_DESC1_REGION: "§fMevcut bölge: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fBölge rütbesi: {0}"
@@ -361,7 +355,6 @@ language:
   HEADER_HISTORY: "Geçmiş"
   HEADER_SETTINGS: "Ayarlar"
   HEADER_CHANGE_OWNERSHIP: "Sahipliği değiştir"
-  HEADER_RELATIONS: "Diplomasi"
   HEADER_SELECT_ADD_TERRITORY_RELATION: "{0} ekle"
   HEADER_SELECT_REMOVE_TERRITORY_RELATION: "{0} çıkar"
   HEADER_CHUNK_PERMISSION: "Arazi izinleri"
@@ -397,7 +390,6 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fSağ tıkla ve §creddet"
   GUI_LANGUAGE_CHANGED: "§aDil şu şekilde değiştirildi: {0}"
   GUI_TOWN_LEVEL_ICON: "§aKasaba seviyesi"
-  GUI_TOWN_LEVEL_ICON_DESC1: "§fKasabayı yükselt"
   GUI_TOWN_SETTINGS_ICON: "§aAyarlar"
   GUI_TOWN_SETTINGS_ICON_DESC1: "§fGenel kasaba ayarları"
   GUI_ATTACK_ICON: "§aSaldırılar"
@@ -428,7 +420,6 @@ language:
   GUI_TOWN_LEVEL_UP_DESC1: "§fMevcut seviye: §e{0}"
   GUI_TOWN_LEVEL_UP_DESC2: "§fSeviye §a{0}§f yükseltme maliyeti: §e{1}{MONEY_CHAR}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nGereksinimler:"
-  TOWN_UPGRADE_MAX_LEVEL: "§cYükseltmenin maksimum seviyesine ulaşıldı"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§cGereksinimleri karşılamıyorsunuz"
   #Diplomacy
   GUI_TOWN_RELATION_HOSTILE: "§aDüşmanca"
@@ -534,7 +525,6 @@ language:
   #Select language
   HELP_US_TRANSLATE: "§fEklentiyi kendi dilinize çevirmemize yardım edin"
   PERCENT_COMPLETED: "§6{0}%§f tamamlandı"
-  CLICK_HERE_TO_OPEN_BROWSER: "§fTarayıcınızda Crowdin'i açmak için buraya tıklayın"
   GUI_REGION_CREATE: "§aBölge oluştur"
   GUI_REGION_CREATE_DESC1: "§fMaliyet: §6{0}{MONEY_CHAR}"
   GUI_REGION_CREATE_DESC2: "§fYeni bir bölge oluşturmak için sol tıklayın, kasabanızı bölge başkenti yapın"
@@ -621,7 +611,6 @@ language:
   WILDERNESS: "§fSahipsiz Arazi"
   PLAYER_ENTER_LANDMARK_CHUNK: "§6Anıt arazisine girildi"
   CHUNK_ENTER_TOWN_AT_WAR: "§cBu kasabayla savaş halindesiniz. Sınırı geçtiğiniz oyunculara bildirildi"
-  CHUNK_INTRUSION_ALERT: "§c{0} şehrinden bir düşman sınırlarınızı geçti: {1}"
   WILDERNESS_NO_PERMISSION: "§cSahipsiz arazide bu eylemi yapma izniniz yok"
   #History
   HISTORY_TOWN_LEADER_CHANGED: "{0} şehir liderini {1}§f'den {2}§f'ye değiştirdi"

@@ -1,7 +1,7 @@
 package org.leralix.tan.data.building.fort;
 
 import org.leralix.lib.position.Vector3D;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 public class FortData extends Fort{
@@ -16,12 +16,26 @@ public class FortData extends Fort{
 
     private String occupierID;
 
-    public FortData(String id, Vector3D position, String name, TerritoryData owningTerritory){
+    public FortData(String id, Vector3D position, String name, Territory owningTerritory){
         this.id = id;
         this.position = position;
         this.name = name;
         this.ownerID = owningTerritory.getID();
         this.occupierID = owningTerritory.getID();
+    }
+
+    public FortData(
+            String id,
+            Vector3D position,
+            String name,
+            String owningTerritoryID,
+            String occupierTerritoryID
+    ){
+        this.id = id;
+        this.position = position;
+        this.name = name;
+        this.ownerID = owningTerritoryID;
+        this.occupierID = occupierTerritoryID;
     }
 
 
@@ -36,12 +50,12 @@ public class FortData extends Fort{
     }
 
     @Override
-    public TerritoryData getOwner() {
+    public Territory getOwner() {
         return TerritoryUtil.getTerritory(ownerID);
     }
 
     @Override
-    public TerritoryData getOccupier() {
+    public Territory getOccupier() {
         return TerritoryUtil.getTerritory(occupierID);
     }
 
@@ -51,12 +65,12 @@ public class FortData extends Fort{
     }
 
     @Override
-    public void setOccupierInternal(TerritoryData newOwner) {
+    public void setOccupierInternal(Territory newOwner) {
         this.occupierID = newOwner.getID();
     }
 
     @Override
-    public void setOwner(TerritoryData newOwner) {
+    public void setOwner(Territory newOwner) {
         this.ownerID = newOwner.getID();
     }
 }

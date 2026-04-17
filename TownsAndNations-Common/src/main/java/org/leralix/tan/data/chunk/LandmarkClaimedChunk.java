@@ -9,18 +9,17 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
-public class LandmarkClaimedChunk extends ClaimedChunk {
+public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
 
     /**
      * The ID of the landmark on this chunk
@@ -38,8 +37,9 @@ public class LandmarkClaimedChunk extends ClaimedChunk {
         this.ownerID = ownerID;
     }
 
+    @Override
     public String getName() {
-        return TownDataStorage.getInstance().get(ownerID).getName();
+        return TownsAndNations.getPlugin().getTownStorage().get(ownerID).getName();
     }
 
     @Override
@@ -70,11 +70,12 @@ public class LandmarkClaimedChunk extends ClaimedChunk {
         TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.get(langType));
     }
 
-
+    @Override
     public Landmark getLandMark() {
-        return LandmarkStorage.getInstance().get(ownerID);
+        return TownsAndNations.getPlugin().getLandmarkStorage().get(ownerID);
     }
 
+    @Override
     public void playerEnterClaimedArea(Player player, ITanPlayer tanPlayer, boolean displayTerritoryColor) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.PLAYER_ENTER_LANDMARK_CHUNK.getDefault()));
     }
@@ -97,13 +98,13 @@ public class LandmarkClaimedChunk extends ClaimedChunk {
     }
 
     @Override
-    public boolean canTerritoryClaim(Player player, TerritoryData territoryData, LangType langType) {
+    public boolean canTerritoryClaim(Player player, Territory territoryData, LangType langType) {
         TanChatUtils.message(player, Lang.CANNOT_CLAIM_LANDMARK.get(langType));
         return false;
     }
 
     @Override
-    public boolean canTerritoryClaim(TerritoryData territoryData) {
+    public boolean canTerritoryClaim(Territory territoryData) {
         return false;
     }
 
@@ -129,7 +130,17 @@ public class LandmarkClaimedChunk extends ClaimedChunk {
     }
 
     @Override
-    public boolean canMobGrief() {
+    public boolean canHostileGrief() {
+        return false;
+    }
+
+    @Override
+    public boolean canVillagerGrief() {
+        return false;
+    }
+
+    @Override
+    public boolean canPassiveGrief() {
         return false;
     }
 

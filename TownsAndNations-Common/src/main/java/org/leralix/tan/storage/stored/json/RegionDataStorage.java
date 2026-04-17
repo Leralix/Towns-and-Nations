@@ -1,14 +1,16 @@
-package org.leralix.tan.storage.stored;
+package org.leralix.tan.storage.stored.json;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
-import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.RegionStorage;
+import org.leralix.tan.storage.stored.TerritoryStorage;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.utils.file.FileUtil;
@@ -18,18 +20,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RegionDataStorage extends JsonStorage<RegionData> {
+public class RegionDataStorage extends TerritoryStorage<Region> implements RegionStorage {
 
-    private int nextID;
-    private static RegionDataStorage instance;
 
-    public static RegionDataStorage getInstance() {
-        if(instance == null)
-            instance = new RegionDataStorage();
-        return instance;
-    }
-
-    private RegionDataStorage() {
+    public RegionDataStorage() {
         super("TAN - Regions.json",
                 new TypeToken<LinkedHashMap<String, RegionData>>() {}.getType(),
                 new GsonBuilder()
@@ -39,62 +33,33 @@ public class RegionDataStorage extends JsonStorage<RegionData> {
                         .create());
     }
 
-    public RegionData createNewRegion(String name, TownData capital){
 
+
+    @Override
+    public Region newRegion(String name, Town capital){
         ITanPlayer newLeader = capital.getLeaderData();
-
-        String regionID = generateNextID();
-
+        String regionID = generateNextID("R");
         RegionData newRegion = new RegionData(regionID, name, newLeader);
         put(regionID, newRegion);
-        capital.setOverlord(newRegion);
 
+        capital.setOverlord(newRegion);
         FileUtil.addLineToHistory(Lang.REGION_CREATED_NEWSLETTER.get(newLeader.getNameStored(), name));
         return newRegion;
     }
 
-    private @NotNull String generateNextID() {
-        String regionID = "R"+nextID;
-        nextID++;
-        return regionID;
-    }
-
-    public RegionData get(ITanPlayer tanPlayer){
-        TownData town = tanPlayer.getTown();
-        if(town == null)
-            return null;
-        return town.getRegion().orElse(null);
-    }
-
-    public RegionData get(TownData townData){
-        if(townData == null){
-            return null;
-        }
-        return dataMap.get(townData.getRegionID());
-    }
-
+    @Override
     public void deleteRegion(RegionData region){
         delete(region.getID());
     }
 
+    @Override
     public boolean isNameUsed(String name){
         return TerritoryUtil.isNameUsed(name, dataMap.values());
     }
 
     @Override
-    public void load() {
-        super.load();
-        int id = 0;
-        for (String keys : getAll().keySet()) {
-            int newID =  Integer.parseInt(keys.substring(1));
-            if(newID > id)
-                id = newID;
-        }
-        nextID = id+1;
+    public void save() {
+
     }
 
-    @Override
-    public void reset() {
-        instance = null;
-    }
 }

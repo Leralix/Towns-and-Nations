@@ -4,16 +4,18 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
+import org.leralix.tan.gui.service.requirements.MoneyRequirement;
 import org.leralix.tan.gui.user.war.WarMenuDispatch;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.WarStorage;
-import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.War;
 
@@ -24,9 +26,9 @@ public class DeclareWarMenu extends IteratorGUI {
 
     private final BasicGui returnMenu;
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
-    public DeclareWarMenu(Player player, TerritoryData territoryData, BasicGui returnMenu) {
+    public DeclareWarMenu(Player player, Territory territoryData, BasicGui returnMenu) {
         super(player, Lang.HEADER_DECLARE_WAR, 3);
         this.territoryData = territoryData;
         this.returnMenu = returnMenu;
@@ -41,17 +43,16 @@ public class DeclareWarMenu extends IteratorGUI {
 
     private List<GuiItem> getTerritoryToDeclareOn() {
         List<GuiItem> res = new ArrayList<>();
-        WarStorage warStorage = WarStorage.getInstance();
 
-        for (String TerritoryID : territoryData.getRelations().getTerritoriesIDWithRelation(TownRelation.WAR)) {
-            TerritoryData iterateTerritory = TerritoryUtil.getTerritory(TerritoryID);
-
-            res.add(getDeclareWarButton(iterateTerritory, warStorage));
+        for (Territory iterateTerritory : territoryData.getRelations().getTerritoriesWithRelation(TownRelation.WAR)) {
+            res.add(getDeclareWarButton(iterateTerritory));
         }
         return res;
     }
 
-    private GuiItem getDeclareWarButton(TerritoryData iterateTerritory, WarStorage warStorage) {
+    private GuiItem getDeclareWarButton(Territory iterateTerritory) {
+        WarStorage warStorage = TownsAndNations.getPlugin().getWarStorage();
+
         return iterateTerritory.getIconWithInformationAndRelation(territoryData, langType)
                 .setClickToAcceptMessage(Lang.GUI_TOWN_ATTACK_TOWN_DESC1)
                 .setAction(action -> {
@@ -63,21 +64,46 @@ public class DeclareWarMenu extends IteratorGUI {
 
                     int nbAllies = iterateTerritory.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE).size();
 
-                    List<FilledLang> confirmDescription = List.of(
+                    List<FilledLang> confirmDescription = new ArrayList<>();
+
+                    confirmDescription.add(
                             Lang.DECLARE_WAR_CONFIRM_MESSAGE.get(
                                     territoryData.getColoredName(),
                                     iterateTerritory.getColoredName()
-                            ),
+                            )
+                    );
+                    confirmDescription.add(
                             Lang.DECLARE_WAR_NUMBER_OF_ALLIES.get(
                                     iterateTerritory.getColoredName(),
                                     Integer.toString(nbAllies)
                             )
                     );
 
+                    if (Constants.getWarDeclareCost() > 0) {
+                        confirmDescription.add(
+                                Lang.REQUIREMENT_COST_POSITIVE.get(
+                                        Integer.toString(Constants.getWarDeclareCost())
+                                )
+                        );
+                    }
+
+
                     new ConfirmMenu(
                             player,
                             confirmDescription,
                             () -> {
+                                MoneyRequirement requirement =
+                                        new MoneyRequirement(territoryData, Constants.getWarDeclareCost());
+                                if (requirement.isInvalid()) {
+                                    TanChatUtils.message(player, Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET, SoundEnum.NOT_ALLOWED);
+                                    SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                                    return;
+                                }
+
+                                requirement.actionDone();
+
+                                SoundUtil.playSound(player, SoundEnum.WAR);
+
                                 War newWar = warStorage.newWar(territoryData, iterateTerritory);
                                 WarMenuDispatch.openMenu(player, newWar, territoryData);
                             },

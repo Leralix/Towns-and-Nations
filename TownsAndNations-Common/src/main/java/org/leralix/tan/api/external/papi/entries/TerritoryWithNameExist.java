@@ -4,21 +4,21 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.NationDataStorage;
+import org.leralix.tan.storage.stored.NationStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.RegionStorage;
+import org.leralix.tan.storage.stored.TownStorage;
 import org.leralix.tan.utils.constants.Constants;
 
 public class TerritoryWithNameExist extends PapiEntry {
 
     public TerritoryWithNameExist(
             PlayerDataStorage playerDataStorage,
-            TownDataStorage townDataStorage,
-            RegionDataStorage regionDataStorage,
-            NationDataStorage nationDataStorage)
+            TownStorage townStorage,
+            RegionStorage regionDataStorage,
+            NationStorage nationDataStorage)
     {
-        super("territory_with_name_{}_exist", playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage);
+        super("territory_with_name_{}_exist", playerDataStorage, townStorage, regionDataStorage, nationDataStorage);
     }
 
     @Override

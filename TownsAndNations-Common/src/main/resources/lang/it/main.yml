@@ -211,7 +211,6 @@ language:
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cNon hai abbastanza soldi. Hai bisogno di {0}{MONEY_CHAR} in più"
   TERRITORY_NOT_ENOUGH_MONEY: "{0}§c non ha abbastanza soldi per eseguire questa azione. Ha bisogno di {1}{MONEY_CHAR} in più"
   NAME_ALREADY_USED: "§cQuesto nome è già utilizzato"
-  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Scrivi il nome della città nella chat."
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Scrivi la quantità nella chat"
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aHai preso §6{0}{MONEY_CHAR}§a dalla città"
   TOWN_SET_TAX_SUCCESS: "§aHai impostato con successo le tasse a §6{0}{MONEY_CHAR}"
@@ -226,12 +225,8 @@ language:
   PROPERTY_DELETED: "Proprietà eliminata con successo"
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Imposta lo spawn della città"
-  SPAWN_SET_SUCCESS: "Spawn della città impostato con successo"
   SPAWN_COMMAND_DESC: "Vai allo spawn della città"
   SPAWN_TELEPORTED: "Teletrasportato allo spawn della città"
-  SPAWN_NOT_SET: "§cLo spawn della città non è impostato"
-  SPAWN_NOT_UNLOCKED: "§cLo spawn della città non è sbloccato"
-  SPAWN_NEED_TO_BE_IN_CHUNK: "§cDevi essere in un chunk reclamato per impostare lo spawn"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Neutrale"
@@ -273,7 +268,6 @@ language:
   GUI_SERVER_TIME: "§aData"
   CURRENT_SERVER_TIME: "§fTempo server: §e{0}"
   CURRENT_PLAYER_TIME: "§fTempo giocatore: §e{0}"
-  GUI_KINGDOM_ICON: "§aRegno"
   GUI_REGION_ICON: "§aRegione"
   GUI_REGION_ICON_DESC1_REGION: "§fRegione corrente: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fRango regione: {0}"
@@ -394,7 +388,6 @@ language:
   HEADER_TOWN_UPGRADE: "Aggiornamento città"
   HEADER_SETTINGS: "Impostazioni"
   HEADER_CHANGE_OWNERSHIP: "Cambia proprietario"
-  HEADER_RELATIONS: "Diplomazia"
   HEADER_RELATION_WITH: "Relazione: {0}"
   HEADER_SELECT_ADD_TERRITORY_RELATION: "Aggiungi a {0}"
   HEADER_SELECT_REMOVE_TERRITORY_RELATION: "Rimuovi da {0}"

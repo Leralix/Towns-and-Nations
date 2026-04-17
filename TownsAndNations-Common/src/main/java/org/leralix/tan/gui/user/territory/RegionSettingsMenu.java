@@ -6,8 +6,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.RegionDeletednternalEvent;
 import org.leralix.tan.gui.common.ConfirmMenu;
@@ -15,7 +16,6 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.LeaderRequirement;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -24,9 +24,9 @@ import static org.leralix.lib.data.SoundEnum.*;
 
 public class RegionSettingsMenu extends SettingsMenus {
 
-    private final RegionData regionData;
+    private final Region regionData;
 
-    public RegionSettingsMenu(Player player, RegionData regionData) {
+    public RegionSettingsMenu(Player player, Region regionData) {
         super(player, Lang.HEADER_SETTINGS, regionData, 4);
         this.regionData = regionData;
         open();
@@ -55,7 +55,7 @@ public class RegionSettingsMenu extends SettingsMenus {
         gui.open(player);
     }
 
-    private @NotNull GuiItem getLeaveNationButton(NationData nationData) {
+    private @NotNull GuiItem getLeaveNationButton(Nation nationData) {
         return iconManager.get(IconKey.REGION_QUIT_REGION_ICON)
                 .setName(Lang.GUI_REGION_SETTINGS_LEAVE_NATION.get(tanPlayer))
                 .setDescription(
@@ -108,7 +108,7 @@ public class RegionSettingsMenu extends SettingsMenus {
                         TanChatUtils.message(player, Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
                         return;
                     }
-                    new RegionChangeOwnership(player, regionData);
+                    new RegionChangeOwnership(player, regionData, this);
                 })
                 .asGuiItem(player, langType);
     }
@@ -132,7 +132,7 @@ public class RegionSettingsMenu extends SettingsMenus {
                         return;
                     }
 
-                    if(!WarStorage.getInstance().getWarsOfTerritory(territoryData).isEmpty()){
+                    if(!TownsAndNations.getPlugin().getWarStorage().getWarsOfTerritory(territoryData).isEmpty()){
                         TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR.get(langType), SoundEnum.NOT_ALLOWED);
                         return;
                     }

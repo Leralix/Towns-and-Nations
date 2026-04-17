@@ -4,12 +4,12 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -20,9 +20,9 @@ import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 public class PlayerApplicationMenu extends IteratorGUI {
 
-    TownData townData;
+    private final Town townData;
 
-    public PlayerApplicationMenu(Player player, TownData townData) {
+    public PlayerApplicationMenu(Player player, Town townData) {
         super(player, Lang.HEADER_TOWN_APPLICATIONS, 3);
         this.townData = townData;
         open();
@@ -39,7 +39,7 @@ public class PlayerApplicationMenu extends IteratorGUI {
         for (UUID playerUUID : new ArrayList<>(townData.getPlayerJoinRequestSet())) {
 
             OfflinePlayer playerIterate = Bukkit.getOfflinePlayer(playerUUID);
-            ITanPlayer playerIterateData = PlayerDataStorage.getInstance().get(playerUUID);
+            ITanPlayer playerIterateData = TownsAndNations.getPlugin().getPlayerDataStorage().get(playerUUID);
             guiItems.add(iconManager.get(playerIterate)
                     .setClickToAcceptMessage(
                             Lang.GUI_PLAYER_ASK_JOIN_PROFILE_DESC2,

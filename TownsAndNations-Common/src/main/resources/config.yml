@@ -260,22 +260,25 @@ events:
   DIPLOMACY_ACCEPTED:
     BROADCAST: "ALL"
     NEWSLETTER: "ALL"
+  LANDMARK_CLAIMED:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
+  LANDMARK_UNCLAIMED:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
+  WAR_DECLARED:
+    BROADCAST: "ALL"
+    NEWSLETTER: "ALL"
   ATTACK_DECLARED:
-    BROADCAST: "ALL"
-    NEWSLETTER: "ALL"
-  ATTACK_WON_BY_ATTACKER:
-    BROADCAST: "ALL"
-    NEWSLETTER: "ALL"
-  ATTACK_WON_BY_DEFENDER:
     BROADCAST: "ALL"
     NEWSLETTER: "ALL"
   ATTACK_CANCELLED:
     BROADCAST: "ALL"
     NEWSLETTER: "ALL"
-  LANDMARK_CLAIMED:
+  ATTACK_ENDED:
     BROADCAST: "ALL"
     NEWSLETTER: "ALL"
-  LANDMARK_UNCLAIMED:
+  WAR_ENDED:
     BROADCAST: "ALL"
     NEWSLETTER: "ALL"
 
@@ -317,6 +320,9 @@ RankNameSize: 25
 
 #Enable war
 EnableWar: true
+
+#WarDeclareCost
+warDeclareCost: 1000
 
 # Simple war mode
 # If enabled, a war will not require attacks to capture chunks.
@@ -495,7 +501,9 @@ chunkGeneralSettings:
   fire: "PLAYER_CHOICE_AND_WAR" #burning and spreading
   explosion: "PLAYER_CHOICE_AND_WAR" #Explosion (creeper included)
   pvp: "ALWAYS"
-  mob: "PLAYER_CHOICE"  #Ender
+  hostile_mob: "PLAYER_CHOICE" #Enderman picking up blocks, Wither breaking blocks...
+  passive_mob: "PLAYER_CHOICE" #sheep eating grass
+  villager: "PLAYER_CHOICE" #Villager farming
 
 ########################
 ##    TELEPORTATION   ##
@@ -615,18 +623,39 @@ TimeBeforeClearingNewsletter: 7
 
 
 ########################
-##       Database     ##
+##       Storage      ##
 ########################
 
-#EXPERIMENTAL FEATURE
-#As of 0.14.4+, tax history and newsletter are stored in the database
-#A full support for databases is not yet available
-#Database url cannot be configured
+
+# There are 2 types of storage in towns and nations. Each one need one type :
+# - In-game storage : data that will be actively used by the plugin when the server is on.
+#  - RAM storage (default)
+#  - Redis (Allow to share data between multiple servers "bungee mode") REQUIRES A REDIS SERVER
+# - Long term storage : Used to store and load data between server restarts.
+#  - JSON storage (default)
+#  - Database (experimental, not yet supported)
+
+## In game storage
+# WARNING : Reds is in early development and is not yet fully supported. Use at your own risk.
+# It is recommended to use Redis only for testing for now.
+inGameStorageType: "RAM" #RAM or REDIS
+
+# Redis configuration (used only if inGameStorageType is set to REDIS)
+redis_config:
+  host: "localhost"
+  port: 6379
+  user: "default"
+  password: "password"
+
+
+# Long term storage
+# As for now, both are used at the same time : Some data are stored in JSON files, and some data are stored in the database.
+# A full support for databases is not yet available.
 
 database:
   #Database type (sqlite or mysql)
   type: "sqlite"
-  #Database host (if using sqlite, leave empty)
+  #Database host (if using sqlite, unused)
   host: "localhost"
   #Database port (if using sqlite, unused)
   port: 3306
@@ -636,6 +665,14 @@ database:
   user: "user"
   #Database password (if using sqlite, unused)
   password: "password"
+
+#Archive major event into a txt file
+archiveHistory: true
+
+#Time before old transactions are deleted (in days). Can be set to -1 to disable
+#Too much history can slow down the certains operations over time
+nbDaysBeforeTransactionDeletion: 90
+
 
 ########################
 ##     Extensions     ##
@@ -655,17 +692,6 @@ placeholderString:
   trueValue: "true"
   falseValue: "false"
 
-########################
-##       Storage      ##
-########################
-
-#Archive major event into a txt file
-archiveHistory: true
-
-
-#Time before old transactions are deleted (in days). Can be set to -1 to disable
-#Too much history can slow down the certains operations over time
-nbDaysBeforeTransactionDeletion: 90
 
 
 #Write the type of mobs you want a town to be able to cancel the spawn of.
@@ -744,7 +770,16 @@ CancelMobSpawnInTown:
   ZOMBIE_VILLAGER: 0
 
 
-
+# Upgrades
+# Everything related to upgrades can be edited from the file "upgrades.yml".
+# - Player cap
+# - Chunk cap
+# - Chunk claim cost
+# - Chunk Upkeep cost
+# - Property cap
+# - Territory spawn
+# - Upgrades cost, position, description, etc.
+# - And more...
 
 
 

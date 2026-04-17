@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.building.Building;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.data.upgrade.rewards.numeric.PropertyCap;
 import org.leralix.tan.gui.BasicGui;
@@ -26,9 +26,9 @@ import java.util.List;
 public class BuildingMenu extends IteratorGUI {
 
     private final BasicGui previousMenu;
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
-    public BuildingMenu(Player player, TerritoryData territoryData, BasicGui previousMenu) {
+    public BuildingMenu(Player player, Territory territoryData, BasicGui previousMenu) {
         super(player, Lang.HEADER_BUILDING_MENU, 4);
         this.territoryData = territoryData;
         this.previousMenu = previousMenu;
@@ -41,14 +41,14 @@ public class BuildingMenu extends IteratorGUI {
         iterator(getBuildings(), p -> previousMenu.open());
 
         //For now, only towns can have properties
-        if (territoryData instanceof TownData townData) {
+        if (territoryData instanceof Town townData) {
             gui.setItem(4, 4, getCreatePublicPropertyButton(townData));
         }
         gui.setItem(4, 5, getCreateFortButton());
         gui.open(player);
     }
 
-    private @NotNull GuiItem getCreatePublicPropertyButton(TownData townData) {
+    private @NotNull GuiItem getCreatePublicPropertyButton(Town townData) {
 
         List<FilledLang> description = new ArrayList<>();
 
@@ -66,7 +66,7 @@ public class BuildingMenu extends IteratorGUI {
                 .setDescription(description)
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
-                    if (!townData.doesPlayerHavePermission(player, RolePermission.MANAGE_PROPERTY)) {
+                    if (!townData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_PROPERTY)) {
                         TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), SoundEnum.NOT_ALLOWED);
                         return;
                     }

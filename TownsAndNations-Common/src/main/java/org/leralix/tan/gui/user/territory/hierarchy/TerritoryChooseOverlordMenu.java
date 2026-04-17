@@ -3,7 +3,7 @@ package org.leralix.tan.gui.user.territory.hierarchy;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
@@ -16,10 +16,10 @@ import java.util.function.Consumer;
 
 public class TerritoryChooseOverlordMenu extends IteratorGUI {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
     private final Consumer<Player> onCLose;
 
-    public TerritoryChooseOverlordMenu(Player player, TerritoryData territoryData, Consumer<Player> onClose) {
+    public TerritoryChooseOverlordMenu(Player player, Territory territoryData, Consumer<Player> onClose) {
         super(player, Lang.HEADER_TERRITORY_SELECT_OVERLORD, 6);
         this.territoryData = territoryData;
         this.onCLose = onClose;
@@ -40,7 +40,7 @@ public class TerritoryChooseOverlordMenu extends IteratorGUI {
         LangType langType = tanPlayer.getLang();
 
         for (String proposalID : territoryData.getOverlordsProposals()) {
-            TerritoryData proposalOverlord = TerritoryUtil.getTerritory(proposalID);
+            Territory proposalOverlord = TerritoryUtil.getTerritory(proposalID);
             if (proposalOverlord == null) continue;
 
             proposals.add(proposalOverlord

@@ -212,7 +212,6 @@ language:
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cVocê não tem dinheiro suficiente. Você precisa de mais {0} {MONEY_CHAR}"
   TERRITORY_NOT_ENOUGH_MONEY: "{0}§c não tem dinheiro o bastante para realizar essa ação. Precisa de mais {1} {MONEY_CHAR}"
   NAME_ALREADY_USED: "§cEste nome já está sendo utilizado"
-  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Escreva o nome da cidade no chat"
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Escreva a quantidade no chat"
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aVocê coletou com sucesso §6{0}{MONEY_CHAR}§a da cidade"
   TOWN_SET_TAX_SUCCESS: "§aVocê definiu com sucesso o imposto para §6{0}{MONEY_CHAR}"
@@ -227,12 +226,8 @@ language:
   PROPERTY_DELETED: "Propriedade removida com sucesso"
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Definir spawn da cidade"
-  SPAWN_SET_SUCCESS: "Spawn da cidade definido"
   SPAWN_COMMAND_DESC: "Teletransportar para o spawn da cidade"
   SPAWN_TELEPORTED: "Teletransportado para o spawn da cidade"
-  SPAWN_NOT_SET: "§cO spawn da cidade não está definido"
-  SPAWN_NOT_UNLOCKED: "§cO spawn da cidade não está desbloqueado"
-  SPAWN_NEED_TO_BE_IN_CHUNK: "§cVocê precisa estar em um chunk claimado para definir a posição de uma propriedade"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Neutro"
@@ -274,7 +269,6 @@ language:
   GUI_SERVER_TIME: "§aData"
   CURRENT_SERVER_TIME: "§fTempo do servidor: §e{0}"
   CURRENT_PLAYER_TIME: "§fTempo do jogador: §e{0}"
-  GUI_KINGDOM_ICON: "§aReino"
   GUI_REGION_ICON: "§aRegião"
   GUI_REGION_ICON_DESC1_REGION: "§fRelação atual : {0}"
   GUI_REGION_ICON_DESC2_REGION: "Rank da §fRegião: {0}"
@@ -456,8 +450,6 @@ language:
   CREATE_PUBLIC_PROPERTY_COST: "§fCusto : §eGratuito"
   CREATE_FORT_ICON: "§aCriar um novo forte"
   CREATE_FORT_DESC1: "§fCusto : §e{0}{MONEY_CHAR}"
-  #Wars menu
-  GUI_TOWN_ATTACK_TOWN_DESC1: "§cClique para declarar guerra"
   DECLARE_WAR_CONFIRM_MESSAGE: "{0}§f vai começar uma guerra contra {1}"
   DECLARE_WAR_NUMBER_OF_ALLIES: "{0}§f tem §9{1}§f aliados"
   DECLARE_WAR_BUTTON: "§aDeclarar uma guerra"
@@ -507,7 +499,6 @@ language:
   HEADER_TOWN_UPGRADE: "Melhorar cidade"
   HEADER_SETTINGS: "Configurações"
   HEADER_CHANGE_OWNERSHIP: "Mudar a titularidade"
-  HEADER_RELATIONS: "Diplomacia"
   HEADER_RELATION_WITH: "Relação: {0}"
   HEADER_SELECT_ADD_TERRITORY_RELATION: "Adicionar à {0}"
   HEADER_SELECT_REMOVE_TERRITORY_RELATION: "Remover de {0}"
@@ -547,7 +538,6 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fClique com o botão direito para §c recusar"
   GUI_LANGUAGE_CHANGED: "§aIdioma alterado para: {0}"
   GUI_TOWN_LEVEL_ICON: "§aNível da cidade"
-  GUI_TOWN_LEVEL_ICON_DESC1: "§fMelhorar a cidade"
   GUI_TOWN_SETTINGS_ICON: "§aConfigurações"
   GUI_TOWN_SETTINGS_ICON_DESC1: "§fConfigurações gerais da cidade"
   GUI_ATTACK_ICON: "§aAtaques"
@@ -592,7 +582,6 @@ language:
   GUI_TOWN_LEVEL_UP_DESC2: "§fNível §a{0}§f custo de atualização: §e{1}{MONEY_CHAR}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nPré requisitos:"
   GUI_TOWN_LEVEL_UP_UNI_DESC4: "§f§nRecompensas:"
-  TOWN_UPGRADE_MAX_LEVEL: "§cVocê atingiu o nível máximo de melhorias"
   ANY_WOOD_SCOPE_NAME: "Qualquer madeira"
   ANY_LOG_SCOPE_NAME: "Qualquer tronco"
   ANY_PLANK_SCOPE_NAME: "Qualquer tábua"
@@ -623,9 +612,6 @@ language:
   UPGRADE_LINE_PERCENT_MAX: "§f- {0} : §e{1}%"
   UPGRADE_LINE_INFINITY_LOCKED: "§f- {0} : 0 §e+∞"
   UPGRADE_LINE_INFINITY_UNLOCKED: "§f- {0} : §e∞"
-  UPGRADE_LINE_LOCKED: "§f- {0} : Bloqueado"
-  UPGRADE_LINE_LOCKED_UNLOCKED: "§f- {0} : Bloqueado → §eDesbloqueado"
-  UPGRADE_LINE_UNLOCKED: "§f- {0} : §eDesbloqueado"
   PLAYER_CAP: "Máximo de jogadores"
   CHUNK_CAP: "Máximo de chunks"
   PROPERTY_CAP: "Máximo de propriedades"
@@ -769,7 +755,6 @@ language:
   #Select language
   HELP_US_TRANSLATE: "§fAjude-nos a traduzir o plugin para o seu idioma"
   PERCENT_COMPLETED: "§6{0}%§f concluído"
-  CLICK_HERE_TO_OPEN_BROWSER: "§fClique aqui para abrir o crowdin no seu navegador"
   #Region GUI
   GUI_ADMIN_PLAYER_ICON: "§aGerenciar jogador"
   GUI_REGION_CREATE: "§aCriar uma região"
@@ -883,7 +868,6 @@ language:
   PLAYER_ENTER_LANDMARK_CHUNK: "§fEntrando: §6Ponto de referência"
   PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION: "Você não pode entrar em {0}§f porque sua relação com o território é {1}"
   CHUNK_ENTER_TOWN_AT_WAR: "§cVocê está em guerra com esta cidade. Os jogadores foram alertados que você cruzou a fronteira"
-  CHUNK_INTRUSION_ALERT: "§cUm inimigo da cidade {0} entrou nas suas fronteiras: {1}"
   WILDERNESS_NO_PERMISSION: "§cVocê não tem permissão para realizar esta ação em território selvagem"
   #History
   HISTORY_TOWN_LEADER_CHANGED: "{0} mudou o líder da cidade de {1} para {2}"

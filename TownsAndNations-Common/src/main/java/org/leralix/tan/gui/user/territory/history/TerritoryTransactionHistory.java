@@ -1,7 +1,7 @@
 package org.leralix.tan.gui.user.territory.history;
 
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.storage.database.transactions.AbstractTransaction;
 import org.leralix.tan.storage.database.transactions.EntityScope;
 import org.leralix.tan.storage.database.transactions.TransactionType;
@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
 
 public class TerritoryTransactionHistory extends AbstractTransactionHistory {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
     public TerritoryTransactionHistory(
             Player player,
-            TerritoryData territoryData,
+            Territory territoryData,
             Consumer<Player> guiCallback
     ){
         super(player, guiCallback);
@@ -37,7 +37,7 @@ public class TerritoryTransactionHistory extends AbstractTransactionHistory {
 
     public TerritoryTransactionHistory(
             Player player,
-            TerritoryData territoryData,
+            Territory territoryData,
             TransactionType transactionType,
             Consumer<Player> guiCallback
     ){

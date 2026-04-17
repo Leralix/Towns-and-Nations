@@ -7,7 +7,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ClaimedChunkSettings {
+public class ClaimedChunkSettings implements IClaimedChunkSettings{
 
     /**
      * The permission manager to handle permissions related to players.
@@ -35,27 +35,17 @@ public class ClaimedChunkSettings {
         }
     }
 
+    @Override
     public PermissionManager getChunkPermissions() {
-        // Migrate old permission system if necessary
-        if (newPermissionManager == null){
-            newPermissionManager = new PermissionManager(PermissionGiven.TOWN);
-        }
         return newPermissionManager;
     }
 
+    @Override
     public Map<GeneralChunkSetting, Boolean> getChunkSetting() {
         return generalSettings;
     }
 
-
-    public void nextPermission(ChunkPermissionType type) {
-        getChunkPermissions().get(type).nextPermission();
-    }
-
-    public UpgradeStatus getSpawnControl(MobChunkSpawnEnum mobType) {
-        return getSpawnControl(mobType.name());
-    }
-
+    @Override
     public UpgradeStatus getSpawnControl(String mobType) {
         mobSpawnStorage.putIfAbsent(mobType, new UpgradeStatus(false, false));
         return mobSpawnStorage.get(mobType);

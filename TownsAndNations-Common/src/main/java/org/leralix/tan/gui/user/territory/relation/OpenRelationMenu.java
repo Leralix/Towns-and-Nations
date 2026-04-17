@@ -2,15 +2,13 @@ package org.leralix.tan.gui.user.territory.relation;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
-import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -18,11 +16,11 @@ import java.util.List;
 
 public class OpenRelationMenu extends IteratorGUI {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
     private final TownRelation relation;
 
-    public OpenRelationMenu(Player player, TerritoryData territoryData, TownRelation relation) {
-        super(player, Lang.HEADER_RELATION_WITH.get(relation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
+    public OpenRelationMenu(Player player, Territory territoryData, TownRelation relation) {
+        super(player, Lang.HEADER_RELATION_WITH.get(relation.getName(TownsAndNations.getPlugin().getPlayerDataStorage().get(player).getLang())), 6);
         this.territoryData = territoryData;
         this.relation = relation;
         open();
@@ -69,15 +67,8 @@ public class OpenRelationMenu extends IteratorGUI {
 
     private List<GuiItem> getTerritories() {
         ArrayList<GuiItem> guiItems = new ArrayList<>();
-        for (String territoryID : territoryData.getRelations().getTerritoriesIDWithRelation(relation)) {
-
-            TerritoryData otherTerritory = TerritoryUtil.getTerritory(territoryID);
-            if(otherTerritory == null){
-                continue;
-            }
-
-            IconBuilder icon = otherTerritory.getIconWithInformationAndRelation(territoryData, langType);
-            guiItems.add(icon.asGuiItem(player, langType));
+        for (Territory otherTerritory : territoryData.getRelations().getTerritoriesWithRelation(relation)) {
+            guiItems.add(otherTerritory.getIconWithInformationAndRelation(territoryData, langType).asGuiItem(player, langType));
         }
         return guiItems;
     }

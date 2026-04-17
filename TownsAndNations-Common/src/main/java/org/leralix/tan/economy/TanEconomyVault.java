@@ -13,8 +13,13 @@ import java.util.List;
 
 public class TanEconomyVault extends TanEconomyStandalone implements Economy {
 
-    public TanEconomyVault() {
+    private final PlayerDataStorage playerDataStorage;
+
+    public TanEconomyVault(
+            PlayerDataStorage playerDataStorage
+    ) {
         super();
+        this.playerDataStorage = playerDataStorage;
     }
 
     @Override
@@ -79,7 +84,7 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
 
     @Override
     public double getBalance(OfflinePlayer offlinePlayer) {
-        return super.getBalance(PlayerDataStorage.getInstance().get(offlinePlayer));
+        return super.getBalance(playerDataStorage.get(offlinePlayer));
     }
 
     @Override
@@ -122,9 +127,9 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
         if(v < 0)
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Cannot withdraw negative funds");
         if(!has(offlinePlayer, v))
-            return new EconomyResponse(v, PlayerDataStorage.getInstance().get(offlinePlayer).getBalance(), EconomyResponse.ResponseType.FAILURE, "Player does not have enough money");
+            return new EconomyResponse(v, playerDataStorage.get(offlinePlayer).getBalance(), EconomyResponse.ResponseType.FAILURE, "Player does not have enough money");
 
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(offlinePlayer);
+        ITanPlayer tanPlayer = playerDataStorage.get(offlinePlayer);
         tanPlayer.removeFromBalance((int) v);
         return new EconomyResponse(v, tanPlayer.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
     }
@@ -146,7 +151,7 @@ public class TanEconomyVault extends TanEconomyStandalone implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double v) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(offlinePlayer);
+        ITanPlayer tanPlayer = playerDataStorage.get(offlinePlayer);
         tanPlayer.addToBalance((int) v);
         return new EconomyResponse(v, tanPlayer.getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
     }

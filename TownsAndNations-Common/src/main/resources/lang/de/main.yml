@@ -196,7 +196,6 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "§cDu hast nicht genug Geld für diese Aktion"
   NAME_ALREADY_USED: "§cDieser Name wird bereits verwendet"
-  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Gib den Namen der Stadt im Chat ein."
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Gib die Menge im Chat ein"
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aDu hast erfolgreich §6{0}{MONEY_CHAR}§a aus der Stadtkasse entnommen"
   TOWN_SET_TAX_SUCCESS: "§aDu hast die Steuer erfolgreich auf §6{0}{MONEY_CHAR}§a festgelegt"
@@ -211,12 +210,8 @@ language:
   PROPERTY_DELETED: "Grundstück erfolgreich gelöscht"
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Setze den Stadt-Spawnpunkt"
-  SPAWN_SET_SUCCESS: "Stadt-Spawnpunkt gesetzt"
   SPAWN_COMMAND_DESC: "Teleportiere zum Stadt-Spawnpunkt"
   SPAWN_TELEPORTED: "Zum Stadt-Spawnpunkt teleportiert"
-  SPAWN_NOT_SET: "§cDer Stadt-Spawnpunkt wurde nicht gesetzt"
-  SPAWN_NOT_UNLOCKED: "§cDer Stadt-Spawnpunkt wurde nicht freigeschaltet"
-  SPAWN_NEED_TO_BE_IN_CHUNK: "§cDu musst dich in einem beanspruchten Chunk befinden, um den Spawnpunkt zu setzen"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Neutral"
@@ -230,7 +225,6 @@ language:
   CANNOT_BE_MODIFIED: "§cDies kann nicht bearbeitet werden"
   #Main menu
   GUI_SERVER_TIME: "§aDatum"
-  GUI_KINGDOM_ICON: "§aKönigreich"
   GUI_REGION_ICON: "§aRegion"
   GUI_REGION_ICON_DESC1_REGION: "§fAktuelle Region: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fRang der Region: {0}"
@@ -337,7 +331,6 @@ language:
   HEADER_HISTORY: "Verlauf"
   HEADER_SETTINGS: "Einstellungen"
   HEADER_CHANGE_OWNERSHIP: "Eigentümerwechsel"
-  HEADER_RELATIONS: "Diplomatie"
   HEADER_SELECT_ADD_TERRITORY_RELATION: "Zu {0} hinzufügen"
   HEADER_SELECT_REMOVE_TERRITORY_RELATION: "Aus {0} entfernen"
   HEADER_CHUNK_PERMISSION: "Chunk-Berechtigungen"
@@ -373,7 +366,6 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fRechtsklick zum§c Ablehnen"
   GUI_LANGUAGE_CHANGED: "§aSprache geändert zu: {0}"
   GUI_TOWN_LEVEL_ICON: "§aStadtstufe"
-  GUI_TOWN_LEVEL_ICON_DESC1: "§fStadt upgraden"
   GUI_TOWN_SETTINGS_ICON: "§aEinstellungen"
   GUI_TOWN_SETTINGS_ICON_DESC1: "§fAllgemeine Stadteinstellungen"
   GUI_ATTACK_ICON: "§aAngriffe"
@@ -404,7 +396,6 @@ language:
   GUI_TOWN_LEVEL_UP_DESC1: "§fAktuelles Level: §e{0}"
   GUI_TOWN_LEVEL_UP_DESC2: "§fKosten für das Upgrade auf Level §a{0}§f: §e{1}{MONEY_CHAR}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nVoraussetzungen:"
-  TOWN_UPGRADE_MAX_LEVEL: "§cDu hast das maximale Upgrade-Level erreicht"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§cDu erfüllst die Voraussetzungen nicht"
   #Diplomacy
   GUI_TOWN_RELATION_HOSTILE: "§aFeindlich"
@@ -510,7 +501,6 @@ language:
   #Select language
   HELP_US_TRANSLATE: "§fHilf uns, das Plugin in deiner Sprache zu übersetzen"
   PERCENT_COMPLETED: "§6{0}%§f abgeschlossen"
-  CLICK_HERE_TO_OPEN_BROWSER: "§fKlicke hier, um Crowdin in deinem Browser zu öffnen"
   GUI_REGION_CREATE: "§aRegion erstellen"
   GUI_REGION_CREATE_DESC1: "§fKosten: §6{0}{MONEY_CHAR}"
   GUI_REGION_CREATE_DESC2: "§fLinksklick, um eine neue Region mit deiner Stadt als regionale Hauptstadt zu erstellen"
@@ -601,7 +591,6 @@ language:
   PLAYER_ENTER_TERRITORY_CHUNK: "§fBetreten : {0}"
   PLAYER_ENTER_LANDMARK_CHUNK: "§fBetritt : §6Landmarke"
   CHUNK_ENTER_TOWN_AT_WAR: "§cDu bist im Krieg mit dieser Stadt. Spieler wurden benachrichtigt, dass du die Grenze überschritten hast"
-  CHUNK_INTRUSION_ALERT: "§cEin Feind aus der Stadt {0} ist in deine Grenzen eingedrungen: {1}"
   WILDERNESS_NO_PERMISSION: "§cDu hast keine Berechtigung, diese Aktion in der Wildnis auszuführen"
   #History
   HISTORY_TOWN_LEADER_CHANGED: "{0} hat den Stadtleiter von {1} auf {2} geändert"

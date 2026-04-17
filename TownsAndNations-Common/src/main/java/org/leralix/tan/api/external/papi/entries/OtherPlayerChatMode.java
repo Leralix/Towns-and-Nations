@@ -7,10 +7,10 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.LocalChatStorage;
-import org.leralix.tan.storage.stored.NationDataStorage;
+import org.leralix.tan.storage.stored.NationStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.RegionStorage;
+import org.leralix.tan.storage.stored.TownStorage;
 
 public class OtherPlayerChatMode extends PapiEntry {
 
@@ -18,14 +18,14 @@ public class OtherPlayerChatMode extends PapiEntry {
 
     public OtherPlayerChatMode(
             PlayerDataStorage playerDataStorage,
-            TownDataStorage townDataStorage,
-            RegionDataStorage regionDataStorage,
-            NationDataStorage nationDataStorage,
+            TownStorage townStorage,
+            RegionStorage regionDataStorage,
+            NationStorage nationDataStorage,
             LocalChatStorage localChatStorage
     ) {
         super("chat_mode_{}",
                 playerDataStorage,
-                townDataStorage,
+                townStorage,
                 regionDataStorage,
                 nationDataStorage
         );

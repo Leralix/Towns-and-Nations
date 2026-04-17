@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,7 +16,7 @@ class ChangeColorTest extends BasicTest {
 
         Player player = server.addPlayer();
         ITanPlayer playerData = playerDataStorage.get(player);
-        TownData townData = townDataStorage.newTown("town 1");
+        Town townData = townStorage.newTown("town 1");
 
         ChangeColor changeColor = new ChangeColor(townData, null);
 

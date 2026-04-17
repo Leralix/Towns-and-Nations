@@ -3,7 +3,7 @@ package org.leralix.tan.gui.user.property;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.leralix.tan.data.building.property.PropertyData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.user.territory.CommonChunkSettingsMenu;
@@ -38,7 +38,7 @@ public class PropertyChunkSettingsMenu extends CommonChunkSettingsMenu {
             } else if (event.isRightClick()) {
                 if (event.isShiftClick()) {
                     //Owner may not have a town
-                    TownData townData = tanPlayer.getTown();
+                    Town townData = tanPlayer.getTown();
                     if (townData == null) {
                         TanChatUtils.message(player, Lang.PLAYER_NO_TOWN);
                         return;

@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.WarsMenu;
 import org.leralix.tan.lang.Lang;
@@ -19,9 +19,9 @@ import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
  */
 public class SecondaryWarMenu extends AbstractWarMenu {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
-    SecondaryWarMenu(Player player, TerritoryData territoryData, War war) {
+    SecondaryWarMenu(Player player, Territory territoryData, War war) {
         super(player, Lang.HEADER_WARS_MENU, 3, war);
         this.territoryData = territoryData;
         open();

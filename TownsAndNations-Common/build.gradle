@@ -22,7 +22,7 @@ tasks.build {
 }
 
 group = 'org.tan'
-version = '0.17.2'
+version = '0.17.3'
 
 compileJava.options.encoding = 'UTF-8'
 
@@ -94,6 +94,7 @@ dependencies {
     //Database dependencies
     implementation 'com.mysql:mysql-connector-j:8.4.0'
     implementation 'org.xerial:sqlite-jdbc:3.43.2.0'
+    implementation 'redis.clients:jedis:7.2.0'
 
     //Tests
     testImplementation 'io.github.leralix:sphere-lib:0.6.1'

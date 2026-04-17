@@ -1,7 +1,7 @@
 package org.leralix.tan.data.territory.permission;
 
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.data.territory.TerritoryData;
 
 public enum PermissionGiven {
@@ -12,10 +12,10 @@ public enum PermissionGiven {
     PROPERTY;
 
     public static PermissionGiven ofTerritory(TerritoryData territoryData) {
-        if(territoryData instanceof NationData){
+        if(territoryData instanceof Nation){
             return NATION;
         }
-        if(territoryData instanceof RegionData){
+        if(territoryData instanceof Region){
             return REGION;
         }
         else {

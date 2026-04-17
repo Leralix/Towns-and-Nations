@@ -5,8 +5,8 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.RegionData;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.data.timezone.TimeZoneManager;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.common.PlayerGUI;
@@ -82,7 +82,7 @@ public class MainMenu extends BasicGui {
         List<FilledLang> description = new ArrayList<>();
 
         if (tanPlayer.hasNation()) {
-            NationData nationData = tanPlayer.getNation();
+            Nation nationData = tanPlayer.getNation();
             description.add(Lang.GUI_NATION_ICON_DESC1_NATION.get(nationData.getColoredName()));
             description.add(Lang.GUI_NATION_ICON_DESC2_NATION.get(nationData.getRank(tanPlayer).getColoredName()));
         } else {
@@ -101,7 +101,7 @@ public class MainMenu extends BasicGui {
         List<FilledLang> description = new ArrayList<>();
 
         if (tanPlayer.hasRegion()) {
-            RegionData regionData = tanPlayer.getRegion();
+            Region regionData = tanPlayer.getRegion();
             description.add(Lang.GUI_REGION_ICON_DESC1_REGION.get(regionData.getColoredName()));
             description.add(Lang.GUI_REGION_ICON_DESC2_REGION.get(regionData.getRank(tanPlayer).getColoredName()));
         } else {

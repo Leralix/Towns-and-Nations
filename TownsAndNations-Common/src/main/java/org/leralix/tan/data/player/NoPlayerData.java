@@ -4,10 +4,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.building.property.PropertyData;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.data.territory.TerritoryData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.*;
 import org.leralix.tan.data.territory.rank.RankData;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.data.timezone.TimeZoneEnum;
@@ -61,7 +58,7 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public TownData getTown() {
+    public Town getTown() {
         return null;
     }
 
@@ -186,7 +183,7 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public SideStatus getWarSideWith(TerritoryData territoryData) {
+    public SideStatus getWarSideWith(Territory territoryData) {
         return SideStatus.NEUTRAL;
     }
 
@@ -211,17 +208,17 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public Integer getRankID(TerritoryData territoryData) {
+    public Integer getRankID(Territory territoryData) {
         return 0;
     }
 
     @Override
-    public RankData getRank(TerritoryData territoryData) {
+    public RankData getRank(Territory territoryData) {
         return territoryData.getRank(territoryData.getDefaultRankID());
     }
 
     @Override
-    public List<TerritoryData> getAllTerritoriesPlayerIsIn() {
+    public List<Territory> getAllTerritoriesPlayerIsIn() {
         return List.of();
     }
 
@@ -231,7 +228,7 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public LangType getLang() {
+    public @NotNull LangType getLang() {
         return null;
     }
 
@@ -251,7 +248,7 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public TimeZoneEnum getTimeZone() {
+    public @NotNull TimeZoneEnum getTimeZone() {
         return null;
     }
 

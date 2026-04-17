@@ -3,14 +3,12 @@ package org.leralix.tan.gui.user.territory.relation;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.storage.stored.truce.ActiveTruce;
 import org.leralix.tan.storage.stored.truce.TruceStorage;
 import org.leralix.tan.utils.constants.Constants;
@@ -21,16 +19,17 @@ import org.leralix.tan.utils.text.TanChatUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.leralix.lib.data.SoundEnum.MINOR_GOOD;
 import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 public class AddRelationMenu extends IteratorGUI {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
     private final TownRelation wantedRelation;
 
 
-    public AddRelationMenu(Player player, TerritoryData territory, TownRelation wantedRelation) {
-        super(player, Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(wantedRelation.getName(PlayerDataStorage.getInstance().get(player).getLang())), 6);
+    public AddRelationMenu(Player player, Territory territory, TownRelation wantedRelation) {
+        super(player, Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(wantedRelation.getName(TownsAndNations.getPlugin().getPlayerDataStorage().get(player).getLang())), 6);
         this.territoryData = territory;
         this.wantedRelation = wantedRelation;
         open();
@@ -45,20 +44,22 @@ public class AddRelationMenu extends IteratorGUI {
     }
 
     private List<GuiItem> getTerritories() {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = TownsAndNations.getPlugin().getPlayerDataStorage().get(player);
 
         List<String> relationListID = territoryData.getRelations().getTerritoriesIDWithRelation(wantedRelation);
         List<GuiItem> guiItems = new ArrayList<>();
 
         List<String> territories = new ArrayList<>();
-        territories.addAll(TownDataStorage.getInstance().getAll().keySet());
-        territories.addAll(RegionDataStorage.getInstance().getAll().keySet());
+        territories.addAll(TownsAndNations.getPlugin().getTownStorage().getAll().keySet());
+        territories.addAll(TownsAndNations.getPlugin().getRegionStorage().getAll().keySet());
+        territories.addAll(TownsAndNations.getPlugin().getNationStorage().getAll().keySet());
 
         territories.removeAll(relationListID); //Territory already have this relation
         territories.remove(territoryData.getID()); //Remove itself
 
         for (String otherTownUUID : territories) {
-            TerritoryData otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
+
+            Territory otherTerritory = TerritoryUtil.getTerritory(otherTownUUID);
 
             if (otherTerritory == null) {
                 continue;
@@ -72,13 +73,19 @@ public class AddRelationMenu extends IteratorGUI {
 
             guiItems.add(otherTerritory.getIconWithInformationAndRelation(territoryData, tanPlayer.getLang())
                     .setAction(action -> {
+
+                        if(TownsAndNations.getPlugin().getWarStorage().isTerritoryAtWarWith(territoryData, otherTerritory)){
+                            TanChatUtils.message(player, Lang.CANNOT_REMOVE_RELATION_WAR.get(tanPlayer, otherTerritory.getName()), MINOR_GOOD);
+                            return;
+                        }
+
                         if (otherTerritory.haveNoLeader()) {
                             TanChatUtils.message(player, Lang.TERRITORY_DIPLOMATIC_INVITATION_NO_LEADER.get(tanPlayer));
                             return;
                         }
 
                         if (wantedRelation.isSuperiorTo(actualRelation)) {
-                            otherTerritory.receiveDiplomaticProposal(territoryData, wantedRelation);
+                            otherTerritory.addDiplomaticProposal(territoryData, wantedRelation);
                             TanChatUtils.message(player, Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(tanPlayer, otherTerritory.getName()));
                         } else {
                             RelationConstant relationConstant = Constants.getRelationConstants(actualRelation);
@@ -99,7 +106,7 @@ public class AddRelationMenu extends IteratorGUI {
                             //Successfully switched to a new relation. If old relation required a truce, apply it.
                             ActiveTruce activeTruce = new ActiveTruce(territoryData, otherTerritory, trucePeriod);
                             TruceStorage.getInstance().add(activeTruce);
-                            territoryData.setRelation(otherTerritory, wantedRelation);
+                            TerritoryUtil.setRelation(otherTerritory, territoryData, wantedRelation);
                         }
                         new OpenRelationMenu(player, territoryData, wantedRelation);
                     })

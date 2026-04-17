@@ -20,7 +20,7 @@ class ShowBoundariesTest extends BasicTest {
         ITanPlayer tanDefender = playerDataStorage.get(defender);
         World world = server.addSimpleWorld("world");
 
-        var townDefender = townDataStorage.newTown("DefenderTown", tanDefender);
+        var townDefender = townStorage.newTown("DefenderTown", tanDefender);
 
         townDefender.addToBalance(townDefender.getClaimCost() * 10);
 

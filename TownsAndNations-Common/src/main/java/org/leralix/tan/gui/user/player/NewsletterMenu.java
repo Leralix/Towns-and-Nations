@@ -33,7 +33,7 @@ public class NewsletterMenu extends IteratorGUI {
     }
 
     private List<GuiItem> getNewsletters() {
-        return NewsletterStorage.getInstance().getNewsletterForPlayer(player, scope, p -> open(), langType);
+        return NewsletterStorage.getInstance().getNewsletterForPlayer(player, tanPlayer, scope, p -> open(), langType);
     }
 
     private GuiItem getMarkAllAsReadButton() {

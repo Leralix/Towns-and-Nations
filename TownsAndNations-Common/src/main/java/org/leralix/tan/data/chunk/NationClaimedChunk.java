@@ -2,9 +2,9 @@ package org.leralix.tan.data.chunk;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.EntityType;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 
-public class NationClaimedChunk extends TerritoryChunk {
+public class NationClaimedChunk extends TerritoryChunkData implements NationChunk {
 
     public NationClaimedChunk(Chunk chunk, String owner) {
         super(chunk, owner);
@@ -25,7 +25,7 @@ public class NationClaimedChunk extends TerritoryChunk {
     }
 
     @Override
-    public boolean canTerritoryClaim(TerritoryData territoryData) {
+    public boolean canTerritoryClaim(Territory territoryData) {
         if (territoryData.canConquerChunk(this)) {
             return true;
         }

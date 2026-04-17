@@ -1,15 +1,15 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Region;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.RegionCreatedInternalEvent;
 import org.leralix.tan.gui.common.PlayerGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
-import org.leralix.tan.storage.stored.RegionDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.NameFilter;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -26,7 +26,7 @@ public class CreateRegion extends ChatListenerEvent {
     @Override
     public boolean execute(Player player, ITanPlayer playerData, String message) {
 
-        TownData town = playerData.getTown();
+        Town town = playerData.getTown();
 
         if(!town.isLeader(player)){
             TanChatUtils.message(player, Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get(playerData));
@@ -50,7 +50,7 @@ public class CreateRegion extends ChatListenerEvent {
             return false;
         }
 
-        if(RegionDataStorage.getInstance().isNameUsed(regionName)){
+        if(TownsAndNations.getPlugin().getRegionStorage().isNameUsed(regionName)){
             TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(playerData));
             return false;
         }
@@ -59,9 +59,9 @@ public class CreateRegion extends ChatListenerEvent {
         return true;
     }
 
-    private void createRegion(Player player, ITanPlayer playerData, String regionName, TownData capital) {
+    private void createRegion(Player player, ITanPlayer playerData, String regionName, Town capital) {
         capital.removeFromBalance(cost);
-        RegionData newRegion = RegionDataStorage.getInstance().createNewRegion(regionName, capital);
+        Region newRegion = TownsAndNations.getPlugin().getRegionStorage().newRegion(regionName, capital);
 
         EventManager.getInstance().callEvent(new RegionCreatedInternalEvent(newRegion, playerData));
 

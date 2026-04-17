@@ -3,14 +3,12 @@ package org.leralix.tan.listeners.chat.events;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.leralix.tan.BasicTest;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.mockbukkit.mockbukkit.MockBukkit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -25,13 +23,7 @@ class ChangeLandmarkNameTest extends BasicTest {
         super.setUp();
 
         World world = server.addSimpleWorld("world");
-        landmark = LandmarkStorage.getInstance().addLandmark(new Location(world, 0, 0, 0));
-    }
-
-    @AfterEach
-    public void tearDown()
-    {
-        MockBukkit.unmock();
+        landmark = TownsAndNations.getPlugin().getLandmarkStorage().addLandmark(new Location(world, 0, 0, 0));
     }
 
     @Test

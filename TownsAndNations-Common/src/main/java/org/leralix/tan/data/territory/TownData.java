@@ -6,9 +6,11 @@ import org.jetbrains.annotations.Nullable;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.data.building.property.PropertyData;
-import org.leralix.tan.data.chunk.ClaimedChunk;
+import org.leralix.tan.data.chunk.ChunkData;
+import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.economy.*;
@@ -26,10 +28,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.PlayerTaxTransaction;
-import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
 import org.leralix.tan.utils.Range;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.graphic.PrefixUtil;
@@ -38,11 +36,10 @@ import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.buildings.TanLandmark;
 import org.tan.api.interfaces.buildings.TanProperty;
-import org.tan.api.interfaces.territory.TanTown;
 
 import java.util.*;
 
-public class TownData extends TerritoryData implements TanTown {
+public class TownData extends TerritoryData implements Town {
 
     //This is all that should be kept after the transition to the parent class
     private UUID UuidLeader;
@@ -55,7 +52,7 @@ public class TownData extends TerritoryData implements TanTown {
 
 
     public TownData(String townId, String townName) {
-        this(townId, townName, null); // Appelle le constructeur principal
+        this(townId, townName, null);
     }
 
     public TownData(String townId, String townName, ITanPlayer leader) {
@@ -77,17 +74,13 @@ public class TownData extends TerritoryData implements TanTown {
     }
 
     @Override
-    public Collection<TanProperty> getProperties() {
-        return List.copyOf(getPropertiesInternal());
-    }
-
     public Collection<PropertyData> getPropertiesInternal() {
         return getPropertyDataMap().values();
     }
 
     @Override
     public Collection<TanLandmark> getLandmarksOwned() {
-        return List.copyOf(LandmarkStorage.getInstance().getLandmarkOf(this));
+        return List.copyOf(TownsAndNations.getPlugin().getLandmarkStorage().getLandmarkOf(this));
     }
 
     @Override
@@ -95,7 +88,7 @@ public class TownData extends TerritoryData implements TanTown {
         return getRank(tanPlayer.getTownRankID());
     }
 
-
+    @Override
     public void addPlayer(ITanPlayer tanNewPlayer) {
         townPlayerListId.add(tanNewPlayer.getID());
         getTownDefaultRank().addPlayer(tanNewPlayer);
@@ -105,7 +98,7 @@ public class TownData extends TerritoryData implements TanTown {
 
         tanNewPlayer.clearAllTownApplications();
 
-        for (TerritoryData overlords : getOverlords()) {
+        for (Territory overlords : getOverlords()) {
             overlords.registerPlayer(tanNewPlayer);
         }
 
@@ -114,8 +107,9 @@ public class TownData extends TerritoryData implements TanTown {
         PrefixUtil.updatePrefix(tanNewPlayer.getPlayer());
     }
 
+    @Override
     public void removePlayer(ITanPlayer tanPlayer) {
-        for (TerritoryData overlords : getOverlords()) {
+        for (Territory overlords : getOverlords()) {
             overlords.unregisterPlayer(tanPlayer);
         }
 
@@ -136,7 +130,7 @@ public class TownData extends TerritoryData implements TanTown {
     public Collection<ITanPlayer> getITanPlayerList() {
         ArrayList<ITanPlayer> res = new ArrayList<>();
         for (UUID playerID : getPlayerIDList()) {
-            res.add(PlayerDataStorage.getInstance().get(playerID));
+            res.add(TownsAndNations.getPlugin().getPlayerDataStorage().get(playerID));
         }
         return res;
     }
@@ -175,7 +169,7 @@ public class TownData extends TerritoryData implements TanTown {
 
     @Override
     public ITanPlayer getLeaderData() {
-        return PlayerDataStorage.getInstance().get(this.UuidLeader);
+        return TownsAndNations.getPlugin().getPlayerDataStorage().get(this.UuidLeader);
     }
 
     @Override
@@ -189,14 +183,13 @@ public class TownData extends TerritoryData implements TanTown {
         return getLeaderID().equals(leaderID);
     }
 
-    @Override
-    protected Collection<TerritoryData> getOverlords() {
-        List<TerritoryData> overlords = new ArrayList<>();
+    protected Collection<Territory> getOverlords() {
+        List<Territory> overlords = new ArrayList<>();
 
         var optRegion = getRegion();
 
         if (optRegion.isPresent()) {
-            RegionData regionData = optRegion.get();
+            Region regionData = optRegion.get();
             overlords.add(regionData);
             regionData.getOverlordInternal().ifPresent(overlords::add);
         }
@@ -210,7 +203,7 @@ public class TownData extends TerritoryData implements TanTown {
         for (UUID playerId : townPlayerListId) {
             Player player = Bukkit.getServer().getPlayer(playerId);
             if (player != null && player.isOnline()) {
-                TanChatUtils.message(player, message.get(player));
+                TanChatUtils.message(player, message.get(TownsAndNations.getPlugin().getPlayerDataStorage().get(player)));
             }
         }
     }
@@ -228,45 +221,44 @@ public class TownData extends TerritoryData implements TanTown {
         broadcastMessageWithSound(message, soundEnum, true);
     }
 
+    @Override
     public RankData getTownDefaultRank() {
         return getRank(getDefaultRankID());
     }
 
-
+    @Override
     public boolean isFull() {
         return !getNewLevel().getStat(TownPlayerCap.class).canDoAction(this.townPlayerListId.size());
     }
 
+    @Override
     public void addPlayerJoinRequest(Player player) {
-        ITanPlayer tanPlayer = PlayerDataStorage.getInstance().get(player);
+        ITanPlayer tanPlayer = TownsAndNations.getPlugin().getPlayerDataStorage().get(player);
         EventManager.getInstance().callEvent(new PlayerJoinTownRequestInternalEvent(tanPlayer, this));
-        addPlayerJoinRequest(tanPlayer.getID());
+        this.PlayerJoinRequestSet.add(player.getUniqueId());
     }
 
-    public void addPlayerJoinRequest(UUID playerID) {
-        this.PlayerJoinRequestSet.add(playerID);
-    }
-
+    @Override
     public void removePlayerJoinRequest(UUID playerID) {
         PlayerJoinRequestSet.remove(playerID);
     }
 
-    public boolean isPlayerAlreadyRequested(String playerUUID) {
+    @Override
+    public boolean isPlayerAlreadyRequested(UUID playerUUID) {
         return PlayerJoinRequestSet.contains(playerUUID);
     }
 
-    public boolean isPlayerAlreadyRequested(Player player) {
-        return isPlayerAlreadyRequested(player.getUniqueId().toString());
-    }
-
+    @Override
     public Set<UUID> getPlayerJoinRequestSet() {
         return this.PlayerJoinRequestSet;
     }
 
+    @Override
     public boolean isRecruiting() {
         return isRecruiting;
     }
 
+    @Override
     public void swapRecruiting() {
         this.isRecruiting = !this.isRecruiting;
     }
@@ -299,9 +291,9 @@ public class TownData extends TerritoryData implements TanTown {
     public void abstractClaimChunk(Chunk chunk, boolean ignoreAdjacent) {
 
         removeFromBalance(getClaimCost());
-        NewClaimedChunkStorage.getInstance().unclaimChunkAndUpdate(NewClaimedChunkStorage.getInstance().get(chunk));
+        TownsAndNations.getPlugin().getClaimStorage().unclaimChunkAndUpdate(TownsAndNations.getPlugin().getClaimStorage().get(chunk));
 
-        ClaimedChunk chunkClaimed = NewClaimedChunkStorage.getInstance().claimTownChunk(chunk, getID());
+        ChunkData chunkClaimed = TownsAndNations.getPlugin().getClaimStorage().claimTownChunk(chunk, getID());
         //If this was the first claimed chunk, set the capital.
         if (getNumberOfClaimedChunk() == 1) {
             setCapitalLocation(chunkClaimed.getVector2D());
@@ -309,7 +301,7 @@ public class TownData extends TerritoryData implements TanTown {
     }
 
     @Override
-    protected boolean isPositionClaimable(Player player, Chunk chunk, ClaimedChunk chunkData, LangType langType) {
+    protected boolean isPositionClaimable(Player player, Chunk chunk, IClaimedChunk chunkData, LangType langType) {
 
         // Rules are different for the first claimed chunk.
         if (getNumberOfClaimedChunk() == 0) {
@@ -323,40 +315,49 @@ public class TownData extends TerritoryData implements TanTown {
         }
 
         // Else, the chunk must be adjacent to at least one chunk of the territory.
-        if (!NewClaimedChunkStorage.getInstance().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
+        if (!TownsAndNations.getPlugin().getClaimStorage().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
             TanChatUtils.message(player, Lang.CHUNK_NOT_ADJACENT.get(langType));
             return false;
         }
         return true;
     }
 
-
+    @Override
     public void setCapitalLocation(Vector2D vector2D) {
         capitalLocation = vector2D;
     }
 
+    @Override
     public Optional<Vector2D> getCapitalLocation() {
         return Optional.ofNullable(capitalLocation);
     }
 
-    public Optional<RegionData> getRegion() {
+    @Override
+    public Optional<Region> getRegion() {
         var optRegion = getOverlordInternal();
-        if (optRegion.isPresent() && optRegion.get() instanceof RegionData regionData) {
+        if (optRegion.isPresent() && optRegion.get() instanceof Region regionData) {
             return Optional.of(regionData);
         }
         return Optional.empty();
     }
 
+    @Override
     public @Nullable String getRegionID(){
         return overlordID;
     }
 
 
     @Override
-    public Collection<TerritoryData> getPotentialVassals() {
+    public Collection<Territory> getPotentialVassals() {
         return Collections.emptyList();
     }
 
+    @Override
+    public List<Territory> getSubjects() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public void removeOverlordPrivate() {
         for (ITanPlayer tanPlayer : getITanPlayerList()) {
             tanPlayer.setRegionRankID(null);
@@ -364,17 +365,22 @@ public class TownData extends TerritoryData implements TanTown {
     }
 
     @Override
-    protected void addVassalPrivate(TerritoryData vassal) {
+    protected void addVassalPrivate(Territory vassal) {
         //town have no vassals
     }
 
     @Override
-    protected void removeVassal(TerritoryData vassal) {
+    public void removeVassal(Territory vassal) {
         //Town have no vassals
     }
 
     @Override
-    public TerritoryData getCapital() {
+    public int getTotalPlayerCount() {
+        return getPlayerIDList().size();
+    }
+
+    @Override
+    public Territory getCapital() {
         return null;
     }
 
@@ -392,11 +398,13 @@ public class TownData extends TerritoryData implements TanTown {
         budget.addProfitLine(new PropertyCreationTaxLine(this));
     }
 
+    @Override
     public Map<String, PropertyData> getPropertyDataMap() {
         if (this.propertyDataMap == null) this.propertyDataMap = new HashMap<>();
         return this.propertyDataMap;
     }
 
+    @Override
     public String nextPropertyID() {
         if (getPropertyDataMap().isEmpty()) return "P0";
         int size = getPropertyDataMap().size();
@@ -404,6 +412,7 @@ public class TownData extends TerritoryData implements TanTown {
         return "P" + (lastID + 1);
     }
 
+    @Override
     public PropertyData registerNewProperty(Vector3D p1, Vector3D p2) {
         String propertyID = nextPropertyID();
         String id = this.getID() + "_" + propertyID;
@@ -412,6 +421,7 @@ public class TownData extends TerritoryData implements TanTown {
         return newProperty;
     }
 
+    @Override
     public PropertyData registerNewProperty(Vector3D p1, Vector3D p2, ITanPlayer owner) {
         String propertyID = nextPropertyID();
         String id = this.getID() + "_" + propertyID;
@@ -421,10 +431,12 @@ public class TownData extends TerritoryData implements TanTown {
         return newProperty;
     }
 
+    @Override
     public PropertyData getProperty(String id) {
         return getPropertyDataMap().get(id);
     }
 
+    @Override
     public PropertyData getProperty(Location location) {
         for (PropertyData propertyData : getPropertyDataMap().values()) {
             if (propertyData.containsLocation(location)) {
@@ -434,20 +446,24 @@ public class TownData extends TerritoryData implements TanTown {
         return null;
     }
 
+    @Override
     public void removeProperty(PropertyData propertyData) {
         this.propertyDataMap.remove(propertyData.getPropertyID());
     }
 
+    @Override
     public String getTownTag() {
         if (this.townTag == null) setTownTag(name.substring(0, 3).toUpperCase());
         return this.townTag;
     }
 
+    @Override
     public void setTownTag(String townTag) {
         this.townTag = townTag;
         applyToAllOnlinePlayer(PrefixUtil::updatePrefix);
     }
 
+    @Override
     public String getFormatedTag() {
         String tag = Constants.getTownTagFormat();
         tag = tag.replace("{townColor}", getChunkColor().toString());
@@ -455,9 +471,9 @@ public class TownData extends TerritoryData implements TanTown {
         return ChatColor.translateAlternateColorCodes('&', tag);
     }
 
-
+    @Override
     public void kickPlayer(OfflinePlayer kickedPlayer) {
-        ITanPlayer kickedITanPlayer = PlayerDataStorage.getInstance().get(kickedPlayer);
+        ITanPlayer kickedITanPlayer = TownsAndNations.getPlugin().getPlayerDataStorage().get(kickedPlayer);
 
         removePlayer(kickedITanPlayer);
 
@@ -466,13 +482,14 @@ public class TownData extends TerritoryData implements TanTown {
         TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get(kickedITanPlayer.getLang()), SoundEnum.BAD);
     }
 
+    @Override
     public boolean haveNoLeader() {
         return this.UuidLeader == null;
     }
 
-
+    @Override
     public void removeAllLandmark() {
-        for (Landmark landmark : LandmarkStorage.getInstance().getLandmarkOf(this)) {
+        for (Landmark landmark : TownsAndNations.getPlugin().getLandmarkStorage().getLandmarkOf(this)) {
             landmark.removeOwnership();
         }
     }
@@ -491,12 +508,13 @@ public class TownData extends TerritoryData implements TanTown {
         }
 
         TeamUtils.updateAllScoreboardColor();
-        TownDataStorage.getInstance().deleteTown(this);
+        TownsAndNations.getPlugin().getTownStorage().deleteTown(this);
 
 
     }
 
-    private void removeAllProperty() {
+    @Override
+    public void removeAllProperty() {
         for(TanProperty property : new ArrayList<>(getProperties())){
             property.delete();
         }
@@ -522,10 +540,11 @@ public class TownData extends TerritoryData implements TanTown {
         return Collections.emptySet();
     }
 
+    @Override
     public boolean isTownCapitalOccupied() {
         var optCapital = getCapitalLocation();
         if (optCapital.isPresent()) {
-            var claimedChunk = NewClaimedChunkStorage.getInstance().get(optCapital.get().getChunk());
+            var claimedChunk = TownsAndNations.getPlugin().getClaimStorage().get(optCapital.get().getChunk());
             return claimedChunk instanceof TerritoryChunk territoryChunk && territoryChunk.isOccupied();
         }
         return false;

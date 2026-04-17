@@ -1,6 +1,6 @@
 package org.leralix.tan.storage.stored.truce;
 
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 
 import java.time.Instant;
 
@@ -10,7 +10,7 @@ public class ActiveTruce {
     private final String territoryID2;
     private final long endOfTruce;
 
-    public ActiveTruce(TerritoryData territoryData, TerritoryData secondTerritory, int nbHours){
+    public ActiveTruce(Territory territoryData, Territory secondTerritory, int nbHours){
         this.territoryID1 = territoryData.getID();
         this.territoryID2 = secondTerritory.getID();
 

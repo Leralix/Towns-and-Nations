@@ -3,7 +3,7 @@ package org.leralix.tan.listeners.chat.events;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
@@ -12,9 +12,9 @@ import org.leralix.tan.storage.database.transactions.instance.RetrieveTransactio
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class RetrieveMoney extends ChatListenerEvent {
-    TerritoryData territoryData;
+    private final Territory territoryData;
 
-    public RetrieveMoney(TerritoryData territoryData) {
+    public RetrieveMoney(Territory territoryData) {
         this.territoryData = territoryData;
     }
 

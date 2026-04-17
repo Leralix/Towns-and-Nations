@@ -5,9 +5,9 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.RegionData;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Region;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.upgrade.rewards.IndividualStat;
 import org.leralix.tan.data.upgrade.rewards.StatsType;
 import org.leralix.tan.data.upgrade.rewards.bool.EnableMobBan;
@@ -190,11 +190,11 @@ public class NewUpgradeStorage {
         }
     }
 
-    public Upgrade getUpgrade(TerritoryData territoryData, String id) {
-        if(territoryData instanceof NationData){
+    public Upgrade getUpgrade(Territory territoryData, String id) {
+        if(territoryData instanceof Nation){
             return nationUpgrades.get(id);
         }
-        if(territoryData instanceof RegionData){
+        if(territoryData instanceof Region){
             return regionUpgrades.get(id);
         }
         return townUpgrades.get(id);
@@ -209,11 +209,11 @@ public class NewUpgradeStorage {
         };
     }
 
-    public Collection<Upgrade> getUpgrades(TerritoryData territoryData) {
-        if(territoryData instanceof NationData){
+    public Collection<Upgrade> getUpgrades(Territory territoryData) {
+        if(territoryData instanceof Nation){
             return getUpgrades(StatsType.NATION);
         }
-        if(territoryData instanceof RegionData){
+        if(territoryData instanceof Region){
             return getUpgrades(StatsType.REGION);
         }
         return getUpgrades(StatsType.TOWN);

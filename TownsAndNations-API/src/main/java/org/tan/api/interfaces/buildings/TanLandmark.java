@@ -4,8 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.tan.api.interfaces.territory.TanTerritory;
 
-import java.util.UUID;
-
 public interface TanLandmark {
 
     /**
@@ -65,12 +63,6 @@ public interface TanLandmark {
      * Remove ownership of the landmark. If the landmark is not owned, nothing will happen.
      */
     void removeOwnership();
-
-    /**
-     * Set the owner of the landmark. If the landmark is already owned, the ownership will be transferred.
-     * @param newOwner The UUID of the new owner of the landmark.
-     */
-    void setOwner(UUID newOwner);
 
     /**
      * Set the owner of the landmark. If the landmark is already owned, the ownership will be transferred.

@@ -6,8 +6,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.landmark.Landmark;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.data.upgrade.rewards.numeric.LandmarkCap;
 import org.leralix.tan.gui.BasicGui;
@@ -18,7 +19,6 @@ import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.deprecated.GuiUtil;
 
@@ -59,7 +59,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
     }
 
     private @NotNull GuiItem getClaimButton() {
-        TownData playerTown = tanPlayer.getTown();
+        Town playerTown = tanPlayer.getTown();
         double cost = Constants.getClaimLandmarkCost();
         List<FilledLang> description = new ArrayList<>();
 
@@ -70,7 +70,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
         boolean isRequirementsMet = true;
 
         LandmarkCap landmarkCap = playerTown.getNewLevel().getStat(LandmarkCap.class);
-        int currentLandmarkCount = LandmarkStorage.getInstance().getLandmarkOf(playerTown).size();
+        int currentLandmarkCount = TownsAndNations.getPlugin().getLandmarkStorage().getLandmarkOf(playerTown).size();
         if (!landmarkCap.canDoAction(currentLandmarkCount)) {
             isRequirementsMet = false;
             description.add(Lang.GUI_LANDMARK_TOWN_FULL.get());

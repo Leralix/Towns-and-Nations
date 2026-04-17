@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.SubCommand;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -58,7 +58,7 @@ class DisbandTownServer extends SubCommand {
             return;
         }
         ITanPlayer tanPlayer = playerDataStorage.get(p);
-        TownData townData = tanPlayer.getTown();
+        Town townData = tanPlayer.getTown();
         if (townData == null) {
             TanChatUtils.message(commandSender, Lang.PLAYER_NO_TOWN);
             return;

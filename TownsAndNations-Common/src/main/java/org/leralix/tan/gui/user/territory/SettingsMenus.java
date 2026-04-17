@@ -7,8 +7,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.fort.Fort;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.data.territory.teleportation.TeleportationData;
 import org.leralix.tan.gui.BasicGui;
@@ -22,7 +23,6 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeColor;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
-import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -31,9 +31,9 @@ import java.util.List;
 
 public abstract class SettingsMenus extends BasicGui {
 
-    protected final TerritoryData territoryData;
+    protected final Territory territoryData;
 
-    protected SettingsMenus(Player player, Lang title, TerritoryData territoryData, int nbRows) {
+    protected SettingsMenus(Player player, Lang title, Territory territoryData, int nbRows) {
         super(player, title, nbRows);
         this.territoryData = territoryData;
     }
@@ -120,7 +120,7 @@ public abstract class SettingsMenus extends BasicGui {
                             if (Tag.BANNERS.isTagged(itemMaterial.getType())) {
                                 BannerMeta meta = (BannerMeta) itemMaterial.getItemMeta();
                                 territoryData.setBanner(itemMaterial.getType(), meta.getPatterns());
-                                FortStorage.getInstance().getOwnedFort(territoryData).forEach(Fort::updateFlag);
+                                TownsAndNations.getPlugin().getFortStorage().getOwnedFort(territoryData).forEach(Fort::updateFlag);
                                 SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
                                 open();
                             }

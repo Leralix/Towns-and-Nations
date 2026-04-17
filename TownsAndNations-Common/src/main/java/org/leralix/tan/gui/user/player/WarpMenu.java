@@ -2,7 +2,7 @@ package org.leralix.tan.gui.user.player;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.TeleportationRegister;
@@ -34,9 +34,9 @@ public class WarpMenu extends IteratorGUI {
 
         List<GuiItem> res = new ArrayList<>();
 
-        Set<TerritoryData> territories = TerritoryUtil.getTerritoriesAuthorizingTeleportation(tanPlayer);
+        Set<Territory> territories = TerritoryUtil.getTerritoriesAuthorizingTeleportation(tanPlayer);
 
-        for (TerritoryData territoryData : territories) {
+        for (Territory territoryData : territories) {
             res.add(iconManager.get(territoryData.getIcon())
                     .setName(territoryData.getColoredName())
                     .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)

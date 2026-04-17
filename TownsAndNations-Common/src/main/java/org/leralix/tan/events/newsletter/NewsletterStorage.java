@@ -49,7 +49,7 @@ public class NewsletterStorage {
         if (scope != EventScope.NONE) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 ITanPlayer tanPlayer = playerDataStorage.get(player.getUniqueId());
-                if (scope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)) {
+                if (scope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(tanPlayer)) {
                     newsletter.broadcastConcerned(player, tanPlayer);
                 } else if (scope == EventScope.ALL) {
                     newsletter.broadcast(player, tanPlayer);
@@ -64,7 +64,7 @@ public class NewsletterStorage {
         }
     }
 
-    public List<GuiItem> getNewsletterForPlayer(Player player, NewsletterScope scope, Consumer<Player> onClick, LangType langType) {
+    public List<GuiItem> getNewsletterForPlayer(Player player, ITanPlayer playerData, NewsletterScope scope, Consumer<Player> onClick, LangType langType) {
         List<GuiItem> guis = new ArrayList<>();
 
         List<Newsletter> newsletters = newsletterDAO.getNewsletters();
@@ -79,9 +79,9 @@ public class NewsletterStorage {
                 continue;
             }
 
-            if (eventScope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(player)) {
+            if (eventScope == EventScope.CONCERNED && newsletter.shouldShowToPlayer(playerData)) {
                 if (scope == NewsletterScope.SHOW_ALL) {
-                    guis.add(newsletter.createConcernedGuiItem(player, langType, onClick));
+                    guis.add(newsletter.createConcernedGuiItem(player, playerData, langType, onClick));
                 } else if (scope == NewsletterScope.SHOW_ONLY_UNREAD && !newsletter.isRead(player)) {
                     guis.add(newsletter.createGuiItem(player, langType, onClick));
                 }
@@ -97,8 +97,8 @@ public class NewsletterStorage {
         return guis;
     }
 
-    public int getNbUnreadNewsletterForPlayer(Player player) {
-        return getNewsletterForPlayer(player, NewsletterScope.SHOW_ONLY_UNREAD, null, LangType.ENGLISH).size();
+    public int getNbUnreadNewsletterForPlayer(Player player, ITanPlayer playerData) {
+        return getNewsletterForPlayer(player, playerData, NewsletterScope.SHOW_ONLY_UNREAD, null, LangType.ENGLISH).size();
     }
 
     public void clearOldNewsletters() {

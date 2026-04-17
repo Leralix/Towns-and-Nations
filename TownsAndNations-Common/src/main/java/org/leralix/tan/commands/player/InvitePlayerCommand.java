@@ -5,13 +5,13 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.utils.ChatUtils;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.TownStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -20,14 +20,14 @@ import java.util.List;
 public class InvitePlayerCommand extends PlayerSubCommand {
 
     private final PlayerDataStorage playerDataStorage;
-    private final TownDataStorage townDataStorage;
+    private final TownStorage townStorage;
 
     public InvitePlayerCommand(
             PlayerDataStorage playerDataStorage,
-            TownDataStorage townDataStorage
+            TownStorage townStorage
     ) {
         this.playerDataStorage = playerDataStorage;
-        this.townDataStorage = townDataStorage;
+        this.townStorage = townStorage;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class InvitePlayerCommand extends PlayerSubCommand {
 
     private void invite(Player player, String playerToInvite) {
         ITanPlayer tanPlayer = playerDataStorage.get(player);
-        TownData townData = townDataStorage.get(tanPlayer);
+        Town townData = townStorage.get(tanPlayer);
         LangType langType = tanPlayer.getLang();
 
         if (townData == null) {

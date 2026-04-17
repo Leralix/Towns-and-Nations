@@ -7,7 +7,7 @@ import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.fort.Fort;
 import org.leralix.tan.data.building.fort.FortData;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.FortStorage;
 
@@ -18,53 +18,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FortDataStorage extends FortStorage {
+public class FortDataStorage implements FortStorage {
 
-    int newFortID;
-    Map<String, FortData> forts;
+    private int newFortID;
+    private Map<String, FortData> forts;
 
     public FortDataStorage(){
         this.forts = new HashMap<>();
         this.newFortID = 0;
         load();
-    }
-
-    @Override
-    public List<Fort> getOccupiedFort(TerritoryData territoryData) {
-        List<Fort> res = new ArrayList<>();
-        for(String fortID : territoryData.getOccupiedFortIds()) {
-            FortData fort = forts.get(fortID);
-            if (fort == null) {
-                continue;
-            }
-            res.add(fort);
-        }
-        return res;
-    }
-
-    @Override
-    public List<Fort> getOwnedFort(TerritoryData territoryData) {
-        List<Fort> res = new ArrayList<>();
-        for(String fortID : territoryData.getOwnedFortIDs()) {
-            FortData fort = forts.get(fortID);
-            if (fort == null) {
-                continue;
-            }
-            res.add(fort);
-        }
-        return res;
-    }
-
-    @Override
-    public List<Fort> getAllControlledFort(TerritoryData territoryData) {
-        List<Fort> allForts = new ArrayList<>(getOccupiedFort(territoryData));
-
-        for(Fort fort : getOwnedFort(territoryData)) {
-            if(!fort.isOccupied()){
-                allForts.add(fort);
-            }
-        }
-        return allForts;
     }
 
     @Override
@@ -78,7 +40,7 @@ public class FortDataStorage extends FortStorage {
     }
 
     @Override
-    public Fort register(Vector3D position, TerritoryData owningTerritory) {
+    public Fort register(Vector3D position, Territory owningTerritory) {
         FortData fort = new FortData("F" + newFortID, position, Lang.DEFAULT_FORT_NAME.get(Lang.getServerLang(), Integer.toString(newFortID)), owningTerritory);
         forts.put(fort.getID(), fort);
         save();
@@ -92,7 +54,7 @@ public class FortDataStorage extends FortStorage {
         if(fort == null) {
             return;
         }
-        TerritoryData owner = fort.getOwner();
+        Territory owner = fort.getOwner();
         owner.removeFort(fortID);
         forts.remove(fortID);
         save();

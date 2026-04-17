@@ -2,7 +2,7 @@ package org.leralix.tan.storage.database.transactions.instance;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
@@ -24,7 +24,7 @@ public class RetrieveTransaction extends AbstractTransaction {
     private final String territoryID;
     private final double amount;
 
-    public RetrieveTransaction(TerritoryData territoryData, Player player, double amount){
+    public RetrieveTransaction(Territory territoryData, Player player, double amount){
         this.playerID = player.getUniqueId().toString();
         this.territoryID = territoryData.getID();
         this.amount = amount;

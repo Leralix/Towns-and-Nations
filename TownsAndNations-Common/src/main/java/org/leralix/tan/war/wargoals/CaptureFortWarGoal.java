@@ -1,13 +1,13 @@
 package org.leralix.tan.war.wargoals;
 
 import org.bukkit.Material;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.fort.Fort;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.impl.FortDataStorage;
 import org.tan.api.interfaces.buildings.TanFort;
 import org.tan.api.interfaces.war.wargoals.TanCaptureFortWargoal;
 
@@ -24,7 +24,7 @@ public class CaptureFortWarGoal extends WarGoal implements TanCaptureFortWargoal
     }
 
     private Fort getFort() {
-        return FortDataStorage.getInstance().getFort(fortToCaptureID);
+        return TownsAndNations.getPlugin().getFortStorage().getFort(fortToCaptureID);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CaptureFortWarGoal extends WarGoal implements TanCaptureFortWargoal
     }
 
     @Override
-    public void applyWarGoal(TerritoryData winner, TerritoryData looser) {
+    public void applyWarGoal(Territory winner, Territory looser) {
 
         Fort fort = getFort();
         fort.setOwner(winner);

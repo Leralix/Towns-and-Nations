@@ -3,7 +3,7 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.permission.GeneralChunkSetting;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
@@ -20,9 +20,9 @@ import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 public class TerritoryChunkGeneralSettings extends IteratorGUI {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
-    public TerritoryChunkGeneralSettings(Player player, TerritoryData territoryData) {
+    public TerritoryChunkGeneralSettings(Player player, Territory territoryData) {
         super(player, Lang.HEADER_CHUNK_GENERAL_SETTINGS, 3);
         this.territoryData = territoryData;
         open();
@@ -46,11 +46,11 @@ public class TerritoryChunkGeneralSettings extends IteratorGUI {
 
             res.add(generalChunkSetting.getIcon(iconManager, settingType, tanPlayer.getLang())
                     .setAction(action -> {
-                        if (!territoryData.doesPlayerHavePermission(player, RolePermission.MANAGE_CLAIM_SETTINGS)) {
+                        if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS)) {
                             TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
                             return;
                         }
-                        generalSettings.put(generalChunkSetting, !generalSettings.get(generalChunkSetting));
+                        generalSettings.put(generalChunkSetting, !generalSettings.getOrDefault(generalChunkSetting, false));
                         SoundUtil.playSound(player, ADD);
                         open();
                     })

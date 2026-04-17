@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
@@ -21,10 +21,10 @@ public class SelectTerritoryForLIberation extends IteratorGUI {
     private final War war;
     private final BasicGui returnGui;
 
-    private final TerritoryData enemyTerritory;
+    private final Territory enemyTerritory;
 
 
-    public SelectTerritoryForLIberation(Player player, TerritoryData territoryData, War war, WarRole warRole, BasicGui returnGui) {
+    public SelectTerritoryForLIberation(Player player, Territory territoryData, War war, WarRole warRole, BasicGui returnGui) {
         super(player, Lang.HEADER_SELECT_WARGOAL, 3);
         this.warRole = warRole;
         this.war = war;
@@ -42,7 +42,7 @@ public class SelectTerritoryForLIberation extends IteratorGUI {
     private List<GuiItem> getTerritoryToLiberate() {
         List<GuiItem> items = new ArrayList<>();
 
-        for(TerritoryData territory : enemyTerritory.getVassalsInternal()) {
+        for(Territory territory : enemyTerritory.getVassalsInternal()) {
 
             if(territory.isCapital()){
                 continue;

@@ -1,83 +1,26 @@
 package org.leralix.tan.storage.stored;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.GsonBuilder;
 import org.bukkit.Location;
-import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.data.building.landmark.Landmark;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class LandmarkStorage extends JsonStorage<Landmark> {
+public interface LandmarkStorage {
 
-    private int newLandmarkID;
+    Landmark addLandmark(Location position);
 
-    private static LandmarkStorage instance;
+    Landmark get(String id);
 
-    private LandmarkStorage() {
-        super("TAN - Landmarks.json",
-                new TypeToken<HashMap<String, Landmark>>() {}.getType(),
-                new GsonBuilder()
-                        .setPrettyPrinting()
-                        .create());
-    }
+    List<Landmark> getLandmarkOf(Territory territoryData);
 
-    public static LandmarkStorage getInstance(){
-        if(instance == null) {
-            instance = new LandmarkStorage();
-        }
-        return instance;
-    }
+    void generateAllResources();
 
-    public static void setInstance(LandmarkStorage mockLandmarkStorage) {
-        instance = mockLandmarkStorage;
-    }
+    void delete(Landmark landmark);
 
+    Map<String, Landmark> getAll();
 
-    public Landmark addLandmark(Location position){
-        Vector3D vector3D = new Vector3D(position);
-        String landmarkID = "L" + newLandmarkID;
-        Landmark landmark = new Landmark(landmarkID,vector3D);
-        put(landmarkID, landmark);
-        newLandmarkID++;
-        NewClaimedChunkStorage.getInstance().claimLandmarkChunk(position.getChunk(), landmarkID);
-        save();
-        return landmark;
-    }
+    void save();
 
-    public List<Landmark> getLandmarkOf(TerritoryData territoryData){
-        return getAll().values().stream()
-                .filter(landmark -> landmark.isOwnedBy(territoryData))
-                .toList();
-    }
-
-    public void generateAllResources(){
-        for (Landmark landmark : getAll().values()) {
-            landmark.generateResources();
-        }
-    }
-
-    public void delete(Landmark landmark){
-        delete(landmark.getID());
-    }
-
-    @Override
-    public void load(){
-        super.load();
-
-        int ID = 0;
-        for (String ids: getAll().keySet()) {
-            int newID =  Integer.parseInt(ids.substring(1));
-            if(newID > ID)
-                ID = newID;
-        }
-        newLandmarkID = ID+1;
-    }
-
-    @Override
-    public void reset() {
-        instance = null;
-    }
 }

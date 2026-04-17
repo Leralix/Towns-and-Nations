@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.rank.RankData;
 import org.leralix.tan.gui.user.ranks.RankManagerMenu;
 import org.leralix.tan.lang.Lang;
@@ -15,10 +15,10 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 public class RenameRank extends ChatListenerEvent {
 
-    private final TerritoryData territoryConcerned;
+    private final Territory territoryConcerned;
     private final RankData rankData;
 
-    public RenameRank(TerritoryData territoryData, RankData rankData) {
+    public RenameRank(Territory territoryData, RankData rankData) {
         this.territoryConcerned = territoryData;
         this.rankData = rankData;
     }

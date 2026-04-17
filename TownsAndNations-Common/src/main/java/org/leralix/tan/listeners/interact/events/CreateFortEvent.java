@@ -7,26 +7,25 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.leralix.lib.position.Vector3D;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.fort.Fort;
-import org.leralix.tan.data.chunk.ClaimedChunk;
-import org.leralix.tan.data.chunk.TerritoryChunk;
-import org.leralix.tan.data.chunk.WildernessChunk;
+import org.leralix.tan.data.chunk.IClaimedChunk;
+import org.leralix.tan.data.chunk.TerritoryChunkData;
+import org.leralix.tan.data.chunk.WildernessChunkData;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.ListenerState;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
-import org.leralix.tan.storage.stored.FortStorage;
-import org.leralix.tan.storage.stored.NewClaimedChunkStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class CreateFortEvent extends RightClickListenerEvent {
 
-    private final TerritoryData tanTerritory;
+    private final Territory tanTerritory;
     private final ITanPlayer tanPlayer;
 
-    public CreateFortEvent(TerritoryData tanTerritory, ITanPlayer tanPlayer) {
+    public CreateFortEvent(Territory tanTerritory, ITanPlayer tanPlayer) {
         this.tanTerritory = tanTerritory;
         this.tanPlayer = tanPlayer;
     }
@@ -55,11 +54,11 @@ public class CreateFortEvent extends RightClickListenerEvent {
         }
 
         Chunk chunk = upBlock.getChunk();
-        ClaimedChunk claimedChunk = NewClaimedChunkStorage.getInstance().get(chunk);
+        IClaimedChunk claimedChunk = TownsAndNations.getPlugin().getClaimStorage().get(chunk);
 
 
         switch (claimedChunk){
-            case WildernessChunk ignored when Constants.enableFortOutpost() -> {
+            case WildernessChunkData ignored when Constants.enableFortOutpost() -> {
 
                 boolean wasAbleToClaim = tanTerritory.claimChunk(player, tanPlayer, chunk, true);
 
@@ -71,7 +70,7 @@ public class CreateFortEvent extends RightClickListenerEvent {
                     return ListenerState.FAILURE;
                 }
             }
-            case TerritoryChunk territoryChunk -> {
+            case TerritoryChunkData territoryChunk -> {
                 if (territoryChunk.getOwnerID().equals(tanTerritory.getID())) {
                     createFort(block);
                     return ListenerState.SUCCESS;
@@ -89,7 +88,7 @@ public class CreateFortEvent extends RightClickListenerEvent {
 
     private void createFort(Block block) {
         Vector3D position = new Vector3D(block.getLocation());
-        Fort fort = FortStorage.getInstance().register(position, tanTerritory);
+        Fort fort = TownsAndNations.getPlugin().getFortStorage().register(position, tanTerritory);
         fort.spawnFlag();
         tanTerritory.addOwnedFort(fort);
     }

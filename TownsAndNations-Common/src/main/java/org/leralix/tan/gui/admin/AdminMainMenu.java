@@ -2,6 +2,7 @@ package org.leralix.tan.gui.admin;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
@@ -20,12 +21,21 @@ public class AdminMainMenu extends BasicGui {
         gui.setItem(2, 2, getNationButton());
         gui.setItem(2, 3, getRegionButton());
         gui.setItem(2, 4, getTownButton());
+
+        gui.setItem(2, 6, getPlayerButton());
         gui.setItem(2, 7, getLandmarkButton());
         gui.setItem(2, 8, getWarButton());
 
         gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> player.closeInventory(), langType));
 
         gui.open(player);
+    }
+
+    private @NotNull GuiItem getPlayerButton() {
+        return iconManager.get(IconKey.PLAYER_HEAD_ICON)
+                .setName(Lang.GUI_ADMIN_PLAYER_ICON.get(langType))
+                .setAction(action -> new AdminBrowsePlayers(player))
+                .asGuiItem(player, langType);
     }
 
     private GuiItem getWarButton() {

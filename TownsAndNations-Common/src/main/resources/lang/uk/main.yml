@@ -178,7 +178,6 @@ language:
   #Chat commands
   PLAYER_NOT_ENOUGH_MONEY: "У вас недостатньо грошей, щоб виконати цю дію"
   NAME_ALREADY_USED: "§4Це ім'я вже використовується"
-  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Напишіть назву міста в чаті."
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Напишіть кількість у чаті"
   TOWN_RETRIEVE_MONEY_SUCCESS: "§aВи успішно отримали §6{0}{MONEY_CHAR}§a з міста"
   TOWN_SET_TAX_SUCCESS: "§aВи успішно встановили податок на §6{0}{MONEY_CHAR}"
@@ -193,12 +192,8 @@ language:
   PROPERTY_DELETED: "Власність успішно видалено"
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Встановити місце спавну у місті"
-  SPAWN_SET_SUCCESS: "Встановлено місце спавну"
   SPAWN_COMMAND_DESC: "Телепорт до спавну міста"
   SPAWN_TELEPORTED: "Телепорт до спавну міста"
-  SPAWN_NOT_SET: "§6Місце спавну міста не встановлено"
-  SPAWN_NOT_UNLOCKED: "§6Місце спавну міста не розблоковано"
-  SPAWN_NEED_TO_BE_IN_CHUNK: "§cВи повинні бути у зайнятому чанку, щоб встановити спавн"
   #Town Relations
   ##Colors are to be defined in another config file
   RELATION_NEUTRAL_NAME: "Нейтральний"
@@ -225,7 +220,6 @@ language:
   GUI_SERVER_TIME: "§aДата"
   CURRENT_SERVER_TIME: "§fСерверний час: §e{0}"
   CURRENT_PLAYER_TIME: "§fЧас гравця: §e{0}"
-  GUI_KINGDOM_ICON: "§aКоролівство"
   GUI_REGION_ICON: "§aРегіон"
   GUI_REGION_ICON_DESC1_REGION: "§fПоточний регіон: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fРанг регіону: {0}"
@@ -408,7 +402,6 @@ language:
   HEADER_HISTORY: "Історія"
   HEADER_SETTINGS: "Налаштування"
   HEADER_CHANGE_OWNERSHIP: "Змінити власника"
-  HEADER_RELATIONS: "Дипломатія"
   HEADER_SELECT_ADD_TERRITORY_RELATION: "Додати до {0}"
   HEADER_SELECT_REMOVE_TERRITORY_RELATION: "Видалити з {0}"
   HEADER_CHUNK_PERMISSION: "Права доступу до чанків"
@@ -444,7 +437,6 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fПКМ щоб§c відмовитись"
   GUI_LANGUAGE_CHANGED: "§aМову змінено на: {0}"
   GUI_TOWN_LEVEL_ICON: "§aРівень міста"
-  GUI_TOWN_LEVEL_ICON_DESC1: "§fПокращення міста"
   GUI_TOWN_SETTINGS_ICON: "§aНалаштування"
   GUI_TOWN_SETTINGS_ICON_DESC1: "§fЗагальні налаштування міста"
   GUI_ATTACK_ICON: "§aАтаки"
@@ -475,7 +467,6 @@ language:
   GUI_TOWN_LEVEL_UP_DESC1: "§fПоточний рівень: §e{0}"
   GUI_TOWN_LEVEL_UP_DESC2: "§fРівень §a{0}§f вартість покращення: §e{1}{MONEY_CHAR}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nПередумови:"
-  TOWN_UPGRADE_MAX_LEVEL: "§cВи досягли максимального рівня покращення"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§cВи не відповідаєте вимогам"
   #Diplomacy
   GUI_TOWN_RELATION_HOSTILE: "§aВорожий"
@@ -581,7 +572,6 @@ language:
   #Select language
   HELP_US_TRANSLATE: "§fHelp з перекладом плагіна вашою мовою"
   PERCENT_COMPLETED: "§6{0}%§f завершено"
-  CLICK_HERE_TO_OPEN_BROWSER: "§fClick тут, щоб відкрити crowdin у браузері"
   GUI_REGION_CREATE: "§aСтворити регіон"
   GUI_REGION_CREATE_DESC1: "§fВартість: §6{0}{MONEY_CHAR}"
   GUI_REGION_CREATE_DESC2: "§fЛКМ, щоб створити новий регіон з вашим містом як регіональною столицею"
@@ -677,7 +667,6 @@ language:
   PLAYER_ENTER_TERRITORY_CHUNK: "§fВходите до : {0}"
   PLAYER_ENTER_LANDMARK_CHUNK: "§fВхід: §6Орієнтир"
   CHUNK_ENTER_TOWN_AT_WAR: "§cВи воюєте з цим містом. Гравці були оповіщені, що ви перетнули кордон"
-  CHUNK_INTRUSION_ALERT: "§cВорог з міста {0} увійшов на вашу територію: {1}"
   WILDERNESS_NO_PERMISSION: "§cУ вас немає прав для виконання цієї дії в Диких землях"
   #History
   HISTORY_TOWN_LEADER_CHANGED: "{0} змінено лідера міста з {1} на {2}"

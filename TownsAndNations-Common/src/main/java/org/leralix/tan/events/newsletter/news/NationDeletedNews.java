@@ -11,8 +11,8 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.text.TanChatUtils;
-import org.tan.api.interfaces.territory.TanNation;
 import org.tan.api.interfaces.TanPlayer;
+import org.tan.api.interfaces.territory.TanNation;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -69,12 +69,12 @@ public class NationDeletedNews extends Newsletter {
     }
 
     @Override
-    public GuiItem createConcernedGuiItem(Player player, LangType lang, Consumer<Player> onClick) {
+    public GuiItem createConcernedGuiItem(Player player, ITanPlayer playerData, LangType lang, Consumer<Player> onClick) {
         return createGuiItem(player, lang, onClick);
     }
 
     @Override
-    public boolean shouldShowToPlayer(Player player) {
+    public boolean shouldShowToPlayer(ITanPlayer player) {
         return true;
     }
 }

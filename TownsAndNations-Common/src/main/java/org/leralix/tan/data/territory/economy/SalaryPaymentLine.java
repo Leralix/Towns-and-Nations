@@ -43,8 +43,10 @@ public class SalaryPaymentLine extends ProfitLine {
         gui.setItem(2, 6, IconManager.getInstance().get(IconKey.SALARY_INFO_ICON)
                 .setName(Lang.GUI_TREASURY_SALARY_HISTORY.get(lang))
                 .setDescription(
-                        Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.get(StringUtil.getColoredMoney(getMoney())),
-                        Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get()
+                        Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.get(StringUtil.getColoredMoney(getMoney()))
+                )
+                .setClickToAcceptMessage(
+                        Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY
                 )
                 .setAction(action ->
                         new TerritoryTransactionHistory(player, territoryData, TransactionType.SALARY, p -> new TreasuryMenu(player, territoryData))

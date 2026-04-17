@@ -1,20 +1,20 @@
 package org.leralix.tan.api.external.papi.entries;
 
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.storage.stored.NationDataStorage;
+import org.leralix.tan.storage.stored.NationStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.RegionStorage;
+import org.leralix.tan.storage.stored.TownStorage;
 
 public class PlayerNationRankName extends AbstractPlayerNationPapiEntry {
 
     public PlayerNationRankName(
             PlayerDataStorage playerDataStorage,
-            TownDataStorage townDataStorage,
-            RegionDataStorage regionDataStorage,
-            NationDataStorage nationDataStorage)
+            TownStorage townStorage,
+            RegionStorage regionDataStorage,
+            NationStorage nationDataStorage)
     {
-        super("player_nation_rank_name", playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage);
+        super("player_nation_rank_name", playerDataStorage, townStorage, regionDataStorage, nationDataStorage);
     }
 
     @Override

@@ -3,8 +3,8 @@ package org.leralix.tan.gui.user.territory.hierarchy;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.leralix.tan.data.territory.NationData;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
@@ -21,9 +21,9 @@ import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 public class VassalsMenu extends IteratorGUI {
 
-    private final TerritoryData territoryData;
+    private final Territory territoryData;
 
-    public VassalsMenu(Player player, TerritoryData territoryData) {
+    public VassalsMenu(Player player, Territory territoryData) {
         super(player, Lang.HEADER_VASSALS, 4);
         this.territoryData = territoryData;
         open();
@@ -42,7 +42,7 @@ public class VassalsMenu extends IteratorGUI {
     private @NotNull GuiItem getAddVassalButton() {
 
         return iconManager.get(IconKey.ADD_VASSALS_ICON)
-                .setName((territoryData instanceof NationData) ? Lang.GUI_INVITE_REGION_TO_NATION.get(tanPlayer) : Lang.GUI_INVITE_TOWN_TO_REGION.get(tanPlayer))
+                .setName((territoryData instanceof Nation) ? Lang.GUI_INVITE_REGION_TO_NATION.get(tanPlayer) : Lang.GUI_INVITE_TOWN_TO_REGION.get(tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
                 .setAction(action -> new AddVassalMenu(player, territoryData))
@@ -53,7 +53,7 @@ public class VassalsMenu extends IteratorGUI {
 
         List<GuiItem> res = new ArrayList<>();
 
-        for (TerritoryData vassal : territoryData.getVassalsInternal()) {
+        for (Territory vassal : territoryData.getVassalsInternal()) {
 
             GuiItem vassalButton = iconManager.get(vassal.getIcon())
                     .setName(vassal.getColoredName())
@@ -70,7 +70,7 @@ public class VassalsMenu extends IteratorGUI {
                         }
                         if (vassal.isCapital()) {
                             TanChatUtils.message(player,
-                                    (territoryData instanceof NationData) ?
+                                    (territoryData instanceof Nation) ?
                                             Lang.CANT_KICK_NATION_CAPITAL.get(tanPlayer, vassal.getName()) :
                                             Lang.CANT_KICK_REGIONAL_CAPITAL.get(tanPlayer, vassal.getName()),
                                     NOT_ALLOWED);
@@ -82,7 +82,7 @@ public class VassalsMenu extends IteratorGUI {
                                 Lang.CONFIRM_VASSAL_KICK.get(vassal.getColoredName(), territoryData.getColoredName()),
                                 () -> {
                                     territoryData.broadcastMessageWithSound(
-                                            (territoryData instanceof NationData) ?
+                                            (territoryData instanceof Nation) ?
                                                     Lang.GUI_NATION_KICK_REGION_BROADCAST.get(vassal.getName()) :
                                                     Lang.GUI_REGION_KICK_TOWN_BROADCAST.get(vassal.getName()),
                                             BAD);

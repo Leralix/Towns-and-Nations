@@ -6,10 +6,10 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.api.external.papi.entries.*;
 import org.leralix.tan.storage.LocalChatStorage;
-import org.leralix.tan.storage.stored.NationDataStorage;
+import org.leralix.tan.storage.stored.NationStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.RegionStorage;
+import org.leralix.tan.storage.stored.TownStorage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,58 +51,58 @@ public class PlaceHolderAPI extends PlaceholderExpansion {
 
     public PlaceHolderAPI(
             PlayerDataStorage playerDataStorage,
-            TownDataStorage townDataStorage,
-            RegionDataStorage regionDataStorage,
-            NationDataStorage nationDataStorage,
+            TownStorage townStorage,
+            RegionStorage regionDataStorage,
+            NationStorage nationDataStorage,
             LocalChatStorage localChatStorage
     ) {
         entries = new HashMap<>();
 
-        registerEntry(new GetFirstTerritoryIdWithName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new OtherPlayerTownName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new OtherPlayerTownTag(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new OtherPlayerRegionName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new OtherPlayerNationName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new OtherPlayerTownColoredName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new OtherPlayerChatMode(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage, localChatStorage));
-        registerEntry(new PlayerBalance(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerBiggerOverlordName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerChatMode(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage, localChatStorage));
-        registerEntry(new PlayerNameHaveTown(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerNameIsTownLeader(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerRegionBalance(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerRegionChunkActualQuantity(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerRegionName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerNationBalance(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerNationChunkActualQuantity(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerNationName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerNationRankColoredName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerNationRankName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerTownBalance(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerTownChunkActualQuantity(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerTownChunkMaxQuantity(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerTownColoredName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerTownName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerTownRankColoredName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerTownRankName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerTownRemainingQuantity(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerTownResidentQuantity(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerTownTag(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerColoredTownTag(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerColoredTownTagOrEmpty(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerColoredTownTagOrCustomText(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new TerritoryWithIdExist(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new TerritoryWithIdLeaderName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new TerritoryWithNameExist(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new TerritoryWithNameLeaderName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerRegionResidentQuantity(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new GetFirstTerritoryIdWithName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new OtherPlayerTownName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new OtherPlayerTownTag(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new OtherPlayerRegionName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new OtherPlayerNationName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new OtherPlayerTownColoredName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new OtherPlayerChatMode(playerDataStorage, townStorage, regionDataStorage, nationDataStorage, localChatStorage));
+        registerEntry(new PlayerBalance(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerBiggerOverlordName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerChatMode(playerDataStorage, townStorage, regionDataStorage, nationDataStorage, localChatStorage));
+        registerEntry(new PlayerNameHaveTown(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerNameIsTownLeader(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerRegionBalance(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerRegionChunkActualQuantity(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerRegionName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerNationBalance(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerNationChunkActualQuantity(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerNationName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerNationRankColoredName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerNationRankName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerTownBalance(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerTownChunkActualQuantity(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerTownChunkMaxQuantity(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerTownColoredName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerTownName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerTownRankColoredName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerTownRankName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerTownRemainingQuantity(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerTownResidentQuantity(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerTownTag(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerColoredTownTag(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerColoredTownTagOrEmpty(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerColoredTownTagOrCustomText(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new TerritoryWithIdExist(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new TerritoryWithIdLeaderName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new TerritoryWithNameExist(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new TerritoryWithNameLeaderName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerRegionResidentQuantity(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
 
-        registerEntry(new PlayerLocationChunkName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerLocationChunkTypeName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerLocationPropertyExist(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerLocationPropertyIsOwner(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerLocationPropertyName(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
-        registerEntry(new PlayerLocationPvpEnabled(playerDataStorage, townDataStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerLocationChunkName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerLocationChunkTypeName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerLocationPropertyExist(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerLocationPropertyIsOwner(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerLocationPropertyName(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
+        registerEntry(new PlayerLocationPvpEnabled(playerDataStorage, townStorage, regionDataStorage, nationDataStorage));
     }
 
     void registerEntry(PapiEntry playerBalance) {

@@ -9,14 +9,13 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.fort.Fort;
 import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.data.building.property.PropertyData;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.LandmarkStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.TownStorage;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -40,18 +39,19 @@ public class TANCustomNBT {
         block.removeMetadata(metaData, TownsAndNations.getPlugin());
     }
 
-    public static void setBlocsData(TownDataStorage townDataStorage){
-        setSignData(townDataStorage);
+    public static void setBlocsData(TownStorage townStorage, FortStorage fortStorage){
+        setSignData(townStorage);
         setLandmarksData();
-        setFortData();
+        setFortData(fortStorage);
     }
 
-    private static void setFortData() {
-        for(Fort fort : FortStorage.getInstance().getForts()){
+    private static void setFortData(FortStorage fortStorage) {
+        for(Fort fort : fortStorage.getForts()){
             Vector3D flagPosition = fort.getPosition();
 
+            // if the flag is in a deleted world, delete the fort
             if(flagPosition.getWorld() == null){
-                FortStorage.getInstance().delete(fort);
+                fortStorage.delete(fort);
                 continue;
             }
 
@@ -73,8 +73,8 @@ public class TANCustomNBT {
     /**
      * Sets metadata for property sign blocks and the blocks directly beneath them for all properties in all towns.
      */
-    public static void setSignData(TownDataStorage townDataStorage){
-        for(TownData townData : townDataStorage.getAll().values() ){
+    public static void setSignData(TownStorage townStorage){
+        for(Town townData : townStorage.getAll().values() ){
             Iterator<PropertyData> iterator = townData.getPropertyDataMap().values().iterator();
             while (iterator.hasNext()) {
                 PropertyData propertyData = iterator.next();
@@ -95,23 +95,15 @@ public class TANCustomNBT {
     }
 
     public static void setLandmarksData(){
-        Iterator<Landmark> landmarkIterator = LandmarkStorage.getInstance().getAll().values().iterator();
-        List<Landmark> landmarksToDelete = new ArrayList<>();
-        while (landmarkIterator.hasNext()){
-            Landmark landmark = landmarkIterator.next();
+        LandmarkStorage landmarkStorage = TownsAndNations.getPlugin().getLandmarkStorage();
+        for(Landmark landmark : new ArrayList<>(landmarkStorage.getAll().values())){
             var optChest = landmark.getChest();
             if(optChest.isPresent()){
                 setBockMetaData(optChest.get(), "LandmarkChest", landmark.getID());
             }
             else {
-                landmarksToDelete.add(landmark);
+                landmarkStorage.delete(landmark);
             }
         }
-        for (Landmark landmark : landmarksToDelete){
-            LandmarkStorage.getInstance().delete(landmark);
-        }
     }
-
-
-
 }
