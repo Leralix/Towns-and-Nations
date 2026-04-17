@@ -17,6 +17,8 @@ import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.info.AttackResultCompleted;
 import org.leralix.tan.war.info.AttackResultCounter;
 
+import java.util.UUID;
+
 /**
  * Represents an ongoing attack between territories.
  * A currentAttack is created when a planned attack starts and is removed when it ends.
@@ -46,7 +48,7 @@ public abstract class CurrentAttack {
      * Constructor of CurrentAttack
      * @param plannedAttack the planned attack data
      */
-    public CurrentAttack(PlannedAttack plannedAttack) {
+    protected CurrentAttack(PlannedAttack plannedAttack) {
 
         this.attackData = plannedAttack;
         this.attackResultCounter = new AttackResultCounter();
@@ -65,30 +67,28 @@ public abstract class CurrentAttack {
 
     private void applyBossBar(PlannedAttack plannedAttack) {
         for (Territory territoryData : plannedAttack.getWar().getAttackingTerritories()) {
-            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                Player player = tanPlayer.getPlayer();
-                if (player != null) {
-                    bossBar.addPlayer(player);
-                }
+            for(UUID playerUUID : territoryData.getPlayerIDList()){
+                registerBossBar(playerUUID);
             }
         }
         for (Territory territoryData : plannedAttack.getWar().getDefendingTerritories()) {
-            for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                Player player = tanPlayer.getPlayer();
-                if (player != null) {
-                    bossBar.addPlayer(player);
-                }
+            for(UUID playerUUID : territoryData.getPlayerIDList()){
+                registerBossBar(playerUUID);
             }
+        }
+    }
+
+    private void registerBossBar(UUID playerUUID) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player != null) {
+            bossBar.addPlayer(player);
         }
     }
 
     protected abstract void updateBossBar();
 
     public void addPlayer(ITanPlayer tanPlayer) {
-        Player player = tanPlayer.getPlayer();
-        if (player != null) {
-            bossBar.addPlayer(player);
-        }
+        registerBossBar(tanPlayer.getID());
     }
 
     private void start() {
@@ -175,5 +175,9 @@ public abstract class CurrentAttack {
 
     public void defenderKilled() {
         attackResultCounter.incrementDefendersKilled();
+    }
+
+    public boolean hasEnded() {
+        return end;
     }
 }

@@ -48,8 +48,10 @@ public class CaptureManager {
         }
 
         for (CurrentAttack currentAttack : CurrentAttacksStorage.getAll()) {
-            handleFortCapture(currentAttack);
-            handleChunkCapture(currentAttack);
+            if(!currentAttack.hasEnded()){
+                handleFortCapture(currentAttack);
+                handleChunkCapture(currentAttack);
+            }
         }
 
         // TODO : how to delete CaptureChunk when they are done ?
