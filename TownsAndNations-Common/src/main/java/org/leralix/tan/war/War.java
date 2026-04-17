@@ -33,7 +33,9 @@ public interface War {
 
     IconBuilder getIcon();
 
-    void territorySurrender(Territory looserTerritory);
+    default void territorySurrender(Territory looserTerritory) {
+        territorySurrender(getTerritoryRole(looserTerritory));
+    }
 
     void territorySurrender(WarRole looserTerritory);
 

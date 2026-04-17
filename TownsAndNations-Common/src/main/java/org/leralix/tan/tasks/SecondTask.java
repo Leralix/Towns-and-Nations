@@ -17,11 +17,9 @@ public class SecondTask {
 
     private final PlayerDataStorage playerDataStorage;
 
-    private final CaptureManager captureManager;
 
     public SecondTask(PlayerDataStorage playerDataStorage, ClaimStorage claimStorage){
         this.playerDataStorage = playerDataStorage;
-        this.captureManager = new CaptureManager(playerDataStorage, claimStorage);
     }
 
     public void startScheduler() {

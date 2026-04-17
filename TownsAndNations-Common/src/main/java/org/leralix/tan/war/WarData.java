@@ -110,11 +110,6 @@ public class WarData implements War{
     }
 
     @Override
-    public void territorySurrender(Territory looserTerritory) {
-        territorySurrender(getTerritoryRole(looserTerritory));
-    }
-
-    @Override
     public void territorySurrender(WarRole looserTerritory) {
 
         Territory looser = getTerritory(looserTerritory);
@@ -140,7 +135,7 @@ public class WarData implements War{
         for (PlannedAttack plannedAttack : getPlannedAttacks()) {
             plannedAttack.end(new AttackResultCancelled());
         }
-        TownsAndNations.getPlugin().getNationStorage().get(getID());
+        TownsAndNations.getPlugin().getWarStorage().remove(this);
     }
 
     @Override

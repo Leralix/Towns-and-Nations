@@ -37,7 +37,7 @@ public interface WarStorage {
 
     War newWar(Territory attackingTerritory, Territory defendingTerritory);
 
-    void remove(War plannedAttack);
+    void remove(War war);
 
     /**
      * Check if two territory are part of the same war in enemy side
