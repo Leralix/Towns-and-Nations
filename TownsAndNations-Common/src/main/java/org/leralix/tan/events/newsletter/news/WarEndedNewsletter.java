@@ -100,7 +100,7 @@ public class WarEndedNewsletter extends Newsletter {
             return;
 
         TanChatUtils.message(player,
-                Lang.ATTACK_ENDED.get(
+                Lang.WAR_ENDED.get(
                         tanPlayer,
                         winningTerritory.getColoredName(),
                         defeatedTerritory.getColoredName(),
