@@ -13,6 +13,10 @@ import java.util.Optional;
 
 public interface TerritoryChunk extends IClaimedChunk, TanTerritoryChunk {
 
+    default Territory getOwner(){
+        return getOwnerInternal();
+    }
+
     Territory getOwnerInternal();
 
     Territory getOccupierInternal();

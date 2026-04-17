@@ -67,10 +67,6 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
         return TerritoryUtil.getTerritory(ownerID);
     }
 
-    @Override
-    public TanTerritory getOwner() {
-        return getOwnerInternal();
-    }
 
     @Override
     public String getOwnerID() {

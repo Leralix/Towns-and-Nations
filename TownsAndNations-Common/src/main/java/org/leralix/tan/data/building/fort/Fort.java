@@ -77,7 +77,6 @@ public abstract class Fort extends Building implements TanFort {
                 territoryChunk.setOccupier(newOwner);
             }
         }
-        getOwner().checkIfShouldSurrender();
         updateFlag();
     }
 

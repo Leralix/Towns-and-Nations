@@ -132,6 +132,7 @@ public class CaptureChunk {
                 territoryChunk.liberate();
             } else {
                 territoryChunk.setOccupier(getAttackingTerritory());
+                territoryChunk.getOwnerInternal().checkIfShouldSurrender();
             }
             isFinished = true;
         }

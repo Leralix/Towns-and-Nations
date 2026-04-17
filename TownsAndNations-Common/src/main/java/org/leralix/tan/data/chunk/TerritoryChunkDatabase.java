@@ -62,11 +62,6 @@ public abstract class TerritoryChunkDatabase extends ChunkDatabase implements Te
     }
 
     @Override
-    public TanTerritory getOwner() {
-        return data.getOwner();
-    }
-
-    @Override
     public String getOwnerID() {
         return data.getOwnerID();
     }
