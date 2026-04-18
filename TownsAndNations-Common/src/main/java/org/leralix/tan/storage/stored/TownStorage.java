@@ -53,4 +53,13 @@ public interface TownStorage {
     }
 
     void save();
+
+    default Town getByName(String townName){
+        for(Town town: getAll().values()){
+            if(town.getName().replaceAll(" ", "-").equals(townName)){
+                return town;
+            }
+        }
+        return null;
+    }
 }

@@ -4,12 +4,12 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TownData;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownDataStorage;
+import org.leralix.tan.storage.stored.TownStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -18,11 +18,11 @@ import java.util.List;
 public class JoinTownCommand extends PlayerSubCommand {
 
     private final PlayerDataStorage playerDataStorage;
-    private final TownDataStorage townDataStorage;
+    private final TownStorage townDataStorage;
 
     public JoinTownCommand(
             PlayerDataStorage playerDataStorage,
-            TownDataStorage townDataStorage
+            TownStorage townDataStorage
     ) {
         this.playerDataStorage = playerDataStorage;
         this.townDataStorage = townDataStorage;
@@ -53,10 +53,13 @@ public class JoinTownCommand extends PlayerSubCommand {
         List<String> suggestions = new ArrayList<>();
         // Get All town IDs that invited this player
         for(String townId:TownInviteDataStorage.getInvitations(player.getUniqueId())) {
-            TownData town= townDataStorage.get(townId);
+            Town town= townDataStorage.get(townId);
             if(town!=null) {
                 suggestions.add(town.getName().replaceAll(" ", "-"));
             }
+        }
+        if(suggestions.isEmpty()){
+            suggestions.add("<No Invitations>");
         }
 
         return suggestions;
@@ -79,7 +82,7 @@ public class JoinTownCommand extends PlayerSubCommand {
 
 
             String townName = args[1].replaceAll(" ", "-");
-            TownData townData = townDataStorage.getByName(townName); // find town by name
+            Town townData = townDataStorage.getByName(townName); // find town by name
             if(townData == null || !TownInviteDataStorage.isInvited(player.getUniqueId(), townData.getID())) {
                 TanChatUtils.message(player, Lang.TOWN_INVITATION_NO_INVITATION.get(lang));
                 return;
