@@ -3,7 +3,7 @@ package org.leralix.tan.storage.stored.json;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.player.NoPlayerData;
 import org.leralix.tan.data.player.PlayerData;
@@ -31,7 +31,7 @@ public class PlayerJsonStorage extends JsonStorage<ITanPlayer> implements Player
      * @param p The player to register.
      * @return The ITanPlayer instance associated with the registered player.
      */
-    public ITanPlayer register(Player p) {
+    public ITanPlayer register(OfflinePlayer p) {
         ITanPlayer tanPlayer = new PlayerData(p);
         put(tanPlayer.getID().toString(), tanPlayer);
         return tanPlayer;
@@ -54,11 +54,8 @@ public class PlayerJsonStorage extends JsonStorage<ITanPlayer> implements Player
             return res;
         }
 
-        Player newPlayer = Bukkit.getPlayer(UUID.fromString(id));
-        if (newPlayer != null) {
-            return register(newPlayer);
-        }
-        throw new RuntimeException("Error : Player ID [" + id + "] has not been found" );
+        OfflinePlayer newPlayer = Bukkit.getOfflinePlayer(UUID.fromString(id));
+        return register(newPlayer);
     }
 
 }
