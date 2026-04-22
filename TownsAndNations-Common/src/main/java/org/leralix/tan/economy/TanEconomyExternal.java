@@ -6,6 +6,9 @@ import org.leralix.tan.data.player.ITanPlayer;
 
 import java.util.UUID;
 
+/**
+ * Implementation of an economy Using Vault's registered economy from another plugin.
+ */
 public class TanEconomyExternal extends AbstractTanEcon {
 
     private final Economy externalEconomy;
@@ -19,11 +22,6 @@ public class TanEconomyExternal extends AbstractTanEcon {
     public double getBalance(ITanPlayer tanPlayer) {
         UUID uuid = tanPlayer.getID();
         return externalEconomy.getBalance(Bukkit.getOfflinePlayer(uuid));
-    }
-
-    @Override
-    public boolean has(ITanPlayer tanPlayer, double v) {
-        return getBalance(tanPlayer) > v;
     }
 
     @Override

@@ -6,7 +6,9 @@ public abstract class AbstractTanEcon {
 
     public abstract double getBalance(ITanPlayer tanPlayer);
 
-    public abstract boolean has(ITanPlayer tanPlayer, double amount);
+    public boolean has(ITanPlayer tanPlayer, double amount) {
+        return getBalance(tanPlayer) > amount;
+    }
 
     public abstract void withdrawPlayer(ITanPlayer tanPlayer, double amount);
 

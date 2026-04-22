@@ -3,15 +3,13 @@ package org.leralix.tan.economy;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.utils.constants.Constants;
 
+/**
+ * If vault is not installed, using internal economy system.
+ */
 public class TanEconomyStandalone extends AbstractTanEcon{
     @Override
     public double getBalance(ITanPlayer tanPlayer) {
         return tanPlayer.getBalance();
-    }
-
-    @Override
-    public boolean has(ITanPlayer tanPlayer, double amount) {
-        return getBalance(tanPlayer) > amount;
     }
 
     @Override

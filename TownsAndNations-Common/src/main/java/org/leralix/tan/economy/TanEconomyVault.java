@@ -11,14 +11,15 @@ import org.leralix.tan.utils.constants.Constants;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Economy class used to register Towns and Nation as the main economy provider.
+ * This {@link Economy} implementation does not use banks or per-world money.
+ */
 public class TanEconomyVault extends TanEconomyStandalone implements Economy {
 
     private final PlayerDataStorage playerDataStorage;
 
-    public TanEconomyVault(
-            PlayerDataStorage playerDataStorage
-    ) {
-        super();
+    public TanEconomyVault(PlayerDataStorage playerDataStorage) {
         this.playerDataStorage = playerDataStorage;
     }
 

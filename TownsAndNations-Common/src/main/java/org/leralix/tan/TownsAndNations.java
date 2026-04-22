@@ -359,9 +359,10 @@ public class TownsAndNations extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             getLogger().log(Level.INFO, "[TaN] -Vault is not detected. Running standalone economy");
             EconomyUtil.register(new TanEconomyStandalone());
-            return;
         }
-        VaultManager.setupVault();
+        else {
+            VaultManager.setupVault();
+        }
     }
 
     /**
