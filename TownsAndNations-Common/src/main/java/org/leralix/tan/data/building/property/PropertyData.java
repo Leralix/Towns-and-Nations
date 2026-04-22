@@ -29,7 +29,7 @@ import org.leralix.tan.data.territory.cosmetic.CustomIcon;
 import org.leralix.tan.data.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.data.territory.permission.PermissionGiven;
-import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;

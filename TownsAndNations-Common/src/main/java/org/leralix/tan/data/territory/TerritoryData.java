@@ -42,7 +42,7 @@ import org.leralix.tan.data.upgrade.rewards.list.BiomeStat;
 import org.leralix.tan.data.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.data.upgrade.rewards.numeric.ChunkCost;
 import org.leralix.tan.data.upgrade.rewards.numeric.ChunkUpkeepCost;
-import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.DiplomacyProposalInternalEvent;
 import org.leralix.tan.events.events.TerritoryVassalAcceptedInternalEvent;

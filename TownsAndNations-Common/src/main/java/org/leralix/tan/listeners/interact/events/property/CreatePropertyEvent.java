@@ -14,7 +14,7 @@ import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TownClaimedChunk;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Town;
-import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;

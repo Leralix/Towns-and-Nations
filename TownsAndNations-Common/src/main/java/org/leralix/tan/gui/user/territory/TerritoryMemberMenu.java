@@ -12,7 +12,7 @@ import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.rank.RolePermission;
-import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;

@@ -1,4 +1,4 @@
-package org.leralix.tan.economy;
+package org.leralix.tan.utils.economy;
 
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.utils.constants.Constants;

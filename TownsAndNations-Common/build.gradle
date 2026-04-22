@@ -112,7 +112,7 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.0'
 }
 
-configurations.all {
+configurations.configureEach {
     resolutionStrategy {
         force 'org.junit.platform:junit-platform-engine:1.10.0'
         force 'org.junit.platform:junit-platform-launcher:1.10.0'

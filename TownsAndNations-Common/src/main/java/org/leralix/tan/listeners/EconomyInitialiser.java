@@ -4,8 +4,8 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServiceRegisterEvent;
-import org.leralix.tan.economy.EconomyUtil;
-import org.leralix.tan.economy.TanEconomyExternal;
+import org.leralix.tan.utils.economy.EconomyUtil;
+import org.leralix.tan.utils.economy.TanEconomyExternal;
 
 public class EconomyInitialiser implements Listener {
 

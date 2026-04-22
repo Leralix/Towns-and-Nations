@@ -2,7 +2,7 @@ package org.leralix.tan.data.building.property.owner;
 
 import org.bukkit.Bukkit;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.economy.EconomyUtil;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.tan.api.interfaces.TanPlayer;
 
 import java.util.UUID;

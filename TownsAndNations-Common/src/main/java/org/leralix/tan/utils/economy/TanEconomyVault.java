@@ -1,4 +1,4 @@
-package org.leralix.tan.economy;
+package org.leralix.tan.utils.economy;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
