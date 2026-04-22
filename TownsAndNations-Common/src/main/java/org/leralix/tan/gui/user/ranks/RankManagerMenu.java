@@ -16,7 +16,6 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.RenameRank;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -58,7 +57,7 @@ public class RankManagerMenu extends BasicGui {
 
         gui.setItem(3, 6, deleteRankIcon());
 
-        gui.setItem(4, 1, GuiUtil.createBackArrow(player,p -> new TerritoryRanksMenu(player, territoryData).open(), langType));
+        gui.setItem(4, 1, createBackArrow(player,p -> new TerritoryRanksMenu(player, territoryData).open(), langType));
         gui.open(player);
 
     }

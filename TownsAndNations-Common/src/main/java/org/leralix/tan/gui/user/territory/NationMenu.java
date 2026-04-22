@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.data.territory.Nation;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class NationMenu extends TerritoryMenu {
 
@@ -21,7 +20,7 @@ public class NationMenu extends TerritoryMenu {
     @Override
     public void open() {
         gui.setItem(1, 5, getTerritoryInfo());
-        gui.getFiller().fillTop(GuiUtil.getUnnamedItem(Material.ORANGE_STAINED_GLASS_PANE));
+        gui.getFiller().fillTop(getUnnamedItem(Material.ORANGE_STAINED_GLASS_PANE));
 
         gui.setItem(2, 2, getTownTreasuryButton());
         gui.setItem(2, 3, getMemberButton());
@@ -35,7 +34,7 @@ public class NationMenu extends TerritoryMenu {
         gui.setItem(3, 3, getAttackButton());
         gui.setItem(3, 4, getHierarchyButton());
 
-        gui.setItem(4, 1, GuiUtil.createBackArrow(player, MainMenu::new, langType));
+        gui.setItem(4, 1, createBackArrow(player, MainMenu::new, langType));
 
         gui.open(player);
     }

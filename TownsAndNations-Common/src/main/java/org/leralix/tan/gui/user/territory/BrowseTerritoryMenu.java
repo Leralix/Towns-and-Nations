@@ -6,7 +6,6 @@ import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.scope.BrowseScope;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public class BrowseTerritoryMenu extends IteratorGUI {
     }
 
     private GuiItem getScopeButton() {
-        return GuiUtil.getNextScopeButton(
+        return getNextScopeButton(
                 iconManager,
                 this,
                 scope,

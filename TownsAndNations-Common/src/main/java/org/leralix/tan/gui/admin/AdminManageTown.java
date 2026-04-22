@@ -8,7 +8,6 @@ import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.SelectNewOwnerForTownMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class AdminManageTown extends AdminManageTerritory {
         gui.setItem(2, 7, getTransactionHistory());
         gui.setItem(2, 8, getDelete());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminBrowseTown(player), langType));
+        gui.setItem(3, 1, createBackArrow(player, p -> new AdminBrowseTown(player), langType));
 
         gui.open(player);
     }

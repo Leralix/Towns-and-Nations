@@ -11,7 +11,6 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeWarName;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.info.WarRole;
@@ -48,7 +47,7 @@ public class WarMenu extends AbstractWarMenu {
         gui.setItem(2, 7, getEnemyWargoalsIcon());
         gui.setItem(2, 8, getSurrenderButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new WarsMenu(player, territoryData), langType));
+        gui.setItem(3, 1, createBackArrow(player, p -> new WarsMenu(player, territoryData), langType));
         gui.open(player);
     }
 

@@ -15,7 +15,6 @@ import org.leralix.tan.gui.user.player.PlayerMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +53,7 @@ public class MainMenu extends BasicGui {
         gui.setItem(2, townPosition, getTownButton(tanPlayer));
         gui.setItem(2, playerPosition, getPlayerButton(tanPlayer));
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory, langType));
+        gui.setItem(3, 1, createBackArrow(player, HumanEntity::closeInventory, langType));
 
         gui.open(player);
     }

@@ -9,7 +9,6 @@ import org.leralix.tan.storage.database.transactions.AbstractTransaction;
 import org.leralix.tan.storage.database.transactions.EntityScope;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.TransactionType;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -40,7 +39,7 @@ public abstract class AbstractTransactionHistory extends IteratorGUI {
     }
 
     private @NotNull GuiItem getNextScopeButton() {
-        return GuiUtil.getNextScopeButton(
+        return getNextScopeButton(
                 iconManager,
                 this,
                 transactionType,

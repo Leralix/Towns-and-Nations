@@ -17,7 +17,6 @@ import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.DonateToTerritory;
 import org.leralix.tan.listeners.chat.events.RetrieveMoney;
 import org.leralix.tan.storage.database.transactions.TransactionType;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -40,14 +39,14 @@ public class TreasuryMenu extends BasicGui {
         budget.createGui(gui, player, tanPlayer, langType);
 
         gui.setItem(1, 5, getBudgetIcon(langType));
-        gui.getFiller().fillTop(GuiUtil.getUnnamedItem(Material.YELLOW_STAINED_GLASS_PANE));
+        gui.getFiller().fillTop(getUnnamedItem(Material.YELLOW_STAINED_GLASS_PANE));
 
         gui.setItem(2,8, getMiscSpendingsIcon());
 
         gui.setItem(3,2, getDonationButton());
         gui.setItem(3,4, getRetrieveButton());
 
-        gui.setItem(5,1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player, tanPlayer), langType));
+        gui.setItem(5,1, createBackArrow(player, p -> territoryData.openMainMenu(player, tanPlayer), langType));
 
         gui.open(player);
     }

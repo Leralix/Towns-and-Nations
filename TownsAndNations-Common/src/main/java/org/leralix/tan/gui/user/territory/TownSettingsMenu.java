@@ -23,7 +23,6 @@ import org.leralix.tan.listeners.chat.events.ChangeTownTag;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.ChangeCapital;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -47,7 +46,7 @@ public class TownSettingsMenu extends SettingsMenus {
     public void open() {
 
         gui.setItem(1, 5, getTerritoryInfo());
-        gui.getFiller().fillTop(GuiUtil.getUnnamedItem(Material.BLUE_STAINED_GLASS_PANE));
+        gui.getFiller().fillTop(getUnnamedItem(Material.BLUE_STAINED_GLASS_PANE));
 
         gui.setItem(2, 2, getRenameButton());
         gui.setItem(2, 3, getChangeDescriptionButton());
@@ -67,7 +66,7 @@ public class TownSettingsMenu extends SettingsMenus {
         gui.setItem(2, 7, getQuitButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> new TownMenu(player, tanPlayer, townData), langType));
+        gui.setItem(4, 1, createBackArrow(player, p -> new TownMenu(player, tanPlayer, townData), langType));
 
         gui.open(player);
     }

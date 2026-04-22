@@ -7,7 +7,6 @@ import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.territory.RegionChangeOwnership;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class AdminManageRegion extends AdminManageTerritory {
 
@@ -30,7 +29,7 @@ public class AdminManageRegion extends AdminManageTerritory {
         gui.setItem(2, 7, getTransactionHistory());
         gui.setItem(2, 8, getDelete());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminBrowseRegion(player), langType));
+        gui.setItem(3, 1, createBackArrow(player, p -> new AdminBrowseRegion(player), langType));
 
         gui.open(player);
     }

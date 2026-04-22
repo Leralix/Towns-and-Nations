@@ -13,7 +13,6 @@ import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.AdminSetPlayerBalance;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -35,7 +34,7 @@ public class AdminManagePlayer extends BasicGui {
         gui.setItem(2, 4, getBalanceButton());
         gui.setItem(2, 6, getTownButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminBrowsePlayers(player), langType));
+        gui.setItem(3, 1, createBackArrow(player, p -> new AdminBrowsePlayers(player), langType));
 
         gui.open(player);
     }

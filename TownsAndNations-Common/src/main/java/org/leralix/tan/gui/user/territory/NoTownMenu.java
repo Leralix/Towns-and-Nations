@@ -13,7 +13,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.CreateTown;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
@@ -30,7 +29,7 @@ public class NoTownMenu extends BasicGui {
 
         gui.setItem(2, 3, getCreateTownButton());
         gui.setItem(2, 7, getBrowseTownsButton());
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new MainMenu(player), langType));
+        gui.setItem(3, 1, createBackArrow(player, p -> new MainMenu(player), langType));
 
         gui.open(player);
     }

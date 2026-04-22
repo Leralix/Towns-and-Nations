@@ -8,7 +8,6 @@ import org.leralix.tan.data.building.property.PropertyData;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.RenterPropertyMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class BuyOrRentPropertyMenu extends PropertyMenus {
 
@@ -22,7 +21,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
     public void open() {
 
         gui.setItem(1,5, getPropertyIcon());
-        gui.getFiller().fillTop(GuiUtil.getUnnamedItem(Material.BROWN_STAINED_GLASS_PANE));
+        gui.getFiller().fillTop(getUnnamedItem(Material.BROWN_STAINED_GLASS_PANE));
 
 
         if(propertyData.isForSale()){
@@ -34,7 +33,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
             gui.setItem(2,7, getCancelRentButton());
         }
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory, langType));
+        gui.setItem(3, 1, createBackArrow(player, HumanEntity::closeInventory, langType));
 
         gui.open(player);
     }

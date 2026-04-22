@@ -16,7 +16,6 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.LeaderRequirement;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -35,7 +34,7 @@ public class RegionSettingsMenu extends SettingsMenus {
     @Override
     public void open() {
         gui.setItem(1, 5, getTerritoryInfo());
-        gui.getFiller().fillTop(GuiUtil.getUnnamedItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
+        gui.getFiller().fillTop(getUnnamedItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE));
 
         gui.setItem(2, 2, getRenameButton());
         gui.setItem(2, 3, getChangeDescriptionButton());
@@ -50,7 +49,7 @@ public class RegionSettingsMenu extends SettingsMenus {
         gui.setItem(2, 7, getChangeOwnershipButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(4, 1, GuiUtil.createBackArrow(player, p -> new RegionMenu(player, regionData), langType));
+        gui.setItem(4, 1, createBackArrow(player, p -> new RegionMenu(player, regionData), langType));
 
         gui.open(player);
     }

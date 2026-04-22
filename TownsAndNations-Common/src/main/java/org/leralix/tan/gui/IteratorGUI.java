@@ -5,7 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -30,7 +29,7 @@ public abstract class IteratorGUI extends BasicGui {
     }
 
     protected void iterator(List<GuiItem> itemList, Consumer<Player> onLeave, Material decorativeMaterial) {
-        GuiUtil.createIterator(gui, itemList, page, player, tanPlayer, onLeave, p -> nextPage(), p -> previousPage(), decorativeMaterial);
+        createIterator(gui, itemList, page, player, tanPlayer, onLeave, p -> nextPage(), p -> previousPage(), decorativeMaterial);
     }
 
     protected void previousPage() {

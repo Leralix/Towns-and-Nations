@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.data.territory.Nation;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class AdminManageNation extends AdminManageTerritory {
 
@@ -27,7 +26,7 @@ public class AdminManageNation extends AdminManageTerritory {
         gui.setItem(2, 7, getTransactionHistory());
         gui.setItem(2, 8, getDelete());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminBrowseNation(player), langType));
+        gui.setItem(3, 1, createBackArrow(player, p -> new AdminBrowseNation(player), langType));
 
         gui.open(player);
     }

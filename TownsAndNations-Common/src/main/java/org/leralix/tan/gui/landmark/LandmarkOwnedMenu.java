@@ -15,7 +15,6 @@ import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.GOOD;
@@ -41,9 +40,9 @@ public class LandmarkOwnedMenu extends BasicGui {
         gui.setItem(2, 4, getCollectButton());
         gui.setItem(2, 6, getAbandonButton());
 
-        gui.setItem(3,1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory, langType));
+        gui.setItem(3,1, createBackArrow(player, HumanEntity::closeInventory, langType));
 
-        GuiItem panelIcon = GuiUtil.getUnnamedItem(Material.GRAY_STAINED_GLASS_PANE);
+        GuiItem panelIcon = getUnnamedItem(Material.GRAY_STAINED_GLASS_PANE);
         gui.getFiller().fillTop(panelIcon);
         gui.getFiller().fillBottom(panelIcon);
 

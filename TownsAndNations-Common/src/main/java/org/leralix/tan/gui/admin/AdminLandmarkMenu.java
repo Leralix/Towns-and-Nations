@@ -14,7 +14,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeLandmarkName;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.GOOD;
@@ -36,7 +35,7 @@ public class AdminLandmarkMenu extends BasicGui {
         gui.setItem(2, 5, getManageProductionButton());
         gui.setItem(2, 7, getDeleteLandmarkButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new AdminLandmarksMenu(player), langType));
+        gui.setItem(3, 1, createBackArrow(player, p -> new AdminLandmarksMenu(player), langType));
         gui.open(player);
     }
 

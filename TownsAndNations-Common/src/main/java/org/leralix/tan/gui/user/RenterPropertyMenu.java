@@ -10,7 +10,6 @@ import org.leralix.tan.data.building.property.owner.PlayerOwned;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.user.property.PropertyMenus;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.buildings.TanOwner;
 
@@ -30,12 +29,12 @@ public class RenterPropertyMenu extends PropertyMenus {
     @Override
     public void open() {
         gui.setItem(1,5, getPropertyIcon());
-        gui.getFiller().fillTop(GuiUtil.getUnnamedItem(Material.BROWN_STAINED_GLASS_PANE));
+        gui.getFiller().fillTop(getUnnamedItem(Material.BROWN_STAINED_GLASS_PANE));
 
         gui.setItem(2, 4, getAuthorizedPlayersButton());
         gui.setItem(2, 6, getStopRentPropertyButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, HumanEntity::closeInventory, langType));
+        gui.setItem(3, 1, createBackArrow(player, HumanEntity::closeInventory, langType));
         gui.open(player);
     }
 

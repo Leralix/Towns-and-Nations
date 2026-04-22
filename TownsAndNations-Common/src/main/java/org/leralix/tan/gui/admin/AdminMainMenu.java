@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class AdminMainMenu extends BasicGui {
 
@@ -26,7 +25,7 @@ public class AdminMainMenu extends BasicGui {
         gui.setItem(2, 7, getLandmarkButton());
         gui.setItem(2, 8, getWarButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> player.closeInventory(), langType));
+        gui.setItem(3, 1, createBackArrow(player, p -> player.closeInventory(), langType));
 
         gui.open(player);
     }

@@ -22,7 +22,6 @@ import org.leralix.tan.gui.user.territory.upgrade.UpgradeMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.List;
@@ -173,7 +172,7 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected void setupCommonLayout(Material glassColor) {
         gui.setItem(1, 5, getTerritoryInfo());
-        gui.getFiller().fillTop(GuiUtil.getUnnamedItem(glassColor));
+        gui.getFiller().fillTop(getUnnamedItem(glassColor));
 
         gui.setItem(2, 2, getTownTreasuryButton());
         gui.setItem(2, 3, getMemberButton());
@@ -185,6 +184,6 @@ public abstract class TerritoryMenu extends BasicGui {
         gui.setItem(3, 3, getAttackButton());
         gui.setItem(3, 4, getHierarchyButton());
 
-        gui.setItem(4, 1, GuiUtil.createBackArrow(player, MainMenu::new, langType));
+        gui.setItem(4, 1, createBackArrow(player, MainMenu::new, langType));
     }
 }

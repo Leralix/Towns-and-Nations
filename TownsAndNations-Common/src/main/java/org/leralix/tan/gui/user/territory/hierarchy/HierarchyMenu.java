@@ -16,7 +16,6 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.DonateToTerritory;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Optional;
@@ -38,7 +37,7 @@ public class HierarchyMenu extends BasicGui {
 
         fillDecorations(gui, Material.LIGHT_BLUE_STAINED_GLASS_PANE);
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player, tanPlayer), tanPlayer.getLang()));
+        gui.setItem(3, 1, createBackArrow(player, p -> territoryData.openMainMenu(player, tanPlayer), tanPlayer.getLang()));
         gui.open(player);
     }
 
@@ -191,7 +190,7 @@ public class HierarchyMenu extends BasicGui {
     }
 
     private void fillDecorations(Gui gui, Material material) {
-        GuiItem decorativeItem = GuiUtil.getUnnamedItem(material);
+        GuiItem decorativeItem = getUnnamedItem(material);
         gui.getFiller().fillTop(decorativeItem);
         gui.getFiller().fillBottom(decorativeItem);
 

@@ -12,7 +12,6 @@ import org.leralix.tan.gui.user.property.PlayerPropertiesMenu;
 import org.leralix.tan.gui.user.territory.history.PlayerTransactionHistory;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class PlayerMenu extends BasicGui {
 
@@ -35,7 +34,7 @@ public class PlayerMenu extends BasicGui {
         gui.setItem(2, 7, getTimezoneButton());
         gui.setItem(2, 8, getLanguageButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, MainMenu::new, langType));
+        gui.setItem(3, 1, createBackArrow(player, MainMenu::new, langType));
 
         gui.open(player);
     }

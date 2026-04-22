@@ -8,7 +8,6 @@ import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class NewsletterMenu extends IteratorGUI {
     }
 
     private GuiItem getCheckScopeGui() {
-        return GuiUtil.getNextScopeButton(
+        return getNextScopeButton(
                 iconManager,
                 this,
                 scope,

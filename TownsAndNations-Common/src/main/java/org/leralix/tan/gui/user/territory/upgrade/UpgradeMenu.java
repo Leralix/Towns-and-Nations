@@ -16,7 +16,6 @@ import org.leralix.tan.gui.service.requirements.MoneyRequirement;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class UpgradeMenu extends BasicGui {
         int townLevel = territoryStats.getMainLevel();
         //Fill the 5 rows of colored due to town level.
 
-        var unlockedFiller = GuiUtil.getUnnamedItem(Material.LIME_STAINED_GLASS_PANE);
+        var unlockedFiller = getUnnamedItem(Material.LIME_STAINED_GLASS_PANE);
         var unlockedLevels = iconManager.get(Material.GREEN_STAINED_GLASS_PANE);
         var lockedFiller = iconManager.get(Material.IRON_BARS)
                 .setName(Lang.LEVEL_LOCKED.get(langType))
@@ -146,13 +145,13 @@ public class UpgradeMenu extends BasicGui {
     }
 
     private void generateMenuPart() {
-        gui.getFiller().fillBottom(GuiUtil.getUnnamedItem(Material.GRAY_STAINED_GLASS_PANE));
-        gui.getFiller().fillSide(GuiFiller.Side.LEFT, Collections.singletonList(GuiUtil.getUnnamedItem(Material.GRAY_STAINED_GLASS_PANE)));
+        gui.getFiller().fillBottom(getUnnamedItem(Material.GRAY_STAINED_GLASS_PANE));
+        gui.getFiller().fillSide(GuiFiller.Side.LEFT, Collections.singletonList(getUnnamedItem(Material.GRAY_STAINED_GLASS_PANE)));
 
         gui.setItem(6, 8, getRightButton());
         gui.setItem(6, 7, getLeftButton());
 
-        gui.setItem(6, 1, GuiUtil.createBackArrow(player, player1 -> territoryData.openMainMenu(player1, tanPlayer), langType));
+        gui.setItem(6, 1, createBackArrow(player, player1 -> territoryData.openMainMenu(player1, tanPlayer), langType));
     }
 
     private @NotNull GuiItem getUpgradeTownButton() {

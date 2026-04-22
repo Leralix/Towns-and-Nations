@@ -8,7 +8,6 @@ import org.leralix.tan.data.territory.permission.GeneralChunkSetting;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class TerritoryChunkGeneralSettings extends IteratorGUI {
     public void open() {
         iterator(getSettings(), p -> new ChunkSettingsMenu(player, territoryData));
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new ChunkSettingsMenu(player, territoryData), langType));
+        gui.setItem(3, 1, createBackArrow(player, p -> new ChunkSettingsMenu(player, territoryData), langType));
         gui.open(player);
     }
 

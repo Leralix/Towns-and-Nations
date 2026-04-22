@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.data.building.property.PropertyData;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 
 public class TownPropertyManager extends PropertyMenus {
 
@@ -18,7 +17,7 @@ public class TownPropertyManager extends PropertyMenus {
 
     @Override
     public void open() {
-        gui.getFiller().fillTop(GuiUtil.getUnnamedItem(Material.BROWN_STAINED_GLASS_PANE));
+        gui.getFiller().fillTop(getUnnamedItem(Material.BROWN_STAINED_GLASS_PANE));
 
         gui.setItem(1, 5, getPropertyIcon());
 
@@ -27,7 +26,7 @@ public class TownPropertyManager extends PropertyMenus {
         if(propertyData.isRented())
             gui.setItem(2, 7, getKickRenterButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> new TownPropertiesMenu(player, townData), langType));
+        gui.setItem(3, 1, createBackArrow(player, p -> new TownPropertiesMenu(player, townData), langType));
 
         gui.open(player);
     }

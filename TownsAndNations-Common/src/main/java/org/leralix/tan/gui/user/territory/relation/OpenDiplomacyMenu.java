@@ -12,7 +12,6 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.constants.RelationConstant;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class OpenDiplomacyMenu extends BasicGui {
         gui.setItem(15, getAllianceButton());
         gui.setItem(17, getProposalButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, p -> territoryData.openMainMenu(player, tanPlayer), langType));
+        gui.setItem(3, 1, createBackArrow(player, p -> territoryData.openMainMenu(player, tanPlayer), langType));
 
         gui.open(player);
     }

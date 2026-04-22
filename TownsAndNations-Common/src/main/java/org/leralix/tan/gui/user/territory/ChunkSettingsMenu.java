@@ -13,7 +13,6 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.BooleanStatRequirement;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class ChunkSettingsMenu extends BasicGui {
@@ -29,13 +28,13 @@ public class ChunkSettingsMenu extends BasicGui {
     @Override
     public void open() {
 
-        gui.getFiller().fillTop(GuiUtil.getUnnamedItem(Material.LIME_STAINED_GLASS_PANE));
+        gui.getFiller().fillTop(getUnnamedItem(Material.LIME_STAINED_GLASS_PANE));
 
         gui.setItem(2, 3, getChunkIcon());
         gui.setItem(2, 5, getChunkGeneralSettings());
         gui.setItem(2, 7, getChunkMobSpawnSettings());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, player1 -> territoryData.openMainMenu(player1, tanPlayer), langType));
+        gui.setItem(3, 1, createBackArrow(player, player1 -> territoryData.openMainMenu(player1, tanPlayer), langType));
 
         gui.open(player);
     }

@@ -20,7 +20,6 @@ import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +45,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
 
         gui.setItem(2, 5, getClaimButton());
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, Player::closeInventory, langType));
+        gui.setItem(3, 1, createBackArrow(player, Player::closeInventory, langType));
 
 
         GuiItem panelGui = IconManager.getInstance().get(Material.GRAY_STAINED_GLASS_PANE).asGuiItem(player, langType);

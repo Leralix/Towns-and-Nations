@@ -14,7 +14,6 @@ import org.leralix.tan.gui.user.territory.AttackMenu;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 import org.leralix.tan.utils.text.DateUtil;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.War;
@@ -53,7 +52,7 @@ public class CreateAttackMenu extends BasicGui {
         gui.setItem(2, 4, getAddTimeButton());
 
         gui.setItem(2, 8, getConfirmButton());
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, e -> returnGui.open(), langType));
+        gui.setItem(3, 1, createBackArrow(player, e -> returnGui.open(), langType));
 
         gui.open(player);
     }

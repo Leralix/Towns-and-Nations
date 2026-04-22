@@ -9,7 +9,6 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.data.building.property.PropertyData;
 import org.leralix.tan.data.territory.cosmetic.CustomIcon;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.utils.deprecated.GuiUtil;
 
 import java.util.function.Consumer;
 
@@ -25,7 +24,7 @@ public class PlayerPropertyManager extends PropertyMenus {
 
     @Override
     public void open() {
-        gui.getFiller().fillTop(GuiUtil.getUnnamedItem(Material.BROWN_STAINED_GLASS_PANE));
+        gui.getFiller().fillTop(getUnnamedItem(Material.BROWN_STAINED_GLASS_PANE));
 
         gui.setItem(1, 5, getPropertyIcon());
 
@@ -44,7 +43,7 @@ public class PlayerPropertyManager extends PropertyMenus {
         gui.setItem(2, 9, getRelocateSignButton());
 
 
-        gui.setItem(3, 1, GuiUtil.createBackArrow(player, onClose, langType));
+        gui.setItem(3, 1, createBackArrow(player, onClose, langType));
 
         gui.open(player);
     }
