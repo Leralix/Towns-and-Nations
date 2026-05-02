@@ -77,7 +77,7 @@ repositories {
 dependencies {
     //Compile only
     compileOnly 'io.github.leralix:sphere-lib:0.6.1'
-    compileOnly 'io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:4.0.43'
     compileOnly 'net.luckperms:api:5.4'
     compileOnly "com.github.MilkBowl:VaultAPI:1.7.1"
@@ -92,14 +92,14 @@ dependencies {
     implementation 'net.objecthunter:exp4j:0.4.8'
     implementation("dev.triumphteam:triumph-gui:3.1.11")
     //Database dependencies
-    implementation 'com.mysql:mysql-connector-j:8.4.0'
+    implementation 'com.mysql:mysql-connector-j:9.7.0'
     implementation 'org.xerial:sqlite-jdbc:3.43.2.0'
     implementation 'redis.clients:jedis:7.2.0'
 
     //Tests
     testImplementation 'io.github.leralix:sphere-lib:0.6.1'
-    testImplementation 'com.github.MockBukkit:MockBukkit:v4.72.9'
-    testImplementation 'io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT'
+    testImplementation 'org.mockbukkit.mockbukkit:mockbukkit-v1.21:4.108.0'
+    testImplementation 'io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'

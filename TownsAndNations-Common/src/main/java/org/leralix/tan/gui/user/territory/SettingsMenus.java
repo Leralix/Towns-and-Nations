@@ -112,19 +112,18 @@ public abstract class SettingsMenus extends BasicGui {
                 .setAction(
                         action -> {
 
-                            if (action.getCursor() == null) {
-                                return;
-                            }
+                            action.getCursor();
                             ItemStack itemMaterial = action.getCursor();
 
-                            if (Tag.BANNERS.isTagged(itemMaterial.getType())) {
-                                BannerMeta meta = (BannerMeta) itemMaterial.getItemMeta();
-                                territoryData.setBanner(itemMaterial.getType(), meta.getPatterns());
+                            if (Tag.BANNERS.isTagged(itemMaterial.getType()) &&
+                                    itemMaterial.getItemMeta() instanceof BannerMeta bannerMeta) {
+                                territoryData.setBanner(itemMaterial.getType(), bannerMeta.getPatterns());
                                 TownsAndNations.getPlugin().getFortStorage().getOwnedFort(territoryData).forEach(Fort::updateFlag);
                                 SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
                                 open();
+                            } else {
+                                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                             }
-                            SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                         }
                 )
                 .asGuiItem(player, langType);

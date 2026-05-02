@@ -26,7 +26,7 @@ public class SubjugateWarGoal extends WarGoal implements TanSubjugateWargoal {
         description.add(Lang.SUBJUGATE_WAR_GOAL_DESC.get());
         description.add(Lang.SUBJUGATE_WAR_GOAL_DESC1.get());
 
-        return buildIcon(Material.CHAIN, description, langType);
+        return buildIcon(Material.IRON_CHAIN, description, langType);
     }
 
     @Override
