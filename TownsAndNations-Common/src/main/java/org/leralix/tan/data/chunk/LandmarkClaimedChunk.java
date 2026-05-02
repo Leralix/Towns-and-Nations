@@ -115,17 +115,17 @@ public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
     }
 
     @Override
-    public boolean canExplosionGrief() {
+    public boolean canBeGriefByExplosion() {
         return false;
     }
 
     @Override
-    public boolean canFireGrief() {
+    public boolean canBeGriefByFire() {
         return false;
     }
 
     @Override
-    public boolean canPVPHappen() {
+    public boolean canPvpHappen() {
         return true;
     }
 

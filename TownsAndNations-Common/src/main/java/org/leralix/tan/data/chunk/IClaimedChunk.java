@@ -59,12 +59,6 @@ public interface IClaimedChunk extends TanClaimedChunk {
 
     void claim(TanTerritory tanTerritory);
 
-    boolean canExplosionGrief();
-
-    boolean canFireGrief();
-
-    boolean canPVPHappen();
-
     boolean canHostileGrief();
 
     boolean canVillagerGrief();
@@ -78,12 +72,6 @@ public interface IClaimedChunk extends TanClaimedChunk {
     void notifyUpdate();
 
     boolean containsPosition(Vector3D position);
-
-    boolean canBeGriefByExplosion();
-
-    boolean canBeGriefByFire();
-
-    boolean canPvpHappen();
 
     boolean canPlayerDoAction(TanPlayer tanPlayer, EChunkPermission permission, Location location);
 

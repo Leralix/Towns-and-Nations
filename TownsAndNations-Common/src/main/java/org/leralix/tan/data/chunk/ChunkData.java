@@ -158,21 +158,6 @@ public abstract class ChunkData implements IClaimedChunk, TanClaimedChunk {
     }
 
     @Override
-    public boolean canBeGriefByExplosion() {
-        return canExplosionGrief();
-    }
-
-    @Override
-    public boolean canBeGriefByFire() {
-        return canFireGrief();
-    }
-
-    @Override
-    public boolean canPvpHappen() {
-        return canPVPHappen();
-    }
-
-    @Override
     public boolean canPlayerDoAction(TanPlayer tanPlayer, EChunkPermission permission, Location location) {
         Player player = Bukkit.getPlayer(tanPlayer.getID());
         if (player == null) {

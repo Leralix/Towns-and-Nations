@@ -22,12 +22,12 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 public class PlayerEnterChunkListener implements Listener {
 
-    private final boolean displayTerritoryNamewithColor;
+    private final boolean displayTerritoryNameWithColor;
     private final ClaimStorage claimStorage;
     private final PlayerDataStorage playerDataStorage;
 
     public PlayerEnterChunkListener(PlayerDataStorage playerDataStorage, ClaimStorage claimStorage) {
-        this.displayTerritoryNamewithColor = Constants.displayTerritoryColor();
+        this.displayTerritoryNameWithColor = Constants.displayTerritoryColor();
         this.claimStorage = claimStorage;
         this.playerDataStorage = playerDataStorage;
     }
@@ -75,7 +75,7 @@ public class PlayerEnterChunkListener implements Listener {
             }
         }
 
-        nextClaimedChunk.playerEnterClaimedArea(player, tanPlayer, displayTerritoryNamewithColor);
+        nextClaimedChunk.playerEnterClaimedArea(player, tanPlayer, displayTerritoryNameWithColor);
 
         if (nextClaimedChunk instanceof WildernessChunkData &&
                 PlayerAutoClaimStorage.containsPlayer(event.getPlayer())) {

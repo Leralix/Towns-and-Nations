@@ -242,17 +242,17 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
     }
 
     @Override
-    public boolean canExplosionGrief() {
+    public boolean canBeGriefByExplosion() {
         return Constants.getChunkSettings(GeneralChunkSetting.TNT_GRIEF).canGrief(getOwnerInternal(), GeneralChunkSetting.TNT_GRIEF);
     }
 
     @Override
-    public boolean canFireGrief() {
+    public boolean canBeGriefByFire() {
         return Constants.getChunkSettings(GeneralChunkSetting.FIRE_GRIEF).canGrief(getOwnerInternal(), GeneralChunkSetting.FIRE_GRIEF);
     }
 
     @Override
-    public boolean canPVPHappen() {
+    public boolean canPvpHappen() {
         return Constants.getChunkSettings(GeneralChunkSetting.ENABLE_PVP).canGrief(getOwnerInternal(), GeneralChunkSetting.ENABLE_PVP);
     }
 

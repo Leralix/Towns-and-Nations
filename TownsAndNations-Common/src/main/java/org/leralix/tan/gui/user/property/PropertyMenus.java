@@ -208,7 +208,7 @@ public abstract class PropertyMenus extends BasicGui {
 
         FilledLang description = propertyData.getSign().isEmpty() ?
                 Lang.GUI_PROPERTY_RELOCATE_SIGN_DESC1_NO_SIGN.get() :
-                Lang.GUI_PROPERTY_RELOCATE_SIGN_DESC1.get(propertyData.getSignLocation().toString());
+                Lang.GUI_PROPERTY_RELOCATE_SIGN_DESC1.get(propertyData.getPosition().toString());
 
         return iconManager.get(IconKey.RELOCATE_SIGN_ICON)
                 .setName(Lang.GUI_PROPERTY_RELOCATE_SIGN.get(langType))

@@ -614,8 +614,4 @@ public class PropertyData extends Building implements TanProperty {
                 .map(TanPlayer::getNameStored)
                 .orElse(Lang.GUI_UNKOWN_OWNER_OR_RENTER.get(langType));
     }
-
-    public Vector3D getSignLocation() {
-        return signLocation;
-    }
 }

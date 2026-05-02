@@ -30,7 +30,7 @@ public class OverlordTaxLine extends ProfitLine {
 
     @Override
     public void addItems(Gui gui, Player player, ITanPlayer playerData, LangType langType) {
-
+        // Overlord tax cannot be edited.
     }
 
     @Override

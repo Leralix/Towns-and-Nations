@@ -3,7 +3,6 @@ package org.leralix.tan.api.internal.managers;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.LandmarkClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunkData;
@@ -17,30 +16,22 @@ import java.util.Optional;
 
 public class ClaimManager implements TanClaimManager {
 
-    private final ClaimStorage newClaimedChunkStorage;
+    private final ClaimStorage claimStorage;
 
-    private static ClaimManager instance;
 
-    private ClaimManager() {
-        newClaimedChunkStorage = TownsAndNations.getPlugin().getClaimStorage();
-    }
-
-    public static ClaimManager getInstance() {
-        if(instance == null) {
-            instance = new ClaimManager();
-        }
-        return instance;
+    public ClaimManager(ClaimStorage claimStorage) {
+        this.claimStorage = claimStorage;
     }
 
     @Override
     public boolean isBlockClaimed(Block block) {
-        IClaimedChunk claimedChunk = newClaimedChunkStorage.get(block.getChunk());
+        IClaimedChunk claimedChunk = claimStorage.get(block.getChunk());
         return claimedChunk.isClaimed();
     }
 
     @Override
     public TanClaimedChunk getClaimedChunk(Location location) {
-        return newClaimedChunkStorage.get(location.getChunk());
+        return claimStorage.get(location.getChunk());
     }
 
     @Override
@@ -49,7 +40,7 @@ public class ClaimManager implements TanClaimManager {
     }
 
     public Optional<TanTerritory> getTerritoryOfChunk(Chunk chunk) {
-        IClaimedChunk claimedChunk = newClaimedChunkStorage.get(chunk);
+        IClaimedChunk claimedChunk = claimStorage.get(chunk);
 
         return switch (claimedChunk){
             case WildernessChunkData ignored -> Optional.empty();

@@ -32,9 +32,9 @@ public class TerritoryUtil {
     }
 
     public static boolean isNameUsed(String name, Collection<? extends Territory> territories){
-        String territoryName = name.replaceAll(" ", "-");
+        String territoryName = name.replace(" ", "-");
         for(Territory territory : territories){
-            if(territoryName.equals(territory.getName().replaceAll(" ", "-"))){
+            if(territoryName.equals(territory.getName().replace(" ", "-"))){
                 return true;
             }
         }

@@ -101,17 +101,17 @@ public class WildernessChunkData extends ChunkData implements WildernessChunk {
     }
 
     @Override
-    public boolean canExplosionGrief() {
+    public boolean canBeGriefByExplosion() {
         return true;
     }
 
     @Override
-    public boolean canFireGrief() {
+    public boolean canBeGriefByFire() {
         return true;
     }
 
     @Override
-    public boolean canPVPHappen() {
+    public boolean canPvpHappen() {
         return true;
     }
 

@@ -3,7 +3,16 @@ package org.leralix.tan.data;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+/**
+ * @deprecated Lazy system for objects inside DatabaseData objets.
+ * Data objets should be reworked to no longer need this.
+ */
+@Deprecated()
 public class DataWrapperFactory {
+
+    private DataWrapperFactory(){
+        throw new AssertionError("Static class");
+    }
 
     public static <T> T wrap(T data, Runnable save, Class<T> iface) {
         Object proxy = Proxy.newProxyInstance(

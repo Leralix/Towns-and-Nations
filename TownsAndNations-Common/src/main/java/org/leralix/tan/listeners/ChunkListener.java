@@ -392,7 +392,7 @@ public class ChunkListener implements Listener {
             return true;
         }
 
-        if (!TownsAndNations.getPlugin().getClaimStorage().get(receiver.getLocation().getChunk()).canPVPHappen()) {
+        if (!TownsAndNations.getPlugin().getClaimStorage().get(receiver.getLocation().getChunk()).canPvpHappen()) {
             return false;
         }
 
@@ -611,7 +611,7 @@ public class ChunkListener implements Listener {
             return;
         }
 
-        event.blockList().removeIf(block -> !TownsAndNations.getPlugin().getClaimStorage().get(block.getChunk()).canExplosionGrief());
+        event.blockList().removeIf(block -> !TownsAndNations.getPlugin().getClaimStorage().get(block.getChunk()).canBeGriefByExplosion());
     }
 
     @EventHandler
@@ -623,7 +623,7 @@ public class ChunkListener implements Listener {
 
         Chunk chunk = event.getBlock().getChunk();
 
-        if (!TownsAndNations.getPlugin().getClaimStorage().get(chunk).canFireGrief()) {
+        if (!TownsAndNations.getPlugin().getClaimStorage().get(chunk).canBeGriefByFire()) {
             event.setCancelled(true);
         }
     }
@@ -637,7 +637,7 @@ public class ChunkListener implements Listener {
 
         if (event.getSource().getType() == Material.FIRE) {
             Chunk chunk = event.getBlock().getChunk();
-            if (!TownsAndNations.getPlugin().getClaimStorage().get(chunk).canFireGrief()) {
+            if (!TownsAndNations.getPlugin().getClaimStorage().get(chunk).canBeGriefByFire()) {
                 event.setCancelled(true);
             }
         }

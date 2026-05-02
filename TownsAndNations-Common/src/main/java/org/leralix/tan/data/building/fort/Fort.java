@@ -48,8 +48,6 @@ public abstract class Fort extends Building implements TanFort {
         TANCustomNBT.setProtectedBlockData(this);
     }
 
-    public abstract Vector3D getPosition();
-
     public abstract Territory getOwner();
 
     public abstract Territory getOccupier();

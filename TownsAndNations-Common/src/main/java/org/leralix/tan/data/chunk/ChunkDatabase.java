@@ -132,21 +132,6 @@ public abstract class ChunkDatabase implements DatabaseData<ChunkData>, IClaimed
     }
 
     @Override
-    public boolean canExplosionGrief() {
-        return data.canExplosionGrief();
-    }
-
-    @Override
-    public boolean canFireGrief() {
-        return data.canFireGrief();
-    }
-
-    @Override
-    public boolean canPVPHappen() {
-        return data.canPVPHappen();
-    }
-
-    @Override
     public boolean canHostileGrief() {
         return data.canHostileGrief();
     }

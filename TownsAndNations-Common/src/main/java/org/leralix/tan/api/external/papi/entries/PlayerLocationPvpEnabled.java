@@ -42,7 +42,7 @@ public class PlayerLocationPvpEnabled extends PapiEntry {
 
         IClaimedChunk claimedChunk = TownsAndNations.getPlugin().getClaimStorage().get(location.getChunk());
 
-        return claimedChunk.canPVPHappen() ?
+        return claimedChunk.canPvpHappen() ?
                 Constants.getTruePlaceholderString() :
                 Constants.getFalsePlaceholderString();
 

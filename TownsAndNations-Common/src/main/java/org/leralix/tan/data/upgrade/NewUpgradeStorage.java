@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.territory.Nation;
 import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.data.territory.Territory;
@@ -20,6 +21,7 @@ import org.leralix.tan.gui.service.requirements.model.*;
 import org.leralix.tan.gui.service.requirements.upgrade.*;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public class NewUpgradeStorage {
 
@@ -160,6 +162,7 @@ public class NewUpgradeStorage {
                         List<String> biomeKeys = benefitsSection.getStringList(benefitKey);
                         rewards.add(BiomeStat.fromStrings(biomeKeys));
                     }
+                    default -> TownsAndNations.getPlugin().getLogger().log(Level.WARNING, "Unknown upgrade rework : " + benefitKey);
                 }
             }
         }

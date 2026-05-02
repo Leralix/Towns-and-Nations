@@ -1,7 +1,6 @@
 package org.leralix.tan.api.internal.managers;
 
 import org.bukkit.Location;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.tan.api.getters.TanLandmarkManager;
 import org.tan.api.interfaces.buildings.TanLandmark;
@@ -13,19 +12,10 @@ import java.util.UUID;
 public class LandmarkManager implements TanLandmarkManager {
 
     private final LandmarkStorage landmarkStorage;
-    private static LandmarkManager instance;
 
-    private LandmarkManager() {
-        landmarkStorage = TownsAndNations.getPlugin().getLandmarkStorage();
+    public LandmarkManager(LandmarkStorage landmarkStorage) {
+        this.landmarkStorage = landmarkStorage;
     }
-
-    public static LandmarkManager getInstance() {
-        if (instance == null) {
-            instance = new LandmarkManager();
-        }
-        return instance;
-    }
-
 
     @Override
     public Collection<TanLandmark> getLandmarks() {

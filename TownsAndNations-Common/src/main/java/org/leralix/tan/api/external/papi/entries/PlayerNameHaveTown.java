@@ -13,8 +13,6 @@ import org.leralix.tan.utils.constants.Constants;
 
 public class PlayerNameHaveTown extends PapiEntry{
 
-    private final PlayerDataStorage playerDataStorage;
-
     public PlayerNameHaveTown(
             PlayerDataStorage playerDataStorage,
             TownStorage townStorage,
@@ -27,7 +25,6 @@ public class PlayerNameHaveTown extends PapiEntry{
                 regionDataStorage,
                 nationDataStorage
         );
-        this.playerDataStorage = playerDataStorage;
     }
 
     @Override
