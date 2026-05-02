@@ -15,19 +15,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class WarDatabase implements War, DatabaseData<War> {
+public class WarDatabase implements DatabaseData<WarData>, War {
 
-    private final DbManager<War> manager;
+    private final DbManager<WarData> manager;
 
-    private War data;
+    private WarData data;
 
-    public WarDatabase(War data, DbManager<War> manager){
+    public WarDatabase(WarData data, DbManager<WarData> manager){
         this.manager = manager;
         this.data = data;
     }
 
     @Override
-    public void setData(War data) {
+    public void setData(WarData data) {
         this.data = data;
     }
 

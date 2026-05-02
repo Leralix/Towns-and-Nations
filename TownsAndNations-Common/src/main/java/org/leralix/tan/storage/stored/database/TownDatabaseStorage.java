@@ -9,9 +9,10 @@ import org.leralix.tan.data.territory.TownDataBase;
 import org.leralix.tan.storage.stored.TownStorage;
 import org.leralix.tan.utils.constants.database.RedisConfig;
 
+import java.util.HashMap;
 import java.util.Map;
 
-public class TownDatabaseStorage extends DatabaseStorage<TownDataBase, Town> implements TownStorage {
+public class TownDatabaseStorage extends DatabaseStorage<TownDataBase, TownData> implements TownStorage {
 
     public TownDatabaseStorage(RedisConfig redisConfig) {
         super(new TownDBManager(redisConfig));
@@ -54,7 +55,7 @@ public class TownDatabaseStorage extends DatabaseStorage<TownDataBase, Town> imp
 
     @Override
     public Map<String, Town> getAll() {
-        return databaseManager.getMap();
+        return new HashMap<>(databaseManager.getMap());
     }
 
     @Override
@@ -63,7 +64,7 @@ public class TownDatabaseStorage extends DatabaseStorage<TownDataBase, Town> imp
     }
 
     private TownDataBase load(String id) {
-        Town data = databaseManager.load(id);
+        TownData data = databaseManager.load(id);
         if(data == null){
             return null;
         }

@@ -6,17 +6,17 @@ import org.leralix.tan.storage.stored.database.DatabaseData;
 
 import java.util.List;
 
-public class NationDatabase extends TerritoryDatabase<Nation> implements DatabaseData<Nation>, Nation {
+public class NationDatabase extends TerritoryDatabase<NationData> implements DatabaseData<NationData>, Nation {
 
-    private Nation data;
+    private NationData data;
 
-    public NationDatabase(Nation data, DbManager<Nation> manager) {
+    public NationDatabase(NationData data, DbManager<NationData> manager) {
         super(manager, data);
         this.data = data;
     }
 
     @Override
-    public void setData(Nation data) {
+    public void setData(NationData data) {
         setTerritoryData(data);
         this.data = data;
     }

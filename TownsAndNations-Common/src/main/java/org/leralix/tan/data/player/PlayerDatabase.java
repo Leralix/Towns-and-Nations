@@ -22,13 +22,13 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class PlayerDatabase implements DatabaseData<ITanPlayer>, ITanPlayer {
+public class PlayerDatabase implements DatabaseData<PlayerData>, ITanPlayer {
 
-    private final DbManager<ITanPlayer> manager;
+    private final DbManager<PlayerData> manager;
 
-    private ITanPlayer data;
+    private PlayerData data;
 
-    public PlayerDatabase(ITanPlayer data, DbManager<ITanPlayer> manager) {
+    public PlayerDatabase(PlayerData data, DbManager<PlayerData> manager) {
         this.data = data;
         this.manager = manager;
     }
@@ -299,11 +299,11 @@ public class PlayerDatabase implements DatabaseData<ITanPlayer>, ITanPlayer {
     }
 
     @Override
-    public void setData(ITanPlayer fresh) {
+    public void setData(PlayerData fresh) {
         this.data = fresh;
     }
 
-    private synchronized void mutate(Consumer<ITanPlayer> action) {
+    private synchronized void mutate(Consumer<PlayerData> action) {
         action.accept(data);
         manager.save(data);
     }

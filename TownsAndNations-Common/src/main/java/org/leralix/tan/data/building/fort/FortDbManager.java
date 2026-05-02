@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class FortDbManager extends DbManager<Fort> {
+public class FortDbManager extends DbManager<FortData> {
 
 
     public FortDbManager(RedisConfig redisConfig) {
@@ -16,7 +16,7 @@ public class FortDbManager extends DbManager<Fort> {
     }
 
     @Override
-    public Fort load(String id){
+    public FortData load(String id){
         try (Jedis jedis = pool.getResource()) {
 
             String key = keyPrefix + ":" + id;
@@ -32,7 +32,7 @@ public class FortDbManager extends DbManager<Fort> {
     }
 
     @Override
-    public void save(Fort data) {
+    public void save(FortData data) {
         try (Jedis jedis = pool.getResource()) {
 
             String key = keyPrefix + ":" + data.getID();

@@ -7,14 +7,14 @@ import org.leralix.tan.storage.stored.database.DatabaseData;
 
 import java.util.function.Consumer;
 
-public class FortDatabase extends Fort implements DatabaseData<Fort> {
+public class FortDatabase extends Fort implements DatabaseData<FortData> {
 
 
-    private final DbManager<Fort> manager;
+    private final DbManager<FortData> manager;
 
-    private Fort data;
+    private FortData data;
 
-    public FortDatabase(Fort data, DbManager<Fort> manager){
+    public FortDatabase(FortData data, DbManager<FortData> manager){
         this.manager = manager;
         this.data = data;
     }
@@ -55,11 +55,11 @@ public class FortDatabase extends Fort implements DatabaseData<Fort> {
     }
 
     @Override
-    public void setData(Fort fresh) {
+    public void setData(FortData fresh) {
         this.data = fresh;
     }
 
-    private synchronized void mutate(Consumer<Fort> action) {
+    private synchronized void mutate(Consumer<FortData> action) {
         action.accept(data);
         manager.save(data);
     }

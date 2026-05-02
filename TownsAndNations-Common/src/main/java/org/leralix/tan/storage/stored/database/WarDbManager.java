@@ -10,14 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class WarDbManager extends DbManager<War> {
+public class WarDbManager extends DbManager<WarData> {
 
     public WarDbManager(RedisConfig redisConfig) {
         super(redisConfig, "war");
     }
 
     @Override
-    public War load(String id) {
+    public WarData load(String id) {
         try (Jedis jedis = pool.getResource()) {
 
             String key = keyPrefix + ":" + id;
@@ -33,7 +33,7 @@ public class WarDbManager extends DbManager<War> {
     }
 
     @Override
-    public void save(War data) {
+    public void save(WarData data) {
         try (Jedis jedis = pool.getResource()) {
 
             String key = keyPrefix + ":" + data.getID();

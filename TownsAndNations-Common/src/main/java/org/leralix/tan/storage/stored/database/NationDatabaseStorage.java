@@ -6,9 +6,10 @@ import org.leralix.tan.storage.stored.NationStorage;
 import org.leralix.tan.utils.constants.database.RedisConfig;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
+import java.util.HashMap;
 import java.util.Map;
 
-public class NationDatabaseStorage extends DatabaseStorage<NationDatabase, Nation> implements NationStorage {
+public class NationDatabaseStorage extends DatabaseStorage<NationDatabase, NationData> implements NationStorage {
 
     public NationDatabaseStorage(RedisConfig redisConfig) {
         super(new NationDbManager(redisConfig));
@@ -60,7 +61,7 @@ public class NationDatabaseStorage extends DatabaseStorage<NationDatabase, Natio
 
     @Override
     public Map<String, Nation> getAll() {
-        return databaseManager.getMap();
+        return new HashMap<>(databaseManager.getMap());
     }
 
     @Override
@@ -69,7 +70,7 @@ public class NationDatabaseStorage extends DatabaseStorage<NationDatabase, Natio
     }
 
     private NationDatabase load(String id) {
-        Nation data = databaseManager.load(id);
+        NationData data = databaseManager.load(id);
         if (data == null) {
             return null;
         }

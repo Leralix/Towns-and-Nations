@@ -2,7 +2,6 @@ package org.leralix.tan.storage.stored.database;
 
 import org.leralix.tan.data.DbManager;
 import org.leralix.tan.data.chunk.ChunkData;
-import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.utils.constants.database.RedisConfig;
 import org.leralix.tan.utils.territory.ChunkUtil;
 import redis.clients.jedis.Jedis;
@@ -11,14 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ChunkDbManager extends DbManager<IClaimedChunk> {
+public class ChunkDbManager extends DbManager<ChunkData> {
 
     public ChunkDbManager(RedisConfig redisConfig) {
         super(redisConfig, "chunk");
     }
 
     @Override
-    public IClaimedChunk load(String id) {
+    public ChunkData load(String id) {
         try (Jedis jedis = pool.getResource()) {
 
             String key = keyPrefix + ":" + id;
@@ -34,7 +33,7 @@ public class ChunkDbManager extends DbManager<IClaimedChunk> {
     }
 
     @Override
-    public void save(IClaimedChunk data) {
+    public void save(ChunkData data) {
         try (Jedis jedis = pool.getResource()) {
 
             String key = keyPrefix + ":" + ChunkUtil.getChunkKey(data);

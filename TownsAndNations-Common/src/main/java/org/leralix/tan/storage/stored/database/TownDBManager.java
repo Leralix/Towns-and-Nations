@@ -1,7 +1,6 @@
 package org.leralix.tan.storage.stored.database;
 
 import org.leralix.tan.data.DbManager;
-import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.utils.constants.database.RedisConfig;
 import redis.clients.jedis.Jedis;
@@ -10,14 +9,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class TownDBManager extends DbManager<Town> {
+public class TownDBManager extends DbManager<TownData> {
 
     public TownDBManager(RedisConfig redisConfig) {
         super(redisConfig, "town");
     }
 
     @Override
-    public Town load(String id) {
+    public TownData load(String id) {
         try (Jedis jedis = pool.getResource()) {
 
             String key = keyPrefix + ":" + id;
@@ -33,7 +32,7 @@ public class TownDBManager extends DbManager<Town> {
     }
 
     @Override
-    public void save(Town data) {
+    public void save(TownData data) {
         try (Jedis jedis = pool.getResource()) {
 
             String key = keyPrefix + ":" + data.getID();

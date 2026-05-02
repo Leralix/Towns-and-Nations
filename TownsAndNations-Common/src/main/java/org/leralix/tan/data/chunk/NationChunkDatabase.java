@@ -4,15 +4,15 @@ import org.leralix.tan.data.DbManager;
 
 public class NationChunkDatabase extends TerritoryChunkDatabase implements NationChunk{
 
-    private NationChunk data;
+    private NationClaimedChunk data;
 
-    public NationChunkDatabase(DbManager<IClaimedChunk> databaseManager, NationChunk nationData) {
-        super(databaseManager, nationData);
+    public NationChunkDatabase(NationClaimedChunk nationData, DbManager<ChunkData> databaseManager) {
+        super(nationData, databaseManager);
         this.data = nationData;
     }
 
     @Override
-    public void setData(IClaimedChunk data) {
-        this.data = (NationChunk) data;
+    public void setData(ChunkData data) {
+        this.data = (NationClaimedChunk) data;
     }
 }

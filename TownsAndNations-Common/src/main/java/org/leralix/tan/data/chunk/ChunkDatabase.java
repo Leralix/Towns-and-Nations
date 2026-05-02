@@ -21,18 +21,18 @@ import org.tan.api.interfaces.territory.TanTerritory;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public abstract class ChunkDatabase implements DatabaseData<IClaimedChunk>, IClaimedChunk {
+public abstract class ChunkDatabase implements DatabaseData<ChunkData>, IClaimedChunk {
 
-    private final DbManager<IClaimedChunk> manager;
+    private final DbManager<ChunkData> manager;
 
-    private IClaimedChunk data;
+    private ChunkData data;
 
-    protected ChunkDatabase(IClaimedChunk data, DbManager<IClaimedChunk> manager) {
+    protected ChunkDatabase(ChunkData data, DbManager<ChunkData> manager) {
         this.data = data;
         this.manager = manager;
     }
 
-    protected void setChunkData(IClaimedChunk data) {
+    protected void setChunkData(ChunkData data) {
         this.data = data;
     }
 

@@ -19,19 +19,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class LandmarkDatabase implements Landmark, DatabaseData<Landmark> {
+public class LandmarkDatabase implements Landmark, DatabaseData<LandmarkData> {
 
-    private final DbManager<Landmark> manager;
+    private final DbManager<LandmarkData> manager;
 
-    private Landmark data;
+    private LandmarkData data;
 
-    public LandmarkDatabase(Landmark data, DbManager<Landmark> manager) {
+    public LandmarkDatabase(LandmarkData data, DbManager<LandmarkData> manager) {
         this.data = data;
         this.manager = manager;
     }
 
     @Override
-    public void setData(Landmark data) {
+    public void setData(LandmarkData data) {
         this.data = data;
     }
 
@@ -138,7 +138,7 @@ public class LandmarkDatabase implements Landmark, DatabaseData<Landmark> {
     @Override
     public int computeStoredReward(Territory townData) {
         int val = data.computeStoredReward(townData);
-        manager.save(this);
+        manager.save(data);
         return val;
     }
 
@@ -189,7 +189,7 @@ public class LandmarkDatabase implements Landmark, DatabaseData<Landmark> {
 
     private void mutate(Consumer<Landmark> mutator) {
         mutator.accept(data);
-        manager.save(this);
+        manager.save(data);
     }
 
 }

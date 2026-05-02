@@ -5,10 +5,10 @@ import org.leralix.tan.data.territory.Region;
 
 public class RegionChunkDatabase extends TerritoryChunkDatabase implements RegionChunk{
 
-    private RegionChunk data;
+    private RegionClaimedChunk data;
 
-    public RegionChunkDatabase(DbManager<IClaimedChunk> databaseManager, RegionChunk regionChunk) {
-        super(databaseManager, regionChunk);
+    public RegionChunkDatabase(RegionClaimedChunk regionChunk, DbManager<ChunkData> databaseManager) {
+        super(regionChunk, databaseManager);
         this.data = regionChunk;
     }
 
@@ -18,7 +18,7 @@ public class RegionChunkDatabase extends TerritoryChunkDatabase implements Regio
     }
 
     @Override
-    public void setData(IClaimedChunk data) {
-        this.data = (RegionChunk) data;
+    public void setData(ChunkData data) {
+        this.data = (RegionClaimedChunk) data;
     }
 }

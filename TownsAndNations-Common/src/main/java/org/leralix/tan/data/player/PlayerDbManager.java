@@ -10,18 +10,18 @@ import redis.clients.jedis.Jedis;
 
 import java.util.*;
 
-public class PlayerDbManager extends DbManager<ITanPlayer> {
+public class PlayerDbManager extends DbManager<PlayerData> {
 
     public PlayerDbManager(RedisConfig redisConfig) {
         super(redisConfig, "player");
     }
 
     @Override
-    public ITanPlayer load(String id) {
+    public PlayerData load(String id) {
         return load(UUID.fromString(id));
     }
 
-    public ITanPlayer load(UUID uuid) {
+    public PlayerData load(UUID uuid) {
         try (Jedis jedis = pool.getResource()) {
 
             String key = keyPrefix + ":" + uuid;
@@ -56,21 +56,20 @@ public class PlayerDbManager extends DbManager<ITanPlayer> {
     }
 
 
-    private ITanPlayer registerNewPlayer(UUID uuid) {
+    private PlayerData registerNewPlayer(UUID uuid) {
         Player player = Bukkit.getPlayer(uuid);
         if(player == null) {
             return null;
         }
 
-        ITanPlayer data = new PlayerData(Bukkit.getOfflinePlayer(uuid));
-
+        PlayerData data = new PlayerData(Bukkit.getOfflinePlayer(uuid));
         save(data);
 
         return data;
     }
 
     @Override
-    public void save(ITanPlayer data) {
+    public void save(PlayerData data) {
         try (Jedis jedis = pool.getResource()) {
 
             String key = keyPrefix + ":" + data.getID();

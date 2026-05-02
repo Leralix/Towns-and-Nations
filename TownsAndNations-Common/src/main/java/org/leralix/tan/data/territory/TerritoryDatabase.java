@@ -40,7 +40,7 @@ import org.tan.api.interfaces.territory.TanTerritory;
 import java.util.*;
 import java.util.function.Consumer;
 
-public abstract class TerritoryDatabase<T extends Territory> implements Territory {
+public abstract class TerritoryDatabase<T extends TerritoryData> implements Territory {
 
     private final DbManager<T> manager;
 
@@ -301,7 +301,7 @@ public abstract class TerritoryDatabase<T extends Territory> implements Territor
 
     @Override
     public void removeOverlord() {
-        mutate(p -> p.removeOverlord());
+        mutate(TerritoryData::removeOverlord);
     }
 
     @Override

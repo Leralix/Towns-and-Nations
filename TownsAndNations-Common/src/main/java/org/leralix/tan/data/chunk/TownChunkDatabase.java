@@ -5,10 +5,10 @@ import org.leralix.tan.data.territory.Town;
 
 public class TownChunkDatabase extends TerritoryChunkDatabase implements TownChunk{
 
-    private TownChunk data;
+    private TownClaimedChunk data;
 
-    public TownChunkDatabase(DbManager<IClaimedChunk> databaseManager, TownChunk townChunk) {
-        super(databaseManager, townChunk);
+    public TownChunkDatabase(TownClaimedChunk townChunk, DbManager<ChunkData> databaseManager) {
+        super(townChunk, databaseManager);
         this.data = townChunk;
     }
 
@@ -18,7 +18,7 @@ public class TownChunkDatabase extends TerritoryChunkDatabase implements TownChu
     }
 
     @Override
-    public void setData(IClaimedChunk data) {
-        this.data = (TownChunk) data;
+    public void setData(ChunkData data) {
+        this.data = (TownClaimedChunk) data;
     }
 }

@@ -15,20 +15,20 @@ import org.tan.api.interfaces.buildings.TanLandmark;
 
 import java.util.*;
 
-public class TownDataBase extends TerritoryDatabase<Town> implements DatabaseData<Town>, Town {
+public class TownDataBase extends TerritoryDatabase<TownData> implements DatabaseData<TownData>, Town {
 
-    private final DbManager<Town> manager;
+    private final DbManager<TownData> manager;
 
-    private Town data;
+    private TownData data;
 
-    public TownDataBase(Town data, DbManager<Town> manager){
+    public TownDataBase(TownData data, DbManager<TownData> manager){
         super(manager, data);
         this.data = data;
         this.manager = manager;
     }
 
     @Override
-    public void setData(Town data) {
+    public void setData(TownData data) {
         setTerritoryData(data);
         this.data = data;
     }

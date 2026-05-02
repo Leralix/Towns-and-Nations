@@ -8,9 +8,10 @@ import org.leralix.tan.utils.constants.database.RedisConfig;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
+import java.util.HashMap;
 import java.util.Map;
 
-public class RegionDatabaseStorage extends DatabaseStorage<RegionDatabase, Region> implements RegionStorage {
+public class RegionDatabaseStorage extends DatabaseStorage<RegionDatabase, RegionData> implements RegionStorage {
 
     public RegionDatabaseStorage(RedisConfig redisConfig) {
         super(new RegionDbManager(redisConfig));
@@ -64,7 +65,7 @@ public class RegionDatabaseStorage extends DatabaseStorage<RegionDatabase, Regio
 
     @Override
     public Map<String, Region> getAll() {
-        return databaseManager.getMap();
+        return new HashMap<>(databaseManager.getMap());
     }
 
     @Override
@@ -73,7 +74,7 @@ public class RegionDatabaseStorage extends DatabaseStorage<RegionDatabase, Regio
     }
 
     private RegionDatabase load(String id) {
-        Region data = databaseManager.load(id);
+        RegionData data = databaseManager.load(id);
         if(data == null){
             return null;
         }

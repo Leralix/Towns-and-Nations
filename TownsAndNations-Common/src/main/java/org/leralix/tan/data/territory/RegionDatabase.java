@@ -7,17 +7,17 @@ import org.leralix.tan.storage.stored.database.DatabaseData;
 import java.util.List;
 import java.util.Optional;
 
-public class RegionDatabase extends TerritoryDatabase<Region> implements DatabaseData<Region>, Region {
+public class RegionDatabase extends TerritoryDatabase<RegionData> implements DatabaseData<RegionData>, Region {
 
-    private Region data;
+    private RegionData data;
 
-    public RegionDatabase(Region data, DbManager<Region> manager) {
+    public RegionDatabase(RegionData data, DbManager<RegionData> manager) {
         super(manager, data);
         this.data = data;
     }
 
     @Override
-    public void setData(Region data) {
+    public void setData(RegionData data) {
         setTerritoryData(data);
         this.data = data;
     }

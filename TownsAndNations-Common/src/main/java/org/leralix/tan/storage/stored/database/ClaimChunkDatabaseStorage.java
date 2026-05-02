@@ -6,9 +6,10 @@ import org.leralix.tan.storage.stored.ClaimStorage;
 import org.leralix.tan.utils.constants.database.RedisConfig;
 import org.leralix.tan.utils.territory.ChunkUtil;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
-public class ClaimChunkDatabaseStorage extends DatabaseStorage<ChunkDatabase, IClaimedChunk> implements ClaimStorage {
+public class ClaimChunkDatabaseStorage extends DatabaseStorage<ChunkDatabase, ChunkData> implements ClaimStorage {
 
     public ClaimChunkDatabaseStorage(RedisConfig redisConfig) {
         super(new ChunkDbManager(redisConfig));
@@ -30,7 +31,7 @@ public class ClaimChunkDatabaseStorage extends DatabaseStorage<ChunkDatabase, IC
 
     @Override
     public Collection<IClaimedChunk> getAllChunks() {
-        return databaseManager.getAll();
+        return new ArrayList<>(databaseManager.getAll());
     }
 
     @Override
@@ -70,16 +71,16 @@ public class ClaimChunkDatabaseStorage extends DatabaseStorage<ChunkDatabase, IC
     }
 
     private ChunkDatabase load(String id) {
-        IClaimedChunk data = databaseManager.load(id);
+        ChunkData data = databaseManager.load(id);
         if(data == null){
             return null;
         }
 
         return switch (data){
-            case LandmarkChunk landmarkChunk -> new LandmarkChunkDatabase(databaseManager, landmarkChunk);
-            case TownChunk townChunk -> new TownChunkDatabase(databaseManager, townChunk);
-            case RegionChunk regionChunk -> new RegionChunkDatabase(databaseManager, regionChunk);
-            case NationChunk nationChunk -> new NationChunkDatabase(databaseManager, nationChunk);
+            case LandmarkClaimedChunk landmarkChunk -> new LandmarkChunkDatabase(landmarkChunk, databaseManager);
+            case TownClaimedChunk townChunk -> new TownChunkDatabase(townChunk, databaseManager);
+            case RegionClaimedChunk regionChunk -> new RegionChunkDatabase(regionChunk, databaseManager);
+            case NationClaimedChunk nationChunk -> new NationChunkDatabase(nationChunk, databaseManager);
             default -> throw new IllegalStateException("Unexpected chunk type: " + data.getType());
         };
     }

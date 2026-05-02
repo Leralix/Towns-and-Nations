@@ -10,10 +10,11 @@ import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.storage.stored.LandmarkStorage;
 import org.leralix.tan.utils.constants.database.RedisConfig;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LandmarkDatabaseStorage extends DatabaseStorage<LandmarkDatabase, Landmark> implements LandmarkStorage {
+public class LandmarkDatabaseStorage extends DatabaseStorage<LandmarkDatabase, LandmarkData> implements LandmarkStorage {
 
     public LandmarkDatabaseStorage(RedisConfig redisConfig) {
         super(new LandmarkDbManager(redisConfig));
@@ -74,7 +75,7 @@ public class LandmarkDatabaseStorage extends DatabaseStorage<LandmarkDatabase, L
 
     @Override
     public Map<String, Landmark> getAll() {
-        return databaseManager.getMap();
+        return new HashMap<>(databaseManager.getMap());
     }
 
     @Override
@@ -83,7 +84,7 @@ public class LandmarkDatabaseStorage extends DatabaseStorage<LandmarkDatabase, L
     }
 
     private LandmarkDatabase load(String id) {
-        Landmark data = databaseManager.load(id);
+        LandmarkData data = databaseManager.load(id);
         if (data == null) {
             return null;
         }

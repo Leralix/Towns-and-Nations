@@ -14,10 +14,11 @@ import org.leralix.tan.war.WarDatabase;
 import org.leralix.tan.war.info.WarRole;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class WarDatabaseStorage extends DatabaseStorage<WarDatabase, War> implements WarStorage {
+public class WarDatabaseStorage extends DatabaseStorage<WarDatabase, WarData> implements WarStorage {
 
 
     public WarDatabaseStorage(RedisConfig redisConfig) {
@@ -45,7 +46,7 @@ public class WarDatabaseStorage extends DatabaseStorage<WarDatabase, War> implem
     @Override
     public War newWar(Territory attackingTerritory, Territory defendingTerritory) {
         String newID = "W" + getNextID();
-        War newWar = new WarData(
+        WarData newWar = new WarData(
                 newID,
                 attackingTerritory,
                 defendingTerritory
@@ -80,7 +81,7 @@ public class WarDatabaseStorage extends DatabaseStorage<WarDatabase, War> implem
 
     @Override
     public Map<String, War> getAll() {
-        return databaseManager.getMap();
+        return new HashMap<>(databaseManager.getMap());
     }
 
     @Override
@@ -89,11 +90,11 @@ public class WarDatabaseStorage extends DatabaseStorage<WarDatabase, War> implem
     }
 
     private WarDatabase load(String id) {
-        War data = databaseManager.load(id);
+        WarData data = databaseManager.load(id);
         if(data == null){
             return null;
         }
-        return new WarDatabase(data, databaseManager );
+        return new WarDatabase(data, databaseManager);
     }
 
     @Override

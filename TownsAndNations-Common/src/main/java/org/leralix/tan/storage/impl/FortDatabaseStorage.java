@@ -12,9 +12,10 @@ import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.database.DatabaseStorage;
 import org.leralix.tan.utils.constants.database.RedisConfig;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class FortDatabaseStorage extends DatabaseStorage<FortDatabase, Fort> implements FortStorage {
+public class FortDatabaseStorage extends DatabaseStorage<FortDatabase, FortData> implements FortStorage {
 
     public FortDatabaseStorage(RedisConfig redisConfig) {
         super(new FortDbManager(redisConfig));
@@ -37,7 +38,7 @@ public class FortDatabaseStorage extends DatabaseStorage<FortDatabase, Fort> imp
 
     @Override
     public List<Fort> getForts() {
-        return databaseManager.getAll();
+        return new ArrayList<>(databaseManager.getAll());
     }
 
     @Override
@@ -65,7 +66,7 @@ public class FortDatabaseStorage extends DatabaseStorage<FortDatabase, Fort> imp
     }
 
     private @NotNull FortDatabase load(String id) {
-        Fort data = databaseManager.load(id);
+        FortData data = databaseManager.load(id);
         return new FortDatabase(data, databaseManager);
     }
 }

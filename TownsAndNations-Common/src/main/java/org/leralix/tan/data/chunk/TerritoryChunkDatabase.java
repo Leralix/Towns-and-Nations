@@ -11,19 +11,19 @@ import java.util.function.Consumer;
 
 public abstract class TerritoryChunkDatabase extends ChunkDatabase implements TerritoryChunk {
 
-    private TerritoryChunk data;
+    private TerritoryChunkData data;
 
-    private final DbManager<IClaimedChunk> databaseManager;
+    private final DbManager<ChunkData> databaseManager;
 
-    protected TerritoryChunkDatabase(DbManager<IClaimedChunk> databaseManager, TerritoryChunk territoryChunk) {
+    protected TerritoryChunkDatabase(TerritoryChunkData territoryChunk, DbManager<ChunkData> databaseManager) {
         super(territoryChunk, databaseManager);
         this.data = territoryChunk;
         this.databaseManager = databaseManager;
     }
 
     @Override
-    public void setData(IClaimedChunk data) {
-        this.data = (TerritoryChunk) data;
+    public void setData(ChunkData data) {
+        this.data = (TerritoryChunkData) data;
     }
 
     @Override

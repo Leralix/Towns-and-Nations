@@ -1,7 +1,6 @@
 package org.leralix.tan.storage.stored.database;
 
 import org.leralix.tan.data.DbManager;
-import org.leralix.tan.data.building.landmark.Landmark;
 import org.leralix.tan.data.building.landmark.LandmarkData;
 import org.leralix.tan.utils.constants.database.RedisConfig;
 import redis.clients.jedis.Jedis;
@@ -10,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class LandmarkDbManager extends DbManager<Landmark> {
+public class LandmarkDbManager extends DbManager<LandmarkData> {
 
     public LandmarkDbManager(RedisConfig redisConfig) {
         super(redisConfig, "landmark");
@@ -18,7 +17,7 @@ public class LandmarkDbManager extends DbManager<Landmark> {
 
 
     @Override
-    public Landmark load(String id) {
+    public LandmarkData load(String id) {
         try (Jedis jedis = pool.getResource()) {
 
             String key = keyPrefix + ":" + id;
@@ -34,7 +33,7 @@ public class LandmarkDbManager extends DbManager<Landmark> {
     }
 
     @Override
-    public void save(Landmark data) {
+    public void save(LandmarkData data) {
         try (Jedis jedis = pool.getResource()) {
 
             String key = keyPrefix + ":" + data.getID();
