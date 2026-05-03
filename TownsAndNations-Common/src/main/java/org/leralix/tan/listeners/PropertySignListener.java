@@ -2,7 +2,7 @@ package org.leralix.tan.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -45,11 +45,16 @@ public class PropertySignListener implements Listener {
         Player player = event.getPlayer();
         Block clickedBlock = event.getClickedBlock();
 
-        if (clickedBlock != null &&
-                (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK) &&
-                (clickedBlock.getType() == Material.OAK_SIGN || clickedBlock.getType() == Material.OAK_WALL_SIGN)) {
+        if(clickedBlock == null) {
+            return;
+        }
 
-            Sign sign = (Sign) clickedBlock.getState();
+        if (clickedBlock.getType() == Material.OAK_SIGN ||
+                clickedBlock.getType() == Material.OAK_WALL_SIGN ||
+                clickedBlock.getType() == Material.OAK_HANGING_SIGN
+        ) {
+
+            BlockState sign = clickedBlock.getState();
             if (sign.hasMetadata(PROPERTY_SIGN_METADATA)) {
                 event.setCancelled(true);
                 for (MetadataValue value : sign.getMetadata(PROPERTY_SIGN_METADATA)) {

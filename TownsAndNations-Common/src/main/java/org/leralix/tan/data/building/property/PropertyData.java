@@ -7,6 +7,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.Rotatable;
 import org.bukkit.block.sign.Side;
 import org.bukkit.block.sign.SignSide;
 import org.bukkit.entity.Player;
@@ -29,7 +30,6 @@ import org.leralix.tan.data.territory.cosmetic.CustomIcon;
 import org.leralix.tan.data.territory.cosmetic.ICustomIcon;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.data.territory.permission.PermissionGiven;
-import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
@@ -42,6 +42,7 @@ import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.RentingPropertyTransaction;
 import org.leralix.tan.storage.database.transactions.instance.SellingPropertyTransaction;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -556,28 +557,37 @@ public class PropertyData extends Building implements TanProperty {
     public void createPropertySign(Player player, Block block, BlockFace blockFace) {
         // Calcul de la position de la pancarte
         Location selectedSignLocation = block.getRelative(blockFace).getLocation();
-        selectedSignLocation.getBlock().setType(blockFace == BlockFace.UP ? Material.OAK_SIGN : Material.OAK_WALL_SIGN);
+
+        Material signType = switch (blockFace){
+            case UP -> Material.OAK_SIGN;
+            case DOWN -> Material.OAK_HANGING_SIGN;
+            default -> Material.OAK_WALL_SIGN;
+        };
+
+        selectedSignLocation.getBlock().setType(signType);
+
+        this.signLocation = new Vector3D(selectedSignLocation);
+        this.supportLocation = new Vector3D(block.getLocation());
 
         BlockState blockState = selectedSignLocation.getBlock().getState();
         Sign sign = (Sign) blockState;
 
-        // Gestion de l'orientation pour les pancartes murales
-        if (blockFace != BlockFace.UP) {
-            BlockFace direction = CreatePropertyEvent.getTopDirection(block.getLocation(), player.getLocation());
-            Directional directional = (Directional) sign.getBlockData();
-            directional.setFacing(direction);
-            sign.setBlockData(directional);
-        } else {
-            org.bukkit.block.data.type.Sign signData = (org.bukkit.block.data.type.Sign) sign.getBlockData();
+        if (blockFace == BlockFace.UP || blockFace == BlockFace.DOWN) {
+            Rotatable signData = (Rotatable) sign.getBlockData();
             BlockFace direction = CreatePropertyEvent.getTopDirection(block.getLocation(), player.getLocation());
             signData.setRotation(direction);
             sign.setBlockData(signData);
         }
+        else {
+            Directional directional = (Directional) sign.getBlockData();
+            BlockFace direction = CreatePropertyEvent.getTopDirection(block.getLocation(), player.getLocation());
+            directional.setFacing(direction);
+            sign.setBlockData(directional);
+        }
 
         sign.update();
 
-        this.signLocation = new Vector3D(selectedSignLocation);
-        this.supportLocation = new Vector3D(block.getLocation());
+
         if(Constants.enablePropertySignProtection()){
             setSignData();
         }
