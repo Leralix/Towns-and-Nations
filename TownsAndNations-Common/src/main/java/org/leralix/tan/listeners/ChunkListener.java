@@ -74,12 +74,11 @@ public class ChunkListener implements Listener {
             return;
         }
 
-        if (breakedBlock.getType() == Material.CHEST && Constants.getDoublePermissionCheck().isBreackChestNeedinteractChestPermission()
+        if (isContainer(breakedBlock.getType()) && Constants.getDoublePermissionCheck().isBreackChestNeedinteractChestPermission()
                 && !canPlayerDoAction(loc, player, EnumSet.of(ChunkPermissionType.BREAK_BLOCK, ChunkPermissionType.INTERACT_CHEST))
         ) {
             event.setCancelled(true);
         }
-
 
         if (furnaceList.contains(breakedBlock.getType()) && Constants.getDoublePermissionCheck().isBreackChestNeedinteractChestPermission() &&
                 !canPlayerDoAction(loc, player, EnumSet.of(ChunkPermissionType.BREAK_BLOCK, ChunkPermissionType.INTERACT_FURNACE))
@@ -127,6 +126,10 @@ public class ChunkListener implements Listener {
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
 
+        if(event.getHand() == null){
+            return;
+        }
+
         if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
         }
@@ -144,8 +147,7 @@ public class ChunkListener implements Listener {
         Location loc = block.getLocation();
 
         //Check if the block is a property sign
-        if (block.getType() == Material.OAK_SIGN) {
-            Sign sign = (Sign) block.getState();
+        if (block.getType() == Material.OAK_SIGN && block.getState() instanceof Sign sign) {
             if (sign.hasMetadata(PROPERTY_SIGN_METADATA)) {
                 event.setCancelled(true);
                 return;
@@ -158,30 +160,7 @@ public class ChunkListener implements Listener {
             if (!canPlayerDoAction(loc, event.getPlayer(), ChunkPermissionType.INTERACT_BUTTON)) {
                 event.setCancelled(true);
             }
-        } else if (materialBlock == Material.CHEST ||
-                materialBlock == Material.TRAPPED_CHEST ||
-                materialBlock == Material.BARREL ||
-                materialBlock == Material.HOPPER ||
-                materialBlock == Material.DISPENSER ||
-                materialBlock == Material.DROPPER ||
-                materialBlock == Material.BREWING_STAND ||
-                materialBlock == Material.SHULKER_BOX ||
-                materialBlock == Material.WHITE_SHULKER_BOX ||
-                materialBlock == Material.ORANGE_SHULKER_BOX ||
-                materialBlock == Material.MAGENTA_SHULKER_BOX ||
-                materialBlock == Material.LIGHT_BLUE_SHULKER_BOX ||
-                materialBlock == Material.YELLOW_SHULKER_BOX ||
-                materialBlock == Material.LIME_SHULKER_BOX ||
-                materialBlock == Material.PINK_SHULKER_BOX ||
-                materialBlock == Material.GRAY_SHULKER_BOX ||
-                materialBlock == Material.LIGHT_GRAY_SHULKER_BOX ||
-                materialBlock == Material.CYAN_SHULKER_BOX ||
-                materialBlock == Material.PURPLE_SHULKER_BOX ||
-                materialBlock == Material.BLUE_SHULKER_BOX ||
-                materialBlock == Material.BROWN_SHULKER_BOX ||
-                materialBlock == Material.GREEN_SHULKER_BOX ||
-                materialBlock == Material.RED_SHULKER_BOX ||
-                materialBlock == Material.BLACK_SHULKER_BOX) {
+        } else if (isContainer(materialBlock)) {
             if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_CHEST)) {
                 event.setCancelled(true);
             }
@@ -229,24 +208,57 @@ public class ChunkListener implements Listener {
         } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.SWEET_BERRY_BUSH) {
             if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_BERRIES))
                 event.setCancelled(true);
-        } else if ((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && Tag.ITEMS_BOATS.isTagged(player.getItemInHand().getType())) {
+        } else if ((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && Tag.ITEMS_BOATS.isTagged(player.getInventory().getItem(event.getHand()).getType())) {
             if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_BOAT))
                 event.setCancelled(true);
-        } else if ((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && minecartList.contains(player.getItemInHand().getType())) {
+        } else if ((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && minecartList.contains(player.getInventory().getItem(event.getHand()).getType())) {
             if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_MINECART))
                 event.setCancelled(true);
         } else if (event.getAction() == Action.PHYSICAL &&
-                (event.getClickedBlock().getType() == Material.FARMLAND)) {
-
-            if (!canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)) {
-                event.setCancelled(true);
-            }
+                event.getClickedBlock().getType() == Material.FARMLAND &&
+                !canPlayerDoAction(loc, player, ChunkPermissionType.BREAK_BLOCK)) {
+            event.setCancelled(true);
         }
+    }
 
+    private static boolean isContainer(Material materialBlock) {
+        return materialBlock == Material.CHEST ||
+                materialBlock == Material.COPPER_CHEST ||
+                materialBlock == Material.EXPOSED_COPPER_CHEST ||
+                materialBlock == Material.OXIDIZED_COPPER_CHEST ||
+                materialBlock == Material.WEATHERED_COPPER_CHEST ||
+                materialBlock == Material.WAXED_COPPER_CHEST ||
+                materialBlock == Material.WAXED_EXPOSED_COPPER_CHEST ||
+                materialBlock == Material.WAXED_OXIDIZED_COPPER_CHEST ||
+                materialBlock == Material.WAXED_WEATHERED_COPPER_CHEST ||
+                materialBlock == Material.TRAPPED_CHEST ||
+                materialBlock == Material.BARREL ||
+                materialBlock == Material.HOPPER ||
+                materialBlock == Material.DISPENSER ||
+                materialBlock == Material.DROPPER ||
+                materialBlock == Material.BREWING_STAND ||
+                materialBlock == Material.SHULKER_BOX ||
+                materialBlock == Material.WHITE_SHULKER_BOX ||
+                materialBlock == Material.ORANGE_SHULKER_BOX ||
+                materialBlock == Material.MAGENTA_SHULKER_BOX ||
+                materialBlock == Material.LIGHT_BLUE_SHULKER_BOX ||
+                materialBlock == Material.YELLOW_SHULKER_BOX ||
+                materialBlock == Material.LIME_SHULKER_BOX ||
+                materialBlock == Material.PINK_SHULKER_BOX ||
+                materialBlock == Material.GRAY_SHULKER_BOX ||
+                materialBlock == Material.LIGHT_GRAY_SHULKER_BOX ||
+                materialBlock == Material.CYAN_SHULKER_BOX ||
+                materialBlock == Material.PURPLE_SHULKER_BOX ||
+                materialBlock == Material.BLUE_SHULKER_BOX ||
+                materialBlock == Material.BROWN_SHULKER_BOX ||
+                materialBlock == Material.GREEN_SHULKER_BOX ||
+                materialBlock == Material.RED_SHULKER_BOX ||
+                materialBlock == Material.BLACK_SHULKER_BOX ||
+                materialBlock == Material.CRAFTER;
     }
 
     @EventHandler
-    public void onBlocPlaced(BlockPlaceEvent event) {
+    public void onBlockPlaced(BlockPlaceEvent event) {
 
         if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;
@@ -274,41 +286,7 @@ public class ChunkListener implements Listener {
             Location loc = entity.getLocation();
 
 
-            if (entity instanceof Allay ||
-                    entity instanceof Axolotl ||
-                    entity instanceof Bat ||
-                    entity instanceof Camel ||
-                    entity instanceof Cat ||
-                    entity instanceof Chicken ||
-                    entity instanceof Cow ||
-                    entity instanceof Donkey ||
-                    entity instanceof Fox ||
-                    entity instanceof Frog ||
-                    entity instanceof Horse ||
-                    entity instanceof Mule ||
-                    entity instanceof Ocelot ||
-                    entity instanceof Parrot ||
-                    entity instanceof Pig ||
-                    entity instanceof Rabbit ||
-                    entity instanceof Sheep ||
-                    entity instanceof SkeletonHorse ||
-                    entity instanceof Sniffer ||
-                    entity instanceof Snowman ||
-                    entity instanceof Squid ||
-                    entity instanceof Strider ||
-                    entity instanceof Turtle ||
-                    entity instanceof Villager ||
-                    entity instanceof WanderingTrader ||
-                    entity instanceof Fish ||
-                    entity instanceof Bee ||
-                    entity instanceof Dolphin ||
-                    entity instanceof Goat ||
-                    entity instanceof IronGolem ||
-                    entity instanceof Llama ||
-                    entity instanceof Panda ||
-                    entity instanceof PolarBear ||
-                    entity instanceof Wolf ||
-                    entity instanceof ArmorStand
+            if (isPassiveMob(entity)
             ) {
                 if (!canPlayerDoAction(loc, player, ChunkPermissionType.ATTACK_PASSIVE_MOB)) {
                     event.setCancelled(true);
@@ -326,48 +304,11 @@ public class ChunkListener implements Listener {
             }
         }
 
-        if (event.getDamager() instanceof Projectile projectile) {
-
-            if (projectile.getShooter() instanceof Player player) {
+        if (event.getDamager() instanceof Projectile projectile && projectile.getShooter() instanceof Player player) {
                 Entity entity = event.getEntity();
                 Location loc = entity.getLocation();
 
-                if (entity instanceof Allay ||
-                        entity instanceof Axolotl ||
-                        entity instanceof Bat ||
-                        entity instanceof Camel ||
-                        entity instanceof Cat ||
-                        entity instanceof Chicken ||
-                        entity instanceof Cow ||
-                        entity instanceof Donkey ||
-                        entity instanceof Fox ||
-                        entity instanceof Frog ||
-                        entity instanceof Horse ||
-                        entity instanceof Mule ||
-                        entity instanceof Ocelot ||
-                        entity instanceof Parrot ||
-                        entity instanceof Pig ||
-                        entity instanceof Rabbit ||
-                        entity instanceof Sheep ||
-                        entity instanceof SkeletonHorse ||
-                        entity instanceof Sniffer ||
-                        entity instanceof Snowman ||
-                        entity instanceof Squid ||
-                        entity instanceof Strider ||
-                        entity instanceof Turtle ||
-                        entity instanceof Villager ||
-                        entity instanceof WanderingTrader ||
-                        entity instanceof Fish ||
-                        entity instanceof Bee ||
-                        entity instanceof Dolphin ||
-                        entity instanceof Goat ||
-                        entity instanceof IronGolem ||
-                        entity instanceof Llama ||
-                        entity instanceof Panda ||
-                        entity instanceof PolarBear ||
-                        entity instanceof Wolf ||
-                        entity instanceof ArmorStand) {
-
+                if (isPassiveMob(entity)) {
                     if (!canPlayerDoAction(loc, player, ChunkPermissionType.ATTACK_PASSIVE_MOB)) {
                         event.setCancelled(true);
                     }
@@ -383,7 +324,47 @@ public class ChunkListener implements Listener {
                     event.setCancelled(true);
                 }
             }
-        }
+
+    }
+
+    private static boolean isPassiveMob(Entity entity) {
+        return entity instanceof Allay ||
+                entity instanceof Axolotl ||
+                entity instanceof Bat ||
+                entity instanceof Camel ||
+                entity instanceof Cat ||
+                entity instanceof Chicken ||
+                entity instanceof Cow ||
+                entity instanceof Donkey ||
+                entity instanceof Fox ||
+                entity instanceof Frog ||
+                entity instanceof Horse ||
+                entity instanceof Mule ||
+                entity instanceof Ocelot ||
+                entity instanceof Parrot ||
+                entity instanceof Pig ||
+                entity instanceof Rabbit ||
+                entity instanceof Sheep ||
+                entity instanceof SkeletonHorse ||
+                entity instanceof Sniffer ||
+                entity instanceof Snowman ||
+                entity instanceof Squid ||
+                entity instanceof Strider ||
+                entity instanceof Turtle ||
+                entity instanceof Villager ||
+                entity instanceof WanderingTrader ||
+                entity instanceof Fish ||
+                entity instanceof Bee ||
+                entity instanceof Dolphin ||
+                entity instanceof Goat ||
+                entity instanceof IronGolem ||
+                entity instanceof Llama ||
+                entity instanceof Panda ||
+                entity instanceof PolarBear ||
+                entity instanceof Wolf ||
+                entity instanceof ArmorStand ||
+                entity instanceof LeashHitch ||
+                entity instanceof CopperGolem;
     }
 
     private boolean canPvpHappen(Player aggressor, Player receiver) {
@@ -665,23 +646,23 @@ public class ChunkListener implements Listener {
                 }
             }
             case VILLAGER -> {
-                if(!TownsAndNations.getPlugin().getClaimStorage()
+                if (!TownsAndNations.getPlugin().getClaimStorage()
                         .get(chunk)
-                        .canVillagerGrief()){
+                        .canVillagerGrief()) {
                     event.setCancelled(true);
                 }
             }
             case SHEEP, RABBIT -> {
-                if(!TownsAndNations.getPlugin().getClaimStorage()
+                if (!TownsAndNations.getPlugin().getClaimStorage()
                         .get(chunk)
-                        .canPassiveGrief()){
+                        .canPassiveGrief()) {
                     event.setCancelled(true);
                 }
             }
             case DRAGON_FIREBALL, FIREBALL, WITHER, ENDERMAN, RAVAGER, SILVERFISH -> {
-                if(!TownsAndNations.getPlugin().getClaimStorage()
+                if (!TownsAndNations.getPlugin().getClaimStorage()
                         .get(chunk)
-                        .canHostileGrief()){
+                        .canHostileGrief()) {
                     event.setCancelled(true);
                 }
             }

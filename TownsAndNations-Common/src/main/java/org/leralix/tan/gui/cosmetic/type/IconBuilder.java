@@ -3,9 +3,9 @@ package org.leralix.tan.gui.cosmetic.type;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.leralix.lib.data.SoundEnum;
@@ -110,12 +110,12 @@ public class IconBuilder {
         if (meta != null) {
             meta.setDisplayName(name);
             meta.setLore(generateDescription(langType));
+            meta.removeAttributeModifier(Attribute.ARMOR);
+            meta.removeAttributeModifier(Attribute.ARMOR_TOUGHNESS);
+            meta.removeAttributeModifier(Attribute.ATTACK_DAMAGE);
+            meta.removeAttributeModifier(Attribute.ATTACK_SPEED);
             if (hideItemFlags) {
-                meta.getItemFlags().add(ItemFlag.HIDE_ATTRIBUTES);
-                meta.getItemFlags().add(ItemFlag.HIDE_ENCHANTS);
-                meta.getItemFlags().add(ItemFlag.HIDE_UNBREAKABLE);
-                meta.getItemFlags().add(ItemFlag.HIDE_PLACED_ON);
-                meta.getItemFlags().add(ItemFlag.HIDE_DYE);
+                meta.setHideTooltip(true);
             }
             item.setItemMeta(meta);
         }
