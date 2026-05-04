@@ -33,8 +33,6 @@ public class RegionDataStorage extends TerritoryStorage<Region> implements Regio
                         .create());
     }
 
-
-
     @Override
     public Region newRegion(String name, Town capital){
         ITanPlayer newLeader = capital.getLeaderData();

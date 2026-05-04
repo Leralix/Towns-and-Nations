@@ -10,12 +10,13 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.listeners.chat.events.ChangeBuildingName;
 import org.leralix.tan.listeners.chat.events.ChangePropertyDescription;
-import org.leralix.tan.listeners.chat.events.ChangePropertyName;
 import org.leralix.tan.listeners.chat.events.ChangePropertyRentPrice;
 import org.leralix.tan.listeners.chat.events.ChangePropertySalePrice;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.listeners.interact.events.property.RelocateSignEvent;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -45,7 +46,7 @@ public abstract class PropertyMenus extends BasicGui {
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_RENAME)
                 .setAction(action -> {
                     TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
-                    PlayerChatListenerStorage.register(player, langType, new ChangePropertyName(propertyData, p -> open()));
+                    PlayerChatListenerStorage.register(player, langType, new ChangeBuildingName(propertyData, p -> open(), Constants.getFortMaxNameSize()));
                 })
                 .asGuiItem(player, langType);
     }

@@ -8,7 +8,7 @@ import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 import java.lang.reflect.Type;
 
-public abstract class TerritoryStorage<T extends Territory> extends JsonStorage<T> {
+public abstract class TerritoryStorage<T extends Territory> extends JsonStorage<T> implements IterritoryStorage {
 
     private int nextID;
 
@@ -17,8 +17,8 @@ public abstract class TerritoryStorage<T extends Territory> extends JsonStorage<
         this.nextID = getNextId();
     }
 
-    protected boolean isNameUsed(String townName) {
-        return TerritoryUtil.isNameUsed(townName, getAll().values());
+    public boolean isNameUsed(String name) {
+        return TerritoryUtil.isNameUsed(name, getAll().values());
     }
 
     private int getNextId() {

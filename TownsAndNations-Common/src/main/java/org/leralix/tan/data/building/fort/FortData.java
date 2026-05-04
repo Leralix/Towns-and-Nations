@@ -73,4 +73,9 @@ public class FortData extends Fort{
     public void setOwner(Territory newOwner) {
         this.ownerID = newOwner.getID();
     }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
 }

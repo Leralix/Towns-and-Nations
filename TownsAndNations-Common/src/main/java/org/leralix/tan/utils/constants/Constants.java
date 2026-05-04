@@ -84,6 +84,7 @@ public class Constants {
     //Buildings
     private static double fortCost;
     private static double fortProtectionRadius;
+    private static int fortMaxNameSize;
     private static double fortCaptureRadius;
     private static boolean useAsOutpost;
     private static int fortCaptureTime;
@@ -231,6 +232,7 @@ public class Constants {
             fortCost = fortsSection.getDouble("fortCost", 1000.0);
             fortProtectionRadius = fortsSection.getDouble("fortProtectionRadius", 50.0);
             fortCaptureRadius = fortsSection.getDouble("fortCaptureRadius", 10.0);
+            fortMaxNameSize = fortsSection.getInt("fortNameSize", 25);
             useAsOutpost = fortsSection.getBoolean("useAsOutpost", true);
             fortCaptureTime = fortsSection.getInt("fortCaptureTime", 60);
             claimAllIfCaptured = fortsSection.getBoolean("claimAllIfCaptured", true);
@@ -482,6 +484,10 @@ public class Constants {
 
     public static double getFortProtectionRadius() {
         return fortProtectionRadius;
+    }
+
+    public static int getFortMaxNameSize() {
+        return fortMaxNameSize;
     }
 
     public static double getFortCaptureRadius() {

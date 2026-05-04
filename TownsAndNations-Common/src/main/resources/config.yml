@@ -381,6 +381,8 @@ BlacklistedCommandsDuringAttacks: [ "/tan pay", "/tp" ]
 
 ## Forts
 Forts:
+  # Max size of a fort name
+  fortMaxNameSize: 25
   # If TownAllowNonAdjacentChunks : true, forts can be used as outposts to claims non-adjacent chunks
   useAsOutpost: true
   # The cost of creating a fort for towns
@@ -409,9 +411,10 @@ preventUnclaimOrphanChunks: false
 # Default : NEUTRAL
 relationAfterSurrender : "NON_AGGRESSION"
 
-# Defines what permissions attackers get in chunk of territory at war
-# - when the chunk is held by defenders
-# - when the chunk is captured by attackers (all attackers from all current wars)
+# Defines what permissions players get in a territory chunk during a war
+# heldByAlly : when the chunk is held by an ally of the player
+# heldByEnemy : when the chunk is held by an enemy of the player
+# heldByEnemyDuringWar : when the chunk is held by an enemy of the player and
 attackersPermissions:
   heldByAlly:
     INTERACT_CHEST: true

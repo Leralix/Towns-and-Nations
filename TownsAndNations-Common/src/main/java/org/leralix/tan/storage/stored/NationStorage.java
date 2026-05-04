@@ -7,7 +7,7 @@ import org.leralix.tan.data.territory.Region;
 
 import java.util.Map;
 
-public interface NationStorage {
+public interface NationStorage extends IterritoryStorage{
 
     default Nation get(Region regionData){
         if(regionData == null){

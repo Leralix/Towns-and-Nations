@@ -4,13 +4,12 @@ import org.jetbrains.annotations.Nullable;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Town;
-import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.tan.api.interfaces.buildings.TanProperty;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-public interface TownStorage {
+public interface TownStorage extends IterritoryStorage {
 
     Town newTown(String townName, @Nullable ITanPlayer tanPlayer);
 
@@ -30,10 +29,6 @@ public interface TownStorage {
 
     default int getNumberOfTown() {
         return getAll().size();
-    }
-
-    default boolean isNameUsed(String townName){
-        return TerritoryUtil.isNameUsed(townName, getAll().values());
     }
 
     default void checkValidWorlds(){

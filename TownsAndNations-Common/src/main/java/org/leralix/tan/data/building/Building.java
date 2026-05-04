@@ -11,4 +11,5 @@ public abstract class Building implements TanBuilding {
 
     public abstract GuiItem getGuiItem(IconManager iconManager, Player player, BasicGui basicGui, LangType langType);
 
+    public abstract void setName(String name);
 }

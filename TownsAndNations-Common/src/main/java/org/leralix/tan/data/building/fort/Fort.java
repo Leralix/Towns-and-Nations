@@ -19,9 +19,12 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
+import org.leralix.tan.listeners.chat.events.ChangeBuildingName;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.territory.ChunkUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.buildings.TanFort;
 
 public abstract class Fort extends Building implements TanFort {
@@ -115,10 +118,17 @@ public abstract class Fort extends Building implements TanFort {
                         Lang.FORT_OCCUPIED_BY.get(getOccupier().getColoredName()),
                         Lang.DISPLAY_COORDINATES.get(Integer.toString(position.getX()), Integer.toString(position.getY()), Integer.toString(position.getZ()))
                 )
-                .setClickToAcceptMessage(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE)
+                .setClickToAcceptMessage(
+                        Lang.GUI_GENERIC_CLICK_TO_RENAME,
+                        Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE
+                )
                 .setAction(
                         action -> {
-                            if (action.isRightClick()) {
+                            if(action.isLeftClick()) {
+                                TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
+                                PlayerChatListenerStorage.register(player, langType, new ChangeBuildingName(this, p -> basicGui.open(), Constants.getTownMaxNameSize()));
+                            }
+                            else if (action.isRightClick()) {
                                 TownsAndNations.getPlugin().getFortStorage().delete(this);
                                 SoundUtil.playSound(player, SoundEnum.MINOR_GOOD);
                                 basicGui.open();

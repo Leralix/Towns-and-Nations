@@ -30,6 +30,11 @@ public class FortDatabase extends Fort implements DatabaseData<FortData> {
     }
 
     @Override
+    public void setName(String name) {
+        mutate(f -> f.setName(name));
+    }
+
+    @Override
     public Vector3D getPosition() {
         return data.getPosition();
     }
@@ -63,5 +68,4 @@ public class FortDatabase extends Fort implements DatabaseData<FortData> {
         action.accept(data);
         manager.save(data);
     }
-
 }
