@@ -75,6 +75,7 @@ public interface ITanPlayer extends TanPlayer {
 
     /**
      * Check all wars between the player's territories and the selected territory.
+     * If the player is not involved in any war with the territory, return NEUTRAL.
      * @param territoryData The territory to check
      * @return The worst role the player has with the territory
      */

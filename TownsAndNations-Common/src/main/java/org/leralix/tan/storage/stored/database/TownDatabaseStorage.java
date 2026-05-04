@@ -8,6 +8,7 @@ import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.data.territory.TownDataBase;
 import org.leralix.tan.storage.stored.TownStorage;
 import org.leralix.tan.utils.constants.database.RedisConfig;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,5 +70,10 @@ public class TownDatabaseStorage extends DatabaseStorage<TownDataBase, TownData>
             return null;
         }
         return new TownDataBase(data, databaseManager);
+    }
+
+    @Override
+    public boolean isNameUsed(String name) {
+        return TerritoryUtil.isNameUsed(name, getAll().values());
     }
 }

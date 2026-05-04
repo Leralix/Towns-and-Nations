@@ -14,28 +14,12 @@ public abstract class TerritoryStorage<T extends Territory> extends JsonStorage<
 
     protected TerritoryStorage(String fileName, Type type, Gson gson) {
         super(fileName, type, gson);
-        this.nextID = getNextId();
+        System.out.println("TerritoryStorage");
+        this.nextID = getNextID();
     }
 
     public boolean isNameUsed(String name) {
         return TerritoryUtil.isNameUsed(name, getAll().values());
-    }
-
-    private int getNextId() {
-        int id = 0;
-        for (String keys : getAll().keySet()) {
-            if (keys != null && keys.length() >= 2) {
-                String suffix = keys.substring(1);
-                boolean isNumeric = suffix.chars().allMatch(Character::isDigit);
-                if (isNumeric) {
-                    int newID = Integer.parseInt(suffix);
-                    if (newID > id) {
-                        id = newID + 1;
-                    }
-                }
-            }
-        }
-        return id;
     }
 
     protected @NotNull String generateNextID(String prefix) {

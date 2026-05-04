@@ -25,7 +25,7 @@ public class LandmarkDataStorage extends JsonStorage<Landmark> implements Landma
                         .setPrettyPrinting()
                         .create()
         );
-        newLandmarkID = getNewLandmarkID();
+        newLandmarkID = getNextID();
     }
 
     @Override
@@ -57,15 +57,4 @@ public class LandmarkDataStorage extends JsonStorage<Landmark> implements Landma
     public void delete(Landmark landmark) {
         delete(landmark.getID());
     }
-
-    private int getNewLandmarkID() {
-        int id = 0;
-        for (String ids : getAll().keySet()) {
-            int newID = Integer.parseInt(ids.substring(1));
-            if (newID > id)
-                id = newID;
-        }
-        return id + 1;
-    }
-
 }

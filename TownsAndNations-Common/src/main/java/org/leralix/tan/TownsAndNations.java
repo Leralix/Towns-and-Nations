@@ -19,9 +19,6 @@ import org.leralix.tan.commands.admin.AdminCommandManager;
 import org.leralix.tan.commands.debug.DebugCommandManager;
 import org.leralix.tan.commands.player.PlayerCommandManager;
 import org.leralix.tan.commands.server.ServerCommandManager;
-import org.leralix.tan.utils.economy.EconomyUtil;
-import org.leralix.tan.utils.economy.TanEconomyStandalone;
-import org.leralix.tan.utils.economy.VaultManager;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.newsletter.NewsletterEvents;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
@@ -47,6 +44,9 @@ import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.tasks.SecondTask;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.constants.DatabaseConstants;
+import org.leralix.tan.utils.economy.EconomyUtil;
+import org.leralix.tan.utils.economy.TanEconomyStandalone;
+import org.leralix.tan.utils.economy.VaultManager;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.gameplay.TANCustomNBT;
 import org.leralix.tan.utils.graphic.TeamUtils;
@@ -397,7 +397,7 @@ public class TownsAndNations extends JavaPlugin {
     private void enableEventList() {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new ChatListener(playerDataStorage), this);
-        pluginManager.registerEvents(new ChunkListener(playerDataStorage), this);
+        pluginManager.registerEvents(new ChunkListener(playerDataStorage, claimStorage), this);
         pluginManager.registerEvents(new PlayerJoinListener(playerDataStorage), this);
         pluginManager.registerEvents(new PlayerEnterChunkListener(playerDataStorage, claimStorage), this);
         pluginManager.registerEvents(new ChatScopeListener(localChatStorage), this);

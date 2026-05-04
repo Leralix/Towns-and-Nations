@@ -23,13 +23,13 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleDestroyEvent;
 import org.bukkit.inventory.FurnaceInventory;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.storage.SudoPlayerStorage;
+import org.leralix.tan.storage.stored.ClaimStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.info.SideStatus;
@@ -43,12 +43,15 @@ public class ChunkListener implements Listener {
 
     private final PlayerDataStorage playerDataStorage;
 
+    private final ClaimStorage claimStorage;
+
     private final Set<Material> furnaceList = Set.of(Material.FURNACE, Material.BLAST_FURNACE, Material.SMOKER);
 
     private final Set<Material> minecartList = Set.of(Material.MINECART, Material.CHEST_MINECART, Material.FURNACE_MINECART, Material.TNT_MINECART, Material.HOPPER_MINECART);
 
-    public ChunkListener(PlayerDataStorage playerDataStorage) {
+    public ChunkListener(PlayerDataStorage playerDataStorage, ClaimStorage claimStorage) {
         this.playerDataStorage = playerDataStorage;
+        this.claimStorage = claimStorage;
     }
 
     @EventHandler
@@ -373,7 +376,7 @@ public class ChunkListener implements Listener {
             return true;
         }
 
-        if (!TownsAndNations.getPlugin().getClaimStorage().get(receiver.getLocation().getChunk()).canPvpHappen()) {
+        if (!claimStorage.get(receiver.getLocation().getChunk()).canPvpHappen()) {
             return false;
         }
 
@@ -592,7 +595,7 @@ public class ChunkListener implements Listener {
             return;
         }
 
-        event.blockList().removeIf(block -> !TownsAndNations.getPlugin().getClaimStorage().get(block.getChunk()).canBeGriefByExplosion());
+        event.blockList().removeIf(block -> !claimStorage.get(block.getChunk()).canBeGriefByExplosion());
     }
 
     @EventHandler
@@ -604,7 +607,7 @@ public class ChunkListener implements Listener {
 
         Chunk chunk = event.getBlock().getChunk();
 
-        if (!TownsAndNations.getPlugin().getClaimStorage().get(chunk).canBeGriefByFire()) {
+        if (!claimStorage.get(chunk).canBeGriefByFire()) {
             event.setCancelled(true);
         }
     }
@@ -618,7 +621,7 @@ public class ChunkListener implements Listener {
 
         if (event.getSource().getType() == Material.FIRE) {
             Chunk chunk = event.getBlock().getChunk();
-            if (!TownsAndNations.getPlugin().getClaimStorage().get(chunk).canBeGriefByFire()) {
+            if (!claimStorage.get(chunk).canBeGriefByFire()) {
                 event.setCancelled(true);
             }
         }
@@ -637,7 +640,6 @@ public class ChunkListener implements Listener {
 
         Chunk chunk = event.getBlock().getChunk();
 
-
         switch (event.getEntity().getType()) {
             case PLAYER -> {
                 Player player = (Player) event.getEntity();
@@ -646,26 +648,27 @@ public class ChunkListener implements Listener {
                 }
             }
             case VILLAGER -> {
-                if (!TownsAndNations.getPlugin().getClaimStorage()
+                if (!claimStorage
                         .get(chunk)
                         .canVillagerGrief()) {
                     event.setCancelled(true);
                 }
             }
             case SHEEP, RABBIT -> {
-                if (!TownsAndNations.getPlugin().getClaimStorage()
+                if (!claimStorage
                         .get(chunk)
                         .canPassiveGrief()) {
                     event.setCancelled(true);
                 }
             }
             case DRAGON_FIREBALL, FIREBALL, WITHER, ENDERMAN, RAVAGER, SILVERFISH -> {
-                if (!TownsAndNations.getPlugin().getClaimStorage()
+                if (!claimStorage
                         .get(chunk)
                         .canHostileGrief()) {
                     event.setCancelled(true);
                 }
             }
+
         }
     }
 
@@ -680,18 +683,19 @@ public class ChunkListener implements Listener {
         if (SudoPlayerStorage.isSudoPlayer(player))
             return true;
 
-        IClaimedChunk claimedChunk = TownsAndNations.getPlugin().getClaimStorage().get(location.getChunk());
+        IClaimedChunk claimedChunk = claimStorage.get(location.getChunk());
         ITanPlayer tanPlayer = playerDataStorage.get(player);
 
+        // Check all involved permissions, if one of them is not allowed, the action is not allowed
         for (var permission : permissions) {
-            if (!test(location, player, permission, claimedChunk, tanPlayer)) {
+            if (!doesPermissionAllow(location, player, permission, claimedChunk, tanPlayer)) {
                 return false;
             }
         }
         return true;
     }
 
-    private static boolean test(Location location, Player player, ChunkPermissionType permission, IClaimedChunk claimedChunk, ITanPlayer tanPlayer) {
+    private static boolean doesPermissionAllow(Location location, Player player, ChunkPermissionType permission, IClaimedChunk claimedChunk, ITanPlayer tanPlayer) {
         // Check if a player is involved in a war with this territory. Additional actions may be authorized
         if (claimedChunk instanceof TerritoryChunk territoryChunk) {
             SideStatus side = tanPlayer.getWarSideWith(territoryChunk.getOwnerInternal());

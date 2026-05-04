@@ -127,4 +127,20 @@ public abstract class JsonStorage<T> {
         }
     }
 
+    protected int getNextID() {
+        int id = 0;
+        for (String cle : getAll().keySet()) {
+            if (cle != null && cle.length() >= 2) {
+                String suffix = cle.substring(1);
+                boolean isNumeric = suffix.chars().allMatch(Character::isDigit);
+                if (isNumeric) {
+                    int newID = Integer.parseInt(suffix);
+                    if (newID >= id) {
+                        id = newID + 1;
+                    }
+                }
+            }
+        }
+        return id;
+    }
 }

@@ -14,14 +14,12 @@ import org.leralix.tan.storage.stored.TerritoryStorage;
 import org.leralix.tan.storage.typeadapter.EnumMapDeserializer;
 import org.leralix.tan.storage.typeadapter.IconAdapter;
 import org.leralix.tan.utils.file.FileUtil;
-import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class RegionDataStorage extends TerritoryStorage<Region> implements RegionStorage {
-
 
     public RegionDataStorage() {
         super("TAN - Regions.json",
@@ -49,15 +47,4 @@ public class RegionDataStorage extends TerritoryStorage<Region> implements Regio
     public void deleteRegion(RegionData region){
         delete(region.getID());
     }
-
-    @Override
-    public boolean isNameUsed(String name){
-        return TerritoryUtil.isNameUsed(name, dataMap.values());
-    }
-
-    @Override
-    public void save() {
-
-    }
-
 }

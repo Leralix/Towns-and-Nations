@@ -36,7 +36,7 @@ public class WarDataStorage extends JsonStorage<War> implements WarStorage {
 
     @Override
     public War newWar(Territory attackingTerritory, Territory defendingTerritory) {
-        String newID = getNewID();
+        String newID = "W" + getNextID();
         War newWar = new WarData(
                 newID,
                 attackingTerritory,
@@ -62,14 +62,6 @@ public class WarDataStorage extends JsonStorage<War> implements WarStorage {
     @Override
     public void remove(War plannedAttack) {
         delete(plannedAttack.getID());
-    }
-
-    private String getNewID(){
-        int id = 0;
-        while(dataMap.containsKey("W"+id)){
-            id++;
-        }
-        return "W"+id;
     }
 
     @Override
