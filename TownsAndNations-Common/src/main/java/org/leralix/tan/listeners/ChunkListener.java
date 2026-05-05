@@ -24,7 +24,6 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleDestroyEvent;
 import org.bukkit.inventory.FurnaceInventory;
 import org.leralix.tan.data.chunk.IClaimedChunk;
-import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.data.territory.relation.TownRelation;
@@ -32,7 +31,6 @@ import org.leralix.tan.storage.SudoPlayerStorage;
 import org.leralix.tan.storage.stored.ClaimStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
-import org.leralix.tan.war.info.SideStatus;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -688,23 +686,10 @@ public class ChunkListener implements Listener {
 
         // Check all involved permissions, if one of them is not allowed, the action is not allowed
         for (var permission : permissions) {
-            if (!doesPermissionAllow(location, player, permission, claimedChunk, tanPlayer)) {
+            if (!claimedChunk.canPlayerDo(player, tanPlayer, permission, location)) {
                 return false;
             }
         }
         return true;
-    }
-
-    private static boolean doesPermissionAllow(Location location, Player player, ChunkPermissionType permission, IClaimedChunk claimedChunk, ITanPlayer tanPlayer) {
-        // Check if a player is involved in a war with this territory. Additional actions may be authorized
-        if (claimedChunk instanceof TerritoryChunk territoryChunk) {
-            SideStatus side = tanPlayer.getWarSideWith(territoryChunk.getOwnerInternal());
-            if (side == SideStatus.ALLY && Constants.getPermissionAtWars().canAllyDoAction(permission) ||
-                    side == SideStatus.ENEMY && Constants.getPermissionAtWars().canEnemyDoAction(permission)) {
-                return true;
-            }
-        }
-
-        return claimedChunk.canPlayerDo(player, tanPlayer, permission, location);
     }
 }

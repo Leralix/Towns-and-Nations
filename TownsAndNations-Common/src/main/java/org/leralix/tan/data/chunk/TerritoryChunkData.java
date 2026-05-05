@@ -288,13 +288,22 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
 
     @Override
     protected boolean canPlayerDoInternal(Player player, ITanPlayer tanPlayer, ChunkPermissionType permissionType, Location location) {
-        SideStatus side = tanPlayer.getWarSideWith(getOwnerInternal());
-        if (side == SideStatus.ALLY && Constants.getPermissionAtWars().canAllyDoAction(permissionType) ||
-                side == SideStatus.ENEMY && Constants.getPermissionAtWars().canEnemyDoAction(permissionType)) {
-            return true;
+
+
+        Territory territoryOfChunk = getOwnerInternal();
+
+        // Check if a player is involved in an attack with this territory.
+        for (CurrentAttack currentAttacks : territoryOfChunk.getCurrentAttacks()) {
+            if (currentAttacks.containsPlayer(tanPlayer)){
+                SideStatus side = tanPlayer.getWarSideWith(getOccupierInternal());
+                if (side == SideStatus.ALLY && Constants.getPermissionAtWars().canAllyDoAction(permissionType) ||
+                        side == SideStatus.ENEMY && Constants.getPermissionAtWars().canEnemyDoAction(permissionType)) {
+                    return true;
+                }
+            }
         }
 
-        if(this instanceof TownClaimedChunk townClaimedChunk){
+        if(this instanceof TownChunk townClaimedChunk){
             Town ownerTown = townClaimedChunk.getTown();
             PropertyData property = ownerTown.getProperty(location);
             if (property != null) {
@@ -306,13 +315,6 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
                     return false;
                 }
             }
-        }
-
-        Territory territoryOfChunk = getOwnerInternal();
-        //Player is at war with the town
-        for (CurrentAttack currentAttacks : territoryOfChunk.getCurrentAttacks()) {
-            if (currentAttacks.containsPlayer(tanPlayer))
-                return true;
         }
 
         //If the permission is locked by admins, only shows default value.

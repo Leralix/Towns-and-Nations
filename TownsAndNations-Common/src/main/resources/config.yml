@@ -414,7 +414,6 @@ relationAfterSurrender : "NON_AGGRESSION"
 # Defines what permissions players get in a territory chunk during a war
 # heldByAlly : when the chunk is held by an ally of the player
 # heldByEnemy : when the chunk is held by an enemy of the player
-# heldByEnemyDuringWar : when the chunk is held by an enemy of the player and
 attackersPermissions:
   heldByAlly:
     INTERACT_CHEST: true
