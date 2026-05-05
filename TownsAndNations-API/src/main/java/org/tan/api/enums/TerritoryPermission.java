@@ -16,5 +16,5 @@ public enum TerritoryPermission {
     MANAGE_MOB_SPAWN,
     CREATE_PROPERTY,
     MANAGE_PROPERTY,
-    TOWN_ADMINISTRATOR;
+    TOWN_ADMINISTRATOR
 }

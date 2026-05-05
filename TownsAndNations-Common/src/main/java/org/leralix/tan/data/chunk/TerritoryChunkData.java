@@ -42,7 +42,7 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
     /**
      * The ID of the territory owning this chunk
      */
-    private String ownerID;
+    private final String ownerID;
 
     /**
      * The ID of the territory occupying this chunk

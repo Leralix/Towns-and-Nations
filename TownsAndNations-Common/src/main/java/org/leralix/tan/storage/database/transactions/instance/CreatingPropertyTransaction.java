@@ -13,7 +13,6 @@ import org.leralix.tan.utils.text.DateUtil;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,8 +54,6 @@ public class CreatingPropertyTransaction extends AbstractTransaction {
 
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
-
-        ;
 
         return iconManager.get(IconKey.PROPERTY_CREATE_TRANSACTION)
                 .setName(Lang.SELL_PROPERTY_TRANSACTION.get(langType))

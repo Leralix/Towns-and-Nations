@@ -9,6 +9,6 @@ public interface TanListener {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
-    public @interface EventHandler {}
+    @interface EventHandler {}
 
 }

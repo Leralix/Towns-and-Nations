@@ -4,12 +4,12 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class DatabaseConstants {
 
-    private String dbType;
-    private String host;
-    private int port;
-    private String name;
-    private String user;
-    private String password;
+    private final String dbType;
+    private final String host;
+    private final int port;
+    private final String name;
+    private final String user;
+    private final String password;
 
 
     public DatabaseConstants(ConfigurationSection configurationSection) {

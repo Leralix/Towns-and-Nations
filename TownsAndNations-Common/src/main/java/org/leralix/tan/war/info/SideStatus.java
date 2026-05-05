@@ -4,5 +4,5 @@ public enum SideStatus {
 
     ALLY,
     NEUTRAL,
-    ENEMY;
+    ENEMY
 }

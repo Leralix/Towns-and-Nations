@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 public class PlayerData implements ITanPlayer {
 
-    private UUID id;
+    private final UUID id;
     private String storedName;
     private Double Balance;
     private String TownId;

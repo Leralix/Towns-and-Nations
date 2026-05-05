@@ -16,7 +16,7 @@ public class BoundaryRegister {
         }
         else {
             players.add(player);
-        };
+        }
     }
 
     public static boolean isRegistered(Player player){

@@ -12,17 +12,17 @@ public class ClaimedChunkSettings implements IClaimedChunkSettings{
     /**
      * The permission manager to handle permissions related to players.
      */
-    private PermissionManager newPermissionManager;
+    private final PermissionManager newPermissionManager;
 
     /**
      * The mob spawn settings for the territory.
      */
-    private Map<String, UpgradeStatus> mobSpawnStorage;
+    private final Map<String, UpgradeStatus> mobSpawnStorage;
 
     /**
      * The general settings unrelated to players.
      */
-    private Map<GeneralChunkSetting, Boolean> generalSettings;
+    private final Map<GeneralChunkSetting, Boolean> generalSettings;
 
     public ClaimedChunkSettings(PermissionGiven permissionGiven) {
         this.newPermissionManager = new PermissionManager(permissionGiven);

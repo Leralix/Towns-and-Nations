@@ -42,7 +42,6 @@ import org.leralix.tan.data.upgrade.rewards.list.BiomeStat;
 import org.leralix.tan.data.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.data.upgrade.rewards.numeric.ChunkCost;
 import org.leralix.tan.data.upgrade.rewards.numeric.ChunkUpkeepCost;
-import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.DiplomacyProposalInternalEvent;
 import org.leralix.tan.events.events.TerritoryVassalAcceptedInternalEvent;
@@ -58,6 +57,7 @@ import org.leralix.tan.storage.database.transactions.instance.DonationTransactio
 import org.leralix.tan.storage.database.transactions.instance.SalaryTransaction;
 import org.leralix.tan.storage.database.transactions.instance.TerritoryChunkUpkeepTransaction;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.territory.ChunkUtil;
@@ -95,8 +95,8 @@ public abstract class TerritoryData implements TanTerritory, Territory {
     protected Integer defaultRankID;
     protected Map<Integer, RankData> ranks;
     private HashMap<String, Integer> availableClaims;
-    private Map<String, DiplomacyProposal> diplomacyProposals;
-    private List<String> overlordsProposals;
+    private final Map<String, DiplomacyProposal> diplomacyProposals;
+    private final List<String> overlordsProposals;
     private ClaimedChunkSettings chunkSettings;
     private List<String> fortIds;
     private List<String> occupiedFortIds;

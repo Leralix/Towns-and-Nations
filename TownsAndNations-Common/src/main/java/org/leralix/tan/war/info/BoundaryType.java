@@ -7,6 +7,6 @@ public enum BoundaryType {
 
     ALLY,
     NEUTRAL,
-    ENEMY;
+    ENEMY
 
 }

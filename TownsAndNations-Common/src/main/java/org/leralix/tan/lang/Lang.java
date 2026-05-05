@@ -1272,7 +1272,7 @@ public enum Lang {
         if (translation != null) {
             translation = ChatColor.translateAlternateColorCodes('§', translation);
             for(int i = 0; i < placeholders.size(); i++) {
-                String val = placeholders.get(i) == null ? "null" : placeholders.get(i).toString();
+                String val = placeholders.get(i) == null ? "null" : placeholders.get(i);
                 translation = translation.replace("{" + i + "}",val);
             }
             translation = replaceCommonPlaceholders(translation);
