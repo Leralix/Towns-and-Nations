@@ -9,6 +9,7 @@ import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.territory.Town;
+import org.leralix.tan.data.territory.permission.RecruitingPolicy;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TownDeletedInternalEvent;
@@ -52,7 +53,7 @@ public class TownSettingsMenu extends SettingsMenus {
         gui.setItem(2, 3, getChangeDescriptionButton());
         gui.setItem(2, 4, getChangeColorButton());
 
-        gui.setItem(3, 2, getChangeApplicationButton());
+        gui.setItem(3, 2, getChangeApplicationRulesButton());
         gui.setItem(3, 3, getChangeCapitalChunkButton());
         gui.setItem(3, 4, getAuthorizedTeleportationButton());
 
@@ -203,14 +204,26 @@ public class TownSettingsMenu extends SettingsMenus {
                 .asGuiItem(player, langType);
     }
 
-    private @NotNull GuiItem getChangeApplicationButton() {
-        IconKey iconKey = townData.isRecruiting() ? IconKey.TOWN_ALLOW_APPLICATION_ICON : IconKey.TOWN_DENY_APPLICATION_ICON;
+    private @NotNull GuiItem getChangeApplicationRulesButton() {
+
+        RecruitingPolicy townRecruitingPolicy = townData.getRecruitingPolicy();
+
+        IconKey iconKey = switch (townRecruitingPolicy) {
+            case APPLICATION_OPEN, AUTHORIZE_ALL -> IconKey.TOWN_ALLOW_APPLICATION_ICON;
+            case CLOSED -> IconKey.TOWN_DENY_APPLICATION_ICON;
+        };
+
         return iconManager.get(iconKey)
                 .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION.get(tanPlayer))
                 .setDescription(
-                        townData.isRecruiting() ?
-                                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.get() :
-                                Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.get())
+                        Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_DESC.get(
+                                switch (townRecruitingPolicy) {
+                                    case AUTHORIZE_ALL -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_OPEN.get(langType);
+                                    case APPLICATION_OPEN -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.get(langType);
+                                    case CLOSED -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.get(langType);
+                                }
+                        )
+                )
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SWITCH)
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.INVITE_PLAYER))
                 .setAction(event -> {

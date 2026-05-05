@@ -2,8 +2,11 @@ package org.leralix.tan.gui.user.player;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
+import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.territory.Town;
+import org.leralix.tan.data.territory.permission.RecruitingPolicy;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.user.territory.NoTownMenu;
 import org.leralix.tan.lang.Lang;
@@ -11,8 +14,6 @@ import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 public class ApplyToTownMenu extends IteratorGUI {
 
@@ -36,39 +37,48 @@ public class ApplyToTownMenu extends IteratorGUI {
 
         for (Town specificTownData : TownsAndNations.getPlugin().getTownStorage().getAll().values()) {
 
+            var recruitingPolicy = specificTownData.getRecruitingPolicy();
             towns.add(specificTownData
                     .getIconWithInformations(tanPlayer.getLang())
-                    .addDescription((specificTownData.isRecruiting()) ?
-                            Lang.GUI_TOWN_INFO_IS_RECRUITING.get() :
-                            Lang.GUI_TOWN_INFO_IS_NOT_RECRUITING.get()
+                    .addDescription(
+                            Lang.GUI_TOWN_RECRUITING_POLICY.get(
+                                    switch (recruitingPolicy) {
+                                        case AUTHORIZE_ALL -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_OPEN.get(langType);
+                                        case APPLICATION_OPEN -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.get(langType);
+                                        case CLOSED -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.get(langType);
+                                    }
+                            )
                     )
                     .setClickToAcceptMessage(
-                            (specificTownData.isPlayerAlreadyRequested(player)) ?
+                            specificTownData.isPlayerAlreadyRequested(player) ?
                                     Lang.GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL :
                                     Lang.GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN
                     )
                     .setAction(action -> {
                         if (action.isLeftClick()) {
 
-                            if (!player.hasPermission("tan.base.town.join")) {
-                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
+                            if(recruitingPolicy == RecruitingPolicy.CLOSED){
+                                SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                                 return;
                             }
-                            if (specificTownData.isPlayerAlreadyRequested(player)) {
-                                return;
+                            else if(recruitingPolicy == RecruitingPolicy.AUTHORIZE_ALL){
+                                specificTownData.addPlayer(tanPlayer);
                             }
-                            if (!specificTownData.isRecruiting()) {
-                                TanChatUtils.message(player, Lang.PLAYER_TOWN_NOT_RECRUITING.get(tanPlayer));
-                                return;
+                            else {
+                                if (!player.hasPermission("tan.base.town.join")) {
+                                    TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), SoundEnum.NOT_ALLOWED);
+                                    return;
+                                }
+                                if (specificTownData.isPlayerAlreadyRequested(player)) {
+                                    return;
+                                }
+
+                                specificTownData.addPlayerJoinRequest(player);
+                                TanChatUtils.message(player, Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(tanPlayer, specificTownData.getName()));
+                                open();
                             }
-                            specificTownData.addPlayerJoinRequest(player);
-                            TanChatUtils.message(player, Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(tanPlayer, specificTownData.getName()));
-                            open();
                         }
-                        if (action.isRightClick()) {
-                            if (!specificTownData.isPlayerAlreadyRequested(player)) {
-                                return;
-                            }
+                        if (action.isRightClick() && specificTownData.isPlayerAlreadyRequested(player)) {
                             specificTownData.removePlayerJoinRequest(player.getUniqueId());
                             TanChatUtils.message(player, Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(tanPlayer));
                             open();

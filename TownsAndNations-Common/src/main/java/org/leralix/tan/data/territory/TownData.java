@@ -14,9 +14,9 @@ import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.economy.*;
+import org.leralix.tan.data.territory.permission.RecruitingPolicy;
 import org.leralix.tan.data.territory.rank.RankData;
 import org.leralix.tan.data.upgrade.rewards.numeric.TownPlayerCap;
-import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.PlayerJoinTownAcceptedInternalEvent;
 import org.leralix.tan.events.events.PlayerJoinTownRequestInternalEvent;
@@ -30,6 +30,7 @@ import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.PlayerTaxTransaction;
 import org.leralix.tan.utils.Range;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.territory.ChunkUtil;
@@ -44,7 +45,15 @@ public class TownData extends TerritoryData implements Town {
     //This is all that should be kept after the transition to the parent class
     private UUID UuidLeader;
     private String townTag;
+
+    /**
+     * @deprecated replaced by {@code recruitingPolicy}
+     */
+    @Deprecated(since = "0.19.0")
     private boolean isRecruiting;
+
+    private RecruitingPolicy recruitingPolicy;
+
     private final Set<UUID> PlayerJoinRequestSet;
     private Map<String, PropertyData> propertyDataMap;
     private final Set<UUID> townPlayerListId;
@@ -59,7 +68,7 @@ public class TownData extends TerritoryData implements Town {
         super(townId, townName, leader);
         this.PlayerJoinRequestSet = new HashSet<>();
         this.townPlayerListId = new HashSet<>();
-        this.isRecruiting = false;
+        this.recruitingPolicy = RecruitingPolicy.APPLICATION_OPEN;
 
         if (leader != null) {
             this.UuidLeader = leader.getID();
@@ -90,6 +99,7 @@ public class TownData extends TerritoryData implements Town {
 
     @Override
     public void addPlayer(ITanPlayer tanNewPlayer) {
+        removePlayerJoinRequest(tanNewPlayer.getID());
         townPlayerListId.add(tanNewPlayer.getID());
         getTownDefaultRank().addPlayer(tanNewPlayer);
         tanNewPlayer.joinTown(this);
@@ -254,13 +264,16 @@ public class TownData extends TerritoryData implements Town {
     }
 
     @Override
-    public boolean isRecruiting() {
-        return isRecruiting;
+    public RecruitingPolicy getRecruitingPolicy() {
+        if(recruitingPolicy == null){
+            recruitingPolicy = isRecruiting ? RecruitingPolicy.APPLICATION_OPEN : RecruitingPolicy.CLOSED;
+        }
+        return recruitingPolicy;
     }
 
     @Override
     public void swapRecruiting() {
-        this.isRecruiting = !this.isRecruiting;
+        this.recruitingPolicy = this.recruitingPolicy.next();
     }
 
     @Override

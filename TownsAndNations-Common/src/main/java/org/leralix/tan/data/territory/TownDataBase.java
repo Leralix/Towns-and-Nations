@@ -9,6 +9,7 @@ import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.data.DbManager;
 import org.leralix.tan.data.building.property.PropertyData;
 import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.permission.RecruitingPolicy;
 import org.leralix.tan.data.territory.rank.RankData;
 import org.leralix.tan.storage.stored.database.DatabaseData;
 import org.tan.api.interfaces.buildings.TanLandmark;
@@ -79,8 +80,8 @@ public class TownDataBase extends TerritoryDatabase<TownData> implements Databas
     }
 
     @Override
-    public boolean isRecruiting() {
-        return data.isRecruiting();
+    public RecruitingPolicy getRecruitingPolicy() {
+        return data.getRecruitingPolicy();
     }
 
     @Override

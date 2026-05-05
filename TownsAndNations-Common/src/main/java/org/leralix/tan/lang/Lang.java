@@ -5,8 +5,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.leralix.lib.utils.config.ConfigUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.economy.EconomyUtil;
 
 import java.io.File;
 import java.util.Collections;
@@ -51,7 +51,6 @@ public enum Lang {
     WRITE_CANCEL_TO_CANCEL,
     PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE,
     PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE,
-    PLAYER_TOWN_NOT_RECRUITING,
     GUI_REGION_KICK_TOWN_BROADCAST,
     GUI_NATION_KICK_REGION_BROADCAST,
     CLAIM_CHUNK_COMMAND_DESC,
@@ -441,8 +440,7 @@ public enum Lang {
     BROADCAST_RELATION_IMPROVE,
     BROADCAST_RELATION_WORSEN,
     GUI_TOWN_INFO_TOWN_RELATION,
-    GUI_TOWN_INFO_IS_RECRUITING,
-    GUI_TOWN_INFO_IS_NOT_RECRUITING,
+    GUI_TOWN_RECRUITING_POLICY,
     GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN,
     GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL,
     GUI_PLAYER_ASK_JOIN_PROFILE_DESC2,
@@ -570,6 +568,8 @@ public enum Lang {
     TOWN_SET_TAX_IN_CHAT,
     CHANGE_MESSAGE_SUCCESS,
     GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION,
+    GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_DESC,
+    GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_OPEN,
     GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT,
     GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT,
     GUI_SETTINGS_CHANGE_TERRITORY_NAME,

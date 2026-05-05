@@ -8,6 +8,7 @@ import org.leralix.lib.position.Vector2D;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.data.building.property.PropertyData;
 import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.permission.RecruitingPolicy;
 import org.leralix.tan.data.territory.rank.RankData;
 import org.tan.api.interfaces.territory.TanTown;
 
@@ -37,7 +38,7 @@ public interface Town extends Territory, TanTown {
 
     Set<UUID> getPlayerJoinRequestSet();
 
-    boolean isRecruiting();
+    RecruitingPolicy getRecruitingPolicy();
 
     void swapRecruiting();
 
