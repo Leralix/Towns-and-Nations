@@ -59,7 +59,7 @@ public interface ITanPlayer extends TanPlayer {
 
     Integer getTownRankID();
 
-    List<String> getPropertiesListID();
+    Set<String> getPropertiesListID();
 
     void addProperty(PropertyData propertyData);
 
@@ -69,10 +69,6 @@ public interface ITanPlayer extends TanPlayer {
 
     Player getPlayer();
 
-    List<String> getAttackInvolvedIn();
-
-    void updateCurrentAttack();
-
     /**
      * Check all wars between the player's territories and the selected territory.
      * If the player is not involved in any war with the territory, return NEUTRAL.
@@ -80,8 +76,6 @@ public interface ITanPlayer extends TanPlayer {
      * @return The worst role the player has with the territory
      */
     SideStatus getWarSideWith(Territory territoryData);
-
-    void removeWar(@NotNull CurrentAttack currentAttacks);
 
     TownRelation getRelationWithPlayer(ITanPlayer otherPlayer);
 

@@ -134,7 +134,7 @@ public class PlayerDatabase implements DatabaseData<PlayerData>, ITanPlayer {
     }
 
     @Override
-    public List<String> getPropertiesListID() {
+    public Set<String> getPropertiesListID() {
         return data.getPropertiesListID();
     }
 
@@ -159,23 +159,8 @@ public class PlayerDatabase implements DatabaseData<PlayerData>, ITanPlayer {
     }
 
     @Override
-    public List<String> getAttackInvolvedIn() {
-        return data.getAttackInvolvedIn();
-    }
-
-    @Override
-    public void updateCurrentAttack() {
-        data.updateCurrentAttack();
-    }
-
-    @Override
     public SideStatus getWarSideWith(Territory territoryData) {
         return data.getWarSideWith(territoryData);
-    }
-
-    @Override
-    public void removeWar(@NotNull CurrentAttack currentAttacks) {
-        mutate(p -> p.removeWar(currentAttacks));
     }
 
     @Override

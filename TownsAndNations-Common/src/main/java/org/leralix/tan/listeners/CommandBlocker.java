@@ -10,7 +10,9 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -20,8 +22,11 @@ public class CommandBlocker implements Listener {
 
     private final PlayerDataStorage playerDataStorage;
 
-    public CommandBlocker(PlayerDataStorage playerDataStorage) {
+    private final WarStorage warStorage;
+
+    public CommandBlocker(PlayerDataStorage playerDataStorage, WarStorage warStorage) {
         this.playerDataStorage = playerDataStorage;
+        this.warStorage = warStorage;
     }
 
     @EventHandler
@@ -90,7 +95,7 @@ public class CommandBlocker implements Listener {
     }
 
     /**
-     * If the player is involved in an attack, check if the command is blacklisted
+     * If the player is involved in an ongoing attack, check if the command is blacklisted
      * during attacks.
      * 
      * @param player       the player executing the command
@@ -98,8 +103,7 @@ public class CommandBlocker implements Listener {
      * @return true if the command is blacklisted during attacks, false otherwise
      */
     private boolean isPlayerInAnAttack(Player player, String inputCommand) {
-
-        if (!playerDataStorage.get(player).getAttackInvolvedIn().isEmpty()) {
+        if (CurrentAttacksStorage.getAll().stream().anyMatch(currentAttack -> currentAttack.containsPlayer(player.getUniqueId()))) {
             for (String blackListedCommands : Constants.getBlacklistedCommandsDuringAttacks()) {
                 if (blackListedCommands.startsWith(inputCommand)) {
                     TanChatUtils.message(player, Lang.CANNOT_CAST_COMMAND_DURING_ATTACK, SoundEnum.NOT_ALLOWED);

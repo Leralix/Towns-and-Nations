@@ -78,18 +78,17 @@ public abstract class CurrentAttack {
         }
     }
 
-    private void registerBossBar(UUID playerUUID) {
-        Player player = Bukkit.getPlayer(playerUUID);
+    private void registerBossBar(UUID playerId) {
+        registerBossBar(Bukkit.getPlayer(playerId));
+    }
+
+    public void registerBossBar(Player player) {
         if (player != null) {
             bossBar.addPlayer(player);
         }
     }
 
     protected abstract void updateBossBar();
-
-    public void addPlayer(ITanPlayer tanPlayer) {
-        registerBossBar(tanPlayer.getID());
-    }
 
     private void start() {
         BukkitRunnable timerTask = new BukkitRunnable() {
@@ -133,17 +132,6 @@ public abstract class CurrentAttack {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (Territory territoryData : attackData.getWar().getAttackingTerritories()) {
-                    for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                        tanPlayer.removeWar(CurrentAttack.this);
-                    }
-                }
-                for (Territory territoryData : attackData.getWar().getDefendingTerritories()) {
-                    for (ITanPlayer tanPlayer : territoryData.getITanPlayerList()) {
-                        tanPlayer.removeWar(CurrentAttack.this);
-                    }
-                }
-
                 bossBar.removeAll();
                 CurrentAttacksStorage.remove(CurrentAttack.this);
             }
@@ -151,13 +139,17 @@ public abstract class CurrentAttack {
     }
 
     public boolean containsPlayer(ITanPlayer tanPlayer) {
+        return containsPlayer(tanPlayer.getID());
+    }
+
+    public boolean containsPlayer(UUID playerId) {
         for (Territory territoryData : attackData.getWar().getAttackingTerritories()) {
-            if (territoryData.isPlayerIn(tanPlayer)) {
+            if (territoryData.isPlayerIn(playerId)) {
                 return true;
             }
         }
         for (Territory territoryData : attackData.getWar().getDefendingTerritories()) {
-            if (territoryData.isPlayerIn(tanPlayer)) {
+            if (territoryData.isPlayerIn(playerId)) {
                 return true;
             }
         }

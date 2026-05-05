@@ -74,8 +74,4 @@ public interface War {
     Collection<Territory> getDefendingTerritories();
 
     Collection<Territory> getAttackingTerritories();
-
-    default boolean isAttackOngoing() {
-        return getPlannedAttacks().stream().anyMatch(plannedAttack -> plannedAttack.isInstantInAttack(System.currentTimeMillis()));
-    }
 }

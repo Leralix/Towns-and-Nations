@@ -14,7 +14,6 @@ import org.leralix.tan.data.timezone.TimeZoneEnum;
 import org.leralix.tan.data.timezone.TimeZoneManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.War;
@@ -30,9 +29,6 @@ import java.util.stream.Collectors;
 
 public class PlayerData implements ITanPlayer {
 
-    //Removing UUID "string" in favor of id "UUID"
-    @Deprecated(since = "0.17.0", forRemoval = true)
-    private String UUID;
     private UUID id;
     private String storedName;
     private Double Balance;
@@ -40,8 +36,7 @@ public class PlayerData implements ITanPlayer {
     private Integer townRankID;
     private Integer regionRankID;
     private Integer nationRankID;
-    private List<String> propertiesListID;
-    private List<String> attackInvolvedIn;
+    private Set<String> propertiesListID;
     private LangType lang;
     private TimeZoneEnum timeZone;
 
@@ -53,8 +48,7 @@ public class PlayerData implements ITanPlayer {
         this.townRankID = null;
         this.regionRankID = null;
         this.nationRankID = null;
-        this.propertiesListID = new ArrayList<>();
-        this.attackInvolvedIn = new ArrayList<>();
+        this.propertiesListID = new HashSet<>();
     }
 
     public PlayerData(
@@ -65,8 +59,8 @@ public class PlayerData implements ITanPlayer {
             Integer townRankID,
             Integer regionRankID,
             Integer nationRankID,
-            List<String> propertiesListID,
-            List<String> attackInvolvedIn,
+            Set<String> propertiesListID,
+            Set<String> attackInvolvedIn,
             LangType lang,
             TimeZoneEnum timeZone
     ) {
@@ -78,15 +72,11 @@ public class PlayerData implements ITanPlayer {
         this.regionRankID = regionRankID;
         this.nationRankID = nationRankID;
         this.propertiesListID = propertiesListID;
-        this.attackInvolvedIn = attackInvolvedIn;
         this.lang = lang;
         this.timeZone = timeZone;
     }
 
     public UUID getID() {
-        if(id == null){
-            id = java.util.UUID.fromString(UUID);
-        }
         return id;
     }
 
@@ -190,9 +180,10 @@ public class PlayerData implements ITanPlayer {
         return this.townRankID;
     }
 
-    public List<String> getPropertiesListID() {
+    @Override
+    public Set<String> getPropertiesListID() {
         if (this.propertiesListID == null)
-            this.propertiesListID = new ArrayList<>();
+            this.propertiesListID = new HashSet<>();
         return propertiesListID;
     }
 
@@ -262,25 +253,6 @@ public class PlayerData implements ITanPlayer {
         return Bukkit.getPlayer(getID());
     }
 
-    public List<String> getAttackInvolvedIn() {
-        if (attackInvolvedIn == null)
-            attackInvolvedIn = new ArrayList<>();
-        return attackInvolvedIn;
-    }
-
-    public void updateCurrentAttack() {
-        Iterator<String> iterator = getAttackInvolvedIn().iterator();
-        while (iterator.hasNext()) {
-            String attackID = iterator.next();
-            CurrentAttack currentAttack = CurrentAttacksStorage.get(attackID);
-            if (currentAttack == null || !currentAttack.containsPlayer(this)) {
-                iterator.remove();
-            } else {
-                currentAttack.addPlayer(this);
-            }
-        }
-    }
-
     public SideStatus getWarSideWith(Territory territoryToCheck) {
         if (territoryToCheck == null) {
             return SideStatus.NEUTRAL;
@@ -305,11 +277,6 @@ public class PlayerData implements ITanPlayer {
             }
         }
         return status;
-    }
-
-
-    public void removeWar(@NotNull CurrentAttack currentAttacks) {
-        getAttackInvolvedIn().remove(currentAttacks.getAttackData().getID());
     }
 
     public TownRelation getRelationWithPlayer(ITanPlayer otherPlayer) {

@@ -1,5 +1,6 @@
 package org.leralix.tan.storage;
 
+import org.bukkit.entity.Player;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.attack.CurrentAttack;
@@ -46,6 +47,19 @@ public class CurrentAttacksStorage {
                 else if (role == WarRole.MAIN_DEFENDER || role == WarRole.OTHER_DEFENDER) {
                     currentAttack.defenderKilled();
                 }
+            }
+        }
+    }
+
+    /**
+     * If a player connect while an attack is ongoing, add the boss bar
+     * @param player        The player registering
+     * @param tanPlayer     The player data
+     */
+    public static void registerPlayer(Player player, ITanPlayer tanPlayer) {
+        for (CurrentAttack currentAttack : attackStatusMap.values()) {
+            if (currentAttack.containsPlayer(tanPlayer)) {
+                currentAttack.registerBossBar(player);
             }
         }
     }

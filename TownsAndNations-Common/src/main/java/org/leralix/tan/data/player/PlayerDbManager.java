@@ -36,8 +36,8 @@ public class PlayerDbManager extends DbManager<PlayerData> {
                 return registerNewPlayer(uuid);
             }
 
-            List<String> properties = getStringList(map, "properties");
-            List<String> attackInvolvedIn = getStringList(map, "attackInvolvedIn");
+            Set<String> properties = new HashSet<>(getStringList(map, "properties")) ;
+            Set<String> attackInvolvedIn = new HashSet<>(getStringList(map, "attackInvolvedIn"));
 
             return new PlayerData(
                     uuid,
@@ -83,11 +83,7 @@ public class PlayerDbManager extends DbManager<PlayerData> {
             put(map, "regionRankId", data.getRegionRankID());
             put(map, "nationRankId", data.getNationRankID());
 
-            put(map, "properties",
-                    data.getPropertiesListID().isEmpty() ? null : String.join(",", data.getPropertiesListID()));
-
-            put(map, "attackInvolvedIn",
-                    data.getAttackInvolvedIn().isEmpty() ? null : String.join(",", data.getAttackInvolvedIn()));
+            put(map, "properties", data.getPropertiesListID().isEmpty() ? null : String.join(",", data.getPropertiesListID()));
 
             put(map, "langType", data.getLang().name());
             put(map, "timeZone", data.getTimeZone().name());

@@ -13,7 +13,9 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.storage.stored.json.PremiumStorage;
 import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
@@ -23,9 +25,11 @@ import org.leralix.tan.utils.text.TanChatUtils;
 public class PlayerJoinListener implements Listener {
 
     private final PlayerDataStorage playerDataStorage;
+    private final WarStorage warStorage;
 
-    public PlayerJoinListener(PlayerDataStorage playerDataStorage){
+    public PlayerJoinListener(PlayerDataStorage playerDataStorage, WarStorage warStorage){
         this.playerDataStorage = playerDataStorage;
+        this.warStorage = warStorage;
     }
 
     @EventHandler
@@ -34,11 +38,9 @@ public class PlayerJoinListener implements Listener {
 
         ITanPlayer tanPlayer = playerDataStorage.get(player);
 
+        CurrentAttacksStorage.registerPlayer(player, tanPlayer);
 
-        if(tanPlayer.hasTown()){
-            tanPlayer.updateCurrentAttack();
-            PrefixUtil.updatePrefix(player);
-        }
+        PrefixUtil.updatePrefix(player);
 
         TeamUtils.setIndividualScoreBoard(player);
         LangType langType = tanPlayer.getLang();

@@ -148,8 +148,8 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public List<String> getPropertiesListID() {
-        return List.of();
+    public Set<String> getPropertiesListID() {
+        return Set.of();
     }
 
     @Override
@@ -173,23 +173,8 @@ public class NoPlayerData implements ITanPlayer {
     }
 
     @Override
-    public List<String> getAttackInvolvedIn() {
-        return List.of();
-    }
-
-    @Override
-    public void updateCurrentAttack() {
-        // singleton class, no need to set name
-    }
-
-    @Override
     public SideStatus getWarSideWith(Territory territoryData) {
         return SideStatus.NEUTRAL;
-    }
-
-    @Override
-    public void removeWar(@NotNull CurrentAttack currentAttacks) {
-        // singleton class, no need to set name
     }
 
     @Override

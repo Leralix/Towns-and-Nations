@@ -3,6 +3,7 @@ package org.leralix.tan.utils.graphic;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.utils.constants.Constants;
 
 /**
@@ -24,9 +25,10 @@ public class PrefixUtil {
         }
         ITanPlayer tanPlayer = TownsAndNations.getPlugin().getPlayerDataStorage().get(player);
 
-        if (tanPlayer.getTown() != null){
+        Town playerTown = tanPlayer.getTown();
+        if (playerTown != null){
 
-            String prefix = tanPlayer.getTown().getFormatedTag();
+            String prefix = playerTown.getFormatedTag();
 
             player.setPlayerListName(prefix + player.getName());
             player.setDisplayName(prefix + player.getName());
