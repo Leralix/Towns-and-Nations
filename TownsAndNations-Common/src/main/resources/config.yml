@@ -473,7 +473,7 @@ displayTerritoryNameWithOwnColor: false
 # already cancelled by other plugins will not be analysed by chunk protection.
 noCheckIfEventCancelled: true
 
-# Chunk permission defines what players can do in a area.
+# Chunk permission defines what players can do in an area.
 # The same system is used for territory chunks and properties.
 # You can set the default permission for every claimed chunk of territory
 # You can also block specific actions so players cannot change them in-game. In that case, default settings will be used.

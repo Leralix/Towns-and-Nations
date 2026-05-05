@@ -290,7 +290,7 @@ public abstract class TerritoryData implements TanTerritory, Territory {
     }
 
     /**
-     * Get the worst relation a territory may have with a all the territory a player is part of (town, region...)
+     * Get the worst relation a territory may have with all the territory a player is part of (town, region...)
      *
      * @param player The player to check
      * @return The worst relation

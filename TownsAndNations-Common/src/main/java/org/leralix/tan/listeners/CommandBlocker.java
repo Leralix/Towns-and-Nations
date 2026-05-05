@@ -12,7 +12,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -22,11 +21,8 @@ public class CommandBlocker implements Listener {
 
     private final PlayerDataStorage playerDataStorage;
 
-    private final WarStorage warStorage;
-
-    public CommandBlocker(PlayerDataStorage playerDataStorage, WarStorage warStorage) {
+    public CommandBlocker(PlayerDataStorage playerDataStorage) {
         this.playerDataStorage = playerDataStorage;
-        this.warStorage = warStorage;
     }
 
     @EventHandler
@@ -83,8 +79,7 @@ public class CommandBlocker implements Listener {
             ITanPlayer senderData = playerDataStorage.get(sender);
             ITanPlayer receiverData = playerDataStorage.get(receiver);
             TownRelation worstRelationWithPlayer = senderData.getRelationWithPlayer(receiverData);
-            if (Constants.getRelationConstants(worstRelationWithPlayer).getBlockedCommands()
-                    .contains(blackListedCommand)) {
+            if (Constants.getRelationConstants(worstRelationWithPlayer).getBlockedCommands().contains(blackListedCommand)) {
                 LangType lang = senderData.getLang();
                 TanChatUtils.message(sender, Lang.CANNOT_CAST_COMMAND_ON_PLAYER_WITH_SPECIFIC_RELATION.get(lang,
                         receiver.getName(), worstRelationWithPlayer.getColoredName(lang)), SoundEnum.NOT_ALLOWED);

@@ -12,31 +12,28 @@ import java.util.logging.Logger;
 
 public class VaultManager {
 
-    private VaultManager(){
+    private VaultManager() {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void setupVault() {
-        AbstractTanEcon tanEcon;
-        Logger logger = Bukkit.getLogger();
+    public static void setupVault(Logger logger) {
 
-
-        if(Constants.useStandaloneEconomy()){
+        if (Constants.useStandaloneEconomy()) {
             TanEconomyVault tanEconomyVault = new TanEconomyVault(TownsAndNations.getPlugin().getPlayerDataStorage());
             EconomyUtil.register(tanEconomyVault);
             Bukkit.getServicesManager().register(Economy.class, tanEconomyVault, TownsAndNations.getPlugin(), ServicePriority.Normal);
-            logger.log(Level.INFO,"[TaN] -Vault is detected, registering TaN Economy");
+            logger.log(Level.INFO, "[TaN] -Vault is detected, registering TaN Economy");
         }
-        else{
+        else {
             RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
             if (rsp == null) {
-                logger.log(Level.INFO,"[TaN] -No active vault economy. Running standalone and waiting for potential update");
+                logger.log(Level.INFO, "[TaN] -No active vault economy. Running standalone and waiting for potential update");
                 EconomyUtil.register(new TanEconomyStandalone());
                 return;
             }
-            tanEcon = new TanEconomyExternal(rsp.getProvider());
+            AbstractTanEcon tanEcon = new TanEconomyExternal(rsp.getProvider());
             EconomyUtil.register(tanEcon);
-            logger.log(Level.INFO,"[TaN] -Vault is detected, using {0} as economy", rsp.getProvider().getName());
+            logger.log(Level.INFO, "[TaN] -Vault is detected, using {0} as economy", rsp.getProvider().getName());
         }
     }
 }

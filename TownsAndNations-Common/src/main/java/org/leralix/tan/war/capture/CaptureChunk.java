@@ -72,7 +72,7 @@ public class CaptureChunk {
             updateScore();
         }
 
-        FilledLang message = generateMessage(fortProtectingChunk);
+        FilledLang message = generateMessage(fortProtectingChunk.orElse(null));
         List<Player> allPlayers = new ArrayList<>(attackers);
         allPlayers.addAll(defenders);
 
@@ -89,14 +89,14 @@ public class CaptureChunk {
         return currentAttack.getAttackData().getWar().getID();
     }
 
-    private FilledLang generateMessage(Optional<Fort> fortProtectingChunk) {
+    private FilledLang generateMessage(Fort fortProtectingChunk) {
 
         String nbDefenders = Integer.toString(defenders.size());
         String nbAttackers = Integer.toString(attackers.size());
 
-        if (fortProtectingChunk.isPresent()) {
+        if (fortProtectingChunk != null) {
             return Lang.WAR_INFO_CHUNK_PROTECTED.get(
-                    fortProtectingChunk.get().getPosition().toString(),
+                    fortProtectingChunk.getPosition().toString(),
                     nbAttackers,
                     nbDefenders
             );

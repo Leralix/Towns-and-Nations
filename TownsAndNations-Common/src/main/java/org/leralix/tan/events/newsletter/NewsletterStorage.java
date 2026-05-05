@@ -60,7 +60,7 @@ public class NewsletterStorage {
         try {
             newsletterDAO.save(newsletter);
         } catch (Exception e) {
-            Bukkit.getLogger().warning("Error while saving newsletter: " + e.getMessage());
+            TownsAndNations.getPlugin().getLogger().warning("Error while saving newsletter: " + e.getMessage());
         }
     }
 

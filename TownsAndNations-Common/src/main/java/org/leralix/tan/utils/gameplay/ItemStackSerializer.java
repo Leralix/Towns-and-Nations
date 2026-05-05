@@ -1,9 +1,9 @@
 package org.leralix.tan.utils.gameplay;
 
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.leralix.tan.TownsAndNations;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,7 +21,7 @@ public class ItemStackSerializer {
             dataOutput.close();
             return Base64.getEncoder().encodeToString(outputStream.toByteArray());
         } catch (IOException e) {
-            Bukkit.getLogger().severe("Error serializing " + item.getType() + " : " + e.getMessage());
+            TownsAndNations.getPlugin().getLogger().severe("Error serializing " + item.getType() + " : " + e.getMessage());
         }
         return null;
     }
@@ -35,7 +35,7 @@ public class ItemStackSerializer {
             dataInput.close();
             return item;
         } catch (IOException | ClassNotFoundException e) {
-            Bukkit.getLogger().severe("Error deSerializing " + data + " : " + e.getMessage());
+            TownsAndNations.getPlugin().getLogger().severe("Error deSerializing " + data + " : " + e.getMessage());
         }
         return null;
     }

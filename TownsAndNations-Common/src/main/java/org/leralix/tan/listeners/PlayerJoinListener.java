@@ -15,7 +15,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.storage.stored.json.PremiumStorage;
 import org.leralix.tan.utils.graphic.PrefixUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
@@ -25,11 +24,9 @@ import org.leralix.tan.utils.text.TanChatUtils;
 public class PlayerJoinListener implements Listener {
 
     private final PlayerDataStorage playerDataStorage;
-    private final WarStorage warStorage;
 
-    public PlayerJoinListener(PlayerDataStorage playerDataStorage, WarStorage warStorage){
+    public PlayerJoinListener(PlayerDataStorage playerDataStorage){
         this.playerDataStorage = playerDataStorage;
-        this.warStorage = warStorage;
     }
 
     @EventHandler

@@ -1,7 +1,6 @@
 package org.leralix.tan.storage.stored.json;
 
 import com.google.gson.Gson;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
 
@@ -63,11 +62,11 @@ public abstract class JsonStorage<T> {
                         newFile.toPath(),
                         StandardCopyOption.REPLACE_EXISTING
                 );
-                Bukkit.getLogger().info(
+                TownsAndNations.getPlugin().getLogger().info(
                         "Moved " + fileName + " to new storage location: " + newFile.getAbsolutePath()
                 );
             } catch (IOException e) {
-                Bukkit.getLogger().severe(
+                TownsAndNations.getPlugin().getLogger().severe(
                         "Failed to move " + fileName + " to new storage location. : " + e.getMessage()
                 );
             }
@@ -111,7 +110,7 @@ public abstract class JsonStorage<T> {
         try (Writer writer = new FileWriter(tempFile, false)) {
             gson.toJson(snapshot, type, writer);
         } catch (IOException e) {
-            Bukkit.getLogger().severe("Error saving " + file.getName() + " : " + e.getMessage());
+            TownsAndNations.getPlugin().getLogger().severe("Error saving " + file.getName() + " : " + e.getMessage());
             return;
         }
 
@@ -123,7 +122,7 @@ public abstract class JsonStorage<T> {
                     StandardCopyOption.ATOMIC_MOVE
             );
         } catch (IOException e) {
-            Bukkit.getLogger().severe("Failed to replace old file with new one: " + file.getName());
+            TownsAndNations.getPlugin().getLogger().severe("Failed to replace old file with new one: " + file.getName());
         }
     }
 

@@ -51,7 +51,7 @@ public interface TerritoryChunk extends IClaimedChunk, TanTerritoryChunk {
      * @return True if the territory can bypass buffer zone restrictions, false otherwise
      */
     default boolean canBypassBufferZone(Territory territoryToAllow){
-        // This chunks is held by the same territory
+        // Held by the same territory
         if (getOwnerID().equals(territoryToAllow.getID())) {
             return true;
         }

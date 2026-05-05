@@ -30,7 +30,6 @@ class ChangePropertyRentPriceTest {
     private ITanPlayer tanPlayer;
     private PropertyData propertyData;
     private MockedStatic<ItemStackSerializer> mockedSerializer;
-    private TownsAndNations townsAndNations;
 
     @BeforeEach
     void setUp() {
@@ -51,7 +50,7 @@ class ChangePropertyRentPriceTest {
         ServerMock server = MockBukkit.mock();
 
         MockBukkit.load(SphereLib.class);
-        townsAndNations = MockBukkit.load(TownsAndNations.class);
+        TownsAndNations townsAndNations = MockBukkit.load(TownsAndNations.class);
 
 
         player = server.addPlayer();
