@@ -49,6 +49,8 @@ language:
   LANDMARK_UPDATED: "{0} ({1})§f has been updated."
   LANDMARK_STORED_UPDATED: "{0} ({1})§f has been set limit to §e{2}"
   LANDMARK_NOT_FOUND: "§cLandmark not found"
+  #Action bar information
+  FORT_ACTION_BAR_INFO: "§6{0}§f, owned by : {1}"
   #Placeholder API
   INVALID_VALUE: "Invalid value"
   INVALID_ID: "Invalid ID"
@@ -486,9 +488,11 @@ language:
   GUI_BUILDING_MENU: "§aBuilding"
   GUI_BUILDING_MENU_DESC1: "§fCreate and manage buildings"
   CREATE_PUBLIC_PROPERTY_ICON: "§aCreate a public property"
-  CREATE_PUBLIC_PROPERTY_COST: "§fCost : §eFree"
+  CREATE_PUBLIC_PROPERTY_COST: "§fCost : §6Free"
   CREATE_FORT_ICON: "§aCreate a new fort"
-  CREATE_FORT_DESC1: "§fCost : §e{0}{MONEY_CHAR}"
+  CREATE_FORT_DESC1: "§fCost : §6{0}{MONEY_CHAR}"
+  CREATE_FORT_DESC2: "§fProtection radius : §2{0} blocks"
+  CREATE_FORT_DESC3: "§fCapture time : §8{0}s"
   #Wars menu
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cClick to declare war"
   DECLARE_WAR_CONFIRM_MESSAGE: "{0}§f will start a war against {1}"

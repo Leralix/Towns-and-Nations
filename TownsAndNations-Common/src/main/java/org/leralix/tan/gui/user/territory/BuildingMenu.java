@@ -82,7 +82,11 @@ public class BuildingMenu extends IteratorGUI {
     private @NotNull GuiItem getCreateFortButton() {
         return iconManager.get(IconKey.FORT_BUILDING_ICON)
                 .setName(Lang.CREATE_FORT_ICON.get(langType))
-                .setDescription(Lang.CREATE_FORT_DESC1.get(Double.toString(Constants.getFortCost())))
+                .setDescription(
+                        Lang.CREATE_FORT_DESC1.get(Double.toString(Constants.getFortCost())),
+                        Lang.CREATE_FORT_DESC2.get(Double.toString(Constants.getFortProtectionRadius())),
+                        Lang.CREATE_FORT_DESC3.get(Double.toString(Constants.getFortCaptureTime()))
+                )
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
 

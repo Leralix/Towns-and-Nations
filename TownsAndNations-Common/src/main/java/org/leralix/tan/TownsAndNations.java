@@ -405,6 +405,7 @@ public class TownsAndNations extends JavaPlugin {
         pluginManager.registerEvents(new MobSpawnListener(claimStorage), this);
         pluginManager.registerEvents(new SpawnListener(playerDataStorage), this);
         pluginManager.registerEvents(new PropertySignListener(playerDataStorage, townStorage, claimStorage), this);
+        pluginManager.registerEvents(new FortBannerListener(playerDataStorage, fortStorage), this);
         pluginManager.registerEvents(new LandmarkChestListener(playerDataStorage), this);
         pluginManager.registerEvents(new EconomyInitialiser(), this);
         pluginManager.registerEvents(new CommandBlocker(playerDataStorage), this);

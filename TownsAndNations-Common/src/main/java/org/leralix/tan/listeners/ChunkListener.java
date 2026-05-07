@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.BlastFurnace;
 import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
 import org.bukkit.block.Smoker;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.*;
@@ -38,6 +37,7 @@ import java.util.Set;
 public class ChunkListener implements Listener {
 
     private static final String PROPERTY_SIGN_METADATA = "propertySign";
+    private static final String FORT_FLAG_METADATA = "fortFlag";
 
     private final PlayerDataStorage playerDataStorage;
 
@@ -69,8 +69,8 @@ public class ChunkListener implements Listener {
             return;
         }
 
-        //Check if the block is a property sign
-        if (breakedBlock.hasMetadata("fortFlag")) {
+        //Check if the block is a fort banner
+        if (breakedBlock.hasMetadata(FORT_FLAG_METADATA)) {
             event.setCancelled(true);
             return;
         }
@@ -148,12 +148,12 @@ public class ChunkListener implements Listener {
         Location loc = block.getLocation();
 
         //Check if the block is a property sign
-        if (block.getType() == Material.OAK_SIGN && block.getState() instanceof Sign sign) {
-            if (sign.hasMetadata(PROPERTY_SIGN_METADATA)) {
-                event.setCancelled(true);
-                return;
-            }
+        if (block.hasMetadata(PROPERTY_SIGN_METADATA)) {
+            event.setCancelled(true);
+            return;
         }
+
+        //Check if the block is a fort sign
 
         if (Tag.BUTTONS.isTagged(materialType) ||
                 materialBlock == Material.LEVER) {

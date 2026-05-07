@@ -14,7 +14,6 @@ public abstract class TerritoryStorage<T extends Territory> extends JsonStorage<
 
     protected TerritoryStorage(String fileName, Type type, Gson gson) {
         super(fileName, type, gson);
-        System.out.println("TerritoryStorage");
         this.nextID = getNextID();
     }
 
