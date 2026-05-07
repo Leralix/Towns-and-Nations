@@ -1,8 +1,8 @@
 package org.leralix.tan.data.chunk;
 
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -124,29 +124,32 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
     }
 
     @Override
-    public TextComponent getMapIcon(LangType langType) {
+    public Component getMapIcon(LangType langType, boolean isMiddleOfMap) {
 
-        TextComponent textComponent;
         String text;
         if (isOccupied()) {
-            textComponent = new TextComponent("🟧");
-            textComponent.setColor(getOccupierInternal().getChunkColor());
             text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
                     getOwner().getColoredName() + "\n" +
                     getOccupier().getColoredName() + "\n" +
                     Lang.LEFT_CLICK_TO_CLAIM.get(langType);
         } else {
-            textComponent = new TextComponent("⬛");
-            textComponent.setColor(getOccupierInternal().getChunkColor());
             text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
                     getOwner().getColoredName() + "\n" +
                     Lang.LEFT_CLICK_TO_CLAIM.get(langType);
         }
 
-        textComponent.setHoverEvent(new HoverEvent(
-                HoverEvent.Action.SHOW_TEXT,
-                new Text(text)));
-        return textComponent;
+        String icon;
+        if(isOccupied()){
+            icon = isMiddleOfMap ? "🟠" : "🟧";
+        }
+        else {
+            icon = isMiddleOfMap ? "🌑" : "⬛";
+        }
+
+        return Component.text(icon)
+                .color(TextColor.color(getOccupierInternal().getChunkColorCode()))
+                .hoverEvent(HoverEvent.showText(Component.text(text))
+        );
     }
 
     /**

@@ -1,10 +1,10 @@
 package org.leralix.tan.data.chunk;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -86,15 +86,15 @@ public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
     }
 
     @Override
-    public TextComponent getMapIcon(LangType langType) {
-        TextComponent textComponent = new TextComponent("⬛");
-        textComponent.setColor(ChatColor.GOLD);
-        textComponent.setHoverEvent(new HoverEvent(
-                HoverEvent.Action.SHOW_TEXT,
-                new Text("x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                        ChatColor.GOLD + getLandMark().getName() + "\n" +
-                        Lang.LEFT_CLICK_TO_CLAIM.get(langType))));
-        return textComponent;
+    public Component getMapIcon(LangType langType, boolean isMiddleOfMap) {
+
+        String text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
+                ChatColor.GOLD + getLandMark().getName() + "\n" +
+                Lang.LEFT_CLICK_TO_CLAIM.get(langType);
+
+        return Component.text(isMiddleOfMap ? "🌑" : "⬛")
+                .color(TextColor.color(12345))
+                .hoverEvent(net.kyori.adventure.text.event.HoverEvent.showText(Component.text(text)));
     }
 
     @Override

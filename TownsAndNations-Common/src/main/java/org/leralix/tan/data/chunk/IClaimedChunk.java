@@ -1,6 +1,6 @@
 package org.leralix.tan.data.chunk;
 
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -49,7 +49,7 @@ public interface IClaimedChunk extends TanClaimedChunk {
 
     World getWorld();
 
-    TextComponent getMapIcon(LangType langType);
+    Component getMapIcon(LangType langType, boolean isMiddleOfMap);
 
     boolean canTerritoryClaim(Player player, Territory territoryData, LangType langType);
 
