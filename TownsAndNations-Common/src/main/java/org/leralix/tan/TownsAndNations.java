@@ -192,6 +192,7 @@ public class TownsAndNations extends JavaPlugin {
                 "wildernessRules",
                 "townPermissions",
                 "regionPermissions",
+                "nationPermissions",
                 "propertyPermissions"
         );
         YamlConfiguration mainConfig = ConfigUtil.saveAndUpdateResource(this, "config.yml", mainBlackList);

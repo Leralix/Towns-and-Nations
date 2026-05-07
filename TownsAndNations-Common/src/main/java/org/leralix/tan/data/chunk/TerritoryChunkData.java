@@ -318,9 +318,7 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
         }
 
         //If the permission is locked by admins, only shows default value.
-        var defaultPermission = (territoryOfChunk instanceof Town)
-                ? Constants.getChunkPermissionConfig().getTownPermission(permissionType)
-                : Constants.getChunkPermissionConfig().getRegionPermission(permissionType);
+        var defaultPermission = Constants.getChunkPermissionConfig().getTerritoryPermission(territoryOfChunk, permissionType);
         if (defaultPermission.isLocked()) {
             return defaultPermission.defaultRelation().isAllowed(territoryOfChunk, tanPlayer);
         }

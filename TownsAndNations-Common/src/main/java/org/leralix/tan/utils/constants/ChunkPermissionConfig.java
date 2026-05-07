@@ -2,6 +2,10 @@ package org.leralix.tan.utils.constants;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Region;
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.data.territory.permission.RelationPermission;
 
@@ -12,6 +16,7 @@ public class ChunkPermissionConfig {
 
     private final EnumMap<ChunkPermissionType, SpecificChunkConfig> permissionsForTowns;
     private final EnumMap<ChunkPermissionType, SpecificChunkConfig> permissionsForRegions;
+    private final EnumMap<ChunkPermissionType, SpecificChunkConfig> permissionsForNations;
     private final EnumMap<ChunkPermissionType, SpecificChunkConfig> permissionsForProperties;
 
     /**
@@ -22,6 +27,7 @@ public class ChunkPermissionConfig {
     public ChunkPermissionConfig(ConfigurationSection configurationSection){
         this.permissionsForTowns = new EnumMap<>(ChunkPermissionType.class);
         this.permissionsForRegions = new EnumMap<>(ChunkPermissionType.class);
+        this.permissionsForNations = new EnumMap<>(ChunkPermissionType.class);
         this.permissionsForProperties = new EnumMap<>(ChunkPermissionType.class);
 
 
@@ -31,6 +37,7 @@ public class ChunkPermissionConfig {
 
         populatePermissions(permissionsForTowns, configurationSection.getConfigurationSection("townPermissions"));
         populatePermissions(permissionsForRegions, configurationSection.getConfigurationSection("regionPermissions"));
+        populatePermissions(permissionsForNations, configurationSection.getConfigurationSection("nationPermissions"));
         populatePermissions(permissionsForProperties, configurationSection.getConfigurationSection("propertyPermissions"));
 
     }
@@ -74,12 +81,24 @@ public class ChunkPermissionConfig {
 
     }
 
+    public SpecificChunkConfig getTerritoryPermission(Territory territory, ChunkPermissionType type){
+        return switch (territory) {
+            case Town town -> getTownPermission(type);
+            case Region region -> getRegionPermission(type);
+            case Nation nation -> getNationPermission(type);
+            default -> throw new IllegalStateException("Unexpected value: " + territory);
+        };
+    }
 
     public SpecificChunkConfig getTownPermission(ChunkPermissionType type){
         return permissionsForTowns.getOrDefault(type, DEFAULT_PERMISSION);
     }
 
     public SpecificChunkConfig getRegionPermission(ChunkPermissionType type){
+        return permissionsForRegions.getOrDefault(type, DEFAULT_PERMISSION);
+    }
+
+    public SpecificChunkConfig getNationPermission(ChunkPermissionType type){
         return permissionsForRegions.getOrDefault(type, DEFAULT_PERMISSION);
     }
 

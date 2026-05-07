@@ -491,6 +491,7 @@ noCheckIfEventCancelled: true
 chunkPermissionConfig:
   townPermissions:
   regionPermissions:
+  nationPermissions:
   propertyPermissions:
 #General settings in claimed chunks of territories
 # Always                 | Always allow

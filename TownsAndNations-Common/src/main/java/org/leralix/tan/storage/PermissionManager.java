@@ -1,11 +1,11 @@
 package org.leralix.tan.storage;
 
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.permission.ChunkPermission;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.data.territory.permission.PermissionGiven;
 import org.leralix.tan.data.territory.permission.RelationPermission;
-import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.utils.constants.Constants;
 
 import java.util.EnumMap;
@@ -28,7 +28,7 @@ public class PermissionManager {
             RelationPermission relationPermission = switch (permissionGiven){
                 case TOWN -> Constants.getChunkPermissionConfig().getTownPermission(type).defaultRelation();
                 case REGION -> Constants.getChunkPermissionConfig().getRegionPermission(type).defaultRelation();
-                case NATION -> Constants.getChunkPermissionConfig().getRegionPermission(type).defaultRelation();
+                case NATION -> Constants.getChunkPermissionConfig().getNationPermission(type).defaultRelation();
                 case PROPERTY -> Constants.getChunkPermissionConfig().getPropertiesPermission(type).defaultRelation();
             };
 
