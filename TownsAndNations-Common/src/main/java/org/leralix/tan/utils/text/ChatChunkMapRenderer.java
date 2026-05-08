@@ -2,7 +2,6 @@ package org.leralix.tan.utils.text;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
@@ -23,7 +22,7 @@ public final class ChatChunkMapRenderer {
             int radius,
             LangType langType,
             BiFunction<Integer, Integer, String> clickCommand,
-            Map<Integer, TextComponent> extraByDz
+            Map<Integer, Component> extraByDz
     ) {
         Chunk currentChunk = player.getLocation().getChunk();
 
@@ -42,18 +41,18 @@ public final class ChatChunkMapRenderer {
                 newLine = newLine.append(
                         claimedChunk.getMapIcon(langType, ifMiddleOfMap)
                         .clickEvent(
-                                net.kyori.adventure.text.event.ClickEvent.clickEvent(
-                                        net.kyori.adventure.text.event.ClickEvent.Action.RUN_COMMAND,
+                                ClickEvent.clickEvent(
+                                        ClickEvent.Action.RUN_COMMAND,
                                         ClickEvent.Payload.string(clickCommand.apply(chunkX, chunkZ))
                                 )
                         )
                 );
             }
 
-//            TextComponent extra = extraByDz.get(dz);
-//            if (extra != null) {
-//                newLine.addExtra(extra);
-//            }
+            Component extra = extraByDz.get(dz);
+            if (extra != null) {
+                newLine = newLine.append(extra);
+            }
 
             player.sendMessage(newLine);
         }

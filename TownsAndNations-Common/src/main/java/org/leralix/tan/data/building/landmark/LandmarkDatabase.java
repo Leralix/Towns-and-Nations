@@ -116,7 +116,7 @@ public class LandmarkDatabase implements Landmark, DatabaseData<LandmarkData> {
     }
 
     @Override
-    public TanTerritory getOwner() {
+    public Territory getOwner() {
         return data.getOwner();
     }
 

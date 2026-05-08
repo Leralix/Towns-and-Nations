@@ -89,11 +89,12 @@ public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
     public Component getMapIcon(LangType langType, boolean isMiddleOfMap) {
 
         String text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                ChatColor.GOLD + getLandMark().getName() + "\n" +
-                Lang.LEFT_CLICK_TO_CLAIM.get(langType);
+                ChatColor.GOLD + getLandMark().getName();
 
-        return Component.text(isMiddleOfMap ? "🌑" : "⬛")
-                .color(TextColor.color(12345))
+        int color = getLandMark().isOwned() ? getLandMark().getOwner().getChunkColorCode() : 0xFFAA00;
+
+        return Component.text("❇")
+                .color(TextColor.color(color))
                 .hoverEvent(net.kyori.adventure.text.event.HoverEvent.showText(Component.text(text)));
     }
 

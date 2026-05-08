@@ -161,7 +161,7 @@ public class LandmarkData implements Landmark, TanLandmark {
     }
 
     @Override
-    public TanTerritory getOwner() {
+    public Territory getOwner() {
         return TownsAndNations.getPlugin().getTownStorage().get(ownerID);
     }
 

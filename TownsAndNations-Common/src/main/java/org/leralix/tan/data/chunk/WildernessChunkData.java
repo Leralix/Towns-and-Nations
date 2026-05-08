@@ -70,7 +70,7 @@ public class WildernessChunkData extends ChunkData implements WildernessChunk {
                     Lang.CHUNK_IS_BLACKLISTED.get(langType);
 
             return Component.text("✖")
-                    .color(TextColor.color(0))
+                    .color(TextColor.color(0xFF5555))
                     .hoverEvent(net.kyori.adventure.text.event.HoverEvent.showText(Component.text(text)));
         }
 
@@ -79,7 +79,7 @@ public class WildernessChunkData extends ChunkData implements WildernessChunk {
                 Lang.LEFT_CLICK_TO_CLAIM.get(langType);
 
         return Component.text(isMiddleOfMap ? "🌕" : "⬜")
-                .color(TextColor.color(0))
+                .color(TextColor.color(0xFFFFFF))
                 .hoverEvent(net.kyori.adventure.text.event.HoverEvent.showText(Component.text(text)));
     }
 
