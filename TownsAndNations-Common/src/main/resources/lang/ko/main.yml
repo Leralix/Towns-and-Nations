@@ -46,7 +46,6 @@ language:
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "마을에 가입 요청을 성공적으로 보냈습니다: §9{0}§f. 취소하려면 마을을 우클릭하세요"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "가입 요청을 취소했습니다"
-  PLAYER_TOWN_NOT_RECRUITING: "§c이 마을은 현재 모집 중이 아닙니다"
   #BROADCAST
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c님이 마을을 떠났습니다!"
   GUI_REGION_KICK_TOWN_BROADCAST: "§f마을 §9{0}§f이(가) 지역에서 추방되었습니다"
@@ -190,8 +189,6 @@ language:
   GUI_TOWN_INFO_DESC5_REGION: "§f지역: §b{0}"
   GUI_TOWN_INFO_DESC5_NO_REGION: "§f지역 없음"
   GUI_TOWN_INFO_TOWN_RELATION: "§f현재 마을과의 관계: §e{0}"
-  GUI_TOWN_INFO_IS_RECRUITING: "§f모집 상태: §a열림"
-  GUI_TOWN_INFO_IS_NOT_RECRUITING: "§f모집 상태: §c닫힘"
   GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§f좌클릭하여 마을에 지원합니다"
   GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§c우클릭하여 지원을 취소합니다"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§f좌클릭하여 §a수락"
@@ -293,9 +290,6 @@ language:
   GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST: "이제 지역 리더는 §e{0}§f입니다"
   GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST: "이제 지역 수도는 §b{0}§f입니다"
   CHANGE_MESSAGE_SUCCESS: "메시지가 성공적으로 변경되었습니다"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§a마을 지원 변경"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§f마을 §a지원 받음"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§f마을 §c지원 받지 않음"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR: "§a청크 색상 변경"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1: "§f지도에 표시된 청크 색상을 변경하세요"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2: "§f현재 색상: §9{0}"

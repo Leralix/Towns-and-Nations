@@ -152,8 +152,6 @@ language:
   NEWSLETTER_DATE: "§fData:§e {0}"
   ATTACK_CANCELLED: "{0}§f ha cancel·lat el seu atac a {1}"
   JOIN_REGION_PROPOSAL_NEWSLETTER: "{0}§f ha proposat entrar a la regió {1}"
-  #Chunk blacklist
-  CHUNK_IS_BLACKLISTED: "§cNo pots reclamar aquesta regió"
   #Relative time description
   RELATIVE_IN_FUTURE: "En el futur"
   RELATIVE_TIME_SECOND: "§fFa §e{0} §f segon(s)"

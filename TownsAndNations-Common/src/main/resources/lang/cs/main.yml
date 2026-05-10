@@ -96,7 +96,6 @@ language:
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Úspěšně jste požádali o připojení k městu: §9{0}§f. Pravým kliknutím na město žádost zrušíte"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Žádost byla zrušena"
-  PLAYER_TOWN_NOT_RECRUITING: "§cToto město nehledá nové členy"
   #BROADCAST
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c opustil město!"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fMěsto §9{0}§f bylo vyřazeno z regionu"
@@ -431,7 +430,6 @@ language:
   GUI_BACK_ARROW: "Zpět"
   GUI_NEXT_PAGE: "Další"
   GUI_PREVIOUS_PAGE: "Předchozí"
-  LEFT_CLICK_TO_CLAIM: "§fLevým klikem zabrat\""
   GUI_INCREASE_1_DESC: "§fKlik: §a+1"
   GUI_INCREASE_10_DESC: "§fShift + klik: §a+10"
   GUI_DECREASE_1_DESC: "§fKlik: §c-1"
@@ -447,9 +445,7 @@ language:
   GUI_BUILDING_MENU: "§aBudování"
   GUI_BUILDING_MENU_DESC1: "§fVytváření a správa budov"
   CREATE_PUBLIC_PROPERTY_ICON: "§aVytvořit veřejnou nemovitost"
-  CREATE_PUBLIC_PROPERTY_COST: "§fCena : §eZdarma"
   CREATE_FORT_ICON: "§aVytvořit novou pevnost"
-  CREATE_FORT_DESC1: "§fCena : §e{0}{MONEY_CHAR}"
   DECLARE_WAR_CONFIRM_MESSAGE: "{0}§f zahájí válku proti {1}"
   DECLARE_WAR_NUMBER_OF_ALLIES: "{0}§f má §9{1}§f spojence"
   DECLARE_WAR_BUTTON: "§aVyhlásit válku"
@@ -530,8 +526,6 @@ language:
   GUI_TOWN_INFO_DESC5_REGION: "§fRegion: §b{0}"
   GUI_TOWN_INFO_DESC5_NO_REGION: "§fŽádný region"
   GUI_TOWN_INFO_TOWN_RELATION: "§fAktuální vztah s městem: §e{0}"
-  GUI_TOWN_INFO_IS_RECRUITING: "§fNábory: §aOtevřeno"
-  GUI_TOWN_INFO_IS_NOT_RECRUITING: "§fNábory: §cUzavřeno"
   GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§fLevým klikem požádejte o připojení k městu"
   GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§cPravým klikem zrušte svou žádost"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fLevým klikem§a přijmout"
@@ -730,9 +724,6 @@ language:
   GUI_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1: "§fSoučasná zpráva: §7§o\"{0}\""
   TOWN_SET_TAX_IN_CHAT: "Zadejte novou daň"
   CHANGE_MESSAGE_SUCCESS: "Zpráva úspěšně změněna"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aUpravit přihlášku města"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fMěsto §apřijímá §fpřihlášky"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fMěsto §cnepřijímá §fpřihlášky"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME: "§aZměnit název"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC1: "§fAktuální název: §9{0}"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC3: "§fCena: §6{0}{MONEY_CHAR}"
@@ -1075,8 +1066,6 @@ language:
   LANDMARK_CLAIMED_NEWSLETTER: "{0}§f zabral §e{1}"
   LANDMARK_UNCLAIMED_NEWSLETTER_TITLE: "Mezník odebrán z nároku"
   LANDMARK_UNCLAIMED_NEWSLETTER: "{0}§f již neovládá §e{1}"
-  #Chunk blacklist
-  CHUNK_IS_BLACKLISTED: "§cNemůžete přivlastnit tento chunk"
   #Timezones
   UTC_MINUS_12: "§eUTC−12:00, Baker Island"
   UTC_MINUS_11: "§eUTC−11:00, Pago pago"

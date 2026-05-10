@@ -96,7 +96,6 @@ language:
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Você solicitou com sucesso para entrar na cidade: §9{0}§f. Clique com o botão direito na cidade para cancelar."
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Você cancelou sua solicitação"
-  PLAYER_TOWN_NOT_RECRUITING: "§cEssa cidade não está recrutando"
   #BROADCAST
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c deixou a cidade !"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fA cidade §9{0}§f foi expulsa da região"
@@ -431,7 +430,6 @@ language:
   GUI_BACK_ARROW: "Retornar"
   GUI_NEXT_PAGE: "Próximo"
   GUI_PREVIOUS_PAGE: "Anterior"
-  LEFT_CLICK_TO_CLAIM: "§fClique esquerdo para claimar"
   GUI_INCREASE_1_DESC: "§fClique: §a+1"
   GUI_INCREASE_10_DESC: "§fShift + clique: §a+10"
   GUI_DECREASE_1_DESC: "§fClique: §c-1"
@@ -447,9 +445,7 @@ language:
   GUI_BUILDING_MENU: "§aConstruindo"
   GUI_BUILDING_MENU_DESC1: "§fCriar e gerenciar construções"
   CREATE_PUBLIC_PROPERTY_ICON: "§aCriar uma propriedade pública"
-  CREATE_PUBLIC_PROPERTY_COST: "§fCusto : §eGratuito"
   CREATE_FORT_ICON: "§aCriar um novo forte"
-  CREATE_FORT_DESC1: "§fCusto : §e{0}{MONEY_CHAR}"
   DECLARE_WAR_CONFIRM_MESSAGE: "{0}§f vai começar uma guerra contra {1}"
   DECLARE_WAR_NUMBER_OF_ALLIES: "{0}§f tem §9{1}§f aliados"
   DECLARE_WAR_BUTTON: "§aDeclarar uma guerra"
@@ -530,8 +526,6 @@ language:
   GUI_TOWN_INFO_DESC5_REGION: "§fRegião: §b{0}"
   GUI_TOWN_INFO_DESC5_NO_REGION: "§fSem região"
   GUI_TOWN_INFO_TOWN_RELATION: "§fRelação atual com a cidade: §e{0}"
-  GUI_TOWN_INFO_IS_RECRUITING: "§fRecrutamento: §aAberto"
-  GUI_TOWN_INFO_IS_NOT_RECRUITING: "§fRecrutamento: §aFechado"
   GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§fClique com o botão esquerdo para se candidatar a entrar na cidade"
   GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§cClique com o botão direito para cancelar sua candidatura"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fClique com o botão esquerdo para §a aceitar"
@@ -730,9 +724,6 @@ language:
   GUI_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1: "§fMensagem atual: §7§o\"{0}\""
   TOWN_SET_TAX_IN_CHAT: "Digite o novo imposto"
   CHANGE_MESSAGE_SUCCESS: "Mensagem alterada com sucesso"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aModificar a candidatura da cidade"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fCidade §aaceita §fcandidatura"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fCidade §cnão aceita §fcandidatura"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME: "§aTrocar nome"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC1: "§fNome atual: §9{0}"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC3: "§fCusto: §6{0}{MONEY_CHAR}"
@@ -1075,8 +1066,6 @@ language:
   LANDMARK_CLAIMED_NEWSLETTER: "{0}§f claimado §e{1}"
   LANDMARK_UNCLAIMED_NEWSLETTER_TITLE: "Ponto de referência desclaimado"
   LANDMARK_UNCLAIMED_NEWSLETTER: "{0}§f não controla mais §e{1}"
-  #Chunk blacklist
-  CHUNK_IS_BLACKLISTED: "§cVocê não pode claimar este chunk"
   #Timezones
   UTC_MINUS_12: "§eUTC− 12:00, Ilha Baker"
   UTC_MINUS_11: "§eUTC−11:00, Pago pago"

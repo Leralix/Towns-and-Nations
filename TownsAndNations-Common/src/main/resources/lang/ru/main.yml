@@ -96,7 +96,6 @@ language:
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Вы успешно подали заявку на вступление в город: §9{0}§f. Щелкните правой кнопкой по городу для отмены"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Вы отменили свою заявку"
-  PLAYER_TOWN_NOT_RECRUITING: "§cЭтот город не набирает новых участников"
   #BROADCAST
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c покинул город!"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fГород §9{0}§f был исключён из региона"
@@ -431,7 +430,6 @@ language:
   GUI_BACK_ARROW: "Назад"
   GUI_NEXT_PAGE: "Следующий"
   GUI_PREVIOUS_PAGE: "Предыдущий"
-  LEFT_CLICK_TO_CLAIM: "§fНажмите ЛКМ, чтобы забрать"
   GUI_INCREASE_1_DESC: "§fЛКМ: §a+1"
   GUI_INCREASE_10_DESC: "§fShift + ЛКМ: §a+10"
   GUI_DECREASE_1_DESC: "§fЛКМ: §c-1"
@@ -447,9 +445,7 @@ language:
   GUI_BUILDING_MENU: "§aЗдание"
   GUI_BUILDING_MENU_DESC1: "§fСоздать и управлять зданиями"
   CREATE_PUBLIC_PROPERTY_ICON: "§aСоздать публичный объект"
-  CREATE_PUBLIC_PROPERTY_COST: "§fСтоимость: §eБесплатно"
   CREATE_FORT_ICON: "§aСоздать новый форт"
-  CREATE_FORT_DESC1: "§fСтоимость: §e{0}{MONEY_CHAR}"
   DECLARE_WAR_CONFIRM_MESSAGE: "{0}§f начнёт войну против {1}"
   DECLARE_WAR_NUMBER_OF_ALLIES: "{0}§f имеет §9{1}§f союзников"
   DECLARE_WAR_BUTTON: "§aОбъявить войну"
@@ -530,8 +526,6 @@ language:
   GUI_TOWN_INFO_DESC5_REGION: "§fРегион: §b{0}"
   GUI_TOWN_INFO_DESC5_NO_REGION: "§fНет региона"
   GUI_TOWN_INFO_TOWN_RELATION: "§fТекущее отношение с городом: §e{0}"
-  GUI_TOWN_INFO_IS_RECRUITING: "§fНабор: §aОткрыт"
-  GUI_TOWN_INFO_IS_NOT_RECRUITING: "§fНабор: §cЗакрыть"
   GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§fНажмите ЛКМ, чтобы подать заявку на вступление в город"
   GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§cНажмите ПКМ, чтобы отменить вашу заявку"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fНажмите ЛКМ, чтобы§a принять"
@@ -730,9 +724,6 @@ language:
   GUI_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1: "§fТекущее сообщение: §7§o\"{0}\""
   TOWN_SET_TAX_IN_CHAT: "Ввести новый налог"
   CHANGE_MESSAGE_SUCCESS: "Сообщение успешно изменено"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aИзменить настройки заявок на вступление в город"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fГород §aпринимает §fзаявки"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fГород §cне принимает §fзаявки"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME: "§aИзменить название"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC1: "§fТекущее название: §9{0}"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC3: "§fСтоимость: §6{0}{MONEY_CHAR}"
@@ -1075,8 +1066,6 @@ language:
   LANDMARK_CLAIMED_NEWSLETTER: "{0}§f забрал §e{1}"
   LANDMARK_UNCLAIMED_NEWSLETTER_TITLE: "Месторождение | Свободно"
   LANDMARK_UNCLAIMED_NEWSLETTER: "{0}§f больше не контролирует §e{1}"
-  #Chunk blacklist
-  CHUNK_IS_BLACKLISTED: "§cВы не можете захватить этот чанк"
   #Timezones
   UTC_MINUS_12: "§eUTC–12:00, Бейкер Айленд"
   UTC_MINUS_11: "§eUTC−11:00, Паго паго"

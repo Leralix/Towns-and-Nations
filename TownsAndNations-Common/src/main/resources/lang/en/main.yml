@@ -478,9 +478,9 @@ language:
   #Map command
   LEFT_CLICK_TO_CLAIM: "§7▶ Left click to claim"
   CHUNK_IS_BLACKLISTED: "§cChunk cannot be claimed"
-  CHUNK_OWNER : "{0}"
-  CHUNK_OWNER_OCCUPIER : "{0}§f (Occupied by {1}§f)"
-  FORT_NAME : "§6{0}"
+  CHUNK_OWNER: "{0}"
+  CHUNK_OWNER_OCCUPIER: "{0}§f (Occupied by {1}§f)"
+  FORT_NAME: "§6{0}"
   #Chunk settings
   GUI_TOWN_CHUNK_PLAYER: "§aInteractions"
   GUI_TERRITORY_CHUNK_PLAYER: "§aInteractions"

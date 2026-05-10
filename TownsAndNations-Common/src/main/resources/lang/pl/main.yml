@@ -96,7 +96,6 @@ language:
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Poprawnie zapytałeś o dołączenie do miasta: §9{0}§f. Prawy przycisk myszy na miasto, aby to anulować"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Twoje zgłoszenie zostało anulowane"
-  PLAYER_TOWN_NOT_RECRUITING: "§cTo miasto nie rekrutuje"
   #BROADCAST
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3Gracz {0}§c opuścił miasto !"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fMiasto §9{0}§f zostało wyrzucone z regionu"
@@ -356,8 +355,6 @@ language:
   GUI_TOWN_INFO_DESC5_REGION: "§fRegion: §b{0}"
   GUI_TOWN_INFO_DESC5_NO_REGION: "§fBrak regionu"
   GUI_TOWN_INFO_TOWN_RELATION: "§fAktualne relacje z miastem: §e{0}"
-  GUI_TOWN_INFO_IS_RECRUITING: "§fRekrutacja: §aOtwarta"
-  GUI_TOWN_INFO_IS_NOT_RECRUITING: "§fRekrutacja: §cZamknięta"
   GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§fKliknij LPM, aby aplikować do miasta"
   GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§cKliknij PPM, aby zrezygnować z aplikacji"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fKliknij LPM,  aby§a zaakceptować"
@@ -452,9 +449,6 @@ language:
   GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST: "Twój liderem regionalnym jest teraz §e{0}"
   GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST: "Stolicą Twojego regionu jest teraz §b{0}"
   CHANGE_MESSAGE_SUCCESS: "Pomyślnie zmieniono wiadomość"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aZmodyfikuj miejskie wnioski"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fMiasto §aackeptuje §fwniosek"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fMiasto §codrzuca §fwniosek"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR: "§aZmień kolor chunka"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1: "§fZmień kolor zajętych fragmentów na mapie"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2: "§fObecny kolor: §9{0}"

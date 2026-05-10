@@ -82,7 +82,6 @@ language:
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Bạn đã yêu cầu tham gia thị trấn thành công: §9{0}§f. Nhấp chuột phải vào thị trấn để hủy"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Bạn đã hủy đơn đăng ký của mình"
-  PLAYER_TOWN_NOT_RECRUITING: "§cThị trấn này không tuyển dụng"
   #BROADCAST
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c đã rời thị trấn!"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fThị trấn §9{0}§f đã bị loại khỏi vùng"
@@ -356,7 +355,6 @@ language:
   GUI_BACK_ARROW: "Quay lại"
   GUI_NEXT_PAGE: "Tiếp theo"
   GUI_PREVIOUS_PAGE: "Trước đó"
-  LEFT_CLICK_TO_CLAIM: "§fNhấp chuột trái để tuyên bố"
   GUI_INCREASE_1_DESC: "§fNhấp: §a+1"
   GUI_INCREASE_10_DESC: "§fShift + nhấp: §a+10"
   GUI_DECREASE_1_DESC: "§fNhấp: §c-1"
@@ -416,8 +414,6 @@ language:
   GUI_TOWN_INFO_DESC5_REGION: "§fVùng: §b{0}"
   GUI_TOWN_INFO_DESC5_NO_REGION: "§fKhông có vùng"
   GUI_TOWN_INFO_TOWN_RELATION: "§fQuan hệ hiện tại với thị trấn: §e{0}"
-  GUI_TOWN_INFO_IS_RECRUITING: "§fTuyển dụng: §aMở"
-  GUI_TOWN_INFO_IS_NOT_RECRUITING: "§fTuyển dụng: §cĐóng"
   GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§fNhấp chuột trái để đăng ký tham gia thị trấn"
   GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§cNhấp chuột phải để hủy đơn đăng ký của bạn"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fNhấp chuột trái để§a chấp nhận"
@@ -545,9 +541,6 @@ language:
   GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST: "Thủ phủ vùng của bạn hiện là §b{0}"
   TOWN_SET_TAX_IN_CHAT: "Nhập mức thuế mới"
   CHANGE_MESSAGE_SUCCESS: "Đã thay đổi tin nhắn thành công"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aSửa đổi đơn đăng ký thị trấn"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fThị trấn §achấp nhận§f đơn đăng ký"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fThị trấn §ckhông chấp nhận§f đơn đăng ký"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR: "§aThay đổi màu khối"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1: "§fThay đổi màu của các khối đã tuyên bố trên bản đồ"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2: "§fMàu hiện tại: §9{0}"
@@ -771,5 +764,3 @@ language:
   ATTACK_CANCELLED_TITLE: "Đã hủy tấn công"
   ATTACK_CANCELLED: "{0}§f đã hủy cuộc tấn công của họ vào {1}"
   JOIN_REGION_PROPOSAL_NEWSLETTER: "{0}§f đã đề xuất tham gia vùng {1}"
-  #Chunk blacklist
-  CHUNK_IS_BLACKLISTED: "§cBạn không thể tuyên bố khối này"

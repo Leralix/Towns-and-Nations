@@ -101,7 +101,6 @@ language:
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "你已成功申请加入城镇：§9{0}§f。右键点击城镇可取消申请"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "你已取消加入申请"
-  PLAYER_TOWN_NOT_RECRUITING: "§c该城镇暂不招募成员"
   #BROADCAST
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c 已离开城镇！"
   GUI_REGION_KICK_TOWN_BROADCAST: "§f城镇§9{0}§f 已被移出该领地"
@@ -468,7 +467,6 @@ language:
   GUI_BACK_ARROW: "返回"
   GUI_NEXT_PAGE: "下一页"
   GUI_PREVIOUS_PAGE: "上一页"
-  LEFT_CLICK_TO_CLAIM: "§f左键点击占领"
   GUI_INCREASE_1_DESC: "§f点击：§a+1"
   GUI_INCREASE_10_DESC: "§f按住Shift+点击：§a+10"
   GUI_DECREASE_1_DESC: "§f点击：§c-1"
@@ -486,9 +484,7 @@ language:
   GUI_BUILDING_MENU: "§a建筑管理"
   GUI_BUILDING_MENU_DESC1: "§f创建和管理建筑"
   CREATE_PUBLIC_PROPERTY_ICON: "§a创建公共建筑"
-  CREATE_PUBLIC_PROPERTY_COST: "§f创建成本：§e免费"
   CREATE_FORT_ICON: "§a创建新要塞"
-  CREATE_FORT_DESC1: "§f创建成本：§e{0}{MONEY_CHAR}"
   #Wars menu
   GUI_TOWN_ATTACK_TOWN_DESC1: "§c点击宣战"
   DECLARE_WAR_CONFIRM_MESSAGE: "{0}§f 将向 {1}§f 宣战"
@@ -585,8 +581,6 @@ language:
   GUI_REGION_INFO_DESC6_NATION: "§6王国:{0}"
   GUI_REGION_INFO_DESC6_NO_NATION: "无王国"
   GUI_TOWN_INFO_TOWN_RELATION: "§f与该城镇的当前关系：§e{0}"
-  GUI_TOWN_INFO_IS_RECRUITING: "§f招募状态：§a开放"
-  GUI_TOWN_INFO_IS_NOT_RECRUITING: "§f招募状态：§c关闭"
   GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§f左键点击申请加入该城镇"
   GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§c右键点击取消你的申请"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§f左键点击§a 通过§f 申请"
@@ -815,9 +809,6 @@ language:
   GUI_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1: "§f当前描述：§7§o\"{0}\""
   TOWN_SET_TAX_IN_CHAT: "输入新的税率"
   CHANGE_MESSAGE_SUCCESS: "描述修改成功"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§a修改城镇申请设置"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§f城镇 §a接受 §f申请"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§f城镇 §c不接受 §f申请"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME: "§a修改名称"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC1: "§f当前名称：§9{0}"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC3: "§f费用：§6{0}{MONEY_CHAR}"
@@ -1204,8 +1195,6 @@ language:
   LANDMARK_CLAIMED_NEWSLETTER: "{0}§f 已认领 §e{1}"
   LANDMARK_UNCLAIMED_NEWSLETTER_TITLE: "地标已放弃"
   LANDMARK_UNCLAIMED_NEWSLETTER: "{0}§f 不再控制 §e{1}"
-  #Chunk blacklist
-  CHUNK_IS_BLACKLISTED: "§c你无法认领该区块"
   #Timezones
   UTC_MINUS_12: "§eUTC−12:00，贝克岛"
   UTC_MINUS_11: "§eUTC−11:00，帕果帕果"

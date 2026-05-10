@@ -95,7 +95,6 @@ language:
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Hai chiesto con successo di unirti alla città: §9{0}§f. Clicca col tasto destro sulla città per annullare"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Hai annullato la tua domanda"
-  PLAYER_TOWN_NOT_RECRUITING: "§cQuesta città non sta reclutando"
   #BROADCAST
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c ha lasciato la città!"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fLa città §9{0}§f è stata espulsa dalla regione"

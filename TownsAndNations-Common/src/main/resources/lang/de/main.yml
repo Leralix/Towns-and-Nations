@@ -93,7 +93,6 @@ language:
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Du hast erfolgreich angefragt, der Stadt §9{0}§f beizutreten. Rechtsklicke auf die Stadt, um die Anfrage abzubrechen"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Du hast deine Anfrage abgebrochen"
-  PLAYER_TOWN_NOT_RECRUITING: "§cDiese Stadt rekrutiert derzeit nicht"
   #BROADCAST
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c hat die Stadt verlassen!"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fDie Stadt §9{0}§f wurde aus der Region entfernt"
@@ -303,7 +302,6 @@ language:
   GUI_BACK_ARROW: "Zurück"
   GUI_NEXT_PAGE: "Weiter"
   GUI_PREVIOUS_PAGE: "Zurück"
-  LEFT_CLICK_TO_CLAIM: "§fLinksklick zum Beanspruchen"
   GUI_INCREASE_1_DESC: "§fKlick: §a+1"
   GUI_INCREASE_10_DESC: "§fShift + Klick: §a+10"
   GUI_DECREASE_1_DESC: "§fKlick: §c-1"
@@ -358,8 +356,6 @@ language:
   GUI_TOWN_INFO_DESC5_REGION: "§fRegion: §b{0}"
   GUI_TOWN_INFO_DESC5_NO_REGION: "§fKeine Region"
   GUI_TOWN_INFO_TOWN_RELATION: "§fAktuelle Beziehung zur Stadt: §e{0}"
-  GUI_TOWN_INFO_IS_RECRUITING: "§fRekrutierung: §aOffen"
-  GUI_TOWN_INFO_IS_NOT_RECRUITING: "§fRekrutierung: §cGeschlossen"
   GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§fLinksklick, um sich zu bewerben"
   GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§cRechtsklick, um die Bewerbung zurückzuziehen"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fLinksklick zum§a Annehmen"
@@ -487,9 +483,6 @@ language:
   GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST: "Deine Regionshauptstadt ist jetzt §b{0}"
   TOWN_SET_TAX_IN_CHAT: "Gib die neue Steuer ein"
   CHANGE_MESSAGE_SUCCESS: "Nachricht erfolgreich geändert"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aStadt-Antrag ändern"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fStadt §aakzeptiert §fAnträge"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fStadt §cakzeptiert §fnicht §fAnträge"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR: "§aChunk-Farbe ändern"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1: "§fÄndere die Farbe der beanspruchten Chunks auf der Karte"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2: "§fAktuelle Farbe: §9{0}"
@@ -699,5 +692,3 @@ language:
   TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER: "§e{0}§f hat vorgeschlagen, der Region beizutreten {1}"
   TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER_TITLE: "Eine Stadt ist einer Region beigetreten"
   TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER: ""
-  #Chunk blacklist
-  CHUNK_IS_BLACKLISTED: "§cDu kannst diesen Chunk nicht beanspruchen"

@@ -48,6 +48,8 @@ language:
   LANDMARK_UPDATED: "{0} ({1})§f a été mis à jour."
   LANDMARK_STORED_UPDATED: "{0} ({1})§f a été fixé à §e{2}"
   LANDMARK_NOT_FOUND: "§cPoint d'intérêt introuvable"
+  #Action bar information
+  FORT_ACTION_BAR_INFO: "§6{0}§f, détenu par : {1}"
   #Placeholder API
   INVALID_VALUE: "Valeur non valide"
   INVALID_ID: "ID non valide"
@@ -101,7 +103,6 @@ language:
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Vous avez demandé à rejoindre §9{0}§f. Faites un clic droit sur cette ville pour annuler votre demande"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Demande annulée"
-  PLAYER_TOWN_NOT_RECRUITING: "§cCette ville ne recrute pas"
   #BROADCAST
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c a quitté la ville !"
   GUI_REGION_KICK_TOWN_BROADCAST: "§9{0}§f a été exclue de la région"
@@ -253,6 +254,7 @@ language:
   SPAWN_TELEPORTED: "Téléportation au spawn de la ville"
   SPAWN_NOT_SET: "§cLe spawn n'est pas défini"
   SPAWN_NOT_UNLOCKED: "§cLe spawn n'est pas déverrouillée"
+  SPAWN_INVALID: "§cL'emplacement du spawn n'est pas valide"
   SPAWN_NEED_TO_BE_IN_CHUNK: "§cVous devez être dans un chunk de {0}§c pour définir le spawn"
   #Town Relations
   ##Colors are to be defined in another config file
@@ -468,11 +470,16 @@ language:
   GUI_BACK_ARROW: "Retour"
   GUI_NEXT_PAGE: "Page suivante"
   GUI_PREVIOUS_PAGE: "Page précédente"
-  LEFT_CLICK_TO_CLAIM: "§fClic gauche pour revendiquer"
   GUI_INCREASE_1_DESC: "§fClic : §a+1"
   GUI_INCREASE_10_DESC: "§fShift + clic: §a+10"
   GUI_DECREASE_1_DESC: "§fClic: §c-1"
   GUI_DECREASE_10_DESC: "§fShift + clic: §c-10"
+  #Map command
+  LEFT_CLICK_TO_CLAIM: "§7▶ Clic gauche pour revendiquer"
+  CHUNK_IS_BLACKLISTED: "§cLe chunk ne peut pas être revendiqué"
+  CHUNK_OWNER: "{0}"
+  CHUNK_OWNER_OCCUPIER: "{0}§f (Occupied by {1}§f)"
+  FORT_NAME: "§6{0}"
   #Chunk settings
   GUI_TOWN_CHUNK_PLAYER: "§aInteractions"
   GUI_TERRITORY_CHUNK_PLAYER: "§aInteractions"
@@ -486,9 +493,11 @@ language:
   GUI_BUILDING_MENU: "§aBâtiment"
   GUI_BUILDING_MENU_DESC1: "§fCréer et gérer les bâtiments"
   CREATE_PUBLIC_PROPERTY_ICON: "§aCréer une propriété publique"
-  CREATE_PUBLIC_PROPERTY_COST: "§fCoût : §eGratuit"
+  CREATE_PUBLIC_PROPERTY_COST: "§fCoût : §6Gratuit"
   CREATE_FORT_ICON: "§aCréer un nouveau fort"
-  CREATE_FORT_DESC1: "§fCoût : §e{0}{MONEY_CHAR}"
+  CREATE_FORT_DESC1: "§fCoût : §6{0}{MONEY_CHAR}"
+  CREATE_FORT_DESC2: "§fRayon de Protection : §2{0} blocs"
+  CREATE_FORT_DESC3: "§fTemps de capture : §8{0}s"
   #Wars menu
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cCliquez pour déclarer la guerre"
   DECLARE_WAR_CONFIRM_MESSAGE: "{0}§f commencera une guerre contre {1}"
@@ -585,8 +594,7 @@ language:
   GUI_REGION_INFO_DESC6_NATION: "§fNation: §6{0}"
   GUI_REGION_INFO_DESC6_NO_NATION: "§fAucune nation"
   GUI_TOWN_INFO_TOWN_RELATION: "§fRelation diplomatique actuelle avec la ville : §e{0}"
-  GUI_TOWN_INFO_IS_RECRUITING: "§fRecrutement : §aCandidatures acceptés"
-  GUI_TOWN_INFO_IS_NOT_RECRUITING: "§fRecrutement : §aCandidatures fermées"
+  GUI_TOWN_RECRUITING_POLICY: "§fRecrutement : {0}"
   GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§fClic gauche pour envoyer votre candidature à la ville"
   GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§cClic droit pour annuler votre candidature"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fClic gauche pour§a accepter"
@@ -815,9 +823,11 @@ language:
   GUI_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1: "§fDescription actuelle : §7§o\"{0}\""
   TOWN_SET_TAX_IN_CHAT: "Entrez la nouvelle taxe"
   CHANGE_MESSAGE_SUCCESS: "Description modifiée avec succès"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aGérer la politique de recrutement de la ville"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fLa ville §aaccepte §fles nouvelles candidatures"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fLa ville §cn'accepte pas §fles nouvelles candidatures"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aRègles pour les candidatures"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_DESC: "§fPolitique actuelle : {0}"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_OPEN: "§a🔓 Ouvert"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§6☑ Nécessite une validation"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§c🔒 Fermé"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME: "§aRenommer le territoire"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC1: "§fNom actuel : §9{0}"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC3: "§fCout : §6{0}{MONEY_CHAR}"
@@ -1204,8 +1214,6 @@ language:
   LANDMARK_CLAIMED_NEWSLETTER: "{0}§f a revendiqué §e{1}"
   LANDMARK_UNCLAIMED_NEWSLETTER_TITLE: "Point d'intérêt abandonné"
   LANDMARK_UNCLAIMED_NEWSLETTER: "{0}§f ne contrôle plus §e{1}"
-  #Chunk blacklist
-  CHUNK_IS_BLACKLISTED: "§cVous ne pouvez pas revendiquer ce chunk"
   #Timezones
   UTC_MINUS_12: "§eUTC-12:00, Île Baker"
   UTC_MINUS_11: "§eUTC−11:00, Pago pago"

@@ -1,0 +1,25 @@
+#Upgrades.yml is used to define the names of upgrades and their benefits in the game.
+#To add a name to a new upgrade, add it to the customLang section.
+customLang:
+  #Names
+  CITY_HALL: "Ayuntamiento"
+  BARRACKS: "Cuartel"
+  ADMINISTRATION: "Administración"
+  WATCHTOWER: "Torre de Vigilancia"
+  PORTAL: "Portal"
+  GUARDS: "Guardias"
+  COUNCIL_CHAMBER: "Cámaras del Consejo"
+  NOTARY_HOUSE: "Notario"
+  EXTRACTION_TEAM: "Equipo de extracción"
+  BETTER_TOOLS: "Mejores herramientas"
+  #Prerequisites
+  TOWN_LEVEL: "Nivel de pueblo"
+  #Benefits
+  PLAYER_CAP: "Límite de jugadores"
+  CHUNK_CAP: "Límite de chunks"
+  PROPERTY_CAP: "Límite de propiedades"
+  UNLOCK_TOWN_SPAWN: "Desbloquear spawn del pueblo"
+  UNLOCK_MOB_BAN: "Desbloquear bloqueo de mob"
+  UNLOCK_REGION_CREATION: "Desbloquear creación de regiones"
+  MAX_LANDMARKS: "Desbloquear Bandera de Región"
+  LANDMARK_BONUS: "% Recompensas de Monumento"

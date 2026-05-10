@@ -82,7 +82,6 @@ language:
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Ви успішно подали запит на приєднання до міста: §9{0}§f. Клацніть правою кнопкою миші на місті, щоб скасувати"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "Ви скасували вашу заявку"
-  PLAYER_TOWN_NOT_RECRUITING: "§cЦе місто не набирає учасників"
   #BROADCAST
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c покинув місто!"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fThe місто §9{0}§f було вигнано з регіону"
@@ -368,7 +367,6 @@ language:
   GUI_BACK_ARROW: "Повернутись"
   GUI_NEXT_PAGE: "Наступний"
   GUI_PREVIOUS_PAGE: "Попередній"
-  LEFT_CLICK_TO_CLAIM: "§fЛКМ щоб затвердити"
   GUI_INCREASE_1_DESC: "§fКлік: §a+1"
   GUI_INCREASE_10_DESC: "§fShift + клік: §a+10"
   GUI_DECREASE_1_DESC: "§fClick: §c-1"
@@ -429,8 +427,6 @@ language:
   GUI_TOWN_INFO_DESC5_REGION: "§fРегіон: §b{0}"
   GUI_TOWN_INFO_DESC5_NO_REGION: "§fНемає регіону"
   GUI_TOWN_INFO_TOWN_RELATION: "§fПоточні відносини з містом: §e{0}"
-  GUI_TOWN_INFO_IS_RECRUITING: "§fНабір: §aВідкрито"
-  GUI_TOWN_INFO_IS_NOT_RECRUITING: "§fНабір: §aЗакрито"
   GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§fЛКМ, щоб подати заявку на вступ до міста"
   GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§cПКМ, щоб скачувати заявку"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fЛКМ щоб§a прийняти"
@@ -558,9 +554,6 @@ language:
   GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST: "Столицею вашого регіону тепер є §b{0}"
   TOWN_SET_TAX_IN_CHAT: "Ввести новий податок"
   CHANGE_MESSAGE_SUCCESS: "Повідомлення успішно змінено"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aРедагування програми міста"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fМісто §aприймає §fзаявку"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "Місто §c не приймає заявки"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR: "§aЗмінити колір чанку"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1: "§fЗмінити колір захоплених чанків на мапі"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2: "§fПоточний колір: §9{0}"
@@ -791,8 +784,6 @@ language:
   NEWSLETTER_DATE: "§fДата:§e {0}"
   ATTACK_CANCELLED: "{0}§f Було скасовано атаку на {1}"
   JOIN_REGION_PROPOSAL_NEWSLETTER: "{0}§f запропоновано приєднатися до регіону {1}"
-  #Chunk blacklist
-  CHUNK_IS_BLACKLISTED: "§cВи не можете зайняти цей чанк"
   #Timezones
   UTC_MINUS_12: "§eUTCvil-12:00, Бейкер Айленд"
   UTC_MINUS_11: "§eUTC−11:00, Паґо-Паґо"
