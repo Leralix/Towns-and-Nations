@@ -1,12 +1,11 @@
 package org.leralix.tan.utils.text;
 
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.chunk.IClaimedChunk;
-import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.lang.LangType;
 
 import java.util.Map;
@@ -23,40 +22,39 @@ public final class ChatChunkMapRenderer {
             int radius,
             LangType langType,
             BiFunction<Integer, Integer, String> clickCommand,
-            Map<Integer, TextComponent> extraByDz
+            Map<Integer, Component> extraByDz
     ) {
         Chunk currentChunk = player.getLocation().getChunk();
 
         // Envoi de l'en-tête
         player.sendMessage("╭─────────⟢⟐⟣─────────╮");
         for (int dz = -radius; dz <= radius; dz++) {
-            TextComponent newLine = new TextComponent();
-            newLine.addExtra("   ");
+            Component newLine = Component.text("   ");
             for (int dx = -radius; dx <= radius; dx++) {
                 int chunkX = currentChunk.getX() + dx;
                 int chunkZ = currentChunk.getZ() + dz;
 
                 IClaimedChunk claimedChunk = TownsAndNations.getPlugin().getClaimStorage().get(chunkX, chunkZ, player.getWorld().getUID().toString());
-                TextComponent icon = claimedChunk.getMapIcon(langType);
 
-                if (dx == 0 && dz == 0) {
-                    if (claimedChunk instanceof TerritoryChunk territoryChunk && territoryChunk.isOccupied()) {
-                        icon.setText("🟠"); //Hashed orange square emoji
-                    } else {
-                        icon.setText("🌑"); // For some reason, the only round emoji with the same size as ⬛ is this emoji
-                    }
-                }
+                boolean ifMiddleOfMap = dx == 0 && dz == 0;
 
-                icon.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand.apply(chunkX, chunkZ)));
-                newLine.addExtra(icon);
+                newLine = newLine.append(
+                        claimedChunk.getMapIcon(langType, ifMiddleOfMap)
+                        .clickEvent(
+                                ClickEvent.clickEvent(
+                                        ClickEvent.Action.RUN_COMMAND,
+                                        ClickEvent.Payload.string(clickCommand.apply(chunkX, chunkZ))
+                                )
+                        )
+                );
             }
 
-            TextComponent extra = extraByDz.get(dz);
+            Component extra = extraByDz.get(dz);
             if (extra != null) {
-                newLine.addExtra(extra);
+                newLine = newLine.append(extra);
             }
 
-            player.spigot().sendMessage(newLine);
+            player.sendMessage(newLine);
         }
         player.sendMessage("╰─────────⟢⟐⟣─────────╯");
     }

@@ -50,7 +50,7 @@ public interface Landmark extends TanLandmark {
 
     boolean isOwned();
 
-    TanTerritory getOwner();
+    Territory getOwner();
 
     IconBuilder getIcon(LangType langType);
 

@@ -1,6 +1,6 @@
 package org.leralix.tan.data.chunk;
 
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -107,8 +107,8 @@ public abstract class ChunkDatabase implements DatabaseData<ChunkData>, IClaimed
     }
 
     @Override
-    public TextComponent getMapIcon(LangType langType) {
-        return data.getMapIcon(langType);
+    public Component getMapIcon(LangType langType, boolean isMiddleOfMap) {
+        return data.getMapIcon(langType, isMiddleOfMap);
     }
 
     @Override

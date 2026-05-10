@@ -1,10 +1,8 @@
 package org.leralix.tan.data.chunk;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -48,7 +46,7 @@ public class WildernessChunkData extends ChunkData implements WildernessChunk {
 
     @Override
     public void playerEnterClaimedArea(Player player, ITanPlayer tanPlayer, boolean displayTerritoryColor) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.WILDERNESS.get(tanPlayer)));
+        player.sendActionBar(Component.text(Lang.WILDERNESS.get(tanPlayer)));
     }
 
     @Override
@@ -62,27 +60,26 @@ public class WildernessChunkData extends ChunkData implements WildernessChunk {
     }
 
     @Override
-    public TextComponent getMapIcon(LangType langType) {
+    public Component getMapIcon(LangType langType, boolean isMiddleOfMap) {
 
         if (ClaimBlacklistStorage.cannotBeClaimed(this)) {
-            TextComponent textComponent = new TextComponent("✖");
-            textComponent.setColor(ChatColor.RED);
-            textComponent.setHoverEvent(new HoverEvent(
-                    HoverEvent.Action.SHOW_TEXT,
-                    new Text("x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                            Lang.WILDERNESS.get(langType) + "\n" +
-                            Lang.CHUNK_IS_BLACKLISTED.get(langType))));
-            return textComponent;
+
+            String text = chunkCoordinateString() +
+                    Lang.WILDERNESS.get(langType) + "\n" +
+                    Lang.CHUNK_IS_BLACKLISTED.get(langType);
+
+            return Component.text("✖")
+                    .color(TextColor.color(0xFF5555))
+                    .hoverEvent(HoverEvent.showText(Component.text(text)));
         }
 
-        TextComponent textComponent = new TextComponent("⬜");
-        textComponent.setColor(ChatColor.WHITE);
-        textComponent.setHoverEvent(new HoverEvent(
-                HoverEvent.Action.SHOW_TEXT,
-                new Text("x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                        Lang.WILDERNESS.get(langType) + "\n" +
-                        Lang.LEFT_CLICK_TO_CLAIM.get(langType))));
-        return textComponent;
+        String text = chunkCoordinateString() +
+                Lang.WILDERNESS.get(langType) + "\n" +
+                Lang.LEFT_CLICK_TO_CLAIM.get(langType);
+
+        return Component.text(isMiddleOfMap ? "🌕" : "⬜")
+                .color(TextColor.color(0xFFFFFF))
+                .hoverEvent(HoverEvent.showText(Component.text(text)));
     }
 
     @Override

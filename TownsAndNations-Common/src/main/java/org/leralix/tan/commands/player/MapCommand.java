@@ -1,6 +1,7 @@
 package org.leralix.tan.commands.player;
 
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
@@ -68,15 +69,13 @@ public class MapCommand extends PlayerSubCommand {
     public void openMap(Player player, MapSettings settings) {
         LangType langType = playerDataStorage.get(player).getLang();
         int radius = 4;
-        Map<Integer, TextComponent> text = new HashMap<>();
-        TextComponent claimType = new TextComponent(Lang.MAP_CLAIM_TYPE.get(langType));
-        claimType.setHoverEvent(null);
-        claimType.setClickEvent(null);
-        claimType.setColor(net.md_5.bungee.api.ChatColor.GRAY);
+        Map<Integer, Component> text = new HashMap<>();
+        Component claimType = Component.text(Lang.MAP_CLAIM_TYPE.get(langType))
+                .color(TextColor.color(0xAAAAAA));
         text.put(-4, claimType);
-        TextComponent typeButton = settings.getMapTypeButton(langType);
+        Component typeButton = settings.getMapTypeButton(langType);
         text.put(-3, typeButton);
-        TextComponent actionButton = settings.getClaimTypeButton(langType);
+        Component actionButton = settings.getClaimTypeButton(langType);
         text.put(-2, actionButton);
 
         ClaimAction claimAction = settings.getClaimActionType();

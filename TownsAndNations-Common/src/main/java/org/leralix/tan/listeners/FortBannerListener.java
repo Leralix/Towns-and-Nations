@@ -30,7 +30,6 @@ public class FortBannerListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        System.out.println("On player interact");
         Player player = event.getPlayer();
         Block clickedBlock = event.getClickedBlock();
 
@@ -38,17 +37,13 @@ public class FortBannerListener implements Listener {
             return;
         }
 
-        System.out.println("1");
         if (clickedBlock.hasMetadata(FORT_FLAG_METADATA) && Tag.BANNERS.isTagged(clickedBlock.getType())) {
-            System.out.println("2");
             List<MetadataValue> metadatas = clickedBlock.getMetadata(FORT_FLAG_METADATA);
             for (MetadataValue metadataValue : metadatas) {
-                System.out.println("3 : " + metadataValue.asString());
                 Fort fort = fortStorage.getFort(metadataValue.asString());
                 if (fort != null) {
                     event.setCancelled(true);
                     ITanPlayer playerData = playerDataStorage.get(player);
-                    System.out.println(Lang.FORT_ACTION_BAR_INFO.get(playerData.getLang(), fort.getName(), fort.getOccupier().getColoredName()));
                     player.sendActionBar(
                             Component.text(
                                 Lang.FORT_ACTION_BAR_INFO.get(playerData.getLang(), fort.getName(), fort.getOccupier().getColoredName())
