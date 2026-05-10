@@ -1,9 +1,8 @@
 package org.leralix.tan.data.chunk;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.TextColor;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -47,7 +46,7 @@ public class WildernessChunkData extends ChunkData implements WildernessChunk {
 
     @Override
     public void playerEnterClaimedArea(Player player, ITanPlayer tanPlayer, boolean displayTerritoryColor) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.WILDERNESS.get(tanPlayer)));
+        player.sendActionBar(Component.text(Lang.WILDERNESS.get(tanPlayer)));
     }
 
     @Override
@@ -65,22 +64,22 @@ public class WildernessChunkData extends ChunkData implements WildernessChunk {
 
         if (ClaimBlacklistStorage.cannotBeClaimed(this)) {
 
-            String text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
+            String text = chunkCoordinateString() +
                     Lang.WILDERNESS.get(langType) + "\n" +
                     Lang.CHUNK_IS_BLACKLISTED.get(langType);
 
             return Component.text("✖")
                     .color(TextColor.color(0xFF5555))
-                    .hoverEvent(net.kyori.adventure.text.event.HoverEvent.showText(Component.text(text)));
+                    .hoverEvent(HoverEvent.showText(Component.text(text)));
         }
 
-        String text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
+        String text = chunkCoordinateString() +
                 Lang.WILDERNESS.get(langType) + "\n" +
                 Lang.LEFT_CLICK_TO_CLAIM.get(langType);
 
         return Component.text(isMiddleOfMap ? "🌕" : "⬜")
                 .color(TextColor.color(0xFFFFFF))
-                .hoverEvent(net.kyori.adventure.text.event.HoverEvent.showText(Component.text(text)));
+                .hoverEvent(HoverEvent.showText(Component.text(text)));
     }
 
     @Override

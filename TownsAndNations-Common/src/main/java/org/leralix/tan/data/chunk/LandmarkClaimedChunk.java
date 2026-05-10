@@ -88,10 +88,14 @@ public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
     @Override
     public Component getMapIcon(LangType langType, boolean isMiddleOfMap) {
 
-        String text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                ChatColor.GOLD + getLandMark().getName();
+        boolean isOwned = getLandMark().isOwned();
 
-        int color = getLandMark().isOwned() ? getLandMark().getOwner().getChunkColorCode() : 0xFFAA00;
+        String text = chunkCoordinateString() +
+                ChatColor.GOLD + getLandMark().getName() + "\n" +
+                (isOwned ? Lang.CHUNK_OWNER.get(langType, getLandMark().getOwner().getName()) : Lang.CHUNK_NOT_CLAIMED.get(langType))
+                ;
+
+        int color = isOwned ? getLandMark().getOwner().getChunkColorCode() : 0xFFAA00;
 
         return Component.text("❇")
                 .color(TextColor.color(color))

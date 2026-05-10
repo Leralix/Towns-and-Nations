@@ -126,25 +126,29 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
     @Override
     public Component getMapIcon(LangType langType, boolean isMiddleOfMap) {
 
-        String text;
+        String text = chunkCoordinateString();
         if (isOccupied()) {
-            text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                    getOwner().getColoredName() + "\n" +
-                    getOccupier().getColoredName() + "\n" +
-                    Lang.LEFT_CLICK_TO_CLAIM.get(langType);
+            text += Lang.CHUNK_OWNER_OCCUPIER.get(langType, getOwner().getColoredName(), getOccupier().getColoredName());
         } else {
-            text = "x : " + super.getMiddleX() + " z : " + super.getMiddleZ() + "\n" +
-                    getOwner().getColoredName() + "\n" +
-                    Lang.LEFT_CLICK_TO_CLAIM.get(langType);
+            text += Lang.CHUNK_OWNER.get(langType, getOwner().getColoredName());
         }
 
         String icon;
-        if(isOccupied()){
-            icon = isMiddleOfMap ? "🟠" : "🟧";
+        var optFort = getFortOnChunk();
+        if (optFort.isPresent()){
+            icon = "🛖";
+            text += "\n" + Lang.FORT_NAME.get(langType, optFort.get().getName());
         }
         else {
-            icon = isMiddleOfMap ? "🌑" : "⬛";
+            if(isOccupied()){
+                icon = isMiddleOfMap ? "🟠" : "🟧";
+            }
+            else {
+                icon = isMiddleOfMap ? "🌑" : "⬛";
+            }
         }
+
+        text += "\n" + Lang.LEFT_CLICK_TO_CLAIM.get(langType);
 
         return Component.text(icon)
                 .color(TextColor.color(getOccupierInternal().getChunkColorCode()))

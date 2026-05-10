@@ -171,4 +171,8 @@ public abstract class ChunkData implements IClaimedChunk, TanClaimedChunk {
     public void unclaim() {
         TownsAndNations.getPlugin().getClaimStorage().unclaimChunkAndUpdate(this);
     }
+
+    protected String chunkCoordinateString(){
+        return "x : " + getMiddleX() + " z : " + getMiddleZ() + "\n";
+    }
 }

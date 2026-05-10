@@ -1,6 +1,7 @@
 package org.leralix.tan.data.chunk;
 
 import org.bukkit.entity.Player;
+import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.fort.Fort;
 import org.leralix.tan.data.player.ITanPlayer;
@@ -24,6 +25,26 @@ public interface TerritoryChunk extends IClaimedChunk, TanTerritoryChunk {
     default Optional<Fort> getFortProtecting(){
         for (Fort fort : TownsAndNations.getPlugin().getFortStorage().getAllControlledFort(getOccupierInternal())) {
             if (fort.getPosition().getDistance(getMiddleVector2D()) <= Constants.getFortProtectionRadius()) {
+                return Optional.of(fort);
+            }
+        }
+        return Optional.empty();
+    }
+
+    default Optional<Fort> getFortOnChunk(){
+        for (Fort fort : TownsAndNations.getPlugin().getFortStorage().getAllControlledFort(getOccupierInternal())) {
+
+            Vector3D position = fort.getPosition();
+
+            int posX = Math.floorDiv(position.getX(), 16);
+            int posZ = Math.floorDiv(position.getZ(), 16);
+
+            int minX = getX();
+            int maxX = getX() + 1;
+            int minZ = getZ();
+            int maxZ = getZ() + 1;
+
+            if (posX >= minX && posX < maxX && posZ >= minZ && posZ < maxZ) {
                 return Optional.of(fort);
             }
         }
