@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.RandomUtil;
 import org.leralix.tan.TownsAndNations;
@@ -1114,7 +1115,7 @@ public abstract class TerritoryData implements TanTerritory, Territory {
     }
 
     @Override
-    public TeleportationData getTeleportationData() {
+    public @NotNull TeleportationData getTeleportationData() {
         if(this.teleportationPosition == null){
             this.teleportationPosition = new TeleportationData();
         }

@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.DataWrapperFactory;
 import org.leralix.tan.data.DbManager;
@@ -654,7 +655,7 @@ public abstract class TerritoryDatabase<T extends TerritoryData> implements Terr
     }
 
     @Override
-    public TeleportationData getTeleportationData() {
+    public @NotNull TeleportationData getTeleportationData() {
         return data.getTeleportationData();
     }
 

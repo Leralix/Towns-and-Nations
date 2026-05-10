@@ -2,6 +2,7 @@ package org.leralix.tan.data.territory.teleportation;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Vector3DWithOrientation;
 import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.relation.TownRelation;
@@ -33,6 +34,10 @@ public class TeleportationData {
 
     public void teleport(Player player) {
         player.teleport(position.getLocation());
+    }
+
+    public Vector3D getPosition(){
+        return position;
     }
 
     public TownRelation getRelationTeleportationAllowed() {

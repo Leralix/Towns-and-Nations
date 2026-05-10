@@ -1,9 +1,12 @@
 package org.leralix.tan.storage;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.chunk.IClaimedChunk;
+import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.teleportation.PlannedTeleportation;
@@ -33,8 +36,8 @@ public class TeleportationRegister {
     /**
      * This method is used to register a player to teleport to a town.
      *
-     * @param player          The player that is teleporting.
-     * @param territoryData   The territory the player is teleporting to.
+     * @param player        The player that is teleporting.
+     * @param territoryData The territory the player is teleporting to.
      */
     public static void registerSpawn(ITanPlayer player, Territory territoryData) {
         spawnRegister.put(player.getID(), new PlannedTeleportation(territoryData.getTeleportationData()));
@@ -75,8 +78,19 @@ public class TeleportationRegister {
         }
 
         TeleportationData teleportationData = territoryData.getTeleportationData();
-        if(teleportationData == null){
+        if (!teleportationData.isSpawnSet()) {
             TanChatUtils.message(player, Lang.SPAWN_NOT_SET.get(langType));
+            return;
+        }
+
+        Chunk chunk = teleportationData.getPosition().getLocation().getChunk();
+        IClaimedChunk claimedChunk = TownsAndNations.getPlugin().getClaimStorage().get(chunk);
+
+        if (!(claimedChunk instanceof TerritoryChunk territoryChunk &&
+                territoryChunk.getOwner().equals(territoryData) &&
+                !territoryChunk.isOccupied())
+        ) {
+            TanChatUtils.message(player, Lang.SPAWN_INVALID.get(langType));
             return;
         }
 
