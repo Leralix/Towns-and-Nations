@@ -42,6 +42,7 @@ import org.leralix.tan.storage.stored.truce.TruceStorage;
 import org.leralix.tan.tasks.DailyTasks;
 import org.leralix.tan.tasks.SaveStats;
 import org.leralix.tan.tasks.SecondTask;
+import org.leralix.tan.tasks.StartOfServerTask;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.constants.DatabaseConstants;
 import org.leralix.tan.utils.economy.EconomyUtil;
@@ -245,10 +246,6 @@ public class TownsAndNations extends JavaPlugin {
         TanChatUtils.init(playerDataStorage);
         TeamUtils.init(playerDataStorage);
 
-        fortStorage.checkValidWorlds();
-        claimStorage.checkValidWorlds();
-        warStorage.updateAttacks();
-
         this.saveStats = new SaveStats(this);
 
         getLogger().log(Level.INFO, "[TaN] -Loading blocks data");
@@ -300,6 +297,7 @@ public class TownsAndNations extends JavaPlugin {
         dailyTasks.scheduleMidnightTask();
         SecondTask secondTask = new SecondTask(playerDataStorage, claimStorage);
         secondTask.startScheduler();
+        StartOfServerTask.registerTasks(fortStorage, claimStorage, warStorage);
 
         getLogger().log(Level.INFO, "[TaN] -Loading commands");
         enableEventList();
