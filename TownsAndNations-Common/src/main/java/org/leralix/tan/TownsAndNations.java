@@ -204,9 +204,6 @@ public class TownsAndNations extends JavaPlugin {
         IconManager.getInstance();
         NumberUtil.init();
 
-        getLogger().log(Level.INFO, "[TaN] -Loading Economy");
-        setupEconomy();
-
         getLogger().log(Level.INFO, "[TaN] -Loading Database");
         loadDB();
 
@@ -234,6 +231,8 @@ public class TownsAndNations extends JavaPlugin {
             claimStorage = new NewClaimedChunkStorage();
         }
 
+        getLogger().log(Level.INFO, "[TaN] -Loading Economy");
+        setupEconomy(playerDataStorage);
 
         localChatStorage = new LocalChatStorage(playerDataStorage, mainConfig.getBoolean("sendPrivateMessagesToConsole", true));
 
@@ -356,13 +355,13 @@ public class TownsAndNations extends JavaPlugin {
     /**
      * Method used to set up the economy of the server if Vault is enabled.
      */
-    private void setupEconomy() {
+    private void setupEconomy(PlayerDataStorage playerDataStorage) {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             getLogger().log(Level.INFO, "[TaN] -Vault is not detected. Running standalone economy");
             EconomyUtil.register(new TanEconomyStandalone());
         }
         else {
-            VaultManager.setupVault(getLogger());
+            VaultManager.setupVault(getLogger(), playerDataStorage);
         }
     }
 

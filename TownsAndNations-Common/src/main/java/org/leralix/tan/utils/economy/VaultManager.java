@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 
 import java.util.logging.Level;
@@ -16,10 +17,10 @@ public class VaultManager {
         throw new IllegalStateException("Utility class");
     }
 
-    public static void setupVault(Logger logger) {
+    public static void setupVault(Logger logger, PlayerDataStorage playerDataStorage) {
 
         if (Constants.useStandaloneEconomy()) {
-            TanEconomyVault tanEconomyVault = new TanEconomyVault(TownsAndNations.getPlugin().getPlayerDataStorage());
+            TanEconomyVault tanEconomyVault = new TanEconomyVault(playerDataStorage);
             EconomyUtil.register(tanEconomyVault);
             Bukkit.getServicesManager().register(Economy.class, tanEconomyVault, TownsAndNations.getPlugin(), ServicePriority.Normal);
             logger.log(Level.INFO, "[TaN] -Vault is detected, registering TaN Economy");
