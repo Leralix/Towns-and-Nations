@@ -26,7 +26,6 @@ public abstract class CommonChunkSettingsMenu extends IteratorGUI {
         super(player, Lang.HEADER_CHUNK_PERMISSION, 4);
         this.permissionManager = permissionManager;
         this.returnMenu = returnGui;
-        open();
     }
 
 
