@@ -94,7 +94,7 @@ public class PropertySignListener implements Listener {
     private boolean canPlayerOpenMenu(Player player, Block clickedBlock) {
         IClaimedChunk claimedChunk = claimStorage.get(clickedBlock.getChunk());
         ITanPlayer tanPlayer = playerDataStorage.get(player);
-        if (tanPlayer.hasTown() && claimedChunk instanceof TownClaimedChunk townClaimedChunk) {
+        if (claimedChunk instanceof TownClaimedChunk townClaimedChunk) {
             TownRelation territoryRelation = townClaimedChunk.getTown().getWorstRelationWith(tanPlayer);
             return Constants.getRelationConstants(territoryRelation).canInteractWithProperty();
         }
