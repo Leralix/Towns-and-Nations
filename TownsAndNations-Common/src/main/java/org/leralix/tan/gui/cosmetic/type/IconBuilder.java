@@ -110,7 +110,7 @@ public class IconBuilder {
         if (meta != null) {
             meta.setDisplayName(name);
             meta.setLore(generateDescription(langType));
-            meta.removeAttributeModifier(Attribute.ARMOR);
+            meta.removeAttributeModifier(Attribute.ARMOR_TANK);
             meta.removeAttributeModifier(Attribute.ARMOR_TOUGHNESS);
             meta.removeAttributeModifier(Attribute.ATTACK_DAMAGE);
             meta.removeAttributeModifier(Attribute.ATTACK_SPEED);
