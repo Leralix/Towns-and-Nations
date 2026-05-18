@@ -110,10 +110,10 @@ public class IconBuilder {
         if (meta != null) {
             meta.setDisplayName(name);
             meta.setLore(generateDescription(langType));
-            meta.removeAttributeModifier(Attribute.ARMOR_TANK);
-            meta.removeAttributeModifier(Attribute.ARMOR_TOUGHNESS);
-            meta.removeAttributeModifier(Attribute.ATTACK_DAMAGE);
-            meta.removeAttributeModifier(Attribute.ATTACK_SPEED);
+            meta.removeAttributeModifier(Attribute.GENERIC_ARMOR);
+            meta.removeAttributeModifier(Attribute.GENERIC_ARMOR_TOUGHNESS);
+            meta.removeAttributeModifier(Attribute.GENERIC_ATTACK_DAMAGE);
+            meta.removeAttributeModifier(Attribute.GENERIC_ATTACK_SPEED);
             if (hideItemFlags) {
                 meta.setHideTooltip(true);
             }
