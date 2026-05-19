@@ -224,14 +224,14 @@ public class ChunkListener implements Listener {
 
     private static boolean isContainer(Material materialBlock) {
         return materialBlock == Material.CHEST ||
-                materialBlock == Material.COPPER_CHEST ||
-                materialBlock == Material.EXPOSED_COPPER_CHEST ||
-                materialBlock == Material.OXIDIZED_COPPER_CHEST ||
-                materialBlock == Material.WEATHERED_COPPER_CHEST ||
-                materialBlock == Material.WAXED_COPPER_CHEST ||
-                materialBlock == Material.WAXED_EXPOSED_COPPER_CHEST ||
-                materialBlock == Material.WAXED_OXIDIZED_COPPER_CHEST ||
-                materialBlock == Material.WAXED_WEATHERED_COPPER_CHEST ||
+                //materialBlock == Material.COPPER_CHEST ||
+                //materialBlock == Material.EXPOSED_COPPER_CHEST ||
+                //materialBlock == Material.OXIDIZED_COPPER_CHEST ||
+                //materialBlock == Material.WEATHERED_COPPER_CHEST ||
+                //materialBlock == Material.WAXED_COPPER_CHEST ||
+                //materialBlock == Material.WAXED_EXPOSED_COPPER_CHEST ||
+                //materialBlock == Material.WAXED_OXIDIZED_COPPER_CHEST ||
+                //materialBlock == Material.WAXED_WEATHERED_COPPER_CHEST ||
                 materialBlock == Material.TRAPPED_CHEST ||
                 materialBlock == Material.BARREL ||
                 materialBlock == Material.HOPPER ||
