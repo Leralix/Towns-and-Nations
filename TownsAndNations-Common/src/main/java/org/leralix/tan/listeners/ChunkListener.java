@@ -364,8 +364,8 @@ public class ChunkListener implements Listener {
                 entity instanceof PolarBear ||
                 entity instanceof Wolf ||
                 entity instanceof ArmorStand ||
-                entity instanceof LeashHitch ||
-                entity instanceof CopperGolem;
+                entity instanceof LeashHitch; //||
+                //entity instanceof CopperGolem;
     }
 
     private boolean canPvpHappen(Player aggressor, Player receiver) {
