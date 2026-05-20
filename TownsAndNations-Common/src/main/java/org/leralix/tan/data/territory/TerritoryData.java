@@ -560,10 +560,10 @@ public abstract class TerritoryData implements TanTerritory, Territory {
         TerritoryStats territoryStats = getNewLevel();
         int nbOfClaimedChunks = getNumberOfClaimedChunk();
 
-        if (!territoryStats.getStat(BiomeStat.class).canClaimBiome(chunk)) {
-            TanChatUtils.message(player, Lang.CHUNK_BIOME_NOT_ALLOWED.get(tanPlayer.getLang()));
-            return false;
-        }
+        //if (!territoryStats.getStat(BiomeStat.class).canClaimBiome(chunk)) {
+        //    TanChatUtils.message(player, Lang.CHUNK_BIOME_NOT_ALLOWED.get(tanPlayer.getLang()));
+        //    return false;
+        //}
 
         if (!territoryStats.getStat(ChunkCap.class).canDoAction(nbOfClaimedChunks)) {
             TanChatUtils.message(player, Lang.MAX_CHUNK_LIMIT_REACHED.get(tanPlayer.getLang()));
