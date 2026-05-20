@@ -123,6 +123,11 @@ public class HierarchyMenu extends BasicGui {
                         return;
                     }
 
+                    if (!player.hasPermission("tan.base.town.declare_independence")) {
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), NOT_ALLOWED);
+                        return;
+                    }
+
                     new ConfirmMenu(
                             player,
                             Lang.GUI_CONFIRM_DECLARE_INDEPENDENCE.get(territoryData.getColoredName(), overlord.getColoredName()),
@@ -135,7 +140,7 @@ public class HierarchyMenu extends BasicGui {
                                     territoryData.broadcastMessageWithSound(Lang.TOWN_BROADCAST_TOWN_LEFT_REGION.get(territoryData.getName(), overlord.getName()), SoundEnum.BAD);
                                     overlord.broadCastMessage(Lang.REGION_BROADCAST_TOWN_LEFT_REGION.get(territoryData.getName()));
                                 }
-
+                    
                                 player.closeInventory();
                             },
                             this::open
