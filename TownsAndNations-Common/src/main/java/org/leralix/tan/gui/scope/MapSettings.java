@@ -36,10 +36,10 @@ public class MapSettings {
     public Component getMapTypeButton(LangType langType){
         return Component.text(claimType.getName(langType))
                 .hoverEvent(HoverEvent.showText(Component.text(Lang.LEFT_CLICK_TO_MODIFY.get(langType))))
-                .clickEvent(ClickEvent.clickEvent(
-                        ClickEvent.Action.RUN_COMMAND,
-                        ClickEvent.Payload.string(getNextCommand(claimAction, claimType.getNextType()))
-                ));
+                //.clickEvent(ClickEvent.clickEvent(
+                //        ClickEvent.Action.RUN_COMMAND,
+                //        ClickEvent.Payload.string(getNextCommand(claimAction, claimType.getNextType()))
+                //));
     }
 
     public Component getClaimTypeButton(LangType langType){
