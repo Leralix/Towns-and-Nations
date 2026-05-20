@@ -124,7 +124,7 @@ public class HierarchyMenu extends BasicGui {
                     }
 
                     if (!player.hasPermission("tan.base.town.declare_independence")) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), SoundEnum.NOT_ALLOWED);
                         return;
                     }
 
