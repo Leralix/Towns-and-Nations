@@ -19,6 +19,14 @@ public class SubjugateWarGoal extends WarGoal implements TanSubjugateWargoal {
         super();
     }
 
+    private Material getChainMaterial() {
+        try {
+            return Material.valueOf("CHAIN");
+        } catch (IllegalArgumentException e) {
+            return Material.valueOf("IRON_CHAIN");
+        }
+    }
+
     @Override
     public IconBuilder getIcon(LangType langType) {
 
@@ -26,7 +34,7 @@ public class SubjugateWarGoal extends WarGoal implements TanSubjugateWargoal {
         description.add(Lang.SUBJUGATE_WAR_GOAL_DESC.get());
         description.add(Lang.SUBJUGATE_WAR_GOAL_DESC1.get());
 
-        return buildIcon(Material.CHAIN, description, langType);
+        return buildIcon(getChainMaterial(), description, langType);
     }
 
     @Override
