@@ -14,6 +14,7 @@ import org.leralix.tan.events.newsletter.NewsletterStorage;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.CurrentAttacksStorage;
+import org.leralix.tan.storage.MinimapManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.json.PremiumStorage;
 import org.leralix.tan.utils.graphic.PrefixUtil;
@@ -24,9 +25,11 @@ import org.leralix.tan.utils.text.TanChatUtils;
 public class PlayerJoinListener implements Listener {
 
     private final PlayerDataStorage playerDataStorage;
+    private final MinimapManager minimapManager;
 
-    public PlayerJoinListener(PlayerDataStorage playerDataStorage){
+    public PlayerJoinListener(PlayerDataStorage playerDataStorage, MinimapManager minimapManager){
         this.playerDataStorage = playerDataStorage;
+        this.minimapManager = minimapManager;
     }
 
     @EventHandler
@@ -59,5 +62,7 @@ public class PlayerJoinListener implements Listener {
             PremiumStorage.getInstance().isPremium(player.getName());
         });
 
+        //Used to reset /tan minimap
+        minimapManager.removePlayer(player.getUniqueId());
     }
 }

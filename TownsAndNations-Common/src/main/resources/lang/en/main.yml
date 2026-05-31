@@ -250,6 +250,7 @@ language:
   PROPERTY_DELETED: "Property successfully deleted"
   #Spawn command
   SET_SPAWN_COMMAND_DESC: "Set the town spawn"
+  OPEN_MINIMAP_COMMAND_DESC: "Display a minimap of claims"
   SPAWN_SET_SUCCESS: "Spawn set"
   SPAWN_COMMAND_DESC: "Teleport to the town spawn"
   SPAWN_TELEPORTED: "Teleported to the town spawn"

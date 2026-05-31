@@ -8,6 +8,8 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.lang.LangType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
@@ -24,10 +26,25 @@ public final class ChatChunkMapRenderer {
             BiFunction<Integer, Integer, String> clickCommand,
             Map<Integer, Component> extraByDz
     ) {
-        Chunk currentChunk = player.getLocation().getChunk();
+        List<Component> mapLines = getMapLines(player, radius, langType, clickCommand, extraByDz);
 
-        // Envoi de l'en-tête
         player.sendMessage("╭─────────⟢⟐⟣─────────╮");
+        for (Component component : mapLines) {
+            player.sendMessage(component);
+        }
+        player.sendMessage("╰─────────⟢⟐⟣─────────╯");
+    }
+
+    public static List<Component> getMapLines(
+            Player player,
+            int radius,
+            LangType langType,
+            BiFunction<Integer, Integer, String> clickCommand,
+            Map<Integer, Component> extraByDz
+    ) {
+        List<Component> res = new ArrayList<>();
+
+        Chunk currentChunk = player.getLocation().getChunk();
         for (int dz = -radius; dz <= radius; dz++) {
             Component newLine = Component.text("   ");
             for (int dx = -radius; dx <= radius; dx++) {
@@ -40,12 +57,12 @@ public final class ChatChunkMapRenderer {
 
                 newLine = newLine.append(
                         claimedChunk.getMapIcon(langType, ifMiddleOfMap)
-                        .clickEvent(
-                                ClickEvent.clickEvent(
-                                        ClickEvent.Action.RUN_COMMAND,
-                                        ClickEvent.Payload.string(clickCommand.apply(chunkX, chunkZ))
+                                .clickEvent(
+                                        ClickEvent.clickEvent(
+                                                ClickEvent.Action.RUN_COMMAND,
+                                                ClickEvent.Payload.string(clickCommand.apply(chunkX, chunkZ))
+                                        )
                                 )
-                        )
                 );
             }
 
@@ -54,8 +71,8 @@ public final class ChatChunkMapRenderer {
                 newLine = newLine.append(extra);
             }
 
-            player.sendMessage(newLine);
+            res.add(newLine);
         }
-        player.sendMessage("╰─────────⟢⟐⟣─────────╯");
+        return res;
     }
 }
