@@ -32,6 +32,7 @@ language:
   NO_LEADER: "§cNo Leader"
   TOWN_DIPLOMATIC_INVITATION_NO_LEADER: "§cThe town has no leader to interact with diplomatic relations"
   TERRITORY_DIPLOMATIC_INVITATION_NO_LEADER: "§cThis territory has no leader to interact with diplomatic relations"
+  PROPERTY_OVERLAPING: "§cThe property would overlap another existing property"
   PLAYER_PROPERTY_TOO_BIG: "§cThe property is too big. The maximum size is {0} blocks"
   POSITION_NOT_IN_CLAIMED_CHUNK: "§cThe position needs to be in a claimed chunk"
   LANDMARK_ALREADY_CLAIMED: "§cThis landmark is already claimed by §9{0}"
