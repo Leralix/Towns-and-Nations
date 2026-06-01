@@ -22,6 +22,7 @@ public class GeneralChunkSettings {
         allowAction.put(GeneralChunkSetting.HOSTILE_MOB_GRIEF, InteractionStatus.valueOf(configurationSection.getString("hostile_mob", DEFAULT_VALUE)));
         allowAction.put(GeneralChunkSetting.PASSIVE_MOB_GRIEF, InteractionStatus.valueOf(configurationSection.getString("passive_mob", DEFAULT_VALUE)));
         allowAction.put(GeneralChunkSetting.VILLAGER_GRIEF, InteractionStatus.valueOf(configurationSection.getString("villager", DEFAULT_VALUE)));
+        allowAction.put(GeneralChunkSetting.ALLOW_UNAUTHORIZED_PLAYER_MOUNTS, InteractionStatus.valueOf(configurationSection.getString("allow_unauthorized_players_mounts", DEFAULT_VALUE)));
 
     }
 

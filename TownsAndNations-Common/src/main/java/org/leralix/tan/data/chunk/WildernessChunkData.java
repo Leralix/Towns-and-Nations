@@ -128,6 +128,11 @@ public class WildernessChunkData extends ChunkData implements WildernessChunk {
     }
 
     @Override
+    public boolean canUnauthorizedPlayerUseMounts() {
+        return true;
+    }
+
+    @Override
     public ChunkType getType() {
         return ChunkType.WILDERNESS;
     }

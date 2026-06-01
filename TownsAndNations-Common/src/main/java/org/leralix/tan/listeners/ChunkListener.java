@@ -325,7 +325,6 @@ public class ChunkListener implements Listener {
                     event.setCancelled(true);
                 }
             }
-
     }
 
     private static boolean isPassiveMob(Entity entity) {
@@ -339,8 +338,10 @@ public class ChunkListener implements Listener {
                 entity instanceof Donkey ||
                 entity instanceof Fox ||
                 entity instanceof Frog ||
+                entity instanceof HappyGhast ||
                 entity instanceof Horse ||
                 entity instanceof Mule ||
+                entity instanceof Nautilus ||
                 entity instanceof Ocelot ||
                 entity instanceof Parrot ||
                 entity instanceof Pig ||
@@ -454,7 +455,7 @@ public class ChunkListener implements Listener {
     }
 
     @EventHandler
-    public void onVeicleBreak(VehicleDestroyEvent event) {
+    public void onVehicleBreak(VehicleDestroyEvent event) {
 
         if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
             return;

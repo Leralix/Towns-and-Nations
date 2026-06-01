@@ -150,6 +150,11 @@ public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
     }
 
     @Override
+    public boolean canUnauthorizedPlayerUseMounts() {
+        return true;
+    }
+
+    @Override
     public ChunkType getType() {
         return ChunkType.LANDMARK;
     }

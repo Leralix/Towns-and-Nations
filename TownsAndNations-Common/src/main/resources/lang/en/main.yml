@@ -764,6 +764,7 @@ language:
   ENABLE_VILLAGER_GRIEF_SETTING: "§aEnable villager griefing"
   ENABLE_PASSIVE_MOB_GRIEF_SETTING: "§aEnable passive mob griefing"
   ENABLE_HOSTILE_MOB_GRIEF_SETTING: "§aEnable hostile mob griefing"
+  ALLOW_UNAUTHORIZED_PLAYER_MOUNTS_SETTING: "§aEnable unauthorized players mounts"
   GUI_TOWN_CLAIM_SETTINGS_DESC1: "§fCurrent permission: §e{0}"
   GUI_TOWN_CLAIM_SETTINGS_DESC_ADDITIONAL_PLAYERS: "§fAdditional players authorized: §9{0}♣"
   GUI_TOWN_CLAIM_SETTINGS_DESC_ADDITIONAL_RANKS: "§fAdditional ranks authorized: §6{0}"

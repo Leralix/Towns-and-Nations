@@ -507,6 +507,7 @@ chunkGeneralSettings:
   hostile_mob: "PLAYER_CHOICE" #Enderman picking up blocks, Wither breaking blocks...
   passive_mob: "PLAYER_CHOICE" #sheep eating grass
   villager: "PLAYER_CHOICE" #Villager farming
+  allow_unauthorized_players_mounts: "PLAYER_CHOICE_AND_WAR" # If set to true, any player entering a territory riding an unauthorized vehicle will be dismounted.
 
 ########################
 ##    TELEPORTATION   ##

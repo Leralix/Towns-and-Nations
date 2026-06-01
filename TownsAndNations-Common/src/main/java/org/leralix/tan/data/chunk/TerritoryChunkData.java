@@ -279,6 +279,11 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
     }
 
     @Override
+    public boolean canUnauthorizedPlayerUseMounts() {
+        return Constants.getChunkSettings(GeneralChunkSetting.ALLOW_UNAUTHORIZED_PLAYER_MOUNTS).canGrief(getOwnerInternal(), GeneralChunkSetting.ALLOW_UNAUTHORIZED_PLAYER_MOUNTS);
+    }
+
+    @Override
     public void setOccupierID(String occupierID) {
         this.occupierID = occupierID;
     }
