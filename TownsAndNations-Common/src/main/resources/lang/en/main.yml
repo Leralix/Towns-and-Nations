@@ -62,6 +62,7 @@ language:
   DISPLAY_2D_COORDINATES: "§d[x: {0}, z : {1}]"
   GUI_BASIC_NAME: "§a{0}"
   CURRENT_STATE: "§fCurrent state: §a{0}"
+  SET_TRUE_IF_AT_WAR: "§fWill be set to §aEnabled§f during war"
   ENABLED: "§aEnabled"
   DISABLED: "§cDisabled"
   ENTER_NEW_VALUE: "Write the new message or value in the chat"

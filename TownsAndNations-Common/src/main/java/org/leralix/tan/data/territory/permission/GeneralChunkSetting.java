@@ -3,6 +3,7 @@ package org.leralix.tan.data.territory.permission;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
+import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.constants.Constants;
@@ -42,11 +43,10 @@ public enum GeneralChunkSetting {
         if(canBeModified) {
             String status = isEnabled ? Lang.ENABLED.get(lang) : Lang.DISABLED.get(lang);
 
-            List<String> desc = new ArrayList<>();
+            List<FilledLang> desc = new ArrayList<>();
             desc.add(Lang.CURRENT_STATE.get(status));
-            desc.add()
-
-            iconBuilder.setDescription();
+            desc.add(Lang.SET_TRUE_IF_AT_WAR.get());
+            iconBuilder.setDescription(desc);
             iconBuilder.setClickToAcceptMessage(Lang.LEFT_CLICK_TO_MODIFY);
         }
         else {
