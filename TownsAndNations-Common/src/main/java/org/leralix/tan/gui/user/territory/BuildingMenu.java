@@ -80,13 +80,18 @@ public class BuildingMenu extends IteratorGUI {
     }
 
     private @NotNull GuiItem getCreateFortButton() {
+
+        List<FilledLang> desc = new ArrayList<>();
+        desc.add(Lang.CREATE_FORT_DESC1.get(Double.toString(Constants.getFortCost())));
+        desc.add(Lang.CREATE_FORT_DESC2.get(Double.toString(Constants.getFortProtectionRadius())));
+        desc.add(Lang.CREATE_FORT_DESC3.get(Double.toString(Constants.getFortCaptureTime())));
+        if(Constants.enableFortOutpost()){
+            desc.add(Lang.CREATE_FORT_DESC4.get());
+        }
+
         return iconManager.get(IconKey.FORT_BUILDING_ICON)
                 .setName(Lang.CREATE_FORT_ICON.get(langType))
-                .setDescription(
-                        Lang.CREATE_FORT_DESC1.get(Double.toString(Constants.getFortCost())),
-                        Lang.CREATE_FORT_DESC2.get(Double.toString(Constants.getFortProtectionRadius())),
-                        Lang.CREATE_FORT_DESC3.get(Double.toString(Constants.getFortCaptureTime()))
-                )
+                .setDescription(desc)
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
 
