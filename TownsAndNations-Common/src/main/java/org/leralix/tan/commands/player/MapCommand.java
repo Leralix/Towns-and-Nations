@@ -70,8 +70,7 @@ public class MapCommand extends PlayerSubCommand {
         LangType langType = playerDataStorage.get(player).getLang();
         int radius = 4;
         Map<Integer, Component> text = new HashMap<>();
-        Component claimType = Component.text(Lang.MAP_CLAIM_TYPE.get(langType))
-                .color(TextColor.color(0xAAAAAA));
+        Component claimType = Component.text(Lang.MAP_CLAIM_TYPE.get(langType)).color(TextColor.color(0xAAAAAA));
         text.put(-4, claimType);
         Component typeButton = settings.getMapTypeButton(langType);
         text.put(-3, typeButton);

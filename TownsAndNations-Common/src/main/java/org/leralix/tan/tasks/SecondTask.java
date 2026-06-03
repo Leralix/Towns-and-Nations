@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.storage.stored.ClaimStorage;
+import org.leralix.tan.storage.MinimapManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.war.capture.CaptureManager;
 import org.leralix.tan.war.cosmetic.BoundaryRegister;
@@ -16,10 +16,11 @@ import org.leralix.tan.war.cosmetic.ShowBoundaries;
 public class SecondTask {
 
     private final PlayerDataStorage playerDataStorage;
+    private final MinimapManager minimapManager;
 
-
-    public SecondTask(PlayerDataStorage playerDataStorage, ClaimStorage claimStorage){
+    public SecondTask(PlayerDataStorage playerDataStorage, MinimapManager minimapManager){
         this.playerDataStorage = playerDataStorage;
+        this.minimapManager = minimapManager;
     }
 
     public void startScheduler() {
@@ -34,6 +35,7 @@ public class SecondTask {
                         ShowBoundaries.display(player, playerDataStorage.get(player));
                     }
                 }
+                minimapManager.displayMap();
 
             }
         }.runTaskTimer(TownsAndNations.getPlugin(), 0L, 20L);

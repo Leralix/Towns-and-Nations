@@ -30,6 +30,7 @@ import org.leralix.tan.listeners.chat.ChatListener;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.LocalChatStorage;
+import org.leralix.tan.storage.MinimapManager;
 import org.leralix.tan.storage.database.DatabaseHandler;
 import org.leralix.tan.storage.database.MySqlHandler;
 import org.leralix.tan.storage.database.SQLiteHandler;
@@ -245,6 +246,7 @@ public class TownsAndNations extends JavaPlugin {
         EconomyUtil.init(playerDataStorage);
         TanChatUtils.init(playerDataStorage);
         TeamUtils.init(playerDataStorage);
+        MinimapManager minimapManager = new MinimapManager();
 
         this.saveStats = new SaveStats(this);
 
@@ -295,13 +297,13 @@ public class TownsAndNations extends JavaPlugin {
 
         DailyTasks dailyTasks = new DailyTasks(playerDataStorage, Constants.getDailyTaskHour(), Constants.getDailyTaskMinute());
         dailyTasks.scheduleMidnightTask();
-        SecondTask secondTask = new SecondTask(playerDataStorage, claimStorage);
+        SecondTask secondTask = new SecondTask(playerDataStorage, minimapManager);
         secondTask.startScheduler();
         StartOfServerTask.registerTasks(fortStorage, claimStorage, warStorage);
 
         getLogger().log(Level.INFO, "[TaN] -Loading commands");
-        enableEventList();
-        getCommand("tan").setExecutor(new PlayerCommandManager(playerDataStorage, townStorage, regionStorage, nationStorage, localChatStorage));
+        enableEventList(minimapManager);
+        getCommand("tan").setExecutor(new PlayerCommandManager(playerDataStorage, townStorage, regionStorage, nationStorage, localChatStorage, minimapManager));
         getCommand("tanadmin").setExecutor(new AdminCommandManager(playerDataStorage));
         getCommand("tandebug").setExecutor(new DebugCommandManager(saveStats, dailyTasks));
         getCommand("tanserver").setExecutor(new ServerCommandManager(playerDataStorage, townStorage, landmarkStorage));
@@ -392,11 +394,11 @@ public class TownsAndNations extends JavaPlugin {
     /**
      * Enable every event listener of the plugin.
      */
-    private void enableEventList() {
+    private void enableEventList(MinimapManager minimapManager) {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new ChatListener(playerDataStorage), this);
         pluginManager.registerEvents(new ChunkListener(playerDataStorage, claimStorage), this);
-        pluginManager.registerEvents(new PlayerJoinListener(playerDataStorage), this);
+        pluginManager.registerEvents(new PlayerJoinListener(playerDataStorage, minimapManager), this);
         pluginManager.registerEvents(new PlayerEnterChunkListener(playerDataStorage, claimStorage), this);
         pluginManager.registerEvents(new ChatScopeListener(localChatStorage), this);
         pluginManager.registerEvents(new MobSpawnListener(claimStorage), this);

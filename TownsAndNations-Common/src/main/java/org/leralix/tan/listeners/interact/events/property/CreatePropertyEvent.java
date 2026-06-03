@@ -14,13 +14,13 @@ import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TownClaimedChunk;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Town;
-import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.interact.ListenerState;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.utils.territory.PropertyUtil;
 import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -71,19 +71,24 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
 
             Vector3D vector3D = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
 
-            if (Math.abs(position1.getX() - vector3D.getX()) * Math.abs(position1.getY() - vector3D.getY()) * Math.abs(position1.getZ() - vector3D.getZ()) > maxPropertySize) {
+            if (isOverlapingOtherProperty(position1, vector3D)) {
+                TanChatUtils.message(player, Lang.PROPERTY_OVERLAPING.get(langType));
+                return ListenerState.FAILURE;
+            }
+
+            if (isTooBig(vector3D, maxPropertySize)) {
                 TanChatUtils.message(player, Lang.PLAYER_PROPERTY_TOO_BIG.get(langType, Integer.toString(maxPropertySize)));
                 return ListenerState.FAILURE;
             }
-            position2 = vector3D;
 
-            cost = NumberUtil.roundWithDigits(getTotalCost());
+            cost = NumberUtil.roundWithDigits(getTotalCost(vector3D));
             if (EconomyUtil.getBalance(player) < cost) {
                 TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(langType, Double.toString(cost - EconomyUtil.getBalance(player))));
                 return ListenerState.SUCCESS;
             }
             EconomyUtil.removeFromBalance(player, cost);
 
+            position2 = vector3D;
             TanChatUtils.message(player, Lang.PLAYER_SECOND_POINT_SET.get(langType, vector3D.toString()));
             TanChatUtils.message(player, Lang.PLAYER_PLACE_SIGN.get(langType));
             return ListenerState.CONTINUE;
@@ -105,11 +110,45 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
         return ListenerState.SUCCESS;
     }
 
+    private boolean isOverlapingOtherProperty(Vector3D firstPoint, Vector3D secondPoint) {
+        int currentMinX = Math.min(firstPoint.getX(), secondPoint.getX());
+        int currentMaxX = Math.max(firstPoint.getX(), secondPoint.getX());
+
+        int currentMinY = Math.min(firstPoint.getY(), secondPoint.getY());
+        int currentMaxY = Math.max(firstPoint.getY(), secondPoint.getY());
+
+        int currentMinZ = Math.min(firstPoint.getZ(), secondPoint.getZ());
+        int currentMaxZ = Math.max(firstPoint.getZ(), secondPoint.getZ());
+
+        for (PropertyData propertyData : townData.getPropertiesInternal()) {
+            Vector3D location1 = propertyData.getFirstCorner();
+            Vector3D location2 = propertyData.getSecondCorner();
+            int minX = Math.min(location1.getX(), location2.getX());
+            int maxX = Math.max(location1.getX(), location2.getX());
+            int minY = Math.min(location1.getY(), location2.getY());
+            int maxY = Math.max(location1.getY(), location2.getY());
+            int minZ = Math.min(location1.getZ(), location2.getZ());
+            int maxZ = Math.max(location1.getZ(), location2.getZ());
+
+            if (currentMaxX >= minX && currentMinX <= maxX
+                    && currentMaxY >= minY && currentMinY <= maxY
+                    && currentMaxZ >= minZ && currentMinZ <= maxZ
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isTooBig(Vector3D vector3D, int maxPropertySize) {
+        return Math.abs(position1.getX() - vector3D.getX()) * Math.abs(position1.getY() - vector3D.getY()) * Math.abs(position1.getZ() - vector3D.getZ()) > maxPropertySize;
+    }
+
     protected abstract PropertyData createProperty();
 
-    private double getTotalCost() {
+    private double getTotalCost(Vector3D vector3D) {
         double costPerBlock = townData.getTaxOnCreatingProperty();
-        return costPerBlock * position1.getArea(position2);
+        return costPerBlock * position1.getArea(vector3D);
     }
 
 

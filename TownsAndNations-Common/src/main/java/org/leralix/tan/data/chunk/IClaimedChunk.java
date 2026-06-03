@@ -12,8 +12,6 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.lang.LangType;
-import org.tan.api.enums.EChunkPermission;
-import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
 import org.tan.api.interfaces.territory.TanTerritory;
 
@@ -65,6 +63,8 @@ public interface IClaimedChunk extends TanClaimedChunk {
 
     boolean canPassiveGrief();
 
+    boolean canUnauthorizedPlayerUseMounts();
+
     Chunk getChunk();
 
     ChunkType getType();
@@ -72,8 +72,6 @@ public interface IClaimedChunk extends TanClaimedChunk {
     void notifyUpdate();
 
     boolean containsPosition(Vector3D position);
-
-    boolean canPlayerDoAction(TanPlayer tanPlayer, EChunkPermission permission, Location location);
 
     void unclaim();
 

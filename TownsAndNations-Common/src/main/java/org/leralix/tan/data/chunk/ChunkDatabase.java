@@ -182,6 +182,11 @@ public abstract class ChunkDatabase implements DatabaseData<ChunkData>, IClaimed
     }
 
     @Override
+    public boolean canUnauthorizedPlayerUseMounts() {
+        return data.canUnauthorizedPlayerUseMounts();
+    }
+
+    @Override
     public boolean canPlayerDoAction(TanPlayer tanPlayer, EChunkPermission permission, Location location) {
         return data.canPlayerDoAction(tanPlayer, permission, location);
     }
