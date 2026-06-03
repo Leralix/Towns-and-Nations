@@ -57,14 +57,19 @@ public class SudoPlayer extends SubCommand {
                 TanChatUtils.message(commandSender, Lang.PLAYER_NOT_FOUND, SoundEnum.NOT_ALLOWED);
                 return;
             }
-            if (commandSender instanceof Player player && target.getUniqueId().equals(player.getUniqueId())){
-                SudoPlayerStorage.swap(player);
-                return;
+            if (commandSender instanceof Player player) {
+                if (target.getUniqueId().equals(player.getUniqueId())) {
+                    SudoPlayerStorage.swap(player);
+                    return;
+                }
+                if (!player.hasPermission("tan.admin.commands.sudo.other")) {
+                    TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION);
+                    return;
+                }
             }
+            
             SudoPlayerStorage.swap(commandSender, target);
-
-        }
-        else {
+        } else {
             TanChatUtils.message(commandSender, Lang.NOT_ENOUGH_ARGS_ERROR, SoundEnum.NOT_ALLOWED);
             TanChatUtils.message(commandSender, Lang.CORRECT_SYNTAX_INFO);
         }

@@ -231,6 +231,7 @@ permissions:
       tan.admin.commands.reload: true
       tan.admin.commands.setmoney: true
       tan.admin.commands.sudo: true
+      tan.admin.commands.sudo.other: true
       tan.admin.commands.unclaim: true
       tan.admin.commands.saveall: true
       tan.admin.commands.createBackup: true
