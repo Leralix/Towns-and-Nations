@@ -45,7 +45,9 @@ public enum GeneralChunkSetting {
 
             List<FilledLang> desc = new ArrayList<>();
             desc.add(Lang.CURRENT_STATE.get(status));
-            desc.add(Lang.SET_TRUE_IF_AT_WAR.get());
+            if(autoTrueIfWar){
+                desc.add(Lang.SET_TRUE_IF_AT_WAR.get());
+            }
             iconBuilder.setDescription(desc);
             iconBuilder.setClickToAcceptMessage(Lang.LEFT_CLICK_TO_MODIFY);
         }
