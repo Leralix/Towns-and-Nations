@@ -1,7 +1,10 @@
 package org.leralix.tan.data.territory.cosmetic;
 
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
@@ -27,12 +30,24 @@ public class BannerBuilder {
     /**
      * Extract serializable attributes from a Banner block.
      */
-    public BannerBuilder(Material material, List<Pattern> patterns) {
+    public BannerBuilder(Material material, List<Pattern> bannerPattern) {
         this.patterns = new ArrayList<>();
         this.bannerType = material;
 
-        for (Pattern pattern : patterns) {
-            this.patterns.add(new Pair<>(pattern.getColor(), pattern.getPattern().name()));
+        var registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BANNER_PATTERN);
+
+        for (Pattern pattern : bannerPattern) {
+            PatternType type = pattern.getPattern();
+
+            NamespacedKey key = registry.getKey(type);
+            if (key != null) {
+                patterns.add(
+                        new Pair<>(
+                                pattern.getColor(),
+                                key.toString()
+                        )
+                );
+            }
         }
     }
 
@@ -53,24 +68,28 @@ public class BannerBuilder {
         return bannerType;
     }
 
-    public List<Pattern> getPatterns(){
+    public List<Pattern> getPatterns() {
         List<Pattern> patternList = new ArrayList<>();
-        for (Pair<DyeColor, String> patternData : patterns) {
-            if (patternData != null && patternData.second() != null) {
-                PatternType patternType = null;
-                String wanted = patternData.second();
-                for (PatternType pt : PatternType.values()) {
-                    if (pt.name().equals(wanted)) {
-                        patternType = pt;
-                        break;
-                    }
-                }
+        var registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BANNER_PATTERN);
 
-                if (patternType != null) {
-                    patternList.add(new Pattern(patternData.first(), patternType));
-                }
+        for (Pair<DyeColor, String> patternData : patterns) {
+            if (patternData == null || patternData.second() == null) {
+                continue;
             }
+
+            NamespacedKey key = NamespacedKey.fromString(patternData.second());
+            if (key == null) {
+                continue;
+            }
+
+            PatternType bannerPattern = registry.get(key);
+            if (bannerPattern == null) {
+                continue;
+            }
+
+            patternList.add(new Pattern(patternData.first(), bannerPattern));
         }
+
         return patternList;
     }
 }
