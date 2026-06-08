@@ -71,6 +71,7 @@ permissions:
       tan.base.commands.setspawn: true
       tan.base.commands.spawn: true
       tan.base.commands.unclaim: true
+      tan.base.commands.minimap: true
 
   tan.base.commands.borders:
     description: Access to /tan borders
@@ -125,6 +126,10 @@ permissions:
     default: true
 
   tan.base.commands.unclaim:
+    description: Access to /tan unclaim
+    default: true
+
+  tan.base.commands.minimap:
     description: Access to /tan unclaim
     default: true
 

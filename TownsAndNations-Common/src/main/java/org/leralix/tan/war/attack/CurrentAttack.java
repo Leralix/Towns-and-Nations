@@ -11,7 +11,6 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.AttackEndedInternalEvent;
-import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.utils.gameplay.CommandExecutor;
 import org.leralix.tan.war.PlannedAttack;
 import org.leralix.tan.war.info.AttackResultCompleted;
@@ -133,7 +132,7 @@ public abstract class CurrentAttack {
             @Override
             public void run() {
                 bossBar.removeAll();
-                CurrentAttacksStorage.remove(CurrentAttack.this);
+                TownsAndNations.getPlugin().getCurrentAttackStorage().remove(CurrentAttack.this);
             }
         }.runTaskLater(TownsAndNations.getPlugin(), 20L * 20); //Still showing the boss bar for 20s
     }

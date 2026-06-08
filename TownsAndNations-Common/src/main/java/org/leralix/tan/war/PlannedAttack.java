@@ -15,7 +15,6 @@ import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.war.attack.CurrentAttack;
 import org.leralix.tan.war.info.AttackNotYetStarted;
@@ -177,7 +176,7 @@ public class PlannedAttack {
 
     public void startAttack() {
         broadCastMessageWithSound(Lang.ATTACK_START_NOW.get(getWar().getName()), SoundEnum.WAR);
-        CurrentAttacksStorage.startAttack(this, endTime);
+        TownsAndNations.getPlugin().getCurrentAttackStorage().startAttack(this, endTime);
     }
 
     public IconBuilder getAdminIcon(IconManager iconManager, LangType langType, TimeZoneEnum timeZoneEnum) {
@@ -233,7 +232,7 @@ public class PlannedAttack {
             warWarningTask.cancel();
         }
 
-        CurrentAttack currentAttack = CurrentAttacksStorage.get(ID);
+        CurrentAttack currentAttack = TownsAndNations.getPlugin().getCurrentAttackStorage().get(ID);
         if (currentAttack != null) {
             currentAttack.end();
         }

@@ -13,9 +13,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CurrentAttacksStorage {
-    private static final Map<String, CurrentAttack> attackStatusMap = new HashMap<>();
+    private final Map<String, CurrentAttack> attackStatusMap;
 
-    public static void startAttack(PlannedAttack plannedAttack, long endTime) {
+    public CurrentAttacksStorage(){
+        attackStatusMap = new HashMap<>();
+    }
+
+    public void startAttack(PlannedAttack plannedAttack, long endTime) {
 
         if(endTime < 0 ){
             attackStatusMap.put(plannedAttack.getID(), new InfiniteCurrentAttack(plannedAttack));
@@ -25,19 +29,19 @@ public class CurrentAttacksStorage {
         }
     }
 
-    public static void remove(CurrentAttack currentAttacks){
+    public void remove(CurrentAttack currentAttacks){
         attackStatusMap.remove(currentAttacks.getAttackData().getID());
     }
 
-    public static CurrentAttack get(String id) {
+    public CurrentAttack get(String id) {
         return attackStatusMap.get(id);
     }
 
-    public static Collection<CurrentAttack> getAll() {
+    public Collection<CurrentAttack> getAll() {
         return attackStatusMap.values();
     }
 
-    public static void notifyPlayerDeath(ITanPlayer tanPlayer) {
+    public void notifyPlayerDeath(ITanPlayer tanPlayer) {
         for (CurrentAttack currentAttack : attackStatusMap.values()) {
             if (currentAttack.containsPlayer(tanPlayer)) {
                 var role = currentAttack.getAttackData().getRole(tanPlayer);
@@ -56,7 +60,7 @@ public class CurrentAttacksStorage {
      * @param player        The player registering
      * @param tanPlayer     The player data
      */
-    public static void registerPlayer(Player player, ITanPlayer tanPlayer) {
+    public void registerPlayer(Player player, ITanPlayer tanPlayer) {
         for (CurrentAttack currentAttack : attackStatusMap.values()) {
             if (currentAttack.containsPlayer(tanPlayer)) {
                 currentAttack.registerBossBar(player);

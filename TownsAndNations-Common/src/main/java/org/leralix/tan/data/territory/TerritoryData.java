@@ -52,7 +52,6 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
-import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.DonationTransaction;
 import org.leralix.tan.storage.database.transactions.instance.SalaryTransaction;
@@ -361,7 +360,7 @@ public abstract class TerritoryData implements TanTerritory, Territory {
     @Override
     public Collection<CurrentAttack> getCurrentAttacks() {
         Collection<CurrentAttack> res = new ArrayList<>();
-        for (CurrentAttack currentAttack : CurrentAttacksStorage.getAll()) {
+        for (CurrentAttack currentAttack : TownsAndNations.getPlugin().getCurrentAttackStorage().getAll()) {
             if (currentAttack.getAttackData().getWar().getTerritoryRole(this) != WarRole.NEUTRAL) {
                 res.add(currentAttack);
             }

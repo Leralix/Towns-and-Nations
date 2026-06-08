@@ -21,8 +21,11 @@ public class CommandBlocker implements Listener {
 
     private final PlayerDataStorage playerDataStorage;
 
-    public CommandBlocker(PlayerDataStorage playerDataStorage) {
+    private final CurrentAttacksStorage currentAttacksStorage;
+
+    public CommandBlocker(PlayerDataStorage playerDataStorage, CurrentAttacksStorage currentAttacksStorage) {
         this.playerDataStorage = playerDataStorage;
+        this.currentAttacksStorage = currentAttacksStorage;
     }
 
     @EventHandler
@@ -98,7 +101,7 @@ public class CommandBlocker implements Listener {
      * @return true if the command is blacklisted during attacks, false otherwise
      */
     private boolean isPlayerInAnAttack(Player player, String inputCommand) {
-        if (CurrentAttacksStorage.getAll().stream().anyMatch(currentAttack -> currentAttack.containsPlayer(player.getUniqueId()))) {
+        if (currentAttacksStorage.getAll().stream().anyMatch(currentAttack -> currentAttack.containsPlayer(player.getUniqueId()))) {
             for (String blackListedCommands : Constants.getBlacklistedCommandsDuringAttacks()) {
                 if (blackListedCommands.startsWith(inputCommand)) {
                     TanChatUtils.message(player, Lang.CANNOT_CAST_COMMAND_DURING_ATTACK, SoundEnum.NOT_ALLOWED);

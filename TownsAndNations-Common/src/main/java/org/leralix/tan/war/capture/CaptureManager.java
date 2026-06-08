@@ -28,15 +28,22 @@ public class CaptureManager {
 
     private final PlayerDataStorage playerDataStorage;
     private final ClaimStorage claimStorage;
+    private final CurrentAttacksStorage currentAttacksStorage;
 
-    public CaptureManager(PlayerDataStorage playerDataStorage, ClaimStorage claimStorage) {
+    public CaptureManager(PlayerDataStorage playerDataStorage, ClaimStorage claimStorage, CurrentAttacksStorage currentAttacksStorage) {
         this.playerDataStorage = playerDataStorage;
         this.claimStorage = claimStorage;
+        this.currentAttacksStorage = currentAttacksStorage;
     }
 
     public static CaptureManager getInstance() {
         if(instance == null) {
-            instance = new CaptureManager(TownsAndNations.getPlugin().getPlayerDataStorage(), TownsAndNations.getPlugin().getClaimStorage());
+            instance = new CaptureManager(
+                    TownsAndNations.getPlugin().getPlayerDataStorage(),
+                    TownsAndNations.getPlugin().getClaimStorage(),
+                    TownsAndNations.getPlugin().getCurrentAttackStorage()
+
+            );
         }
         return instance;
     }
@@ -47,7 +54,7 @@ public class CaptureManager {
             captureChunk.resetPlayers();
         }
 
-        for (CurrentAttack currentAttack : CurrentAttacksStorage.getAll()) {
+        for (CurrentAttack currentAttack : currentAttacksStorage.getAll()) {
             if(!currentAttack.hasEnded()){
                 handleFortCapture(currentAttack);
                 handleChunkCapture(currentAttack);
@@ -209,9 +216,5 @@ public class CaptureManager {
                 territoryChunk.liberate();
             }
         }
-
-
-
-
     }
 }

@@ -29,6 +29,7 @@ import org.leralix.tan.listeners.*;
 import org.leralix.tan.listeners.chat.ChatListener;
 import org.leralix.tan.listeners.interact.RightClickListener;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
+import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.MinimapManager;
 import org.leralix.tan.storage.database.DatabaseHandler;
@@ -155,6 +156,8 @@ public class TownsAndNations extends JavaPlugin {
      */
     private ClaimStorage claimStorage;
 
+    private CurrentAttacksStorage currentAttacksStorage;
+
     private LocalChatStorage localChatStorage;
 
     private SaveStats saveStats;
@@ -232,6 +235,7 @@ public class TownsAndNations extends JavaPlugin {
             fortStorage = new FortDataStorage();
             claimStorage = new NewClaimedChunkStorage();
         }
+        currentAttacksStorage = new CurrentAttacksStorage();
 
         getLogger().log(Level.INFO, "[TaN] -Loading Economy");
         setupEconomy(playerDataStorage);
@@ -398,7 +402,7 @@ public class TownsAndNations extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new ChatListener(playerDataStorage), this);
         pluginManager.registerEvents(new ChunkListener(playerDataStorage, claimStorage), this);
-        pluginManager.registerEvents(new PlayerJoinListener(playerDataStorage, minimapManager), this);
+        pluginManager.registerEvents(new PlayerJoinListener(playerDataStorage, currentAttacksStorage, minimapManager), this);
         pluginManager.registerEvents(new PlayerEnterChunkListener(playerDataStorage, claimStorage), this);
         pluginManager.registerEvents(new ChatScopeListener(localChatStorage), this);
         pluginManager.registerEvents(new MobSpawnListener(claimStorage), this);
@@ -407,7 +411,7 @@ public class TownsAndNations extends JavaPlugin {
         pluginManager.registerEvents(new FortBannerListener(playerDataStorage, fortStorage), this);
         pluginManager.registerEvents(new LandmarkChestListener(playerDataStorage), this);
         pluginManager.registerEvents(new EconomyInitialiser(), this);
-        pluginManager.registerEvents(new CommandBlocker(playerDataStorage), this);
+        pluginManager.registerEvents(new CommandBlocker(playerDataStorage, currentAttacksStorage), this);
         pluginManager.registerEvents(new AttackListener(playerDataStorage), this);
         pluginManager.registerEvents(new RightClickListener(playerDataStorage), this);
     }
@@ -542,6 +546,10 @@ public class TownsAndNations extends JavaPlugin {
 
     public ClaimStorage getClaimStorage() {
         return claimStorage;
+    }
+
+    public CurrentAttacksStorage getCurrentAttackStorage() {
+        return currentAttacksStorage;
     }
 }
 
