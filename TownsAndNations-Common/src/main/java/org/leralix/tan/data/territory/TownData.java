@@ -88,6 +88,11 @@ public class TownData extends TerritoryData implements Town {
     }
 
     @Override
+    public Collection<TanProperty> getProperties() {
+        return new ArrayList<>(getPropertiesInternal());
+    }
+
+    @Override
     public Collection<TanLandmark> getLandmarksOwned() {
         return List.copyOf(TownsAndNations.getPlugin().getLandmarkStorage().getLandmarkOf(this));
     }
