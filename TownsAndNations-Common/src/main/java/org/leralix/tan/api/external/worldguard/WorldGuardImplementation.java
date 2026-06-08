@@ -74,7 +74,8 @@ public class WorldGuardImplementation {
                  INTERACT_REDSTONE,
                  USE_LEAD,
                  USE_BONE_MEAL,
-                 USE_SHEARS -> Flags.INTERACT;
+                 USE_SHEARS,
+                 USE_EGGS -> Flags.INTERACT;
             case INTERACT_CHEST,
                  INTERACT_FURNACE -> Flags.CHEST_ACCESS;
             case INTERACT_BOAT,
