@@ -250,9 +250,9 @@ language:
   PLAYER_PROPERTY_CREATED: "Property created"
   PLAYER_PROPERTY_SIGN_RELOCATED: "Property sign relocated"
   PROPERTY_DELETED: "Property successfully deleted"
-  #Spawn command
   SET_SPAWN_COMMAND_DESC: "Set the town spawn"
   OPEN_MINIMAP_COMMAND_DESC: "Display a minimap of claims"
+  DEPOSIT_COMMAND_DESC: "Deposit money into a territory"
   SPAWN_SET_SUCCESS: "Spawn set"
   SPAWN_COMMAND_DESC: "Teleport to the town spawn"
   SPAWN_TELEPORTED: "Teleported to the town spawn"

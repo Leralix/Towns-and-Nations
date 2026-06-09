@@ -18,11 +18,11 @@ public class TerritoryUtil {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Territory getTerritory(String id){
-        if(id.startsWith("T")) {
+    public static Territory getTerritory(String id) {
+        if (id.startsWith("T")) {
             return TownsAndNations.getPlugin().getTownStorage().get(id);
         }
-        if(id.startsWith("R")) {
+        if (id.startsWith("R")) {
             return TownsAndNations.getPlugin().getRegionStorage().get(id);
         }
         if (id.startsWith("N")) {
@@ -31,10 +31,10 @@ public class TerritoryUtil {
         return null;
     }
 
-    public static boolean isNameUsed(String name, Collection<? extends Territory> territories){
+    public static boolean isNameUsed(String name, Collection<? extends Territory> territories) {
         String territoryName = name.replace(" ", "-");
-        for(Territory territory : territories){
-            if(territoryName.equals(territory.getName().replace(" ", "-"))){
+        for (Territory territory : territories) {
+            if (territoryName.equals(territory.getName().replace(" ", "-"))) {
                 return true;
             }
         }
@@ -44,11 +44,11 @@ public class TerritoryUtil {
     public static @NotNull List<Territory> getTerritories(BrowseScope scope) {
         List<Territory> territoryList = new ArrayList<>();
 
-        if(scope == BrowseScope.ALL || scope == BrowseScope.TOWNS)
+        if (scope == BrowseScope.ALL || scope == BrowseScope.TOWNS)
             territoryList.addAll(TownsAndNations.getPlugin().getTownStorage().getAll().values());
-        if(scope == BrowseScope.ALL || scope == BrowseScope.REGIONS)
+        if (scope == BrowseScope.ALL || scope == BrowseScope.REGIONS)
             territoryList.addAll(TownsAndNations.getPlugin().getRegionStorage().getAll().values());
-        if(scope == BrowseScope.ALL || scope == BrowseScope.NATIONS)
+        if (scope == BrowseScope.ALL || scope == BrowseScope.NATIONS)
             territoryList.addAll(TownsAndNations.getPlugin().getNationStorage().getAll().values());
         return territoryList;
     }
@@ -74,7 +74,7 @@ public class TerritoryUtil {
     public static void setRelation(Territory proposingTerritory, Territory acceptingTerritory, TownRelation newRelation) {
         TownRelation oldRelation = proposingTerritory.getRelationWith(acceptingTerritory);
 
-        if(oldRelation == newRelation) {
+        if (oldRelation == newRelation) {
             return;
         }
 
@@ -85,4 +85,15 @@ public class TerritoryUtil {
         TeamUtils.updateAllScoreboardColor();
     }
 
+    public static Optional<Territory> getTerritoryFromArgs(ITanPlayer tanPlayer, String message) {
+        return Optional.ofNullable(
+                switch (message) {
+                    case "town" -> tanPlayer.getTown();
+                    case "region" -> tanPlayer.getRegion();
+                    case "nation" -> tanPlayer.getNation();
+                    default -> null;
+                }
+        );
+
+    }
 }

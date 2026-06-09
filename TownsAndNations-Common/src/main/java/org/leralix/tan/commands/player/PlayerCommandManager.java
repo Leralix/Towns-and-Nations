@@ -2,6 +2,7 @@ package org.leralix.tan.commands.player;
 
 import org.leralix.lib.commands.CommandManager;
 import org.leralix.lib.commands.MainHelpCommand;
+import org.leralix.tan.commands.player.territory.DepositCommand;
 import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.MinimapManager;
 import org.leralix.tan.storage.stored.NationStorage;
@@ -38,6 +39,7 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new SetSpawnCommand(playerDataStorage, townStorage, regionStorage, nationStorage));
         addSubCommand(new MainHelpCommand(this));
         addSubCommand(new ShowMinimap(minimapManager));
+        addSubCommand(new DepositCommand(playerDataStorage));
     }
 
     @Override
