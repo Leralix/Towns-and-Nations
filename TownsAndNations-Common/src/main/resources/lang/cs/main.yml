@@ -223,7 +223,6 @@ language:
   PLAYER_PROPERTY_SIGN_TOO_FAR: "§cCedule je příliš daleko od nemovitosti. Musí být maximálně {0} bloků daleko"
   PLAYER_PROPERTY_CREATED: "Nemovitost vytvořena"
   PROPERTY_DELETED: "Nemovitost úspěšně smazána"
-  #Spawn command
   SET_SPAWN_COMMAND_DESC: "Nastavit městský spawn"
   SPAWN_COMMAND_DESC: "Teleportovat se na městský spawn"
   SPAWN_TELEPORTED: "Teleportováno na městský spawn"

@@ -207,7 +207,6 @@ language:
   PLAYER_PROPERTY_SIGN_TOO_FAR: "§cDas Schild ist zu weit vom Grundstück entfernt. Es darf maximal {0} Blöcke entfernt sein"
   PLAYER_PROPERTY_CREATED: "Grundstück erstellt"
   PROPERTY_DELETED: "Grundstück erfolgreich gelöscht"
-  #Spawn command
   SET_SPAWN_COMMAND_DESC: "Setze den Stadt-Spawnpunkt"
   SPAWN_COMMAND_DESC: "Teleportiere zum Stadt-Spawnpunkt"
   SPAWN_TELEPORTED: "Zum Stadt-Spawnpunkt teleportiert"

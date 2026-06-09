@@ -48,6 +48,8 @@ language:
   LANDMARK_UPDATED: "{0} ({1})§f 已更新。"
   LANDMARK_STORED_UPDATED: "{0} ({1})§f 的存储上限已设置为 §e{2}"
   LANDMARK_NOT_FOUND: "§c未找到该地标"
+  #Action bar information
+  FORT_ACTION_BAR_INFO: "§6{0}§f, 领主: {1}"
   #Placeholder API
   INVALID_VALUE: "数值无效"
   INVALID_ID: "ID无效"
@@ -245,7 +247,6 @@ language:
   PLAYER_PROPERTY_CREATED: "房产创建成功"
   PLAYER_PROPERTY_SIGN_RELOCATED: "属性标志已转移"
   PROPERTY_DELETED: "房产已成功删除"
-  #Spawn command
   SET_SPAWN_COMMAND_DESC: "设置城镇重生点"
   SPAWN_SET_SUCCESS: "城镇传送点设置"
   SPAWN_COMMAND_DESC: "传送到城镇重生点"
@@ -296,8 +297,6 @@ language:
   CURRENT_PLAYER_TIME: "§f玩家本地时间：§e{0}"
   GUI_NATION_ICON: "王国"
   GUI_NATION_ICON_DESC1_NATION: "§f当前王国:{0}"
-  GUI_NATION_ICON_DESC2_NATION: "§f王国等级: {0}"
-  GUI_NATION_ICON_DESC1_NO_NATION: "无王国"
   GUI_REGION_ICON: "§a领地"
   GUI_REGION_ICON_DESC1_REGION: "§f当前领地：{0}"
   GUI_REGION_ICON_DESC2_REGION: "§f领地等级：{0}"
@@ -471,6 +470,10 @@ language:
   GUI_INCREASE_10_DESC: "§f按住Shift+点击：§a+10"
   GUI_DECREASE_1_DESC: "§f点击：§c-1"
   GUI_DECREASE_10_DESC: "§f按住Shift+点击：§c-10"
+  #Map command
+  LEFT_CLICK_TO_CLAIM: "§7▶ 左键点击占领"
+  CHUNK_IS_BLACKLISTED: "§c此区块不能被占领"
+  CHUNK_OWNER: "{0}"
   #Chunk settings
   GUI_TOWN_CHUNK_PLAYER: "§a交互权限"
   GUI_TERRITORY_CHUNK_PLAYER: "§a交互权限"
@@ -485,6 +488,7 @@ language:
   GUI_BUILDING_MENU_DESC1: "§f创建和管理建筑"
   CREATE_PUBLIC_PROPERTY_ICON: "§a创建公共建筑"
   CREATE_FORT_ICON: "§a创建新要塞"
+  CREATE_FORT_DESC2: "§f保护范围: §2{0} 块"
   #Wars menu
   GUI_TOWN_ATTACK_TOWN_DESC1: "§c点击宣战"
   DECLARE_WAR_CONFIRM_MESSAGE: "{0}§f 将向 {1}§f 宣战"
@@ -809,6 +813,9 @@ language:
   GUI_SETTINGS_CHANGE_TOWN_MESSAGE_DESC1: "§f当前描述：§7§o\"{0}\""
   TOWN_SET_TAX_IN_CHAT: "输入新的税率"
   CHANGE_MESSAGE_SUCCESS: "描述修改成功"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_OPEN: "§a🔓 自由加入"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§6☑️ 需要审核"
+  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§c🔒 禁止加入"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME: "§a修改名称"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC1: "§f当前名称：§9{0}"
   GUI_SETTINGS_CHANGE_TERRITORY_NAME_DESC3: "§f费用：§6{0}{MONEY_CHAR}"

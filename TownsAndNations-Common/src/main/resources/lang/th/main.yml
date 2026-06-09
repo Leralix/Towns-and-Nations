@@ -63,7 +63,6 @@ language:
   #Ask to join a town
   PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "คุณได้ขอเข้าร่วมเมือง: §9{0}§f คลิกขวาที่เมืองเพื่อยกเลิก"
   PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE: "คุณได้ยกเลิกคำขอของคุณ"
-  PLAYER_TOWN_NOT_RECRUITING: "§cเมืองนี้ไม่รับสมัคร"
   #BROADCAST
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c ได้ออกจากเมือง!PROPERTY_TAX_LINE"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fเมือง §9{0}§f ถูกไล่ออกจากภูมิภาค"
@@ -165,7 +164,6 @@ language:
   PLAYER_PROPERTY_SIGN_TOO_FAR: "§cป้ายอยู่ไกลจากทรัพย์สินเกินไป ต้องอยู่ห่างไม่เกิน {0} บล็อก"
   PLAYER_PROPERTY_CREATED: "สร้างทรัพย์สินสำเร็จ"
   PROPERTY_DELETED: "ลบทรัพย์สินสำเร็จ"
-  #Spawn command
   SET_SPAWN_COMMAND_DESC: "ตั้งจุดเกิดเมือง"
   SPAWN_COMMAND_DESC: "เทเลพอร์ตไปยังจุดเกิดเมือง"
   SPAWN_TELEPORTED: "เทเลพอร์ตไปยังจุดเกิดเมือง"
@@ -256,7 +254,6 @@ language:
   GUI_BACK_ARROW: "กลับ"
   GUI_NEXT_PAGE: "ถัดไป"
   GUI_PREVIOUS_PAGE: "ก่อนหน้า"
-  LEFT_CLICK_TO_CLAIM: "§fคลิกซ้ายเพื่ออ้างสิทธิ์"
   GUI_INCREASE_1_DESC: "§fคลิก: §a+1"
   GUI_INCREASE_10_DESC: "§fShift + คลิก: §a+10"
   GUI_DECREASE_1_DESC: "§fคลิก: §c-1"
@@ -309,8 +306,6 @@ language:
   GUI_TOWN_INFO_DESC5_REGION: "§fภูมิภาค: §b{0}"
   GUI_TOWN_INFO_DESC5_NO_REGION: "§fไม่มีภูมิภาค"
   GUI_TOWN_INFO_TOWN_RELATION: "§fความสัมพันธ์ปัจจุบันกับเมือง: §e{0}"
-  GUI_TOWN_INFO_IS_RECRUITING: "§fรับสมัคร: §aเปิด"
-  GUI_TOWN_INFO_IS_NOT_RECRUITING: "§fรับสมัคร: §cปิด"
   GUI_TOWN_INFO_LEFT_CLICK_TO_JOIN: "§fคลิกซ้ายเพื่อสมัครเข้าร่วมเมือง"
   GUI_TOWN_INFO_RIGHT_CLICK_TO_CANCEL: "§cคลิกขวาเพื่อยกเลิกคำขอของคุณ"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fคลิกซ้ายเพื่อ§a ยอมรับ"
@@ -438,9 +433,6 @@ language:
   GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST: "เมืองหลวงภูมิภาคของคุณตอนนี้คือ §b{0}"
   TOWN_SET_TAX_IN_CHAT: "พิมพ์ภาษีใหม่"
   CHANGE_MESSAGE_SUCCESS: "เปลี่ยนข้อความสำเร็จ"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION: "§aแก้ไขคำขอเข้าร่วมเมือง"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT: "§fเมือง §aรับ§f คำขอ"
-  GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT: "§fเมือง §cไม่รับ§f คำขอ"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR: "§aเปลี่ยนสีชังก์"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC1: "§fเปลี่ยนสีของชังก์ที่อ้างสิทธิ์บนแผนที่"
   GUI_TOWN_SETTINGS_CHANGE_CHUNK_COLOR_DESC2: "§fสีปัจจุบัน: §9{0}"
@@ -627,5 +619,3 @@ language:
   NEWSLETTER_JOIN_REGION_PROPOSAL: "§fข้อเสนอเข้าร่วมภูมิภาค"
   NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1: "{0}§f ขอให้ {1}§f เข้าร่วมภูมิภาคของพวกเขา"
   NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2: "§fคลิกซ้ายเพื่อเปิดข้อเสนอ"
-  #Chunk blacklist
-  CHUNK_IS_BLACKLISTED: "§cคุณไม่สามารถอ้างสิทธิ์ชังก์นี้ได้"

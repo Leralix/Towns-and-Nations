@@ -7,6 +7,7 @@ language:
   #Common errors
   PLAYER_NO_TOWN: "§cУ вас нет своего города"
   PLAYER_NO_REGION: "§cУ вас нет региона"
+  PLAYER_NO_NATION: "§cУ Вас нет нации"
   VALUE_EXCEED_MAXIMUM_ERROR: "§cЗначение превышает максимально допустимое ({0})"
   VALUE_CANNOT_BE_NEGATIVE_ERROR: "§cЗначение не может быть отрицательным"
   TOWN_NO_REGION: "§cВаш город не относится к какому-либо региону"
@@ -23,11 +24,13 @@ language:
   PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION: "§cТолько глава города может выполнить это действие"
   CHUNK_NOT_CLAIMED: "§cЭтот чанк не захвачен"
   CANT_KICK_REGIONAL_CAPITAL: "§cВы не можете убрать столицу региона за её пределами"
+  CANT_KICK_NATION_CAPITAL: "§cВы не можете лишить нацию столицы"
   CONFIRM_VASSAL_KICK: "{0} §cБольше не является частью {1}"
   MESSAGE_NOT_RIGHT_SIZE: "§cСообщение должно быть длиной от {0} - {1}"
   NO_TRADE_ALLOWED_EMBARGO: "§cВы не можете торговаться с городом, на который наложен эмбарго"
   NO_LEADER: "§cНет главы"
   TOWN_DIPLOMATIC_INVITATION_NO_LEADER: "§cВ городе нет главы для поддержки дипломатических отношений"
+  TERRITORY_DIPLOMATIC_INVITATION_NO_LEADER: "§cУ этой территории нет лидеров для дипломатических отношений"
   PLAYER_PROPERTY_TOO_BIG: "§cСобственность слишком большая. Максимальное количество блоков - {0}"
   POSITION_NOT_IN_CLAIMED_CHUNK: "§cЭто место должно быть в захваченном чанке"
   LANDMARK_ALREADY_CLAIMED: "§cМесторождение уже занято §9{0}"
@@ -45,6 +48,8 @@ language:
   LANDMARK_UPDATED: "{0} ({1})§f обновлено."
   LANDMARK_STORED_UPDATED: "{0} ({1})§f установлен лимит на §e{2}"
   LANDMARK_NOT_FOUND: "§cМесторождение не найдено"
+  #Action bar information
+  FORT_ACTION_BAR_INFO: "§6{0}§f, владелец: {1}"
   #Placeholder API
   INVALID_VALUE: "Неверное значение"
   INVALID_ID: "Неверный ID"
@@ -64,6 +69,7 @@ language:
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§9[{0}]§f <{1}> {2}"
   CHAT_SCOPE_REGION_MESSAGE: "§b[{0}]§f <{1}> {2}"
+  CHAT_SCOPE_NATION_MESSAGE: "§6[{0}]§f <{1}> {2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Альянс - {0}]§3 {1}: §f{2}"
   #Update needed
   NEW_VERSION_AVAILABLE: "§cДоступна новая версия: §f{0}"
@@ -88,6 +94,7 @@ language:
   SYNTAX_ERROR: "§cНекорректный синтаксис"
   SYNTAX_ERROR_AMOUNT: "§cНекорректный синтаксис для суммы"
   CORRECT_SYNTAX_INFO: "§cКорректный синтаксис: {0}"
+  MESSAGE_TOO_SHORT: "§cСообщение слишком короткое: {0} мин"
   MESSAGE_TOO_LONG: "§cСообщение слишком длинное: максимум {0}"
   CANCELLED_ACTION: "§cДействие отменено"
   #Cancel
@@ -99,6 +106,7 @@ language:
   #BROADCAST
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c покинул город!"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fГород §9{0}§f был исключён из региона"
+  GUI_NATION_KICK_REGION_BROADCAST: "§fРегион §b{0}§f был изгнан из нации"
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Захват пустого чанка"
   CHUNK_ALREADY_CLAIMED_WARNING: "§cЭтот чанк уже занят: §9{0}"
@@ -124,11 +132,14 @@ language:
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f присоединился к городу !"
   #Relation diplomatique
   DIPLOMATIC_INVITATION_SENT_SUCCESS: "Предложение отправлено: {0}"
+  CANNOT_REMOVE_RELATION_WAR: "§cВы не можете изменить отношения во время войны с этой территорией"
   CURRENT_RELATION_REQUIRES_TRUCE: "§cТекущее отношение требует перемирия §6{0} часов§c. Сначала установите нейтральное отношение."
   CANNOT_SET_RELATION_TO_NEGATIVE_WHILE_TRUCE: "§cУ вас еще §6{0} часов§c перемирия с {1}."
   ACCEPTED_VASSALISATION_PROPOSAL_ALL: "{0}§f присоединился к региону {1}"
+  NATION_ACCEPTED_VASSALISATION_PROPOSAL_ALL: "{0}§f присоединился к нации {1}"
   #Diplomatic relation confirmation
   REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f пригласил {1}§f вступить в регион"
+  NATION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f пригласил {1}§f присоединиться к нации"
   #Autoclaim command
   TOWN_AUTO_CLAIM_DESC: "§fВключить автоматический захват чанков при движении между ними"
   AUTO_CLAIM_ON_FOR: "§fАвтоматический захват включен для: §9{0}"
@@ -140,6 +151,7 @@ language:
   CHAT_SCOPE_NOT_FOUND: "§cОбласть чата не найдена"
   CITY_SCOPE: "town"
   REGION_SCOPE: "region"
+  NATION_SCOPE: "нация"
   ALLIANCE_SCOPE: "alliance"
   GLOBAL_SCOPE: "global"
   #See border command
@@ -184,6 +196,15 @@ language:
   ADMIN_OPEN_GUI: "Открыть интерфейс админа"
   ADMIN_RELOAD_COMMAND: "Перезагрузить плагин"
   ADMIN_SUDO_COMMAND: "Дать игроку возможность обходить защиту чанков"
+  ADMIN_NAME_FILTER_DESC: "Управление списком фильтрации названий"
+  ADMIN_NAME_FILTER_RELOADED: "Фильтрация названий перезагружена."
+  ADMIN_NAME_FILTER_LIST_EMPTY: "Список фильтрации названий пуст."
+  ADMIN_NAME_FILTER_LIST_HEADER: "Запрещённых для названий слов ({0}):"
+  ADMIN_NAME_FILTER_ADD_SUCCESS: "Добавлено запрещённых слов: {0}"
+  ADMIN_NAME_FILTER_ADD_FAILED: "Не удалось добавить запрещённое слово: {0}"
+  ADMIN_NAME_FILTER_REMOVE_SUCCESS: "Удалено запрещённое слово: {0}"
+  ADMIN_NAME_FILTER_REMOVE_FAILED: "Запрещённое слово не найдено (или не удалось удалить): {0}"
+  ADMIN_NAME_FILTER_NOT_AVAILABLE: "Фильтр имен не доступен в этой версии плагина."
   ##Debug commands
   DEBUG_SAVE_ALL_DATA: "Сохранить всю статистику"
   DEBUG_CREATE_BACKUP: "Создать бэкап данных плагина."
@@ -211,6 +232,8 @@ language:
   PLAYER_NOT_ENOUGH_MONEY_EXTENDED: "§cУ вас недостаточно монет. Вам нужно ещё {0}{MONEY_CHAR} монет"
   TERRITORY_NOT_ENOUGH_MONEY: "{0}§c не хватает денег для выполнения этого действия. Требуется {1}{MONEY_CHAR}"
   NAME_ALREADY_USED: "§cЭто имя уже используется"
+  NAME_FILTER_BLOCKED_NAME: "§cЭто имя содержит запрещённые слова. Пожалуйста, выберите другое имя."
+  PLAYER_WRITE_TOWN_NAME_IN_CHAT: "Напишите название города в чате"
   PLAYER_WRITE_QUANTITY_IN_CHAT: "Напишите количество в чат"
   TOWN_RETRIEVE_MONEY_SUCCESS: "§Вы успешно вернули §6{0}{MONEY_CHAR}§a из города"
   TOWN_SET_TAX_SUCCESS: "§aВы успешно установили налог на §6{0}{MONEY_CHAR}"
@@ -222,9 +245,10 @@ language:
   PLAYER_PLACE_SIGN: "Нажмите ПКМ, чтобы установить табличку на вершине блока"
   PLAYER_PROPERTY_SIGN_TOO_FAR: "§cТабличка слишком далеко от собственности. Она должна быть не дальше чем на {0} блоков"
   PLAYER_PROPERTY_CREATED: "Собственность создана"
+  PLAYER_PROPERTY_SIGN_RELOCATED: "Знак собственности перемещен"
   PROPERTY_DELETED: "Собственность удалена"
-  #Spawn command
   SET_SPAWN_COMMAND_DESC: "Установить точку появления города"
+  SPAWN_SET_SUCCESS: "Установить спавн"
   SPAWN_COMMAND_DESC: "Телепортация в точку появления города"
   SPAWN_TELEPORTED: "Телепортирован в точку появления города"
   #Town Relations
@@ -268,6 +292,7 @@ language:
   GUI_SERVER_TIME: "§aДата"
   CURRENT_SERVER_TIME: "§fВремя сервера: §e{0}"
   CURRENT_PLAYER_TIME: "§fВремя игрока: §e{0}"
+  GUI_NATION_ICON: "§aНация"
   GUI_REGION_ICON: "§aРегион"
   GUI_REGION_ICON_DESC1_REGION: "§fТекущий регион: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fРанг региона: {0}"
@@ -859,6 +884,7 @@ language:
   PLAYER_ENTER_LANDMARK_CHUNK: "§fТерритория: §6Месторождение"
   PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION: "Вы не можете войти в {0}§f, потому что ваше отношение к территории – {1}"
   CHUNK_ENTER_TOWN_AT_WAR: "§cВы в состоянии войны с этим городом. Игроки этого города знают, что вы пересекли границу"
+  CHUNK_INTRUSION_ALERT: "§c{1} ({0}) вошел в ваши границы"
   WILDERNESS_NO_PERMISSION: "§cУ вас нет права делать это в вольных землях"
   #History
   HISTORY_TOWN_LEADER_CHANGED: "{0} сменил главу города с {1} на {2}"
