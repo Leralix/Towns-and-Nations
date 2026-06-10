@@ -145,6 +145,9 @@ public class Constants {
     private static boolean cancelTeleportOnMoveHead;
     private static boolean cancelTeleportOnMovePosition;
     private static boolean cancelTeleportOnDamage;
+    private static boolean allowShareOfTeleportation;
+    private static boolean allowFortTeleport;
+    private static boolean allowFortTeleportDuringWar;
 
     //Storage
     private static boolean useRedis;
@@ -311,6 +314,9 @@ public class Constants {
         cancelTeleportOnMoveHead = config.getBoolean("cancelTeleportOnMoveHead", false);
         cancelTeleportOnMovePosition = config.getBoolean("cancelTeleportOnMovePosition", true);
         cancelTeleportOnDamage = config.getBoolean("cancelTeleportOnDamage", true);
+        allowShareOfTeleportation = config.getBoolean("allowShareOfTeleportation", true);
+        allowFortTeleport = config.getBoolean("allowFortTeleport", true);
+        allowFortTeleportDuringWar = config.getBoolean("allowFortTeleportDuringWar", false);
 
         //Storage
         useRedis = config.getString("inGameStorageType", "RAM").equalsIgnoreCase("redis");
@@ -757,6 +763,18 @@ public class Constants {
 
     public static boolean isCancelTeleportOnDamage() {
         return cancelTeleportOnDamage;
+    }
+
+    public static boolean allowShareOfTeleportation() {
+        return allowShareOfTeleportation;
+    }
+
+    public static boolean allowFortTeleport() {
+        return allowFortTeleport;
+    }
+
+    public static boolean allowFortTeleportDuringWar() {
+        return allowFortTeleportDuringWar;
     }
 
     public static boolean isUseRedis() {

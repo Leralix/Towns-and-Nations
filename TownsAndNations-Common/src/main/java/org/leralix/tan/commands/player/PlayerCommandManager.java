@@ -3,12 +3,10 @@ package org.leralix.tan.commands.player;
 import org.leralix.lib.commands.CommandManager;
 import org.leralix.lib.commands.MainHelpCommand;
 import org.leralix.tan.commands.player.territory.DepositCommand;
+import org.leralix.tan.commands.player.territory.TeleportCommand;
 import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.MinimapManager;
-import org.leralix.tan.storage.stored.NationStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionStorage;
-import org.leralix.tan.storage.stored.TownStorage;
+import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.constants.Constants;
 
 public class PlayerCommandManager extends CommandManager {
@@ -18,6 +16,7 @@ public class PlayerCommandManager extends CommandManager {
             TownStorage townStorage,
             RegionStorage regionStorage,
             NationStorage nationStorage,
+            FortStorage fortStorage,
             LocalChatStorage localChatStorage,
             MinimapManager minimapManager
     ){
@@ -40,6 +39,7 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new MainHelpCommand(this));
         addSubCommand(new ShowMinimap(minimapManager));
         addSubCommand(new DepositCommand(playerDataStorage));
+        addSubCommand(new TeleportCommand(playerDataStorage, townStorage, fortStorage));
     }
 
     @Override

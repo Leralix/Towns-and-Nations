@@ -45,13 +45,4 @@ public interface TownStorage extends IterritoryStorage<Town> {
     }
 
     void save();
-
-    default Town getByName(String townName){
-        for(Town town: getAll().values()){
-            if(town.getName().replace(" ", "-").equals(townName)){
-                return town;
-            }
-        }
-        return null;
-    }
 }

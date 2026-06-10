@@ -147,6 +147,10 @@ permissions:
     description: deposit money into territory
     default: true
 
+  tan.base.commands.teleport:
+    description: deposit money into territory
+    default: true
+
   # =========================
   # TOWNS
   # =========================

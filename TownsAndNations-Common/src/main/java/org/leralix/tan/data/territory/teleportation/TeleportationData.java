@@ -4,11 +4,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.position.Vector3DWithOrientation;
-import org.leralix.tan.data.territory.TerritoryData;
 import org.leralix.tan.data.territory.relation.TownRelation;
 
-import java.util.HashSet;
-import java.util.Set;
 
 
 public class TeleportationData {
@@ -17,11 +14,8 @@ public class TeleportationData {
 
     private TownRelation relationTeleportationAllowed;
 
-    private Set<String> authorizedTerritoryIds;
-
     public TeleportationData() {
         relationTeleportationAllowed = TownRelation.ALLIANCE;
-        authorizedTerritoryIds = new HashSet<>();
     }
 
     public void setPosition(Location position) {
@@ -57,20 +51,5 @@ public class TeleportationData {
 
     public boolean isSpawnSet() {
         return position != null;
-    }
-
-    private Set<String> getAuthorizedTerritoryIds() {
-        if (authorizedTerritoryIds == null) {
-            authorizedTerritoryIds = new HashSet<>();
-        }
-        return authorizedTerritoryIds;
-    }
-
-    private boolean isTerritoryAuthorized(String territoryId) {
-        return getAuthorizedTerritoryIds().contains(territoryId);
-    }
-
-    public boolean addAuthorizedTerritory(TerritoryData territoryData) {
-        return getAuthorizedTerritoryIds().add(territoryData.getID());
     }
 }

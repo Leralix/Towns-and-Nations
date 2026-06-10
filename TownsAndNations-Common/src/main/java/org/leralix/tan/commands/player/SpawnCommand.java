@@ -80,11 +80,8 @@ public class SpawnCommand extends AbstractSpawnCommand {
             return;
         }
 
-        TeleportationRegister.teleportToTownSpawn(playerData, territoryData);
-
-
+        TeleportationRegister.teleportToSpawn(playerData, territoryData);
     }
-
 }
 
 

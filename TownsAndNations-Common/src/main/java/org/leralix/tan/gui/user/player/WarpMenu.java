@@ -41,7 +41,7 @@ public class WarpMenu extends IteratorGUI {
                     .setName(territoryData.getColoredName())
                     .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                     .setAction(action -> {
-                        TeleportationRegister.teleportToTownSpawn(tanPlayer, territoryData);
+                        TeleportationRegister.teleportToSpawn(tanPlayer, territoryData);
                         player.closeInventory();
                     })
                     .asGuiItem(player, langType));

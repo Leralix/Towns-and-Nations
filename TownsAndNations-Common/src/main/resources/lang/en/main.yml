@@ -50,6 +50,7 @@ language:
   LANDMARK_UPDATED: "{0} ({1})§f has been updated."
   LANDMARK_STORED_UPDATED: "{0} ({1})§f has been set limit to §e{2}"
   LANDMARK_NOT_FOUND: "§cLandmark not found"
+  CANNOT_TELEPORT_TO_FORT_WHILE_AT_WAR: "§cCannot teleport to fort while at war"
   #Action bar information
   FORT_ACTION_BAR_INFO: "§6{0}§f, owned by : {1}"
   #Placeholder API

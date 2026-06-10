@@ -8,6 +8,7 @@ import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public interface FortStorage {
 
@@ -82,5 +83,16 @@ public interface FortStorage {
 
     default boolean isNameUsed(String name){
         return TerritoryUtil.isNameUsed(name, getForts());
+    }
+
+    default Optional<Fort> getTerritoryByName(String name){
+        for(Fort fort : getForts()){
+            if(fort.getName().replace(" ", "-").equals(name)){
+                return Optional.of(fort);
+            }
+        }
+        return Optional.empty();
+
+
     }
 }

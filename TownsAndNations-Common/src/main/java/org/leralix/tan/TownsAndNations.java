@@ -307,7 +307,15 @@ public class TownsAndNations extends JavaPlugin {
 
         getLogger().log(Level.INFO, "[TaN] -Loading commands");
         enableEventList(minimapManager);
-        getCommand("tan").setExecutor(new PlayerCommandManager(playerDataStorage, townStorage, regionStorage, nationStorage, localChatStorage, minimapManager));
+        getCommand("tan").setExecutor(new PlayerCommandManager(
+                playerDataStorage,
+                townStorage,
+                regionStorage,
+                nationStorage,
+                fortStorage,
+                localChatStorage,
+                minimapManager)
+        );
         getCommand("tanadmin").setExecutor(new AdminCommandManager(playerDataStorage));
         getCommand("tandebug").setExecutor(new DebugCommandManager(saveStats, dailyTasks));
         getCommand("tanserver").setExecutor(new ServerCommandManager(playerDataStorage, townStorage, landmarkStorage));

@@ -4,7 +4,10 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.Nameable;
 import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.DiplomacyProposalAcceptedInternalEvent;
@@ -95,6 +98,24 @@ public class TerritoryUtil {
                     default -> null;
                 }
         );
+
+    }
+
+    public static Optional<Territory> getTerritoryByName(String name) {
+
+        Optional<Town> townData = TownsAndNations.getPlugin().getTownStorage().getByName(name);
+        if(townData.isPresent()){
+            return Optional.of(townData.get());
+        }
+        Optional<Region> regionData = TownsAndNations.getPlugin().getRegionStorage().getByName(name);
+        if(regionData.isPresent()){
+            return Optional.of(regionData.get());
+        }
+        Optional<Nation> nationData = TownsAndNations.getPlugin().getNationStorage().getByName(name);
+        if(nationData.isPresent()){
+            return Optional.of(nationData.get());
+        }
+        return Optional.empty();
 
     }
 }

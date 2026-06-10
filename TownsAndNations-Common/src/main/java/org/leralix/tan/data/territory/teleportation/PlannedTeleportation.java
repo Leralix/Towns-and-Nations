@@ -5,7 +5,7 @@ public class PlannedTeleportation {
     private final TeleportationData teleportationPosition;
     private boolean isCancelled;
 
-    public PlannedTeleportation(TeleportationData teleportationPosition){
+    public PlannedTeleportation(TeleportationData teleportationPosition) {
         this.teleportationPosition = teleportationPosition;
         this.isCancelled = false;
     }
@@ -17,7 +17,8 @@ public class PlannedTeleportation {
     public boolean isCancelled() {
         return isCancelled;
     }
-    public void setCancelled(Boolean bool){
+
+    public void setCancelled(Boolean bool) {
         this.isCancelled = bool;
     }
 
