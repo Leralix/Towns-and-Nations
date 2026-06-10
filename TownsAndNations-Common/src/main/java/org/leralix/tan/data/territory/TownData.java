@@ -46,19 +46,12 @@ public class TownData extends TerritoryData implements Town {
     private UUID UuidLeader;
     private String townTag;
 
-    /**
-     * @deprecated replaced by {@code recruitingPolicy}
-     */
-    @Deprecated(since = "0.19.0")
-    private boolean isRecruiting;
-
     private RecruitingPolicy recruitingPolicy;
 
     private final Set<UUID> PlayerJoinRequestSet;
     private Map<String, PropertyData> propertyDataMap;
     private final Set<UUID> townPlayerListId;
     private Vector2D capitalLocation;
-
 
     public TownData(String townId, String townName) {
         this(townId, townName, null);
@@ -69,6 +62,7 @@ public class TownData extends TerritoryData implements Town {
         this.PlayerJoinRequestSet = new HashSet<>();
         this.townPlayerListId = new HashSet<>();
         this.recruitingPolicy = RecruitingPolicy.APPLICATION_OPEN;
+        this.propertyDataMap = new HashMap<>();
 
         if (leader != null) {
             this.UuidLeader = leader.getID();

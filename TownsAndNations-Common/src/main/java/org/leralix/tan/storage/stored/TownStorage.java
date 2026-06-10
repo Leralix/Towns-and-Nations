@@ -7,9 +7,8 @@ import org.leralix.tan.data.territory.Town;
 import org.tan.api.interfaces.buildings.TanProperty;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-public interface TownStorage extends IterritoryStorage {
+public interface TownStorage extends IterritoryStorage<Town> {
 
     Town newTown(String townName, @Nullable ITanPlayer tanPlayer);
 
@@ -24,8 +23,6 @@ public interface TownStorage extends IterritoryStorage {
     }
 
     Town get(String townId);
-
-    Map<String, Town> getAll();
 
     default int getNumberOfTown() {
         return getAll().size();

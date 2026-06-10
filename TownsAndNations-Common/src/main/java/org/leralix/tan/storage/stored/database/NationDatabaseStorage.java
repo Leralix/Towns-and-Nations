@@ -1,10 +1,12 @@
 package org.leralix.tan.storage.stored.database;
 
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.*;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.NationStorage;
 import org.leralix.tan.utils.constants.database.RedisConfig;
-import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.file.FileUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,23 +37,20 @@ public class NationDatabaseStorage extends DatabaseStorage<NationDatabase, Natio
 
     @Override
     public Nation newNation(String name, @NotNull Region capital) {
-        NationData newNation = new NationData("N" + getNextID(), name, capital.getLeaderData(), capital);
+        ITanPlayer newLeader = capital.getLeaderData();
+        NationData newNation = new NationData("N" + getNextID(), name, newLeader, capital);
         databaseManager.save(newNation);
+
         Nation loadedNation = getOrLoad(newNation.getID(), this::load);
 
         capital.setOverlord(loadedNation);
+        FileUtil.addLineToHistory(Lang.NATION_CREATED_NEWSLETTER.get(newLeader.getNameStored(), name));
         return loadedNation;
     }
 
     @Override
     public Nation get(String nationID) {
         return getOrLoad(nationID, this::load);
-    }
-
-
-    @Override
-    public boolean isNameUsed(String name) {
-        return TerritoryUtil.isNameUsed(name, databaseManager.getAll());
     }
 
     @Override

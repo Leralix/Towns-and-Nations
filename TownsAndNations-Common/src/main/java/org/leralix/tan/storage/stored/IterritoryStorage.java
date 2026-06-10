@@ -1,7 +1,16 @@
 package org.leralix.tan.storage.stored;
 
-public interface IterritoryStorage {
+import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
-    boolean isNameUsed(String name);
+import java.util.Map;
+
+public interface IterritoryStorage<U extends Territory> {
+
+    Map<String, U> getAll();
+
+    default boolean isNameUsed(String name){
+        return TerritoryUtil.isNameUsed(name, getAll().values());
+    }
 
 }

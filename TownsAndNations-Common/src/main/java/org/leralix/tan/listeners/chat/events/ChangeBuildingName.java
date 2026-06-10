@@ -28,6 +28,7 @@ public class ChangeBuildingName extends ChatListenerEvent {
             return false;
         }
 
+
         propertyToRename.setName(message);
         TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(playerData));
         openGui(guiCallback, player);

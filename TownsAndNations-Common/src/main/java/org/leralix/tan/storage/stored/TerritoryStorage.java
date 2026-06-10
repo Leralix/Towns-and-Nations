@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.storage.stored.json.JsonStorage;
-import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 import java.lang.reflect.Type;
 
@@ -15,10 +14,6 @@ public abstract class TerritoryStorage<T extends Territory> extends JsonStorage<
     protected TerritoryStorage(String fileName, Type type, Gson gson) {
         super(fileName, type, gson);
         this.nextID = getNextID();
-    }
-
-    public boolean isNameUsed(String name) {
-        return TerritoryUtil.isNameUsed(name, getAll().values());
     }
 
     protected @NotNull String generateNextID(String prefix) {
