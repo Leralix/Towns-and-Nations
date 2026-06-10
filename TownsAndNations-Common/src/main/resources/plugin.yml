@@ -72,6 +72,8 @@ permissions:
       tan.base.commands.spawn: true
       tan.base.commands.unclaim: true
       tan.base.commands.minimap: true
+      tan.base.commands.deposit: true
+
 
   tan.base.commands.borders:
     description: Access to /tan borders
@@ -139,6 +141,10 @@ permissions:
 
   tan.base.commands.gui:
     description: Access to /tan gui
+    default: true
+
+  tan.base.commands.deposit:
+    description: deposit money into territory
     default: true
 
   # =========================

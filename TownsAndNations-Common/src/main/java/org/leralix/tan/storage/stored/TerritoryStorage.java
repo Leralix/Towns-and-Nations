@@ -7,7 +7,7 @@ import org.leralix.tan.storage.stored.json.JsonStorage;
 
 import java.lang.reflect.Type;
 
-public abstract class TerritoryStorage<T extends Territory> extends JsonStorage<T> implements IterritoryStorage {
+public abstract class TerritoryStorage<T extends Territory> extends JsonStorage<T> implements IterritoryStorage<T> {
 
     private int nextID;
 

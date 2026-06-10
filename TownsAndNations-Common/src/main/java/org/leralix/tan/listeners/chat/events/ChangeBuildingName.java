@@ -1,6 +1,7 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.Building;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.Lang;
@@ -28,6 +29,10 @@ public class ChangeBuildingName extends ChatListenerEvent {
             return false;
         }
 
+        if(TownsAndNations.getPlugin().getFortStorage().isNameUsed(message)){
+            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(playerData));
+            return false;
+        }
 
         propertyToRename.setName(message);
         TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(playerData));

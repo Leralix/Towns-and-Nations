@@ -2,6 +2,7 @@ package org.leralix.tan.utils.gameplay;
 
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.Nameable;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.relation.TownRelation;
@@ -31,9 +32,9 @@ public class TerritoryUtil {
         return null;
     }
 
-    public static boolean isNameUsed(String name, Collection<? extends Territory> territories) {
+    public static boolean isNameUsed(String name, Collection<? extends Nameable> instances) {
         String territoryName = name.replace(" ", "-");
-        for (Territory territory : territories) {
+        for (Nameable territory : instances) {
             if (territoryName.equals(territory.getName().replace(" ", "-"))) {
                 return true;
             }

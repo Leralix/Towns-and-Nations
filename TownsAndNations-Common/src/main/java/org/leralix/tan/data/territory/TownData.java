@@ -264,9 +264,6 @@ public class TownData extends TerritoryData implements Town {
 
     @Override
     public RecruitingPolicy getRecruitingPolicy() {
-        if(recruitingPolicy == null){
-            recruitingPolicy = isRecruiting ? RecruitingPolicy.APPLICATION_OPEN : RecruitingPolicy.CLOSED;
-        }
         return recruitingPolicy;
     }
 
