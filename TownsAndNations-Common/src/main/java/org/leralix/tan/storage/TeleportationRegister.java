@@ -114,7 +114,8 @@ public class TeleportationRegister {
     public static void teleportToFort(Player player, ITanPlayer tanPlayer, Fort fortData) {
         LangType langType = tanPlayer.getLang();
 
-        EnableTownSpawn enableTownSpawn = fortData.getOwner().getNewLevel().getStat(EnableTownSpawn.class);
+        Territory territory = fortData.getOwner();
+        EnableTownSpawn enableTownSpawn = territory.getNewLevel().getStat(EnableTownSpawn.class);
         //Spawn Unlocked
         if (!enableTownSpawn.isEnabled()) {
             TanChatUtils.message(player, Lang.SPAWN_NOT_UNLOCKED.get(langType));
@@ -131,6 +132,16 @@ public class TeleportationRegister {
 
         if (fortData.isOccupied()) {
             TanChatUtils.message(player, Lang.SPAWN_INVALID.get(langType));
+            return;
+        }
+
+        if(!Constants.allowFortTeleport()){
+            TanChatUtils.message(player, Lang.TERRITORY_NOT_FOUND);
+            return;
+        }
+
+        if(!Constants.allowFortTeleportDuringWar() && territory.isAtWar()){
+            TanChatUtils.message(player, Lang.CANNOT_TELEPORT_TO_FORT_WHILE_AT_WAR.get());
             return;
         }
 

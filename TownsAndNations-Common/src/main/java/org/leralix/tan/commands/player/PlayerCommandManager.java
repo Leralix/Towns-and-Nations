@@ -39,7 +39,7 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new MainHelpCommand(this));
         addSubCommand(new ShowMinimap(minimapManager));
         addSubCommand(new DepositCommand(playerDataStorage));
-        addSubCommand(new TeleportCommand(playerDataStorage, townStorage, fortStorage));
+        addSubCommand(new TeleportCommand(playerDataStorage, fortStorage));
     }
 
     @Override

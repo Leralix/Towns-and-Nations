@@ -9,7 +9,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.TeleportationRegister;
 import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.TownStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -21,16 +20,13 @@ import java.util.Optional;
 public class TeleportCommand extends PlayerSubCommand {
 
     private final PlayerDataStorage playerDataStorage;
-    private final TownStorage townStorage;
     private final FortStorage fortStorage;
 
     public TeleportCommand(
             PlayerDataStorage playerDataStorage,
-            TownStorage townStorage,
             FortStorage fortStorage
     ){
         this.playerDataStorage = playerDataStorage;
-        this.townStorage = townStorage;
         this.fortStorage = fortStorage;
     }
 
