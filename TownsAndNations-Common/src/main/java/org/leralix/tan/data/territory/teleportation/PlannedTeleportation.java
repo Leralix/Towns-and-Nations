@@ -1,16 +1,18 @@
 package org.leralix.tan.data.territory.teleportation;
 
+import org.bukkit.Location;
+
 public class PlannedTeleportation {
 
-    private final TeleportationData teleportationPosition;
+    private final Location teleportationPosition;
     private boolean isCancelled;
 
-    public PlannedTeleportation(TeleportationData teleportationPosition) {
+    public PlannedTeleportation(Location teleportationPosition) {
         this.teleportationPosition = teleportationPosition;
         this.isCancelled = false;
     }
 
-    public TeleportationData getTeleportationPosition() {
+    public Location getTeleportationPosition() {
         return teleportationPosition;
     }
 

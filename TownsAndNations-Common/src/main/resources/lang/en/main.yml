@@ -258,7 +258,7 @@ language:
   SPAWN_COMMAND_DESC: "Teleport to the town spawn"
   SPAWN_TELEPORTED: "Teleported to the town spawn"
   SPAWN_NOT_SET: "§cSpawn is not set"
-  SPAWN_NOT_UNLOCKED: "§cSpawn is not unlocked"
+  SPAWN_NOT_UNLOCKED: "§cTeleportation is not unlocked"
   SPAWN_INVALID: "§cSpawn location is invalid"
   SPAWN_NEED_TO_BE_IN_CHUNK: "§cYou need to be in a claimed chunk of {0}§c to set the spawn"
   #Town Relations

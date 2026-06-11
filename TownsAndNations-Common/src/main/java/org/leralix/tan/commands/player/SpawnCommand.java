@@ -3,7 +3,6 @@ package org.leralix.tan.commands.player;
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Territory;
-import org.leralix.tan.data.upgrade.rewards.bool.EnableTownSpawn;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.TeleportationRegister;
@@ -73,14 +72,7 @@ public class SpawnCommand extends AbstractSpawnCommand {
         }
 
         Territory territoryData = optTerritory.get();
-        EnableTownSpawn enableTownSpawn = territoryData.getNewLevel().getStat(EnableTownSpawn.class);
-        //Spawn Unlocked
-        if (!enableTownSpawn.isEnabled()) {
-            TanChatUtils.message(player, Lang.SPAWN_NOT_UNLOCKED.get(langType));
-            return;
-        }
-
-        TeleportationRegister.teleportToSpawn(playerData, territoryData);
+        TeleportationRegister.teleportToTerritory(player, playerData, territoryData);
     }
 }
 

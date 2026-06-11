@@ -85,7 +85,7 @@ public class TeleportCommand extends PlayerSubCommand {
         Optional<Territory> territory = TerritoryUtil.getTerritoryByName(name);
         ITanPlayer tanPlayer = playerDataStorage.get(player);
         if(territory.isPresent()){
-            TeleportationRegister.teleportToSpawn(tanPlayer, territory.get());
+            TeleportationRegister.teleportToTerritory(player, tanPlayer, territory.get());
             return;
         }
 
@@ -97,7 +97,7 @@ public class TeleportCommand extends PlayerSubCommand {
                     TanChatUtils.message(player, Lang.CANNOT_TELEPORT_TO_FORT_WHILE_AT_WAR.get());
                     return;
                 }
-                TeleportationRegister.teleportToFort(tanPlayer, fortOptional.get());
+                TeleportationRegister.teleportToFort(player, tanPlayer, fortOptional.get());
                 return;
             }
         }
