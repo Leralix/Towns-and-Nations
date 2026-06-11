@@ -504,6 +504,8 @@ language:
   CREATE_FORT_DESC2: "§fProtection radius : §2{0} blocks"
   CREATE_FORT_DESC3: "§fCapture time : §8{0}s"
   CREATE_FORT_DESC4: "§fCan be used to claim land away from the territory."
+  CREATE_FORT_DESC_ALLOW_TELEPORTATION: "§fCan be used for teleportation"
+  CREATE_FORT_DESC_ALLOW_TELEPORTATION_OUTSIDE_WARS: "§fCan be used for teleportation during peace"
   #Wars menu
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cClick to declare war"
   DECLARE_WAR_CONFIRM_MESSAGE: "{0}§f will start a war against {1}"

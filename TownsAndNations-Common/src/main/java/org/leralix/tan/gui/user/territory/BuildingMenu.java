@@ -53,9 +53,6 @@ public class BuildingMenu extends IteratorGUI {
     private @NotNull GuiItem getCreatePublicPropertyButton(Town townData) {
 
         List<FilledLang> description = new ArrayList<>();
-
-        int nbProperties = townData.getProperties().size();
-        int maxNbProperties = townData.getNewLevel().getStat(PropertyCap.class).getMaxAmount();
         description.add(Lang.CREATE_PUBLIC_PROPERTY_COST.get());
 
         List<IndividualRequirement> requirements = new ArrayList<>();
@@ -81,6 +78,14 @@ public class BuildingMenu extends IteratorGUI {
         desc.add(Lang.CREATE_FORT_DESC3.get(Integer.toString(Constants.getFortCaptureTime())));
         if(Constants.enableFortOutpost()){
             desc.add(Lang.CREATE_FORT_DESC4.get());
+        }
+        if(Constants.allowFortTeleport()){
+            if(Constants.allowFortTeleportDuringWar()){
+                desc.add(Lang.CREATE_FORT_DESC_ALLOW_TELEPORTATION.get());
+            }
+            else {
+                desc.add(Lang.CREATE_FORT_DESC_ALLOW_TELEPORTATION_OUTSIDE_WARS.get());
+            }
         }
         List<IndividualRequirement> requirements = new ArrayList<>();
         requirements.add(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_WARS));
