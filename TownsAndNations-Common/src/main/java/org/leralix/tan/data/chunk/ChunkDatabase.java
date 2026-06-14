@@ -182,6 +182,11 @@ public abstract class ChunkDatabase implements DatabaseData<ChunkData>, IClaimed
     }
 
     @Override
+    public boolean canPistonEnter() {
+        return data.canPistonEnter();
+    }
+
+    @Override
     public boolean canUnauthorizedPlayerUseMounts() {
         return data.canUnauthorizedPlayerUseMounts();
     }

@@ -264,6 +264,11 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
     }
 
     @Override
+    public boolean canPistonEnter() {
+        return Constants.getChunkSettings(GeneralChunkSetting.PISTON_INTERACTION).canGrief(getOwnerInternal(), GeneralChunkSetting.PISTON_INTERACTION);
+    }
+
+    @Override
     public boolean canHostileGrief() {
         return Constants.getChunkSettings(GeneralChunkSetting.HOSTILE_MOB_GRIEF).canGrief(getOwnerInternal(), GeneralChunkSetting.HOSTILE_MOB_GRIEF);
     }

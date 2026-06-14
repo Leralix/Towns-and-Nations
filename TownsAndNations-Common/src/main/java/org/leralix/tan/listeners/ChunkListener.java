@@ -26,7 +26,9 @@ import org.bukkit.event.vehicle.VehicleDestroyEvent;
 import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.data.chunk.IClaimedChunk;
+import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.storage.SudoPlayerStorage;
@@ -682,6 +684,39 @@ public class ChunkListener implements Listener {
             }
 
         }
+    }
+
+    @EventHandler
+    public void onPistonExtend(BlockPistonExtendEvent event) {
+        for (Block movedBlock : event.getBlocks()) {
+
+            Location from = movedBlock.getLocation();
+            Location to = movedBlock.getRelative(event.getDirection()).getLocation();
+
+            IClaimedChunk claimedChunkFrom = claimStorage.get(from.getChunk());
+            IClaimedChunk claimedChunkTo = claimStorage.get(to.getChunk());
+
+            if(claimedChunkFrom != claimedChunkTo && !isPistonEventAuthorized(claimedChunkFrom, claimedChunkTo)){
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    private boolean isPistonEventAuthorized(IClaimedChunk claimedChunkFrom, IClaimedChunk claimedChunkTo) {
+        if(!(claimedChunkTo instanceof TerritoryChunk territoryChunkTo)){
+            return true;
+        }
+
+        if(territoryChunkTo.canPistonEnter()){
+            return true;
+        }
+
+        if(claimedChunkFrom instanceof TerritoryChunk territoryChunkFrom){
+            Territory territoryFrom = territoryChunkFrom.getOccupierInternal();
+            Territory territoryTo = territoryChunkTo.getOccupierInternal();
+            return territoryFrom == territoryTo;
+        }
+        return false;
     }
 
     private boolean canPlayerDoAction(Location location, Player player, ChunkPermissionType permissionType) {

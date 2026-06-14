@@ -113,6 +113,11 @@ public class WildernessChunkData extends ChunkData implements WildernessChunk {
     }
 
     @Override
+    public boolean canPistonEnter() {
+        return true;
+    }
+
+    @Override
     public boolean canHostileGrief() {
         return true;
     }

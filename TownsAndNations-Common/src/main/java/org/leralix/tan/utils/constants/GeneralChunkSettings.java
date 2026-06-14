@@ -19,6 +19,7 @@ public class GeneralChunkSettings {
         allowAction.put(GeneralChunkSetting.FIRE_GRIEF, InteractionStatus.valueOf(configurationSection.getString("fire", DEFAULT_VALUE)));
         allowAction.put(GeneralChunkSetting.TNT_GRIEF, InteractionStatus.valueOf(configurationSection.getString("explosion", DEFAULT_VALUE)));
         allowAction.put(GeneralChunkSetting.ENABLE_PVP, InteractionStatus.valueOf(configurationSection.getString("pvp", DEFAULT_VALUE)));
+        allowAction.put(GeneralChunkSetting.PISTON_INTERACTION, InteractionStatus.valueOf(configurationSection.getString("piston_interaction", DEFAULT_VALUE)));
         allowAction.put(GeneralChunkSetting.HOSTILE_MOB_GRIEF, InteractionStatus.valueOf(configurationSection.getString("hostile_mob", DEFAULT_VALUE)));
         allowAction.put(GeneralChunkSetting.PASSIVE_MOB_GRIEF, InteractionStatus.valueOf(configurationSection.getString("passive_mob", DEFAULT_VALUE)));
         allowAction.put(GeneralChunkSetting.VILLAGER_GRIEF, InteractionStatus.valueOf(configurationSection.getString("villager", DEFAULT_VALUE)));

@@ -137,6 +137,11 @@ public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
     }
 
     @Override
+    public boolean canPistonEnter() {
+        return false;
+    }
+
+    @Override
     public boolean canHostileGrief() {
         return false;
     }

@@ -768,6 +768,7 @@ language:
   ENABLE_MOB_GRIEF_SETTING: "§aEnable mob griefing"
   ENABLE_FIRE_GRIEF_SETTING: "§aEnable fire griefing"
   ENABLE_TNT_GRIEF_SETTING: "§aEnable explosion griefing"
+  ENABLE_PISTON_INTERACTON_SETTING: "§aEnable piston interaction from unclaimed chunks"
   ENABLE_VILLAGER_GRIEF_SETTING: "§aEnable villager griefing"
   ENABLE_PASSIVE_MOB_GRIEF_SETTING: "§aEnable passive mob griefing"
   ENABLE_HOSTILE_MOB_GRIEF_SETTING: "§aEnable hostile mob griefing"

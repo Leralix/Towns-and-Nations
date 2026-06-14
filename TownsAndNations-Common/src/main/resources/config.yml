@@ -504,6 +504,7 @@ chunkGeneralSettings:
   fire: "PLAYER_CHOICE_AND_WAR" #burning and spreading
   explosion: "PLAYER_CHOICE_AND_WAR" #Explosion (creeper included)
   pvp: "ALWAYS"
+  piston_interaction: "PLAYER_CHOICE_AND_WAR" #Moving blocks inside claimed chunks with piston from wilderness or other territory.
   hostile_mob: "PLAYER_CHOICE" #Enderman picking up blocks, Wither breaking blocks...
   passive_mob: "PLAYER_CHOICE" #sheep eating grass
   villager: "PLAYER_CHOICE" #Villager farming
