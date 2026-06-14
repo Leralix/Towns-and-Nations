@@ -1,27 +1,25 @@
-package org.leralix.tan.commands.player;
+package org.leralix.tan.commands.player.claim;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.commands.player.MapCommand;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.gui.scope.MapSettings;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.utils.text.ChatChunkMapRenderer;
-import org.leralix.tan.utils.text.TanChatUtils;
 
-import java.util.Collections;
+public class ClaimCommand extends AbstractTerritoryClaimCommand {
 
-public class ClaimAreaCommand extends AbstractTerritoryClaimCommand {
-
-    public ClaimAreaCommand(PlayerDataStorage playerDataStorage) {
+    public ClaimCommand(PlayerDataStorage playerDataStorage) {
         super(playerDataStorage);
     }
 
     @Override
     public String getName() {
-        return "claimarea";
+        return "claim";
     }
 
     @Override
@@ -35,34 +33,27 @@ public class ClaimAreaCommand extends AbstractTerritoryClaimCommand {
 
     @Override
     public String getSyntax() {
-        return "/tan claimarea <town/region/nation|kingdom>";
+        return "/tan claim <town/region/nation>";
     }
 
     @Override
     protected void onNoCoordinates(Player player, ITanPlayer tanPlayer, Territory territoryData, LangType langType, String territoryArg, String[] args) {
+        territoryData.claimChunk(player, tanPlayer);
     }
 
     @Override
     protected void onCoordinates(Player player, ITanPlayer tanPlayer, Territory territoryData, Chunk chunk, LangType langType, String territoryArg, String[] args) {
         territoryData.claimChunk(player, tanPlayer, chunk);
+        var mapCommand = new MapCommand(TownsAndNations.getPlugin().getPlayerDataStorage());
+        mapCommand.openMap(player, new MapSettings(args[0], territoryArg));
     }
 
     @Override
     protected void onEnd(Player player, Territory territoryData, LangType langType, String territoryArg, String[] args) {
-        openClaimAreaMap(player, territoryArg);
+
     }
 
-    public void openClaimAreaMap(Player player, String territoryArg) {
-        LangType langType = playerDataStorage.get(player).getLang();
-        int radius = 4;
 
-        ChatChunkMapRenderer.sendChunkMap(
-                player,
-                radius,
-                langType,
-                (chunkX, chunkZ) -> "/tan claimarea " + territoryArg + " " + chunkX + " " + chunkZ,
-                Collections.emptyMap()
-        );
-        TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, "/tan claimarea " + territoryArg), SoundEnum.MINOR_GOOD);
-    }
 }
+
+
