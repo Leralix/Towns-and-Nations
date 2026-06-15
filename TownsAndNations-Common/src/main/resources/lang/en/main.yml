@@ -148,6 +148,9 @@ language:
   TOWN_AUTO_CLAIM_DESC: "Enable auto claiming while moving between chunks"
   AUTO_CLAIM_ON_FOR: "§fAuto claim is now on for chunk type: §9{0}"
   AUTO_CLAIM_OFF: "§fAuto claim is now disabled"
+  #CLaim area
+  CLAIM_AREA_NOT_WILDERNESS_CHUNK: "§cThis command needs to be cast on a wilderness chunk surrounded by claims"
+  CLAIM_AREA_TOO_BIG: "§cThe zone is too big, or is not encircled by claimed chunk"
   #Chance chat
   TOWN_CHAT_COMMAND_DESC: "Change chat range"
   CHAT_CHANGED: "§fChat is now set to: §e{0}"

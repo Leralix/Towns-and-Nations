@@ -313,6 +313,7 @@ public class TownsAndNations extends JavaPlugin {
                 regionStorage,
                 nationStorage,
                 fortStorage,
+                claimStorage,
                 localChatStorage,
                 minimapManager)
         );

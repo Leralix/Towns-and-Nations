@@ -3,6 +3,7 @@ package org.leralix.tan.commands.player;
 import org.leralix.lib.commands.CommandManager;
 import org.leralix.lib.commands.MainHelpCommand;
 import org.leralix.tan.commands.player.claim.AutoClaimCommand;
+import org.leralix.tan.commands.player.claim.ClaimAreaCommand;
 import org.leralix.tan.commands.player.claim.ClaimCommand;
 import org.leralix.tan.commands.player.claim.UnclaimCommand;
 import org.leralix.tan.commands.player.territory.DepositCommand;
@@ -20,6 +21,7 @@ public class PlayerCommandManager extends CommandManager {
             RegionStorage regionStorage,
             NationStorage nationStorage,
             FortStorage fortStorage,
+            ClaimStorage claimStorage,
             LocalChatStorage localChatStorage,
             MinimapManager minimapManager
     ){
@@ -36,6 +38,7 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new OpenNewsletterCommand(playerDataStorage));
         addSubCommand(new ChannelChatScopeCommand(playerDataStorage, localChatStorage));
         addSubCommand(new AutoClaimCommand(playerDataStorage));
+        addSubCommand(new ClaimAreaCommand(playerDataStorage, claimStorage));
         addSubCommand(new SpawnCommand(playerDataStorage, townStorage, regionStorage, nationStorage));
         addSubCommand(new SetSpawnCommand(playerDataStorage, townStorage, regionStorage, nationStorage));
         addSubCommand(new MainHelpCommand(this));

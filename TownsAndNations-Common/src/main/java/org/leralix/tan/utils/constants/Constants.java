@@ -137,6 +137,8 @@ public class Constants {
     private static double claimLandmarkCost;
     private static boolean landmarkClaimRequiresEncirclement;
 
+    private static int claimAreaChunkLimit;
+
     private static int landmarkStorageCapacity;
     private static int landmarkMaxNameSize;
 
@@ -228,6 +230,8 @@ public class Constants {
 
 
         landmarkClaimRequiresEncirclement = config.getBoolean("landmarkEncircleToCapture", true);
+
+        claimAreaChunkLimit = config.getInt("claimAreaChunkLimit", 10000);
 
         //forts
         ConfigurationSection fortsSection = config.getConfigurationSection("Forts");
@@ -482,6 +486,10 @@ public class Constants {
 
     public static boolean isLandmarkClaimRequiresEncirclement() {
         return landmarkClaimRequiresEncirclement;
+    }
+
+    public static int getClaimAreaChunkLimit() {
+        return claimAreaChunkLimit;
     }
 
     public static double getFortCost() {

@@ -39,6 +39,7 @@ class CommandPermissionConsistencyTest extends BasicTest {
                 regionStorage,
                 nationStorage,
                 townsAndNations.getFortStorage(),
+                claimStorage,
                 new LocalChatStorage(playerDataStorage, false),
                 new MinimapManager())
         );

@@ -695,6 +695,14 @@ placeholderString:
   trueValue: "true"
   falseValue: "false"
 
+########################
+##     Server Limit   ##
+########################
+
+# Some functionalities may consume a lot of processing time and/or memory.
+
+# The maximum number of wilderness chunk that can be claimed at once with /tan claimarea <town/region/nation>
+claimAreaChunkLimit : 10000
 
 
 #Write the type of mobs you want a town to be able to cancel the spawn of.
