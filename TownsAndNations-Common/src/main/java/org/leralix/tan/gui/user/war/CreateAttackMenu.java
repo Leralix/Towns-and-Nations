@@ -62,7 +62,7 @@ public class CreateAttackMenu extends BasicGui {
         boolean isAuthorized = isStartDateAuthorized();
         boolean isOverridingOtherAttack = isOverridingOtherAttack();
 
-        IconKey iconKey = isAuthorized ? IconKey.CONFIRM_WAR_START_ICON : IconKey.CONFIRM_WAR_START_IMPOSSIBLE_ICON;
+        IconKey iconKey = isAuthorized || isOverridingOtherAttack ? IconKey.CONFIRM_WAR_START_ICON : IconKey.CONFIRM_WAR_START_IMPOSSIBLE_ICON;
 
         return iconManager.get(iconKey)
                 .setName(Lang.GUI_CONFIRM_ATTACK.get(tanPlayer))
@@ -98,8 +98,7 @@ public class CreateAttackMenu extends BasicGui {
         Instant warStart = Instant.now().plusSeconds(attackData.getSelectedTime() * 60L);
         Instant warEnd = warStart.plusSeconds(Constants.getAttackDuration() * 60L);
         for (PlannedAttack plannedAttack : war.getPlannedAttacks()) {
-            if (plannedAttack.isInstantInAttack(warStart.toEpochMilli()) ||
-                    plannedAttack.isInstantInAttack(warEnd.toEpochMilli())) {
+            if (!plannedAttack.isCancelled() && (plannedAttack.isInstantInAttack(warStart.toEpochMilli()) || plannedAttack.isInstantInAttack(warEnd.toEpochMilli()))) {
                 return true;
             }
         }
