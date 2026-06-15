@@ -69,7 +69,6 @@ permissions:
       tan.base.commands.pay: true
       tan.base.commands.balance: true
       tan.base.commands.setspawn: true
-      tan.base.commands.spawn: true
       tan.base.commands.unclaim: true
       tan.base.commands.minimap: true
       tan.base.commands.deposit: true
@@ -120,10 +119,6 @@ permissions:
 
   tan.base.commands.setspawn:
     description: Access to /tan setspawn
-    default: true
-
-  tan.base.commands.spawn:
-    description: Access to /tan spawn
     default: true
 
   tan.base.commands.unclaim:

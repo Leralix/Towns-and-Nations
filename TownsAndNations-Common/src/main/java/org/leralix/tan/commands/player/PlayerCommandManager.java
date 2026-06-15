@@ -39,7 +39,6 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new ChannelChatScopeCommand(playerDataStorage, localChatStorage));
         addSubCommand(new AutoClaimCommand(playerDataStorage));
         addSubCommand(new ClaimAreaCommand(playerDataStorage, claimStorage));
-        addSubCommand(new SpawnCommand(playerDataStorage, townStorage, regionStorage, nationStorage));
         addSubCommand(new SetSpawnCommand(playerDataStorage, townStorage, regionStorage, nationStorage));
         addSubCommand(new MainHelpCommand(this));
         addSubCommand(new ShowMinimap(minimapManager));
