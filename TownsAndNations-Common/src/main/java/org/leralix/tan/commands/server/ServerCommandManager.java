@@ -16,6 +16,7 @@ public class ServerCommandManager extends CommandManager {
         addSubCommand(new OpenGuiServer());
         addSubCommand(new LandmarkUpdateServer(landmarkStorage));
         addSubCommand(new LandmarkSetStoredLimitServer(landmarkStorage));
+        addSubCommand(new AddPlayerCommand(townStorage, playerDataStorage));
     }
 
     @Override

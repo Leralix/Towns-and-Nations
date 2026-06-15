@@ -101,6 +101,7 @@ language:
   MESSAGE_TOO_SHORT: "§cMessage is too short: {0} min"
   MESSAGE_TOO_LONG: "§cMessage is too long: {0} max"
   CANCELLED_ACTION: "§cAction cancelled"
+  MUST_BE_TOWN: "§cThe territory selected must be a Town"
   #Cancel
   CANCEL_WORD: "cancel" #The cancel word can be modified
   WRITE_CANCEL_TO_CANCEL: "§fWrite §c{0}§f in the chat to cancel"
@@ -992,7 +993,7 @@ language:
   VASSAL_GUI_DESC1: "{0}§f have §6{1}§f vassals"
   CANNOT_HAVE_VASSAL: "§fThis territory cannot have vassals"
   #Chat Information
-  CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cYou cannot leave a town if you are the leader, you need to disband it or transfer ownership to someone else"
+  CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cA town leader cannot leave its town. Ownership needs to be transfer."
   CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER: "§cYou cannot leave a town if you are the leader of the region, you need to disband it or transfer ownership to someone else"
   CHAT_PLAYER_LEFT_THE_TOWN: "§fYou left the town"
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cThe town {0}§c, with which you had a relation: {1}§c has been deleted"
