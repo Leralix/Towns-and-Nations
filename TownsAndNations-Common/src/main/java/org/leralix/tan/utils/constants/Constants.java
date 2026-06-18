@@ -118,11 +118,14 @@ public class Constants {
     private static int maxTimeBeforeAttack;
     private static int chunkCaptureTime;
     private static List<String> blacklistedCommandsDuringAttacks;
-    private static int nbChunkToCaptureMax;
     private static List<String> onceStartCommands;
     private static List<String> onceEndCommands;
     private static List<String> perPlayerStartCommands;
     private static List<String> perPlayerEndCommands;
+
+    private static int nbChunkToCaptureMax;
+    private static int tributeDuration;
+    private static double maxTributeAmount;
 
     //Claims
     private static boolean noCheckIfEventCancelled;
@@ -293,6 +296,10 @@ public class Constants {
         if (nbChunkToCaptureMax == 0) {
             nbChunkToCaptureMax = Integer.MAX_VALUE;
         }
+        tributeDuration = config.getInt("tributeDuration", 7);
+        maxTributeAmount = config.getDouble("maxTributeAmount", 1000);
+
+
         onceStartCommands = config.getStringList("commandToExecuteOnceWhenAttackStart");
         onceEndCommands = config.getStringList("commandToExecuteOnceWhenAttackEnd");
         perPlayerStartCommands = config.getStringList("commandToExecutePerPlayerWhenAttackStart");
@@ -591,10 +598,6 @@ public class Constants {
         return blacklistedCommandsDuringAttacks;
     }
 
-    public static int getNbChunkToCaptureMax() {
-        return nbChunkToCaptureMax;
-    }
-
     public static InteractionStatus getChunkSettings(GeneralChunkSetting generalChunkSetting) {
         return generalChunkSettings.getAction(generalChunkSetting);
     }
@@ -747,6 +750,18 @@ public class Constants {
 
     public static List<String> getPerPlayerEndCommands() {
         return perPlayerEndCommands;
+    }
+
+    public static int getNbChunkToCaptureMax() {
+        return nbChunkToCaptureMax;
+    }
+
+    public static int getTributeDuration() {
+        return tributeDuration;
+    }
+
+    public static double getMaxTributeAmount() {
+        return maxTributeAmount;
     }
 
     public static List<String> getPerPlayerStartCommands() {

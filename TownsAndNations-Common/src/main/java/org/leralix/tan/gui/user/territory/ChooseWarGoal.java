@@ -11,6 +11,8 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.SelectNbChunksForConquer;
+import org.leralix.tan.listeners.chat.events.SelectQuantityForTribute;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.leralix.tan.war.War;
 import org.leralix.tan.war.info.WarRole;
@@ -40,6 +42,7 @@ public class ChooseWarGoal extends BasicGui {
         gui.setItem(2, 3, getcaptureLandmarkButton());
         gui.setItem(2, 4, getCaptureFortButton());
 
+        gui.setItem(2, 6, getTributeButton());
         gui.setItem(2, 7, getSubjugateButton());
         gui.setItem(2, 8, getLiberateButton());
 
@@ -63,8 +66,7 @@ public class ChooseWarGoal extends BasicGui {
                 )
                 .setAction(
                         action -> {
-
-                            if(conquerAlreadyUsed){
+                            if (conquerAlreadyUsed) {
                                 TanChatUtils.message(player, Lang.GUI_ONLY_ONE_CONQUER_WAR_GOAL.get(tanPlayer), SoundEnum.NOT_ALLOWED);
                                 return;
                             }
@@ -89,7 +91,7 @@ public class ChooseWarGoal extends BasicGui {
                 )
                 .setAction(
                         action -> {
-                            if(!isTown){
+                            if (!isTown) {
                                 TanChatUtils.message(player, Lang.GUI_WARGOAL_CAPTURE_LANDMARK_CANNOT_BE_USED.get(langType));
                                 return;
                             }
@@ -106,6 +108,28 @@ public class ChooseWarGoal extends BasicGui {
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                 .setAction(
                         action -> new SelectFortForCapture(player, territoryData, war, warRole, returnGui)
+                )
+                .asGuiItem(player, langType);
+    }
+
+    private @NotNull GuiItem getTributeButton() {
+
+        boolean tributeAlreadyUsed = war.getGoals(warRole).stream()
+                .anyMatch(ConquerWarGoal.class::isInstance);
+
+        return iconManager.get(IconKey.WAR_GOAL_TRIBUTE_ICON)
+                .setName(Lang.TRIBUTE_WAR_GOAL.get(langType))
+                .setDescription(Lang.TRIBUTE_WAR_GOAL_DESC.get(Integer.toString(Constants.getTributeDuration())))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
+                .setAction(
+                        action -> {
+                            if (tributeAlreadyUsed) {
+                                TanChatUtils.message(player, Lang.GUI_ONLY_ONE_CONQUER_WAR_GOAL.get(tanPlayer), SoundEnum.NOT_ALLOWED);
+                                return;
+                            }
+                            TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
+                            PlayerChatListenerStorage.register(player, langType, new SelectQuantityForTribute(war, warRole, returnGui));
+                        }
                 )
                 .asGuiItem(player, langType);
     }
@@ -127,7 +151,7 @@ public class ChooseWarGoal extends BasicGui {
                 .setAction(
                         action -> {
 
-                            if(!canBeSubjugated) {
+                            if (!canBeSubjugated) {
                                 TanChatUtils.message(player, Lang.GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED.get(langType));
                                 return;
                             }
@@ -155,7 +179,7 @@ public class ChooseWarGoal extends BasicGui {
                 )
                 .setAction(
                         action -> {
-                            if(!doesEnemyHaveSubjects){
+                            if (!doesEnemyHaveSubjects) {
                                 TanChatUtils.message(player, Lang.GUI_WARGOAL_LIBERATE_CANNOT_BE_USED.get(langType));
                                 return;
                             }
