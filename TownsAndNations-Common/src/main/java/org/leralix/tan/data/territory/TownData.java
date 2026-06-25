@@ -264,6 +264,9 @@ public class TownData extends TerritoryData implements Town {
 
     @Override
     public RecruitingPolicy getRecruitingPolicy() {
+        if(recruitingPolicy == null){
+            recruitingPolicy = RecruitingPolicy.CLOSED;
+        }
         return recruitingPolicy;
     }
 
@@ -405,6 +408,8 @@ public class TownData extends TerritoryData implements Town {
         budget.addProfitLine(new PropertyRentTaxLine(this));
         budget.addProfitLine(new PropertySellTaxLine(this));
         budget.addProfitLine(new PropertyCreationTaxLine(this));
+        budget.addProfitLine(new TributeReceivedTaxLine(this));
+        budget.addProfitLine(new TributePaidTaxLine(this));
     }
 
     @Override

@@ -444,6 +444,8 @@ language:
   OVERLORD_TAX_LINE: "§f -From overlord taxes: {0}"
   PLAYER_SALARY_LINE: "§f -From salary: {0}"
   TERRITORY_UPKEEP_LINE: "§f -From territory upkeep: {0}"
+  TRIBUTE_RECEIVED_TAX_LINE: "§f -From {0}§f tribute : §a+{1}{MONEY_CHAR}/day §f(§6{2}{MONEY_CHAR}/{3}{MONEY_CHAR}§f)"
+  TRIBUTE_PAID_TAX_LINE: "§f -From {0}§f tribute : §c{1}{MONEY_CHAR}/day §f(§6{2}{MONEY_CHAR}/{3}{MONEY_CHAR}§f)"
   #Attack GUI
   GUI_ATTACK_ADD_TIME: "§aAdd time"
   GUI_ATTACK_REMOVE_TIME: "§aRemove time"
@@ -1072,6 +1074,7 @@ language:
   GUI_CONFIRM_DELETE_NATION: "§fThe nation §6{0}§f will be deleted"
   GUI_CONFIRM_CHANGE_NATION_CAPITAL: "§6{0}§f will be the new capital of the nation"
   #War goal
+  GUI_ONLY_ONE_WAR_GOAL_TYPE: "§aOnly one war goal of this type can be added."
   CONQUER_WAR_GOAL: "§aConquer territory"
   CONQUER_WAR_GOAL_DESC: "§fConquer a certain amount of territory"
   CONQUER_WAR_GOAL_DESC1: "§fNumber of chunks : §2{0}§f chunks"

@@ -35,6 +35,7 @@ public class WargoalTypeAdapter implements JsonDeserializer<WarGoal>, JsonSerial
                 }
                 yield context.deserialize(jsonObject, CaptureFortWarGoal.class);
             }
+            case "TributeWarGoal" -> context.deserialize(jsonObject, TributeWarGoal.class);
             default -> throw new JsonParseException("Unknown type: " + type);
         };
     }
