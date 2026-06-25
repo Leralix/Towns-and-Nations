@@ -156,6 +156,8 @@ public class TownsAndNations extends JavaPlugin {
      */
     private ClaimStorage claimStorage;
 
+    private TributeStorage tributeStorage;
+
     private CurrentAttacksStorage currentAttacksStorage;
 
     private LocalChatStorage localChatStorage;
@@ -235,6 +237,7 @@ public class TownsAndNations extends JavaPlugin {
             fortStorage = new FortDataStorage();
             claimStorage = new NewClaimedChunkStorage();
         }
+        tributeStorage = new TributeJsonStorage();
         currentAttacksStorage = new CurrentAttacksStorage();
 
         getLogger().log(Level.INFO, "[TaN] -Loading Economy");
@@ -555,6 +558,10 @@ public class TownsAndNations extends JavaPlugin {
 
     public ClaimStorage getClaimStorage() {
         return claimStorage;
+    }
+
+    public TributeStorage getTributeStorage() {
+        return tributeStorage;
     }
 
     public CurrentAttacksStorage getCurrentAttackStorage() {

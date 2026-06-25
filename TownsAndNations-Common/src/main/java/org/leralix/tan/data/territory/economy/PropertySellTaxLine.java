@@ -17,6 +17,9 @@ import org.leralix.tan.listeners.chat.events.treasury.SetBuyPropertyRate;
 import org.leralix.tan.storage.database.transactions.TransactionType;
 import org.leralix.tan.utils.text.TanChatUtils;
 
+import java.util.Collections;
+import java.util.List;
+
 
 public class PropertySellTaxLine extends ProfitLine {
 
@@ -31,8 +34,8 @@ public class PropertySellTaxLine extends ProfitLine {
     }
 
     @Override
-    public FilledLang getLine() {
-        return null;
+    public List<FilledLang> getLine() {
+        return Collections.emptyList();
     }
 
     @Override

@@ -61,13 +61,13 @@ public class ChooseWarGoal extends BasicGui {
                 .setName(Lang.CONQUER_WAR_GOAL.get(langType))
                 .setDescription(Lang.CONQUER_WAR_GOAL_DESC.get())
                 .setClickToAcceptMessage(conquerAlreadyUsed ?
-                        Lang.GUI_ONLY_ONE_CONQUER_WAR_GOAL :
+                        Lang.GUI_ONLY_ONE_WAR_GOAL_TYPE :
                         Lang.GUI_GENERIC_CLICK_TO_SELECT
                 )
                 .setAction(
                         action -> {
                             if (conquerAlreadyUsed) {
-                                TanChatUtils.message(player, Lang.GUI_ONLY_ONE_CONQUER_WAR_GOAL.get(tanPlayer), SoundEnum.NOT_ALLOWED);
+                                TanChatUtils.message(player, Lang.GUI_ONLY_ONE_WAR_GOAL_TYPE.get(tanPlayer), SoundEnum.NOT_ALLOWED);
                                 return;
                             }
                             TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
@@ -120,11 +120,15 @@ public class ChooseWarGoal extends BasicGui {
         return iconManager.get(IconKey.WAR_GOAL_TRIBUTE_ICON)
                 .setName(Lang.TRIBUTE_WAR_GOAL.get(langType))
                 .setDescription(Lang.TRIBUTE_WAR_GOAL_DESC.get(Integer.toString(Constants.getTributeDuration())))
-                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
+                .setClickToAcceptMessage(
+                        tributeAlreadyUsed ?
+                                Lang.GUI_ONLY_ONE_WAR_GOAL_TYPE :
+                                Lang.GUI_GENERIC_CLICK_TO_SELECT
+                )
                 .setAction(
                         action -> {
                             if (tributeAlreadyUsed) {
-                                TanChatUtils.message(player, Lang.GUI_ONLY_ONE_CONQUER_WAR_GOAL.get(tanPlayer), SoundEnum.NOT_ALLOWED);
+                                TanChatUtils.message(player, Lang.GUI_ONLY_ONE_WAR_GOAL_TYPE.get(tanPlayer), SoundEnum.NOT_ALLOWED);
                                 return;
                             }
                             TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));

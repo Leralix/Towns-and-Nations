@@ -15,7 +15,11 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.TransactionType;
 import org.leralix.tan.utils.text.StringUtil;
 
+import java.util.Collections;
+import java.util.List;
+
 public class SalaryPaymentLine extends ProfitLine {
+
     double totalSalaries;
 
     public SalaryPaymentLine(TerritoryData territoryData) {
@@ -33,8 +37,8 @@ public class SalaryPaymentLine extends ProfitLine {
     }
 
     @Override
-    public FilledLang getLine() {
-        return Lang.PLAYER_SALARY_LINE.get(StringUtil.getColoredMoney(getMoney()));
+    public List<FilledLang> getLine() {
+        return Collections.singletonList(Lang.PLAYER_SALARY_LINE.get(StringUtil.getColoredMoney(getMoney())));
     }
 
     @Override

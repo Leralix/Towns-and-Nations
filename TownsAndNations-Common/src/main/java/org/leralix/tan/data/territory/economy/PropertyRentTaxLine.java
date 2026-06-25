@@ -19,8 +19,11 @@ import org.leralix.tan.storage.database.transactions.TransactionType;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
+import java.util.Collections;
+import java.util.List;
 
-public class PropertyRentTaxLine extends ProfitLine {
+
+public class    PropertyRentTaxLine extends ProfitLine {
 
     double taxes = 0;
 
@@ -39,8 +42,8 @@ public class PropertyRentTaxLine extends ProfitLine {
     }
 
     @Override
-    public FilledLang getLine() {
-        return Lang.PROPERTY_TAX_LINE.get(StringUtil.getColoredMoney(getMoney()));
+    public List<FilledLang> getLine() {
+        return Collections.singletonList(Lang.PROPERTY_TAX_LINE.get(StringUtil.getColoredMoney(getMoney())));
     }
 
     @Override

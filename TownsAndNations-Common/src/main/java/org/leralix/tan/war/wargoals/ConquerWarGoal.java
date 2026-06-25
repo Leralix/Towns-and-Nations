@@ -38,7 +38,7 @@ public class ConquerWarGoal extends WarGoal implements TanCaptureChunkWargoal {
 
     @Override
     public void applyWarGoal(Territory winner, Territory loser) {
-        if (winner == null)
+        if (winner == null || loser == null)
             return;
         winner.addAvailableClaims(loser.getID(), numberOfChunks);
     }

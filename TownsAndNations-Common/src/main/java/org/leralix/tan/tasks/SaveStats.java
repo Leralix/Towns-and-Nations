@@ -31,6 +31,7 @@ public class SaveStats {
         plugin.getLandmarkStorage().save();
         plugin.getWarStorage().save();
         plugin.getFortStorage().save();
+        plugin.getTributeStorage().save();
         PremiumStorage.getInstance().save();
         TruceStorage.getInstance().save();
     }

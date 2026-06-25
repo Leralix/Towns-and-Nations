@@ -37,6 +37,7 @@ import org.leralix.tan.data.territory.relation.DiplomacyProposal;
 import org.leralix.tan.data.territory.relation.RelationData;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.data.territory.teleportation.TeleportationData;
+import org.leralix.tan.data.territory.wargoals.Tribute;
 import org.leralix.tan.data.upgrade.TerritoryStats;
 import org.leralix.tan.data.upgrade.rewards.StatsType;
 import org.leralix.tan.data.upgrade.rewards.list.BiomeStat;
@@ -634,6 +635,8 @@ public abstract class TerritoryData implements TanTerritory, Territory {
             TownsAndNations.getPlugin().getFortStorage().delete(ownedFort);
         }
 
+        TownsAndNations.getPlugin().getTributeStorage().deleteAllTributeOfTerritory(this);
+
         getRelations().cleanAll(this);   //Cancel all Relation between the deleted territory and other territories
     }
 
@@ -819,8 +822,19 @@ public abstract class TerritoryData implements TanTerritory, Territory {
     @Override
     public void executeTasks() {
         collectTaxes();
+        payTribute();
         paySalaries();
         payChunkUpkeep();
+    }
+
+    private void payTribute() {
+        for(Tribute tribute : TownsAndNations.getPlugin().getTributeStorage().getTributeOfTributary(this)){
+            int amountToPay = tribute.getRemaningDailyAmount();
+            int toPay = Math.min((int) getBalance(), amountToPay);
+
+            removeFromBalance(toPay);
+            tribute.pay(toPay);
+        }
     }
 
     private void paySalaries() {

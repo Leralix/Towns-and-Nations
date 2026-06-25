@@ -87,7 +87,6 @@ public class DeclareWarMenu extends IteratorGUI {
                         );
                     }
 
-
                     new ConfirmMenu(
                             player,
                             confirmDescription,

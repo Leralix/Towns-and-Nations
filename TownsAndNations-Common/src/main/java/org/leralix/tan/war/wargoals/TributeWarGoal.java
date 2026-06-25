@@ -2,7 +2,9 @@ package org.leralix.tan.war.wargoals;
 
 
 import org.bukkit.Material;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.wargoals.Tribute;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
@@ -38,9 +40,10 @@ public class TributeWarGoal extends WarGoal implements TanCaptureChunkWargoal {
 
     @Override
     public void applyWarGoal(Territory winner, Territory loser) {
-        if (winner == null)
+        if (winner == null || loser == null)
             return;
-        winner.addAvailableClaims(loser.getID(), dailyAmount);
+        Tribute tribute = new Tribute(winner, loser, dailyAmount * Constants.getTributeDuration());
+        TownsAndNations.getPlugin().getTributeStorage().registerTribute(tribute);
     }
 
     @Override
