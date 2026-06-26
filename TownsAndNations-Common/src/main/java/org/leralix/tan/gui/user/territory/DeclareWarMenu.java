@@ -15,6 +15,7 @@ import org.leralix.tan.gui.service.requirements.MoneyRequirement;
 import org.leralix.tan.gui.user.war.WarMenuDispatch;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.TributeStorage;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -92,6 +93,8 @@ public class DeclareWarMenu extends IteratorGUI {
                             () -> {
                                 SoundUtil.playSound(player, SoundEnum.WAR);
                                 War newWar = warStorage.newWar(territoryData, iterateTerritory);
+                                TributeStorage tributeStorage = TownsAndNations.getPlugin().getTributeStorage();
+                                tributeStorage.getTribute(territoryData, iterateTerritory).ifPresent(tributeStorage::deleteTribute);
                                 WarMenuDispatch.openMenu(player, newWar, territoryData);
                             },
                             this::open
