@@ -12,6 +12,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownStorage;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
@@ -52,7 +53,7 @@ public class AddPlayerCommand extends SubCommand {
     public List<String> getTabCompleteSuggestions(CommandSender player, String currentMessage, String[] args) {
         return switch (args.length){
             case 2 -> Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
-            case 3 -> townStorage.getAll().values().stream().map(t -> t.getName().replace(" ", "-")).toList();
+            case 3 -> townStorage.getAll().values().stream().map(t -> StringUtil.removeSpaceChar(t.getName())).toList();
             default -> Collections.emptyList();
         };
     }

@@ -93,4 +93,8 @@ public class StringUtil {
         double digitVal = Math.pow(10, Constants.getNbDigits());
         return Math.round(amount * digitVal) / digitVal;
     }
+
+    public static String removeSpaceChar(String baseString){
+        return baseString.replace(" ", "_");
+    }
 }

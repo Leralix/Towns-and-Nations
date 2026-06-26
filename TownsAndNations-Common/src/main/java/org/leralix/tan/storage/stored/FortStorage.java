@@ -5,6 +5,7 @@ import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.fort.Fort;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +88,7 @@ public interface FortStorage {
 
     default Optional<Fort> getTerritoryByName(String name){
         for(Fort fort : getForts()){
-            if(fort.getName().replace(" ", "-").equals(name)){
+            if(StringUtil.removeSpaceChar(fort.getName()).equals(name)){
                 return Optional.of(fort);
             }
         }

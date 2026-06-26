@@ -13,6 +13,7 @@ import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.DiplomacyProposalAcceptedInternalEvent;
 import org.leralix.tan.gui.scope.BrowseScope;
 import org.leralix.tan.utils.graphic.TeamUtils;
+import org.leralix.tan.utils.text.StringUtil;
 
 import java.util.*;
 
@@ -36,9 +37,9 @@ public class TerritoryUtil {
     }
 
     public static boolean isNameUsed(String name, Collection<? extends Nameable> instances) {
-        String territoryName = name.replace(" ", "-");
+        String territoryName = StringUtil.removeSpaceChar(name);
         for (Nameable territory : instances) {
-            if (territoryName.equals(territory.getName().replace(" ", "-"))) {
+            if (territoryName.equals(StringUtil.removeSpaceChar(territory.getName()))) {
                 return true;
             }
         }

@@ -10,6 +10,7 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownStorage;
+import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class JoinTownCommand extends PlayerSubCommand {
         for(String townId:TownInviteDataStorage.getInvitations(player.getUniqueId())) {
             Town town= townDataStorage.get(townId);
             if(town!=null) {
-                suggestions.add(town.getName().replace(" ", "-"));
+                suggestions.add(StringUtil.removeSpaceChar(town.getName()));
             }
         }
         if(suggestions.isEmpty()){
@@ -82,7 +83,7 @@ public class JoinTownCommand extends PlayerSubCommand {
             }
 
 
-            String townName = args[1].replace(" ", "-");
+            String townName = StringUtil.removeSpaceChar(args[1]);
             Optional<Town> optTownData = townDataStorage.getByName(townName); // find town by name
             if(optTownData.isEmpty() || !TownInviteDataStorage.isInvited(player.getUniqueId(), optTownData.get().getID())) {
                 TanChatUtils.message(player, Lang.TOWN_INVITATION_NO_INVITATION.get(lang));

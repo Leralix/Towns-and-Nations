@@ -11,6 +11,7 @@ import org.leralix.tan.storage.stored.FortStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -58,8 +59,8 @@ public class TeleportCommand extends PlayerSubCommand {
             List<String> locationName = new ArrayList<>();
 
             for(Territory territory : TerritoryUtil.getTerritoriesAuthorizingTeleportation(tanPlayer)){
-                locationName.addAll(fortStorage.getAllControlledFort(territory).stream().map(f -> f.getName().replace(" ", "-")).toList());
-                locationName.add(territory.getName().replace(" ", "-"));
+                locationName.addAll(fortStorage.getAllControlledFort(territory).stream().map(f -> StringUtil.removeSpaceChar(f.getName())).toList());
+                locationName.add(StringUtil.removeSpaceChar(territory.getName()));
             }
             return locationName;
         }
