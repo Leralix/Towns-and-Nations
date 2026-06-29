@@ -3,7 +3,6 @@ package org.leralix.tan.utils.constants;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.chunk.ChunkType;
 import org.leralix.tan.data.territory.*;
 import org.leralix.tan.data.territory.permission.GeneralChunkSetting;
@@ -12,6 +11,7 @@ import org.leralix.tan.data.upgrade.NewUpgradeStorage;
 import org.leralix.tan.storage.MobChunkSpawnStorage;
 import org.leralix.tan.utils.Range;
 import org.leralix.tan.utils.constants.database.RedisConfig;
+import org.leralix.tan.utils.constants.enums.ChunkCapExtendedStrategy;
 import org.leralix.tan.war.WarTimeSlot;
 
 import java.util.*;
@@ -144,6 +144,8 @@ public class Constants {
 
     private static int landmarkStorageCapacity;
     private static int landmarkMaxNameSize;
+
+    private static ChunkCapExtendedStrategy chunkCapExceededStrategy;
 
     //Teleportation
     private static int timeBeforeTeleport;
@@ -319,6 +321,7 @@ public class Constants {
         //Landmarks
         landmarkStorageCapacity = config.getInt("landmarkStorageCapacity", 7);
         landmarkMaxNameSize = config.getInt("landmarkNameMaxSize", 25);
+        chunkCapExceededStrategy = getChunkCapExtendedStrategy(config.getString("chunkCapExceededStrategy", "DELETE_EACH_DAY"));
 
         //Teleportation
         timeBeforeTeleport = config.getInt("timeBeforeTeleport", 5);
@@ -371,9 +374,18 @@ public class Constants {
             particle = Particle.valueOf(particleName);
         } catch (IllegalArgumentException e) {
             particle = Particle.DRAGON_BREATH;
-            TownsAndNations.getPlugin().getLogger();
         }
         return particle;
+    }
+
+    private static ChunkCapExtendedStrategy getChunkCapExtendedStrategy(String chunkCapExceededStrategy) {
+        ChunkCapExtendedStrategy strategy;
+        try {
+            strategy = ChunkCapExtendedStrategy.valueOf(chunkCapExceededStrategy);
+        } catch (IllegalArgumentException e) {
+            strategy = ChunkCapExtendedStrategy.DELETE_EACH_DAY;
+        }
+        return strategy;
     }
 
     public static boolean onlineMode() {
@@ -782,6 +794,10 @@ public class Constants {
 
     public static int getLandmarkMaxNameSize() {
         return landmarkMaxNameSize;
+    }
+
+    public static ChunkCapExtendedStrategy getChunkCapExceededStrategy() {
+        return chunkCapExceededStrategy;
     }
 
     public static boolean isCancelTeleportOnDamage() {

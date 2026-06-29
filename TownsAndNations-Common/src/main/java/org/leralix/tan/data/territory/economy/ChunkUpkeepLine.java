@@ -4,6 +4,7 @@ import dev.triumphteam.gui.guis.Gui;
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.data.upgrade.rewards.numeric.ChunkUpkeepCost;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -13,6 +14,9 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.TransactionType;
+import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.constants.enums.ChunkCapExtendedStrategy;
+import org.leralix.tan.utils.text.NumberUtil;
 import org.leralix.tan.utils.text.StringUtil;
 
 import java.util.Collections;
@@ -33,7 +37,15 @@ public class ChunkUpkeepLine extends ProfitLine {
 
     @Override
     public List<FilledLang> getLine() {
-        return Collections.singletonList(Lang.TERRITORY_UPKEEP_LINE.get(StringUtil.getColoredMoney(getMoney())));
+        int numberClaimedChunk = territoryData.getNumberOfClaimedChunk();
+        int maxAmount = territoryData.getNewLevel().getStat(ChunkCap.class).getMaxAmount();
+        if (Constants.getChunkCapExceededStrategy() == ChunkCapExtendedStrategy.INCREASE_UPKEEP && numberClaimedChunk > maxAmount) {
+            double ratio = (double) numberClaimedChunk / maxAmount;
+            double upkeep = getMoney() * ratio;
+            return Collections.singletonList(Lang.TERRITORY_UPKEEP_LINE_OVEREXTENSION.get(StringUtil.getColoredMoney(upkeep), Double.toString(NumberUtil.roundWithDigits(ratio * 100))));
+        } else {
+            return Collections.singletonList(Lang.TERRITORY_UPKEEP_LINE.get(StringUtil.getColoredMoney(getMoney())));
+        }
     }
 
     @Override

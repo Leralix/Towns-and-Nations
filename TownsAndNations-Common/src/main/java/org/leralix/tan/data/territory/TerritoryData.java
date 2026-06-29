@@ -58,6 +58,7 @@ import org.leralix.tan.storage.database.transactions.instance.DonationTransactio
 import org.leralix.tan.storage.database.transactions.instance.SalaryTransaction;
 import org.leralix.tan.storage.database.transactions.instance.TerritoryChunkUpkeepTransaction;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.constants.enums.ChunkCapExtendedStrategy;
 import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.graphic.PrefixUtil;
@@ -347,7 +348,7 @@ public abstract class TerritoryData implements TanTerritory, Territory {
     public IconBuilder getIconWithInformationAndRelation(Territory territoryData, LangType langType) {
         IconBuilder icon = getIconWithInformations(langType);
 
-        if(territoryData == null){
+        if (territoryData == null) {
             return icon;
         }
 
@@ -418,12 +419,11 @@ public abstract class TerritoryData implements TanTerritory, Territory {
     }
 
     @Override
-    public Optional<TanTerritory> getOverlord(){
+    public Optional<TanTerritory> getOverlord() {
         var optOverlord = getOverlordInternal();
-        if(optOverlord.isEmpty()){
+        if (optOverlord.isEmpty()) {
             return Optional.empty();
-        }
-        else {
+        } else {
             return Optional.of(optOverlord.get());
         }
     }
@@ -444,7 +444,7 @@ public abstract class TerritoryData implements TanTerritory, Territory {
         EventManager.getInstance().callEvent(new TerritoryVassalAcceptedInternalEvent(vassal, this));
 
         RankData regionDefaultRank = getDefaultRank();
-        for(ITanPlayer player : vassal.getITanPlayerList()){
+        for (ITanPlayer player : vassal.getITanPlayerList()) {
             player.setRegionRankID(regionDefaultRank.getID());
             regionDefaultRank.addPlayer(player);
         }
@@ -508,7 +508,7 @@ public abstract class TerritoryData implements TanTerritory, Territory {
     }
 
     @Override
-    public boolean claimChunk(Player player, ITanPlayer tanPlayer, Chunk chunk){
+    public boolean claimChunk(Player player, ITanPlayer tanPlayer, Chunk chunk) {
         return claimChunk(player, tanPlayer, chunk, Constants.allowNonAdjacentChunksFor(this));
     }
 
@@ -577,7 +577,7 @@ public abstract class TerritoryData implements TanTerritory, Territory {
         }
 
         IClaimedChunk chunkData = TownsAndNations.getPlugin().getClaimStorage().get(chunk);
-        if (!chunkData.canTerritoryClaim(player, this,  tanPlayer.getLang())) {
+        if (!chunkData.canTerritoryClaim(player, this, tanPlayer.getLang())) {
             return false;
         }
 
@@ -589,16 +589,17 @@ public abstract class TerritoryData implements TanTerritory, Territory {
 
     /**
      * Check if the chunk can be claimed
+     *
      * @return true if the position can be claimed, false otherwise
      */
-    protected boolean isPositionClaimable(Player player, Chunk chunk, IClaimedChunk chunkData, LangType langType){
+    protected boolean isPositionClaimable(Player player, Chunk chunk, IClaimedChunk chunkData, LangType langType) {
 
-        for(IClaimedChunk claimedChunk : TownsAndNations.getPlugin().getClaimStorage().getFourAjacentChunks(chunkData)) {
-            if(claimedChunk instanceof TerritoryChunk territoryChunk){
+        for (IClaimedChunk claimedChunk : TownsAndNations.getPlugin().getClaimStorage().getFourAjacentChunks(chunkData)) {
+            if (claimedChunk instanceof TerritoryChunk territoryChunk) {
 
                 String ownerID = territoryChunk.getOwnerID();
 
-                if(ownerID.equals(getID()) || getVassalsID().contains(ownerID)) {
+                if (ownerID.equals(getID()) || getVassalsID().contains(ownerID)) {
                     return true;
                 }
             }
@@ -824,11 +825,21 @@ public abstract class TerritoryData implements TanTerritory, Territory {
         collectTaxes();
         payTribute();
         paySalaries();
+
+        int numberClaimedChunk = getNumberOfClaimedChunk();
+        int maxAmount = getNewLevel().getStat(ChunkCap.class).getMaxAmount();
+        if (numberClaimedChunk > maxAmount) {
+            int chunkToDelete = numberClaimedChunk - maxAmount;
+            switch (Constants.getChunkCapExceededStrategy()){
+                case DELETE_INSTANT -> deletePortionOfChunk(chunkToDelete, 0);
+                case DELETE_EACH_DAY -> deletePortionOfChunk(Math.min(Constants.getMinimumNumberOfChunksUnclaimed(), chunkToDelete), Constants.getPercentageOfChunksUnclaimed());
+            }
+        }
         payChunkUpkeep();
     }
 
     private void payTribute() {
-        for(Tribute tribute : TownsAndNations.getPlugin().getTributeStorage().getTributeOfTributary(this)){
+        for (Tribute tribute : TownsAndNations.getPlugin().getTributeStorage().getTributeOfTributary(this)) {
             int amountToPay = tribute.getRemaningDailyAmount();
             int toPay = Math.min((int) getBalance(), amountToPay);
 
@@ -860,24 +871,24 @@ public abstract class TerritoryData implements TanTerritory, Territory {
 
         int numberClaimedChunk = getNumberOfClaimedChunk();
         double totalUpkeep = numberClaimedChunk * upkeepCost;
+
+        int maxAmount = getNewLevel().getStat(ChunkCap.class).getMaxAmount();
+        if (Constants.getChunkCapExceededStrategy() == ChunkCapExtendedStrategy.INCREASE_UPKEEP && numberClaimedChunk > maxAmount) {
+            totalUpkeep *= (double) numberClaimedChunk / maxAmount;
+        }
+
         if (totalUpkeep > getBalance()) {
-            deletePortionOfChunk();
+            deletePortionOfChunk(Constants.getMinimumNumberOfChunksUnclaimed(), Constants.getPercentageOfChunksUnclaimed());
             TransactionManager.getInstance().register(new TerritoryChunkUpkeepTransaction(getID(), upkeepCost, numberClaimedChunk, false));
         } else {
             removeFromBalance(totalUpkeep);
             TransactionManager.getInstance().register(new TerritoryChunkUpkeepTransaction(getID(), upkeepCost, numberClaimedChunk, true));
         }
-
     }
 
-    private void deletePortionOfChunk() {
-        int minNbOfUnclaimedChunk = Constants.getMinimumNumberOfChunksUnclaimed();
+    private void deletePortionOfChunk(int minNbOfUnclaimedChunk, double percentageOfChunkToKeep) {
         int nbOfUnclaimedChunk = 0;
-        double percentageOfChunkToKeep = Constants.getPercentageOfChunksUnclaimed();
-
-
         List<TerritoryChunk> borderChunks = ChunkUtil.getBorderChunks(this);
-
 
         for (TerritoryChunk claimedChunk : borderChunks) {
             if (RandomUtil.getRandom().nextDouble() < percentageOfChunkToKeep) {
@@ -940,7 +951,7 @@ public abstract class TerritoryData implements TanTerritory, Territory {
      * @return true if the territory is involved in at least one war.
      */
     @Override
-    public boolean isAtWar(){
+    public boolean isAtWar() {
         return !TownsAndNations.getPlugin().getWarStorage().getWarsOfTerritory(this).isEmpty();
     }
 
@@ -1056,8 +1067,8 @@ public abstract class TerritoryData implements TanTerritory, Territory {
     @Override
     public int getNumberOfOccupiedChunk() {
         int count = 0;
-        for(TerritoryChunk territoryChunk : TownsAndNations.getPlugin().getClaimStorage().getAllChunkFrom(this)){
-            if(territoryChunk.isOccupied()){
+        for (TerritoryChunk territoryChunk : TownsAndNations.getPlugin().getClaimStorage().getAllChunkFrom(this)) {
+            if (territoryChunk.isOccupied()) {
                 count++;
             }
         }
@@ -1069,15 +1080,14 @@ public abstract class TerritoryData implements TanTerritory, Territory {
      * If surrender progress is superior to constants, territory will automatically surrender all involved wars
      */
     @Override
-    public void checkIfShouldSurrender(){
+    public void checkIfShouldSurrender() {
         int totalChunk = getNumberOfClaimedChunk();
         int occupiedChunk = getNumberOfOccupiedChunk();
 
         int ratio;
-        if(totalChunk != 0){
+        if (totalChunk != 0) {
             ratio = occupiedChunk * 100 / totalChunk;
-        }
-        else {
+        } else {
             ratio = 0;
         }
 
@@ -1085,13 +1095,13 @@ public abstract class TerritoryData implements TanTerritory, Territory {
         boolean capitalExist = capitalTownOpt.isPresent() && capitalTownOpt.get().getCapitalLocation().isPresent();
         boolean capitalCaptured = capitalTownOpt.isPresent() && capitalTownOpt.get().isTownCapitalOccupied();
 
-        if(capitalExist && capitalCaptured){
+        if (capitalExist && capitalCaptured) {
             ratio += Constants.getCaptureCapitalBonusPercentage();
         }
 
-        if(ratio > Constants.getCapturePercentageToSurrender()){
-            for(War war : TownsAndNations.getPlugin().getWarStorage().getWarsOfTerritory(this)){
-                if(war.isMainAttacker(this) || war.isMainDefender(this)){
+        if (ratio > Constants.getCapturePercentageToSurrender()) {
+            for (War war : TownsAndNations.getPlugin().getWarStorage().getWarsOfTerritory(this)) {
+                if (war.isMainAttacker(this) || war.isMainDefender(this)) {
                     war.territorySurrender(this);
                 }
             }
@@ -1106,19 +1116,19 @@ public abstract class TerritoryData implements TanTerritory, Territory {
 
     @Override
     public BannerBuilder getBanner() {
-        if(bannerBuilder == null) {
+        if (bannerBuilder == null) {
             bannerBuilder = new BannerBuilder();
         }
         return bannerBuilder;
     }
 
     @Override
-    public int getLevel(){
+    public int getLevel() {
         return getNewLevel().getMainLevel();
     }
 
     @Override
-    public EDiplomacyState getRelationWith(TanPlayer playerData){
+    public EDiplomacyState getRelationWith(TanPlayer playerData) {
         return getWorstRelationWith(TownsAndNations.getPlugin().getPlayerDataStorage().get(playerData.getID())).toAPI();
     }
 
@@ -1129,7 +1139,7 @@ public abstract class TerritoryData implements TanTerritory, Territory {
 
     @Override
     public @NotNull TeleportationData getTeleportationData() {
-        if(this.teleportationPosition == null){
+        if (this.teleportationPosition == null) {
             this.teleportationPosition = new TeleportationData();
         }
         return this.teleportationPosition;
@@ -1138,7 +1148,7 @@ public abstract class TerritoryData implements TanTerritory, Territory {
     @Override
     public void broadCastBarMessage(FilledLang filledLang) {
 
-        for(Player player : getPlayers()){
+        for (Player player : getPlayers()) {
             LangType langType = TownsAndNations.getPlugin().getPlayerDataStorage().get(player).getLang();
             TextComponent message = new TextComponent(filledLang.get(langType));
             message.setColor(ChatColor.GRAY);

@@ -581,6 +581,13 @@ claimBlacklist:
 # - name: "world"
 #   coordinate: [ 0,0,1,1 ]
 
+# Defines how chunks are handled when more chunks
+# - DELETE_INSTANT : Remove all border chunks until the town have enough claims (As of 1.0.3, only triggers at midnight).
+# - DELETE_EACH_DAY : Same logic will apply as when upkeep is not fully paid (percentageOfChunksUnclaimed and minimumNumberOfChunksUnclaimed) DEFAULT
+# - INCREASE_UPKEEP : Increase the upkeep of all chunks by a percent based on how many chunk exceed (60/50 chunks -> +20%)
+# - NOTHING : Chunk cap can be exceeded.
+chunkCapExceededStrategy : DELETE_EACH_DAY
+
 #If a town cannot pay the territory upkeep, % of chunks that will be unclaimed
 percentageOfChunksUnclaimed: 15.0
 

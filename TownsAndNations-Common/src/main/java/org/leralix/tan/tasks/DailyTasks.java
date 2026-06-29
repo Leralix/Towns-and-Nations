@@ -5,14 +5,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.property.PropertyData;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.Nation;
-import org.leralix.tan.data.territory.Region;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
+import org.leralix.tan.gui.scope.BrowseScope;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.ArchiveUtil;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -46,15 +47,9 @@ public class DailyTasks {
     public void executeMidnightTasks() {
         propertyRent();
 
-        for(Town town : TownsAndNations.getPlugin().getTownStorage().getAll().values()){
-            town.executeTasks();
-        }
-        for(Region regionData : TownsAndNations.getPlugin().getRegionStorage().getAll().values()){
-            regionData.executeTasks();
-        }
 
-        for(Nation nation : TownsAndNations.getPlugin().getNationStorage().getAll().values()){
-            nation.executeTasks();
+        for(Territory territory : TerritoryUtil.getTerritories(BrowseScope.ALL)){
+            territory.executeTasks();
         }
 
         clearOldTransaction();

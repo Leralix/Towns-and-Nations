@@ -444,6 +444,7 @@ language:
   OVERLORD_TAX_LINE: "§f -From overlord taxes: {0}"
   PLAYER_SALARY_LINE: "§f -From salary: {0}"
   TERRITORY_UPKEEP_LINE: "§f -From territory upkeep: {0}"
+  TERRITORY_UPKEEP_LINE_OVEREXTENSION: "§f -From territory upkeep: {0} §f(+{1}% from overextension)"
   TRIBUTE_RECEIVED_TAX_LINE: "§f -From {0}§f tribute : §a+{1}{MONEY_CHAR}/day §f(§6{2}{MONEY_CHAR}/{3}{MONEY_CHAR}§f)"
   TRIBUTE_PAID_TAX_LINE: "§f -From {0}§f tribute : §c{1}{MONEY_CHAR}/day §f(§6{2}{MONEY_CHAR}/{3}{MONEY_CHAR}§f)"
   #Attack GUI
