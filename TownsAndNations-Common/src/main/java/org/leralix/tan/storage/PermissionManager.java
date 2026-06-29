@@ -41,6 +41,9 @@ public class PermissionManager {
     }
 
     public ChunkPermission get(ChunkPermissionType type) {
+        if(!chunkPermissions.containsKey(type)){
+            chunkPermissions.put(type, new ChunkPermission(RelationPermission.TOWN));
+        }
         return chunkPermissions.getOrDefault(type, new ChunkPermission(RelationPermission.TOWN));
     }
 

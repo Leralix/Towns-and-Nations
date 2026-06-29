@@ -5,9 +5,7 @@ import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.data.territory.RegionData;
 import org.leralix.tan.data.territory.Town;
 
-import java.util.Map;
-
-public interface RegionStorage extends IterritoryStorage{
+public interface RegionStorage extends IterritoryStorage<Region>{
 
     Region newRegion(String name, Town capital);
 
@@ -28,8 +26,6 @@ public interface RegionStorage extends IterritoryStorage{
     void deleteRegion(RegionData region);
 
     Region get(String regionID);
-
-    Map<String, Region> getAll();
 
     void save();
 }

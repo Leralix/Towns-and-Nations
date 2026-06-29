@@ -4,10 +4,10 @@ import org.bukkit.Chunk;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.Building;
-import org.leralix.tan.data.chunk.ChunkData;
 import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.chunk.TerritoryChunkData;
+import org.leralix.tan.data.chunk.WildernessChunk;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.Town;
 
@@ -101,7 +101,7 @@ public class ChunkUtil {
         return false;
     }
 
-    private static ChunkPolygon getPolygon(TerritoryChunk startChunk) {
+    public static ChunkPolygon getPolygon(TerritoryChunk startChunk) {
         return getPolygon(startChunk, null);
     }
 
@@ -110,7 +110,7 @@ public class ChunkUtil {
      * @param blacklistedChunk  A chunk that should not be counted while creating the polygon
      * @return the polygon of all chunks linked to the start chunk. ignoring blacklisted chunk
      */
-    private static ChunkPolygon getPolygon(TerritoryChunk startChunk, TerritoryChunk blacklistedChunk) {
+    public static ChunkPolygon getPolygon(TerritoryChunk startChunk, TerritoryChunk blacklistedChunk) {
 
         String ownerID = startChunk.getOwnerID();
         Set<String> visited = new HashSet<>();
@@ -153,13 +153,65 @@ public class ChunkUtil {
         return new ChunkPolygon(startChunk.getOwnerInternal(), result);
     }
 
-    private static boolean alreadyAnalysed(ChunkData claimedChunk, List<ChunkPolygon> polygonsAnalysed) {
-        for (ChunkPolygon chunkPolygon : polygonsAnalysed) {
-            if (chunkPolygon.contains(claimedChunk)) {
-                return true;
+    /**
+     * @param baseWildernessChunk   The chunk creating the polygon
+     * @return the polygon of all chunks linked to the start chunk or an
+     * {@link Optional#empty()} If the polygon is too big or not linked to any chunk of the claiming territory
+     */
+    public static Optional<WildernessPolygon> getPolygon(
+            WildernessChunk baseWildernessChunk,
+            Territory territoryClaiming,
+            int maxIteration
+    ) {
+        boolean isSupplied = false;
+        Set<String> visited = new HashSet<>();
+        Set<WildernessChunk> result = new HashSet<>();
+        Queue<IClaimedChunk> toVisit = new LinkedList<>();
+
+        toVisit.add(baseWildernessChunk);
+
+        int nbIteration = 0;
+
+        while (!toVisit.isEmpty()) {
+
+            if(nbIteration >= maxIteration){
+                return Optional.empty();
+            }
+            nbIteration++;
+
+            IClaimedChunk current = toVisit.poll();
+            String key = current.getX() + "," + current.getZ() + "," + current.getWorldID();
+
+            if (visited.contains(key)) {
+                continue;
+            }
+            visited.add(key);
+
+
+
+
+            if (!(current instanceof WildernessChunk wildernessChunk)) {
+                if(!isSupplied && current instanceof TerritoryChunk territoryChunk && territoryChunk.getOwner() == territoryClaiming){
+                    isSupplied = true;
+                }
+                continue; // Ignore non-wilderness chunks
+            }
+
+            result.add(wildernessChunk);
+
+            // Get adjacent chunks (4 directions)
+            for (IClaimedChunk adj : TownsAndNations.getPlugin().getClaimStorage().getFourAjacentChunks(current)) {
+                if (adj != null && !visited.contains(adj.getX() + "," + adj.getZ() + "," + adj.getWorldID())) {
+                    toVisit.add(adj);
+                }
             }
         }
-        return false;
+        if(isSupplied){
+            return Optional.of(new WildernessPolygon(result));
+        }
+        else {
+            return Optional.empty();
+        }
     }
 
     public static boolean chunkContainsBuildings(TerritoryChunkData townClaimedChunk, Territory territory) {

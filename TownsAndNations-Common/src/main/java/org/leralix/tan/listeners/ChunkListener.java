@@ -1,5 +1,6 @@
 package org.leralix.tan.listeners;
 
+import com.destroystokyo.paper.MaterialTags;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Smoker;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.*;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
@@ -22,8 +24,11 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleDestroyEvent;
 import org.bukkit.inventory.FurnaceInventory;
+import org.bukkit.inventory.ItemStack;
 import org.leralix.tan.data.chunk.IClaimedChunk;
+import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.storage.SudoPlayerStorage;
@@ -126,17 +131,27 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
-
         if(event.getHand() == null){
             return;
         }
 
-        if (Constants.noCheckIfEventCancelled() && event.isCancelled()) {
+        if (Constants.noCheckIfEventCancelled() && event.useItemInHand() == Event.Result.DENY) {
             return;
         }
 
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();
+
+        ItemStack itemInHand = event.getItem();
+        if(itemInHand != null &&
+                (MaterialTags.SPAWN_EGGS.isTagged(itemInHand.getType()) ||
+                itemInHand.getType() == Material.EGG ||
+                itemInHand.getType() == Material.BROWN_EGG||
+                itemInHand.getType() == Material.BLUE_EGG) && !canPlayerDoAction(player.getLocation(), player, ChunkPermissionType.USE_EGGS)
+        ){
+            event.setCancelled(true);
+            return;
+        }
 
         if (block == null)
             return;
@@ -202,7 +217,7 @@ public class ChunkListener implements Listener {
             if (!canPlayerDoAction(loc, player, ChunkPermissionType.INTERACT_REDSTONE)) {
                 event.setCancelled(true);
             }
-        } else if (event.getItem() != null && event.getItem().getType() == Material.BONE_MEAL) {
+        } else if (itemInHand != null && itemInHand.getType() == Material.BONE_MEAL) {
             if (!canPlayerDoAction(loc, player, ChunkPermissionType.USE_BONE_MEAL)) {
                 event.setCancelled(true);
             }
@@ -669,6 +684,39 @@ public class ChunkListener implements Listener {
             }
 
         }
+    }
+
+    @EventHandler
+    public void onPistonExtend(BlockPistonExtendEvent event) {
+        for (Block movedBlock : event.getBlocks()) {
+
+            Location from = movedBlock.getLocation();
+            Location to = movedBlock.getRelative(event.getDirection()).getLocation();
+
+            IClaimedChunk claimedChunkFrom = claimStorage.get(from.getChunk());
+            IClaimedChunk claimedChunkTo = claimStorage.get(to.getChunk());
+
+            if(claimedChunkFrom != claimedChunkTo && !isPistonEventAuthorized(claimedChunkFrom, claimedChunkTo)){
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    private boolean isPistonEventAuthorized(IClaimedChunk claimedChunkFrom, IClaimedChunk claimedChunkTo) {
+        if(!(claimedChunkTo instanceof TerritoryChunk territoryChunkTo)){
+            return true;
+        }
+
+        if(territoryChunkTo.canPistonEnter()){
+            return true;
+        }
+
+        if(claimedChunkFrom instanceof TerritoryChunk territoryChunkFrom){
+            Territory territoryFrom = territoryChunkFrom.getOccupierInternal();
+            Territory territoryTo = territoryChunkTo.getOccupierInternal();
+            return territoryFrom == territoryTo;
+        }
+        return false;
     }
 
     private boolean canPlayerDoAction(Location location, Player player, ChunkPermissionType permissionType) {

@@ -9,6 +9,9 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.text.StringUtil;
 
+import java.util.Collections;
+import java.util.List;
+
 public abstract class TaxProfitLine extends ProfitLine {
 
     protected double actualTaxes = 0;
@@ -24,11 +27,11 @@ public abstract class TaxProfitLine extends ProfitLine {
     }
 
     @Override
-    public FilledLang getLine() {
+    public List<FilledLang> getLine() {
         if (missingTaxes > 0)
-            return Lang.PLAYER_TAX_MISSING_LINE.get(StringUtil.getColoredMoney(getMoney()), Double.toString(missingTaxes));
+            return Collections.singletonList(Lang.PLAYER_TAX_MISSING_LINE.get(StringUtil.getColoredMoney(getMoney()), Double.toString(missingTaxes)));
         else
-            return Lang.PLAYER_TAX_LINE.get(StringUtil.getColoredMoney(getMoney()));
+            return Collections.singletonList(Lang.PLAYER_TAX_LINE.get(StringUtil.getColoredMoney(getMoney())));
     }
 
     @Override

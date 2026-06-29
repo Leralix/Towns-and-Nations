@@ -55,7 +55,9 @@ public class TownSettingsMenu extends SettingsMenus {
 
         gui.setItem(3, 2, getChangeApplicationRulesButton());
         gui.setItem(3, 3, getChangeCapitalChunkButton());
-        gui.setItem(3, 4, getAuthorizedTeleportationButton());
+        if(Constants.allowShareOfTeleportation()) {
+            gui.setItem(3, 4, getAuthorizedTeleportationButton());
+        }
 
         if (Constants.enableTownTag()) {
             gui.setItem(3, 6, getChangeTagButton());

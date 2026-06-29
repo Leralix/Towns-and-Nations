@@ -10,6 +10,9 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.text.StringUtil;
 
+import java.util.Collections;
+import java.util.List;
+
 public class OverlordTaxLine extends ProfitLine {
 
     double tax;
@@ -24,8 +27,8 @@ public class OverlordTaxLine extends ProfitLine {
         return tax;
     }
 
-    public FilledLang getLine() {
-        return Lang.OVERLORD_TAX_LINE.get(StringUtil.getColoredMoney(getMoney()));
+    public List<FilledLang> getLine() {
+        return Collections.singletonList(Lang.OVERLORD_TAX_LINE.get(StringUtil.getColoredMoney(getMoney())));
     }
 
     @Override

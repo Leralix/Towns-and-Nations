@@ -16,6 +16,7 @@ import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.LeaderRequirement;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -44,7 +45,9 @@ public class NationSettingsMenu extends SettingsMenus {
         gui.setItem(2, 4, getChangeColorButton());
 
         gui.setItem(3, 2, setBannerButton());
-        gui.setItem(3, 3, getAuthorizedTeleportationButton());
+        if(Constants.allowShareOfTeleportation()){
+            gui.setItem(3, 3, getAuthorizedTeleportationButton());
+        }
 
         gui.setItem(2, 6, getChangeOwnershipButton());
         gui.setItem(2, 7, getChangeCapitalButton());

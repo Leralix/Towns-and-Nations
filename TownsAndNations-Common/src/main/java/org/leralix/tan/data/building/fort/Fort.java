@@ -9,6 +9,7 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.Nameable;
 import org.leralix.tan.data.building.Building;
 import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
@@ -27,7 +28,7 @@ import org.leralix.tan.utils.territory.ChunkUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.buildings.TanFort;
 
-public abstract class Fort extends Building implements TanFort {
+public abstract class Fort extends Building implements TanFort, Nameable {
 
     protected Fort() {
 

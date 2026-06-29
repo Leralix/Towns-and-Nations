@@ -189,7 +189,6 @@ language:
   PLAYER_PROPERTY_SIGN_TOO_FAR: "§cЗнак занадто далеко від ділянки. Він повинен бути не більше ніж {0} блоків"
   PLAYER_PROPERTY_CREATED: "Власність створено"
   PROPERTY_DELETED: "Власність успішно видалено"
-  #Spawn command
   SET_SPAWN_COMMAND_DESC: "Встановити місце спавну у місті"
   SPAWN_COMMAND_DESC: "Телепорт до спавну міста"
   SPAWN_TELEPORTED: "Телепорт до спавну міста"

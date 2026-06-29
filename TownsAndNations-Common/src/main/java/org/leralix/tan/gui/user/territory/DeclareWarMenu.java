@@ -10,10 +10,12 @@ import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
+import org.leralix.tan.gui.service.requirements.IndividualRequirement;
 import org.leralix.tan.gui.service.requirements.MoneyRequirement;
 import org.leralix.tan.gui.user.war.WarMenuDispatch;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.storage.stored.TributeStorage;
 import org.leralix.tan.storage.stored.WarStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -79,32 +81,20 @@ public class DeclareWarMenu extends IteratorGUI {
                             )
                     );
 
-                    if (Constants.getWarDeclareCost() > 0) {
-                        confirmDescription.add(
-                                Lang.REQUIREMENT_COST_POSITIVE.get(
-                                        Integer.toString(Constants.getWarDeclareCost())
-                                )
-                        );
+                    List< IndividualRequirement> requirements = new ArrayList<>();
+                    if(Constants.getWarDeclareCost() > 0){
+                        requirements.add(new MoneyRequirement(territoryData, Constants.getWarDeclareCost()));
                     }
-
 
                     new ConfirmMenu(
                             player,
                             confirmDescription,
+                            requirements,
                             () -> {
-                                MoneyRequirement requirement =
-                                        new MoneyRequirement(territoryData, Constants.getWarDeclareCost());
-                                if (requirement.isInvalid()) {
-                                    TanChatUtils.message(player, Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET, SoundEnum.NOT_ALLOWED);
-                                    SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
-                                    return;
-                                }
-
-                                requirement.actionDone();
-
                                 SoundUtil.playSound(player, SoundEnum.WAR);
-
                                 War newWar = warStorage.newWar(territoryData, iterateTerritory);
+                                TributeStorage tributeStorage = TownsAndNations.getPlugin().getTributeStorage();
+                                tributeStorage.getTribute(territoryData, iterateTerritory).ifPresent(tributeStorage::deleteTribute);
                                 WarMenuDispatch.openMenu(player, newWar, territoryData);
                             },
                             this::open

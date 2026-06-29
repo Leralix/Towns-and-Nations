@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.data.territory.TerritoryData;
+import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -19,17 +19,19 @@ import org.leralix.tan.listeners.chat.events.treasury.SetTerritoryTax;
 import org.leralix.tan.storage.database.transactions.TransactionType;
 import org.leralix.tan.utils.text.TanChatUtils;
 
+import java.util.List;
+
 public abstract class ProfitLine implements Comparable<ProfitLine> {
 
-    protected final TerritoryData territoryData;
+    protected final Territory territoryData;
 
-    protected ProfitLine(TerritoryData territoryData) {
+    protected ProfitLine(Territory territoryData) {
         this.territoryData = territoryData;
     }
 
     protected abstract double getMoney();
 
-    public abstract FilledLang getLine();
+    public abstract List<FilledLang> getLine();
 
     public abstract void addItems(Gui gui, Player player, ITanPlayer playerData, LangType langType);
 

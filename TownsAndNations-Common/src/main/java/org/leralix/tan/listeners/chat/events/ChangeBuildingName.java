@@ -1,6 +1,7 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.entity.Player;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.Building;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.Lang;
@@ -25,6 +26,11 @@ public class ChangeBuildingName extends ChatListenerEvent {
 
         if (message.length() > maxSize) {
             TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(playerData, Integer.toString(maxSize)));
+            return false;
+        }
+
+        if(TownsAndNations.getPlugin().getFortStorage().isNameUsed(message)){
+            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(playerData));
             return false;
         }
 

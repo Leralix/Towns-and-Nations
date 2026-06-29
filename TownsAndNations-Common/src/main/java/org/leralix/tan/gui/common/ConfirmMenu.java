@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
+import org.leralix.tan.gui.service.requirements.IndividualRequirement;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 
@@ -14,18 +15,29 @@ import java.util.List;
 public class ConfirmMenu extends BasicGui {
 
     private final List<FilledLang> confirmDescription;
-    private final Runnable  confirmAction;
-    private final Runnable  cancelAction;
+    private final Runnable confirmAction;
+    private final Runnable cancelAction;
+    private final List<IndividualRequirement> requirements;
 
-    public ConfirmMenu(Player player, FilledLang confirmDescription, Runnable confirmAction, Runnable  cancelAction){
+    public ConfirmMenu(Player player, FilledLang confirmDescription, Runnable confirmAction, Runnable cancelAction) {
         this(player, Collections.singletonList(confirmDescription), confirmAction, cancelAction);
     }
 
-    public ConfirmMenu(Player player, List<FilledLang> confirmDescription, Runnable confirmAction, Runnable  cancelAction){
+    public ConfirmMenu(Player player, List<FilledLang> confirmDescription, Runnable confirmAction, Runnable cancelAction) {
         super(player, Lang.HEADER_CONFIRMATION, 3);
         this.confirmDescription = confirmDescription;
         this.confirmAction = confirmAction;
         this.cancelAction = cancelAction;
+        this.requirements = Collections.emptyList();
+        open();
+    }
+
+    public ConfirmMenu(Player player, List<FilledLang> confirmDescription, List<IndividualRequirement> requirements, Runnable confirmAction, Runnable cancelAction) {
+        super(player, Lang.HEADER_CONFIRMATION, 3);
+        this.confirmDescription = confirmDescription;
+        this.confirmAction = confirmAction;
+        this.cancelAction = cancelAction;
+        this.requirements = requirements;
         open();
     }
 
@@ -49,6 +61,7 @@ public class ConfirmMenu extends BasicGui {
         return iconManager.get(IconKey.CONFIRM_ICON)
                 .setName(Lang.GENERIC_CONFIRM_ACTION.get(tanPlayer))
                 .setDescription(confirmDescription)
+                .setRequirements(requirements)
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> confirmAction.run())
                 .asGuiItem(player, langType);

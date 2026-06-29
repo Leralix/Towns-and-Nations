@@ -33,7 +33,7 @@ public class Budget {
         Collections.sort(profitList);
         for (ProfitLine profitLine : profitList) {
             if (profitLine.isRecurrent()) {
-                lore.add(profitLine.getLine());
+                lore.addAll(profitLine.getLine());
                 total += profitLine.getMoney();
             }
         }

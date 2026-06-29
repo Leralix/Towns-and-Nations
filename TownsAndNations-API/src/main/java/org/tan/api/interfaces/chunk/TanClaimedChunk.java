@@ -97,6 +97,11 @@ public interface TanClaimedChunk {
     boolean canPvpHappen();
 
     /**
+     * @return True if piston can push blocks from outside claims to inside. False otherwise.
+     */
+    boolean canPistonEnter();
+
+    /**
      * Check if the player can do the action in the chunk.
      * <br>
      * @param player        The player to check

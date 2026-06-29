@@ -4,9 +4,12 @@ import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.fort.Fort;
 import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
+import org.leralix.tan.utils.text.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public interface FortStorage {
 
@@ -77,5 +80,20 @@ public interface FortStorage {
                 TownsAndNations.getPlugin().getLogger().warning("Deleted fort " + fort.getID() + " due to invalid world.");
             }
         }
+    }
+
+    default boolean isNameUsed(String name){
+        return TerritoryUtil.isNameUsed(name, getForts());
+    }
+
+    default Optional<Fort> getTerritoryByName(String name){
+        for(Fort fort : getForts()){
+            if(StringUtil.removeSpaceChar(fort.getName()).equals(name)){
+                return Optional.of(fort);
+            }
+        }
+        return Optional.empty();
+
+
     }
 }

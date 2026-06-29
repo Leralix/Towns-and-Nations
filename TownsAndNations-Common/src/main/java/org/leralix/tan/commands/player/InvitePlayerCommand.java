@@ -12,6 +12,7 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownStorage;
+import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -120,7 +121,7 @@ public class InvitePlayerCommand extends PlayerSubCommand {
 
         LangType receiverLang = inviteStat.getLang();
         TanChatUtils.message(invite, Lang.INVITATION_RECEIVED_1.get(receiverLang, player.getName(), townData.getName()));
-        ChatUtils.sendClickableCommand(invite, Lang.INVITATION_RECEIVED_2.get(receiverLang), "tan join " + townData.getName().replace(" ", "-"));
+        ChatUtils.sendClickableCommand(invite, Lang.INVITATION_RECEIVED_2.get(receiverLang), "tan join " + StringUtil.removeSpaceChar(townData.getName()));
     }
 }
 

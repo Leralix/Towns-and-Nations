@@ -56,7 +56,9 @@ public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
                 permissionType == ChunkPermissionType.INTERACT_DECORATIVE_BLOCK ||
                 permissionType == ChunkPermissionType.INTERACT_MUSIC_BLOCK ||
                 permissionType == ChunkPermissionType.USE_LEAD ||
-                permissionType == ChunkPermissionType.USE_SHEARS) {
+                permissionType == ChunkPermissionType.USE_SHEARS ||
+                permissionType == ChunkPermissionType.USE_EGGS
+        ) {
             return true;
         }
 
@@ -132,6 +134,11 @@ public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
     @Override
     public boolean canPvpHappen() {
         return true;
+    }
+
+    @Override
+    public boolean canPistonEnter() {
+        return false;
     }
 
     @Override

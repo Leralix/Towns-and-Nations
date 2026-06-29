@@ -118,11 +118,14 @@ public class Constants {
     private static int maxTimeBeforeAttack;
     private static int chunkCaptureTime;
     private static List<String> blacklistedCommandsDuringAttacks;
-    private static int nbChunkToCaptureMax;
     private static List<String> onceStartCommands;
     private static List<String> onceEndCommands;
     private static List<String> perPlayerStartCommands;
     private static List<String> perPlayerEndCommands;
+
+    private static int nbChunkToCaptureMax;
+    private static int tributeDuration;
+    private static double maxTributeAmount;
 
     //Claims
     private static boolean noCheckIfEventCancelled;
@@ -137,6 +140,8 @@ public class Constants {
     private static double claimLandmarkCost;
     private static boolean landmarkClaimRequiresEncirclement;
 
+    private static int claimAreaChunkLimit;
+
     private static int landmarkStorageCapacity;
     private static int landmarkMaxNameSize;
 
@@ -145,6 +150,9 @@ public class Constants {
     private static boolean cancelTeleportOnMoveHead;
     private static boolean cancelTeleportOnMovePosition;
     private static boolean cancelTeleportOnDamage;
+    private static boolean allowShareOfTeleportation;
+    private static boolean allowFortTeleport;
+    private static boolean allowFortTeleportDuringWar;
 
     //Storage
     private static boolean useRedis;
@@ -226,6 +234,8 @@ public class Constants {
 
         landmarkClaimRequiresEncirclement = config.getBoolean("landmarkEncircleToCapture", true);
 
+        claimAreaChunkLimit = config.getInt("claimAreaChunkLimit", 10000);
+
         //forts
         ConfigurationSection fortsSection = config.getConfigurationSection("Forts");
         if (fortsSection != null) {
@@ -286,6 +296,10 @@ public class Constants {
         if (nbChunkToCaptureMax == 0) {
             nbChunkToCaptureMax = Integer.MAX_VALUE;
         }
+        tributeDuration = config.getInt("tributeDuration", 7);
+        maxTributeAmount = config.getDouble("maxTributeAmount", 1000);
+
+
         onceStartCommands = config.getStringList("commandToExecuteOnceWhenAttackStart");
         onceEndCommands = config.getStringList("commandToExecuteOnceWhenAttackEnd");
         perPlayerStartCommands = config.getStringList("commandToExecutePerPlayerWhenAttackStart");
@@ -311,6 +325,9 @@ public class Constants {
         cancelTeleportOnMoveHead = config.getBoolean("cancelTeleportOnMoveHead", false);
         cancelTeleportOnMovePosition = config.getBoolean("cancelTeleportOnMovePosition", true);
         cancelTeleportOnDamage = config.getBoolean("cancelTeleportOnDamage", true);
+        allowShareOfTeleportation = config.getBoolean("allowShareOfTeleportation", true);
+        allowFortTeleport = config.getBoolean("allowFortTeleport", true);
+        allowFortTeleportDuringWar = config.getBoolean("allowFortTeleportDuringWar", false);
 
         //Storage
         useRedis = config.getString("inGameStorageType", "RAM").equalsIgnoreCase("redis");
@@ -478,6 +495,10 @@ public class Constants {
         return landmarkClaimRequiresEncirclement;
     }
 
+    public static int getClaimAreaChunkLimit() {
+        return claimAreaChunkLimit;
+    }
+
     public static double getFortCost() {
         return fortCost;
     }
@@ -575,10 +596,6 @@ public class Constants {
 
     public static List<String> getBlacklistedCommandsDuringAttacks() {
         return blacklistedCommandsDuringAttacks;
-    }
-
-    public static int getNbChunkToCaptureMax() {
-        return nbChunkToCaptureMax;
     }
 
     public static InteractionStatus getChunkSettings(GeneralChunkSetting generalChunkSetting) {
@@ -735,6 +752,18 @@ public class Constants {
         return perPlayerEndCommands;
     }
 
+    public static int getNbChunkToCaptureMax() {
+        return nbChunkToCaptureMax;
+    }
+
+    public static int getTributeDuration() {
+        return tributeDuration;
+    }
+
+    public static double getMaxTributeAmount() {
+        return maxTributeAmount;
+    }
+
     public static List<String> getPerPlayerStartCommands() {
         return perPlayerStartCommands;
     }
@@ -757,6 +786,18 @@ public class Constants {
 
     public static boolean isCancelTeleportOnDamage() {
         return cancelTeleportOnDamage;
+    }
+
+    public static boolean allowShareOfTeleportation() {
+        return allowShareOfTeleportation;
+    }
+
+    public static boolean allowFortTeleport() {
+        return allowFortTeleport;
+    }
+
+    public static boolean allowFortTeleportDuringWar() {
+        return allowFortTeleportDuringWar;
     }
 
     public static boolean isUseRedis() {

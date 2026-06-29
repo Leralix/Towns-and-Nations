@@ -6,7 +6,6 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.RegionStorage;
 import org.leralix.tan.utils.constants.database.RedisConfig;
 import org.leralix.tan.utils.file.FileUtil;
-import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,11 +58,6 @@ public class RegionDatabaseStorage extends DatabaseStorage<RegionDatabase, Regio
     }
 
     @Override
-    public boolean isNameUsed(String name) {
-        return TerritoryUtil.isNameUsed(name, databaseManager.getAll());
-    }
-
-    @Override
     public Map<String, Region> getAll() {
         return new HashMap<>(databaseManager.getMap());
     }
@@ -75,7 +69,7 @@ public class RegionDatabaseStorage extends DatabaseStorage<RegionDatabase, Regio
 
     private RegionDatabase load(String id) {
         RegionData data = databaseManager.load(id);
-        if(data == null){
+        if (data == null) {
             return null;
         }
         return new RegionDatabase(data, databaseManager);

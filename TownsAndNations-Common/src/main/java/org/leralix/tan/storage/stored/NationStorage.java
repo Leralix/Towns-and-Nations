@@ -5,9 +5,7 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Nation;
 import org.leralix.tan.data.territory.Region;
 
-import java.util.Map;
-
-public interface NationStorage extends IterritoryStorage{
+public interface NationStorage extends IterritoryStorage<Nation>{
 
     default Nation get(Region regionData){
         if(regionData == null){
@@ -27,11 +25,7 @@ public interface NationStorage extends IterritoryStorage{
 
     Nation get(String nationID);
 
-    boolean isNameUsed(String name);
-
     void delete(String id);
-
-    Map<String, Nation> getAll();
 
     void save();
 }

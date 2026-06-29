@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 
 public class AttackListener implements Listener {
@@ -22,7 +22,7 @@ public class AttackListener implements Listener {
         Player killed = e.getEntity();
 
         ITanPlayer tanPlayer = playerDataStorage.get(killed);
-        CurrentAttacksStorage.notifyPlayerDeath(tanPlayer);
+        TownsAndNations.getPlugin().getCurrentAttackStorage().notifyPlayerDeath(tanPlayer);
 
     }
 }

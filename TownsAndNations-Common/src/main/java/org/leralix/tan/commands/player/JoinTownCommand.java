@@ -10,10 +10,12 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.invitation.TownInviteDataStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.storage.stored.TownStorage;
+import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class JoinTownCommand extends PlayerSubCommand {
 
@@ -55,7 +57,7 @@ public class JoinTownCommand extends PlayerSubCommand {
         for(String townId:TownInviteDataStorage.getInvitations(player.getUniqueId())) {
             Town town= townDataStorage.get(townId);
             if(town!=null) {
-                suggestions.add(town.getName().replace(" ", "-"));
+                suggestions.add(StringUtil.removeSpaceChar(town.getName()));
             }
         }
         if(suggestions.isEmpty()){
@@ -81,20 +83,20 @@ public class JoinTownCommand extends PlayerSubCommand {
             }
 
 
-            String townName = args[1].replace(" ", "-");
-            Town townData = townDataStorage.getByName(townName); // find town by name
-            if(townData == null || !TownInviteDataStorage.isInvited(player.getUniqueId(), townData.getID())) {
+            String townName = StringUtil.removeSpaceChar(args[1]);
+            Optional<Town> optTownData = townDataStorage.getByName(townName); // find town by name
+            if(optTownData.isEmpty() || !TownInviteDataStorage.isInvited(player.getUniqueId(), optTownData.get().getID())) {
                 TanChatUtils.message(player, Lang.TOWN_INVITATION_NO_INVITATION.get(lang));
                 return;
             }
             ITanPlayer tanPlayer = playerDataStorage.get(player);
 
-            if (townData.isFull()) {
+            if (optTownData.get().isFull()) {
                 TanChatUtils.message(player, Lang.INVITATION_TOWN_FULL.get(lang));
                 return;
             }
 
-            townData.addPlayer(tanPlayer);
+            optTownData.get().addPlayer(tanPlayer);
         } else {
             TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.get(lang));
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(lang, getSyntax()));

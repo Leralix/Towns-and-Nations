@@ -44,7 +44,7 @@ public class LandmarkCap extends NumericStat implements AggregatableStat<Landmar
     }
 
     public IndividualRequirement getRequirement(TownData townData) {
-        return new PropertyCapRequirement(townData, maxAmount);
+        return new PropertyCapRequirement(townData, maxAmount, isUnlimited);
     }
 
     @Override

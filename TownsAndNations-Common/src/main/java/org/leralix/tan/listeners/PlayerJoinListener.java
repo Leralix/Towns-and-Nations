@@ -25,10 +25,12 @@ import org.leralix.tan.utils.text.TanChatUtils;
 public class PlayerJoinListener implements Listener {
 
     private final PlayerDataStorage playerDataStorage;
+    private final CurrentAttacksStorage currentAttacksStorage;
     private final MinimapManager minimapManager;
 
-    public PlayerJoinListener(PlayerDataStorage playerDataStorage, MinimapManager minimapManager){
+    public PlayerJoinListener(PlayerDataStorage playerDataStorage, CurrentAttacksStorage currentAttacksStorage, MinimapManager minimapManager){
         this.playerDataStorage = playerDataStorage;
+        this.currentAttacksStorage = currentAttacksStorage;
         this.minimapManager = minimapManager;
     }
 
@@ -38,7 +40,7 @@ public class PlayerJoinListener implements Listener {
 
         ITanPlayer tanPlayer = playerDataStorage.get(player);
 
-        CurrentAttacksStorage.registerPlayer(player, tanPlayer);
+        currentAttacksStorage.registerPlayer(player, tanPlayer);
 
         PrefixUtil.updatePrefix(player);
 

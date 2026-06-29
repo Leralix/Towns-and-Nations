@@ -24,21 +24,6 @@ public class FortData extends Fort{
         this.occupierID = owningTerritory.getID();
     }
 
-    public FortData(
-            String id,
-            Vector3D position,
-            String name,
-            String owningTerritoryID,
-            String occupierTerritoryID
-    ){
-        this.id = id;
-        this.position = position;
-        this.name = name;
-        this.ownerID = owningTerritoryID;
-        this.occupierID = occupierTerritoryID;
-    }
-
-
     @Override
     public String getID() {
         return id;

@@ -1,8 +1,9 @@
-package org.leralix.tan.commands.player;
+package org.leralix.tan.commands.player.claim;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
+import org.leralix.tan.commands.player.TerritoryCommandUtil;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.lang.Lang;

@@ -2,12 +2,15 @@ package org.leralix.tan.commands.player;
 
 import org.leralix.lib.commands.CommandManager;
 import org.leralix.lib.commands.MainHelpCommand;
+import org.leralix.tan.commands.player.claim.AutoClaimCommand;
+import org.leralix.tan.commands.player.claim.ClaimAreaCommand;
+import org.leralix.tan.commands.player.claim.ClaimCommand;
+import org.leralix.tan.commands.player.claim.UnclaimCommand;
+import org.leralix.tan.commands.player.territory.DepositCommand;
+import org.leralix.tan.commands.player.territory.TeleportCommand;
 import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.MinimapManager;
-import org.leralix.tan.storage.stored.NationStorage;
-import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.leralix.tan.storage.stored.RegionStorage;
-import org.leralix.tan.storage.stored.TownStorage;
+import org.leralix.tan.storage.stored.*;
 import org.leralix.tan.utils.constants.Constants;
 
 public class PlayerCommandManager extends CommandManager {
@@ -17,6 +20,8 @@ public class PlayerCommandManager extends CommandManager {
             TownStorage townStorage,
             RegionStorage regionStorage,
             NationStorage nationStorage,
+            FortStorage fortStorage,
+            ClaimStorage claimStorage,
             LocalChatStorage localChatStorage,
             MinimapManager minimapManager
     ){
@@ -24,7 +29,6 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new InvitePlayerCommand(playerDataStorage, townStorage));
         addSubCommand(new JoinTownCommand(playerDataStorage, townStorage));
         addSubCommand(new ClaimCommand(playerDataStorage));
-        addSubCommand(new ClaimAreaCommand(playerDataStorage));
         addSubCommand(new EnableBoundaryCommand(playerDataStorage));
         addSubCommand(new UnclaimCommand(playerDataStorage));
         addSubCommand(new MapCommand(playerDataStorage));
@@ -34,10 +38,12 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new OpenNewsletterCommand(playerDataStorage));
         addSubCommand(new ChannelChatScopeCommand(playerDataStorage, localChatStorage));
         addSubCommand(new AutoClaimCommand(playerDataStorage));
-        addSubCommand(new SpawnCommand(playerDataStorage, townStorage, regionStorage, nationStorage));
+        addSubCommand(new ClaimAreaCommand(playerDataStorage, claimStorage));
         addSubCommand(new SetSpawnCommand(playerDataStorage, townStorage, regionStorage, nationStorage));
         addSubCommand(new MainHelpCommand(this));
         addSubCommand(new ShowMinimap(minimapManager));
+        addSubCommand(new DepositCommand(playerDataStorage));
+        addSubCommand(new TeleportCommand(playerDataStorage, fortStorage));
     }
 
     @Override

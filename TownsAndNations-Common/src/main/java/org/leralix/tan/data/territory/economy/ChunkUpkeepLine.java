@@ -15,6 +15,9 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.database.transactions.TransactionType;
 import org.leralix.tan.utils.text.StringUtil;
 
+import java.util.Collections;
+import java.util.List;
+
 public class ChunkUpkeepLine extends ProfitLine {
     private final double totalUpkeep;
 
@@ -29,8 +32,8 @@ public class ChunkUpkeepLine extends ProfitLine {
     }
 
     @Override
-    public FilledLang getLine() {
-        return Lang.TERRITORY_UPKEEP_LINE.get(StringUtil.getColoredMoney(getMoney()));
+    public List<FilledLang> getLine() {
+        return Collections.singletonList(Lang.TERRITORY_UPKEEP_LINE.get(StringUtil.getColoredMoney(getMoney())));
     }
 
     @Override

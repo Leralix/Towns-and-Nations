@@ -46,19 +46,12 @@ public class TownData extends TerritoryData implements Town {
     private UUID UuidLeader;
     private String townTag;
 
-    /**
-     * @deprecated replaced by {@code recruitingPolicy}
-     */
-    @Deprecated(since = "0.19.0")
-    private boolean isRecruiting;
-
     private RecruitingPolicy recruitingPolicy;
 
     private final Set<UUID> PlayerJoinRequestSet;
     private Map<String, PropertyData> propertyDataMap;
     private final Set<UUID> townPlayerListId;
     private Vector2D capitalLocation;
-
 
     public TownData(String townId, String townName) {
         this(townId, townName, null);
@@ -69,6 +62,7 @@ public class TownData extends TerritoryData implements Town {
         this.PlayerJoinRequestSet = new HashSet<>();
         this.townPlayerListId = new HashSet<>();
         this.recruitingPolicy = RecruitingPolicy.APPLICATION_OPEN;
+        this.propertyDataMap = new HashMap<>();
 
         if (leader != null) {
             this.UuidLeader = leader.getID();
@@ -85,6 +79,11 @@ public class TownData extends TerritoryData implements Town {
     @Override
     public Collection<PropertyData> getPropertiesInternal() {
         return getPropertyDataMap().values();
+    }
+
+    @Override
+    public Collection<TanProperty> getProperties() {
+        return new ArrayList<>(getPropertiesInternal());
     }
 
     @Override
@@ -266,7 +265,7 @@ public class TownData extends TerritoryData implements Town {
     @Override
     public RecruitingPolicy getRecruitingPolicy() {
         if(recruitingPolicy == null){
-            recruitingPolicy = isRecruiting ? RecruitingPolicy.APPLICATION_OPEN : RecruitingPolicy.CLOSED;
+            recruitingPolicy = RecruitingPolicy.CLOSED;
         }
         return recruitingPolicy;
     }
@@ -409,6 +408,8 @@ public class TownData extends TerritoryData implements Town {
         budget.addProfitLine(new PropertyRentTaxLine(this));
         budget.addProfitLine(new PropertySellTaxLine(this));
         budget.addProfitLine(new PropertyCreationTaxLine(this));
+        budget.addProfitLine(new TributeReceivedTaxLine(this));
+        budget.addProfitLine(new TributePaidTaxLine(this));
     }
 
     @Override

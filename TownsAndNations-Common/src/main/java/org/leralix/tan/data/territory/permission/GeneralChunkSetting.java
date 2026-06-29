@@ -16,6 +16,7 @@ public enum GeneralChunkSetting {
     ENABLE_PVP(IconKey.ENABLE_PVP_ICON, Lang.ENABLE_PVP_SETTING),
     FIRE_GRIEF(IconKey.ENABLE_FIRE_GRIEF_ICON, Lang.ENABLE_FIRE_GRIEF_SETTING),
     TNT_GRIEF(IconKey.ENABLE_TNT_GRIEF_ICON, Lang.ENABLE_TNT_GRIEF_SETTING),
+    PISTON_INTERACTION(IconKey.ENABLE_PISTON_INTERACTION_ICON, Lang.ENABLE_PISTON_INTERACTON_SETTING),
     VILLAGER_GRIEF(IconKey.ENABLE_VILLAGER_GRIEF_ICON, Lang.ENABLE_VILLAGER_GRIEF_SETTING),
     PASSIVE_MOB_GRIEF(IconKey.ENABLE_PASSIVE_MOB_GRIEF_ICON, Lang.ENABLE_PASSIVE_MOB_GRIEF_SETTING),
     HOSTILE_MOB_GRIEF(IconKey.ENABLE_HOSTILE_MOB_GRIEF_ICON, Lang.ENABLE_HOSTILE_MOB_GRIEF_SETTING),
@@ -45,7 +46,9 @@ public enum GeneralChunkSetting {
 
             List<FilledLang> desc = new ArrayList<>();
             desc.add(Lang.CURRENT_STATE.get(status));
-            desc.add(Lang.SET_TRUE_IF_AT_WAR.get());
+            if(autoTrueIfWar){
+                desc.add(Lang.SET_TRUE_IF_AT_WAR.get());
+            }
             iconBuilder.setDescription(desc);
             iconBuilder.setClickToAcceptMessage(Lang.LEFT_CLICK_TO_MODIFY);
         }

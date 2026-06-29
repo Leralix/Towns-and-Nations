@@ -202,7 +202,6 @@ language:
   PLAYER_PROPERTY_SIGN_TOO_FAR: "§cLa señal esta demasiado lejos de la propiedad. Como mucho puede estar a {0} bloques"
   PLAYER_PROPERTY_CREATED: "Propiedad creada exitosamente"
   PROPERTY_DELETED: "Propiedad eliminada exitosamente"
-  #Spawn command
   SET_SPAWN_COMMAND_DESC: "Define el punto de aparición del pueblo"
   SPAWN_COMMAND_DESC: "Teletransportate al punto de aparición del pueblo"
   SPAWN_TELEPORTED: "Teletransportado al punto de aparición del pueblo"

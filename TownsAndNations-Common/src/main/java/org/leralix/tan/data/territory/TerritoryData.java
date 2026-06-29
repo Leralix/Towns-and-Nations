@@ -37,6 +37,7 @@ import org.leralix.tan.data.territory.relation.DiplomacyProposal;
 import org.leralix.tan.data.territory.relation.RelationData;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.data.territory.teleportation.TeleportationData;
+import org.leralix.tan.data.territory.wargoals.Tribute;
 import org.leralix.tan.data.upgrade.TerritoryStats;
 import org.leralix.tan.data.upgrade.rewards.StatsType;
 import org.leralix.tan.data.upgrade.rewards.list.BiomeStat;
@@ -52,7 +53,6 @@ import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.ClaimBlacklistStorage;
-import org.leralix.tan.storage.CurrentAttacksStorage;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.DonationTransaction;
 import org.leralix.tan.storage.database.transactions.instance.SalaryTransaction;
@@ -361,7 +361,7 @@ public abstract class TerritoryData implements TanTerritory, Territory {
     @Override
     public Collection<CurrentAttack> getCurrentAttacks() {
         Collection<CurrentAttack> res = new ArrayList<>();
-        for (CurrentAttack currentAttack : CurrentAttacksStorage.getAll()) {
+        for (CurrentAttack currentAttack : TownsAndNations.getPlugin().getCurrentAttackStorage().getAll()) {
             if (currentAttack.getAttackData().getWar().getTerritoryRole(this) != WarRole.NEUTRAL) {
                 res.add(currentAttack);
             }
@@ -635,6 +635,8 @@ public abstract class TerritoryData implements TanTerritory, Territory {
             TownsAndNations.getPlugin().getFortStorage().delete(ownedFort);
         }
 
+        TownsAndNations.getPlugin().getTributeStorage().deleteAllTributeOfTerritory(this);
+
         getRelations().cleanAll(this);   //Cancel all Relation between the deleted territory and other territories
     }
 
@@ -820,8 +822,19 @@ public abstract class TerritoryData implements TanTerritory, Territory {
     @Override
     public void executeTasks() {
         collectTaxes();
+        payTribute();
         paySalaries();
         payChunkUpkeep();
+    }
+
+    private void payTribute() {
+        for(Tribute tribute : TownsAndNations.getPlugin().getTributeStorage().getTributeOfTributary(this)){
+            int amountToPay = tribute.getRemaningDailyAmount();
+            int toPay = Math.min((int) getBalance(), amountToPay);
+
+            removeFromBalance(toPay);
+            tribute.pay(toPay);
+        }
     }
 
     private void paySalaries() {

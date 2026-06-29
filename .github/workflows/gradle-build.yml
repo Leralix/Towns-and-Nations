@@ -32,7 +32,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build (shadowJar)
-        run: ./gradlew :TownsAndNations-Common:shadowJar -x test --console=plain
+        run: ./gradlew :TownsAndNations-Common:shadowJar --console=plain
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

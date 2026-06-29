@@ -30,7 +30,6 @@ public class PropertyCap extends NumericStat implements AggregatableStat<Propert
 
     @Override
     public PropertyCap aggregate(List<PropertyCap> stats) {
-
         int totalCap = 0;
         boolean unlimitedFound = false;
         for (PropertyCap stat : stats) {
@@ -43,7 +42,7 @@ public class PropertyCap extends NumericStat implements AggregatableStat<Propert
     }
 
     public IndividualRequirement getRequirement(Town townData) {
-        return new PropertyCapRequirement(townData, maxAmount);
+        return new PropertyCapRequirement(townData, maxAmount, isUnlimited);
     }
 
     @Override

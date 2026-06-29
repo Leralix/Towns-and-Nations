@@ -355,11 +355,6 @@ MinimumTimeBeforeAttack: 120 #2 hours
 #The maximum time before starting a war in minutes
 MaximumTimeBeforeAttack: 4320 #72 hours
 
-
-# Set the maximum number of chunks a territory can conquer during a war.
-# Set the value to 0 for unlimited chunks (capped by the maximum number of chunks the territory currently own).
-MaximumChunkConquer: 0
-
 #Chunk capture time (in seconds)
 ChunkCaptureTime : 10
 
@@ -455,6 +450,20 @@ attackersPermissions:
     INTERACT_BERRIES: true
 
 ########################
+##      War goals     ##
+########################
+
+# Set the maximum number of chunks a territory can conquer during a war.
+# Set the value to 0 for unlimited chunks (capped by the maximum number of chunks the territory currently own).
+MaximumChunkConquer: 0
+
+# Set the number of day a tribute should be paid
+tributeDuration : 7
+
+# Set the maximum of money of a daily tribute
+maxTributeAmount : 1000.0
+
+########################
 ##  General settings  ##
 ########################
 
@@ -504,6 +513,7 @@ chunkGeneralSettings:
   fire: "PLAYER_CHOICE_AND_WAR" #burning and spreading
   explosion: "PLAYER_CHOICE_AND_WAR" #Explosion (creeper included)
   pvp: "ALWAYS"
+  piston_interaction: "PLAYER_CHOICE_AND_WAR" #Moving blocks inside claimed chunks with piston from wilderness or other territory.
   hostile_mob: "PLAYER_CHOICE" #Enderman picking up blocks, Wither breaking blocks...
   passive_mob: "PLAYER_CHOICE" #sheep eating grass
   villager: "PLAYER_CHOICE" #Villager farming
@@ -526,16 +536,14 @@ cancelTeleportOnMovePosition: true
 #Cancel teleportation if player take damage
 cancelTeleportOnDamage: true
 
-# Authorize territory spawn in claimed chunks of territory.
-# If enabled, players will be able to set territory spawns inside claimed chunk of their territory.
-allowSpawnTown: true
-allowSpawnRegion: false
-allowSpawnNation: false
-
 # Authorize territory to grant teleportation permission to other territories.
 # If enabled, territories will be able to grant teleportation permission to other territories.
 # Players from these territories will then be able to teleport to the territory spawn.
 allowShareOfTeleportation: true
+
+# Defines if a player can teleport to a fort owned by one of its territory.
+allowFortTeleport: true
+allowFortTeleportDuringWar: false
 
 ########################
 ##      Landmarks     ##
@@ -696,6 +704,14 @@ placeholderString:
   trueValue: "true"
   falseValue: "false"
 
+########################
+##     Server Limit   ##
+########################
+
+# Some functionalities may consume a lot of processing time and/or memory.
+
+# The maximum number of wilderness chunk that can be claimed at once with /tan claimarea <town/region/nation>
+claimAreaChunkLimit : 10000
 
 
 #Write the type of mobs you want a town to be able to cancel the spawn of.

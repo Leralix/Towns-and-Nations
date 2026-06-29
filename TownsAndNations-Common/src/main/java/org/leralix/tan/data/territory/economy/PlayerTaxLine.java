@@ -8,7 +8,6 @@ import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.TownData;
 import org.leralix.tan.data.territory.rank.RolePermission;
-import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.user.territory.TreasuryMenu;
@@ -19,8 +18,12 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.treasury.SetTerritoryTax;
 import org.leralix.tan.storage.database.transactions.TransactionType;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
+
+import java.util.Collections;
+import java.util.List;
 
 public class PlayerTaxLine extends ProfitLine {
 
@@ -51,11 +54,11 @@ public class PlayerTaxLine extends ProfitLine {
     }
 
     @Override
-    public FilledLang getLine() {
+    public List<FilledLang> getLine() {
         if (missingTaxes > 0)
-            return Lang.PLAYER_TAX_MISSING_LINE.get(StringUtil.getColoredMoney(getMoney()), StringUtil.formatMoney(missingTaxes));
+            return Collections.singletonList(Lang.PLAYER_TAX_MISSING_LINE.get(StringUtil.getColoredMoney(getMoney()), StringUtil.formatMoney(missingTaxes)));
         else
-            return Lang.PLAYER_TAX_LINE.get(StringUtil.getColoredMoney(getMoney()));
+            return Collections.singletonList(Lang.PLAYER_TAX_LINE.get(StringUtil.getColoredMoney(getMoney())));
     }
 
     @Override

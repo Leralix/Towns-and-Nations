@@ -50,6 +50,7 @@ language:
   LANDMARK_UPDATED: "{0} ({1})§f has been updated."
   LANDMARK_STORED_UPDATED: "{0} ({1})§f has been set limit to §e{2}"
   LANDMARK_NOT_FOUND: "§cLandmark not found"
+  CANNOT_TELEPORT_TO_FORT_WHILE_AT_WAR: "§cCannot teleport to fort while at war"
   #Action bar information
   FORT_ACTION_BAR_INFO: "§6{0}§f, owned by : {1}"
   #Placeholder API
@@ -100,6 +101,7 @@ language:
   MESSAGE_TOO_SHORT: "§cMessage is too short: {0} min"
   MESSAGE_TOO_LONG: "§cMessage is too long: {0} max"
   CANCELLED_ACTION: "§cAction cancelled"
+  MUST_BE_TOWN: "§cThe territory selected must be a Town"
   #Cancel
   CANCEL_WORD: "cancel" #The cancel word can be modified
   WRITE_CANCEL_TO_CANCEL: "§fWrite §c{0}§f in the chat to cancel"
@@ -147,6 +149,9 @@ language:
   TOWN_AUTO_CLAIM_DESC: "Enable auto claiming while moving between chunks"
   AUTO_CLAIM_ON_FOR: "§fAuto claim is now on for chunk type: §9{0}"
   AUTO_CLAIM_OFF: "§fAuto claim is now disabled"
+  #CLaim area
+  CLAIM_AREA_NOT_WILDERNESS_CHUNK: "§cThis command needs to be cast on a wilderness chunk surrounded by claims"
+  CLAIM_AREA_TOO_BIG: "§cThe zone is too big, or is not encircled by claimed chunk"
   #Chance chat
   TOWN_CHAT_COMMAND_DESC: "Change chat range"
   CHAT_CHANGED: "§fChat is now set to: §e{0}"
@@ -250,14 +255,14 @@ language:
   PLAYER_PROPERTY_CREATED: "Property created"
   PLAYER_PROPERTY_SIGN_RELOCATED: "Property sign relocated"
   PROPERTY_DELETED: "Property successfully deleted"
-  #Spawn command
   SET_SPAWN_COMMAND_DESC: "Set the town spawn"
   OPEN_MINIMAP_COMMAND_DESC: "Display a minimap of claims"
+  DEPOSIT_COMMAND_DESC: "Deposit money into a territory"
   SPAWN_SET_SUCCESS: "Spawn set"
   SPAWN_COMMAND_DESC: "Teleport to the town spawn"
   SPAWN_TELEPORTED: "Teleported to the town spawn"
   SPAWN_NOT_SET: "§cSpawn is not set"
-  SPAWN_NOT_UNLOCKED: "§cSpawn is not unlocked"
+  SPAWN_NOT_UNLOCKED: "§cTeleportation is not unlocked"
   SPAWN_INVALID: "§cSpawn location is invalid"
   SPAWN_NEED_TO_BE_IN_CHUNK: "§cYou need to be in a claimed chunk of {0}§c to set the spawn"
   #Town Relations
@@ -303,8 +308,8 @@ language:
   CURRENT_PLAYER_TIME: "§fPlayer time: §e{0}"
   GUI_NATION_ICON: "§aNation"
   GUI_NATION_ICON_DESC1_NATION: "§fCurrent nation: {0}"
-  GUI_NATION_ICON_DESC2_NATION: "§fCurrent nation: {0}"
-  GUI_NATION_ICON_DESC1_NO_NATION: "§fNation rank: {0}"
+  GUI_NATION_ICON_DESC2_NATION: "§fNation rank: {0}"
+  GUI_NATION_ICON_DESC1_NO_NATION: "§fCreate or look at nations"
   GUI_REGION_ICON: "§aRegion"
   GUI_REGION_ICON_DESC1_REGION: "§fCurrent region: {0}"
   GUI_REGION_ICON_DESC2_REGION: "§fRegion rank: {0}"
@@ -439,6 +444,8 @@ language:
   OVERLORD_TAX_LINE: "§f -From overlord taxes: {0}"
   PLAYER_SALARY_LINE: "§f -From salary: {0}"
   TERRITORY_UPKEEP_LINE: "§f -From territory upkeep: {0}"
+  TRIBUTE_RECEIVED_TAX_LINE: "§f -From {0}§f tribute : §a+{1}{MONEY_CHAR}/day §f(§6{2}{MONEY_CHAR}/{3}{MONEY_CHAR}§f)"
+  TRIBUTE_PAID_TAX_LINE: "§f -From {0}§f tribute : §c{1}{MONEY_CHAR}/day §f(§6{2}{MONEY_CHAR}/{3}{MONEY_CHAR}§f)"
   #Attack GUI
   GUI_ATTACK_ADD_TIME: "§aAdd time"
   GUI_ATTACK_REMOVE_TIME: "§aRemove time"
@@ -469,6 +476,7 @@ language:
   GUI_PROPERTY_CAP_FULL: "§fCurrent properties : §c{0}/{1}"
   GUI_PROPERTY_CAP: "§fCurrent properties : §a{0}/{1}"
   GUI_PROPERTY_COST_PER_BLOCK: "§fCost : §e{0}{MONEY_CHAR}/block"
+  INFINITY: "∞"
   #GUI text
   GUI_WARNING_STILL_IN_DEV: "§eStill in development"
   GUI_BACK_ARROW: "Return"
@@ -499,9 +507,11 @@ language:
   CREATE_PUBLIC_PROPERTY_ICON: "§aCreate a public property"
   CREATE_PUBLIC_PROPERTY_COST: "§fCost : §6Free"
   CREATE_FORT_ICON: "§aCreate a new fort"
-  CREATE_FORT_DESC1: "§fCost : §6{0}{MONEY_CHAR}"
   CREATE_FORT_DESC2: "§fProtection radius : §2{0} blocks"
   CREATE_FORT_DESC3: "§fCapture time : §8{0}s"
+  CREATE_FORT_DESC4: "§fCan be used to claim land away from the territory."
+  CREATE_FORT_DESC_ALLOW_TELEPORTATION: "§fCan be used for teleportation"
+  CREATE_FORT_DESC_ALLOW_TELEPORTATION_OUTSIDE_WARS: "§fCan be used for teleportation during peace"
   #Wars menu
   GUI_TOWN_ATTACK_TOWN_DESC1: "§cClick to declare war"
   DECLARE_WAR_CONFIRM_MESSAGE: "{0}§f will start a war against {1}"
@@ -755,6 +765,7 @@ language:
   GUI_TOWN_CLAIM_SETTINGS_MUSIC_BLOCK: "§aManage interaction with music blocks"
   GUI_TOWN_CLAIM_SETTINGS_LEAD: "§aManage interaction with Lead related actions"
   GUI_TOWN_CLAIM_SETTINGS_SHEARS: "§aManage interaction with shears"
+  GUI_TOWN_CLAIM_SETTINGS_EGGS: "§aManage use of all types of eggs"
   GUI_TOWN_CLAIM_SETTINGS_PLACE_BOAT: "§aManage placing and breaking boats"
   GUI_TOWN_CLAIM_SETTINGS_PLACE_VEHICLE: "§aManage placing and breaking vehicles"
   GUI_TOWN_CLAIM_SETTINGS_GATHER_BERRIES: "§aManage gathering berries"
@@ -763,6 +774,7 @@ language:
   ENABLE_MOB_GRIEF_SETTING: "§aEnable mob griefing"
   ENABLE_FIRE_GRIEF_SETTING: "§aEnable fire griefing"
   ENABLE_TNT_GRIEF_SETTING: "§aEnable explosion griefing"
+  ENABLE_PISTON_INTERACTON_SETTING: "§aEnable piston interaction from unclaimed chunks"
   ENABLE_VILLAGER_GRIEF_SETTING: "§aEnable villager griefing"
   ENABLE_PASSIVE_MOB_GRIEF_SETTING: "§aEnable passive mob griefing"
   ENABLE_HOSTILE_MOB_GRIEF_SETTING: "§aEnable hostile mob griefing"
@@ -983,7 +995,7 @@ language:
   VASSAL_GUI_DESC1: "{0}§f have §6{1}§f vassals"
   CANNOT_HAVE_VASSAL: "§fThis territory cannot have vassals"
   #Chat Information
-  CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cYou cannot leave a town if you are the leader, you need to disband it or transfer ownership to someone else"
+  CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cA town leader cannot leave its town. Ownership needs to be transfer."
   CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER: "§cYou cannot leave a town if you are the leader of the region, you need to disband it or transfer ownership to someone else"
   CHAT_PLAYER_LEFT_THE_TOWN: "§fYou left the town"
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cThe town {0}§c, with which you had a relation: {1}§c has been deleted"
@@ -1062,11 +1074,15 @@ language:
   GUI_CONFIRM_DELETE_NATION: "§fThe nation §6{0}§f will be deleted"
   GUI_CONFIRM_CHANGE_NATION_CAPITAL: "§6{0}§f will be the new capital of the nation"
   #War goal
+  GUI_ONLY_ONE_WAR_GOAL_TYPE: "§aOnly one war goal of this type can be added."
   CONQUER_WAR_GOAL: "§aConquer territory"
   CONQUER_WAR_GOAL_DESC: "§fConquer a certain amount of territory"
   CONQUER_WAR_GOAL_DESC1: "§fNumber of chunks : §2{0}§f chunks"
-  GUI_ONLY_ONE_CONQUER_WAR_GOAL: "§cOnly one conquer war goal can be added"
+  GUI_ONLY_ONE_WAR_GOAL: "§cOnly one war goal of this category can be added"
   GUI_CONQUER_CHUNK_CURRENT_DESC: "§fConquer §2{0}§f chunks"
+  TRIBUTE_WAR_GOAL: "§aForce Tribute"
+  TRIBUTE_WAR_GOAL_DESC: "§fReceive a payment every day, for §2{0} day(s)"
+  TRIBUTE_WAR_GOAL_DESC1: "§fTribute : §6{0}{MONEY_CHAR}/day"
   CAPTURE_LANDMARK_WAR_GOAL: "§aCapture landmark"
   CAPTURE_LANDMARK_WAR_GOAL_DESC: "§fCapture a specific landmark from the enemy"
   GUI_CAPTURE_LANDMARK_CURRENT_DESC: "§fCapture the landmark §6{0}"

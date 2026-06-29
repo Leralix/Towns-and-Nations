@@ -8,6 +8,7 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -82,7 +83,7 @@ public abstract class JsonStorage<T> {
     }
 
     public Map<String, T> getAll() {
-        return dataMap;
+        return new HashMap<>(dataMap);
     }
 
     public T get(String id) {

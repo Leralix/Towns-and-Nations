@@ -189,7 +189,6 @@ language:
   PLAYER_PROPERTY_SIGN_TOO_FAR: "§cBiển báo quá xa so với tài sản. Nó cần cách tối đa {0} khối"
   PLAYER_PROPERTY_CREATED: "Đã tạo tài sản"
   PROPERTY_DELETED: "Đã xóa tài sản thành công"
-  #Spawn command
   SET_SPAWN_COMMAND_DESC: "Đặt điểm hồi sinh của thị trấn"
   SPAWN_COMMAND_DESC: "Dịch chuyển đến điểm hồi sinh của thị trấn"
   SPAWN_TELEPORTED: "Đã dịch chuyển đến điểm hồi sinh thị trấn"

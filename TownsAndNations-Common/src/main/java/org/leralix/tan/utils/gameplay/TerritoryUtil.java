@@ -2,13 +2,18 @@ package org.leralix.tan.utils.gameplay;
 
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.TownsAndNations;
+import org.leralix.tan.data.Nameable;
 import org.leralix.tan.data.player.ITanPlayer;
+import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.DiplomacyProposalAcceptedInternalEvent;
 import org.leralix.tan.gui.scope.BrowseScope;
 import org.leralix.tan.utils.graphic.TeamUtils;
+import org.leralix.tan.utils.text.StringUtil;
 
 import java.util.*;
 
@@ -18,11 +23,11 @@ public class TerritoryUtil {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Territory getTerritory(String id){
-        if(id.startsWith("T")) {
+    public static Territory getTerritory(String id) {
+        if (id.startsWith("T")) {
             return TownsAndNations.getPlugin().getTownStorage().get(id);
         }
-        if(id.startsWith("R")) {
+        if (id.startsWith("R")) {
             return TownsAndNations.getPlugin().getRegionStorage().get(id);
         }
         if (id.startsWith("N")) {
@@ -31,10 +36,10 @@ public class TerritoryUtil {
         return null;
     }
 
-    public static boolean isNameUsed(String name, Collection<? extends Territory> territories){
-        String territoryName = name.replace(" ", "-");
-        for(Territory territory : territories){
-            if(territoryName.equals(territory.getName().replace(" ", "-"))){
+    public static boolean isNameUsed(String name, Collection<? extends Nameable> instances) {
+        String territoryName = StringUtil.removeSpaceChar(name);
+        for (Nameable territory : instances) {
+            if (territoryName.equals(StringUtil.removeSpaceChar(territory.getName()))) {
                 return true;
             }
         }
@@ -44,11 +49,11 @@ public class TerritoryUtil {
     public static @NotNull List<Territory> getTerritories(BrowseScope scope) {
         List<Territory> territoryList = new ArrayList<>();
 
-        if(scope == BrowseScope.ALL || scope == BrowseScope.TOWNS)
+        if (scope == BrowseScope.ALL || scope == BrowseScope.TOWNS)
             territoryList.addAll(TownsAndNations.getPlugin().getTownStorage().getAll().values());
-        if(scope == BrowseScope.ALL || scope == BrowseScope.REGIONS)
+        if (scope == BrowseScope.ALL || scope == BrowseScope.REGIONS)
             territoryList.addAll(TownsAndNations.getPlugin().getRegionStorage().getAll().values());
-        if(scope == BrowseScope.ALL || scope == BrowseScope.NATIONS)
+        if (scope == BrowseScope.ALL || scope == BrowseScope.NATIONS)
             territoryList.addAll(TownsAndNations.getPlugin().getNationStorage().getAll().values());
         return territoryList;
     }
@@ -74,7 +79,7 @@ public class TerritoryUtil {
     public static void setRelation(Territory proposingTerritory, Territory acceptingTerritory, TownRelation newRelation) {
         TownRelation oldRelation = proposingTerritory.getRelationWith(acceptingTerritory);
 
-        if(oldRelation == newRelation) {
+        if (oldRelation == newRelation) {
             return;
         }
 
@@ -85,4 +90,33 @@ public class TerritoryUtil {
         TeamUtils.updateAllScoreboardColor();
     }
 
+    public static Optional<Territory> getTerritoryFromArgs(ITanPlayer tanPlayer, String message) {
+        return Optional.ofNullable(
+                switch (message) {
+                    case "town" -> tanPlayer.getTown();
+                    case "region" -> tanPlayer.getRegion();
+                    case "nation" -> tanPlayer.getNation();
+                    default -> null;
+                }
+        );
+
+    }
+
+    public static Optional<Territory> getTerritoryByName(String name) {
+
+        Optional<Town> townData = TownsAndNations.getPlugin().getTownStorage().getByName(name);
+        if(townData.isPresent()){
+            return Optional.of(townData.get());
+        }
+        Optional<Region> regionData = TownsAndNations.getPlugin().getRegionStorage().getByName(name);
+        if(regionData.isPresent()){
+            return Optional.of(regionData.get());
+        }
+        Optional<Nation> nationData = TownsAndNations.getPlugin().getNationStorage().getByName(name);
+        if(nationData.isPresent()){
+            return Optional.of(nationData.get());
+        }
+        return Optional.empty();
+
+    }
 }
