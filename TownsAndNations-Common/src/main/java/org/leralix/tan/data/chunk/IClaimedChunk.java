@@ -13,7 +13,6 @@ import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.lang.LangType;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
-import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.UUID;
 
@@ -52,10 +51,6 @@ public interface IClaimedChunk extends TanClaimedChunk {
     boolean canTerritoryClaim(Player player, Territory territoryData, LangType langType);
 
     boolean canTerritoryClaim(Territory territoryData);
-
-    boolean canClaim(TanTerritory territory);
-
-    void claim(TanTerritory tanTerritory);
 
     boolean canHostileGrief();
 

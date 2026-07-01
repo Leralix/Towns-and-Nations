@@ -349,6 +349,14 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
     }
 
     @Override
+    public boolean canTerritoryClaim(Territory territoryData) {
+        if (territoryData.canConquerChunk(this)) {
+            return true;
+        }
+        return getOwnerInternal().getVassalsID().contains(territoryData.getID());
+    }
+
+    @Override
     public void notifyUpdate() {
         if (!Constants.allowNonAdjacentChunksFor(getType())) {
             ChunkUtil.unclaimIfNoLongerSupplied(this);

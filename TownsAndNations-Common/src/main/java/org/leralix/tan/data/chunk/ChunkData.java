@@ -13,6 +13,7 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.ClaimStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.tan.api.enums.EChunkPermission;
 import org.tan.api.interfaces.TanPlayer;
@@ -119,26 +120,21 @@ public abstract class ChunkData implements IClaimedChunk, TanClaimedChunk {
 
     @Override
     public boolean canClaim(TanTerritory territory) {
-        if (!(territory instanceof Territory territoryData)) {
-            return false;
+        if (territory instanceof Territory territoryData) {
+            return canTerritoryClaim(territoryData);
         }
-        return canTerritoryClaim(territoryData);
+        return false ;
     }
 
     @Override
-    public void claim(TanTerritory tanTerritory) {
-        if (tanTerritory == null) {
-            return;
-        }
-        if (tanTerritory instanceof TanTown) {
-            TownsAndNations.getPlugin().getClaimStorage().claimTownChunk(getChunk(), tanTerritory.getID());
-        }
-        if (tanTerritory instanceof TanRegion) {
-            TownsAndNations.getPlugin().getClaimStorage().claimRegionChunk(getChunk(), tanTerritory.getID());
-        }
-        if (tanTerritory instanceof TanNation) {
-            TownsAndNations.getPlugin().getClaimStorage().claimNationChunk(getChunk(), tanTerritory.getID());
-        }
+    public TerritoryChunk claim(TanTerritory tanTerritory) {
+        ClaimStorage claimStorage = TownsAndNations.getPlugin().getClaimStorage();
+        return switch (tanTerritory){
+            case TanTown town -> claimStorage.claimTownChunk(getChunk(), tanTerritory.getID());
+            case TanRegion region -> claimStorage.claimRegionChunk(getChunk(), tanTerritory.getID());
+            case TanNation nation -> claimStorage.claimNationChunk(getChunk(), tanTerritory.getID());
+            default -> throw new IllegalArgumentException();
+        };
     }
 
     @Override

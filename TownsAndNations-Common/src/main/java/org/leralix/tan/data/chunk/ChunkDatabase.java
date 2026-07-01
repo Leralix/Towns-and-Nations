@@ -16,6 +16,7 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.database.DatabaseData;
 import org.tan.api.enums.EChunkPermission;
 import org.tan.api.interfaces.TanPlayer;
+import org.tan.api.interfaces.chunk.TanTerritoryChunk;
 import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.UUID;
@@ -30,10 +31,6 @@ public abstract class ChunkDatabase implements DatabaseData<ChunkData>, IClaimed
     protected ChunkDatabase(ChunkData data, DbManager<ChunkData> manager) {
         this.data = data;
         this.manager = manager;
-    }
-
-    protected void setChunkData(ChunkData data) {
-        this.data = data;
     }
 
     @Override
@@ -127,8 +124,10 @@ public abstract class ChunkDatabase implements DatabaseData<ChunkData>, IClaimed
     }
 
     @Override
-    public void claim(TanTerritory tanTerritory) {
-        mutate(claim -> claim.claim(tanTerritory));
+    public TanTerritoryChunk claim(TanTerritory tanTerritory) {
+        var res = data.claim(tanTerritory);
+        manager.save(data);
+        return res;
     }
 
     @Override

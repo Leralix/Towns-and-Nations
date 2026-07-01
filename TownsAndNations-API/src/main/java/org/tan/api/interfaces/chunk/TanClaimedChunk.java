@@ -45,9 +45,9 @@ public interface TanClaimedChunk {
     /**
      * Check if the chunk is currently being claimed by a territory.
      * <ul>
-     *     <li>{@link TanTerritoryChunk : always true}</li>
-     *     <li>{@link TanWildernessChunk : always false}</li>
-     *     <li>{@link TanChunk : true if claimed, false otherwise}</li>
+     *     <li>{@link TanTerritoryChunk} : always true</li>
+     *     <li>{@link TanWildernessChunk} : always false</li>
+     *     <li>{@link TanChunk} : true if claimed, false otherwise</li>
      * </ul>
      * @return True if the chunk is claimed by a territory or a landmark, false otherwise
      */
@@ -64,6 +64,12 @@ public interface TanClaimedChunk {
     /**
      * Check if the territory can claim the chunk.
      * <br>
+     * A territory can be claimed if :
+     * <ul>
+     *     <li>Chunk cap not reached</li>
+     *     <li>Chunk is a wilderness chunk</li>
+     *     <li>Chunk is a territory chunk and a war goal is applied</li>
+     * </ul>
      * It will return false if it is exceeding the chunk limit or if the chunk is already claimed.
      * @param territory The territory to check.
      * @return True if the territory can claim the chunk, false otherwise
@@ -76,7 +82,7 @@ public interface TanClaimedChunk {
      * nor if the territory can claim more chunks. Use {@link #canClaim(TanTerritory)} for that.
      * @param territory The territory to claim the chunk.
      */
-    void claim(TanTerritory territory);
+    TanTerritoryChunk claim(TanTerritory territory);
 
     /**
      * Check if the chunk can be griefed by explosions.

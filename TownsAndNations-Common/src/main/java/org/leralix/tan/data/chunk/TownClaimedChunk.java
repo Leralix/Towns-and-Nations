@@ -3,7 +3,6 @@ package org.leralix.tan.data.chunk;
 import org.bukkit.Chunk;
 import org.bukkit.entity.EntityType;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.Town;
 
 public class TownClaimedChunk extends TerritoryChunkData implements TownChunk {
@@ -29,11 +28,6 @@ public class TownClaimedChunk extends TerritoryChunkData implements TownChunk {
     @Override
     public boolean canEntitySpawn(EntityType entityType) {
         return getTown().getChunkSettings().getSpawnControl(entityType.toString()).canSpawn();
-    }
-
-    @Override
-    public boolean canTerritoryClaim(Territory territoryData) {
-        return territoryData.canConquerChunk(this);
     }
 
     @Override

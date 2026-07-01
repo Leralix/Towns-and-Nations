@@ -4,7 +4,6 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.EntityType;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.territory.Region;
-import org.leralix.tan.data.territory.Territory;
 
 public class RegionClaimedChunk extends TerritoryChunkData implements RegionChunk {
 
@@ -29,15 +28,6 @@ public class RegionClaimedChunk extends TerritoryChunkData implements RegionChun
     @Override
     public boolean canEntitySpawn(EntityType entityType) {
         return true;
-    }
-
-    @Override
-    public boolean canTerritoryClaim(Territory territoryData) {
-        if (territoryData.canConquerChunk(this))
-            return true;
-
-        // if the town is part of this specific region, they can claim
-        return getRegion().getSubjects().contains(territoryData);
     }
 
     @Override

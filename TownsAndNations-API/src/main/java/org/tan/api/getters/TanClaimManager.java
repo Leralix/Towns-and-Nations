@@ -4,6 +4,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
+import org.tan.api.interfaces.chunk.TanTerritoryChunk;
 import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.Optional;
@@ -22,12 +23,15 @@ public interface TanClaimManager {
      */
     boolean isBlockClaimed(Block block);
 
-    TanClaimedChunk getClaimedChunk(Location location);
-
+    default TanClaimedChunk getClaimedChunk(Location location){
+        return getClaimedChunk(location.getChunk());
+    }
 
     default TanClaimedChunk getClaimedChunk(Block block){
         return getClaimedChunk(block.getLocation());
     }
+
+    TanClaimedChunk getClaimedChunk(Chunk chunk);
 
     /**
      * Get the territory own a block.
@@ -46,4 +50,16 @@ public interface TanClaimManager {
      * @return The territory owning the chunk, or {@link Optional#empty()} if the chunk is not claimed.
      */
     Optional<TanTerritory> getTerritoryOfChunk(Chunk chunk);
+
+    /**
+     *
+     * @return an optional chunk if claimed, {@link Optional#empty()} if the claim failed
+     */
+    Optional<TanTerritoryChunk> claimChunk(TanClaimedChunk chunk, TanTerritory territory);
+
+    /**
+     *
+     * @return an optional chunk if claimed, {@link Optional#empty()} otherwise
+     */
+    TanTerritoryChunk forceClaim(TanClaimedChunk chunk, TanTerritory territory);
 }

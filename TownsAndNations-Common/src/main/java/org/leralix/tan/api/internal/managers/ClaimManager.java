@@ -1,7 +1,6 @@
 package org.leralix.tan.api.internal.managers;
 
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.LandmarkClaimedChunk;
@@ -10,6 +9,7 @@ import org.leralix.tan.data.chunk.WildernessChunkData;
 import org.leralix.tan.storage.stored.ClaimStorage;
 import org.tan.api.getters.TanClaimManager;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
+import org.tan.api.interfaces.chunk.TanTerritoryChunk;
 import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.Optional;
@@ -30,8 +30,8 @@ public class ClaimManager implements TanClaimManager {
     }
 
     @Override
-    public TanClaimedChunk getClaimedChunk(Location location) {
-        return claimStorage.get(location.getChunk());
+    public TanClaimedChunk getClaimedChunk(Chunk chunk) {
+        return claimStorage.get(chunk);
     }
 
     @Override
@@ -48,5 +48,18 @@ public class ClaimManager implements TanClaimManager {
             case TerritoryChunkData territoryChunk -> Optional.ofNullable(territoryChunk.getOwner());
             default -> throw new IllegalStateException("Unexpected chunk type : " + claimedChunk);
         };
+    }
+
+    @Override
+    public Optional<TanTerritoryChunk> claimChunk(TanClaimedChunk chunk, TanTerritory territory) {
+        if(chunk.canClaim(territory)){
+            return Optional.of(chunk.claim(territory));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public TanTerritoryChunk forceClaim(TanClaimedChunk chunk, TanTerritory territory) {
+        return chunk.claim(territory);
     }
 }

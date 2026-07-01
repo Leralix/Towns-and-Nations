@@ -2,7 +2,6 @@ package org.leralix.tan.data.chunk;
 
 import org.bukkit.Chunk;
 import org.bukkit.entity.EntityType;
-import org.leralix.tan.data.territory.Territory;
 
 public class NationClaimedChunk extends TerritoryChunkData implements NationChunk {
 
@@ -22,14 +21,6 @@ public class NationClaimedChunk extends TerritoryChunkData implements NationChun
     @Override
     public boolean canEntitySpawn(EntityType entityType) {
         return true;
-    }
-
-    @Override
-    public boolean canTerritoryClaim(Territory territoryData) {
-        if (territoryData.canConquerChunk(this)) {
-            return true;
-        }
-        return getOwnerInternal().getVassalsID().contains(territoryData.getID());
     }
 
     @Override
