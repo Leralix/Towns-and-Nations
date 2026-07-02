@@ -1,5 +1,6 @@
 package org.tan.api.interfaces.chunk;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.tan.api.enums.EChunkPermission;
 import org.tan.api.interfaces.TanPlayer;
@@ -25,6 +26,9 @@ public interface TanClaimedChunk {
      * @return The z position of the chunk.
      */
     int getZ();
+
+
+    Chunk getChunk();
 
     /**
      * Return the world UUID of the chunk.

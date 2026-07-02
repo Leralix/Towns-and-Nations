@@ -12,6 +12,7 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.Nameable;
 import org.leralix.tan.data.building.Building;
 import org.leralix.tan.data.building.fort.Fort;
+import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunkData;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.cosmetic.BannerBuilder;
@@ -356,4 +357,6 @@ public interface Territory extends TanTerritory, Relation, Nameable {
     void removeVassal(Territory territoryData);
 
     int getTotalPlayerCount();
+
+    ClaimChunkValidationResult isPositionClaimable(Chunk chunk, IClaimedChunk chunkData);
 }

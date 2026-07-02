@@ -40,7 +40,6 @@ import org.leralix.tan.data.territory.teleportation.TeleportationData;
 import org.leralix.tan.data.territory.wargoals.Tribute;
 import org.leralix.tan.data.upgrade.TerritoryStats;
 import org.leralix.tan.data.upgrade.rewards.StatsType;
-import org.leralix.tan.data.upgrade.rewards.list.BiomeStat;
 import org.leralix.tan.data.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.data.upgrade.rewards.numeric.ChunkCost;
 import org.leralix.tan.data.upgrade.rewards.numeric.ChunkUpkeepCost;
@@ -52,7 +51,6 @@ import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
-import org.leralix.tan.storage.ClaimBlacklistStorage;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.DonationTransaction;
 import org.leralix.tan.storage.database.transactions.instance.SalaryTransaction;
@@ -514,7 +512,14 @@ public abstract class TerritoryData implements TanTerritory, Territory {
 
     @Override
     public boolean claimChunk(Player player, ITanPlayer playerData, Chunk chunk, boolean ignoreAdjacent) {
-        if (!canClaimChunk(player, playerData, chunk, ignoreAdjacent)) {
+        ClaimChunkValidationResult validationResult = TownsAndNations.getPlugin()
+                .getChunkClaimValidator()
+                .validate(this, playerData, chunk, ignoreAdjacent);
+
+        if (!validationResult.isSuccess()) {
+            if (validationResult.getErrorMessage() != null) {
+                TanChatUtils.message(player, validationResult.getErrorMessage().get(playerData.getLang()));
+            }
             return false;
         }
 
@@ -545,54 +550,12 @@ public abstract class TerritoryData implements TanTerritory, Territory {
      */
     protected abstract void abstractClaimChunk(Chunk chunk, boolean ignoreAdjacent);
 
-    protected boolean canClaimChunk(Player player, ITanPlayer tanPlayer, Chunk chunk, boolean ignoreAdjacent) {
-
-        if (ClaimBlacklistStorage.cannotBeClaimed(chunk)) {
-            TanChatUtils.message(player, Lang.CHUNK_IS_BLACKLISTED.get(tanPlayer.getLang()));
-            return false;
-        }
-
-        if (!doesPlayerHavePermission(tanPlayer, RolePermission.CLAIM_CHUNK)) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer.getLang()));
-            return false;
-        }
-
-        TerritoryStats territoryStats = getNewLevel();
-        int nbOfClaimedChunks = getNumberOfClaimedChunk();
-
-        if (!territoryStats.getStat(BiomeStat.class).canClaimBiome(chunk)) {
-            TanChatUtils.message(player, Lang.CHUNK_BIOME_NOT_ALLOWED.get(tanPlayer.getLang()));
-            return false;
-        }
-
-        if (!territoryStats.getStat(ChunkCap.class).canDoAction(nbOfClaimedChunks)) {
-            TanChatUtils.message(player, Lang.MAX_CHUNK_LIMIT_REACHED.get(tanPlayer.getLang()));
-            return false;
-        }
-
-        int cost = getClaimCost();
-        if (getBalance() < cost) {
-            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer.getLang(), getColoredName(), Double.toString(cost - getBalance())));
-            return false;
-        }
-
-        IClaimedChunk chunkData = TownsAndNations.getPlugin().getClaimStorage().get(chunk);
-        if (!chunkData.canTerritoryClaim(player, this, tanPlayer.getLang())) {
-            return false;
-        }
-
-        if (ignoreAdjacent) {
-            return true;
-        }
-        return isPositionClaimable(player, chunk, chunkData, tanPlayer.getLang());
-    }
-
     /**
      * Check if the chunk can be claimed
      *
      * @return true if the position can be claimed, false otherwise
      */
-    protected boolean isPositionClaimable(Player player, Chunk chunk, IClaimedChunk chunkData, LangType langType) {
+    public ClaimChunkValidationResult isPositionClaimable(Chunk chunk, IClaimedChunk chunkData) {
 
         for (IClaimedChunk claimedChunk : TownsAndNations.getPlugin().getClaimStorage().getFourAjacentChunks(chunkData)) {
             if (claimedChunk instanceof TerritoryChunk territoryChunk) {
@@ -600,17 +563,16 @@ public abstract class TerritoryData implements TanTerritory, Territory {
                 String ownerID = territoryChunk.getOwnerID();
 
                 if (ownerID.equals(getID()) || getVassalsID().contains(ownerID)) {
-                    return true;
+                    return ClaimChunkValidationResult.success();
                 }
             }
         }
 
         // The chunk must be adjacent to at least one chunk from the territory of one of its vassals.
         if (!TownsAndNations.getPlugin().getClaimStorage().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
-            TanChatUtils.message(player, Lang.CHUNK_NOT_ADJACENT.get(langType));
-            return false;
+            return ClaimChunkValidationResult.failure(Lang.CHUNK_NOT_ADJACENT.get());
         }
-        return true;
+         return ClaimChunkValidationResult.success();
     }
 
     @Override

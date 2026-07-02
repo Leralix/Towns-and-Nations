@@ -13,6 +13,7 @@ import org.leralix.tan.utils.Range;
 import org.leralix.tan.utils.constants.database.RedisConfig;
 import org.leralix.tan.utils.constants.enums.ChunkCapExtendedStrategy;
 import org.leralix.tan.war.WarTimeSlot;
+import org.tan.api.interfaces.territory.TanTerritory;
 
 import java.util.*;
 
@@ -630,7 +631,7 @@ public class Constants {
         return doublePermissionCheck;
     }
 
-    public static boolean allowNonAdjacentChunksFor(Territory territoryData) {
+    public static boolean allowNonAdjacentChunksFor(TanTerritory territoryData) {
 
         ChunkType chunkType = switch (territoryData){
             case TownData ignored -> ChunkType.TOWN;

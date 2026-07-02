@@ -14,6 +14,7 @@ import org.leralix.tan.data.DataWrapperFactory;
 import org.leralix.tan.data.DbManager;
 import org.leralix.tan.data.building.Building;
 import org.leralix.tan.data.building.fort.Fort;
+import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunkData;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.cosmetic.BannerBuilder;
@@ -667,6 +668,11 @@ public abstract class TerritoryDatabase<T extends TerritoryData> implements Terr
     @Override
     public boolean authorizeTeleportation(Territory territoryData) {
         return data.authorizeTeleportation(territoryData);
+    }
+
+    @Override
+    public ClaimChunkValidationResult isPositionClaimable(Chunk chunk, IClaimedChunk chunkData) {
+        return data.isPositionClaimable(chunk, chunkData);
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.tan.api.getters;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.tan.api.interfaces.TanPlayer;
 import org.tan.api.interfaces.chunk.TanClaimedChunk;
 import org.tan.api.interfaces.chunk.TanTerritoryChunk;
 import org.tan.api.interfaces.territory.TanTerritory;
@@ -55,7 +56,7 @@ public interface TanClaimManager {
      *
      * @return an optional chunk if claimed, {@link Optional#empty()} if the claim failed
      */
-    Optional<TanTerritoryChunk> claimChunk(TanClaimedChunk chunk, TanTerritory territory);
+    Optional<TanTerritoryChunk> claimChunk(TanClaimedChunk chunk, TanPlayer tanPlayer, TanTerritory territory);
 
     /**
      *

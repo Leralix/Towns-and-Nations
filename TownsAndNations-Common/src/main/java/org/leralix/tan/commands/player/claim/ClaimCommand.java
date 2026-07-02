@@ -10,11 +10,6 @@ import org.leralix.tan.gui.scope.MapSettings;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
-import org.tan.api.TanAPI;
-import org.tan.api.getters.TanClaimManager;
-import org.tan.api.interfaces.chunk.TanTerritoryChunk;
-
-import java.util.Optional;
 
 public class ClaimCommand extends AbstractTerritoryClaimCommand {
 
@@ -43,12 +38,6 @@ public class ClaimCommand extends AbstractTerritoryClaimCommand {
 
     @Override
     protected void onNoCoordinates(Player player, ITanPlayer tanPlayer, Territory territoryData, LangType langType, String territoryArg, String[] args) {
-
-        TanClaimManager claimManager = TanAPI.getInstance().getClaimManager();
-        var tanChunk = claimManager.getClaimedChunk(player.getChunk());
-        Optional<TanTerritoryChunk> potentialClaim =  claimManager.claimChunk(tanChunk, territoryData);
-        potentialClaim.ifPresent(claim -> player.sendMessage(claim.getOwner().getName() + " has claimed the land"));
-
         territoryData.claimChunk(player, tanPlayer);
     }
 

@@ -25,7 +25,7 @@ public class InternalAPI extends TanAPI {
 
         playerManager = new PlayerManager(plugin.getPlayerDataStorage());
         territoryManager = new TerritoryManager(plugin.getTownStorage(), plugin.getRegionStorage(), plugin.getNationStorage());
-        claimManager = new ClaimManager(plugin.getClaimStorage());
+        claimManager = new ClaimManager(plugin.getClaimStorage(), plugin.getPlayerDataStorage(), plugin.getChunkClaimValidator());
         landmarkManager = new LandmarkManager(plugin.getLandmarkStorage());
         eventManager = EventManager.getInstance();
         fortManager = new FortManager(plugin.getFortStorage());

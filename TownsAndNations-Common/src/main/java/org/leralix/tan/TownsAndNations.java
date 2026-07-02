@@ -19,6 +19,7 @@ import org.leralix.tan.commands.admin.AdminCommandManager;
 import org.leralix.tan.commands.debug.DebugCommandManager;
 import org.leralix.tan.commands.player.PlayerCommandManager;
 import org.leralix.tan.commands.server.ServerCommandManager;
+import org.leralix.tan.data.territory.ChunkClaimValidator;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.newsletter.NewsletterEvents;
 import org.leralix.tan.events.newsletter.NewsletterStorage;
@@ -156,6 +157,8 @@ public class TownsAndNations extends JavaPlugin {
      */
     private ClaimStorage claimStorage;
 
+    private ChunkClaimValidator chunkClaimValidator;
+
     private TributeStorage tributeStorage;
 
     private CurrentAttacksStorage currentAttacksStorage;
@@ -237,6 +240,7 @@ public class TownsAndNations extends JavaPlugin {
             fortStorage = new FortDataStorage();
             claimStorage = new NewClaimedChunkStorage();
         }
+        chunkClaimValidator = new org.leralix.tan.data.territory.ChunkClaimValidator(claimStorage);
         tributeStorage = new TributeJsonStorage();
         currentAttacksStorage = new CurrentAttacksStorage();
 
@@ -558,6 +562,10 @@ public class TownsAndNations extends JavaPlugin {
 
     public ClaimStorage getClaimStorage() {
         return claimStorage;
+    }
+
+    public ChunkClaimValidator getChunkClaimValidator() {
+        return chunkClaimValidator;
     }
 
     public TributeStorage getTributeStorage() {

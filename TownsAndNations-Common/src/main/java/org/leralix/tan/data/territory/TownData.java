@@ -313,25 +313,23 @@ public class TownData extends TerritoryData implements Town {
     }
 
     @Override
-    protected boolean isPositionClaimable(Player player, Chunk chunk, IClaimedChunk chunkData, LangType langType) {
+    public ClaimChunkValidationResult isPositionClaimable(Chunk chunk, IClaimedChunk chunkData) {
 
         // Rules are different for the first claimed chunk.
         if (getNumberOfClaimedChunk() == 0) {
             int bufferZone = Constants.territoryClaimBufferZone();
             // If the chunk is in the buffer zone of another territory, it cannot be claimed.
             if (ChunkUtil.isInBufferZone(chunkData, this, bufferZone)) {
-                TanChatUtils.message(player, Lang.CHUNK_IN_BUFFER_ZONE.get(langType, Integer.toString(bufferZone)));
-                return false;
+                return ClaimChunkValidationResult.failure(Lang.CHUNK_IN_BUFFER_ZONE.get());
             }
-            return true;
+            return ClaimChunkValidationResult.success();
         }
 
         // Else, the chunk must be adjacent to at least one chunk of the territory.
         if (!TownsAndNations.getPlugin().getClaimStorage().isOneAdjacentChunkClaimedBySameTerritory(chunk, getID())) {
-            TanChatUtils.message(player, Lang.CHUNK_NOT_ADJACENT.get(langType));
-            return false;
+            return  ClaimChunkValidationResult.failure(Lang.CHUNK_NOT_ADJACENT.get());
         }
-        return true;
+        return ClaimChunkValidationResult.success();
     }
 
     @Override
