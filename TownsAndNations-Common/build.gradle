@@ -22,7 +22,7 @@ tasks.build {
 }
 
 group = 'org.tan'
-version = '1.0.2'
+version = '1.0.3'
 
 compileJava.options.encoding = 'UTF-8'
 

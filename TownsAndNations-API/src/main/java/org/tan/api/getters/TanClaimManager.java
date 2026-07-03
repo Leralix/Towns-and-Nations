@@ -53,14 +53,14 @@ public interface TanClaimManager {
     Optional<TanTerritory> getTerritoryOfChunk(Chunk chunk);
 
     /**
-     *
-     * @return an optional chunk if claimed, {@link Optional#empty()} if the claim failed
+     * Try to claim a chunk for a specific territory from a specific player.
+     * @return an optional chunk if claimed, {@link Optional#empty()} if prerequisites are not met
      */
     Optional<TanTerritoryChunk> claimChunk(TanClaimedChunk chunk, TanPlayer tanPlayer, TanTerritory territory);
 
     /**
-     *
-     * @return an optional chunk if claimed, {@link Optional#empty()} otherwise
+     * Claims the current chunk without any check
+     * @return the newly claimed chunk
      */
     TanTerritoryChunk forceClaim(TanClaimedChunk chunk, TanTerritory territory);
 }
