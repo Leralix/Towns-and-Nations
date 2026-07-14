@@ -47,10 +47,27 @@ public class SubjugateWarGoal extends WarGoal implements TanSubjugateWargoal {
         if (territoryToSubjugate == null || winner == null)
             return;
 
-        if (territoryToSubjugate.haveOverlord()) {
-            territoryToSubjugate.removeOverlord();
+        if (winner instanceof Nation && territoryToSubjugate instanceof Town) {
+            if (territoryToSubjugate.haveOverlord()) {
+                territoryToSubjugate.removeOverlord();
+            }
+            territoryToSubjugate.setOverlord(winner.getCapital());
         }
-        territoryToSubjugate.setOverlord(winner);
+
+        if (winner instanceof Nation && territoryToSubjugate instanceof Region) {
+            if (territoryToSubjugate.haveOverlord()) {
+                territoryToSubjugate.removeOverlord();
+            }
+            territoryToSubjugate.setOverlord(winner);
+        }
+
+        if (winner instanceof Nation && territoryToSubjugate instanceof Nation) {
+            for (Territory vassal : territoryToSubjugate.getVassals()) {
+                vassal.removeOverlord();
+                vassal.setOverlord(winner);
+            }
+            territoryToSubjugate.delete();
+        }
 
         EventManager.getInstance().callEvent(new TerritoryVassalForcedInternalEvent(
                 territoryToSubjugate,

@@ -43,6 +43,9 @@ public class WarData implements War{
                 mainAttacker.getName(),
                 mainDefender.getName()
         );
+
+        //BOOKMARK - Add regions, and towns from nations as part of the war
+
         this.mainDefenderID = mainDefender.getID();
         this.mainAttackerID = mainAttacker.getID();
         this.allDefendersID = new ArrayList<>(mainDefender.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE));
