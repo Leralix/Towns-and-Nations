@@ -789,8 +789,12 @@ public abstract class TerritoryData implements TanTerritory, Territory {
         paySalaries();
 
         int numberClaimedChunk = getNumberOfClaimedChunk();
-        int maxAmount = getNewLevel().getStat(ChunkCap.class).getMaxAmount();
-        if (numberClaimedChunk > maxAmount) {
+        
+        ChunkCap territoryChunkStat = getNewLevel().getStat(ChunkCap.class);
+
+        int maxAmount = territoryChunkStat.getMaxAmount();
+        boolean isUnlimited = territoryChunkStat.isUnlimited();
+        if (isUnlimited == false && numberClaimedChunk > maxAmount) {
             int chunkToDelete = numberClaimedChunk - maxAmount;
             switch (Constants.getChunkCapExceededStrategy()){
                 case DELETE_INSTANT -> deletePortionOfChunk(chunkToDelete, 0);
