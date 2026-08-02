@@ -39,7 +39,13 @@ public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
 
     @Override
     public String getName() {
-        return TownsAndNations.getPlugin().getTownStorage().get(ownerID).getName();
+        Territory owningTerritory = TownsAndNations.getPlugin().getTownStorage().get(ownerID);
+        if(owningTerritory != null){
+            return owningTerritory.getColoredName();
+        }
+        else {
+            return getLandMark().getName();
+        }
     }
 
     @Override

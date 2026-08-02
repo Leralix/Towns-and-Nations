@@ -317,10 +317,10 @@ public class TownData extends TerritoryData implements Town {
 
         // Rules are different for the first claimed chunk.
         if (getNumberOfClaimedChunk() == 0) {
-            int bufferZone = Constants.territoryClaimBufferZone();
+            int bufferRadius = Constants.territoryClaimBufferZone();
             // If the chunk is in the buffer zone of another territory, it cannot be claimed.
-            if (ChunkUtil.isInBufferZone(chunkData, this, bufferZone)) {
-                return ClaimChunkValidationResult.failure(Lang.CHUNK_IN_BUFFER_ZONE.get());
+            if (ChunkUtil.isInBufferZone(chunkData, this, bufferRadius)) {
+                return ClaimChunkValidationResult.failure(Lang.CHUNK_IN_BUFFER_ZONE.get(Integer.toString(bufferRadius)));
             }
             return ClaimChunkValidationResult.success();
         }

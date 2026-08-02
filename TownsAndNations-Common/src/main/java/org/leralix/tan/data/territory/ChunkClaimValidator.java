@@ -46,7 +46,7 @@ public class ChunkClaimValidator {
 
         IClaimedChunk chunkData = claimStorage.get(chunk);
         if (!chunkData.canTerritoryClaim(territory)) {
-            return ClaimChunkValidationResult.failure(Lang.CHUNK_ALREADY_CLAIMED_WARNING.get());
+            return ClaimChunkValidationResult.failure(Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(chunkData.getName()));
         }
 
         if(ignoreAdjacent){
