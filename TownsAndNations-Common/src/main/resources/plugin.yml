@@ -72,6 +72,8 @@ permissions:
       tan.base.commands.unclaim: true
       tan.base.commands.minimap: true
       tan.base.commands.deposit: true
+      tan.base.commands.trust: true
+      tan.base.commands.untrust: true
 
   tan.base.commands.borders:
     description: Access to /tan borders
@@ -143,6 +145,14 @@ permissions:
 
   tan.base.commands.teleport:
     description: deposit money into territory
+    default: true
+
+  tan.base.commands.trust:
+    description: trust a foreign player in territory
+    default: true
+
+  tan.base.commands.untrust:
+    description: untrust a foreign player in territory
     default: true
 
   # =========================

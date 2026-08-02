@@ -8,6 +8,8 @@ import org.leralix.tan.commands.player.claim.ClaimCommand;
 import org.leralix.tan.commands.player.claim.UnclaimCommand;
 import org.leralix.tan.commands.player.territory.DepositCommand;
 import org.leralix.tan.commands.player.territory.TeleportCommand;
+import org.leralix.tan.commands.player.territory.TrustCommand;
+import org.leralix.tan.commands.player.territory.UntrustCommand;
 import org.leralix.tan.storage.LocalChatStorage;
 import org.leralix.tan.storage.MinimapManager;
 import org.leralix.tan.storage.stored.*;
@@ -44,6 +46,8 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new ShowMinimap(minimapManager));
         addSubCommand(new DepositCommand(playerDataStorage));
         addSubCommand(new TeleportCommand(playerDataStorage, fortStorage));
+        addSubCommand(new TrustCommand(playerDataStorage));
+        addSubCommand(new UntrustCommand(playerDataStorage));
     }
 
     @Override
