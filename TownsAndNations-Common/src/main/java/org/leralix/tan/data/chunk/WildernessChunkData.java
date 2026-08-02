@@ -83,11 +83,6 @@ public class WildernessChunkData extends ChunkData implements WildernessChunk {
     }
 
     @Override
-    public boolean canTerritoryClaim(Player player, Territory territoryData, LangType langType) {
-        return true;
-    }
-
-    @Override
     public boolean canTerritoryClaim(Territory territoryData) {
         return true;
     }

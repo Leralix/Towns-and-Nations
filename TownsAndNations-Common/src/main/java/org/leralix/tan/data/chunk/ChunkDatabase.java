@@ -109,11 +109,6 @@ public abstract class ChunkDatabase implements DatabaseData<ChunkData>, IClaimed
     }
 
     @Override
-    public boolean canTerritoryClaim(Player player, Territory territoryData, LangType langType) {
-        return data.canTerritoryClaim(player, territoryData, langType);
-    }
-
-    @Override
     public boolean canTerritoryClaim(Territory territoryData) {
         return data.canTerritoryClaim(territoryData);
     }

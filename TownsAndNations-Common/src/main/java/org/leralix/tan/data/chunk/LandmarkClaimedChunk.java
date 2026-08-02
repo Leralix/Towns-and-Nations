@@ -105,12 +105,6 @@ public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
     }
 
     @Override
-    public boolean canTerritoryClaim(Player player, Territory territoryData, LangType langType) {
-        TanChatUtils.message(player, Lang.CANNOT_CLAIM_LANDMARK.get(langType));
-        return false;
-    }
-
-    @Override
     public boolean canTerritoryClaim(Territory territoryData) {
         return false;
     }

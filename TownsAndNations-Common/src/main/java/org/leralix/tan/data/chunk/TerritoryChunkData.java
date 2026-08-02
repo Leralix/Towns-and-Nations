@@ -90,15 +90,6 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
     }
 
     @Override
-    public boolean canTerritoryClaim(Player player, Territory territoryData, LangType langType) {
-        if (canTerritoryClaim(territoryData)) {
-            return true;
-        }
-        TanChatUtils.message(player, Lang.CHUNK_ALREADY_CLAIMED_WARNING.get(getOwner().getColoredName()));
-        return false;
-    }
-
-    @Override
     public boolean isClaimed() {
         return true; // A TerritoryChunk is always claimed
     }

@@ -48,8 +48,6 @@ public interface IClaimedChunk extends TanClaimedChunk {
 
     Component getMapIcon(LangType langType, boolean isMiddleOfMap);
 
-    boolean canTerritoryClaim(Player player, Territory territoryData, LangType langType);
-
     boolean canTerritoryClaim(Territory territoryData);
 
     boolean canHostileGrief();

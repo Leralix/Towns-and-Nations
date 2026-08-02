@@ -213,6 +213,8 @@ GUI_ADD_TERRITORY_ICON: "https://textures.minecraft.net/texture/5ff31431d64587ff
 
 # Wars menu
 DECLARE_WAR_ICON: "minecraft:DIAMOND_SWORD"
+ATTACKS_LIST_ICON: "minecraft:BOW"
+CHUNK_CONQUER_ICON: "https://textures.minecraft.net/texture/17980b940af858f910943464ee00359287cb0b5810680b60b89be4210dda0ed1"
 
 #War settings menu
 REMOVE_WAR_START_TIME_ICON: "https://textures.minecraft.net/texture/da56dab53d4ea1a79a8e5ed6322c2d56cb714dd35edf478763ad1a84a8310"
