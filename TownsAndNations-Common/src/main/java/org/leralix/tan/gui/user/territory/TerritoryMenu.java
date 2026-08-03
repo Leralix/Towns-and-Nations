@@ -176,6 +176,7 @@ public abstract class TerritoryMenu extends BasicGui {
 
         gui.setItem(2, 2, getTownTreasuryButton());
         gui.setItem(2, 3, getMemberButton());
+        gui.setItem(2, 4, getLandButton());
         gui.setItem(2, 5, getBrowseButton());
         gui.setItem(2, 6, getDiplomacyButton());
         gui.setItem(2, 7, getLevelButton());
@@ -186,4 +187,7 @@ public abstract class TerritoryMenu extends BasicGui {
 
         gui.setItem(4, 1, createBackArrow(player, MainMenu::new, langType));
     }
+
+
+    protected abstract GuiItem getSettingsButton();
 }

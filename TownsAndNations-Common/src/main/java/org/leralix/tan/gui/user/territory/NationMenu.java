@@ -4,7 +4,6 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.leralix.tan.data.territory.Nation;
-import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
 
 public class NationMenu extends TerritoryMenu {
@@ -19,27 +18,12 @@ public class NationMenu extends TerritoryMenu {
 
     @Override
     public void open() {
-        gui.setItem(1, 5, getTerritoryInfo());
-        gui.getFiller().fillTop(getUnnamedItem(Material.ORANGE_STAINED_GLASS_PANE));
-
-        gui.setItem(2, 2, getTownTreasuryButton());
-        gui.setItem(2, 3, getMemberButton());
-        gui.setItem(2, 4, getLandButton());
-        gui.setItem(2, 5, getBrowseButton());
-        gui.setItem(2, 6, getDiplomacyButton());
-        gui.setItem(2, 7, getLevelButton());
-        gui.setItem(2, 8, getSettingsButton());
-
-        gui.setItem(3, 2, getBuildingButton());
-        gui.setItem(3, 3, getAttackButton());
-        gui.setItem(3, 4, getHierarchyButton());
-
-        gui.setItem(4, 1, createBackArrow(player, MainMenu::new, langType));
-
+        setupCommonLayout(Material.ORANGE_STAINED_GLASS_PANE);
         gui.open(player);
     }
 
-    private GuiItem getSettingsButton() {
+    @Override
+    protected GuiItem getSettingsButton() {
         return createSettingsButton(Lang.GUI_NATION_SETTINGS_ICON_DESC1.get(), p -> new NationSettingsMenu(player, nationData, this));
     }
 }

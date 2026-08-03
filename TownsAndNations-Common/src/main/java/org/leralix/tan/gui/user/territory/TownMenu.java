@@ -22,13 +22,12 @@ public class TownMenu extends TerritoryMenu {
     @Override
     public void open() {
         setupCommonLayout(Material.BLUE_STAINED_GLASS_PANE);
-        gui.setItem(2, 4, getLandButton());
-        gui.setItem(2, 8, getSettingsButton());
         gui.setItem(3, 8, getLandmarksButton());
         gui.open(player);
     }
 
-    private GuiItem getSettingsButton() {
+    @Override
+    protected GuiItem getSettingsButton() {
         return createSettingsButton(Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(), p -> new TownSettingsMenu(player, townData));
     }
 
