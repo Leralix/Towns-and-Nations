@@ -18,17 +18,17 @@ public class AdminManageTown extends AdminManageTerritory {
     private final Town townData;
 
     public AdminManageTown(Player player, Town townData) {
-        super(player, Lang.HEADER_ADMIN_SPECIFIC_REGION_MENU.get(townData.getName()), 3, townData);
+        super(player, Lang.HEADER_ADMIN_SPECIFIC_REGION_MENU.get(townData.getName()), 4, townData);
         this.townData = townData;
         open();
     }
 
     @Override
     public void open() {
-
         gui.setItem(2, 2, getRenameTerritory());
         gui.setItem(2, 3, getChangeDescription());
         gui.setItem(2, 4, changeLeader());
+
         gui.setItem(2, 5, getChangeRegion());
 
         gui.setItem(2, 6, getDonateTerritory());
@@ -52,8 +52,7 @@ public class AdminManageTown extends AdminManageTerritory {
                 description.add(Lang.GUI_CANNOT_QUIT_IF_LEADER);
             else
                 description.add(Lang.GUI_RIGHT_CLICK_TO_QUIT);
-        }
-        else {
+        } else {
             description.add(Lang.GUI_LEFT_CLICK_TO_SET_REGION);
         }
 
@@ -71,7 +70,7 @@ public class AdminManageTown extends AdminManageTerritory {
                             open();
                         }
                     } else {
-                        new AdminSelectNewOverlord(player, townData);
+                        new AdminSelectNewOverlord(player, townData, this);
                     }
                 })
                 .asGuiItem(player, langType);

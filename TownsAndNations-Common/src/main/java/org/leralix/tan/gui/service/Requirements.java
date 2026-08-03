@@ -26,7 +26,10 @@ public class Requirements {
 
         res.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC3.get(langType));
         for(var requirement : individualRequirementList){
-            res.add(requirement.getLine(langType));
+            String newLine = requirement.getLine(langType);
+            if(newLine != null){
+                res.add(newLine);
+            }
         }
         return res;
     }

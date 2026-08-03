@@ -466,7 +466,7 @@ public class Constants {
     }
 
     public static boolean enableNation() {
-        return enableNation;
+        return enableNation && enableRegion;
     }
 
     public static boolean enableRegion() {

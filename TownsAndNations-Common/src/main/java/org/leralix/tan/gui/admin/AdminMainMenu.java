@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.utils.constants.Constants;
 
 public class AdminMainMenu extends BasicGui {
 
@@ -17,8 +18,12 @@ public class AdminMainMenu extends BasicGui {
     @Override
     public void open() {
 
-        gui.setItem(2, 2, getNationButton());
-        gui.setItem(2, 3, getRegionButton());
+        if(Constants.enableNation()){
+            gui.setItem(2, 2, getNationButton());
+        }
+        if(Constants.enableRegion()){
+            gui.setItem(2, 3, getRegionButton());
+        }
         gui.setItem(2, 4, getTownButton());
 
         gui.setItem(2, 6, getPlayerButton());
@@ -45,12 +50,6 @@ public class AdminMainMenu extends BasicGui {
     }
 
     private GuiItem getNationButton() {
-        if (!org.leralix.tan.utils.constants.Constants.enableNation()) {
-            return iconManager.get(IconKey.NATION_BASE_ICON)
-                    .setName(Lang.GUI_NATION_ICON.get(langType))
-                    .setDescription(Lang.GUI_WARNING_STILL_IN_DEV.get())
-                    .asGuiItem(player, langType);
-        }
         return iconManager.get(IconKey.NATION_BASE_ICON)
                 .setName(Lang.GUI_NATION_ICON.get(langType))
                 .setAction(action -> new AdminBrowseNation(player))

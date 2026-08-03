@@ -18,6 +18,9 @@ public class MoneyRequirement extends IndividualRequirementWithCost {
    @Override
     public String getLine(LangType langType) {
         double cost = getCost();
+        if(cost == 0){
+            return null;
+        }
         if(isInvalid()){
             return Lang.REQUIREMENT_COST_NEGATIVE.get(langType, Double.toString(cost));
         } else {

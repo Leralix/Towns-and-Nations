@@ -105,18 +105,33 @@ public class TerritoryUtil {
     public static Optional<Territory> getTerritoryByName(String name) {
 
         Optional<Town> townData = TownsAndNations.getPlugin().getTownStorage().getByName(name);
-        if(townData.isPresent()){
+        if (townData.isPresent()) {
             return Optional.of(townData.get());
         }
         Optional<Region> regionData = TownsAndNations.getPlugin().getRegionStorage().getByName(name);
-        if(regionData.isPresent()){
+        if (regionData.isPresent()) {
             return Optional.of(regionData.get());
         }
         Optional<Nation> nationData = TownsAndNations.getPlugin().getNationStorage().getByName(name);
-        if(nationData.isPresent()){
+        if (nationData.isPresent()) {
             return Optional.of(nationData.get());
         }
         return Optional.empty();
 
+    }
+
+    public static List<Territory> getAllPotentialOverlords(Territory territory) {
+
+        BrowseScope scope = switch (territory) {
+            case Town town -> BrowseScope.REGIONS;
+            case Region region -> BrowseScope.NATIONS;
+            default -> null;
+        };
+
+        if(scope == null){
+            return Collections.emptyList();
+        }
+
+        return (getTerritories(scope));
     }
 }

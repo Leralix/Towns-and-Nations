@@ -11,7 +11,7 @@ public class AdminManageNation extends AdminManageTerritory {
     private final Nation nationData;
 
     public AdminManageNation(Player player, Nation nationData) {
-        super(player, Lang.HEADER_ADMIN_SPECIFIC_NATION_MENU.get(nationData.getName()), 3, nationData);
+        super(player, Lang.HEADER_ADMIN_SPECIFIC_NATION_MENU.get(nationData.getName()), 4, nationData);
         this.nationData = nationData;
         open();
     }
