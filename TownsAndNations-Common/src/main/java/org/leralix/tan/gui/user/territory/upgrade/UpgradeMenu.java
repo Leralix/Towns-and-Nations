@@ -22,13 +22,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class UpgradeMenu extends BasicGui {
+public class  UpgradeMenu extends BasicGui {
 
-    private final Territory territoryData;
+    protected final Territory territoryData;
     private int scrollIndex;
     private final int maxLevel;
 
-    public UpgradeMenu(Player player, Territory territoryData){
+    public UpgradeMenu(Player player, Territory territoryData, BasicGui returnGui){
         super(player, Lang.HEADER_TERRITORY_UPGRADE, 6);
         this.territoryData = territoryData;
         this.scrollIndex = 0;
@@ -39,10 +39,8 @@ public class UpgradeMenu extends BasicGui {
 
     @Override
     public void open() {
-
         generateMenuPart();
         generateUpgrades();
-
 
         gui.open(player);
     }
@@ -97,38 +95,46 @@ public class UpgradeMenu extends BasicGui {
             int levelOfUpgrade = territoryStats.getLevel(upgrade) ;
             int maxLevelOfUpgrade = upgrade.getMaxLevel();
 
-            List<FilledLang> upgradeDescription = upgrade.getDescription(langType);
-
-            List<FilledLang> desc = new ArrayList<>();
-            if(!upgradeDescription.isEmpty()){
-                desc.addAll(upgradeDescription);
-                desc.add(Lang.EMPTY.get());
-            }
-            desc.add(Lang.UPGRADE_CURRENT_LEVEL.get(Integer.toString(levelOfUpgrade), Integer.toString(maxLevelOfUpgrade)));
-            desc.add(Lang.EMPTY.get());
-            desc.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4.get());
-            for(IndividualStat individualStat : upgrade.getRewards()){
-                desc.add(individualStat.getStatReward(langType, levelOfUpgrade, maxLevelOfUpgrade));
-            }
-
-
-            gui.setItem(row, column,
-                    iconManager.get(upgrade.getIconMaterial())
-                            .setName(upgrade.getName(langType))
-                            .setDescription(desc)
-                            .setRequirements(upgrade.getRequirements(territoryData, player))
-                            .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_UPGRADE)
-                            .setAction( action -> {
-                                TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
-                                territoryData.getNewLevel().levelUp(upgrade);
-                                open();
-                            })
-                            .asGuiItem(player, langType)
-            );
+            gui.setItem(row, column, getUpgradeItem(upgrade, levelOfUpgrade, maxLevelOfUpgrade));
         }
     }
 
-    private @NotNull GuiItem getTerritoryStats(Territory territoryData) {
+    protected @NotNull GuiItem getUpgradeItem(Upgrade upgrade, int levelOfUpgrade, int maxLevelOfUpgrade) {
+        List<FilledLang> desc = buildUpgradeDescription(upgrade, levelOfUpgrade, maxLevelOfUpgrade);
+
+        return iconManager.get(upgrade.getIconMaterial())
+                .setName(upgrade.getName(langType))
+                .setDescription(desc)
+                .setRequirements(upgrade.getRequirements(territoryData, player))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_UPGRADE)
+                .setAction(action -> {
+                    if(action.isLeftClick()){
+                        TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
+                        territoryData.getNewLevel().levelUp(upgrade);
+                        open();
+                    }
+                })
+                .asGuiItem(player, langType);
+    }
+
+    protected List<FilledLang> buildUpgradeDescription(Upgrade upgrade, int levelOfUpgrade, int maxLevelOfUpgrade) {
+        List<FilledLang> upgradeDescription = upgrade.getDescription(langType);
+
+        List<FilledLang> desc = new ArrayList<>();
+        if(!upgradeDescription.isEmpty()){
+            desc.addAll(upgradeDescription);
+            desc.add(Lang.EMPTY.get());
+        }
+        desc.add(Lang.UPGRADE_CURRENT_LEVEL.get(Integer.toString(levelOfUpgrade), Integer.toString(maxLevelOfUpgrade)));
+        desc.add(Lang.EMPTY.get());
+        desc.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC4.get());
+        for(IndividualStat individualStat : upgrade.getRewards()){
+            desc.add(individualStat.getStatReward(langType, levelOfUpgrade, maxLevelOfUpgrade));
+        }
+        return desc;
+    }
+
+    protected @NotNull GuiItem getTerritoryStats(Territory territoryData) {
 
         List<FilledLang> desc = new ArrayList<>();
         desc.add(Lang.EMPTY.get());
@@ -154,7 +160,7 @@ public class UpgradeMenu extends BasicGui {
         gui.setItem(6, 1, createBackArrow(player, player1 -> territoryData.openMainMenu(player1, tanPlayer), langType));
     }
 
-    private @NotNull GuiItem getUpgradeTownButton() {
+    protected @NotNull GuiItem getUpgradeTownButton() {
 
         TerritoryStats level = territoryData.getNewLevel();
         int currentLevel = level.getMainLevel();
@@ -169,9 +175,11 @@ public class UpgradeMenu extends BasicGui {
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setRequirements(new MoneyRequirement(territoryData, nextLevelPrice))
                 .setAction( action -> {
-                    territoryData.getNewLevel().levelUpMain();
-                    TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
-                    open();
+                    if(action.isLeftClick()){
+                        territoryData.getNewLevel().levelUpMain();
+                        TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
+                        open();
+                    }
                 })
                 .asGuiItem(player, langType);
     }

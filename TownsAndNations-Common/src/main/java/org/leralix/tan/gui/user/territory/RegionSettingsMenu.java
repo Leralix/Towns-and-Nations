@@ -103,7 +103,7 @@ public class RegionSettingsMenu extends SettingsMenus {
                 .setDescription(
                         Lang.GUI_REGION_CHANGE_CAPITAL_DESC1.get(regionData.getCapital().getName())
                 )
-                .setClickToAcceptMessage(Lang.GUI_REGION_CHANGE_CAPITAL_DESC2)
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(event -> {
                     event.setCancelled(true);
                     if (!regionData.isLeader(tanPlayer)) {

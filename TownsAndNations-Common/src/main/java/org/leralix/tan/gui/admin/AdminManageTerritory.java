@@ -3,6 +3,7 @@ package org.leralix.tan.gui.admin;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.BasicGui;
@@ -14,6 +15,7 @@ import org.leralix.tan.listeners.chat.AdminSetTerritoryBalance;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryDescription;
 import org.leralix.tan.listeners.chat.events.ChangeTerritoryName;
+import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -92,6 +94,25 @@ public abstract class AdminManageTerritory extends BasicGui {
                 .setAction(action ->
                         PlayerChatListenerStorage.register(player, langType, new AdminSetTerritoryBalance(territoryData, p -> open())))
                 .asGuiItem(player, langType);
+    }
+
+    protected GuiItem getAdminUpgrade(){
+        boolean canTerritoryBeUpgraded = Constants.getTerritoryMaxLevel(territoryData) > 0;
+
+        return iconManager.get(IconKey.TERRITORY_LEVEL_ICON)
+                .setName(Lang.GUI_TOWN_LEVEL_ICON.get(tanPlayer.getLang()))
+                .setDescription( canTerritoryBeUpgraded ? Lang.GUI_TERRITORY_LEVEL_ICON_DESC1.get() : Lang.GUI_TERRITORY_LEVEL_LOCKED.get())
+                .setAction(event -> {
+                    if (canTerritoryBeUpgraded) {
+                        new AdminUpgradeMenu(player, territoryData, this);
+                    } else {
+                        SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
+                        event.setCancelled(true);
+                    }
+                })
+                .asGuiItem(player, langType);
+
+
     }
 
 }

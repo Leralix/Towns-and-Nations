@@ -35,6 +35,8 @@ public class AdminManageTown extends AdminManageTerritory {
         gui.setItem(2, 7, getTransactionHistory());
         gui.setItem(2, 8, getDelete());
 
+        gui.setItem(3, 2, getAdminUpgrade());
+
         gui.setItem(3, 1, createBackArrow(player, p -> new AdminBrowseTown(player), langType));
 
         gui.open(player);
@@ -82,7 +84,7 @@ public class AdminManageTown extends AdminManageTerritory {
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(townData.getLeaderData().getNameStored())
                 )
-                .setClickToAcceptMessage(Lang.GUI_REGION_CHANGE_CAPITAL_DESC2)
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(action -> new SelectNewOwnerForTownMenu(player, townData, this::open))
                 .asGuiItem(player, langType);
     }

@@ -46,12 +46,39 @@ public class TerritoryStats {
         level.put(key, level.get(key) + 1);
     }
 
+    public boolean levelDown(Upgrade townUpgrade) {
+        String key = townUpgrade.getID();
+        if (!level.containsKey(key)) {
+            return false;
+        }
+
+        int currentLevel = level.get(key);
+        if (currentLevel <= 0) {
+            return false;
+        }
+
+        if (currentLevel == 1) {
+            level.remove(key);
+        } else {
+            level.put(key, currentLevel - 1);
+        }
+        return true;
+    }
+
     public int getMainLevel() {
         return mainLevel;
     }
 
     public void levelUpMain(){
         mainLevel++;
+    }
+
+    public boolean levelDownMain() {
+        if (mainLevel <= 1) {
+            return false;
+        }
+        mainLevel--;
+        return true;
     }
 
     public <T extends IndividualStat & AggregatableStat<T>> T getStat(Class<T> rewardClass) {

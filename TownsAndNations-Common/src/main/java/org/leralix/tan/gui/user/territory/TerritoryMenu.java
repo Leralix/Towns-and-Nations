@@ -85,7 +85,7 @@ public abstract class TerritoryMenu extends BasicGui {
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.UPGRADE_TOWN))
                 .setAction(event -> {
                     if (canTerritoryBeUpgraded) {
-                        new UpgradeMenu(player, territoryData);
+                        new UpgradeMenu(player, territoryData, this);
                     } else {
                         SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                         event.setCancelled(true);

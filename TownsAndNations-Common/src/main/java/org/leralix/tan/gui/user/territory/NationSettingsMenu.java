@@ -77,9 +77,9 @@ public class NationSettingsMenu extends SettingsMenus {
         return iconManager.get(IconKey.NATION_CHANGE_CAPITAL_ICON)
                 .setName(Lang.GUI_NATION_CHANGE_CAPITAL.get(tanPlayer))
                 .setDescription(
-                        Lang.GUI_NATION_CHANGE_CAPITAL_DESC1.get(capitalName),
-                        Lang.GUI_NATION_CHANGE_CAPITAL_DESC2.get()
+                        Lang.GUI_NATION_CHANGE_CAPITAL_DESC1.get(capitalName)
                 )
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(event -> {
                     event.setCancelled(true);
                     if (!nationData.isLeader(tanPlayer)) {

@@ -26,6 +26,8 @@ public class AdminManageNation extends AdminManageTerritory {
         gui.setItem(2, 7, getTransactionHistory());
         gui.setItem(2, 8, getDelete());
 
+        gui.setItem(3, 2, getAdminUpgrade());
+
         gui.setItem(3, 1, createBackArrow(player, p -> new AdminBrowseNation(player), langType));
 
         gui.open(player);
@@ -37,7 +39,7 @@ public class AdminManageNation extends AdminManageTerritory {
                 .setDescription(
                         Lang.GUI_REGION_CHANGE_CAPITAL_DESC1.get(nationData.getCapital() != null ? nationData.getCapital().getColoredName() : "None")
                 )
-                .setClickToAcceptMessage(Lang.GUI_REGION_CHANGE_CAPITAL_DESC2)
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(action -> {
                     action.setCancelled(true);
                     new NationChangeOwnership(player, nationData);
