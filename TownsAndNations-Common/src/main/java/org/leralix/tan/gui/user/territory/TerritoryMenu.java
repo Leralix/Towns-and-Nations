@@ -180,6 +180,7 @@ public abstract class TerritoryMenu extends BasicGui {
         gui.setItem(2, 5, getBrowseButton());
         gui.setItem(2, 6, getDiplomacyButton());
         gui.setItem(2, 7, getLevelButton());
+        gui.setItem(2, 7, getSettingsButton());
 
         gui.setItem(3, 2, getBuildingButton());
         gui.setItem(3, 3, getAttackButton());
