@@ -37,7 +37,7 @@ public class AdminManageRegion extends AdminManageTerritory {
 
         gui.setItem(3, 2, getAdminUpgrade());
 
-        gui.setItem(3, 1, createBackArrow(player, p -> new AdminBrowseRegion(player), langType));
+        gui.setItem(4, 1, createBackArrow(player, p -> new AdminBrowseRegion(player), langType));
 
         gui.open(player);
     }

@@ -25,7 +25,7 @@ public class AdminUpgradeMenu extends UpgradeMenu {
                 .setName(upgrade.getName(langType))
                 .setDescription(buildUpgradeDescription(upgrade, levelOfUpgrade, maxLevelOfUpgrade))
                 .setClickToAcceptMessage(
-                        Lang.GUI_GENERIC_LEFT_CLICK_TO_ACCEPT,
+                        Lang.GUI_GENERIC_CLICK_TO_UPGRADE,
                         Lang.GUI_GENERIC_RIGHT_CLICK_TO_REMOVE
                 )
                 .setAction(action -> {
@@ -56,13 +56,11 @@ public class AdminUpgradeMenu extends UpgradeMenu {
     protected @NotNull GuiItem getUpgradeTownButton() {
         TerritoryStats level = territoryData.getNewLevel();
         int currentLevel = level.getMainLevel();
-        int nextLevelPrice = level.getMoneyRequiredForLevelUp();
 
         return iconManager.get(org.leralix.tan.gui.cosmetic.IconKey.LEVEL_UP_ICON)
                 .setName(Lang.GUI_TERRITORY_LEVEL_UP.get(langType))
                 .setDescription(
-                        Lang.GUI_TOWN_LEVEL_UP_DESC1.get(Integer.toString(currentLevel)),
-                        Lang.GUI_TOWN_LEVEL_UP_DESC2.get(Integer.toString(currentLevel + 1), Integer.toString(nextLevelPrice))
+                        Lang.GUI_TOWN_LEVEL_UP_DESC1.get(Integer.toString(currentLevel))
                 )
                 .setClickToAcceptMessage(
                         Lang.GUI_GENERIC_LEFT_CLICK_TO_ACCEPT,
