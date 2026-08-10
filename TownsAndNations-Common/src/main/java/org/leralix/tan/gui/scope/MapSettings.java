@@ -38,7 +38,7 @@ public class MapSettings {
                 .hoverEvent(HoverEvent.showText(Component.text(Lang.LEFT_CLICK_TO_MODIFY.get(langType))))
                 .clickEvent(ClickEvent.clickEvent(
                         ClickEvent.Action.RUN_COMMAND,
-                        ClickEvent.Payload.string(getNextCommand(claimAction, claimType.getNextType()))
+                        getNextCommand(claimAction, claimType.getNextType())
                 ));
     }
 
@@ -47,7 +47,7 @@ public class MapSettings {
                 .hoverEvent(HoverEvent.showText(Component.text(Lang.LEFT_CLICK_TO_MODIFY.get(langType))))
                 .clickEvent(ClickEvent.clickEvent(
                         ClickEvent.Action.RUN_COMMAND,
-                        ClickEvent.Payload.string(getNextCommand(claimAction.getNextType(), claimType)))
+                        getNextCommand(claimAction.getNextType(), claimType))
                 );
     }
 }

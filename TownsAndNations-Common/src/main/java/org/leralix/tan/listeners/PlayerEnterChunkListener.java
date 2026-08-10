@@ -2,7 +2,8 @@ package org.leralix.tan.listeners;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Tag;
+import org.bukkit.Material;
+import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
@@ -27,6 +28,8 @@ import org.leralix.tan.storage.stored.ClaimStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
+
+import java.util.List;
 
 public class PlayerEnterChunkListener implements Listener {
 
@@ -65,6 +68,19 @@ public class PlayerEnterChunkListener implements Listener {
             event.setCancelled(true);
         }
     }
+
+    private static List<Material> boats = List.of(
+            Material.OAK_BOAT,
+            Material.OAK_CHEST_BOAT,
+            Material.BIRCH_BOAT,
+            Material.BIRCH_CHEST_BOAT,
+            Material.ACACIA_BOAT,
+            Material.ACACIA_CHEST_BOAT,
+            Material.CHERRY_BOAT,
+            Material.CHERRY_CHEST_BOAT,
+            Material.DARK_OAK_BOAT,
+            Material.DARK_OAK_CHEST_BOAT
+    );
 
     private boolean playerEnterChunk(Location currentLocation, Location nextLocation, Player player) {
 
@@ -113,7 +129,7 @@ public class PlayerEnterChunkListener implements Listener {
                     if(entity instanceof Minecart && !territoryChunk.canPlayerDo(player, tanPlayer, ChunkPermissionType.INTERACT_MINECART, nextLocation)){
                         player.leaveVehicle();
                     }
-                    else if(Tag.ENTITY_TYPES_BOAT.isTagged(entity.getType()) && !territoryChunk.canPlayerDo(player, tanPlayer, ChunkPermissionType.INTERACT_BOAT, nextLocation)){
+                    else if (entity instanceof Boat && !territoryChunk.canPlayerDo(player, tanPlayer, ChunkPermissionType.INTERACT_BOAT, nextLocation)){
                         player.leaveVehicle();
                     }
                 }

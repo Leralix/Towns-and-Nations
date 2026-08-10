@@ -22,7 +22,7 @@ tasks.build {
 }
 
 group = 'org.tan'
-version = '1.0.3'
+version = '1.0.4'
 
 compileJava.options.encoding = 'UTF-8'
 
@@ -77,7 +77,7 @@ repositories {
 dependencies {
     //Compile only
     compileOnly 'io.github.leralix:sphere-lib:0.6.1'
-    compileOnly 'io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT'
     compileOnly 'com.mojang:authlib:4.0.43'
     compileOnly 'net.luckperms:api:5.4'
     compileOnly "com.github.MilkBowl:VaultAPI:1.7.1"

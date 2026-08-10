@@ -77,7 +77,6 @@ public abstract class BasicGui {
     public static GuiItem getUnnamedItem(Material material) {
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setHideTooltip(true);
         item.setItemMeta(itemMeta);
         return ItemBuilder.from(item).asGuiItem(event -> event.setCancelled(true));
     }

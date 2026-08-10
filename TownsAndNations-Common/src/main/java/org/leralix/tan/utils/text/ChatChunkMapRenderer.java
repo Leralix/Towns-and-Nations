@@ -60,7 +60,7 @@ public final class ChatChunkMapRenderer {
                                 .clickEvent(
                                         ClickEvent.clickEvent(
                                                 ClickEvent.Action.RUN_COMMAND,
-                                                ClickEvent.Payload.string(clickCommand.apply(chunkX, chunkZ))
+                                                clickCommand.apply(chunkX, chunkZ)
                                         )
                                 )
                 );

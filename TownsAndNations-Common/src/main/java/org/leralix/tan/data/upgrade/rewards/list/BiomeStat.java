@@ -1,13 +1,8 @@
 package org.leralix.tan.data.upgrade.rewards.list;
 
-import io.papermc.paper.registry.RegistryAccess;
-import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.Chunk;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.upgrade.rewards.AggregatableStat;
 import org.leralix.tan.data.upgrade.rewards.IndividualStat;
 import org.leralix.tan.lang.FilledLang;
@@ -15,6 +10,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -64,8 +60,12 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
     }
 
     private static void addAllBiomes(List<Biome> out) {
-        Registry<@NotNull Biome> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME);
-        out.addAll(registry.stream().toList());
+        try {
+            out.addAll(Arrays.asList(Biome.values()));
+        } catch (IncompatibleClassChangeError ignored) {
+            out.add(Biome.PLAINS);
+            // Error with MockBukkit. This allows for tests to run.
+        }
     }
 
     private static BiomeCategory findCategory(String key) {
@@ -78,14 +78,12 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
     }
 
     private static Biome findBiome(String key) {
-        Registry<@NotNull Biome> registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME);
-
-        NamespacedKey namespacedKey = NamespacedKey.fromString(key);
-        if (namespacedKey == null) {
-            return null;
+        for (Biome b : Biome.values()) {
+            if (b.name().equals(key)) {
+                return b;
+            }
         }
-
-        return registry.get(namespacedKey);
+        return null;
     }
 
     @Override

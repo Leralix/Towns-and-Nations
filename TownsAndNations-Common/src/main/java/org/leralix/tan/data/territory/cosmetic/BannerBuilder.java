@@ -1,10 +1,7 @@
 package org.leralix.tan.data.territory.cosmetic;
 
-import io.papermc.paper.registry.RegistryAccess;
-import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
@@ -30,24 +27,12 @@ public class BannerBuilder {
     /**
      * Extract serializable attributes from a Banner block.
      */
-    public BannerBuilder(Material material, List<Pattern> bannerPattern) {
+    public BannerBuilder(Material material, List<Pattern> patterns) {
         this.patterns = new ArrayList<>();
         this.bannerType = material;
 
-        var registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BANNER_PATTERN);
-
-        for (Pattern pattern : bannerPattern) {
-            PatternType type = pattern.getPattern();
-
-            NamespacedKey key = registry.getKey(type);
-            if (key != null) {
-                patterns.add(
-                        new Pair<>(
-                                pattern.getColor(),
-                                key.toString()
-                        )
-                );
-            }
+        for (Pattern pattern : patterns) {
+            this.patterns.add(new Pair<>(pattern.getColor(), pattern.getPattern().name()));
         }
     }
 
@@ -68,28 +53,24 @@ public class BannerBuilder {
         return bannerType;
     }
 
-    public List<Pattern> getPatterns() {
+    public List<Pattern> getPatterns(){
         List<Pattern> patternList = new ArrayList<>();
-        var registry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BANNER_PATTERN);
-
         for (Pair<DyeColor, String> patternData : patterns) {
-            if (patternData == null || patternData.second() == null) {
-                continue;
-            }
+            if (patternData != null && patternData.second() != null) {
+                PatternType patternType = null;
+                String wanted = patternData.second();
+                for (PatternType pt : PatternType.values()) {
+                    if (pt.name().equals(wanted)) {
+                        patternType = pt;
+                        break;
+                    }
+                }
 
-            NamespacedKey key = NamespacedKey.fromString(patternData.second());
-            if (key == null) {
-                continue;
+                if (patternType != null) {
+                    patternList.add(new Pattern(patternData.first(), patternType));
+                }
             }
-
-            PatternType bannerPattern = registry.get(key);
-            if (bannerPattern == null) {
-                continue;
-            }
-
-            patternList.add(new Pattern(patternData.first(), bannerPattern));
         }
-
         return patternList;
     }
 }

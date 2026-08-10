@@ -145,9 +145,7 @@ public class ChunkListener implements Listener {
         ItemStack itemInHand = event.getItem();
         if(itemInHand != null &&
                 (MaterialTags.SPAWN_EGGS.isTagged(itemInHand.getType()) ||
-                itemInHand.getType() == Material.EGG ||
-                itemInHand.getType() == Material.BROWN_EGG||
-                itemInHand.getType() == Material.BLUE_EGG) && !canPlayerDoAction(player.getLocation(), player, ChunkPermissionType.USE_EGGS)
+                itemInHand.getType() == Material.EGG) && !canPlayerDoAction(player.getLocation(), player, ChunkPermissionType.USE_EGGS)
         ){
             event.setCancelled(true);
             return;
@@ -239,14 +237,6 @@ public class ChunkListener implements Listener {
 
     private static boolean isContainer(Material materialBlock) {
         return materialBlock == Material.CHEST ||
-                materialBlock == Material.COPPER_CHEST ||
-                materialBlock == Material.EXPOSED_COPPER_CHEST ||
-                materialBlock == Material.OXIDIZED_COPPER_CHEST ||
-                materialBlock == Material.WEATHERED_COPPER_CHEST ||
-                materialBlock == Material.WAXED_COPPER_CHEST ||
-                materialBlock == Material.WAXED_EXPOSED_COPPER_CHEST ||
-                materialBlock == Material.WAXED_OXIDIZED_COPPER_CHEST ||
-                materialBlock == Material.WAXED_WEATHERED_COPPER_CHEST ||
                 materialBlock == Material.TRAPPED_CHEST ||
                 materialBlock == Material.BARREL ||
                 materialBlock == Material.HOPPER ||
@@ -353,10 +343,8 @@ public class ChunkListener implements Listener {
                 entity instanceof Donkey ||
                 entity instanceof Fox ||
                 entity instanceof Frog ||
-                entity instanceof HappyGhast ||
                 entity instanceof Horse ||
                 entity instanceof Mule ||
-                entity instanceof Nautilus ||
                 entity instanceof Ocelot ||
                 entity instanceof Parrot ||
                 entity instanceof Pig ||
@@ -380,8 +368,7 @@ public class ChunkListener implements Listener {
                 entity instanceof PolarBear ||
                 entity instanceof Wolf ||
                 entity instanceof ArmorStand ||
-                entity instanceof LeashHitch ||
-                entity instanceof CopperGolem;
+                entity instanceof LeashHitch;
     }
 
     private boolean canPvpHappen(Player aggressor, Player receiver) {
