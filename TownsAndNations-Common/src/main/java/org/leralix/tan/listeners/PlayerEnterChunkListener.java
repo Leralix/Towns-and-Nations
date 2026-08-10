@@ -21,6 +21,7 @@ import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.gui.scope.ClaimType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.MinimapManager;
 import org.leralix.tan.storage.PlayerAutoClaimStorage;
 import org.leralix.tan.storage.stored.ClaimStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -32,11 +33,13 @@ public class PlayerEnterChunkListener implements Listener {
     private final boolean displayTerritoryNameWithColor;
     private final ClaimStorage claimStorage;
     private final PlayerDataStorage playerDataStorage;
+    private final MinimapManager minimapManager;
 
-    public PlayerEnterChunkListener(PlayerDataStorage playerDataStorage, ClaimStorage claimStorage) {
+    public PlayerEnterChunkListener(PlayerDataStorage playerDataStorage, ClaimStorage claimStorage, MinimapManager minimapManager) {
         this.displayTerritoryNameWithColor = Constants.displayTerritoryColor();
         this.claimStorage = claimStorage;
         this.playerDataStorage = playerDataStorage;
+        this.minimapManager = minimapManager;
     }
 
     @EventHandler
@@ -71,6 +74,8 @@ public class PlayerEnterChunkListener implements Listener {
         if (currentChunk.equals(nextChunk)) {
             return true;
         }
+
+        minimapManager.displayMinimapIfSubscribed(player);
 
         // If both chunks are not claimed, no need to display anything
         if (!claimStorage.isChunkClaimed(currentChunk) &&

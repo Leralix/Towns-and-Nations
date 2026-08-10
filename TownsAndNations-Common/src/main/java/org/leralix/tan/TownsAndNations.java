@@ -419,7 +419,7 @@ public class TownsAndNations extends JavaPlugin {
         pluginManager.registerEvents(new ChatListener(playerDataStorage), this);
         pluginManager.registerEvents(new ChunkListener(playerDataStorage, claimStorage), this);
         pluginManager.registerEvents(new PlayerJoinListener(playerDataStorage, currentAttacksStorage, minimapManager), this);
-        pluginManager.registerEvents(new PlayerEnterChunkListener(playerDataStorage, claimStorage), this);
+        pluginManager.registerEvents(new PlayerEnterChunkListener(playerDataStorage, claimStorage, minimapManager), this);
         pluginManager.registerEvents(new ChatScopeListener(localChatStorage), this);
         pluginManager.registerEvents(new MobSpawnListener(claimStorage), this);
         pluginManager.registerEvents(new SpawnListener(playerDataStorage), this);

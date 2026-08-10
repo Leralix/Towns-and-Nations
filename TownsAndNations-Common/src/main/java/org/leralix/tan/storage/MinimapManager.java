@@ -46,11 +46,17 @@ public class MinimapManager {
                 removePlayer(uuid);
                 continue;
             }
-            displayMap(player);
+            displayMinimap(player);
         }
     }
 
-    public void displayMap(Player player) {
+    public void displayMinimapIfSubscribed(Player player) {
+        if(subscribedPlayers.contains(player.getUniqueId())){
+            displayMinimap(player);
+        }
+    }
+
+    private void displayMinimap(Player player) {
 
         Scoreboard scoreboard = player.getScoreboard();
 
