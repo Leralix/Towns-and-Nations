@@ -1,6 +1,8 @@
 package org.leralix.tan.storage;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -9,17 +11,22 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.ChatChunkMapRenderer;
 
 import java.util.*;
 
 public class MinimapManager {
 
-    public Set<UUID> subscribedPlayers;
+    private final PlayerDataStorage playerDataStorage;
 
-    public MinimapManager() {
+    private final Set<UUID> subscribedPlayers;
+
+    public MinimapManager(PlayerDataStorage playerDataStorage) {
         this.subscribedPlayers = new HashSet<>();
+        this.playerDataStorage = playerDataStorage;
     }
 
     public void addPlayer(UUID playerID) {
@@ -31,7 +38,7 @@ public class MinimapManager {
         Player player = Bukkit.getPlayer(playerID);
         if (player != null) {
             Scoreboard scoreboard = player.getScoreboard();
-            Objective objective = scoreboard.getObjective("tan minimap");
+            Objective objective = scoreboard.getObjective("TAN_MINIMAP");
             if (objective != null) {
                 objective.unregister();
             }
@@ -60,13 +67,18 @@ public class MinimapManager {
 
         Scoreboard scoreboard = player.getScoreboard();
 
-        Objective objective = scoreboard.getObjective("minimap");
+        Objective objective = scoreboard.getObjective("TAN_MINIMAP");
+
+        LangType langType = playerDataStorage.get(player).getLang();
+        TextComponent title = Component
+                .text(Lang.MINIMAP_TITLE.get(langType))
+                .decorate(TextDecoration.BOLD);
 
         if (objective == null) {
             objective = scoreboard.registerNewObjective(
-                    "minimap",
+                    "TAN_MINIMAP",
                     Criteria.DUMMY,
-                    Component.text("Towns and Nations")
+                    title
             );
         }
 
@@ -79,7 +91,7 @@ public class MinimapManager {
         List<Component> map = ChatChunkMapRenderer.getMapLines(
                 player,
                 4,
-                LangType.ENGLISH,
+                langType,
                 (chunkX, chunkZ) -> "/tan ",
                 new HashMap<>()
         );
@@ -89,7 +101,7 @@ public class MinimapManager {
         for (Component component : map) {
 
             String text = LegacyComponentSerializer.legacySection().serialize(component);
-            String entry = text + i;
+            String entry = text + "§" + Integer.toHexString(i);
             objective.getScore(entry).setScore(i);
             i--;
         }

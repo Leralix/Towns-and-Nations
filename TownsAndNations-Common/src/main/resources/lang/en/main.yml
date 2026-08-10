@@ -257,6 +257,7 @@ language:
   PROPERTY_DELETED: "Property successfully deleted"
   SET_SPAWN_COMMAND_DESC: "Set the town spawn"
   OPEN_MINIMAP_COMMAND_DESC: "Display a minimap of claims"
+  MINIMAP_TITLE: "§6TaN - Minimap"
   DEPOSIT_COMMAND_DESC: "Deposit money into a territory"
   TRUST_COMMAND_DESC: "Trust a foreign player into a territory"
   PLAYER_NOW_TRUSTED_IN_TERRITORY: "{0} is now trusted in {1}"

@@ -257,7 +257,7 @@ public class TownsAndNations extends JavaPlugin {
         EconomyUtil.init(playerDataStorage);
         TanChatUtils.init(playerDataStorage);
         TeamUtils.init(playerDataStorage);
-        MinimapManager minimapManager = new MinimapManager();
+        MinimapManager minimapManager = new MinimapManager(playerDataStorage);
 
         this.saveStats = new SaveStats(this);
 

@@ -40,7 +40,7 @@ class CommandPermissionConsistencyTest extends BasicTest {
                 townsAndNations.getFortStorage(),
                 claimStorage,
                 new LocalChatStorage(playerDataStorage, false),
-                new MinimapManager())
+                new MinimapManager(playerDataStorage))
         );
         assertPermissionsExist(permissionsSection, "tan.admin.commands", new AdminCommandManager(playerDataStorage));
         assertPermissionsExist(permissionsSection, "tan.admin.commands", new DebugCommandManager(new SaveStats(townsAndNations), null));
