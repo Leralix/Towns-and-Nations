@@ -59,14 +59,14 @@ public class UnclaimCommand extends PlayerSubCommand {
 
         ITanPlayer tanPlayer = playerDataStorage.get(player);
         LangType langType = tanPlayer.getLang();
-        if (!(args.length == 1 || args.length == 4)) {
+        if (!(args.length == 2 || args.length == 4)) {
             TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
             return;
         }
 
         Chunk chunk = null;
-        if (args.length == 1) {
+        if (args.length == 2) {
             chunk = player.getLocation().getChunk();
         }
 
