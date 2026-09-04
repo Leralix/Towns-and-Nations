@@ -49,6 +49,9 @@ public class TerritoryMobSettings extends IteratorGUI {
 
             UpgradeStatus upgradeStatus = chunkSettings.getSpawnControl(mobEnum);
             int cost = spawnStorage.getMobSpawnCost(mobEnum);
+            if(cost < 0){
+                continue;
+            }
             List<FilledLang> status = generateDescription(upgradeStatus, cost);
 
             boolean upgradeBought = upgradeStatus.isUnlocked();
