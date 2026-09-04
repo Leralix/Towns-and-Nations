@@ -84,18 +84,18 @@ public class UnclaimCommand extends PlayerSubCommand {
         }
 
         IClaimedChunk claimedChunk = TownsAndNations.getPlugin().getClaimStorage().get(chunk);
-        if (claimedChunk instanceof TerritoryChunk territoryChunk) {
-            territoryChunk.unclaimChunk(player, tanPlayer, langType);
-            if (args.length == 4) {
-                var mapCommand = new MapCommand(TownsAndNations.getPlugin().getPlayerDataStorage());
-                mapCommand.openMap(player, new MapSettings(args[0], args[1]));
+        switch (claimedChunk){
+            case TerritoryChunk territoryChunk -> {
+                territoryChunk.unclaimChunk(player, tanPlayer, langType);
+                if (args.length == 4) {
+                    var mapCommand = new MapCommand(TownsAndNations.getPlugin().getPlayerDataStorage());
+                    mapCommand.openMap(player, new MapSettings(args[0], args[1]));
+                }
             }
-        }
-        else if (claimedChunk instanceof LandmarkClaimedChunk){
-            TanChatUtils.message(player, Lang.CANNOT_CLAIM_LANDMARK.get(langType));
-        }
-        else {
-            TanChatUtils.message(player, Lang.CHUNK_NOT_CLAIMED.get(langType));
+            case LandmarkClaimedChunk ignored -> {
+                TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_LANDMARK_CHUNK.get(langType));
+            }
+            default -> TanChatUtils.message(player, Lang.CHUNK_NOT_CLAIMED.get(langType));
         }
     }
 }
