@@ -9,6 +9,7 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.ClaimStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.constants.Constants;
@@ -64,9 +65,10 @@ public class ClaimAreaCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args) {
         ITanPlayer tanPlayer = playerDataStorage.get(player);
-
+        LangType langType = tanPlayer.getLang();
         if(args.length != 2 ){
             TanChatUtils.message(player, Lang.SYNTAX_ERROR);
+            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
             return;
         }
 
@@ -79,7 +81,7 @@ public class ClaimAreaCommand extends PlayerSubCommand {
         Territory territory = optionalTerritory.get();
 
         if(!(chunk instanceof WildernessChunk wildernessChunk)){
-            TanChatUtils.message(player, Lang.CLAIM_AREA_NOT_WILDERNESS_CHUNK.get(tanPlayer));
+            TanChatUtils.message(player, Lang.CLAIM_AREA_NOT_WILDERNESS_CHUNK.get(langType));
             return;
         }
 
@@ -93,7 +95,7 @@ public class ClaimAreaCommand extends PlayerSubCommand {
         Optional<WildernessPolygon> optPolygon = ChunkUtil.getPolygon(wildernessChunk, territory, maxIteration);
 
         if(optPolygon.isEmpty()){
-            TanChatUtils.message(player, Lang.CLAIM_AREA_TOO_BIG.get(tanPlayer));
+            TanChatUtils.message(player, Lang.CLAIM_AREA_TOO_BIG.get(langType));
             return;
         }
 
