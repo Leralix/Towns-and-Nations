@@ -166,4 +166,14 @@ public abstract class Fort extends Building implements TanFort, Nameable {
     }
 
     public abstract void setOwner(Territory newOwner);
+
+    /**
+     *
+     * @return the chunk
+     */
+    public IClaimedChunk getChunk() {
+        int posX = Math.floorDiv(getPosition().getX(), 16);
+        int posZ = Math.floorDiv(getPosition().getZ(), 16);
+        return TownsAndNations.getPlugin().getClaimStorage().get(posX, posZ, getPosition().getWorldID().toString());
+    }
 }

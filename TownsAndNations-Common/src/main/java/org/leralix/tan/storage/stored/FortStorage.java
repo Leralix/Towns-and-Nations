@@ -69,6 +69,7 @@ public interface FortStorage {
     default void delete(Fort fort){
         fort.delete();
         delete(fort.getID());
+        fort.getChunk().notifyUpdate();
     }
 
     void save();
