@@ -33,9 +33,12 @@ public abstract class SettingsMenus extends BasicGui {
 
     protected final Territory territoryData;
 
-    protected SettingsMenus(Player player, Lang title, Territory territoryData, int nbRows) {
+    protected final BasicGui returnGui;
+
+    protected SettingsMenus(Player player, Lang title, Territory territoryData, int nbRows, BasicGui returnGui) {
         super(player, title, nbRows);
         this.territoryData = territoryData;
+        this.returnGui = returnGui;
     }
 
     protected GuiItem getTerritoryInfo() {

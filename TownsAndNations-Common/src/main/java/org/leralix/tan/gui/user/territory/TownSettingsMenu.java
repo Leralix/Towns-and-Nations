@@ -13,6 +13,7 @@ import org.leralix.tan.data.territory.permission.RecruitingPolicy;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TownDeletedInternalEvent;
+import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.LeaderRequirement;
@@ -37,8 +38,8 @@ public class TownSettingsMenu extends SettingsMenus {
 
     private final Town townData;
 
-    public TownSettingsMenu(Player player, Town townData) {
-        super(player, Lang.HEADER_SETTINGS, townData, 4);
+    public TownSettingsMenu(Player player, Town townData, BasicGui returnGUI) {
+        super(player, Lang.HEADER_SETTINGS, townData, 4, returnGUI);
         this.townData = townData;
         open();
     }
@@ -69,7 +70,7 @@ public class TownSettingsMenu extends SettingsMenus {
         gui.setItem(2, 7, getQuitButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(4, 1, createBackArrow(player, p -> new TownMenu(player, tanPlayer, townData), langType));
+        gui.setItem(4, 1, createBackArrow(player, p -> returnGui.open(), langType));
 
         gui.open(player);
     }
@@ -238,15 +239,13 @@ public class TownSettingsMenu extends SettingsMenus {
     private @NotNull GuiItem getChangeOwnershipButton() {
         return iconManager.get(IconKey.TOWN_CHANGE_OWNERSHIP_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.get(tanPlayer))
-                .setRequirements(new LeaderRequirement(territoryData, tanPlayer))
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(),
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.get()
                 )
+                .setRequirements(new LeaderRequirement(territoryData, tanPlayer))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(event -> new SelectNewOwnerForTownMenu(player, townData, this::open))
                 .asGuiItem(player, langType);
-
     }
-
-
 }

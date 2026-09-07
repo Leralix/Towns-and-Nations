@@ -11,6 +11,7 @@ import org.leralix.tan.data.territory.Nation;
 import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.RegionDeletednternalEvent;
+import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.LeaderRequirement;
@@ -26,8 +27,8 @@ public class RegionSettingsMenu extends SettingsMenus {
 
     private final Region regionData;
 
-    public RegionSettingsMenu(Player player, Region regionData) {
-        super(player, Lang.HEADER_SETTINGS, regionData, 4);
+    public RegionSettingsMenu(Player player, Region regionData, BasicGui returnGUI) {
+        super(player, Lang.HEADER_SETTINGS, regionData, 4, returnGUI);
         this.regionData = regionData;
         open();
     }
@@ -52,7 +53,7 @@ public class RegionSettingsMenu extends SettingsMenus {
         gui.setItem(2, 7, getChangeOwnershipButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(4, 1, createBackArrow(player, p -> new RegionMenu(player, regionData), langType));
+        gui.setItem(4, 1, createBackArrow(player, p -> returnGui.open(), langType));
 
         gui.open(player);
     }
@@ -100,18 +101,10 @@ public class RegionSettingsMenu extends SettingsMenus {
     private @NotNull GuiItem getChangeOwnershipButton() {
         return iconManager.get(IconKey.REGION_CHANGE_OWNERSHIP_ICON)
                 .setName(Lang.GUI_REGION_CHANGE_CAPITAL.get(tanPlayer))
-                .setDescription(
-                        Lang.GUI_REGION_CHANGE_CAPITAL_DESC1.get(regionData.getCapital().getName())
-                )
+                .setDescription(Lang.GUI_REGION_CHANGE_CAPITAL_DESC1.get(regionData.getCapital().getName()))
+                .setRequirements(new LeaderRequirement(territoryData, tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
-                .setAction(event -> {
-                    event.setCancelled(true);
-                    if (!regionData.isLeader(tanPlayer)) {
-                        TanChatUtils.message(player, Lang.GUI_NEED_TO_BE_LEADER_OF_REGION.get(tanPlayer));
-                        return;
-                    }
-                    new RegionChangeOwnership(player, regionData, this);
-                })
+                .setAction(event -> new RegionChangeOwnership(player, regionData, this))
                 .asGuiItem(player, langType);
     }
 

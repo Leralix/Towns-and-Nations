@@ -26,12 +26,10 @@ import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 public class NationSettingsMenu extends SettingsMenus {
 
     private final Nation nationData;
-    private final BasicGui returnGUI;
 
     public NationSettingsMenu(Player player, Nation nationData, BasicGui returnGUI) {
-        super(player, Lang.HEADER_SETTINGS, nationData, 4);
+        super(player, Lang.HEADER_SETTINGS, nationData, 4, returnGUI);
         this.nationData = nationData;
-        this.returnGUI = returnGUI;
         open();
     }
 
@@ -53,19 +51,17 @@ public class NationSettingsMenu extends SettingsMenus {
         gui.setItem(2, 7, getChangeCapitalButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(3, 1, createBackArrow(player, p -> returnGUI.open(), langType));
+        gui.setItem(4, 1, createBackArrow(player, p -> returnGui.open(), langType));
 
         gui.open(player);
     }
 
     private @NotNull GuiItem getChangeOwnershipButton() {
         return iconManager.get(IconKey.TERRITORY_CHANGE_OWNER_ICON)
-                .setName(Lang.GUI_NATION_SETTINGS_TRANSFER_OWNERSHIP.get(tanPlayer))
+                .setName(Lang.GUI_NATION_CHANGE_CAPITAL.get(tanPlayer))
+                .setDescription(Lang.GUI_NATION_CHANGE_CAPITAL_DESC1.get(nationData.getCapital().getColoredName()))
                 .setRequirements(new LeaderRequirement(territoryData, tanPlayer))
-                .setDescription(
-                        Lang.GUI_NATION_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(),
-                        Lang.GUI_NATION_SETTINGS_TRANSFER_OWNERSHIP_DESC2.get()
-                )
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(event -> new SelectNewOwnerForNationMenu(player, nationData, this::open))
                 .asGuiItem(player, langType);
     }
@@ -86,7 +82,7 @@ public class NationSettingsMenu extends SettingsMenus {
                         TanChatUtils.message(player, Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get(tanPlayer), NOT_ALLOWED);
                         return;
                     }
-                    new NationChangeCapitalMenu(player, nationData);
+                    new NationChangeCapitalMenu(player, nationData, this);
                 })
                 .asGuiItem(player, langType);
     }

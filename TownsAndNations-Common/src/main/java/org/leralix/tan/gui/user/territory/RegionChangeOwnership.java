@@ -62,7 +62,7 @@ public class RegionChangeOwnership extends IteratorGUI {
                                                 regionData.broadCastMessage(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST.get(iterateTanPlayer.getTown().getName()));
                                                 regionData.setCapital(iterateTanPlayer.getTownId());
                                             }
-                                            new RegionSettingsMenu(player, regionData);
+                                            returnGUI.open();
                                         },
                                         this::open
                                 );

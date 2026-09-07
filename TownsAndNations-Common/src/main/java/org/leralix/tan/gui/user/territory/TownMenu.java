@@ -28,7 +28,7 @@ public class TownMenu extends TerritoryMenu {
 
     @Override
     protected GuiItem getSettingsButton() {
-        return createSettingsButton(Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(), p -> new TownSettingsMenu(player, townData));
+        return createSettingsButton(Lang.GUI_TOWN_SETTINGS_ICON_DESC1.get(), p -> new TownSettingsMenu(player, townData, this));
     }
 
     private GuiItem getLandmarksButton() {

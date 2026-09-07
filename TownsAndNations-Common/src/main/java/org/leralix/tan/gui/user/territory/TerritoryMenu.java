@@ -80,8 +80,8 @@ public abstract class TerritoryMenu extends BasicGui {
         boolean canTerritoryBeUpgraded = Constants.getTerritoryMaxLevel(territoryData) > 0;
 
         return IconManager.getInstance().get(IconKey.TERRITORY_LEVEL_ICON)
-                .setName(Lang.GUI_TOWN_LEVEL_ICON.get(tanPlayer.getLang()))
-                .setDescription( canTerritoryBeUpgraded ? Lang.GUI_TERRITORY_LEVEL_ICON_DESC1.get() : Lang.GUI_TERRITORY_LEVEL_LOCKED.get())
+                .setName(Lang.GUI_TERRITORY_UPGRADE_ICON.get(tanPlayer.getLang()))
+                .setDescription( canTerritoryBeUpgraded ? Lang.GUI_TERRITORY_UPGRADE_ICON_DESC1.get() : Lang.GUI_TERRITORY_LEVEL_LOCKED.get())
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.UPGRADE_TOWN))
                 .setAction(event -> {
                     if (canTerritoryBeUpgraded) {

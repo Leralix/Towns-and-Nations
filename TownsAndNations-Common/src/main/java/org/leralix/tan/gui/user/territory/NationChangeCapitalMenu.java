@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.leralix.tan.data.territory.Nation;
 import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.data.territory.Territory;
+import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.lang.Lang;
@@ -15,10 +16,12 @@ import java.util.List;
 public class NationChangeCapitalMenu extends IteratorGUI {
 
     private final Nation nationData;
+    private final BasicGui returnGui;
 
-    public NationChangeCapitalMenu(Player player, Nation nationData) {
+    public NationChangeCapitalMenu(Player player, Nation nationData, BasicGui returnGui) {
         super(player, Lang.HEADER_CHANGE_NATION_CAPITAL, 6);
         this.nationData = nationData;
+        this.returnGui = returnGui;
         open();
     }
 
@@ -46,7 +49,7 @@ public class NationChangeCapitalMenu extends IteratorGUI {
                                         Lang.GUI_CONFIRM_CHANGE_NATION_CAPITAL.get(regionData.getName()),
                                         () -> {
                                             nationData.setCapital(regionData.getID());
-                                            new NationSettingsMenu(player, nationData, this);
+                                            returnGui.open();
                                         },
                                         this::open
                                 );
