@@ -535,3 +535,4 @@ nation_upgrades:
       TOWN_LEVEL: 0
     benefits:
       CHUNK_CAP: 0
+      AUTHORIZED_BIOMES: [ 'ALL' ]
