@@ -4,7 +4,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.leralix.tan.data.territory.Region;
+import org.leralix.tan.data.territory.Nation;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
@@ -17,14 +17,14 @@ import java.util.UUID;
 
 import static org.leralix.lib.data.SoundEnum.GOOD;
 
-public class RegionChangeOwnership extends IteratorGUI {
+public class NationChangeOwnership extends IteratorGUI {
 
-    private final Region regionData;
+    private final Nation nationData;
     private final BasicGui returnGUI;
 
-    public RegionChangeOwnership(Player player, Region regionData, BasicGui returnGUI) {
+    public NationChangeOwnership(Player player, Nation nationData, BasicGui returnGUI) {
         super(player, Lang.HEADER_CHANGE_OWNERSHIP, 6);
-        this.regionData = regionData;
+        this.nationData = nationData;
         this.returnGUI = returnGUI;
         open();
     }
@@ -37,11 +37,11 @@ public class RegionChangeOwnership extends IteratorGUI {
 
     private List<GuiItem> getCandidates() {
         List<GuiItem> guiItems = new ArrayList<>();
-        for (UUID playerID : regionData.getPlayerIDList()) {
-            if (regionData.isLeader(playerID)) {
+        for (UUID playerID : nationData.getPlayerIDList()) {
+            if (nationData.isLeader(playerID)) {
                 continue;
             }
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerID);
+            OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(playerID);
             guiItems.add(
                     iconManager.get(offlinePlayer)
                             .setName(offlinePlayer.getName())
@@ -54,10 +54,10 @@ public class RegionChangeOwnership extends IteratorGUI {
 
                                 new ConfirmMenu(
                                         player,
-                                        Lang.GUI_CONFIRM_CHANGE_LEADER.get(offlinePlayer.getName()),
+                                        Lang.GUI_CONFIRM_CHANGE_NATION_LEADER.get(offlinePlayer.getName()),
                                         () -> {
-                                            regionData.setLeaderID(offlinePlayer.getUniqueId());
-                                            regionData.broadcastMessageWithSound(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST.get(offlinePlayer.getName()), GOOD);
+                                            nationData.setLeaderID(offlinePlayer.getUniqueId());
+                                            nationData.broadcastMessageWithSound(Lang.GUI_NATION_SETTINGS_NATION_CHANGE_LEADER_BROADCAST.get(offlinePlayer.getName()), GOOD);
                                             TanChatUtils.message(player, Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(tanPlayer, offlinePlayer.getName()));
                                             returnGUI.open();
                                         },

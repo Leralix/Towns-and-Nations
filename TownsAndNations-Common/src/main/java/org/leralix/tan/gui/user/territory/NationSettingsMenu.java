@@ -43,7 +43,7 @@ public class NationSettingsMenu extends SettingsMenus {
         gui.setItem(2, 4, getChangeColorButton());
 
         gui.setItem(3, 2, setBannerButton());
-        if(Constants.allowShareOfTeleportation()){
+        if (Constants.allowShareOfTeleportation()) {
             gui.setItem(3, 3, getAuthorizedTeleportationButton());
         }
 
@@ -56,34 +56,26 @@ public class NationSettingsMenu extends SettingsMenus {
         gui.open(player);
     }
 
-    private @NotNull GuiItem getChangeOwnershipButton() {
+    protected @NotNull GuiItem getChangeOwnershipButton() {
         return iconManager.get(IconKey.TERRITORY_CHANGE_OWNER_ICON)
-                .setName(Lang.GUI_NATION_CHANGE_CAPITAL.get(tanPlayer))
-                .setDescription(Lang.GUI_NATION_CHANGE_CAPITAL_DESC1.get(nationData.getCapital().getColoredName()))
+                .setName(Lang.GUI_TERRITORY_CHANGE_OWNERSHIP.get(tanPlayer))
+                .setDescription(Lang.GUI_TERRITORY_CHANGE_OWNERSHIP_DESC1.get(nationData.getCapital().getLeaderData().getNameStored()))
                 .setRequirements(new LeaderRequirement(territoryData, tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
-                .setAction(event -> new SelectNewOwnerForNationMenu(player, nationData, this::open))
+                .setAction(event -> new NationChangeOwnership(player, nationData, this))
                 .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getChangeCapitalButton() {
         Territory capital = nationData.getCapital();
-        String capitalName = capital == null ? Lang.NO_REGION.get(tanPlayer) : capital.getName();
+        String capitalName = capital == null ? Lang.NO_REGION.get(tanPlayer) : capital.getColoredName();
 
-        return iconManager.get(IconKey.NATION_CHANGE_CAPITAL_ICON)
-                .setName(Lang.GUI_NATION_CHANGE_CAPITAL.get(tanPlayer))
-                .setDescription(
-                        Lang.GUI_NATION_CHANGE_CAPITAL_DESC1.get(capitalName)
-                )
+        return iconManager.get(IconKey.TERRITORY_CHANGE_CAPITAL_ICON)
+                .setName(Lang.GUI_TERRITORY_CHANGE_CAPITAL.get(tanPlayer))
+                .setDescription(Lang.GUI_TERRITORY_CHANGE_CAPITAL_DESC1.get(capitalName))
+                .setRequirements(new LeaderRequirement(capital, tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
-                .setAction(event -> {
-                    event.setCancelled(true);
-                    if (!nationData.isLeader(tanPlayer)) {
-                        TanChatUtils.message(player, Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get(tanPlayer), NOT_ALLOWED);
-                        return;
-                    }
-                    new NationChangeCapitalMenu(player, nationData, this);
-                })
+                .setAction(event -> new NationChangeCapitalMenu(player, nationData, this))
                 .asGuiItem(player, langType);
     }
 

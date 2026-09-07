@@ -5,6 +5,7 @@ import org.bukkit.Tag;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
+import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.lib.utils.SoundUtil;
 import org.leralix.tan.TownsAndNations;
@@ -160,4 +161,12 @@ public abstract class SettingsMenus extends BasicGui {
                 })
                 .asGuiItem(player, langType);
     }
+
+    /**
+     * Set the new owner of the Territory
+     */
+    protected abstract @NotNull GuiItem getChangeOwnershipButton();
+
+
+
 }

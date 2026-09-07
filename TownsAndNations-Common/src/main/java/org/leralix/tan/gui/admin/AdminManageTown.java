@@ -79,7 +79,7 @@ public class AdminManageTown extends AdminManageTerritory {
     }
 
     private @NotNull GuiItem changeLeader() {
-        return iconManager.get(IconKey.TOWN_CHANGE_OWNERSHIP_ICON)
+        return iconManager.get(IconKey.TERRITORY_CHANGE_OWNER_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.get(langType))
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(townData.getLeaderData().getNameStored())
