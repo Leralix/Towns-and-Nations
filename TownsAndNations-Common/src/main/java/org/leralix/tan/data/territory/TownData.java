@@ -14,6 +14,7 @@ import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.economy.*;
+import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.data.territory.permission.RecruitingPolicy;
 import org.leralix.tan.data.territory.rank.RankData;
 import org.leralix.tan.data.upgrade.rewards.numeric.TownPlayerCap;
@@ -26,6 +27,7 @@ import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.storage.PermissionManager;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.PlayerTaxTransaction;
 import org.leralix.tan.utils.Range;
@@ -109,6 +111,12 @@ public class TownData extends TerritoryData implements Town {
 
         for (Territory overlords : getOverlords()) {
             overlords.registerPlayer(tanNewPlayer);
+        }
+
+        // Clear old authorization when player was not part of the town
+        PermissionManager permissionManager = getChunkSettings().getChunkPermissions();
+        for (ChunkPermissionType chunkPermissionType : ChunkPermissionType.values()){
+            permissionManager.get(chunkPermissionType).getAuthorizedPlayers().remove(tanNewPlayer.getID());
         }
 
         EventManager.getInstance().callEvent(new PlayerJoinTownAcceptedInternalEvent(tanNewPlayer, this));
