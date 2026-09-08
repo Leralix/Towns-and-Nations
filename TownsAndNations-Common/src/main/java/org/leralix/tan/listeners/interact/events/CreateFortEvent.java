@@ -17,6 +17,7 @@ import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.interact.ListenerState;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
+import org.leralix.tan.utils.constants.BlockList;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -37,6 +38,11 @@ public class CreateFortEvent extends RightClickListenerEvent {
 
         Block block = event.getClickedBlock();
         if (block == null) {
+            return ListenerState.CONTINUE;
+        }
+
+        if(BlockList.BREAKABLE_BLOCKS.contains(block.getType())){
+            TanChatUtils.message(player, Lang.CANNOT_CREATE_FORT_ON_THIS_BLOCK.get(tanPlayer));
             return ListenerState.CONTINUE;
         }
 

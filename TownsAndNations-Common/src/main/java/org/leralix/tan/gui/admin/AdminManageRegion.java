@@ -79,10 +79,10 @@ public class AdminManageRegion extends AdminManageTerritory {
     }
 
     private @NotNull GuiItem changeLeader() {
-        return iconManager.get(IconKey.REGION_CHANGE_OWNERSHIP_ICON)
-                .setName(Lang.GUI_REGION_CHANGE_CAPITAL.get(langType))
+        return iconManager.get(IconKey.TERRITORY_CHANGE_OWNER_ICON)
+                .setName(Lang.GUI_TERRITORY_CHANGE_CAPITAL.get(langType))
                 .setDescription(
-                        Lang.GUI_REGION_CHANGE_CAPITAL_DESC1.get(regionData.getCapital().getColoredName())
+                        Lang.GUI_TERRITORY_CHANGE_CAPITAL_DESC1.get(regionData.getCapital().getColoredName())
                 )
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(action -> new RegionChangeOwnership(player, regionData, this))

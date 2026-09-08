@@ -13,6 +13,7 @@ import org.leralix.tan.data.territory.permission.RecruitingPolicy;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TownDeletedInternalEvent;
+import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.service.requirements.LeaderRequirement;
@@ -31,14 +32,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.leralix.lib.data.SoundEnum.*;
+import static org.leralix.lib.data.SoundEnum.GOOD;
+import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
 
 public class TownSettingsMenu extends SettingsMenus {
 
     private final Town townData;
 
-    public TownSettingsMenu(Player player, Town townData) {
-        super(player, Lang.HEADER_SETTINGS, townData, 4);
+    public TownSettingsMenu(Player player, Town townData, BasicGui returnGUI) {
+        super(player, Lang.HEADER_SETTINGS, townData, 4, returnGUI);
         this.townData = townData;
         open();
     }
@@ -60,16 +62,15 @@ public class TownSettingsMenu extends SettingsMenus {
         }
 
         if (Constants.enableTownTag()) {
-            gui.setItem(3, 6, getChangeTagButton());
+            gui.setItem(3, 7, getChangeTagButton());
         }
-        gui.setItem(3, 7, setBannerButton());
+        gui.setItem(3, 8, setBannerButton());
 
 
-        gui.setItem(2, 6, getChangeOwnershipButton());
-        gui.setItem(2, 7, getQuitButton());
+        gui.setItem(2, 7, getChangeOwnershipButton());
         gui.setItem(2, 8, getDeleteButton());
 
-        gui.setItem(4, 1, createBackArrow(player, p -> new TownMenu(player, tanPlayer, townData), langType));
+        gui.setItem(4, 1, createBackArrow(player, p -> returnGui.open(), langType));
 
         gui.open(player);
     }
@@ -119,48 +120,6 @@ public class TownSettingsMenu extends SettingsMenus {
                     PlayerChatListenerStorage.register(player, langType, new ChangeTownTag(townData, p -> open()));
                 })
                 .asGuiItem(player, langType);
-    }
-
-    private GuiItem getQuitButton() {
-        return iconManager.get(IconKey.TOWN_QUIT_TOWN_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN.get(tanPlayer))
-                .setDescription(
-                        Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC1.get(townData.getName()),
-                        Lang.GUI_TOWN_SETTINGS_LEAVE_TOWN_DESC2.get()
-                )
-                .setAction(event -> {
-                    event.setCancelled(true);
-
-                    if (!player.hasPermission("tan.base.town.quit")) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), NOT_ALLOWED);
-                        return;
-                    }
-
-                    if (townData.isLeader(tanPlayer)) {
-                        TanChatUtils.message(player, Lang.CHAT_CANT_LEAVE_TOWN_IF_LEADER.get(tanPlayer), NOT_ALLOWED);
-                        return;
-                    }
-
-                    var optOverlord = territoryData.getOverlordInternal();
-                    if (optOverlord.isPresent() && optOverlord.get().isLeader(tanPlayer)) {
-                        TanChatUtils.message(player, Lang.CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER.get(tanPlayer), NOT_ALLOWED);
-                    }
-
-
-                    new ConfirmMenu(
-                            player,
-                            Lang.GUI_CONFIRM_PLAYER_LEAVE_TOWN.get(tanPlayer.getNameStored()),
-                            () -> {
-                                player.closeInventory();
-                                townData.removePlayer(tanPlayer);
-                                TanChatUtils.message(player, Lang.CHAT_PLAYER_LEFT_THE_TOWN.get(tanPlayer));
-                                townData.broadcastMessageWithSound(Lang.TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN.get(tanPlayer.getNameStored()), BAD);
-                            },
-                            this::open
-                    );
-                })
-                .asGuiItem(player, langType);
-
     }
 
     private GuiItem getDeleteButton() {
@@ -235,18 +194,16 @@ public class TownSettingsMenu extends SettingsMenus {
                 .asGuiItem(player, langType);
     }
 
-    private @NotNull GuiItem getChangeOwnershipButton() {
-        return iconManager.get(IconKey.TOWN_CHANGE_OWNERSHIP_ICON)
+    protected @NotNull GuiItem getChangeOwnershipButton() {
+        return iconManager.get(IconKey.TERRITORY_CHANGE_OWNER_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.get(tanPlayer))
-                .setRequirements(new LeaderRequirement(territoryData, tanPlayer))
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(),
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.get()
                 )
+                .setRequirements(new LeaderRequirement(territoryData, tanPlayer))
+                .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setAction(event -> new SelectNewOwnerForTownMenu(player, townData, this::open))
                 .asGuiItem(player, langType);
-
     }
-
-
 }

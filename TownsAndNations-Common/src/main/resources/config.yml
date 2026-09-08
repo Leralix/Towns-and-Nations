@@ -51,6 +51,7 @@ NameFilterNormalizeLeetspeak: false
 NameFilterApplyToTown: true
 NameFilterApplyToRegion: true
 NameFilterApplyToNation: true
+NameFilterApplyToRank: true
 
 ########################
 ##      Economy       ##

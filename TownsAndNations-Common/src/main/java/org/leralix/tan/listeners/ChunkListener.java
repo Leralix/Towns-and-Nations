@@ -696,13 +696,19 @@ public class ChunkListener implements Listener {
             IClaimedChunk claimedChunkFrom = claimStorage.get(from.getChunk());
             IClaimedChunk claimedChunkTo = claimStorage.get(to.getChunk());
 
-            if(claimedChunkFrom != claimedChunkTo && !isPistonEventAuthorized(claimedChunkFrom, claimedChunkTo)){
+            if(claimedChunkFrom != claimedChunkTo && !isPistonEventAuthorizedInChunk(claimedChunkFrom, claimedChunkTo)){
+                event.setCancelled(true);
+                return;
+            }
+
+            Block aboveBlock = from.getWorld().getBlockAt(from.getBlockX(), from.getBlockY() + 1, from.getBlockZ());
+            if(aboveBlock.hasMetadata(FORT_FLAG_METADATA)){
                 event.setCancelled(true);
             }
         }
     }
 
-    private boolean isPistonEventAuthorized(IClaimedChunk claimedChunkFrom, IClaimedChunk claimedChunkTo) {
+    private boolean isPistonEventAuthorizedInChunk(IClaimedChunk claimedChunkFrom, IClaimedChunk claimedChunkTo) {
         if(!(claimedChunkTo instanceof TerritoryChunk territoryChunkTo)){
             return true;
         }

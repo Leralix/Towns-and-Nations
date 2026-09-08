@@ -28,6 +28,9 @@ public final class TerritoryCommandUtil {
         if (tanPlayer.hasNation()) {
             suggestions.add("nation");
         }
+        if(suggestions.isEmpty()){
+            suggestions.add("<No Territory>");
+        }
         return suggestions;
     }
 

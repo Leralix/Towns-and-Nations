@@ -3,7 +3,6 @@ package org.leralix.tan.utils.text;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.lang.Lang;
 
@@ -13,24 +12,28 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.text.Normalizer;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class NameFilter {
 
     private static final String DEFAULT_WORDS_FILE = "banned_words.yml";
 
-    private static volatile boolean enabled = true;
-    private static volatile boolean normalizeDiacritics = true;
-    private static volatile boolean normalizeLeetspeak = false;
+    private static volatile boolean enabled;
+    private static volatile boolean normalizeDiacritics;
+    private static volatile boolean normalizeLeetspeak;
 
-    private static volatile boolean applyToTown = true;
-    private static volatile boolean applyToRegion = true;
-    private static volatile boolean applyToNation = true;
+    private static volatile boolean applyToTown;
+    private static volatile boolean applyToRegion;
+    private static volatile boolean applyToNation;
+    private static volatile boolean applyToRank ;
 
-    private static Set<String> blockedWords = Collections.emptySet();
+    private static volatile File wordsFile;
 
-    private static volatile File activeWordsFile;
+    private static final Set<String> blockedWords = new HashSet<>();
 
     private static final Pattern DIACRITICS_PATTERN = Pattern.compile("\\p{M}+");
 
@@ -41,11 +44,16 @@ public class NameFilter {
     public enum Scope {
         TOWN,
         REGION,
-        NATION
+        NATION,
+        RANK,
     }
 
     public static synchronized void reload(YamlConfiguration config) {
         enabled = config.getBoolean("EnableNameFilter", true);
+
+        if (!enabled) {
+            return;
+        }
 
         normalizeDiacritics = config.getBoolean("NameFilterNormalizeDiacritics", true);
         normalizeLeetspeak = config.getBoolean("NameFilterNormalizeLeetspeak", false);
@@ -53,37 +61,30 @@ public class NameFilter {
         applyToTown = config.getBoolean("NameFilterApplyToTown", true);
         applyToRegion = config.getBoolean("NameFilterApplyToRegion", true);
         applyToNation = config.getBoolean("NameFilterApplyToNation", true);
-
-        if (!enabled) {
-            blockedWords = Collections.emptySet();
-            return;
-        }
+        applyToRank = config.getBoolean("NameFilterApplyToRank", true);
 
         String fileName = config.getString("NameFilterFile", DEFAULT_WORDS_FILE);
-        if (fileName == null || fileName.isBlank()) {
+        if (fileName.isBlank()) {
             fileName = DEFAULT_WORDS_FILE;
         }
 
         TownsAndNations plugin = TownsAndNations.getPlugin();
         plugin.saveResource(DEFAULT_WORDS_FILE, false);
 
-        File wordsFile = ensureWordsFileExists(plugin, fileName);
-        activeWordsFile = wordsFile;
+        wordsFile = ensureWordsFileExists(plugin, fileName);
         YamlConfiguration bannedWordConfig = YamlConfiguration.loadConfiguration(wordsFile);
 
         List<String> words = bannedWordConfig.getStringList("blockedWords");
-        Set<String> normalized = new HashSet<>();
         for (String w : words) {
             if (w == null) {
                 continue;
             }
             String cleaned = normalize(w);
             if (!cleaned.isEmpty()) {
-                normalized.add(cleaned);
+                blockedWords.add(cleaned);
             }
         }
 
-        blockedWords = Collections.unmodifiableSet(normalized);
     }
 
     private static File ensureWordsFileExists(TownsAndNations plugin, String fileName) {
@@ -114,15 +115,8 @@ public class NameFilter {
         return target.exists() ? target : fallback;
     }
 
-    public static boolean isNameAllowed(String name) {
-        return isNameAllowed(name, null);
-    }
-
     public static boolean isNameAllowed(String name, Scope scope) {
-        if (!enabled) {
-            return true;
-        }
-        if (scope != null && !isScopeEnabled(scope)) {
+        if (!isScopeEnabled(scope)) {
             return true;
         }
         if (name == null) {
@@ -143,28 +137,12 @@ public class NameFilter {
         return true;
     }
 
-    public static boolean validateOrWarn(CommandSender sender, String name) {
-        if (isNameAllowed(name, null)) {
-            return true;
-        }
-        sendBlockedNameWarning(sender);
-        return false;
-    }
-
     public static boolean validateOrWarn(CommandSender sender, String name, Scope scope) {
         if (isNameAllowed(name, scope)) {
             return true;
         }
-        sendBlockedNameWarning(sender);
+        TanChatUtils.message(sender, Lang.NAME_FILTER_BLOCKED_NAME);
         return false;
-    }
-
-    private static void sendBlockedNameWarning(CommandSender sender) {
-        if (sender instanceof Player player) {
-            TanChatUtils.message(player, Lang.NAME_FILTER_BLOCKED_NAME.get());
-        } else if (sender != null) {
-            sender.sendMessage(Lang.NAME_FILTER_BLOCKED_NAME.getDefault());
-        }
     }
 
     private static boolean isScopeEnabled(Scope scope) {
@@ -172,6 +150,7 @@ public class NameFilter {
             case TOWN -> applyToTown;
             case REGION -> applyToRegion;
             case NATION -> applyToNation;
+            case RANK -> applyToRank;
         };
     }
 
@@ -180,9 +159,6 @@ public class NameFilter {
             return "";
         }
         String s = ChatColor.stripColor(input);
-        if (s == null) {
-            s = input;
-        }
         s = s.trim().toLowerCase(Locale.ROOT);
         if (s.isEmpty()) {
             return "";
@@ -203,5 +179,51 @@ public class NameFilter {
                     .replace('$', 's');
         }
         return s;
+    }
+
+    public static Set<String> getBlockedWords() {
+        return blockedWords;
+    }
+
+    public static void addWord(String newWord) {
+        if (newWord == null || newWord.isBlank()) {
+            return;
+        }
+        
+        String normalized = normalize(newWord);
+        if (normalized.isEmpty()) {
+            return;
+        }
+        
+        blockedWords.add(normalized);
+        saveWordsToFile();
+    }
+
+    public static void removeWord(String wordToRemove) {
+        if (wordToRemove == null || wordToRemove.isBlank()) {
+            return;
+        }
+        
+        String normalized = normalize(wordToRemove);
+        if (normalized.isEmpty()) {
+            return;
+        }
+        
+        blockedWords.remove(normalized);
+        saveWordsToFile();
+    }
+
+    private static void saveWordsToFile() {
+        if (wordsFile == null) {
+            return;
+        }
+
+        try {
+            YamlConfiguration config = new YamlConfiguration();
+            config.set("blockedWords", List.copyOf(blockedWords));
+            config.save(wordsFile);
+        } catch (IOException e) {
+            TownsAndNations.getPlugin().getLogger().warning("Failed to save blocked words to file: " + e.getMessage());
+        }
     }
 }

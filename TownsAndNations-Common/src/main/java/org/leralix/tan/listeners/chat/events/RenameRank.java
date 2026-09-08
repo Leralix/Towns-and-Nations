@@ -28,7 +28,7 @@ public class RenameRank extends ChatListenerEvent {
         String rankName = message == null ? "" : message.trim();
         int maxSize = Constants.getRankNameSize();
 
-        if (!NameFilter.validateOrWarn(player, rankName)) {
+        if (!NameFilter.validateOrWarn(player, rankName, NameFilter.Scope.RANK)) {
             return false;
         }
 

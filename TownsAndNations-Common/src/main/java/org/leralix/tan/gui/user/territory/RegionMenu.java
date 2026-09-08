@@ -24,7 +24,7 @@ public class RegionMenu extends TerritoryMenu {
 
     @Override
     protected GuiItem getSettingsButton() {
-        return createSettingsButton(Lang.GUI_REGION_SETTINGS_ICON_DESC1.get(), p -> new RegionSettingsMenu(player, regionData));
+        return createSettingsButton(Lang.GUI_REGION_SETTINGS_ICON_DESC1.get(), p -> new RegionSettingsMenu(player, regionData, this));
     }
 
 }

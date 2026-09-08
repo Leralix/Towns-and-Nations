@@ -48,6 +48,7 @@ public class HierarchyMenu extends BasicGui {
             gui.setItem(2, 2, info);
             gui.setItem(2, 3, info);
             gui.setItem(2, 4, info);
+            return;
         }
 
         Optional<Territory> overlordOptional = territoryData.getOverlordInternal();
