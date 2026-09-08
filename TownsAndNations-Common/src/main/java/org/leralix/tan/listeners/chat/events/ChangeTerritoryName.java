@@ -11,6 +11,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.file.FileUtil;
+import org.leralix.tan.utils.text.NameFilter;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.function.Consumer;
@@ -31,12 +32,22 @@ public class ChangeTerritoryName extends ChatListenerEvent {
     public boolean execute(Player player, ITanPlayer playerData, String newName) {
 
         int maxSize;
+        NameFilter.Scope nameFilterScope;
         if (territoryToRename instanceof Town) {
             maxSize = Constants.getTownMaxNameSize();
-        } else if (territoryToRename instanceof Nation) {
+            nameFilterScope = NameFilter.Scope.TOWN;
+        }
+        else if (territoryToRename instanceof Nation) {
             maxSize = Constants.getNationMaxNameSize();
-        } else {
+            nameFilterScope = NameFilter.Scope.NATION;
+        }
+        else {
             maxSize = Constants.getRegionMaxNameSize();
+            nameFilterScope = NameFilter.Scope.REGION;
+        }
+
+        if (!NameFilter.validateOrWarn(player, newName, nameFilterScope)) {
+            return false;
         }
 
         if(newName.length() > maxSize){
