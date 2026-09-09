@@ -100,7 +100,7 @@ public class CaptureChunk {
                     nbAttackers,
                     nbDefenders
             );
-        } else if (score > 0) {
+        } else if (score > 0 && score < Constants.getChunkCaptureTime()) {
             return Lang.WAR_INFO_CONTESTED.get(
                     getAttackingTerritory().getColoredName(),
                     NumberUtil.getPercentage(score, Constants.getChunkCaptureTime()),
