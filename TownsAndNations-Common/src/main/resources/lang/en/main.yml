@@ -5,6 +5,7 @@ language:
   PLUGIN_STRING: "§6[TaN]§f "
   PLUGIN_DEBUG_STRING: "§c[TaN - Debug]§f "
   NEWSLETTER_STRING: "§6[TaN - Newsletter]§f "
+  WIKI_LINK: "§6[Click here to open the wiki]"
   #Common errors
   PLAYER_NO_TOWN: "§cYou do not have a town"
   PLAYER_NO_REGION: "§cYou do not have a region"
