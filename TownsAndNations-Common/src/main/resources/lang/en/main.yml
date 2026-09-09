@@ -1267,6 +1267,7 @@ language:
   #Forts
   FORT_OCCUPIED_BY: "§fOccupied by : {0}"
   CANNOT_CREATE_FORT_IF_ABOVE_BLOCKED: "§cYou cannot create a fort if the block above is not air"
+  FORT_ALREADY_PRESENT_ON_CHUNK: "§cA fort is already present in this chunk"
   CANNOT_CREATE_FORT_ON_THIS_BLOCK: "§cInvalid block"
   DEFAULT_FORT_NAME: "Fort n°{0}"
   RIGHT_CLICK_TO_PLACE_FORT: "§fRight click to place the fort flag"

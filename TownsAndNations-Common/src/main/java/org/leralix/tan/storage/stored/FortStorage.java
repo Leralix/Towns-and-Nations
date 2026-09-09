@@ -1,5 +1,7 @@
 package org.leralix.tan.storage.stored;
 
+import org.bukkit.Chunk;
+import org.jetbrains.annotations.NotNull;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.fort.Fort;
@@ -94,7 +96,15 @@ public interface FortStorage {
             }
         }
         return Optional.empty();
+    }
 
-
+    default Optional<Fort> getFortOnChunk(@NotNull Chunk chunk){
+        for(Fort fort : getForts()){
+            Chunk fortChunk = fort.getPosition().getLocation().getChunk();
+            if(fortChunk.getX() == chunk.getX() && fortChunk.getZ() == chunk.getZ()){
+                return Optional.of(fort);
+            }
+        }
+        return Optional.empty();
     }
 }

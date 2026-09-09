@@ -41,6 +41,12 @@ public class CreateFortEvent extends RightClickListenerEvent {
             return ListenerState.CONTINUE;
         }
 
+        if(TownsAndNations.getPlugin().getFortStorage().getFortOnChunk(block.getLocation().getChunk()).isPresent()){
+            TanChatUtils.message(player, Lang.FORT_ALREADY_PRESENT_ON_CHUNK.get(tanPlayer));
+            return ListenerState.CONTINUE;
+        }
+
+
         if(BlockList.BREAKABLE_BLOCKS.contains(block.getType())){
             TanChatUtils.message(player, Lang.CANNOT_CREATE_FORT_ON_THIS_BLOCK.get(tanPlayer));
             return ListenerState.CONTINUE;
