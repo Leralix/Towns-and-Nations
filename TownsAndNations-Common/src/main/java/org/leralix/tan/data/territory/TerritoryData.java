@@ -523,6 +523,10 @@ public abstract class TerritoryData implements TanTerritory, Territory {
             return false;
         }
 
+        return claimChunkSucess(player, chunk, ignoreAdjacent);
+    }
+
+    public boolean claimChunkSucess(Player player, Chunk chunk, boolean ignoreAdjacent) {
         abstractClaimChunk(chunk, ignoreAdjacent);
 
         ChunkCap chunkCap = getNewLevel().getStat(ChunkCap.class);

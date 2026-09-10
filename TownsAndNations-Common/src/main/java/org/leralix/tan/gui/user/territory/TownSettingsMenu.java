@@ -102,7 +102,7 @@ public class TownSettingsMenu extends SettingsMenus {
                         TanChatUtils.message(player, Lang.CANNOT_MOVE_CAPITAL_WHILE_AT_WAR.get());
                         return;
                     }
-
+                    TanChatUtils.message(player, Lang.RIGHT_CLICK_TO_SELECT_CAPITAL.get(tanPlayer));
                     RightClickListener.register(player, langType, new ChangeCapital(townData, p -> open()));
                 })
                 .asGuiItem(player, langType);

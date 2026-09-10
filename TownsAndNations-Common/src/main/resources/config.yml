@@ -82,7 +82,7 @@ StartingMoney: 100.0
 ########################
 
 #Buffer zone between territories when creating a new territory (Capital chunk or Fort as outpost)
-#Buffer is only checked if ...AllowNonAdjacentChunks is set to false
+#Buffer is only checked if <Town/Region/Nation>AllowNonAdjacentChunks is set to false
 TerritoryClaimBufferZone: 2
 
 # Particles shown to display territory boundaries
@@ -105,10 +105,8 @@ NationDescSize: 55
 
 ChangeNationNameCost: 100
 
-tributeLimits:
-  enabled: false
-  perPlayerDailyLimit: 50000
-  perVassalDailyLimit: 400000
+#Allow non-adjacent chunks to be claimed for nations
+NationAllowNonAdjacentChunks: false
 
 ########################
 ##       Regions      ##
@@ -129,9 +127,6 @@ ChangeRegionNameCost: 100
 
 #Allow non-adjacent chunks to be claimed
 RegionAllowNonAdjacentChunks: false
-
-#Allow non-adjacent chunks to be claimed for nations
-NationAllowNonAdjacentChunks: false
 
 #Notify if a player from an enemy territory enters
 notifyEnemyEnterRegion: true
@@ -155,6 +150,10 @@ TownAllowNonAdjacentChunks: false
 
 #Notify if a player from an enemy town enters
 notifyEnemyEnterTown: true
+
+# Defines if the first claim chunk needs to be selected before creating a new town
+# If set to false, a town can exist without any claims
+setCapitalAtCreation: true
 
 ########################
 ##      Relations     ##

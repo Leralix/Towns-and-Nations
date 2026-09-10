@@ -1,6 +1,7 @@
 package org.leralix.tan.utils.territory;
 
 import org.bukkit.Chunk;
+import org.jetbrains.annotations.Nullable;
 import org.leralix.lib.position.Vector2D;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.building.Building;
@@ -341,7 +342,7 @@ public class ChunkUtil {
         return chunksInRadius;
     }
 
-    public static boolean isInBufferZone(IClaimedChunk chunkToAnalyse, Territory territoryToAllow, int bufferZone) {
+    public static boolean isInBufferZone(IClaimedChunk chunkToAnalyse, @Nullable Territory territoryToAllow, int bufferZone) {
 
         List<IClaimedChunk> claimedChunkToAnalyse = getChunksInRadius(
                 chunkToAnalyse,

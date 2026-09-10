@@ -187,6 +187,8 @@ public interface Territory extends TanTerritory, Relation, Nameable {
      */
     boolean claimChunk(Player player, ITanPlayer playerData, Chunk chunk, boolean ignoreAdjacent);
 
+    boolean claimChunkSucess(Player player, Chunk chunk, boolean ignoreAdjacent);
+
     int getClaimCost();
 
     void delete();

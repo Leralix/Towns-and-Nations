@@ -1,11 +1,12 @@
 package org.leralix.tan.listeners.chat.events;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Town;
-import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.events.EventManager;
 import org.leralix.tan.events.events.TownCreatedInternalEvent;
 import org.leralix.tan.gui.common.PlayerGUI;
@@ -13,6 +14,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.storage.stored.TownStorage;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.utils.file.FileUtil;
 import org.leralix.tan.utils.graphic.TeamUtils;
 import org.leralix.tan.utils.text.NameFilter;
@@ -22,9 +24,22 @@ public class CreateTown extends ChatListenerEvent {
 
     private final int cost;
 
+    /**
+     * If {@code setCapitalAtCreation: true}, defines the chunk that will be claimed when naming the city
+     * Make sure the chunk can be claimed because the town will be created even if the chunk is not claimable
+     */
+    private final @Nullable Chunk chunkToClaim;
+
     public CreateTown(int cost) {
         super();
         this.cost = cost;
+        this.chunkToClaim = null;
+    }
+
+    public CreateTown(int cost, @Nullable Chunk chunkToClaim) {
+        super();
+        this.cost = cost;
+        this.chunkToClaim = chunkToClaim;
     }
 
     @Override
@@ -54,12 +69,16 @@ public class CreateTown extends ChatListenerEvent {
             TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(playerData));
             return false;
         }
-        createTown(player, playerData, townName, townStorage);
+        Town createdTown = createTown(player, playerData, townName, townStorage);
+
+        if(chunkToClaim != null){
+            createdTown.claimChunkSucess(player, chunkToClaim, true);
+        }
 
         return true;
     }
 
-    public void createTown(Player player, ITanPlayer playerData, String message, TownStorage townStorage) {
+    public Town createTown(Player player, ITanPlayer playerData, String message, TownStorage townStorage) {
 
         Town newTown = townStorage.newTown(message, playerData);
         EconomyUtil.removeFromBalance(player, cost);
@@ -70,5 +89,6 @@ public class CreateTown extends ChatListenerEvent {
         Bukkit.getScheduler().runTask(TownsAndNations.getPlugin(), () -> TeamUtils.setIndividualScoreBoard(player));
 
         openGui(p -> PlayerGUI.dispatchPlayerTown(player, playerData), player);
+        return newTown;
     }
 }

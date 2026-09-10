@@ -3,7 +3,6 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -12,7 +11,10 @@ import org.leralix.tan.gui.user.player.ApplyToTownMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.CreateTown;
+import org.leralix.tan.listeners.interact.RightClickListener;
+import org.leralix.tan.listeners.interact.events.ChooseCapital;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
@@ -53,8 +55,14 @@ public class NoTownMenu extends BasicGui {
                         TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(tanPlayer, Double.toString(townPrice - playerMoney)), NOT_ALLOWED);
                     }
                     else {
-                        TanChatUtils.message(player, Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get(tanPlayer));
-                        PlayerChatListenerStorage.register(player, langType, new CreateTown(townPrice));
+                        if(Constants.shouldSetCapitalAtCreation()){
+                            TanChatUtils.message(player, Lang.RIGHT_CLICK_TO_SELECT_CAPITAL.get(tanPlayer));
+                            RightClickListener.register(player, langType, new ChooseCapital(tanPlayer, townPrice));
+                        }
+                        else {
+                            TanChatUtils.message(player, Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get(tanPlayer));
+                            PlayerChatListenerStorage.register(player, langType, new CreateTown(townPrice));
+                        }
                     }
                 })
                 .asGuiItem(player, langType);
