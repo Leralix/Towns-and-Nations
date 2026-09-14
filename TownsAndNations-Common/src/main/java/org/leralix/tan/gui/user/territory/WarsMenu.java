@@ -49,7 +49,7 @@ public class WarsMenu extends IteratorGUI {
                 continue;
             }
 
-            desc.add(Lang.CHUNK_CONQUER_DESC.get(territoryData.getColoredName(), Integer.toString(quantity)));
+            desc.add(Lang.CHUNK_CONQUER_DESC.get(territory.getColoredName(), Integer.toString(quantity)));
         }
 
         if(desc.isEmpty()){
