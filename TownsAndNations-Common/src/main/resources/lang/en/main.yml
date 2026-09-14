@@ -260,7 +260,7 @@ language:
   DEPOSIT_COMMAND_DESC: "Deposit money into a territory"
   TRUST_COMMAND_DESC: "Trust a foreign player into a territory"
   PLAYER_NOW_TRUSTED_IN_TERRITORY: "{0} is now trusted in {1}"
-  UNTRUST_COMMAND_DESC: "Trust a foreign player into a territory"
+  UNTRUST_COMMAND_DESC: "Untrust a foreign player into a territory"
   PLAYER_NOW_UNTRUSTED_IN_TERRITORY: "{0} is no longer trusted in {1}"
   SPAWN_SET_SUCCESS: "Spawn set"
   SPAWN_COMMAND_DESC: "Teleport to the town spawn"

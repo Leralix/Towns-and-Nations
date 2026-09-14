@@ -74,6 +74,7 @@ permissions:
       tan.base.commands.deposit: true
       tan.base.commands.trust: true
       tan.base.commands.untrust: true
+      tan.base.commands.wiki: true
 
   tan.base.commands.borders:
     description: Access to /tan borders
@@ -153,6 +154,10 @@ permissions:
 
   tan.base.commands.untrust:
     description: untrust a foreign player in territory
+    default: true
+
+  tan.base.commands.wiki:
+    description: open a link to Towns and Nations' wiki
     default: true
 
   # =========================

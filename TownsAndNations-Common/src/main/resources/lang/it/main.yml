@@ -101,7 +101,6 @@ language:
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Reclama quest'area"
   CHUNK_ALREADY_CLAIMED_WARNING: "§cQuest'area è già reclamata da: §9{0}"
-  CANNOT_CLAIM_LANDMARK: "§cNon puoi reclamare un luogo d'interesse"
   CHUNK_BIOME_NOT_ALLOWED: "§cNon puoi rivendicare chunk in questo bioma."
   CHUNK_IN_BUFFER_ZONE: "§cNon puoi rivendicare un primo chunk troppo vicino ad un altro territorio (minimo §e{0}§c chunks di distanza)"
   MAX_CHUNK_LIMIT_REACHED: "§cHai raggiunto il numero massimo di aree reclamabili, potenzia la tua città per reclamarne di più"
@@ -222,7 +221,6 @@ language:
   PLAYER_PROPERTY_SIGN_TOO_FAR: "§cIl cartello è troppo lontano dalla proprietà. Deve essere a massimo blocchi {0} di distanza"
   PLAYER_PROPERTY_CREATED: "Proprietà creata"
   PROPERTY_DELETED: "Proprietà eliminata con successo"
-  #Spawn command
   SET_SPAWN_COMMAND_DESC: "Imposta lo spawn della città"
   SPAWN_COMMAND_DESC: "Vai allo spawn della città"
   SPAWN_TELEPORTED: "Teletrasportato allo spawn della città"
