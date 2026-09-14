@@ -143,7 +143,7 @@ public abstract class SettingsMenus extends BasicGui {
                 territoryData.getTeleportationData().getRelationTeleportationAllowed().getColoredName(langType))
         );
 
-        if (teleportationData.isSpawnSet()) {
+        if (!teleportationData.isSpawnSet()) {
             description.add(Lang.SPAWN_NOT_SET.get());
         }
 
