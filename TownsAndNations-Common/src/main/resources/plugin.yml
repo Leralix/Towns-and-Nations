@@ -1,7 +1,7 @@
 name: TownsAndNations
 version: '${version}'
 main: org.leralix.tan.TownsAndNations
-api-version: "1.21"
+api-version: "26.2"
 authors: [Leralix]
 depend: [SphereLib]
 softdepend: [PlaceholderAPI, WorldGuard, LuckPerms, Vault]
