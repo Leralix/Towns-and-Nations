@@ -1,7 +1,6 @@
 package org.leralix.tan.data.chunk;
 
 import org.bukkit.Chunk;
-import org.bukkit.entity.EntityType;
 
 public class NationClaimedChunk extends TerritoryChunkData implements NationChunk {
 
@@ -16,11 +15,6 @@ public class NationClaimedChunk extends TerritoryChunkData implements NationChun
     @Override
     public String getName() {
         return getOwner().getName();
-    }
-
-    @Override
-    public boolean canEntitySpawn(EntityType entityType) {
-        return true;
     }
 
     @Override

@@ -5,6 +5,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.TownsAndNations;
@@ -112,6 +113,11 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
             TanChatUtils.message(player, Lang.CHUNK_ENTER_TOWN_AT_WAR.get(tanPlayer.getLang()));
             territoryData.broadCastBarMessage(Lang.CHUNK_INTRUSION_ALERT.get(enteringPlayerTown.getName(), player.getName()));
         }
+    }
+
+    @Override
+    public boolean canEntitySpawn(EntityType entityType) {
+        return getOwner().getChunkSettings().getSpawnControl(entityType.toString()).canSpawn();
     }
 
     @Override

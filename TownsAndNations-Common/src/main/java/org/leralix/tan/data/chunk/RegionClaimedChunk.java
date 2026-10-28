@@ -1,7 +1,6 @@
 package org.leralix.tan.data.chunk;
 
 import org.bukkit.Chunk;
-import org.bukkit.entity.EntityType;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.territory.Region;
 
@@ -23,11 +22,6 @@ public class RegionClaimedChunk extends TerritoryChunkData implements RegionChun
     @Override
     public Region getRegion() {
         return TownsAndNations.getPlugin().getRegionStorage().get(getOwnerID());
-    }
-
-    @Override
-    public boolean canEntitySpawn(EntityType entityType) {
-        return true;
     }
 
     @Override
