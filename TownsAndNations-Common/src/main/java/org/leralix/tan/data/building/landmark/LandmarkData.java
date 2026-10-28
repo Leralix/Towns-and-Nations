@@ -6,6 +6,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jspecify.annotations.Nullable;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.chunk.IClaimedChunk;
@@ -161,7 +162,7 @@ public class LandmarkData implements Landmark, TanLandmark {
     }
 
     @Override
-    public Territory getOwner() {
+    public @Nullable Territory getOwner() {
         return TownsAndNations.getPlugin().getTownStorage().get(ownerID);
     }
 
@@ -169,10 +170,12 @@ public class LandmarkData implements Landmark, TanLandmark {
     public IconBuilder getIcon(LangType langType) {
 
         List<FilledLang> description = getBaseDescription();
-        if (isOwned())
-            description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_OWNER.get(getOwner().getName()));
-        else
-            description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER.get());
+        Territory owner = getOwner();
+        description.add(
+                owner != null ?
+                        Lang.SPECIFIC_LANDMARK_ICON_DESC2_OWNER.get(owner.getName()) :
+                        Lang.SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER.get()
+        );
 
 
         return IconManager.getInstance().get(Material.valueOf(materialName))
