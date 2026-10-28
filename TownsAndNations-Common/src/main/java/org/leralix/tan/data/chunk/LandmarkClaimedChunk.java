@@ -90,20 +90,26 @@ public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
 
     @Override
     public boolean canEntitySpawn(EntityType entityType) {
-        return true;
+
+        Landmark landmark = getLandMark();
+        Territory ownerTerritory = landmark.getOwner();
+        if(ownerTerritory == null) {
+            return true;
+        }
+        return ownerTerritory.getChunkSettings().getSpawnControl(entityType.toString()).canSpawn();
     }
 
     @Override
     public Component getMapIcon(LangType langType, boolean isMiddleOfMap) {
 
-        boolean isOwned = getLandMark().isOwned();
+        Territory ownerTerritory = getLandMark().getOwner();
 
-        String text = chunkCoordinateString() +
-                ChatColor.GOLD + getLandMark().getName() + "\n" +
-                (isOwned ? Lang.CHUNK_OWNER.get(langType, getLandMark().getOwner().getName()) : Lang.CHUNK_NOT_CLAIMED.get(langType))
-                ;
+        String mapMessage = ownerTerritory != null ?
+                Lang.CHUNK_OWNER.get(langType, ownerTerritory.getName()) :
+                Lang.CHUNK_NOT_CLAIMED.get(langType);
 
-        int color = isOwned ? getLandMark().getOwner().getChunkColorCode() : 0xFFAA00;
+        String text = chunkCoordinateString() + ChatColor.GOLD + getLandMark().getName() + "\n" + mapMessage;
+        int color = ownerTerritory != null ? ownerTerritory.getChunkColorCode() : 0xFFAA00;
 
         return Component.text("❇")
                 .color(TextColor.color(color))

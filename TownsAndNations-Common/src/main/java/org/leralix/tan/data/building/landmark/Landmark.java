@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jspecify.annotations.Nullable;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.Town;
@@ -50,6 +51,7 @@ public interface Landmark extends TanLandmark {
 
     boolean isOwned();
 
+    @Nullable
     Territory getOwner();
 
     IconBuilder getIcon(LangType langType);
