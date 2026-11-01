@@ -126,16 +126,16 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
 
         String text = chunkCoordinateString();
         if (isOccupied()) {
-            text += Lang.CHUNK_OWNER_OCCUPIER.get(getOwner().getColoredName(), getOccupier().getColoredName());
+            text += Lang.CHUNK_OWNER_OCCUPIER.get(getOwner().getColoredName(), getOccupier().getColoredName()).translate(langType);
         } else {
-            text += Lang.CHUNK_OWNER.get(getOwner().getColoredName());
+            text += Lang.CHUNK_OWNER.get(getOwner().getColoredName()).translate(langType);
         }
 
         String icon;
         var optFort = getFortOnChunk();
         if (optFort.isPresent()){
             icon = "🛖";
-            text += "\n" + Lang.FORT_NAME.get(optFort.get().getName());
+            text += "\n" + Lang.FORT_NAME.get(optFort.get().getName()).translate(langType);
         }
         else {
             if(isOccupied()){
