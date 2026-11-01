@@ -53,12 +53,12 @@ public abstract class ChatListenerEvent {
             LangType langType
     ) {
         if (message.length() < minSize) {
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_SHORT.get(langType, Integer.toString(minSize)));
+            TanChatUtils.message(player, Lang.MESSAGE_TOO_SHORT.get(Integer.toString(minSize)).translate(langType));
             return true;
         }
 
         if (message.length() > maxSize) {
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(langType, Integer.toString(maxSize)));
+            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(Integer.toString(maxSize)).translate(langType));
             return true;
         }
         return false;

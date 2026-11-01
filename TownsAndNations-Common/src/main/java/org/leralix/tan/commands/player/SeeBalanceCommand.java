@@ -3,10 +3,9 @@ package org.leralix.tan.commands.player;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.tan.data.player.ITanPlayer;
-import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.Collections;
@@ -47,12 +46,11 @@ public class SeeBalanceCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args) {
         ITanPlayer playerData = playerDataStorage.get(player);
-        LangType langType = playerData.getLang();
         if (args.length == 1) {
-            TanChatUtils.message(player, Lang.BAL_AMOUNT.get(langType, Double.toString(EconomyUtil.getBalance(playerData))));
+            TanChatUtils.message(playerData, Lang.BAL_AMOUNT.get(Double.toString(EconomyUtil.getBalance(playerData))));
         } else if (args.length > 1) {
-            TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.get(langType));
-            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+            TanChatUtils.message(playerData, Lang.TOO_MANY_ARGS_ERROR);
+            TanChatUtils.message(playerData, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
     }
 

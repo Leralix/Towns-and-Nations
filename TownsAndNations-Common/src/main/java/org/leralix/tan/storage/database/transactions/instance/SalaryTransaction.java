@@ -44,12 +44,12 @@ public class SalaryTransaction extends AbstractTransaction {
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
         return iconManager.get(IconKey.SALARY_TRANSACTION)
-                .setName(Lang.SALARY_TRANSACTION_NAME.get(langType))
+                .setName(Lang.SALARY_TRANSACTION_NAME.translate(langType))
                 .setDescription(
                         Lang.TRANSACTION_FROM.get(getTerritoryName(territoryID, langType)),
                         Lang.TRANSACTION_TO.get(getPlayerName(playerID, langType)),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount)),
-                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate()))
+                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(getDate()))
                 )
                 .asGuiItem(player, langType);
     }

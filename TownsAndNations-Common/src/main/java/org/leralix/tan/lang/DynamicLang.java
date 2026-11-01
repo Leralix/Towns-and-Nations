@@ -11,7 +11,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DynamicLang {
+public class DynamicLang implements Placeholder {
 
     private static LangType serverLang;
 
@@ -55,10 +55,12 @@ public class DynamicLang {
 
             DynamicLang.values.put(langType, values);
         }
-
-
-
     }
+
+    public static Placeholder get(String key) {
+        return new DynamicPlaceholder(key);
+    }
+
 
     public static String get(LangType langType, String key) {
         String line = values.get(langType).get(key);
@@ -71,4 +73,8 @@ public class DynamicLang {
         return line;
     }
 
+    @Override
+    public String translate(LangType langType) {
+        return "";
+    }
 }

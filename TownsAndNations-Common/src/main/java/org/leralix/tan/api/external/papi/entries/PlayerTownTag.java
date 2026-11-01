@@ -37,6 +37,6 @@ public class PlayerTownTag extends PapiEntry {
 
         return tanPlayer.hasTown() ?
                 tanPlayer.getTown().getTownTag() :
-                Lang.NO_TOWN.get(tanPlayer);
+                Lang.NO_TOWN.translate(tanPlayer);
     }
 }

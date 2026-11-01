@@ -35,40 +35,40 @@ public class NoNationMenu extends BasicGui {
         int nationCost = Constants.getNationCost();
 
         return iconManager.get(IconKey.CREATE_NATION_ICON)
-                .setName(Lang.GUI_NATION_CREATE.get(tanPlayer))
+                .setName(Lang.GUI_NATION_CREATE.translate(tanPlayer))
                 .setDescription(
                         Lang.GUI_NATION_CREATE_DESC1.get(Integer.toString(nationCost)),
                         Lang.GUI_NATION_CREATE_DESC2.get()
                 )
                 .setAction(action -> {
                     if (!player.hasPermission("tan.base.nation.create")) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer), NOT_ALLOWED);
                         return;
                     }
 
                     if (!tanPlayer.hasRegion()) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(tanPlayer), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_REGION.translate(tanPlayer), NOT_ALLOWED);
                         return;
                     }
 
                     Region regionData = tanPlayer.getRegion();
                     if (!regionData.isLeader(tanPlayer)) {
-                        TanChatUtils.message(player, Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get(tanPlayer), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.translate(tanPlayer), NOT_ALLOWED);
                         return;
                     }
 
                     if (regionData.haveOverlord()) {
-                        TanChatUtils.message(player, Lang.TOWN_ALREADY_HAVE_OVERLORD.get(tanPlayer), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.TOWN_ALREADY_HAVE_OVERLORD.translate(tanPlayer), NOT_ALLOWED);
                         return;
                     }
 
                     double regionMoney = regionData.getBalance();
                     if (regionMoney < nationCost) {
-                        TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, regionData.getColoredName(), Double.toString(nationCost - regionMoney)));
+                        TanChatUtils.message(tanPlayer, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(regionData.getColoredName(), Double.toString(nationCost - regionMoney)));
                         return;
                     }
 
-                    TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_NATION_NAME.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_NATION_NAME.translate(tanPlayer));
                     PlayerChatListenerStorage.register(player, langType, new CreateNation(nationCost));
                 })
                 .asGuiItem(player, langType);
@@ -76,7 +76,7 @@ public class NoNationMenu extends BasicGui {
 
     private GuiItem getBrowseNationsButton() {
         return iconManager.get(IconKey.BROWSE_NATION_ICON)
-                .setName(Lang.GUI_NATION_BROWSE.get(tanPlayer))
+                .setName(Lang.GUI_NATION_BROWSE.translate(tanPlayer))
                 .setDescription(
                         Lang.GUI_NATION_BROWSE_DESC1.get(Integer.toString(TownsAndNations.getPlugin().getNationStorage().getAll().size())),
                         Lang.GUI_NATION_BROWSE_DESC2.get()

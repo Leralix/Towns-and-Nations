@@ -52,9 +52,9 @@ public class WarDeclaredNewsletter extends Newsletter {
             return null;
 
         return IconManager.getInstance().get(Material.IRON_SWORD)
-                .setName(Lang.WAR_DECLARED_TITLE.get(lang))
+                .setName(Lang.WAR_DECLARED_TITLE.translate(lang))
                 .setDescription(
-                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(getDate())),
                         Lang.WAR_DECLARED.get(attackingTerritory.getColoredName(), defendingTerritory.getColoredName())
                 )
                 .setClickToAcceptMessage(Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ)
@@ -96,6 +96,6 @@ public class WarDeclaredNewsletter extends Newsletter {
         if (attackingTerritory == null || defendingTerritory == null)
             return;
 
-        TanChatUtils.message(player, Lang.WAR_DECLARED.get(tanPlayer, attackingTerritory.getColoredName(), defendingTerritory.getColoredName()), SoundEnum.WAR);
+        TanChatUtils.message(tanPlayer, Lang.WAR_DECLARED.get(attackingTerritory.getColoredName(), defendingTerritory.getColoredName()), SoundEnum.WAR);
     }
 }

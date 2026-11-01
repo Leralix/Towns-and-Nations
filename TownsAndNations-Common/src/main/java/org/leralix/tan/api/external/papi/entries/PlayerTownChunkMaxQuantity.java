@@ -47,6 +47,6 @@ public class PlayerTownChunkMaxQuantity extends PapiEntry {
             }
         }
 
-        return Lang.NO_TOWN.get(tanPlayer);
+        return Lang.NO_TOWN.translate(tanPlayer);
     }
 }

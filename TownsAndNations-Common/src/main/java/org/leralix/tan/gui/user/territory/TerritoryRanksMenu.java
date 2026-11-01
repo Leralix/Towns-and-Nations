@@ -43,21 +43,21 @@ public class TerritoryRanksMenu extends IteratorGUI {
         int nbRanks = Constants.getMaxRankSize();
 
         return iconManager.get(IconKey.NEW_RANK_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES.get(tanPlayer))
+                .setName(Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES.translate(tanPlayer))
                 .setDescription(Lang.GUI_TOWN_MEMBERS_ADD_NEW_ROLES_DESC1.get(Integer.toString(nbRanks)))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_CREATE)
                 .setAction( event -> {
                     event.setCancelled(true);
 
                     if(!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.CREATE_RANK)) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer));
                         return;
                     }
                     if(territoryData.getNumberOfRank() >= nbRanks){
-                        TanChatUtils.message(player, Lang.TOWN_RANK_CAP_REACHED.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.TOWN_RANK_CAP_REACHED.translate(tanPlayer));
                         return;
                     }
-                    TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.translate(tanPlayer));
                     PlayerChatListenerStorage.register(player, langType, new CreateRank(territoryData, p -> new TerritoryRanksMenu(player, territoryData).open()));
                 })
                 .asGuiItem(player, langType);
@@ -81,7 +81,7 @@ public class TerritoryRanksMenu extends IteratorGUI {
                 )
                 .setAction(action -> {
                     if(territoryData.getRank(tanPlayer).getLevel() <= rank.getLevel() && !territoryData.isLeader(tanPlayer)){
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(langType));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.translate(langType));
                         return;
                     }
                     new RankManagerMenu(player, territoryData, rank).open();

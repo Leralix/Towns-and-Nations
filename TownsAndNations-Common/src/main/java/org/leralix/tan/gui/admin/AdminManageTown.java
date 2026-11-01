@@ -45,7 +45,7 @@ public class AdminManageTown extends AdminManageTerritory {
     private @NotNull GuiItem getChangeRegion() {
         String name = townData.getOverlordInternal()
                 .map(Territory::getName)
-                .orElseGet(() -> Lang.NO_REGION.get(langType));
+                .orElseGet(() -> Lang.NO_REGION.translate(langType));
 
         List<Lang> description = new ArrayList<>();
 
@@ -66,7 +66,7 @@ public class AdminManageTown extends AdminManageTerritory {
                 .setAction(action -> {
                     if (townData.haveOverlord()) {
                         if (townData.isCapital())
-                            TanChatUtils.message(player, Lang.GUI_CANNOT_QUIT_IF_LEADER.get(langType));
+                            TanChatUtils.message(player, Lang.GUI_CANNOT_QUIT_IF_LEADER.translate(langType));
                         else {
                             townData.removeOverlord();
                             open();
@@ -80,7 +80,7 @@ public class AdminManageTown extends AdminManageTerritory {
 
     private @NotNull GuiItem changeLeader() {
         return iconManager.get(IconKey.TERRITORY_CHANGE_OWNER_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.get(langType))
+                .setName(Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.translate(langType))
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(townData.getLeaderData().getNameStored())
                 )

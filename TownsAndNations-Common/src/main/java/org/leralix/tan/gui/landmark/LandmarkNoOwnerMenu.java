@@ -91,7 +91,7 @@ public class LandmarkNoOwnerMenu extends BasicGui {
         final boolean requirementMet = isRequirementsMet;
 
         return iconManager.get(iconKey)
-                .setName(Lang.GUI_TOWN_RELATION_ADD_TOWN.get(tanPlayer))
+                .setName(Lang.GUI_TOWN_RELATION_ADD_TOWN.translate(tanPlayer))
                 .setDescription(description)
                 .setClickToAcceptMessage(Lang.GUI_LANDMARK_LEFT_CLICK_TO_CLAIM)
                 .setRequirements(new RankPermissionRequirement(playerTown, tanPlayer, RolePermission.MANAGE_LANDMARK))

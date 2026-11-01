@@ -42,6 +42,6 @@ public class OtherPlayerRegionName extends PapiEntry {
 
         return otherTanPlayer.hasRegion() ?
                 otherTanPlayer.getRegion().getName() :
-                Lang.NO_REGION.get(tanPlayer);
+                Lang.NO_REGION.translate(tanPlayer);
     }
 }

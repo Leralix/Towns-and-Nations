@@ -51,7 +51,7 @@ public class AdminManageWarMenu extends BasicGui {
         description.addAll(war.generateWarGoalsDesciption(warRole, langType));
 
         return iconManager.get(icon)
-                .setName(name.get(langType))
+                .setName(name.translate(langType))
                 .setDescription(description)
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
@@ -63,7 +63,7 @@ public class AdminManageWarMenu extends BasicGui {
 
     private @NotNull GuiItem getAuthorizeAttacksButton() {
         return iconManager.get(IconKey.TERRITORY_WAR_ICON)
-                .setName(Lang.ADMIN_GUI_MANAGE_ATTACKS.get(langType))
+                .setName(Lang.ADMIN_GUI_MANAGE_ATTACKS.translate(langType))
                 .setAction(action -> {
                     new AdminManageAttacks(player, war, this);
                 })

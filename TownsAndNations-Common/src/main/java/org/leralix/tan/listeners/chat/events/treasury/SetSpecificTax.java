@@ -22,15 +22,15 @@ public abstract class SetSpecificTax extends ChatListenerEvent {
     public boolean execute(Player player, ITanPlayer playerData, String message) {
         Double amount = parseStringToDouble(message);
         if (amount == null) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(playerData));
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.translate(playerData));
             return false;
         }
         if (amount < 0) {
-            TanChatUtils.message(player, Lang.VALUE_CANNOT_BE_NEGATIVE_ERROR.get(playerData));
+            TanChatUtils.message(player, Lang.VALUE_CANNOT_BE_NEGATIVE_ERROR.translate(playerData));
             return false;
         }
 
-        TanChatUtils.message(player, Lang.TOWN_SET_TAX_SUCCESS.get(playerData, Double.toString(amount)), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(playerData, Lang.TOWN_SET_TAX_SUCCESS.get(Double.toString(amount)), SoundEnum.MINOR_GOOD);
         setTax(amount);
 
         openGui(guiCallback, player);

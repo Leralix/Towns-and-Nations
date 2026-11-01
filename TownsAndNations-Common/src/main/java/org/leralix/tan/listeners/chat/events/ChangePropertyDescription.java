@@ -25,12 +25,12 @@ public class ChangePropertyDescription extends ChatListenerEvent {
         int maxSize = Constants.getMaxPropertyDescriptionSize();
 
         if (message.length() > maxSize) {
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(playerData, Integer.toString(maxSize)));
+            TanChatUtils.message(playerData, Lang.MESSAGE_TOO_LONG.get(Integer.toString(maxSize)));
             return false;
         }
 
         propertyData.setDescription(message);
-        TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(playerData));
+        TanChatUtils.message(playerData, Lang.CHANGE_MESSAGE_SUCCESS);
         openGui(guiCallback, player);
         return true;
     }

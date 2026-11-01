@@ -65,7 +65,7 @@ public class CreateAttackMenu extends BasicGui {
         IconKey iconKey = isAuthorized || isOverridingOtherAttack ? IconKey.CONFIRM_WAR_START_ICON : IconKey.CONFIRM_WAR_START_IMPOSSIBLE_ICON;
 
         return iconManager.get(iconKey)
-                .setName(Lang.GUI_CONFIRM_ATTACK.get(tanPlayer))
+                .setName(Lang.GUI_CONFIRM_ATTACK.translate(tanPlayer))
                 .setClickToAcceptMessage(
                         isOverridingOtherAttack ?
                                 Lang.GUI_ATTACK_ALREADY_PLANNED_IN_TIME :
@@ -112,7 +112,7 @@ public class CreateAttackMenu extends BasicGui {
 
     private @NotNull GuiItem getAddTimeButton() {
         return iconManager.get(IconKey.ADD_WAR_START_TIME_ICON)
-                .setName(Lang.GUI_ATTACK_ADD_TIME.get(tanPlayer))
+                .setName(Lang.GUI_ATTACK_ADD_TIME.translate(tanPlayer))
                 .setDescription(
                         Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(),
                         Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get()
@@ -142,14 +142,14 @@ public class CreateAttackMenu extends BasicGui {
         availableTimeSlots.addAll(warTimeSlot.getPrintedDaysOfTheWeek(langType));
 
         return IconManager.getInstance().get(IconKey.WAR_START_TIME_ICON)
-                .setName(Lang.GUI_ATTACK_SET_TO_START_IN.get(tanPlayer, DateUtil.getDateStringFromMinutes(attackData.getSelectedTime())))
+                .setName(Lang.GUI_ATTACK_SET_TO_START_IN.get(DateUtil.getDateStringFromMinutes(attackData.getSelectedTime())).translate(tanPlayer))
                 .setDescription(availableTimeSlots)
                 .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getRemoveTimeButton() {
         return iconManager.get(IconKey.REMOVE_WAR_START_TIME_ICON)
-                .setName(Lang.GUI_ATTACK_REMOVE_TIME.get(tanPlayer))
+                .setName(Lang.GUI_ATTACK_REMOVE_TIME.translate(tanPlayer))
                 .setDescription(
                         Lang.GUI_LEFT_CLICK_FOR_1_MINUTE.get(),
                         Lang.GUI_SHIFT_CLICK_FOR_1_HOUR.get()

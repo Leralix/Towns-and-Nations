@@ -48,6 +48,7 @@ public class PlayerCommandManager extends CommandManager {
         addSubCommand(new TeleportCommand(playerDataStorage, fortStorage));
         addSubCommand(new TrustCommand(playerDataStorage));
         addSubCommand(new UntrustCommand(playerDataStorage));
+        addSubCommand(new WikiLinkCommand(playerDataStorage));
     }
 
     @Override

@@ -39,7 +39,7 @@ public class ManageRankPermissionMenu extends IteratorGUI {
         for(RolePermission permission : RolePermission.values()){
             if(permission.isForTerritory(territoryData)){
                 guiItems.add(iconManager.get(permission.getIconKey())
-                        .setName(permission.getName().get(tanPlayer))
+                        .setName(permission.getName().translate(tanPlayer))
                         .setDescription(
                                 rankData.hasPermission(permission) ?
                                         Lang.GUI_TOWN_MEMBERS_ROLE_HAS_PERMISSION.get() :
@@ -48,7 +48,7 @@ public class ManageRankPermissionMenu extends IteratorGUI {
                         .setAction(event -> {
                             event.setCancelled(true);
                             if(!territoryData.getRank(tanPlayer).hasPermission(permission) && !territoryData.isLeader(player)) {
-                                TanChatUtils.message(player, Lang.ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT.get(langType), SoundEnum.NOT_ALLOWED);
+                                TanChatUtils.message(player, Lang.ERROR_CANNOT_CHANGE_PERMISSION_IF_PLAYER_RANK_DOES_NOT_HAVE_IT.translate(langType), SoundEnum.NOT_ALLOWED);
                                 return;
                             }
                             rankData.switchPermission(permission);

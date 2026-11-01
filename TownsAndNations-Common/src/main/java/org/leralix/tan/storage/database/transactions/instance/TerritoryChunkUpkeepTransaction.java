@@ -51,12 +51,12 @@ public class TerritoryChunkUpkeepTransaction extends AbstractTransaction {
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
         return iconManager.get(IconKey.CHUNK_UPKEEP_TRANSACTION)
-                .setName(Lang.TERRITORY_CHUNK_UPKEEP_TRANSACTION_SCOPE.get(langType))
+                .setName(Lang.TERRITORY_CHUNK_UPKEEP_TRANSACTION_SCOPE.translate(langType))
                 .setDescription(
                         Lang.TRANSACTION_FROM.get(getTerritoryName(territoryID, langType)),
                         enoughMoney ? Lang.TRANSACTION_AMOUNT.get(Double.toString(getCost())) : Lang.TRANSACTION_FAILED_NOT_ENOUGH_MONEY.get(Double.toString(getCost())),
                         Lang.CHUNK_UPKEEP_INFO.get(Integer.toString(numberOfChunks), Double.toString(costPerChunk)),
-                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate()))
+                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(getDate()))
                 )
                 .asGuiItem(player, langType);
     }

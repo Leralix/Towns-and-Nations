@@ -60,7 +60,7 @@ public class PlayerGUI {
             return;
         }
         Town owner = TownsAndNations.getPlugin().getTownStorage().get(landmark.getOwnerID());
-        TanChatUtils.message(player, Lang.LANDMARK_ALREADY_CLAIMED.get(playerData, owner.getName()), MINOR_BAD);
+        TanChatUtils.message(playerData, Lang.LANDMARK_ALREADY_CLAIMED.get(owner.getName()), MINOR_BAD);
     }
 
 }

@@ -3,7 +3,9 @@ package org.leralix.tan.gui.service.requirements;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.upgrade.Upgrade;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
+
+import java.util.List;
 
 public class OtherUpgradeRequirement extends IndividualRequirement{
 
@@ -18,13 +20,18 @@ public class OtherUpgradeRequirement extends IndividualRequirement{
     }
 
     @Override
-    public String getLine(LangType langType) {
+    public Placeholder getLine() {
         int currentLevel = territoryData.getNewLevel().getLevel(otherUpgrade);
+        List<Placeholder> placeholders = List.of(
+                otherUpgrade.getName(),
+                Lang.of(String.valueOf(currentLevel)),
+                Lang.of(String.valueOf(requiredLevel))
+        );
         if(isInvalid()){
-            return Lang.REQUIREMENT_UPGRADE_LEVEL_NEGATIVE.get(langType, otherUpgrade.getName(langType), String.valueOf(currentLevel), String.valueOf(requiredLevel));
+            return Lang.REQUIREMENT_UPGRADE_LEVEL_NEGATIVE.get(placeholders);
         }
         else {
-            return Lang.REQUIREMENT_UPGRADE_LEVEL_POSITIVE.get(langType, otherUpgrade.getName(langType), String.valueOf(currentLevel), String.valueOf(requiredLevel));
+            return Lang.REQUIREMENT_UPGRADE_LEVEL_POSITIVE.get(placeholders);
         }
     }
 

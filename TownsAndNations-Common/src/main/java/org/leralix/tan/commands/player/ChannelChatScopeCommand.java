@@ -68,10 +68,10 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        LangType langType = playerDataStorage.get(player).getLang();
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
         if (args.length < 2) {
-            TanChatUtils.message(player, Lang.NOT_ENOUGH_ARGS_ERROR.get(langType), SoundEnum.NOT_ALLOWED);
-            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+            TanChatUtils.message(tanPlayer, Lang.NOT_ENOUGH_ARGS_ERROR, SoundEnum.NOT_ALLOWED);
+            TanChatUtils.message(tanPlayer, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
             return;
         }
         if (args.length == 2) {
@@ -90,44 +90,44 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
         switch (normalizedChannelName) {
             case GLOBAL:
                 localChatStorage.removePlayerChatScope(player);
-                TanChatUtils.message(player, Lang.CHAT_CHANGED.get(langType, channelName));
+                TanChatUtils.message(tanPlayer, Lang.CHAT_CHANGED.get(channelName));
                 return;
             case TOWN:
-                setScope(player, langType, channelName, currentScope, ChatScope.CITY);
+                setScope(tanPlayer, channelName, currentScope, ChatScope.CITY);
                 return;
             case ALLIANCE:
                 if (!tanPlayer.hasTown()) {
-                    TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
+                    TanChatUtils.message(tanPlayer, Lang.PLAYER_NO_TOWN);
                     return;
                 }
-                setScope(player, langType, channelName, currentScope, ChatScope.ALLIANCE);
+                setScope(tanPlayer, channelName, currentScope, ChatScope.ALLIANCE);
                 return;
             case REGION:
                 if (!tanPlayer.hasRegion()) {
-                    TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(langType));
+                    TanChatUtils.message(tanPlayer, Lang.PLAYER_NO_REGION);
                     return;
                 }
-                setScope(player, langType, channelName, currentScope, ChatScope.REGION);
+                setScope(tanPlayer, channelName, currentScope, ChatScope.REGION);
                 return;
             case NATION:
                 if (!tanPlayer.hasNation()) {
-                    TanChatUtils.message(player, Lang.PLAYER_NO_NATION.get(langType));
+                    TanChatUtils.message(tanPlayer, Lang.PLAYER_NO_NATION);
                     return;
                 }
-                setScope(player, langType, channelName, currentScope, ChatScope.NATION);
+                setScope(tanPlayer, channelName, currentScope, ChatScope.NATION);
                 return;
             default:
-                TanChatUtils.message(player, Lang.CHAT_SCOPE_NOT_FOUND.get(langType, channelName));
+                TanChatUtils.message(tanPlayer, Lang.CHAT_SCOPE_NOT_FOUND.get(channelName));
         }
     }
 
-    private void setScope(Player player, LangType langType, String channelName, ChatScope currentScope, ChatScope wantedScope) {
+    private void setScope(ITanPlayer tanPlayer, String channelName, ChatScope currentScope, ChatScope wantedScope) {
         if (currentScope == wantedScope) {
-            TanChatUtils.message(player, Lang.TOWN_CHAT_ALREADY_IN_CHAT.get(langType, wantedScope.getName(langType)));
+            TanChatUtils.message(tanPlayer, Lang.TOWN_CHAT_ALREADY_IN_CHAT.get(wantedScope.getName()));
             return;
         }
-        localChatStorage.setPlayerChatScope(player, wantedScope);
-        TanChatUtils.message(player, Lang.CHAT_CHANGED.get(langType, channelName));
+        localChatStorage.setPlayerChatScope(tanPlayer, wantedScope);
+        TanChatUtils.message(tanPlayer, Lang.CHAT_CHANGED.get(channelName));
     }
 
     private void sendSingleMessage(Player player, String channelName, String[] words) {
@@ -138,7 +138,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
         String normalizedChannelName = channelName.toLowerCase();
         switch (normalizedChannelName) {
             case GLOBAL:
-                sendGlobalMessage(player, message);
+                sendGlobalMessage(player, tanPlayer, message);
                 return;
             case ALLIANCE:
                 sendAllianceMessage(player, tanPlayer, langType, message);
@@ -153,11 +153,11 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
                 sendTownMessage(player, tanPlayer, langType, message);
                 return;
             default:
-                TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+                TanChatUtils.message(tanPlayer, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
     }
 
-    private void sendGlobalMessage(Player player, String message) {
+    private void sendGlobalMessage(Player player, ITanPlayer tanPlayer, String message) {
         if (!localChatStorage.isPlayerInChatScope(player.getUniqueId().toString())) {
             player.chat(message);
             return;
@@ -166,12 +166,12 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
         ChatScope prevScope = localChatStorage.getPlayerChatScope(player);
         localChatStorage.removePlayerChatScope(player);
         player.chat(message);
-        localChatStorage.setPlayerChatScope(player, prevScope);
+        localChatStorage.setPlayerChatScope(tanPlayer, prevScope);
     }
 
     private void sendAllianceMessage(Player player, ITanPlayer tanPlayer, LangType langType, String message) {
         if (!tanPlayer.hasTown()) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
+            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.translate(langType));
             return;
         }
 
@@ -188,7 +188,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
 
     private void sendRegionMessage(Player player, ITanPlayer tanPlayer, LangType langType, String message) {
         if (!tanPlayer.hasRegion()) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(langType));
+            TanChatUtils.message(player, Lang.PLAYER_NO_REGION.translate(langType));
             return;
         }
 
@@ -202,7 +202,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
 
     private void sendNationMessage(Player player, ITanPlayer tanPlayer, LangType langType, String message) {
         if (!tanPlayer.hasNation()) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_NATION.get(langType));
+            TanChatUtils.message(player, Lang.PLAYER_NO_NATION.translate(langType));
             return;
         }
 
@@ -216,7 +216,7 @@ public class ChannelChatScopeCommand extends PlayerSubCommand {
 
     private void sendTownMessage(Player player, ITanPlayer tanPlayer, LangType langType, String message) {
         if (!tanPlayer.hasTown()) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
+            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.translate(langType));
             return;
         }
 

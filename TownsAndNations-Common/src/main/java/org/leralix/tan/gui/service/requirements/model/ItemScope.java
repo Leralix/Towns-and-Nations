@@ -2,7 +2,7 @@ package org.leralix.tan.gui.service.requirements.model;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 
 public abstract class ItemScope {
 
@@ -12,5 +12,5 @@ public abstract class ItemScope {
 
     public abstract boolean isInScope(Material material);
 
-    public abstract String getName(LangType langType);
+    public abstract Placeholder getName();
 }

@@ -51,7 +51,7 @@ public class ChunkUpkeepLine extends ProfitLine {
     @Override
     public void addItems(Gui gui, Player player, ITanPlayer playerData, LangType lang) {
         gui.setItem(2, 7, IconManager.getInstance().get(IconKey.CHUNK_UPKEEP_ICON)
-                .setName(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.get(lang))
+                .setName(Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY.translate(lang))
                 .setDescription(
                         Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC1.get(StringUtil.getColoredMoney(getMoney())),
                         Lang.GUI_TREASURY_CHUNK_SPENDING_HISTORY_DESC2.get(StringUtil.getColoredMoney(-territoryData.getNewLevel().getStat(ChunkUpkeepCost.class).getCost())),

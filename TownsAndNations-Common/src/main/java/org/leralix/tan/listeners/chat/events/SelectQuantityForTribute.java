@@ -32,13 +32,13 @@ public class SelectQuantityForTribute extends ChatListenerEvent {
     protected boolean execute(Player player, ITanPlayer playerData, String message) {
         Integer amount = parseStringToInt(message);
         if (amount == null) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(playerData));
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.translate(playerData));
             return false;
         }
 
         double maxAmountOfChunkToCapture = Constants.getMaxTributeAmount();
         if (amount > maxAmountOfChunkToCapture) {
-            TanChatUtils.message(player, Lang.VALUE_EXCEED_MAXIMUM_ERROR.get(playerData, Double.toString(maxAmountOfChunkToCapture)));
+            TanChatUtils.message(playerData, Lang.VALUE_EXCEED_MAXIMUM_ERROR.get(Double.toString(maxAmountOfChunkToCapture)));
             return false;
         }
 

@@ -4,7 +4,7 @@ import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.upgrade.rewards.AggregatableStat;
 import org.leralix.tan.data.upgrade.rewards.bool.BooleanStat;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 
 public class BooleanStatRequirement<T extends BooleanStat & AggregatableStat<T>> extends IndividualRequirement {
 
@@ -18,12 +18,12 @@ public class BooleanStatRequirement<T extends BooleanStat & AggregatableStat<T>>
     }
 
     @Override
-    public String getLine(LangType langType) {
+    public Placeholder getLine() {
         Lang statName = territoryData.getNewLevel().getStat(statClass).getStatName();
         if (isInvalid()) {
-            return Lang.REQUIREMENT_UPGRADE_NEGATIVE.get(langType, statName.get(langType));
+            return Lang.REQUIREMENT_UPGRADE_NEGATIVE.get(statName);
         } else {
-            return Lang.REQUIREMENT_UPGRADE_POSITIVE.get(langType, statName.get(langType));
+            return Lang.REQUIREMENT_UPGRADE_POSITIVE.get(statName);
         }
     }
 

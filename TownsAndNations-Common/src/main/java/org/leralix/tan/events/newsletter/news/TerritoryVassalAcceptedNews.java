@@ -46,7 +46,7 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
             return null;
 
        return IconManager.getInstance().get(IconKey.TOWN_BASE_ICON)
-                .setName(Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER_TITLE.get(lang))
+                .setName(Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER_TITLE.translate(lang))
                 .setDescription(
                         Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER.get(town.getCustomColoredName().toLegacyText(), region.getCustomColoredName().toLegacyText()),
                         Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
@@ -91,8 +91,7 @@ public class TerritoryVassalAcceptedNews extends Newsletter {
         if (receivingTerritory == null)
             return;
 
-        TanChatUtils.message(player, Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER.get(
-                tanPlayer,
+        TanChatUtils.message(tanPlayer, Lang.TOWN_JOIN_REGION_ACCEPTED_NEWSLETTER.get(
                 proposingTerritory.getCustomColoredName().toLegacyText(),
                 receivingTerritory.getCustomColoredName().toLegacyText()),
                 SoundEnum.MINOR_GOOD);

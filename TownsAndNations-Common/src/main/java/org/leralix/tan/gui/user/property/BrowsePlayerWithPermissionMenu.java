@@ -42,7 +42,7 @@ public class BrowsePlayerWithPermissionMenu extends IteratorGUI {
 
     private GuiItem getAddPlayerButton() {
         return iconManager.get(IconKey.ADD_PLAYER_ICON)
-                .setName(Lang.GUI_GENERIC_ADD_BUTTON.get(tanPlayer))
+                .setName(Lang.GUI_GENERIC_ADD_BUTTON.translate(tanPlayer))
                 .setAction(event -> {
                             event.setCancelled(true);
                             new AddPlayerWithPermissionMenu(

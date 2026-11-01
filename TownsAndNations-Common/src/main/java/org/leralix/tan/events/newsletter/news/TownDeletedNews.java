@@ -50,9 +50,9 @@ public class TownDeletedNews extends Newsletter {
 
 
         return IconManager.getInstance().get(IconKey.TOWN_BASE_ICON)
-                .setName(Lang.TOWN_DELETED_NEWSLETTER_TITLE.get(lang))
+                .setName(Lang.TOWN_DELETED_NEWSLETTER_TITLE.translate(lang))
                 .setDescription(
-                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(getDate())),
                         Lang.TOWN_DELETED_NEWSLETTER.get(townDeleter.getName(), oldTownName),
                         Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
                 )
@@ -85,6 +85,6 @@ public class TownDeletedNews extends Newsletter {
     public void broadcast(Player player, ITanPlayer tanPlayer) {
         OfflinePlayer townDeleter = player.getServer().getOfflinePlayer(UUID.fromString(playerID));
 
-        TanChatUtils.message(player, Lang.TOWN_DELETED_NEWSLETTER.get(tanPlayer, townDeleter.getName(), oldTownName), SoundEnum.BAD);
+        TanChatUtils.message(tanPlayer, Lang.TOWN_DELETED_NEWSLETTER.get(townDeleter.getName(), oldTownName), SoundEnum.BAD);
     }
 }

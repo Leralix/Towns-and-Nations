@@ -61,7 +61,7 @@ public class BuildingMenu extends IteratorGUI {
 
 
         return iconManager.get(IconKey.PLAYER_PROPERTY_ICON)
-                .setName(Lang.CREATE_PUBLIC_PROPERTY_ICON.get(langType))
+                .setName(Lang.CREATE_PUBLIC_PROPERTY_ICON.translate(langType))
                 .setDescription(description)
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setRequirements(requirements)
@@ -93,12 +93,12 @@ public class BuildingMenu extends IteratorGUI {
 
 
         return iconManager.get(IconKey.FORT_BUILDING_ICON)
-                .setName(Lang.CREATE_FORT_ICON.get(langType))
+                .setName(Lang.CREATE_FORT_ICON.translate(langType))
                 .setDescription(desc)
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setRequirements(requirements)
                 .setAction(action -> {
-                    TanChatUtils.message(player, Lang.RIGHT_CLICK_TO_PLACE_FORT.get(langType));
+                    TanChatUtils.message(player, Lang.RIGHT_CLICK_TO_PLACE_FORT.translate(langType));
                     RightClickListener.register(player, langType, new CreateFortEvent(territoryData, tanPlayer));
                     player.closeInventory();
                 })

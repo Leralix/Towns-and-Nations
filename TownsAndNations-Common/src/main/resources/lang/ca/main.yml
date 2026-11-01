@@ -109,7 +109,6 @@ language:
   GENERIC_CANCEL_ACTION: "§cCancel·lar acció"
   GUI_CONFIRM_PLAYER_LEAVE_TOWN: "§3{0}§f abandona la localitat"
   GUI_CONFIRM_PLAYER_DELETE_TOWN: "§fLa localitat §9{0}§f serà eliminada"
-  #War goal
   CONQUER_WAR_GOAL: "§aConquerir un territori"
   CONQUER_WAR_GOAL_DESC: "§fConquistar una certa quantitat de territori"
   GUI_CONQUER_CHUNK_CURRENT_DESC: "§fConquerir §2{0}§f chunks"

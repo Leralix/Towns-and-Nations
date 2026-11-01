@@ -60,7 +60,7 @@ public class RegionSettingsMenu extends SettingsMenus {
 
     protected @NotNull GuiItem getChangeOwnershipButton() {
         return iconManager.get(IconKey.TERRITORY_CHANGE_OWNER_ICON)
-                .setName(Lang.GUI_TERRITORY_CHANGE_OWNERSHIP.get(tanPlayer))
+                .setName(Lang.GUI_TERRITORY_CHANGE_OWNERSHIP.translate(tanPlayer))
                 .setDescription(Lang.GUI_TERRITORY_CHANGE_OWNERSHIP_DESC1.get(regionData.getCapital().getLeaderData().getNameStored()))
                 .setRequirements(new LeaderRequirement(territoryData, tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
@@ -70,10 +70,10 @@ public class RegionSettingsMenu extends SettingsMenus {
 
     private @NotNull GuiItem getChangeCapitalButton() {
         Territory capital = regionData.getCapital();
-        String capitalName = capital == null ? Lang.NO_REGION.get(tanPlayer) : capital.getColoredName();
+        String capitalName = capital == null ? Lang.NO_REGION.translate(tanPlayer) : capital.getColoredName();
 
         return iconManager.get(IconKey.TERRITORY_CHANGE_CAPITAL_ICON)
-                .setName(Lang.GUI_TERRITORY_CHANGE_CAPITAL.get(tanPlayer))
+                .setName(Lang.GUI_TERRITORY_CHANGE_CAPITAL.translate(tanPlayer))
                 .setDescription(Lang.GUI_TERRITORY_CHANGE_CAPITAL_DESC1.get(capitalName))
                 .setRequirements(new LeaderRequirement(capital, tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
@@ -83,7 +83,7 @@ public class RegionSettingsMenu extends SettingsMenus {
 
     private @NotNull GuiItem getDeleteButton() {
         return iconManager.get(IconKey.REGION_DELETE_REGION_ICON)
-                .setName(Lang.GUI_REGION_DELETE.get(tanPlayer))
+                .setName(Lang.GUI_REGION_DELETE.translate(tanPlayer))
                 .setDescription(
                         Lang.GUI_REGION_DELETE_DESC1.get(regionData.getName()),
                         Lang.GUI_REGION_DELETE_DESC2.get(),
@@ -96,17 +96,17 @@ public class RegionSettingsMenu extends SettingsMenus {
                     event.setCancelled(true);
 
                     if (regionData.isCapital()) {
-                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, regionData.getOverlordInternal().get().getColoredName()));
+                        TanChatUtils.message(tanPlayer, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(regionData.getOverlordInternal().get().getColoredName()));
                         return;
                     }
 
                     if (!TownsAndNations.getPlugin().getWarStorage().getWarsOfTerritory(territoryData).isEmpty()) {
-                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR.get(langType), SoundEnum.NOT_ALLOWED);
+                        TanChatUtils.message(tanPlayer, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR, SoundEnum.NOT_ALLOWED);
                         return;
                     }
 
                     if (!player.hasPermission("tan.base.region.disband")) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
+                        TanChatUtils.message(tanPlayer, Lang.PLAYER_NO_PERMISSION, NOT_ALLOWED);
                         return;
                     }
 

@@ -6,13 +6,13 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Town;
-import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.AdminSetPlayerBalance;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.utils.text.StringUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -41,7 +41,7 @@ public class AdminManagePlayer extends BasicGui {
 
     private @NotNull GuiItem getBalanceButton() {
         return iconManager.get(IconKey.PLAYER_BALANCE_ICON)
-                .setName(Lang.GUI_YOUR_BALANCE.get(langType))
+                .setName(Lang.GUI_YOUR_BALANCE.translate(langType))
                 .setDescription(
                         Lang.GUI_YOUR_BALANCE_DESC1.get(StringUtil.formatMoney(EconomyUtil.getBalance(targetPlayer.getOfflinePlayer())))
                 )
@@ -62,7 +62,7 @@ public class AdminManagePlayer extends BasicGui {
         if(targetPlayer.hasTown()){
             Town townData = targetPlayer.getTown();
             iconBuilder
-                    .setName(Lang.ADMIN_GUI_TOWN_PLAYER_TOWN.get(langType, townData.getName()))
+                    .setName(Lang.ADMIN_GUI_TOWN_PLAYER_TOWN.get(townData.getName()).translate(tanPlayer))
                     .setClickToAcceptMessage(
                             townData.isLeader(targetPlayer) ?
                                     Lang.ADMIN_GUI_TOWN_PLAYER_TOWN_DESC2 :
@@ -70,18 +70,18 @@ public class AdminManagePlayer extends BasicGui {
                     )
                     .setAction(action -> {
                             if (townData.isLeader(targetPlayer)) {
-                                TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get(langType));
+                                TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.translate(langType));
                                 return;
                             }
                             townData.removePlayer(targetPlayer);
 
-                            TanChatUtils.message(player, Lang.ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS.get(langType, targetPlayer.getNameStored(), townData.getName()));
+                            TanChatUtils.message(tanPlayer, Lang.ADMIN_GUI_TOWN_PLAYER_LEAVE_TOWN_SUCCESS.get(targetPlayer.getNameStored(), townData.getName()));
                             open();
                     });
         }
         else {
             iconBuilder
-                    .setName(Lang.ADMIN_GUI_PLAYER_NO_TOWN.get(langType))
+                    .setName(Lang.ADMIN_GUI_PLAYER_NO_TOWN.translate(langType))
                     .setClickToAcceptMessage(Lang.GUI_GENERIC_ADD_BUTTON)
                     .setAction(action -> new AdminSetPlayerTown(player, targetPlayer));
         }

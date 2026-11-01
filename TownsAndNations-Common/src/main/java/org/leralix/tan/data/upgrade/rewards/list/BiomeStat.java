@@ -111,17 +111,17 @@ public class BiomeStat extends IndividualStat implements AggregatableStat<BiomeS
     public FilledLang getStatReward(LangType langType, int level, int maxLevel) {
         String nbNewCommands = getMathSign(biomes.size());
         if(level == 0){
-            return Lang.UPGRADE_LINE_INT.get(Lang.CHUNK_AUTHORIZED_BIOMES.get(langType),  "0", nbNewCommands);
+            return Lang.UPGRADE_LINE_INT.get(Lang.CHUNK_AUTHORIZED_BIOMES.translate(langType),  "0", nbNewCommands);
         }
         else {
-            return Lang.UPGRADE_LINE_INT_MAX.get(Lang.CHUNK_AUTHORIZED_BIOMES.get(langType),nbNewCommands);
+            return Lang.UPGRADE_LINE_INT_MAX.get(Lang.CHUNK_AUTHORIZED_BIOMES.translate(langType),nbNewCommands);
         }
     }
 
     @Override
     public FilledLang getStatReward(LangType langType) {
         String nbNewCommands = getMathSign(biomes.size());
-        return Lang.UPGRADE_LINE_INT_MAX.get(Lang.CHUNK_AUTHORIZED_BIOMES.get(langType), nbNewCommands);
+        return Lang.UPGRADE_LINE_INT_MAX.get(Lang.CHUNK_AUTHORIZED_BIOMES.translate(langType), nbNewCommands);
     }
 
     @Override

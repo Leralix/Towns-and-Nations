@@ -10,6 +10,7 @@ import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.constants.Constants;
 import org.tan.api.interfaces.chunk.TanTerritoryChunk;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 public interface TerritoryChunk extends IClaimedChunk, TanTerritoryChunk {
@@ -71,7 +72,11 @@ public interface TerritoryChunk extends IClaimedChunk, TanTerritoryChunk {
      * @param territoryToAllow The territory wishing to claim a chunk in the buffer zone
      * @return True if the territory can bypass buffer zone restrictions, false otherwise
      */
-    default boolean canBypassBufferZone(Territory territoryToAllow){
+    default boolean canBypassBufferZone(@Nullable Territory territoryToAllow){
+        if(territoryToAllow == null){
+            return false;
+        }
+
         // Held by the same territory
         if (getOwnerID().equals(territoryToAllow.getID())) {
             return true;

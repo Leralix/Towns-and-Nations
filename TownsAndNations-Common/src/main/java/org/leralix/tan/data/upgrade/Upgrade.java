@@ -7,10 +7,7 @@ import org.leralix.tan.data.upgrade.rewards.IndividualStat;
 import org.leralix.tan.gui.service.requirements.IndividualRequirement;
 import org.leralix.tan.gui.service.requirements.MaxLevelReachedRequirement;
 import org.leralix.tan.gui.service.requirements.upgrade.UpgradeRequirement;
-import org.leralix.tan.lang.DynamicLang;
-import org.leralix.tan.lang.FilledLang;
-import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -80,8 +77,8 @@ public class Upgrade {
         return descriptionKey;
     }
 
-    public String getName(LangType langType) {
-        return DynamicLang.get(langType, nameKey);
+    public Placeholder getName() {
+        return DynamicLang.get(nameKey);
     }
 
     public Collection<IndividualRequirement> getRequirements(Territory territoryData, Player player) {

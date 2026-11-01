@@ -39,7 +39,7 @@ public class LandmarkChestListener implements Listener {
                 String customData = value.asString();
                 Landmark landmark = TownsAndNations.getPlugin().getLandmarkStorage().get(customData);
                 if (!tanPlayer.hasTown()) {
-                    TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer.getLang()));
+                    TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.translate(tanPlayer.getLang()));
                     return;
                 }
                 PlayerGUI.dispatchLandmarkGui(player, tanPlayer, landmark);

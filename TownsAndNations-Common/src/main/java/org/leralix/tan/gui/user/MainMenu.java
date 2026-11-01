@@ -68,10 +68,10 @@ public class MainMenu extends BasicGui {
 
 
         return iconManager.get(icon)
-                .setName(Lang.GUI_SERVER_TIME.get(tanPlayer))
+                .setName(Lang.GUI_SERVER_TIME.translate(tanPlayer))
                 .setDescription(
-                        Lang.CURRENT_SERVER_TIME.get(timeManager.formatDateNowForServer().get(langType)),
-                        Lang.CURRENT_PLAYER_TIME.get(timeManager.formatDateNowForPlayer(tanPlayer).get(langType))
+                        Lang.CURRENT_SERVER_TIME.get(timeManager.formatDateNowForServer().translate(langType)),
+                        Lang.CURRENT_PLAYER_TIME.get(timeManager.formatDateNowForPlayer(tanPlayer).translate(langType))
                 )
                 .asGuiItem(player, langType);
     }
@@ -89,7 +89,7 @@ public class MainMenu extends BasicGui {
         }
 
         return iconManager.get(IconKey.NATION_BASE_ICON)
-                .setName(Lang.GUI_NATION_ICON.get(tanPlayer))
+                .setName(Lang.GUI_NATION_ICON.translate(tanPlayer))
                 .setDescription(description)
                 .setAction(action -> PlayerGUI.dispatchPlayerNation(player, tanPlayer))
                 .asGuiItem(player, langType);
@@ -109,7 +109,7 @@ public class MainMenu extends BasicGui {
 
 
         return iconManager.get(IconKey.REGION_BASE_ICON)
-                .setName(Lang.GUI_REGION_ICON.get(tanPlayer))
+                .setName(Lang.GUI_REGION_ICON.translate(tanPlayer))
                 .setDescription(description)
                 .setAction(action -> PlayerGUI.dispatchPlayerRegion(player, tanPlayer))
                 .asGuiItem(player, langType);
@@ -126,7 +126,7 @@ public class MainMenu extends BasicGui {
         }
 
         return iconManager.get(IconKey.TOWN_BASE_ICON)
-                .setName(Lang.GUI_TOWN_ICON.get(tanPlayer))
+                .setName(Lang.GUI_TOWN_ICON.translate(tanPlayer))
                 .setDescription(description)
                 .setAction(action -> PlayerGUI.dispatchPlayerTown(player, tanPlayer))
                 .asGuiItem(player, langType);
@@ -134,7 +134,7 @@ public class MainMenu extends BasicGui {
 
     private GuiItem getPlayerButton(ITanPlayer tanPlayer) {
         return iconManager.get(IconKey.PLAYER_BASE_ICON)
-                .setName(Lang.GUI_PLAYER_MENU_ICON.get(tanPlayer, player.getName()))
+                .setName(Lang.GUI_PLAYER_MENU_ICON.get(player.getName()).translate(tanPlayer))
                 .setAction(action -> new PlayerMenu(player))
                 .asGuiItem(player, langType);
     }

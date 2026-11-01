@@ -43,7 +43,7 @@ public class SelectWarGoals extends IteratorGUI {
 
     private @NotNull GuiItem getNewWarGoalButton() {
         return iconManager.get(IconKey.NEW_WAR_GOAL_ICON)
-                .setName(Lang.GUI_ADD_WAR_GOAL.get(langType))
+                .setName(Lang.GUI_ADD_WAR_GOAL.translate(langType))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> new ChooseWarGoal(player, territoryData, war, warRole, this))
                 .asGuiItem(player, langType);

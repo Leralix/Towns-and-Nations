@@ -2,7 +2,6 @@ package org.leralix.tan.gui.user.territory.relation;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
-import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.data.territory.relation.TownRelation;
@@ -20,7 +19,7 @@ public class OpenRelationMenu extends IteratorGUI {
     private final TownRelation relation;
 
     public OpenRelationMenu(Player player, Territory territoryData, TownRelation relation) {
-        super(player, Lang.HEADER_RELATION_WITH.get(relation.getName(TownsAndNations.getPlugin().getPlayerDataStorage().get(player).getLang())), 6);
+        super(player, Lang.HEADER_RELATION_WITH.get(relation.getName()), 6);
         this.territoryData = territoryData;
         this.relation = relation;
         open();
@@ -39,11 +38,11 @@ public class OpenRelationMenu extends IteratorGUI {
 
     private GuiItem getRemoveTerritoryButton() {
         return iconManager.get(IconKey.GUI_REMOVE_TERRITORY_ICON)
-                .setName(Lang.GUI_TERRITORY_RELATION_REMOVE_TERRITORY.get(tanPlayer))
+                .setName(Lang.GUI_TERRITORY_RELATION_REMOVE_TERRITORY.translate(tanPlayer))
                 .setAction(
                         action -> {
                             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TOWN_RELATION)) {
-                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer));
                                 return;
                             }
                             new RemoveRelationMenu(player, territoryData, relation);
@@ -53,11 +52,11 @@ public class OpenRelationMenu extends IteratorGUI {
 
     private GuiItem getAddTerritoryButton() {
         return iconManager.get(IconKey.GUI_ADD_TERRITORY_ICON)
-                .setName(Lang.GUI_TERRITORY_RELATION_ADD_TERRITORY.get(tanPlayer))
+                .setName(Lang.GUI_TERRITORY_RELATION_ADD_TERRITORY.translate(tanPlayer))
                 .setAction(
                         action -> {
                             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TOWN_RELATION)) {
-                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer));
                                 return;
                             }
                             new AddRelationMenu(player, territoryData, relation);

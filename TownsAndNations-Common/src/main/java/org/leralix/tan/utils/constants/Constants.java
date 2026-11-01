@@ -107,6 +107,8 @@ public class Constants {
     private static WarTimeSlot warTimeSlot;
     private static double warBoundaryRadius;
     private static boolean notifyWhenEnemyEnterTerritory;
+    private static boolean setCapitalAtCreation;
+
     private static Map<TownRelation, RelationConstant> relationsConstants;
     private static Set<String> allRelationBlacklistedCommands;
     private static boolean adminApprovalForStartOfAttack;
@@ -270,6 +272,7 @@ public class Constants {
         );
         warBoundaryRadius = config.getDouble("warBoundaryRadius", 16);
         notifyWhenEnemyEnterTerritory = config.getBoolean("notifyEnemyEnterTown", true);
+        setCapitalAtCreation =  config.getBoolean("setCapitalAtCreation", true);
 
         relationsConstants = new EnumMap<>(TownRelation.class);
         allRelationBlacklistedCommands = new HashSet<>();
@@ -586,6 +589,10 @@ public class Constants {
 
     public static boolean notifyWhenEnemyEnterTerritory() {
         return notifyWhenEnemyEnterTerritory;
+    }
+
+    public static boolean shouldSetCapitalAtCreation() {
+        return setCapitalAtCreation;
     }
 
     /**

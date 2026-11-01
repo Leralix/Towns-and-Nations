@@ -40,13 +40,13 @@ public class RelocateSignEvent extends RightClickListenerEvent {
 
         int margin = Constants.getMaxPropertySignMargin();
         if(!PropertyUtil.isNearProperty(clickLocation, propertyData, margin)){
-            TanChatUtils.message(player, Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(langType, Integer.toString(margin)), SoundEnum.NOT_ALLOWED);
+            TanChatUtils.message(player, Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(Integer.toString(margin)).translate(langType), SoundEnum.NOT_ALLOWED);
             return ListenerState.CONTINUE;
         }
 
         propertyData.removeSign();
         propertyData.createPropertySign(player, clickedBlock, event.getBlockFace());
-        TanChatUtils.message(player, Lang.PLAYER_PROPERTY_SIGN_RELOCATED.get(langType), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player, Lang.PLAYER_PROPERTY_SIGN_RELOCATED.translate(langType), SoundEnum.MINOR_GOOD);
 
         openGui(player1 -> returnGui.open(), player);
 

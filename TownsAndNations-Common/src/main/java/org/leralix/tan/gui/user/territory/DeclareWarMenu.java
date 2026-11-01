@@ -59,7 +59,7 @@ public class DeclareWarMenu extends IteratorGUI {
                 .setClickToAcceptMessage(Lang.GUI_TOWN_ATTACK_TOWN_DESC1)
                 .setAction(action -> {
                     if (warStorage.isTerritoryAtWarWith(territoryData, iterateTerritory)) {
-                        TanChatUtils.message(player, Lang.GUI_TOWN_ATTACK_ALREADY_ATTACKING.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.GUI_TOWN_ATTACK_ALREADY_ATTACKING.translate(tanPlayer));
                         SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
                         return;
                     }

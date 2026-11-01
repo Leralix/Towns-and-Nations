@@ -63,7 +63,7 @@ public class TerritoryMobSettings extends IteratorGUI {
                     .setAction(event -> {
                         event.setCancelled(true);
                         if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_MOB_SPAWN)) {
-                            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer));
                             return;
                         }
                         if (upgradeStatus.isUnlocked()) {
@@ -71,7 +71,7 @@ public class TerritoryMobSettings extends IteratorGUI {
                             SoundUtil.playSound(player, ADD);
                         } else {
                             if (territoryData.getBalance() < cost) {
-                                TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, territoryData.getColoredName(), Double.toString(cost - territoryData.getBalance())));
+                                TanChatUtils.message(tanPlayer, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(territoryData.getColoredName(), Double.toString(cost - territoryData.getBalance())));
                                 return;
                             }
                             territoryData.removeFromBalance(cost);

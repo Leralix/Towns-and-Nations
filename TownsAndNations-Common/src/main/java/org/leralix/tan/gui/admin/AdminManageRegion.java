@@ -45,7 +45,7 @@ public class AdminManageRegion extends AdminManageTerritory {
     private @NotNull GuiItem getChangeNation() {
         String name = regionData.getOverlordInternal()
                 .map(Territory::getName)
-                .orElseGet(() -> Lang.NO_REGION.get(langType));
+                .orElseGet(() -> Lang.NO_REGION.translate(langType));
 
         List<Lang> description = new ArrayList<>();
 
@@ -66,7 +66,7 @@ public class AdminManageRegion extends AdminManageTerritory {
                 .setAction(action -> {
                     if (regionData.haveOverlord()) {
                         if (regionData.isCapital())
-                            TanChatUtils.message(player, Lang.GUI_CANNOT_QUIT_IF_LEADER.get(langType));
+                            TanChatUtils.message(player, Lang.GUI_CANNOT_QUIT_IF_LEADER.translate(langType));
                         else {
                             regionData.removeOverlord();
                             open();
@@ -80,7 +80,7 @@ public class AdminManageRegion extends AdminManageTerritory {
 
     private @NotNull GuiItem changeLeader() {
         return iconManager.get(IconKey.TERRITORY_CHANGE_OWNER_ICON)
-                .setName(Lang.GUI_TERRITORY_CHANGE_CAPITAL.get(langType))
+                .setName(Lang.GUI_TERRITORY_CHANGE_CAPITAL.translate(langType))
                 .setDescription(
                         Lang.GUI_TERRITORY_CHANGE_CAPITAL_DESC1.get(regionData.getCapital().getColoredName())
                 )

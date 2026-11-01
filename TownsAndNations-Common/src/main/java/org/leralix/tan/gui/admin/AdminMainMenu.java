@@ -37,42 +37,42 @@ public class AdminMainMenu extends BasicGui {
 
     private @NotNull GuiItem getPlayerButton() {
         return iconManager.get(IconKey.PLAYER_HEAD_ICON)
-                .setName(Lang.GUI_ADMIN_PLAYER_ICON.get(langType))
+                .setName(Lang.GUI_ADMIN_PLAYER_ICON.translate(langType))
                 .setAction(action -> new AdminBrowsePlayers(player))
                 .asGuiItem(player, langType);
     }
 
     private GuiItem getWarButton() {
         return iconManager.get(IconKey.TERRITORY_WAR_ICON)
-                .setName(Lang.ADMIN_GUI_WAR_ICON.get(langType))
+                .setName(Lang.ADMIN_GUI_WAR_ICON.translate(langType))
                 .setAction(action -> new AdminWarMenu(player))
                 .asGuiItem(player, langType);
     }
 
     private GuiItem getNationButton() {
         return iconManager.get(IconKey.NATION_BASE_ICON)
-                .setName(Lang.GUI_NATION_ICON.get(langType))
+                .setName(Lang.GUI_NATION_ICON.translate(langType))
                 .setAction(action -> new AdminBrowseNation(player))
                 .asGuiItem(player, langType);
     }
 
     private GuiItem getLandmarkButton() {
         return iconManager.get(IconKey.TOWN_LANDMARKS_ICON)
-                .setName(Lang.ADMIN_GUI_LANDMARK_ICON.get(langType))
+                .setName(Lang.ADMIN_GUI_LANDMARK_ICON.translate(langType))
                 .setAction(action -> new AdminLandmarksMenu(player))
                 .asGuiItem(player, langType);
     }
 
     private GuiItem getTownButton() {
         return iconManager.get(IconKey.TOWN_BASE_ICON)
-                .setName(Lang.GUI_TOWN_ICON.get(langType))
+                .setName(Lang.GUI_TOWN_ICON.translate(langType))
                 .setAction(action -> new AdminBrowseTown(player))
                 .asGuiItem(player, langType);
     }
 
     private GuiItem getRegionButton() {
         return iconManager.get(IconKey.REGION_BASE_ICON)
-                .setName(Lang.GUI_REGION_ICON.get(langType))
+                .setName(Lang.GUI_REGION_ICON.translate(langType))
                 .setAction(action -> new AdminBrowseRegion(player))
                 .asGuiItem(player, langType);
     }

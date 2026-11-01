@@ -67,7 +67,7 @@ public class PropertySignListener implements Listener {
                         LangType langType = tanPlayer.getLang();
 
                         if (!canPlayerOpenMenu(player, clickedBlock)) {
-                            TanChatUtils.message(player, Lang.NO_TRADE_ALLOWED_EMBARGO.get(langType));
+                            TanChatUtils.message(player, Lang.NO_TRADE_ALLOWED_EMBARGO.translate(langType));
                             return;
                         }
                         if (propertyData.getOwner().canAccess(tanPlayer)) {
@@ -79,7 +79,7 @@ public class PropertySignListener implements Listener {
                             if (propertyData.isForRent() || propertyData.isForSale()) {
                                 new BuyOrRentPropertyMenu(player, propertyData);
                             } else {
-                                TanChatUtils.message(player, Lang.PROPERTY_NOT_FOR_SALE_OR_RENT.get(langType));
+                                TanChatUtils.message(player, Lang.PROPERTY_NOT_FOR_SALE_OR_RENT.translate(langType));
                             }
                         }
                     } else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {

@@ -3,7 +3,6 @@ package org.leralix.tan.gui.user.territory;
 import dev.triumphteam.gui.guis.GuiItem;
 import org.bukkit.entity.Player;
 import org.leralix.tan.TownsAndNations;
-import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.gui.BasicGui;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
@@ -12,7 +11,10 @@ import org.leralix.tan.gui.user.player.ApplyToTownMenu;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.PlayerChatListenerStorage;
 import org.leralix.tan.listeners.chat.events.CreateTown;
+import org.leralix.tan.listeners.interact.RightClickListener;
+import org.leralix.tan.listeners.interact.events.ChooseCapital;
 import org.leralix.tan.utils.constants.Constants;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import static org.leralix.lib.data.SoundEnum.NOT_ALLOWED;
@@ -39,22 +41,28 @@ public class NoTownMenu extends BasicGui {
         int townPrice = Constants.getTownCost();
 
         return IconManager.getInstance().get(IconKey.CREATE_TOWN_ICON)
-                .setName(Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.get(tanPlayer))
+                .setName(Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.translate(tanPlayer))
                 .setDescription(Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.get(Integer.toString(townPrice)))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction( action -> {
                     if(!player.hasPermission("tan.base.town.create")){
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer), NOT_ALLOWED);
                         return;
                     }
 
                     double playerMoney = EconomyUtil.getBalance(player);
                     if (playerMoney < townPrice) {
-                        TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(tanPlayer, Double.toString(townPrice - playerMoney)), NOT_ALLOWED);
+                        TanChatUtils.message(tanPlayer, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(Double.toString(townPrice - playerMoney)), NOT_ALLOWED);
                     }
                     else {
-                        TanChatUtils.message(player, Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get(tanPlayer));
-                        PlayerChatListenerStorage.register(player, langType, new CreateTown(townPrice));
+                        if(Constants.shouldSetCapitalAtCreation()){
+                            TanChatUtils.message(tanPlayer, Lang.RIGHT_CLICK_TO_SELECT_CAPITAL);
+                            RightClickListener.register(player, langType, new ChooseCapital(tanPlayer, townPrice));
+                        }
+                        else {
+                            TanChatUtils.message(tanPlayer, Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT);
+                            PlayerChatListenerStorage.register(player, langType, new CreateTown(townPrice));
+                        }
                     }
                 })
                 .asGuiItem(player, langType);
@@ -63,7 +71,7 @@ public class NoTownMenu extends BasicGui {
     private GuiItem getBrowseTownsButton() {
 
         return IconManager.getInstance().get(IconKey.BROWSE_TOWN_ICON)
-                .setName(Lang.GUI_NO_TOWN_JOIN_A_TOWN.get(tanPlayer))
+                .setName(Lang.GUI_NO_TOWN_JOIN_A_TOWN.translate(tanPlayer))
                 .setDescription(
                         Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(Integer.toString(TownsAndNations.getPlugin().getTownStorage().getNumberOfTown()))
                 )

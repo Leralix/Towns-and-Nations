@@ -53,10 +53,10 @@ public class WarMenu extends AbstractWarMenu {
 
     private GuiItem getRenameWarButton() {
         return iconManager.get(IconKey.RENAME_WAR_ICON)
-                .setName(Lang.GUI_RENAME_WAR.get(tanPlayer))
+                .setName(Lang.GUI_RENAME_WAR.translate(tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_RENAME)
                 .setAction(action -> {
-                    TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.translate(tanPlayer));
                     PlayerChatListenerStorage.register(player, langType, new ChangeWarName(war, p -> open()));
                 })
                 .asGuiItem(player, langType);
@@ -71,7 +71,7 @@ public class WarMenu extends AbstractWarMenu {
         List<FilledLang> description = new ArrayList<>();
         description.add(Lang.WAR_GOAL_LIST_BUTTON_DESC1.get());
         for(WarGoal goal : war.getGoals(warRole)) {
-            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(goal.getCurrentDesc(langType)));
+            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(goal.getCurrentDesc()));
         }
 
         // If no goals are set, add a message
@@ -81,7 +81,7 @@ public class WarMenu extends AbstractWarMenu {
 
 
         return iconManager.get(IconKey.WAR_GOAL_LIST_ICON)
-                .setName(Lang.WAR_GOAL_LIST_BUTTON.get(langType))
+                .setName(Lang.WAR_GOAL_LIST_BUTTON.translate(langType))
                 .setDescription(description)
                 .setAction(action -> new SelectWarGoals(player, territoryData, war, warRole, this))
                 .asGuiItem(player, langType);
@@ -91,7 +91,7 @@ public class WarMenu extends AbstractWarMenu {
         List<FilledLang> description = new ArrayList<>();
         description.add(Lang.WAR_ENEMY_GOAL_LIST_DESC1.get());
         for(WarGoal goal : war.getGoals(warRole.opposite())) {
-            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(goal.getCurrentDesc(langType)));
+            description.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(goal.getCurrentDesc()));
         }
 
         // If no goals are set, add a message
@@ -101,14 +101,14 @@ public class WarMenu extends AbstractWarMenu {
 
 
         return iconManager.get(IconKey.WAR_ENEMY_GOAL_LIST_ICON)
-                .setName(Lang.WAR_ENEMY_GOAL_LIST.get(langType))
+                .setName(Lang.WAR_ENEMY_GOAL_LIST.translate(langType))
                 .setDescription(description)
                 .asGuiItem(player, langType);
     }
 
     private @NotNull GuiItem getAttackButton() {
         return iconManager.get(IconKey.WAR_CREATE_ATTACK_ICON)
-                .setName(Lang.WAR_CREATE_ATTACK.get(langType))
+                .setName(Lang.WAR_CREATE_ATTACK.translate(langType))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> new CreateAttackMenu(player, war, warRole, this))
                 .asGuiItem(player, langType);
@@ -123,7 +123,7 @@ public class WarMenu extends AbstractWarMenu {
         description.addAll(war.generateWarGoalsDesciption(warRole, langType));
 
         return iconManager.get(IconKey.WAR_SURRENDER_ICON)
-                .setName(Lang.WAR_SURRENDER.get(langType))
+                .setName(Lang.WAR_SURRENDER.translate(langType))
                 .setDescription(description)
                 .setAction( action -> {
                     war.territorySurrender(warRole);

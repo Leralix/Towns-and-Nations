@@ -45,7 +45,7 @@ public class OpenDiplomacyMenu extends BasicGui {
         List<FilledLang> desc = generateDescription(Lang.GUI_TERRITORY_RELATION_HOSTILE_DESC1.get(), TownRelation.WAR);
 
         return iconManager.get(IconKey.GUI_WAR_ICON)
-                .setName(Lang.GUI_TERRITORY_RELATION_HOSTILE.get(langType))
+                .setName(Lang.GUI_TERRITORY_RELATION_HOSTILE.translate(langType))
                 .setDescription(desc)
                 .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.WAR))
                 .asGuiItem(player, langType);
@@ -55,7 +55,7 @@ public class OpenDiplomacyMenu extends BasicGui {
         List<FilledLang> desc = generateDescription(Lang.GUI_TERRITORY_RELATION_EMBARGO_DESC1.get(), TownRelation.EMBARGO);
 
         return iconManager.get(IconKey.GUI_EMBARGO_ICON)
-                .setName(Lang.GUI_TERRITORY_RELATION_EMBARGO.get(langType))
+                .setName(Lang.GUI_TERRITORY_RELATION_EMBARGO.translate(langType))
                 .setDescription(desc)
                 .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.EMBARGO))
                 .asGuiItem(player, langType);
@@ -65,7 +65,7 @@ public class OpenDiplomacyMenu extends BasicGui {
         List<FilledLang> desc = generateDescription(Lang.GUI_TERRITORY_RELATION_NAP_DESC1.get(), TownRelation.NON_AGGRESSION);
 
         return iconManager.get(IconKey.GUI_NON_AGGRESSION_PACT_ICON)
-                .setName(Lang.GUI_TERRITORY_RELATION_NAP.get(langType))
+                .setName(Lang.GUI_TERRITORY_RELATION_NAP.translate(langType))
                 .setDescription(desc)
                 .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.NON_AGGRESSION))
                 .asGuiItem(player, langType);
@@ -75,7 +75,7 @@ public class OpenDiplomacyMenu extends BasicGui {
         List<FilledLang> desc = generateDescription(Lang.GUI_TERRITORY_RELATION_ALLIANCE_DESC1.get(), TownRelation.ALLIANCE);
 
         return iconManager.get(IconKey.GUI_ALLIANCE_ICON)
-                .setName(Lang.GUI_TERRITORY_RELATION_ALLIANCE.get(langType))
+                .setName(Lang.GUI_TERRITORY_RELATION_ALLIANCE.translate(langType))
                 .setDescription(desc)
                 .setAction(p -> new OpenRelationMenu(player, territoryData, TownRelation.ALLIANCE))
                 .asGuiItem(player, langType);
@@ -83,14 +83,14 @@ public class OpenDiplomacyMenu extends BasicGui {
 
     private @NotNull GuiItem getProposalButton() {
         return iconManager.get(IconKey.GUI_PROPOSALS_ICON)
-                .setName(Lang.GUI_TERRITORY_RELATION_DIPLOMACY_PROPOSAL.get(langType))
+                .setName(Lang.GUI_TERRITORY_RELATION_DIPLOMACY_PROPOSAL.translate(langType))
                 .setDescription(
                         Lang.GUI_TERRITORY_RELATION_DIPLOMACY_PROPOSAL_DESC1.get(),
                         Lang.GUI_TERRITORY_RELATION_DIPLOMACY_PROPOSAL_DESC2.get(Integer.toString(territoryData.getAllDiplomacyProposal().size()))
                 )
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TOWN_RELATION)) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer));
                         return;
                     }
                     new OpenDiplomacyProposalsMenu(player, territoryData);

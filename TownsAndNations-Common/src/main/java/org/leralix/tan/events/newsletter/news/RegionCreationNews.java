@@ -56,7 +56,7 @@ public class RegionCreationNews extends Newsletter {
         Region regionData = TownsAndNations.getPlugin().getRegionStorage().get(regionID);
         if (regionData == null)
             return;
-        TanChatUtils.message(player, Lang.REGION_CREATED_NEWSLETTER.get(tanPlayer, getRegionCreator.getName(), regionData.getColoredName()));
+        TanChatUtils.message(tanPlayer, Lang.REGION_CREATED_NEWSLETTER.get(getRegionCreator.getName(), regionData.getColoredName()));
     }
 
     @Override
@@ -68,9 +68,9 @@ public class RegionCreationNews extends Newsletter {
             return null;
 
         return IconManager.getInstance().get(IconKey.REGION_BASE_ICON)
-                .setName(Lang.REGION_CREATED_NEWSLETTER_TITLE.get(lang))
+                .setName(Lang.REGION_CREATED_NEWSLETTER_TITLE.translate(lang))
                 .setDescription(
-                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(getDate())),
                         Lang.REGION_CREATED_NEWSLETTER.get(getRegionCreator.getName(), regionData.getColoredName()),
                         Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
                 )

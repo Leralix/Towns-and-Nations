@@ -53,7 +53,7 @@ public class RegionDeletedNews extends Newsletter {
     @Override
     public void broadcast(Player player, ITanPlayer tanPlayer) {
         OfflinePlayer getRegionDeleter = player.getServer().getOfflinePlayer(UUID.fromString(playerID));
-        TanChatUtils.message(player, Lang.REGION_DELETED_NEWSLETTER.get(tanPlayer, getRegionDeleter.getName(), regionName), SoundEnum.GOOD);
+        TanChatUtils.message(tanPlayer, Lang.REGION_DELETED_NEWSLETTER.get(getRegionDeleter.getName(), regionName), SoundEnum.GOOD);
     }
 
     @Override
@@ -61,9 +61,9 @@ public class RegionDeletedNews extends Newsletter {
         OfflinePlayer getRegionDeleter = player.getServer().getOfflinePlayer(UUID.fromString(playerID));
 
         return IconManager.getInstance().get(IconKey.REGION_BASE_ICON)
-                .setName(Lang.REGION_DELETED_NEWSLETTER_TITLE.get(lang))
+                .setName(Lang.REGION_DELETED_NEWSLETTER_TITLE.translate(lang))
                 .setDescription(
-                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(getDate())),
                         Lang.REGION_DELETED_NEWSLETTER.get(getRegionDeleter.getName(), regionName),
                         Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
                 )

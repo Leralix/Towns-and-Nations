@@ -101,7 +101,7 @@ public abstract class IteratorGUI extends BasicGui {
         gui.setItem(lastRow, 1, createBackArrow(player, backArrowAction, tanPlayer.getLang()));
 
         gui.setItem(lastRow, 7, IconManager.getInstance().get(IconKey.PREVIOUS_PAGE_ICON)
-                .setName(Lang.GUI_PREVIOUS_PAGE.get(tanPlayer))
+                .setName(Lang.GUI_PREVIOUS_PAGE.translate(tanPlayer))
                 .setAction(action -> {
                     if (page == 0) {
                         return;
@@ -112,7 +112,7 @@ public abstract class IteratorGUI extends BasicGui {
         );
 
         gui.setItem(lastRow, 8, IconManager.getInstance().get(IconKey.NEXT_PAGE_ICON)
-                .setName(Lang.GUI_NEXT_PAGE.get(tanPlayer))
+                .setName(Lang.GUI_NEXT_PAGE.translate(tanPlayer))
                 .setAction(action -> {
                     if (lastPage) {
                         return;

@@ -53,9 +53,9 @@ public class TerritoryIndependentNews extends Newsletter {
             return null;
 
         return IconManager.getInstance().get(Material.GOLDEN_HELMET)
-                .setName(Lang.TOWN_LEAVE_REGION_NEWSLETTER_TITLE.get(lang))
+                .setName(Lang.TOWN_LEAVE_REGION_NEWSLETTER_TITLE.translate(lang))
                 .setDescription(
-                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(getDate())),
                         Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(leavingTown.getColoredName(), region.getColoredName())
                 )
                 .setClickToAcceptMessage(Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ)
@@ -100,6 +100,6 @@ public class TerritoryIndependentNews extends Newsletter {
         if (region == null)
             return;
 
-        TanChatUtils.message(player, Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(tanPlayer, leavingTown.getColoredName(), region.getColoredName()), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(tanPlayer, Lang.TOWN_LEAVE_REGION_NEWSLETTER.get(leavingTown.getColoredName(), region.getColoredName()), SoundEnum.MINOR_GOOD);
     }
 }

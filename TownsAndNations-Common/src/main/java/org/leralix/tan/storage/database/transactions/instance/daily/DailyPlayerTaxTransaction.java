@@ -33,9 +33,9 @@ public class DailyPlayerTaxTransaction extends AbstractDailyTransaction {
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
         IconBuilder icon = iconManager.get(IconKey.PLAYER_TAX_TRANSACTION)
-                .setName(Lang.PLAYER_TAX_TRANSACTION.get(langType))
+                .setName(Lang.PLAYER_TAX_TRANSACTION.translate(langType))
                 .setDescription(
-                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate())),
+                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(getDate())),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(totalAmount))
                 );
 

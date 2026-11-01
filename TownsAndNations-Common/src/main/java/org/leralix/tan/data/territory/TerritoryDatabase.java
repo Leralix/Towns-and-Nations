@@ -391,6 +391,13 @@ public abstract class TerritoryDatabase<T extends TerritoryData> implements Terr
     }
 
     @Override
+    public boolean claimChunkSucess(Player player, Chunk chunk, boolean ignoreAdjacent){
+        boolean result = data.claimChunkSucess(player, chunk, ignoreAdjacent);
+        manager.save(data);
+        return result;
+    }
+
+    @Override
     public int getClaimCost() {
         return data.getClaimCost();
     }

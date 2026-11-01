@@ -12,7 +12,6 @@ import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.data.territory.rank.RolePermission;
-import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.gui.IteratorGUI;
 import org.leralix.tan.gui.common.ConfirmMenu;
 import org.leralix.tan.gui.cosmetic.IconKey;
@@ -21,6 +20,7 @@ import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.gui.service.requirements.RankPermissionRequirement;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -98,19 +98,19 @@ public class TerritoryMemberMenu extends IteratorGUI {
                             }
 
                             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.KICK_PLAYER)) {
-                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType));
+                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(langType));
                                 return;
                             }
                             if (territoryData.getRank(playerToIterate).isSuperiorTo(townData.getRank(tanPlayer))) {
-                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.get(langType));
+                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION_RANK_DIFFERENCE.translate(langType));
                                 return;
                             }
                             if (territoryData.isLeader(playerToIterate)) {
-                                TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.get(langType));
+                                TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_CANT_KICK_LEADER.translate(langType));
                                 return;
                             }
                             if (playerToIterate.getID().equals(tanPlayer.getID())) {
-                                TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_CANT_KICK_YOURSELF.get(langType));
+                                TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_CANT_KICK_YOURSELF.translate(langType));
                                 return;
                             }
 
@@ -129,7 +129,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
 
     private GuiItem getManageRankButton() {
         return IconManager.getInstance().get(IconKey.MANAGE_RANKS_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.get(langType))
+                .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_ROLES.translate(langType))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_RANKS))
                 .setAction(p -> new TerritoryRanksMenu(player, territoryData).open())
                 .asGuiItem(player, langType);
@@ -137,7 +137,7 @@ public class TerritoryMemberMenu extends IteratorGUI {
 
     private GuiItem getManageApplicationsButton(Town townData) {
         return IconManager.getInstance().get(IconKey.MANAGE_APPLICATIONS_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.get(langType))
+                .setName(Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION.translate(langType))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.INVITE_PLAYER))
                 .setDescription(Lang.GUI_TOWN_MEMBERS_MANAGE_APPLICATION_DESC1.get(Integer.toString(townData.getPlayerJoinRequestSet().size())))
                 .setAction(p -> new PlayerApplicationMenu(player, townData))

@@ -6,6 +6,7 @@ import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 import org.leralix.tan.storage.database.transactions.AbstractTransaction;
 import org.leralix.tan.storage.database.transactions.TransactionType;
 import org.leralix.tan.utils.text.DateUtil;
@@ -46,15 +47,15 @@ public class UpgradeTransaction extends AbstractTransaction {
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
 
-        String upgradeName = getUpgradeName(territoryID, upgradeID, langType);
+        Placeholder upgradeNamePlaceholder = getUpgradeName(territoryID, upgradeID);
 
         return iconManager.get(IconKey.UPGRADE_REQUIREMENT)
-                .setName(Lang.UPGRADE_TRANSACTION.get(langType))
+                .setName(Lang.UPGRADE_TRANSACTION.translate(langType))
                 .setDescription(
                         Lang.TRANSACTION_FROM.get(getTerritoryName(territoryID, langType)),
-                        Lang.TRANSACTION_UPGRADE.get(upgradeName, Integer.toString(newLevel)),
+                        Lang.TRANSACTION_UPGRADE.get(upgradeNamePlaceholder, Lang.of(Integer.toString(newLevel))),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount)),
-                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate()))
+                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(getDate()))
                 )
                 .asGuiItem(player, langType);
     }

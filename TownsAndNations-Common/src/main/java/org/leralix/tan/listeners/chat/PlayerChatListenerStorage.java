@@ -18,7 +18,7 @@ public class PlayerChatListenerStorage {
 
     public static void register(Player player, LangType langType, ChatListenerEvent category) {
         chatStorage.put(player, category);
-        TanChatUtils.message(player, Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)));
+        TanChatUtils.message(player, Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.translate(langType)).translate(langType));
         SoundUtil.playSound(player, SoundEnum.WRITE);
         player.closeInventory();
     }
@@ -43,7 +43,7 @@ public class PlayerChatListenerStorage {
             chatStorage.remove(player);
         }
         else {
-            TanChatUtils.message(player, Lang.WRITE_CANCEL_TO_CANCEL.get(playerData, Lang.CANCEL_WORD.get(playerData)));
+            TanChatUtils.message(playerData, Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD));
         }
     }
 }

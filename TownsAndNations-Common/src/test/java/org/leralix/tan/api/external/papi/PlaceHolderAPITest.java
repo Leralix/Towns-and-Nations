@@ -92,10 +92,10 @@ class PlaceHolderAPITest extends BasicTest {
 
         placeHolderAPI.registerEntry(new OtherPlayerChatMode(playerDataStorage, townStorage, null, null, localChatStorage));
 
-        assertEquals(ChatScope.GLOBAL.getName(tanPlayer.getLang()), placeHolderAPI.onRequest(player, "chat_mode_{playerName}"));
+        assertEquals(ChatScope.GLOBAL.getName().translate(tanPlayer.getLang()), placeHolderAPI.onRequest(player, "chat_mode_{playerName}"));
 
-        localChatStorage.setPlayerChatScope(player, ChatScope.ALLIANCE);
+        localChatStorage.setPlayerChatScope(tanPlayer, ChatScope.ALLIANCE);
 
-        assertEquals(ChatScope.ALLIANCE.getName(tanPlayer.getLang()), placeHolderAPI.onRequest(player, "chat_mode_{playerName}"));
+        assertEquals(ChatScope.ALLIANCE.getName().translate(tanPlayer.getLang()), placeHolderAPI.onRequest(player, "chat_mode_{playerName}"));
     }
 }

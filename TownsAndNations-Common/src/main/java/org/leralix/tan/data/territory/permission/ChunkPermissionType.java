@@ -38,7 +38,7 @@ public enum ChunkPermissionType {
     }
 
     public String getLabel(LangType langType) {
-        return label.get(langType);
+        return label.translate(langType);
     }
 
     public IconKey getIconKey() {

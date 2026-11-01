@@ -63,9 +63,8 @@ public class PlayerJoinRequestNews extends Newsletter {
         Town townData = getTownData();
         if (townData == null)
             return;
-        TanChatUtils.message(player,
+        TanChatUtils.message(tanPlayer,
                 Lang.PLAYER_APPLICATION_NEWSLETTER.get(
-                        tanPlayer,
                         playerJoinRequest.getName(),
                         townData.getColoredName()),
                 SoundEnum.MINOR_GOOD);
@@ -89,9 +88,9 @@ public class PlayerJoinRequestNews extends Newsletter {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 
         return IconManager.getInstance().get(offlinePlayer)
-                .setName(Lang.NEWSLETTER_PLAYER_APPLICATION.get(lang, offlinePlayer.getName()))
+                .setName(Lang.NEWSLETTER_PLAYER_APPLICATION.get(offlinePlayer.getName()).translate(lang))
                 .setDescription(
-                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(getDate())),
                         Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), getTownData().getColoredName()),
                         Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
                 )
@@ -123,7 +122,7 @@ public class PlayerJoinRequestNews extends Newsletter {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 
         return IconManager.getInstance().get(offlinePlayer)
-                .setName(Lang.NEWSLETTER_PLAYER_APPLICATION.get(lang, offlinePlayer.getName()))
+                .setName(Lang.NEWSLETTER_PLAYER_APPLICATION.get(offlinePlayer.getName()).translate(lang))
                 .setDescription(
                         Lang.NEWSLETTER_PLAYER_APPLICATION_DESC1.get(offlinePlayer.getName(), townData.getColoredName()),
                         Lang.NEWSLETTER_PLAYER_APPLICATION_DESC2.get(),

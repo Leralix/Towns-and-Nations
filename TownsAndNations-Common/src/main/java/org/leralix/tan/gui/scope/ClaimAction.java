@@ -18,7 +18,7 @@ public enum ClaimAction {
     }
 
     public String getName(LangType langType) {
-        return buttonName.get(langType);
+        return buttonName.translate(langType);
     }
 
     public String getTypeCommand() {

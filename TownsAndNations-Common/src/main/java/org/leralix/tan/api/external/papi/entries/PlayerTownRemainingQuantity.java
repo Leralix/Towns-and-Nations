@@ -45,6 +45,6 @@ public class PlayerTownRemainingQuantity extends PapiEntry {
                 return Integer.toString(level.getMaxAmount() - town.getNumberOfClaimedChunk());
             }
         }
-        return Lang.NO_TOWN.get(tanPlayer);
+        return Lang.NO_TOWN.translate(tanPlayer);
     }
 }

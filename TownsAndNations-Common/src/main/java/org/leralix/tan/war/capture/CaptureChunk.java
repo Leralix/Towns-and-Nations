@@ -81,7 +81,7 @@ public class CaptureChunk {
                 continue;
             }
             LangType langType = TownsAndNations.getPlugin().getPlayerDataStorage().get(player).getLang();
-            player.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message.get(langType)));
+            player.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message.translate(langType)));
         }
     }
 
@@ -100,7 +100,7 @@ public class CaptureChunk {
                     nbAttackers,
                     nbDefenders
             );
-        } else if (score > 0) {
+        } else if (score > 0 && score < Constants.getChunkCaptureTime()) {
             return Lang.WAR_INFO_CONTESTED.get(
                     getAttackingTerritory().getColoredName(),
                     NumberUtil.getPercentage(score, Constants.getChunkCaptureTime()),

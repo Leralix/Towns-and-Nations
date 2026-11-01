@@ -38,13 +38,13 @@ public class AdminLandmarksMenu extends IteratorGUI {
 
 
         return iconManager.get(IconKey.CREATE_LANDMARK)
-                .setName(Lang.ADMIN_GUI_CREATE_LANDMARK.get(langType))
+                .setName(Lang.ADMIN_GUI_CREATE_LANDMARK.translate(langType))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
                     IClaimedChunk claimedChunk = TownsAndNations.getPlugin().getClaimStorage().get(player.getLocation().getBlock().getChunk());
 
                     if (claimedChunk instanceof LandmarkClaimedChunk) {
-                        TanChatUtils.message(player, Lang.ADMIN_CHUNK_ALREADY_LANDMARK.get(langType));
+                        TanChatUtils.message(player, Lang.ADMIN_CHUNK_ALREADY_LANDMARK.translate(langType));
                         return;
                     }
                     Landmark newLandmark = TownsAndNations.getPlugin().getLandmarkStorage().addLandmark(player.getLocation());

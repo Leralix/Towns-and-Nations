@@ -54,21 +54,21 @@ public class PermissionList extends IndividualStat implements AggregatableStat<P
     public FilledLang getStatReward(LangType langType, int level, int maxLevel) {
         String nbNewCommands = getMathSign(values.size());
         if(level == 0){
-            return Lang.UPGRADE_LINE_INT.get(Lang.UNLOCK_PERMISSION.get(langType),  "0", nbNewCommands);
+            return Lang.UPGRADE_LINE_INT.get(Lang.UNLOCK_PERMISSION.translate(langType),  "0", nbNewCommands);
         }
         else {
-            return Lang.UPGRADE_LINE_INT_MAX.get(Lang.UNLOCK_PERMISSION.get(langType),nbNewCommands);
+            return Lang.UPGRADE_LINE_INT_MAX.get(Lang.UNLOCK_PERMISSION.translate(langType),nbNewCommands);
         }
     }
 
     @Override
     public FilledLang getStatReward(LangType langType) {
         if(values.isEmpty()){
-            return Lang.UPGRADE_LINE_INT_MAX.get(Lang.UNLOCK_PERMISSION.get(langType), "0");
+            return Lang.UPGRADE_LINE_INT_MAX.get(Lang.UNLOCK_PERMISSION.translate(langType), "0");
         }
         else {
             String nbNewCommands = getMathSign(values.size());
-            return Lang.UPGRADE_LINE_INT_MAX.get(Lang.UNLOCK_PERMISSION.get(langType), nbNewCommands);
+            return Lang.UPGRADE_LINE_INT_MAX.get(Lang.UNLOCK_PERMISSION.translate(langType), nbNewCommands);
         }
     }
 

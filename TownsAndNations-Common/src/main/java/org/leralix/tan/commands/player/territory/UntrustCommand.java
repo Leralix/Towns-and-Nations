@@ -104,7 +104,7 @@ public class UntrustCommand extends PlayerSubCommand {
         }
         Territory territory = optionalTerritory.get();
         if(territory.getRank(tanPlayer).hasPermission(RolePermission.MANAGE_CLAIM_SETTINGS)){
-            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
+            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer), NOT_ALLOWED);
             return;
         }
         ITanPlayer targetPlayer = playerDataStorage.get(Bukkit.getOfflinePlayer(args[2]));

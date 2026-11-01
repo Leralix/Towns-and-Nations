@@ -1,9 +1,11 @@
 package org.leralix.tan.gui.user.territory.hierarchy;
 
 import dev.triumphteam.gui.guis.GuiItem;
+import org.apache.commons.lang3.NotImplementedException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.leralix.tan.data.territory.Nation;
+import org.leralix.tan.data.territory.Region;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.gui.IteratorGUI;
@@ -42,7 +44,7 @@ public class VassalsMenu extends IteratorGUI {
     private @NotNull GuiItem getAddVassalButton() {
 
         return iconManager.get(IconKey.ADD_VASSALS_ICON)
-                .setName((territoryData instanceof Nation) ? Lang.GUI_INVITE_REGION_TO_NATION.get(tanPlayer) : Lang.GUI_INVITE_TOWN_TO_REGION.get(tanPlayer))
+                .setName((territoryData instanceof Nation) ? Lang.GUI_INVITE_REGION_TO_NATION.translate(tanPlayer) : Lang.GUI_INVITE_TOWN_TO_REGION.translate(tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
                 .setAction(action -> new AddVassalMenu(player, territoryData))
@@ -69,10 +71,12 @@ public class VassalsMenu extends IteratorGUI {
                             return;
                         }
                         if (vassal.isCapital()) {
-                            TanChatUtils.message(player,
-                                    (territoryData instanceof Nation) ?
-                                            Lang.CANT_KICK_NATION_CAPITAL.get(tanPlayer, vassal.getName()) :
-                                            Lang.CANT_KICK_REGIONAL_CAPITAL.get(tanPlayer, vassal.getName()),
+                            TanChatUtils.message(tanPlayer,
+                                    switch (territoryData) {
+                                        case Nation _ -> Lang.CANT_KICK_NATION_CAPITAL.get(vassal.getName());
+                                        case Region _ -> Lang.CANT_KICK_REGIONAL_CAPITAL.get(vassal.getName());
+                                        default -> throw new NotImplementedException();
+                                    },
                                     NOT_ALLOWED);
                             return;
                         }

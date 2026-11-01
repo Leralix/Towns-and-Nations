@@ -1,4 +1,5 @@
 language:
+  STRING: "§f{0}"
   LANGUAGE_SUCCESSFULLY_LOADED: "[TaN] Deutsche Sprache erfolgreich geladen"
   PLUGIN_STRING: "§6[TaN]§f "
   PLUGIN_DEBUG_STRING: "§c[TaN - Debug]§f "
@@ -6,9 +7,11 @@ language:
   #Common errors
   PLAYER_NO_TOWN: "§cDu hast keine Stadt"
   PLAYER_NO_REGION: "§cDu hast keine Region"
+  PLAYER_NO_NATION: "§cDu hast keine Nation"
   VALUE_EXCEED_MAXIMUM_ERROR: "§cDer Wert überschreitet die maximal erlaubte Anzahl ({0})"
   VALUE_CANNOT_BE_NEGATIVE_ERROR: "§cDer Wert darf nicht negativ sein"
   TOWN_NO_REGION: "§cDeine Stadt gehört keiner Region an"
+  PLAYER_NOT_IN_TERRITORY: "§cDu bist nicht Mitglied von {0}"
   LEADER_CANNOT_QUIT_TOWN: "§cDer Anführer kann die Stadt nicht verlassen"
   TOWN_ALREADY_HAVE_OVERLORD: "Diese Stadt hat bereits einen Herrscher"
   PLAYER_NO_PERMISSION: "§cDu hast keine Berechtigung, diesen Befehl auszuführen"
@@ -21,11 +24,14 @@ language:
   PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION: "§cNur der Stadtführer kann diese Aktion ausführen"
   CHUNK_NOT_CLAIMED: "Dieser Chunk ist nicht beansprucht"
   CANT_KICK_REGIONAL_CAPITAL: "Du kannst die regionale Hauptstadt nicht aus der Region entfernen"
+  CANT_KICK_NATION_CAPITAL: "§cDu kannst nicht die Hauptstadt der Nation aus deiner Nation Entfernen"
   CONFIRM_VASSAL_KICK: "{0} §cWird nicht mehr Teil von {1} sein."
   MESSAGE_NOT_RIGHT_SIZE: "§cDie Nachricht muss genau {0} - {1} Zeichen lang sein"
   NO_TRADE_ALLOWED_EMBARGO: "§cDu kannst nicht mit einer Stadt unter Embargo handeln"
   NO_LEADER: "§cKein Anführer"
   TOWN_DIPLOMATIC_INVITATION_NO_LEADER: "§cDie Stadt hat keinen Anführer für diplomatische Beziehungen"
+  TERRITORY_DIPLOMATIC_INVITATION_NO_LEADER: "§cDieses Gebiet hat keinen Anführer zu interagieren mit diplomatischen Beziehungen"
+  PROPERTY_OVERLAPING: "§cDas Grundstück würde sich mit einem anderen Grundstück Überlappen"
   PLAYER_PROPERTY_TOO_BIG: "§cDas Grundstück ist zu groß. Die maximale Größe beträgt {0} Blöcke"
   POSITION_NOT_IN_CLAIMED_CHUNK: "§cDie Position muss in einem beanspruchten Chunk liegen"
   LANDMARK_ALREADY_CLAIMED: "§cDiese Sehenswürdigkeit wurde bereits von §9{0} beansprucht"
@@ -43,6 +49,8 @@ language:
   LANDMARK_UPDATED: "{0} ({1})§f wurde aktualisiert."
   LANDMARK_STORED_UPDATED: "{0} ({1})§f wurde auf das Limit §e{2} gesetzt"
   LANDMARK_NOT_FOUND: "§cSehenswürdigkeit nicht gefunden"
+  #Action bar information
+  FORT_ACTION_BAR_INFO: "§6{0}§f, ist im besitzt von : {1}"
   #Placeholder API
   INVALID_VALUE: "Ungültiger Wert"
   INVALID_ID: "Ungültige ID"
@@ -51,8 +59,10 @@ language:
   INVALID_PLAYER_NAME: "Ungültiger Spielername"
   #Common uses
   DISPLAY_COORDINATES: "§fKoordinaten: §d[{0}, {1}, {2}]"
+  DISPLAY_2D_COORDINATES: "§d[x: {0}, z : {1}]"
   GUI_BASIC_NAME: "§a{0}"
   CURRENT_STATE: "§fAktueller Status: §a{0}"
+  SET_TRUE_IF_AT_WAR: "§fEs wird zu §aAktiviert§f gesetzt Während des Krieges"
   ENABLED: "§aAktiviert"
   DISABLED: "§cDeaktiviert"
   ENTER_NEW_VALUE: "Schreibe die neue Nachricht oder Wert in den Chat."
@@ -61,6 +71,7 @@ language:
   #Chat scope
   CHAT_SCOPE_TOWN_MESSAGE: "§9[{0}]§f <{1}> {2}"
   CHAT_SCOPE_REGION_MESSAGE: "§b[{0}]§f <{1}> {2}"
+  CHAT_SCOPE_NATION_MESSAGE: "§6[{0}]§f <{1}> {2}"
   CHAT_SCOPE_ALLIANCE_MESSAGE: "§9[Allianz - {0}]§3 {1}: §f{2}"
   #Update needed
   NEW_VERSION_AVAILABLE: "§cEine neue Version ist verfügbar: §f{0}"
@@ -85,6 +96,7 @@ language:
   SYNTAX_ERROR: "§cFalsche Syntax"
   SYNTAX_ERROR_AMOUNT: "§cFalsche Syntax für die Menge"
   CORRECT_SYNTAX_INFO: "§cKorrekte Syntax: {0}"
+  MESSAGE_TOO_SHORT: "§cDie Nachricht ist zu Kurz: {0} Minuten"
   MESSAGE_TOO_LONG: "§cNachricht ist zu lang: maximal {0}"
   CANCELLED_ACTION: "§cAktion abgebrochen"
   #Cancel
@@ -96,13 +108,14 @@ language:
   #BROADCAST
   TOWN_BROADCAST_PLAYER_LEAVE_THE_TOWN: "§3{0}§c hat die Stadt verlassen!"
   GUI_REGION_KICK_TOWN_BROADCAST: "§fDie Stadt §9{0}§f wurde aus der Region entfernt"
+  GUI_NATION_KICK_REGION_BROADCAST: "§fDie Region §b{0}§f wurde aus der Nation geworfen"
   #Claim chunk command
   CLAIM_CHUNK_COMMAND_DESC: "Beanspruche ein Chunk"
   CHUNK_ALREADY_CLAIMED_WARNING: "§cDieses Chunk wurde bereits beansprucht von: §9{0}"
-  CANNOT_CLAIM_LANDMARK: "§cDu kannst kein Chunk mit einer Sehenswürdigkeit beanspruchen"
   CHUNK_BIOME_NOT_ALLOWED: "§cDu kannst keine Chunks in diesem Biom beanspruchen."
   CHUNK_IN_BUFFER_ZONE: "§cDu kannst keinen ersten Chunk in der Nähe eines anderen Territoriums beanspruchen (mindestens §e{0}§c)."
   MAX_CHUNK_LIMIT_REACHED: "§cDu hast die maximale Anzahl an beanspruchten Chunks erreicht. Erweitere deine Stadt, um mehr zu erhalten"
+  CHUNK_NOT_ADJACENT: "§cDieser Chunk grenzt nicht an dein Territorium"
   CHUNK_CLAIMED_SUCCESS_UNLIMITED: "Chunk für {0} beansprucht."
   CHUNK_CLAIMED_SUCCESS_LIMITED: "Chunk für {0} §f(§2{1}/{2}♦️§f) beansprucht."
   #Invite player to town command
@@ -120,10 +133,14 @@ language:
   TOWN_INVITATION_ACCEPTED_TOWN_SIDE: "§3{0}§f ist der Stadt beigetreten!"
   #Relation diplomatique
   DIPLOMATIC_INVITATION_SENT_SUCCESS: "Vorschlag an {0} gesendet"
+  CANNOT_REMOVE_RELATION_WAR: "§cDu kannst die Beziehung nicht ändern während du im Krieg mit diesem Territorium bist"
   CURRENT_RELATION_REQUIRES_TRUCE: "."
+  CANNOT_SET_RELATION_TO_NEGATIVE_WHILE_TRUCE: "§cDu hast noch eine §6{0} Stunde(n)§c Waffenstillstand mit {1}."
   ACCEPTED_VASSALISATION_PROPOSAL_ALL: "{0}§f ist der Region {1} beigetreten"
+  NATION_ACCEPTED_VASSALISATION_PROPOSAL_ALL: "{0}§f Hat sich Nation {1} Angeschlossen"
   #Diplomatic relation confirmation
   REGION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f hat {1}§f eingeladen, dem Gebiet beizutreten"
+  NATION_DIPLOMATIC_INVITATION_RECEIVED_1: "{0}§f hat {1}§f eingeladen, der Nation beizutreten"
   #Autoclaim command
   TOWN_AUTO_CLAIM_DESC: "Aktiviere automatisches Beanspruchen beim Bewegen durch Chunks"
   AUTO_CLAIM_ON_FOR: "§fAuto-Claim ist jetzt aktiviert für Chunk-Typ: §9{0}"
@@ -135,8 +152,13 @@ language:
   CHAT_SCOPE_NOT_FOUND: "§cUnbekannter Chat-Bereich"
   CITY_SCOPE: "Stadt"
   REGION_SCOPE: "Region"
+  NATION_SCOPE: "Nation"
   ALLIANCE_SCOPE: "Allianz"
   GLOBAL_SCOPE: "Global"
+  #See border command
+  SEE_BORDER_COMMAND_DESC: "Aktiviere oder Deaktiviere Gebiets Grenze"
+  ENABLE_BORDER_INFO: "Zeigt nun Grenze"
+  DISABLE_BORDER_INFO: "Versteckt jetzt die Grenze"
   ###Admins commands
   ADD_MONEY_COMMAND_SUCCESS: "§6+{0}{MONEY_CHAR}§f zu §3{1} §fhinzugefügt"
   SET_MONEY_COMMAND_SUCCESS: "Erfolgreich den Saldo von §3{0}§f auf §6{1}{MONEY_CHAR} gesetzt"
@@ -153,11 +175,14 @@ language:
   BAL_AMOUNT: "Dein Saldo: §6{0}{MONEY_CHAR}"
   #Unclaim command
   UNCLAIM_CHUNK_COMMAND_DESC: "Einen Chunk freigeben"
+  CHUNK_UNCLAIMED_SUCCESS_UNLIMITED: "Chunk ist {0} widerrufen worden"
+  CHUNK_UNCLAIMED_SUCCESS_LIMITED: "Chunk widerrufen worden für {0} §f(§2{1}/{2}♦§f)"
   UNCLAIMED_CHUNK_SUCCESS_TOWN: "Chunk freigegeben! Aktuelle Anzahl der beanspruchten Chunks: §2{0}/{1}♦"
   UNCLAIMED_CHUNK_SUCCESS_REGION: "Chunk freigegeben! Aktuelle Anzahl der beanspruchten Chunks: §2{0}♦"
   DEBUG_UNCLAIMED_CHUNK_SUCCESS_TOWN: "Chunk freigegeben! Aktuelle Anzahl der beanspruchten Chunks §9{0} §f: §2{1}/{2}♦"
   DEBUG_UNCLAIMED_CHUNK_SUCCESS_REGION: "Chunk freigegeben! Aktuelle Anzahl der beanspruchten Chunks §9{0} §f: §2{1}♦"
   PROPERTY_IN_CHUNK: "§cDieser Chunk enthält eine Immobilie §f({0})"
+  BUILDINGS_OR_CAPITAL_IN_CHUNK: "§cDieser Chunk hat mindestens ein Gebäude oder ist ein Stück von der Hauptstadt"
   #Map command
   MAP_COMMAND_DESC: "Öffne die Karte der Chunks um den Spieler herum"
   #Debug commands
@@ -360,7 +385,6 @@ language:
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC2: "§fLinksklick zum§a Annehmen"
   GUI_PLAYER_ASK_JOIN_PROFILE_DESC3: "§fRechtsklick zum§c Ablehnen"
   GUI_LANGUAGE_CHANGED: "§aSprache geändert zu: {0}"
-  GUI_TOWN_LEVEL_ICON: "§aStadtstufe"
   GUI_TOWN_SETTINGS_ICON: "§aEinstellungen"
   GUI_TOWN_SETTINGS_ICON_DESC1: "§fAllgemeine Stadteinstellungen"
   GUI_ATTACK_ICON: "§aAngriffe"
@@ -392,18 +416,6 @@ language:
   GUI_TOWN_LEVEL_UP_DESC2: "§fKosten für das Upgrade auf Level §a{0}§f: §e{1}{MONEY_CHAR}"
   GUI_TOWN_LEVEL_UP_UNI_DESC3: "§f§nVoraussetzungen:"
   GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET: "§cDu erfüllst die Voraussetzungen nicht"
-  #Diplomacy
-  GUI_TOWN_RELATION_HOSTILE: "§aFeindlich"
-  GUI_TOWN_RELATION_HOSTILE_DESC1: "§fFeindliche Beziehungen verwalten"
-  GUI_TOWN_RELATION_EMBARGO: "Embargo"
-  GUI_TOWN_RELATION_EMBARGO_DESC1: "§fVerwalte blockierte Territorien"
-  GUI_TOWN_RELATION_NAP: "§aNichtangriffspakt"
-  GUI_TOWN_RELATION_NAP_DESC1: "§fVerwalte Territorien mit einem Nichtangriffspakt"
-  GUI_TOWN_RELATION_ALLIANCE: "§aAllianz"
-  GUI_TOWN_RELATION_ALLIANCE_DESC1: "§fVerwalte Territorien mit einer Militärallianz"
-  GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL: "§aDiplomatischer Vorschlag"
-  GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC1: "§fListe der ausstehenden diplomatischen Vorschläge"
-  GUI_TOWN_RELATION_DIPLOMACY_PROPOSAL_DESC2: "§6{0}§f ausstehende Vorschläge"
   GUI_TOWN_RELATION_ADD_TOWN: "§aStadt hinzufügen"
   GUI_TOWN_RELATION_REMOVE_TOWN: "§aStadt entfernen"
   BROADCAST_RELATION_IMPROVE: "§fDie Beziehung zwischen {0}§f und {1}§f hat sich verbessert auf: {2}"
@@ -477,7 +489,6 @@ language:
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2: "§cDu verlierst deinen Status als Stadtleiter"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC1: "§fÜbertrage die Stadtleitung an §e{0}"
   GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_DESC2: "§cDu verlierst deinen Status und wirst zum Standardrang"
-  GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS: "Erfolgreich die Stadtleitung übertragen an: §e{0}"
   GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST: "Dein Regionsleiter ist jetzt §e{0}"
   GUI_REGION_SETTINGS_REGION_CHANGE_CAPITAL_BROADCAST: "Deine Regionshauptstadt ist jetzt §b{0}"
   TOWN_SET_TAX_IN_CHAT: "Gib die neue Steuer ein"
@@ -510,14 +521,10 @@ language:
   GUI_REGION_TOWN_LIST_DESC1: "§fLinksklick, um die Städte-Liste zu öffnen"
   GUI_HIERARCHY_MENU: "§aHierarchie"
   GUI_HIERARCHY_MENU_DESC1: "§fVerwalte die Territorien-Hierarchie"
-  GUI_REGION_CHANGE_CAPITAL: "§aRegion-Hauptstadt ändern"
-  GUI_REGION_CHANGE_CAPITAL_DESC1: "§fAktuelle Hauptstadt: §3{0}"
-  GUI_REGION_CHANGE_CAPITAL_DESC2: "§fLinksklick, um die Region-Hauptstadt zu ändern"
   GUI_REGION_DELETE: "§aRegion löschen"
   GUI_REGION_DELETE_DESC1: "§cLösche die Region §9{0}"
   GUI_REGION_DELETE_DESC2: "§fLinksklick, um die Region zu löschen"
   GUI_REGION_DELETE_DESC3: "§cDu kannst eine Region nicht löschen, wenn du nicht der Leiter der regionalen Hauptstadt bist"
-  GUI_NEED_TO_BE_LEADER_OF_REGION: "§cDu musst der Leiter der regionalen Hauptstadt sein, um diese Aktion auszuführen"
   GUI_INVITE_TOWN_TO_REGION: "§aStadt zur Region einladen"
   GUI_REGION_INVITE_TOWN_DESC1: "§fLinksklick, um diese Stadt zur Region einzuladen"
   #Landmarks
@@ -571,8 +578,6 @@ language:
   VASSAL_GUI: "§aVasallen"
   VASSAL_GUI_DESC1: "{0}§f hat §6{1}§f Vasallen"
   CANNOT_HAVE_VASSAL: "§fDieses Gebiet kann keine Vasallen haben"
-  #Chat Information
-  CHAT_CANT_LEAVE_TOWN_IF_LEADER: "§cDu kannst eine Stadt nicht verlassen, wenn du der Anführer bist, du musst sie auflösen oder die Leitung an jemanden anderen übergeben"
   CHAT_CANT_LEAVE_TOWN_IF_REGION_LEADER: "Du kannst keine Stadt verlassen, wenn du der Führer der Region bist, du musst sie auflösen oder die Stadt an jemand anderem übertragen"
   CHAT_PLAYER_LEFT_THE_TOWN: "§fDu hast die Stadt verlassen"
   WARNING_OTHER_TOWN_HAS_BEEN_DELETED: "§cDie Stadt {0}§c, mit der du eine Beziehung hattest: {1}§c wurde gelöscht"
@@ -625,7 +630,6 @@ language:
   CONFIRM_PLAYER_KICKED: "§3{0}§f wird aus der Stadt geworfen"
   GUI_CONFIRM_DELETE_REGION: "§fDie Region §b{0}§f wird gelöscht"
   GUI_CONFIRM_CHANGE_LEADER: "§3{0}§f wird der neue Anführer der Region"
-  #War goal
   CONQUER_WAR_GOAL: "§aTerritorium erobern"
   CONQUER_WAR_GOAL_DESC: "§fErobere eine bestimmte Menge an Territorium"
   GUI_CONQUER_CHUNK_CURRENT_DESC: "§fErobere §2{0}§f Chunk"

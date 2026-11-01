@@ -29,8 +29,8 @@ public class LocalChatStorage {
 
     private final HashMap<String, ChatScope> playerChatScope = new HashMap<>();
 
-    public void setPlayerChatScope(Player player, ChatScope scope) {
-        playerChatScope.put(player.getUniqueId().toString(), scope);
+    public void setPlayerChatScope(ITanPlayer player, ChatScope scope) {
+        playerChatScope.put(player.getID().toString(), scope);
     }
 
     public ChatScope getPlayerChatScope(String uuid) {
@@ -79,7 +79,7 @@ public class LocalChatStorage {
 
     private void broadcastTownMessage(Player player, ITanPlayer tanPlayer, String message, boolean sendLogsToConsole) {
         if (!tanPlayer.hasTown()) {
-            TanChatUtils.message(player, Lang.NO_TOWN.get(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
+            TanChatUtils.message(player, Lang.NO_TOWN.translate(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
             return;
         }
 
@@ -91,7 +91,7 @@ public class LocalChatStorage {
 
     private void broadcastRegionMessage(Player player, ITanPlayer tanPlayer, String message, boolean sendLogsToConsole) {
         if (!tanPlayer.hasRegion()) {
-            TanChatUtils.message(player, Lang.NO_REGION.get(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
+            TanChatUtils.message(player, Lang.NO_REGION.translate(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
             return;
         }
 
@@ -103,7 +103,7 @@ public class LocalChatStorage {
 
     private void broadcastNationMessage(Player player, ITanPlayer tanPlayer, String message, boolean sendLogsToConsole) {
         if (!tanPlayer.hasNation()) {
-            TanChatUtils.message(player, Lang.NO_NATION.get(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
+            TanChatUtils.message(player, Lang.NO_NATION.translate(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
             return;
         }
 
@@ -115,7 +115,7 @@ public class LocalChatStorage {
 
     private void broadcastAllianceMessage(Player player, ITanPlayer tanPlayer, String message, boolean sendLogsToConsole) {
         if (!tanPlayer.hasTown()) {
-            TanChatUtils.message(player, Lang.NO_TOWN.get(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
+            TanChatUtils.message(player, Lang.NO_TOWN.translate(tanPlayer.getLang()), SoundEnum.NOT_ALLOWED);
             return;
         }
 
@@ -131,7 +131,7 @@ public class LocalChatStorage {
 
     private void logIfNeeded(FilledLang message, boolean sendLogsToConsole) {
         if (sendLogsToConsole) {
-            TownsAndNations.getPlugin().getLogger().info(message.getDefault());
+            TownsAndNations.getPlugin().getLogger().info(message.translateDefault());
         }
     }
 

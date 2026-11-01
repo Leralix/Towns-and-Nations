@@ -4,6 +4,7 @@ package org.leralix.tan.storage.stored;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.leralix.lib.position.Vector2D;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.chunk.*;
 import org.leralix.tan.data.territory.Territory;
@@ -46,6 +47,14 @@ public interface ClaimStorage {
      */
     default IClaimedChunk get(Player player){
         return get(player.getLocation().getChunk());
+    }
+
+    default IClaimedChunk get(Vector2D vector2D){
+        return get(
+                vector2D.getX(),
+                vector2D.getZ(),
+                vector2D.getWorldID().toString()
+        );
     }
 
     default void unclaimAllChunkFromID(String id) {

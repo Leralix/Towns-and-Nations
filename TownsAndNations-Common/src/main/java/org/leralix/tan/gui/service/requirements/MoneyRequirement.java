@@ -2,7 +2,7 @@ package org.leralix.tan.gui.service.requirements;
 
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 import org.leralix.tan.utils.text.NumberUtil;
 
 public class MoneyRequirement extends IndividualRequirementWithCost {
@@ -16,15 +16,15 @@ public class MoneyRequirement extends IndividualRequirementWithCost {
     }
 
    @Override
-    public String getLine(LangType langType) {
+    public Placeholder getLine() {
         double cost = getCost();
         if(cost == 0){
             return null;
         }
         if(isInvalid()){
-            return Lang.REQUIREMENT_COST_NEGATIVE.get(langType, Double.toString(cost));
+            return Lang.REQUIREMENT_COST_NEGATIVE.get(Double.toString(cost));
         } else {
-            return Lang.REQUIREMENT_COST_POSITIVE.get(langType, Double.toString(cost));
+            return Lang.REQUIREMENT_COST_POSITIVE.get(Double.toString(cost));
         }
     }
 

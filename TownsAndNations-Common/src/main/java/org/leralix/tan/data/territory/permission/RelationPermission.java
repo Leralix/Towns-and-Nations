@@ -31,7 +31,7 @@ public enum RelationPermission {
     }
 
     public String getName(LangType langType) {
-        return name.get(langType);
+        return name.translate(langType);
     }
 
     public ChatColor getColor() {

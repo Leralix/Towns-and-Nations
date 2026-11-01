@@ -37,9 +37,9 @@ public class TerritoryWithIdExist extends PapiEntry {
         }
 
         String[] values = extractValues(params);
-        if (values.length == 0) return Lang.INVALID_VALUE.get(tanPlayer);
+        if (values.length == 0) return Lang.INVALID_VALUE.translate(tanPlayer);
         String id = values[0];
-        if (id == null) return Lang.INVALID_ID.get(tanPlayer);
+        if (id == null) return Lang.INVALID_ID.translate(tanPlayer);
         return TerritoryUtil.getTerritory(id) != null ? Constants.getTruePlaceholderString() : Constants.getFalsePlaceholderString();
     }
 }

@@ -7,10 +7,10 @@ import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.chunk.IClaimedChunk;
 import org.leralix.tan.data.chunk.TerritoryChunk;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -51,9 +51,9 @@ public class UnclaimAdminCommand extends PlayerSubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        LangType langType = playerDataStorage.get(player).getLang();
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
         if (args.length != 1) {
-            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType));
+            TanChatUtils.message(tanPlayer, Lang.CORRECT_SYNTAX_INFO);
             return;
         }
 
@@ -65,16 +65,16 @@ public class UnclaimAdminCommand extends PlayerSubCommand {
             Territory owner = territoryChunk.getOwnerInternal();
             ChunkCap chunkCap = owner.getNewLevel().getStat(ChunkCap.class);
             if(chunkCap.isUnlimited()){
-                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(langType, owner.getColoredName()));
+                TanChatUtils.message(tanPlayer, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(owner.getColoredName()));
             }
             else {
                 String currentChunks = Integer.toString(owner.getNumberOfClaimedChunk());
                 String maxChunks = Integer.toString(chunkCap.getMaxAmount());
-                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(langType, owner.getColoredName(), currentChunks, maxChunks));
+                TanChatUtils.message(tanPlayer, Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(owner.getColoredName(), currentChunks, maxChunks));
             }
         }
         else {
-            TanChatUtils.message(player, Lang.ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED.get(langType), SoundEnum.NOT_ALLOWED);
+            TanChatUtils.message(tanPlayer, Lang.ADMIN_UNCLAIM_CHUNK_NOT_CLAIMED, SoundEnum.NOT_ALLOWED);
         }
     }
 

@@ -45,7 +45,7 @@ public class SalaryPaymentLine extends ProfitLine {
     public void addItems(Gui gui, Player player, ITanPlayer playerData, LangType lang) {
 
         gui.setItem(2, 6, IconManager.getInstance().get(IconKey.SALARY_INFO_ICON)
-                .setName(Lang.GUI_TREASURY_SALARY_HISTORY.get(lang))
+                .setName(Lang.GUI_TREASURY_SALARY_HISTORY.translate(lang))
                 .setDescription(
                         Lang.GUI_TREASURY_SALARY_HISTORY_DESC1.get(StringUtil.getColoredMoney(getMoney()))
                 )

@@ -32,7 +32,7 @@ public class AttackNotYetStarted extends AttackResult {
 
         return List.of(
                 Lang.ATTACK_ICON_NOT_YET_STARTED.get(),
-                Lang.ATTACK_ICON_NOT_YET_STARTED_START_DATE.get(DateUtil.getDateStringFromMilli(dateOfStart), exactTimeStart.get(langType)),
+                Lang.ATTACK_ICON_NOT_YET_STARTED_START_DATE.get(DateUtil.getDateStringFromMilli(dateOfStart), exactTimeStart.translate(langType)),
                 Lang.ATTACK_ICON_NOT_YET_STARTED_DURATION_DATE.get(DateUtil.getDateStringFromMinutes(Constants.getAttackDuration()))
         );
     }

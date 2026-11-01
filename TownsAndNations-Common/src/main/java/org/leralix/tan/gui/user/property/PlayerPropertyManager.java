@@ -52,7 +52,7 @@ public class PlayerPropertyManager extends PropertyMenus {
     protected GuiItem getPropertyIcon(){
         return iconManager.get(propertyData.getIcon())
                 .setName(propertyData.getName())
-                .setDescription(propertyData.getBasicDescription(langType))
+                .setDescription(propertyData.getBasicDescription())
                 .setClickToAcceptMessage(Lang.GUI_PROPERTY_CHANGE_ICON)
                 .setAction(event -> {
                     if(event.getCursor() == null){

@@ -126,7 +126,7 @@ public abstract class Fort extends Building implements TanFort, Nameable {
                 .setAction(
                         action -> {
                             if(action.isLeftClick()) {
-                                TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
+                                TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.translate(langType));
                                 PlayerChatListenerStorage.register(player, langType, new ChangeBuildingName(this, p -> basicGui.open(), Constants.getTownMaxNameSize()));
                             }
                             else if (action.isRightClick()) {

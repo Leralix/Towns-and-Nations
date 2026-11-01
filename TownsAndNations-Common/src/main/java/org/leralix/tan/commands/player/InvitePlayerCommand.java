@@ -65,13 +65,13 @@ public class InvitePlayerCommand extends PlayerSubCommand {
     public void perform(Player player, String[] args) {
         if (args.length <= 1) {
             TanChatUtils.message(player, Lang.NOT_ENOUGH_ARGS_ERROR.getDefault());
-            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
+            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).translateDefault());
 
         } else if (args.length == 2) {
             invite(player, args[1]);
         } else {
             TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.getDefault());
-            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).getDefault());
+            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()).translateDefault());
         }
     }
 
@@ -81,34 +81,33 @@ public class InvitePlayerCommand extends PlayerSubCommand {
         LangType langType = tanPlayer.getLang();
 
         if (townData == null) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
+            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.translate(langType));
             return;
         }
         if (!townData.doesPlayerHavePermission(tanPlayer, RolePermission.INVITE_PLAYER)) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType));
+            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(langType));
             return;
         }
 
         Player invite = Bukkit.getPlayer(playerToInvite);
         if (invite == null) {
-            TanChatUtils.message(player, Lang.PLAYER_NOT_FOUND.get(langType));
+            TanChatUtils.message(player, Lang.PLAYER_NOT_FOUND.translate(langType));
             return;
         }
 
 
         if (townData.isFull()) {
-            TanChatUtils.message(player, Lang.INVITATION_TOWN_FULL.get(langType));
+            TanChatUtils.message(player, Lang.INVITATION_TOWN_FULL.translate(langType));
             return;
         }
         ITanPlayer inviteStat = playerDataStorage.get(invite);
 
         if (inviteStat.getTownId() != null) {
             if (inviteStat.getTownId().equals(townData.getID())) {
-                TanChatUtils.message(player, Lang.INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN.get(langType, invite.getName()));
+                TanChatUtils.message(tanPlayer, Lang.INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN.get(invite.getName()));
                 return;
             }
-            TanChatUtils.message(player, Lang.INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN.get(
-                    langType,
+            TanChatUtils.message(tanPlayer, Lang.INVITATION_ERROR_PLAYER_ALREADY_HAVE_TOWN.get(
                     invite.getName(),
                     inviteStat.getTown().getName())
             );
@@ -117,11 +116,10 @@ public class InvitePlayerCommand extends PlayerSubCommand {
 
         TownInviteDataStorage.addInvitation(invite.getUniqueId(), townData.getID());
 
-        TanChatUtils.message(player, Lang.INVITATION_SENT_SUCCESS.get(langType, invite.getName()));
+        TanChatUtils.message(tanPlayer, Lang.INVITATION_SENT_SUCCESS.get(invite.getName()));
 
-        LangType receiverLang = inviteStat.getLang();
-        TanChatUtils.message(invite, Lang.INVITATION_RECEIVED_1.get(receiverLang, player.getName(), townData.getName()));
-        ChatUtils.sendClickableCommand(invite, Lang.INVITATION_RECEIVED_2.get(receiverLang), "tan join " + StringUtil.removeSpaceChar(townData.getName()));
+        TanChatUtils.message(inviteStat, Lang.INVITATION_RECEIVED_1.get(player.getName(), townData.getName()));
+        ChatUtils.sendClickableCommand(invite, Lang.INVITATION_RECEIVED_2.translate(inviteStat.getLang()), "tan join " + StringUtil.removeSpaceChar(townData.getName()));
     }
 }
 

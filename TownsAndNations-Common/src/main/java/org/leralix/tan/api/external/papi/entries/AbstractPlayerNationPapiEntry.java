@@ -30,7 +30,7 @@ public abstract class AbstractPlayerNationPapiEntry extends PapiEntry {
         }
 
         if (!tanPlayer.hasNation()) {
-            return Lang.NO_NATION.get(tanPlayer);
+            return Lang.NO_NATION.translate(tanPlayer);
         }
 
         return getDataForNationPlayer(tanPlayer);

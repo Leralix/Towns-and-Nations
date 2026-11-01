@@ -49,10 +49,10 @@ public class OpenPlayerListForChunkPermission extends IteratorGUI {
 
     private @NotNull GuiItem getAddButton() {
         return iconManager.get(IconKey.ADD_NEW_PLAYER_PERMISSION_ICON)
-                .setName(Lang.GUI_GENERIC_ADD_BUTTON.get(langType))
+                .setName(Lang.GUI_GENERIC_ADD_BUTTON.translate(langType))
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer), NOT_ALLOWED);
                         return;
                     }
                     new AddPlayerWithPermissionMenu(player, chunkPermission.getChunkPermissions(), chunkPermissionType, this);
@@ -74,7 +74,7 @@ public class OpenPlayerListForChunkPermission extends IteratorGUI {
                     .setAction(action -> {
                         action.setCancelled(true);
                         if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer));
                             return;
                         }
                         if (action.isRightClick()) {

@@ -48,11 +48,11 @@ public class PlayerApplicationMenu extends IteratorGUI {
                     .setAction(action -> {
                         if (action.isLeftClick()) {
                             if (!townData.doesPlayerHavePermission(tanPlayer, RolePermission.INVITE_PLAYER)) {
-                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
+                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer), NOT_ALLOWED);
                                 return;
                             }
                             if (townData.isFull()) {
-                                TanChatUtils.message(player, Lang.INVITATION_TOWN_FULL.get(tanPlayer), NOT_ALLOWED);
+                                TanChatUtils.message(player, Lang.INVITATION_TOWN_FULL.translate(tanPlayer), NOT_ALLOWED);
                                 return;
                             }
                             if (playerIterateData == null) {
@@ -63,7 +63,7 @@ public class PlayerApplicationMenu extends IteratorGUI {
                             townData.addPlayer(playerIterateData);
                         } else if (action.isRightClick()) {
                             if (!townData.doesPlayerHavePermission(tanPlayer, RolePermission.KICK_PLAYER)) {
-                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer));
+                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer));
                                 return;
                             }
                             if (playerIterateData == null) {

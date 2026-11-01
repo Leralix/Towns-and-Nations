@@ -29,12 +29,12 @@ public class CreateRegion extends ChatListenerEvent {
         Town town = playerData.getTown();
 
         if(!town.isLeader(player)){
-            TanChatUtils.message(player, Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get(playerData));
+            TanChatUtils.message(player, Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.translate(playerData));
             return false;
         }
 
         if(town.getBalance() < cost){
-            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(playerData, town.getColoredName(), Double.toString(cost - town.getBalance())));
+            TanChatUtils.message(playerData, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(town.getColoredName(), Double.toString(cost - town.getBalance())));
             return false;
         }
 
@@ -46,12 +46,12 @@ public class CreateRegion extends ChatListenerEvent {
 
         int maxSize = Constants.getRegionMaxNameSize();
         if(regionName.length() > maxSize){
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(playerData, Integer.toString(maxSize)));
+            TanChatUtils.message(playerData, Lang.MESSAGE_TOO_LONG.get(Integer.toString(maxSize)));
             return false;
         }
 
         if(TownsAndNations.getPlugin().getRegionStorage().isNameUsed(regionName)){
-            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(playerData));
+            TanChatUtils.message(playerData, Lang.NAME_ALREADY_USED);
             return false;
         }
 

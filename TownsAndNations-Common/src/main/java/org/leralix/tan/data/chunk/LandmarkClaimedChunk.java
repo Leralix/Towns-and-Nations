@@ -16,6 +16,7 @@ import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -69,13 +70,13 @@ public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
         }
 
 
-        TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.get(tanPlayer));
+        TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.translate(tanPlayer));
         return false;
     }
 
     @Override
     protected void playerCantPerformAction(Player player, LangType langType) {
-        TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.get(langType));
+        TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.translate(langType));
     }
 
     @Override
@@ -90,20 +91,26 @@ public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
 
     @Override
     public boolean canEntitySpawn(EntityType entityType) {
-        return true;
+
+        Landmark landmark = getLandMark();
+        Territory ownerTerritory = landmark.getOwner();
+        if(ownerTerritory == null) {
+            return true;
+        }
+        return ownerTerritory.getChunkSettings().getSpawnControl(entityType.toString()).canSpawn();
     }
 
     @Override
     public Component getMapIcon(LangType langType, boolean isMiddleOfMap) {
 
-        boolean isOwned = getLandMark().isOwned();
+        Territory ownerTerritory = getLandMark().getOwner();
 
-        String text = chunkCoordinateString() +
-                ChatColor.GOLD + getLandMark().getName() + "\n" +
-                (isOwned ? Lang.CHUNK_OWNER.get(langType, getLandMark().getOwner().getName()) : Lang.CHUNK_NOT_CLAIMED.get(langType))
-                ;
+        Placeholder mapMessage = ownerTerritory != null ?
+                Lang.CHUNK_OWNER.get(ownerTerritory.getName()) :
+                Lang.CHUNK_NOT_CLAIMED;
 
-        int color = isOwned ? getLandMark().getOwner().getChunkColorCode() : 0xFFAA00;
+        String text = chunkCoordinateString() + ChatColor.GOLD + getLandMark().getName() + "\n" + mapMessage.translate(langType);
+        int color = ownerTerritory != null ? ownerTerritory.getChunkColorCode() : 0xFFAA00;
 
         return Component.text("❇")
                 .color(TextColor.color(color))

@@ -37,12 +37,12 @@ public class PlayerNameHaveTown extends PapiEntry{
         }
 
         String[] values = extractValues(params);
-        if(values.length == 0) return Lang.INVALID_VALUE.get(tanPlayer);
+        if(values.length == 0) return Lang.INVALID_VALUE.translate(tanPlayer);
         String playerName = values[0];
-        if(playerName == null) return Lang.INVALID_PLAYER_NAME.get(tanPlayer);
+        if(playerName == null) return Lang.INVALID_PLAYER_NAME.translate(tanPlayer);
         OfflinePlayer playerSelected = Bukkit.getOfflinePlayer(playerName);
         ITanPlayer tanPlayer1 = playerDataStorage.get(playerSelected);
-        if(tanPlayer1 == null) return Lang.INVALID_PLAYER_NAME.get(tanPlayer);
+        if(tanPlayer1 == null) return Lang.INVALID_PLAYER_NAME.translate(tanPlayer);
         return tanPlayer1.hasTown() ? Constants.getTruePlaceholderString(): Constants.getFalsePlaceholderString();
     }
 }

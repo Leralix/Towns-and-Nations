@@ -34,6 +34,6 @@ public class PlayerTownResidentQuantity extends PapiEntry {
             return PLAYER_NOT_FOUND;
         }
 
-        return tanPlayer.hasTown() ? Integer.toString(tanPlayer.getTown().getPlayerIDList().size()) : Lang.NO_TOWN.get(tanPlayer);
+        return tanPlayer.hasTown() ? Integer.toString(tanPlayer.getTown().getPlayerIDList().size()) : Lang.NO_TOWN.translate(tanPlayer);
     }
 }

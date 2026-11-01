@@ -29,7 +29,7 @@ public class PlayerTownBalance extends PapiEntry {
             return PLAYER_NOT_FOUND;
         }
 
-        return tanPlayer.hasTown() ? Double.toString(tanPlayer.getTown().getBalance()) : Lang.NO_TOWN.get(tanPlayer);
+        return tanPlayer.hasTown() ? Double.toString(tanPlayer.getTown().getBalance()) : Lang.NO_TOWN.translate(tanPlayer);
 
     }
 }

@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
@@ -42,8 +43,8 @@ public class RightClickListener implements Listener {
                 events.remove(player);
             }
             if(state == ListenerState.FAILURE){
-                LangType langType = playerDataStorage.get(player).getLang();
-                TanChatUtils.message(player, Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)));
+                ITanPlayer tanPlayer = playerDataStorage.get(player);
+                TanChatUtils.message(tanPlayer, Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD));
             }
         }
     }
@@ -54,7 +55,7 @@ public class RightClickListener implements Listener {
 
     public static void register(Player player, LangType langType, RightClickListenerEvent rightClickListenerEvent){
         player.closeInventory();
-        TanChatUtils.message(player, Lang.WRITE_CANCEL_TO_CANCEL.get(langType, Lang.CANCEL_WORD.get(langType)), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player, Lang.WRITE_CANCEL_TO_CANCEL.get(Lang.CANCEL_WORD.translate(langType)), SoundEnum.MINOR_GOOD);
         events.put(player, rightClickListenerEvent);
     }
 

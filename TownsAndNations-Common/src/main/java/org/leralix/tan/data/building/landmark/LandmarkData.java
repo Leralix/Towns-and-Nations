@@ -6,6 +6,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jspecify.annotations.Nullable;
 import org.leralix.lib.position.Vector3D;
 import org.leralix.tan.TownsAndNations;
 import org.leralix.tan.data.chunk.IClaimedChunk;
@@ -46,7 +47,7 @@ public class LandmarkData implements Landmark, TanLandmark {
 
     public LandmarkData(String id, Vector3D position) {
         this.ID = id;
-        this.name = Lang.SPECIFIC_LANDMARK_ICON_DEFAULT_NAME.get(Lang.getServerLang(), getID());
+        this.name = Lang.SPECIFIC_LANDMARK_ICON_DEFAULT_NAME.get(getID()).translateDefault();
         this.position = position;
         this.materialName = "DIAMOND";
         this.amount = 2;
@@ -161,7 +162,7 @@ public class LandmarkData implements Landmark, TanLandmark {
     }
 
     @Override
-    public Territory getOwner() {
+    public @Nullable Territory getOwner() {
         return TownsAndNations.getPlugin().getTownStorage().get(ownerID);
     }
 
@@ -169,14 +170,16 @@ public class LandmarkData implements Landmark, TanLandmark {
     public IconBuilder getIcon(LangType langType) {
 
         List<FilledLang> description = getBaseDescription();
-        if (isOwned())
-            description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_OWNER.get(getOwner().getName()));
-        else
-            description.add(Lang.SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER.get());
+        Territory owner = getOwner();
+        description.add(
+                owner != null ?
+                        Lang.SPECIFIC_LANDMARK_ICON_DESC2_OWNER.get(owner.getName()) :
+                        Lang.SPECIFIC_LANDMARK_ICON_DESC2_NO_OWNER.get()
+        );
 
 
         return IconManager.getInstance().get(Material.valueOf(materialName))
-                .setName(Lang.SPECIFIC_LANDMARK_NAME.get(langType, getName()))
+                .setName(Lang.SPECIFIC_LANDMARK_NAME.get(getName()).translate(langType))
                 .setDescription(description);
     }
 

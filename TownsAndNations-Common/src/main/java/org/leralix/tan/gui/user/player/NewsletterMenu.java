@@ -37,7 +37,7 @@ public class NewsletterMenu extends IteratorGUI {
 
     private GuiItem getMarkAllAsReadButton() {
         return IconManager.getInstance().get(IconKey.MARK_ALL_AS_READ_ICON)
-                .setName(Lang.MARK_ALL_AS_READ.get(tanPlayer))
+                .setName(Lang.MARK_ALL_AS_READ.translate(tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(event -> {
                     NewsletterStorage.getInstance().markAllAsReadForPlayer(player);

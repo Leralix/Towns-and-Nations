@@ -40,6 +40,6 @@ public class PlayerBiggerOverlordName extends PapiEntry{
             return tanPlayer.getRegion().getName();
         if(tanPlayer.hasTown())
             return tanPlayer.getTown().getName();
-        return Lang.NO_NATION.get(tanPlayer);
+        return Lang.NO_NATION.translate(tanPlayer);
     }
 }

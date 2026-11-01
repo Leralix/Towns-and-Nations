@@ -34,15 +34,19 @@ public class CreateFortEvent extends RightClickListenerEvent {
     @Override
     public ListenerState execute(PlayerInteractEvent event) {
 
-        Player player = event.getPlayer();
-
         Block block = event.getClickedBlock();
         if (block == null) {
             return ListenerState.CONTINUE;
         }
 
+        if(TownsAndNations.getPlugin().getFortStorage().getFortOnChunk(block.getLocation().getChunk()).isPresent()){
+            TanChatUtils.message(tanPlayer, Lang.FORT_ALREADY_PRESENT_ON_CHUNK);
+            return ListenerState.CONTINUE;
+        }
+
+
         if(BlockList.BREAKABLE_BLOCKS.contains(block.getType())){
-            TanChatUtils.message(player, Lang.CANNOT_CREATE_FORT_ON_THIS_BLOCK.get(tanPlayer));
+            TanChatUtils.message(tanPlayer, Lang.CANNOT_CREATE_FORT_ON_THIS_BLOCK);
             return ListenerState.CONTINUE;
         }
 
@@ -50,12 +54,12 @@ public class CreateFortEvent extends RightClickListenerEvent {
         Block upBlock = world.getBlockAt(block.getX(), block.getY() + 1, block.getZ());
 
         if (upBlock.getType() != Material.AIR) {
-            TanChatUtils.message(player, Lang.CANNOT_CREATE_FORT_IF_ABOVE_BLOCKED.get(tanPlayer));
+            TanChatUtils.message(tanPlayer, Lang.CANNOT_CREATE_FORT_IF_ABOVE_BLOCKED);
             return ListenerState.FAILURE;
         }
 
         if (tanTerritory.getBalance() <= Constants.getFortCost()) {
-            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, tanTerritory.getColoredName(), Double.toString(Constants.getFortCost() - tanTerritory.getBalance())));
+            TanChatUtils.message(tanPlayer, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanTerritory.getColoredName(), Double.toString(Constants.getFortCost() - tanTerritory.getBalance())));
             return ListenerState.FAILURE;
         }
 
@@ -66,7 +70,7 @@ public class CreateFortEvent extends RightClickListenerEvent {
         switch (claimedChunk){
             case WildernessChunkData ignored when Constants.enableFortOutpost() -> {
 
-                boolean wasAbleToClaim = tanTerritory.claimChunk(player, tanPlayer, chunk, true);
+                boolean wasAbleToClaim = tanTerritory.claimChunk(event.getPlayer(), tanPlayer, chunk, true);
 
                 if (wasAbleToClaim) {
                     createFort(block);
@@ -82,7 +86,7 @@ public class CreateFortEvent extends RightClickListenerEvent {
                     return ListenerState.SUCCESS;
                 }
                 else {
-                    TanChatUtils.message(player, Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(tanPlayer));
+                    TanChatUtils.message(tanPlayer, Lang.POSITION_NOT_IN_CLAIMED_CHUNK);
                     return ListenerState.FAILURE;
                 }
             }

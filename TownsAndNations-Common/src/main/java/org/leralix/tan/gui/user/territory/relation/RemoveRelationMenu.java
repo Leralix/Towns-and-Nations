@@ -26,7 +26,7 @@ public class RemoveRelationMenu extends IteratorGUI {
     private final TownRelation relation;
 
     public RemoveRelationMenu(Player player, Territory territoryData, TownRelation relation){
-        super(player, Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(relation.getName(TownsAndNations.getPlugin().getPlayerDataStorage().get(player).getLang())), 6);
+        super(player, Lang.HEADER_SELECT_REMOVE_TERRITORY_RELATION.get(relation.getName()), 6);
         this.territoryData = territoryData;
         this.relation = relation;
         open();
@@ -49,7 +49,7 @@ public class RemoveRelationMenu extends IteratorGUI {
                         event.setCancelled(true);
 
                         if(TownsAndNations.getPlugin().getWarStorage().isTerritoryAtWarWith(territoryData, otherTerritory)){
-                            TanChatUtils.message(player, Lang.CANNOT_REMOVE_RELATION_WAR.get(tanPlayer, otherTerritory.getName()), MINOR_GOOD);
+                            TanChatUtils.message(tanPlayer, Lang.CANNOT_REMOVE_RELATION_WAR.get(otherTerritory.getName()), MINOR_GOOD);
                             return;
                         }
 
@@ -65,7 +65,7 @@ public class RemoveRelationMenu extends IteratorGUI {
                             TerritoryUtil.setRelation(territoryData, otherTerritory, TownRelation.NEUTRAL);
                         } else {
                             otherTerritory.addDiplomaticProposal(territoryData, TownRelation.NEUTRAL);
-                            TanChatUtils.message(player, Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(tanPlayer, otherTerritory.getName()), MINOR_GOOD);
+                            TanChatUtils.message(tanPlayer, Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(otherTerritory.getName()), MINOR_GOOD);
                         }
                         new OpenRelationMenu(player, territoryData, relation);
                     })

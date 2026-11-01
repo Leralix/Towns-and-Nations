@@ -33,9 +33,9 @@ public class DailySalaryTransaction extends AbstractDailyTransaction {
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
         IconBuilder icon = iconManager.get(IconKey.SALARY_TRANSACTION)
-                .setName(Lang.SALARY_TRANSACTION_NAME.get(langType))
+                .setName(Lang.SALARY_TRANSACTION_NAME.translate(langType))
                 .setDescription(
-                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate())),
+                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(getDate())),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(totalAmount))
                 );
         for(SalaryTransaction transaction : getPartTransactionlistIfNecessary(transactions)) {

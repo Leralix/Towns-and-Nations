@@ -36,6 +36,7 @@ import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 import org.leralix.tan.listeners.interact.events.property.CreatePropertyEvent;
 import org.leralix.tan.storage.PermissionManager;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
@@ -295,7 +296,7 @@ public class PropertyData extends Building implements TanProperty {
                 Math.max(p1.getZ(), p2.getZ()) >= location.getZ() && Math.min(p1.getZ(), p2.getZ()) <= location.getZ();
     }
 
-    public List<FilledLang> getBasicDescription(LangType langType) {
+    public List<FilledLang> getBasicDescription() {
         List<FilledLang> lore = new ArrayList<>();
 
         lore.add(Lang.GUI_PROPERTY_DESCRIPTION.get(getDescription()));
@@ -305,7 +306,7 @@ public class PropertyData extends Building implements TanProperty {
         if (isForSale())
             lore.add(Lang.GUI_PROPERTY_FOR_SALE.get(String.valueOf(salePrice)));
         else if (isRented())
-            lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(getRenterDisplayName(langType), String.valueOf(rentPrice)));
+            lore.add(Lang.GUI_PROPERTY_RENTED_BY.get(getRenterDisplayName(), Lang.of(String.valueOf(rentPrice))));
         else if (isForRent())
             lore.add(Lang.GUI_PROPERTY_FOR_RENT.get(String.valueOf(rentPrice)));
         else {
@@ -358,20 +359,20 @@ public class PropertyData extends Building implements TanProperty {
 
         LangType langType = Lang.getServerLang();
 
-        lines[0] = Lang.SIGN_NAME.get(langType, this.getName());
-        lines[1] = Lang.SIGN_PLAYER.get(langType, getOwner().getName());
+        lines[0] = Lang.SIGN_NAME.get(this.getName()).translate(langType);
+        lines[1] = Lang.SIGN_PLAYER.get(getOwner().getName()).translate(langType);
 
         if (this.isForSale) {
-            lines[2] = Lang.SIGN_FOR_SALE.get(langType);
-            lines[3] = Lang.SIGN_SALE_PRICE.get(langType, Double.toString(this.getPriceWithTax()));
+            lines[2] = Lang.SIGN_FOR_SALE.translate(langType);
+            lines[3] = Lang.SIGN_SALE_PRICE.get(Double.toString(this.getPriceWithTax())).translate(langType);
         } else if (this.isForRent) {
-            lines[2] = Lang.SIGN_RENT.get(langType);
-            lines[3] = Lang.SIGN_RENT_PRICE.get(langType, Double.toString(this.getRentPriceWithTax()));
+            lines[2] = Lang.SIGN_RENT.translate(langType);
+            lines[3] = Lang.SIGN_RENT_PRICE.get(Double.toString(this.getRentPriceWithTax())).translate(langType);
         } else if (this.isRented()) {
-            lines[2] = Lang.SIGN_RENTED_BY.get(langType);
-            lines[3] = getRenterDisplayName(langType);
+            lines[2] = Lang.SIGN_RENTED_BY.translate(langType);
+            lines[3] = getRenterDisplayName().translate(langType);
         } else {
-            lines[2] = Lang.SIGN_NOT_FOR_SALE.get(langType);
+            lines[2] = Lang.SIGN_NOT_FOR_SALE.translate(langType);
             lines[3] = "";
         }
 
@@ -420,7 +421,7 @@ public class PropertyData extends Building implements TanProperty {
 
             Player player = Bukkit.getPlayer(ownerUuid);
             if (player != null) {
-                TanChatUtils.message(player, Lang.PROPERTY_DELETED.get(playerOwner.getLang()), SoundEnum.MINOR_GOOD);
+                TanChatUtils.message(player, Lang.PROPERTY_DELETED.translate(playerOwner.getLang()), SoundEnum.MINOR_GOOD);
             }
         }
     }
@@ -449,7 +450,7 @@ public class PropertyData extends Building implements TanProperty {
         double playerBalance = EconomyUtil.getBalance(buyer);
         double cost = getPriceWithTax();
         if (playerBalance < cost) {
-            TanChatUtils.message(buyer, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(langType, Double.toString(cost - playerBalance)), SoundEnum.MINOR_BAD);
+            TanChatUtils.message(buyer, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(Double.toString(cost - playerBalance)), SoundEnum.MINOR_BAD);
             return;
         }
 
@@ -458,14 +459,14 @@ public class PropertyData extends Building implements TanProperty {
             OfflinePlayer exOwnerOffline = Bukkit.getOfflinePlayer(exOwnerID);
             Player exOwner = exOwnerOffline.getPlayer();
             if (exOwner != null) {
-                TanChatUtils.message(exOwner, Lang.PROPERTY_SOLD_EX_OWNER.get(langType, getName(), buyer.getName(), Double.toString(getPriceWithTax())), SoundEnum.GOOD);
+                TanChatUtils.message(exOwner, Lang.PROPERTY_SOLD_EX_OWNER.get(getName(), buyer.getName(), Double.toString(getPriceWithTax())), SoundEnum.GOOD);
             }
 
             ITanPlayer exOwnerData = TownsAndNations.getPlugin().getPlayerDataStorage().get(exOwnerID);
             exOwnerData.removeProperty(this);
         }
 
-        TanChatUtils.message(buyer, Lang.PROPERTY_SOLD_NEW_OWNER.get(langType, getName(), Double.toString(getPriceWithTax())), SoundEnum.BAD);
+        TanChatUtils.message(buyerData, Lang.PROPERTY_SOLD_NEW_OWNER.get(getName(), Double.toString(getPriceWithTax())), SoundEnum.BAD);
 
         Town town = getTown();
         double townCut = getPriceWithTax() - getPrice();
@@ -509,11 +510,11 @@ public class PropertyData extends Building implements TanProperty {
         return getOwner().canAccess(tanPlayer);
     }
 
-    public String getDenyMessage(LangType langType) {
+    public Placeholder getDenyMessage() {
         if (isRented())
-            return Lang.PROPERTY_RENTED_BY.get(langType, getRenterDisplayName(langType));
+            return Lang.PROPERTY_RENTED_BY.get(getRenterDisplayName());
         else
-            return Lang.PROPERTY_BELONGS_TO.get(langType, getOwner().getName());
+            return Lang.PROPERTY_BELONGS_TO.get(getOwner().getName());
 
     }
 
@@ -602,7 +603,7 @@ public class PropertyData extends Building implements TanProperty {
 
         return iconManager.get(getIcon())
                 .setName(getName())
-                .setDescription(getBasicDescription(langType))
+                .setDescription(getBasicDescription())
                 .setAction(event -> {
                     if (!canInteract) {
                         SoundUtil.playSound(player, SoundEnum.NOT_ALLOWED);
@@ -619,9 +620,8 @@ public class PropertyData extends Building implements TanProperty {
         return signLocation;
     }
 
-    public String getRenterDisplayName(LangType langType) {
-        return getRenter()
-                .map(TanPlayer::getNameStored)
-                .orElse(Lang.GUI_UNKOWN_OWNER_OR_RENTER.get(langType));
+    public Placeholder getRenterDisplayName() {
+        Optional<TanPlayer> optRenter = getRenter();
+        return optRenter.map(tanPlayer -> Lang.of(tanPlayer.getNameStored())).orElse(Lang.GUI_UNKOWN_OWNER_OR_RENTER);
     }
 }

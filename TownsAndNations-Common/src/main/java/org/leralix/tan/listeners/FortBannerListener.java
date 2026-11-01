@@ -46,7 +46,7 @@ public class FortBannerListener implements Listener {
                     ITanPlayer playerData = playerDataStorage.get(player);
                     player.sendActionBar(
                             Component.text(
-                                Lang.FORT_ACTION_BAR_INFO.get(playerData.getLang(), fort.getName(), fort.getOccupier().getColoredName())
+                                Lang.FORT_ACTION_BAR_INFO.get(fort.getName(), fort.getOccupier().getColoredName()).translate(playerData.getLang())
                             )
                     );
                     return;

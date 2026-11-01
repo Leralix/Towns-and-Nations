@@ -2,7 +2,7 @@ package org.leralix.tan.gui.service.requirements;
 
 import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 
 public class PropertyCapRequirement extends IndividualRequirement {
 
@@ -17,16 +17,16 @@ public class PropertyCapRequirement extends IndividualRequirement {
     }
 
     @Override
-    public String getLine(LangType langType) {
+    public Placeholder getLine() {
         int nbProperties = territoryData.getProperties().size();
         if (isUnlimited) {
-            return Lang.GUI_PROPERTY_CAP.get(langType, Integer.toString(nbProperties), Lang.INFINITY.get(langType));
+            return Lang.GUI_PROPERTY_CAP.get(Lang.of(Integer.toString(nbProperties)), Lang.INFINITY);
         }
 
         if (isInvalid()) {
-            return Lang.GUI_PROPERTY_CAP_FULL.get(langType, Integer.toString(nbProperties), Integer.toString(maxAmount));
+            return Lang.GUI_PROPERTY_CAP_FULL.get(Integer.toString(nbProperties), Integer.toString(maxAmount));
         } else {
-            return Lang.GUI_PROPERTY_CAP.get(langType, Integer.toString(nbProperties), Integer.toString(maxAmount));
+            return Lang.GUI_PROPERTY_CAP.get(Integer.toString(nbProperties), Integer.toString(maxAmount));
         }
     }
 

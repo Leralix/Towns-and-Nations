@@ -84,8 +84,14 @@ public class CommandBlocker implements Listener {
             TownRelation worstRelationWithPlayer = senderData.getRelationWithPlayer(receiverData);
             if (Constants.getRelationConstants(worstRelationWithPlayer).getBlockedCommands().contains(blackListedCommand)) {
                 LangType lang = senderData.getLang();
-                TanChatUtils.message(sender, Lang.CANNOT_CAST_COMMAND_ON_PLAYER_WITH_SPECIFIC_RELATION.get(lang,
-                        receiver.getName(), worstRelationWithPlayer.getColoredName(lang)), SoundEnum.NOT_ALLOWED);
+                TanChatUtils.message(
+                        senderData,
+                        Lang.CANNOT_CAST_COMMAND_ON_PLAYER_WITH_SPECIFIC_RELATION.get(
+                                receiver.getName(),
+                                worstRelationWithPlayer.getColoredName(lang)
+                        ),
+                        SoundEnum.NOT_ALLOWED
+                );
                 return true;
             }
         }

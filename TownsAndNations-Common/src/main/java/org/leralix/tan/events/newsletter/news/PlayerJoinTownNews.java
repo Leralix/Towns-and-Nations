@@ -59,7 +59,7 @@ public class PlayerJoinTownNews extends Newsletter {
         Town townData = TownsAndNations.getPlugin().getTownStorage().get(townID);
         if (townData == null)
             return;
-        TanChatUtils.message(player, Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(tanPlayer, playerJoiningTown.getName(), townData.getColoredName()), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(tanPlayer, Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(playerJoiningTown.getName(), townData.getColoredName()), SoundEnum.MINOR_GOOD);
     }
 
     @Override
@@ -72,9 +72,9 @@ public class PlayerJoinTownNews extends Newsletter {
 
 
         return IconManager.getInstance().get(IconKey.NEWSLETTER_PLAYER_JOIN_TOWN_ICON)
-                .setName(Lang.PLAYER_JOINED_TOWN_NEWSLETTER_TITLE.get(lang))
+                .setName(Lang.PLAYER_JOINED_TOWN_NEWSLETTER_TITLE.translate(lang))
                 .setDescription(
-                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(getDate())),
                         Lang.PLAYER_JOINED_TOWN_NEWSLETTER.get(playerJoiningTown.getName(), townData.getCustomColoredName().toLegacyText())
                 )
                 .setClickToAcceptMessage(

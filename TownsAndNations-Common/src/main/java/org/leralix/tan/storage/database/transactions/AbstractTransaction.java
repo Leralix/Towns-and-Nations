@@ -13,6 +13,7 @@ import org.leralix.tan.data.upgrade.Upgrade;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 
@@ -48,7 +49,7 @@ public abstract class AbstractTransaction {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerID));
         String playerName = offlinePlayer.getName();
         if(playerName == null){
-            return Lang.PLAYER_NOT_FOUND.get(langType);
+            return Lang.PLAYER_NOT_FOUND.translate(langType);
         }
         return offlinePlayer.getName();
     }
@@ -56,7 +57,7 @@ public abstract class AbstractTransaction {
     protected String getTerritoryName(String id, LangType langType) {
         Territory territoryData = TerritoryUtil.getTerritory(id);
         if(territoryData == null){
-            return Lang.TERRITORY_NOT_FOUND.get(langType);
+            return Lang.TERRITORY_NOT_FOUND.translate(langType);
         }
         return territoryData.getColoredName();
     }
@@ -64,30 +65,30 @@ public abstract class AbstractTransaction {
     protected String getPropertyName(String territoryID, String propertyID, LangType langType) {
         Territory territoryData = TerritoryUtil.getTerritory(territoryID);
         if(territoryData == null){
-            return Lang.TERRITORY_NOT_FOUND.get(langType);
+            return Lang.TERRITORY_NOT_FOUND.translate(langType);
         }
         // As of 0.16.1, Region canot have properties.
         if(territoryData instanceof Town townData){
             PropertyData propertyData = townData.getPropertyDataMap().get(propertyID);
             if(propertyData == null){
-                return Lang.PROPERTY_NOT_FOUND.get(langType);
+                return Lang.PROPERTY_NOT_FOUND.translate(langType);
             }
             return propertyData.getName();
         }
-        return Lang.PROPERTY_NOT_FOUND.get(langType);
+        return Lang.PROPERTY_NOT_FOUND.translate(langType);
     }
 
-    protected String getUpgradeName(String territoryID, String upgradeID, LangType langType) {
+    protected Placeholder getUpgradeName(String territoryID, String upgradeID) {
         Territory territoryData = TerritoryUtil.getTerritory(territoryID);
         NewUpgradeStorage upgradeStorage = Constants.getUpgradeStorage();
         if(territoryData == null){
-            return Lang.TERRITORY_NOT_FOUND.get(langType);
+            return Lang.TERRITORY_NOT_FOUND;
         }
         Upgrade upgrade = upgradeStorage.getUpgrade(territoryData, upgradeID);
         if(upgrade == null){
-            return Lang.UPGRADE_NOT_FOUND.get(langType);
+            return Lang.UPGRADE_NOT_FOUND;
         }
-        return upgrade.getName(langType);
+        return upgrade.getName();
     }
 
     /**

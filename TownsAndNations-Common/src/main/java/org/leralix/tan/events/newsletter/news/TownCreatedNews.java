@@ -60,9 +60,9 @@ public class TownCreatedNews extends Newsletter {
             return null;
 
         return IconManager.getInstance().get(IconKey.TOWN_BASE_ICON)
-                .setName(Lang.TOWN_CREATED_NEWSLETTER_TITLE.get(lang))
+                .setName(Lang.TOWN_CREATED_NEWSLETTER_TITLE.translate(lang))
                 .setDescription(
-                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(getDate())),
                         Lang.TOWN_CREATED_NEWSLETTER.get(townCreator.getName(), townData.getColoredName()),
                         Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
                 )
@@ -98,6 +98,6 @@ public class TownCreatedNews extends Newsletter {
         Town townData = TownsAndNations.getPlugin().getTownStorage().get(townID);
         if (townData == null)
             return;
-        TanChatUtils.message(player, Lang.TOWN_CREATED_NEWSLETTER.get(tanPlayer, townCreator.getName(), townData.getColoredName()), SoundEnum.GOOD);
+        TanChatUtils.message(tanPlayer, Lang.TOWN_CREATED_NEWSLETTER.get(townCreator.getName(), townData.getColoredName()), SoundEnum.GOOD);
     }
 }

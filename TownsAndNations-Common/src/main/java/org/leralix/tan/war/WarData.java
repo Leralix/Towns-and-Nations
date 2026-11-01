@@ -39,10 +39,9 @@ public class WarData implements War{
     public WarData(String id, Territory mainAttacker, Territory mainDefender) {
         this.ID = id;
         this.name = Lang.BASIC_ATTACK_NAME.get(
-                Lang.getServerLang(),
                 mainAttacker.getName(),
                 mainDefender.getName()
-        );
+        ).translateDefault();
         this.mainDefenderID = mainDefender.getID();
         this.mainAttackerID = mainAttacker.getID();
         this.allDefendersID = new ArrayList<>(mainDefender.getRelations().getTerritoriesIDWithRelation(TownRelation.ALLIANCE));
@@ -202,7 +201,7 @@ public class WarData implements War{
         List<WarGoal> goals = getGoals(warRole.opposite());
         List<FilledLang> goalsToString = new ArrayList<>();
         for (WarGoal goal : goals) {
-            goalsToString.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(goal.getCurrentDesc(langType)));
+            goalsToString.add(Lang.WAR_GOAL_LIST_BUTTON_LIST.get(goal.getCurrentDesc()));
         }
 
         // If no goals are set, add a message

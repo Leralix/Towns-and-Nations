@@ -50,7 +50,7 @@ public class    PropertyRentTaxLine extends ProfitLine {
     public void addItems(Gui gui, Player player, ITanPlayer playerData, LangType lang) {
 
         gui.setItem(4, 3, IconManager.getInstance().get(IconKey.PROPERTY_RENT_TAX_ICON)
-                .setName(Lang.GUI_TREASURY_RENT_PROPERTY_TAX.get(lang))
+                .setName(Lang.GUI_TREASURY_RENT_PROPERTY_TAX.translate(lang))
                 .setDescription(Lang.GUI_TREASURY_PROPERTY_RENT_TAX_DESC1.get(String.format("%.2f", territoryData.getTaxOnRentingProperty() * 100)))
                 .setClickToAcceptMessage(
                         Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY,
@@ -60,14 +60,14 @@ public class    PropertyRentTaxLine extends ProfitLine {
                             event.setCancelled(true);
 
                             if (!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)) {
-                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
+                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(lang));
                                 return;
                             }
 
                             if (event.isLeftClick()) {
                                 new TerritoryTransactionHistory(player, territoryData, TransactionType.RENTING_PROPERTY, p -> new TreasuryMenu(player, territoryData));
                             } else if (event.isRightClick()) {
-                                TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
+                                TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.translate(lang));
                                 PlayerChatListenerStorage.register(player, lang, new SetRentPropertyRate(territoryData));
                             }
                         }

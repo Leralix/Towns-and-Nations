@@ -34,6 +34,6 @@ public class PlayerRegionChunkActualQuantity extends PapiEntry {
             return PLAYER_NOT_FOUND;
         }
 
-        return tanPlayer.hasRegion() ? Integer.toString(tanPlayer.getRegion().getNumberOfClaimedChunk()) : Lang.NO_REGION.get(tanPlayer);
+        return tanPlayer.hasRegion() ? Integer.toString(tanPlayer.getRegion().getNumberOfClaimedChunk()) : Lang.NO_REGION.translate(tanPlayer);
     }
 }

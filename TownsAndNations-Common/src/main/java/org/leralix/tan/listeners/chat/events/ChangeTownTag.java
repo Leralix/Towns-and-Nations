@@ -26,8 +26,7 @@ public class ChangeTownTag extends ChatListenerEvent {
 
         Range prefixRange = Constants.getPrefixSize();
         if(!prefixRange.isValueIn(message.length())){
-            TanChatUtils.message(player, Lang.MESSAGE_NOT_RIGHT_SIZE.get(
-                    playerData,
+            TanChatUtils.message(playerData, Lang.MESSAGE_NOT_RIGHT_SIZE.get(
                     Integer.toString(prefixRange.getMinVal()),
                     Integer.toString(prefixRange.getMaxVal())
             ));
@@ -35,7 +34,7 @@ public class ChangeTownTag extends ChatListenerEvent {
         }
 
         townData.setTownTag(message);
-        TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(playerData));
+        TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.translate(playerData));
         openGui(guiCallback, player);
         return true;
     }

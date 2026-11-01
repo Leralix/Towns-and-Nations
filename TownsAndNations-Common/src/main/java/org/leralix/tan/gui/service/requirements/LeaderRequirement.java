@@ -3,7 +3,7 @@ package org.leralix.tan.gui.service.requirements;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 
 public class LeaderRequirement extends IndividualRequirement {
 
@@ -17,11 +17,11 @@ public class LeaderRequirement extends IndividualRequirement {
 
 
     @Override
-    public String getLine(LangType langType) {
+    public Placeholder getLine() {
         if (isInvalid()) {
-            return Lang.REQUIREMENT_TERRITORY_LEADER_NEGATIVE.get(langType);
+            return Lang.REQUIREMENT_TERRITORY_LEADER_NEGATIVE;
         } else {
-            return Lang.REQUIREMENT_TERRITORY_LEADER_POSITIVE.get(langType);
+            return Lang.REQUIREMENT_TERRITORY_LEADER_POSITIVE;
         }
     }
 

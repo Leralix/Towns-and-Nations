@@ -49,7 +49,7 @@ public class WarsMenu extends IteratorGUI {
                 continue;
             }
 
-            desc.add(Lang.CHUNK_CONQUER_DESC.get(territoryData.getColoredName(), Integer.toString(quantity)));
+            desc.add(Lang.CHUNK_CONQUER_DESC.get(territory.getColoredName(), Integer.toString(quantity)));
         }
 
         if(desc.isEmpty()){
@@ -57,14 +57,14 @@ public class WarsMenu extends IteratorGUI {
         }
 
         return iconManager.get(IconKey.CHUNK_CONQUER_ICON)
-                .setName(Lang.CHUNK_CONQUER_INFO.get(langType))
+                .setName(Lang.CHUNK_CONQUER_INFO.translate(langType))
                 .setDescription(desc)
                 .asGuiItem(player, langType);
     }
 
     private GuiItem getDeclareWarButton() {
         return iconManager.get(IconKey.DECLARE_WAR_ICON)
-                .setName(Lang.DECLARE_WAR_BUTTON.get(langType))
+                .setName(Lang.DECLARE_WAR_BUTTON.translate(langType))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_OPEN)
                 .setAction(
                         action -> new DeclareWarMenu(player, territoryData, this)
@@ -88,7 +88,7 @@ public class WarsMenu extends IteratorGUI {
 
     private @NotNull GuiItem getAttackButton() {
         return iconManager.get(IconKey.ATTACKS_LIST_ICON)
-                .setName(Lang.OPEN_ATTACK_BUTTON.get(langType))
+                .setName(Lang.OPEN_ATTACK_BUTTON.translate(langType))
                 .setAction(p -> new AttackMenu(player, territoryData))
                 .asGuiItem(player, langType);
     }

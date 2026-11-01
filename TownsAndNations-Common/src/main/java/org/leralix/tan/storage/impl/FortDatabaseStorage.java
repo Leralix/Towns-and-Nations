@@ -50,7 +50,7 @@ public class FortDatabaseStorage extends DatabaseStorage<FortDatabase, FortData>
     public Fort register(Vector3D position, Territory owningTerritory) {
         int newFortID = getNextFortID();
         String id = "F" + newFortID;
-        FortData fort = new FortData(id, position, Lang.DEFAULT_FORT_NAME.get(Lang.getServerLang(), Integer.toString(newFortID)), owningTerritory);
+        FortData fort = new FortData(id, position, Lang.DEFAULT_FORT_NAME.get(Integer.toString(newFortID)).translateDefault(), owningTerritory);
         databaseManager.save(fort);
         return getOrLoad(id, this::load);
     }

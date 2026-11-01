@@ -57,7 +57,7 @@ public class  UpgradeMenu extends BasicGui {
         var unlockedFiller = getUnnamedItem(Material.LIME_STAINED_GLASS_PANE);
         var unlockedLevels = iconManager.get(Material.GREEN_STAINED_GLASS_PANE);
         var lockedFiller = iconManager.get(Material.IRON_BARS)
-                .setName(Lang.LEVEL_LOCKED.get(langType))
+                .setName(Lang.LEVEL_LOCKED.translate(langType))
                 .asGuiItem(player, langType);
         var lockedLevels = iconManager.get(Material.RED_STAINED_GLASS_PANE);
         var aboveMaxLevel = iconManager.get(Material.BLACK_STAINED_GLASS_PANE);
@@ -67,11 +67,11 @@ public class  UpgradeMenu extends BasicGui {
 
             if(adaptedCursor >= maxLevel){
                 gui.getFiller().fillBetweenPoints(1, i, 4, i, lockedFiller);
-                gui.setItem(5, i, aboveMaxLevel.setName(Lang.MAX_LEVEL_REACHED.get(langType, Integer.toString(adaptedCursor + 1))).asGuiItem(player, langType));
+                gui.setItem(5, i, aboveMaxLevel.setName(Lang.MAX_LEVEL_REACHED.get( Integer.toString(adaptedCursor + 1)).translate(tanPlayer)).asGuiItem(player, langType));
             }
             else if(adaptedCursor > townLevel){
                 gui.getFiller().fillBetweenPoints(1, i, 4, i, lockedFiller);
-                gui.setItem(5, i, lockedLevels.setName(Lang.LEVEL_LOCKED_WITH_LEVEL.get(langType, Integer.toString(adaptedCursor + 1))).asGuiItem(player, langType));
+                gui.setItem(5, i, lockedLevels.setName(Lang.LEVEL_LOCKED_WITH_LEVEL.get(Integer.toString(adaptedCursor + 1)).translate(tanPlayer)).asGuiItem(player, langType));
             }
             else if(adaptedCursor == townLevel){
                 gui.getFiller().fillBetweenPoints(1, i, 4, i, lockedFiller);
@@ -79,7 +79,7 @@ public class  UpgradeMenu extends BasicGui {
             }
             else {
                 gui.getFiller().fillBetweenPoints(1, i, 4, i, unlockedFiller);
-                gui.setItem(5, i, unlockedLevels.setName(Lang.LEVEL_UNLOCKED_WITH_LEVEL.get(langType,Integer.toString(adaptedCursor + 1))).asGuiItem(player, langType));
+                gui.setItem(5, i, unlockedLevels.setName(Lang.LEVEL_UNLOCKED_WITH_LEVEL.get(Integer.toString(adaptedCursor + 1)).translate(tanPlayer)).asGuiItem(player, langType));
             }
         }
 
@@ -103,13 +103,13 @@ public class  UpgradeMenu extends BasicGui {
         List<FilledLang> desc = buildUpgradeDescription(upgrade, levelOfUpgrade, maxLevelOfUpgrade);
 
         return iconManager.get(upgrade.getIconMaterial())
-                .setName(upgrade.getName(langType))
+                .setName(upgrade.getName().translate(langType))
                 .setDescription(desc)
                 .setRequirements(upgrade.getRequirements(territoryData, player))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_UPGRADE)
                 .setAction(action -> {
                     if(action.isLeftClick()){
-                        TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
+                        TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.translate(langType), SoundEnum.LEVEL_UP);
                         territoryData.getNewLevel().levelUp(upgrade);
                         open();
                     }
@@ -167,7 +167,7 @@ public class  UpgradeMenu extends BasicGui {
         int nextLevelPrice = level.getMoneyRequiredForLevelUp();
 
         return iconManager.get(IconKey.LEVEL_UP_ICON)
-                .setName(Lang.GUI_TERRITORY_LEVEL_UP.get(langType))
+                .setName(Lang.GUI_TERRITORY_LEVEL_UP.translate(langType))
                 .setDescription(
                         Lang.GUI_TOWN_LEVEL_UP_DESC1.get(Integer.toString(currentLevel)),
                         Lang.GUI_TOWN_LEVEL_UP_DESC2.get(Integer.toString(currentLevel + 1), Integer.toString(nextLevelPrice))
@@ -177,7 +177,7 @@ public class  UpgradeMenu extends BasicGui {
                 .setAction( action -> {
                     if(action.isLeftClick()){
                         territoryData.getNewLevel().levelUpMain();
-                        TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
+                        TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.translate(langType), SoundEnum.LEVEL_UP);
                         open();
                     }
                 })
@@ -190,7 +190,7 @@ public class  UpgradeMenu extends BasicGui {
         int minScroll = 0;
 
         return iconManager.get(IconKey.RIGHT_ARROW)
-                .setName(Lang.GUI_GENERIC_UP.get(langType))
+                .setName(Lang.GUI_GENERIC_UP.translate(langType))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction( action -> {
                     if(maxScroll < minScroll){
@@ -207,7 +207,7 @@ public class  UpgradeMenu extends BasicGui {
 
     private @NotNull GuiItem getLeftButton() {
         return iconManager.get(IconKey.LEFT_ARROW)
-                .setName(Lang.GUI_GENERIC_DOWN.get(langType))
+                .setName(Lang.GUI_GENERIC_DOWN.translate(langType))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction( action -> {
                     scrollIndex = Math.max(0, scrollIndex - 1);

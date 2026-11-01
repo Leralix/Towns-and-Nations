@@ -44,8 +44,8 @@ public class OtherPlayerChatMode extends PapiEntry {
         String[] values = extractValues(params);
         OfflinePlayer playerSelected = Bukkit.getOfflinePlayer(values[0]);
         if (!playerSelected.isOnline()) {
-            return Lang.INVALID_PLAYER_NAME.get(langType);
+            return Lang.INVALID_PLAYER_NAME.translate(langType);
         }
-        return localChatStorage.getPlayerChatScope(playerSelected.getUniqueId().toString()).getName(langType);
+        return localChatStorage.getPlayerChatScope(playerSelected.getUniqueId().toString()).getName().translate(langType);
     }
 }

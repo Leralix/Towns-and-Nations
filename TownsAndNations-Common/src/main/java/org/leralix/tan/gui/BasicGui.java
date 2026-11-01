@@ -44,7 +44,7 @@ public abstract class BasicGui {
         this.iconManager = IconManager.getInstance();
 
         this.gui = Gui.gui()
-                .title(Component.text(title.get(langType)))
+                .title(Component.text(title.translate(langType)))
                 .type(GuiType.CHEST)
                 .rows(rows)
                 .create();
@@ -65,7 +65,7 @@ public abstract class BasicGui {
     public static GuiItem createBackArrow(Player player, Consumer<Player> openMenuAction, LangType langType) {
 
         return IconManager.getInstance().get(Material.ARROW)
-                .setName(Lang.GUI_BACK_ARROW.get(langType))
+                .setName(Lang.GUI_BACK_ARROW.translate(langType))
                 .setAction(event -> {
                     event.setCancelled(true);
                     openMenuAction.accept(player);
@@ -102,7 +102,7 @@ public abstract class BasicGui {
         }
 
         return iconManager.get(IconKey.CHANGE_SCOPE_ICON)
-                .setName(Lang.BROWSE_SELECT.get(langType, currentValue.getDisplayName(langType)))
+                .setName(Lang.BROWSE_SELECT.get(currentValue.getDisplayName(langType)).translate(langType))
                 .setDescription(description)
                 .setClickToAcceptMessage(
                         Lang.GUI_GENERIC_RIGHT_CLICK_TO_BACK,

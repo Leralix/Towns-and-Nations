@@ -2,7 +2,7 @@ package org.leralix.tan.gui.service.requirements.model;
 
 import org.bukkit.Material;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 
 public class AnyLogScope extends ItemScope {
 
@@ -22,7 +22,7 @@ public class AnyLogScope extends ItemScope {
     }
 
     @Override
-    public String getName(LangType langType) {
-        return Lang.ANY_LOG_SCOPE_NAME.get(langType);
+    public Placeholder getName() {
+        return Lang.ANY_LOG_SCOPE_NAME;
     }
 }

@@ -28,19 +28,19 @@ public class CreateNation extends ChatListenerEvent {
     public boolean execute(Player player, ITanPlayer tanPlayer, String message) {
 
         if (!tanPlayer.hasRegion()) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(tanPlayer));
+            TanChatUtils.message(player, Lang.PLAYER_NO_REGION.translate(tanPlayer));
             return false;
         }
 
         Region regionData = tanPlayer.getRegion();
 
         if (!regionData.isLeader(tanPlayer)) {
-            TanChatUtils.message(player, Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.get(tanPlayer));
+            TanChatUtils.message(player, Lang.PLAYER_ONLY_LEADER_CAN_PERFORM_ACTION.translate(tanPlayer));
             return false;
         }
 
         if (regionData.getBalance() < cost) {
-            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(tanPlayer, regionData.getColoredName(), Double.toString(cost - regionData.getBalance())));
+            TanChatUtils.message(tanPlayer, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(regionData.getColoredName(), Double.toString(cost - regionData.getBalance())));
             return false;
         }
 
@@ -52,12 +52,12 @@ public class CreateNation extends ChatListenerEvent {
 
         int maxSize = Constants.getNationMaxNameSize();
         if (nationName.length() > maxSize) {
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(tanPlayer, Integer.toString(maxSize)));
+            TanChatUtils.message(tanPlayer, Lang.MESSAGE_TOO_LONG.get(Integer.toString(maxSize)));
             return false;
         }
 
         if (TownsAndNations.getPlugin().getNationStorage().isNameUsed(nationName)) {
-            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(tanPlayer));
+            TanChatUtils.message(tanPlayer, Lang.NAME_ALREADY_USED);
             return false;
         }
 

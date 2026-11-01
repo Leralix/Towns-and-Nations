@@ -105,7 +105,7 @@ public class TownData extends TerritoryData implements Town {
         getTownDefaultRank().addPlayer(tanNewPlayer);
         tanNewPlayer.joinTown(this);
 
-        TanChatUtils.message(tanNewPlayer.getPlayer(), Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(tanNewPlayer.getLang(), this.getColoredName()));
+        TanChatUtils.message(tanNewPlayer, Lang.TOWN_INVITATION_ACCEPTED_MEMBER_SIDE.get(this.getColoredName()));
 
         tanNewPlayer.clearAllTownApplications();
 
@@ -220,7 +220,7 @@ public class TownData extends TerritoryData implements Town {
         for (UUID playerId : townPlayerListId) {
             Player player = Bukkit.getServer().getPlayer(playerId);
             if (player != null && player.isOnline()) {
-                TanChatUtils.message(player, message.get(TownsAndNations.getPlugin().getPlayerDataStorage().get(player)));
+                TanChatUtils.message(player, message.translate(TownsAndNations.getPlugin().getPlayerDataStorage().get(player)));
             }
         }
     }
@@ -315,7 +315,7 @@ public class TownData extends TerritoryData implements Town {
 
         ChunkData chunkClaimed = TownsAndNations.getPlugin().getClaimStorage().claimTownChunk(chunk, getID());
         //If this was the first claimed chunk, set the capital.
-        if (getNumberOfClaimedChunk() == 1) {
+        if (getCapitalLocation().isEmpty() || isTownCapitalOccupied()) {
             setCapitalLocation(chunkClaimed.getVector2D());
         }
     }
@@ -499,7 +499,7 @@ public class TownData extends TerritoryData implements Town {
 
         broadcastMessageWithSound(Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS.get(kickedPlayer.getName()), SoundEnum.BAD);
         Player player = kickedPlayer.getPlayer();
-        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.get(kickedITanPlayer.getLang()), SoundEnum.BAD);
+        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBER_KICKED_SUCCESS_PLAYER.translate(kickedITanPlayer.getLang()), SoundEnum.BAD);
     }
 
     @Override
@@ -564,8 +564,13 @@ public class TownData extends TerritoryData implements Town {
     public boolean isTownCapitalOccupied() {
         var optCapital = getCapitalLocation();
         if (optCapital.isPresent()) {
-            var claimedChunk = TownsAndNations.getPlugin().getClaimStorage().get(optCapital.get().getChunk());
-            return claimedChunk instanceof TerritoryChunk territoryChunk && territoryChunk.isOccupied();
+            var claimedChunk = TownsAndNations.getPlugin().getClaimStorage().get(optCapital.get());
+            if(claimedChunk instanceof TerritoryChunk territoryChunk){
+                return !Objects.equals(territoryChunk.getOccupierID(), getID());
+            }
+            else {
+                return true;
+            }
         }
         return false;
     }

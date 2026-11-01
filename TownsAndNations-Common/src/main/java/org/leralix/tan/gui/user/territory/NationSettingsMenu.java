@@ -58,7 +58,7 @@ public class NationSettingsMenu extends SettingsMenus {
 
     protected @NotNull GuiItem getChangeOwnershipButton() {
         return iconManager.get(IconKey.TERRITORY_CHANGE_OWNER_ICON)
-                .setName(Lang.GUI_TERRITORY_CHANGE_OWNERSHIP.get(tanPlayer))
+                .setName(Lang.GUI_TERRITORY_CHANGE_OWNERSHIP.translate(tanPlayer))
                 .setDescription(Lang.GUI_TERRITORY_CHANGE_OWNERSHIP_DESC1.get(nationData.getCapital().getLeaderData().getNameStored()))
                 .setRequirements(new LeaderRequirement(territoryData, tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
@@ -68,10 +68,10 @@ public class NationSettingsMenu extends SettingsMenus {
 
     private @NotNull GuiItem getChangeCapitalButton() {
         Territory capital = nationData.getCapital();
-        String capitalName = capital == null ? Lang.NO_REGION.get(tanPlayer) : capital.getColoredName();
+        String capitalName = capital == null ? Lang.NO_REGION.translate(tanPlayer) : capital.getColoredName();
 
         return iconManager.get(IconKey.TERRITORY_CHANGE_CAPITAL_ICON)
-                .setName(Lang.GUI_TERRITORY_CHANGE_CAPITAL.get(tanPlayer))
+                .setName(Lang.GUI_TERRITORY_CHANGE_CAPITAL.translate(tanPlayer))
                 .setDescription(Lang.GUI_TERRITORY_CHANGE_CAPITAL_DESC1.get(capitalName))
                 .setRequirements(new LeaderRequirement(capital, tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
@@ -81,7 +81,7 @@ public class NationSettingsMenu extends SettingsMenus {
 
     private @NotNull GuiItem getDeleteButton() {
         return iconManager.get(IconKey.NATION_DELETE_NATION_ICON)
-                .setName(Lang.GUI_NATION_DELETE.get(tanPlayer))
+                .setName(Lang.GUI_NATION_DELETE.translate(tanPlayer))
                 .setDescription(
                         Lang.GUI_NATION_DELETE_DESC1.get(nationData.getName()),
                         Lang.GUI_NATION_DELETE_DESC2.get()
@@ -91,12 +91,12 @@ public class NationSettingsMenu extends SettingsMenus {
                     event.setCancelled(true);
 
                     if (!TownsAndNations.getPlugin().getWarStorage().getWarsOfTerritory(territoryData).isEmpty()) {
-                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR.get(langType), SoundEnum.NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR.translate(langType), SoundEnum.NOT_ALLOWED);
                         return;
                     }
 
                     if (!player.hasPermission("tan.base.nation.disband")) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer), NOT_ALLOWED);
                         return;
                     }
 

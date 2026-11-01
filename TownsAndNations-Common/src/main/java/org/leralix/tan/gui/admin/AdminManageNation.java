@@ -35,7 +35,7 @@ public class AdminManageNation extends AdminManageTerritory {
 
     private GuiItem changeLeader() {
         return iconManager.get(IconKey.TERRITORY_CHANGE_OWNER_ICON)
-                .setName(Lang.GUI_TERRITORY_CHANGE_CAPITAL.get(langType))
+                .setName(Lang.GUI_TERRITORY_CHANGE_CAPITAL.translate(langType))
                 .setDescription(
                         Lang.GUI_TERRITORY_CHANGE_CAPITAL_DESC1.get(nationData.getCapital() != null ? nationData.getCapital().getColoredName() : "None")
                 )

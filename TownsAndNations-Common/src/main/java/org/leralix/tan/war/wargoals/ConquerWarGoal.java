@@ -7,6 +7,7 @@ import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 import org.tan.api.interfaces.war.wargoals.TanCaptureChunkWargoal;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class ConquerWarGoal extends WarGoal implements TanCaptureChunkWargoal {
 
     @Override
     public String getDisplayName(LangType langType) {
-        return Lang.CONQUER_WAR_GOAL.get(langType);
+        return Lang.CONQUER_WAR_GOAL.translate(langType);
     }
 
     @Override
@@ -44,8 +45,8 @@ public class ConquerWarGoal extends WarGoal implements TanCaptureChunkWargoal {
     }
 
     @Override
-    public String getCurrentDesc(LangType langType) {
-        return Lang.GUI_CONQUER_CHUNK_CURRENT_DESC.get(langType, Integer.toString(numberOfChunks));
+    public Placeholder getCurrentDesc() {
+        return Lang.GUI_CONQUER_CHUNK_CURRENT_DESC.get(Integer.toString(numberOfChunks));
     }
 
     @Override
