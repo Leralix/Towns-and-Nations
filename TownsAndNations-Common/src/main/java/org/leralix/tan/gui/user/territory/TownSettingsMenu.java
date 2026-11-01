@@ -57,7 +57,7 @@ public class TownSettingsMenu extends SettingsMenus {
 
         gui.setItem(3, 2, getChangeApplicationRulesButton());
         gui.setItem(3, 3, getChangeCapitalChunkButton());
-        if(Constants.allowShareOfTeleportation()) {
+        if (Constants.allowShareOfTeleportation()) {
             gui.setItem(3, 4, getAuthorizedTeleportationButton());
         }
 
@@ -77,36 +77,39 @@ public class TownSettingsMenu extends SettingsMenus {
 
     private @NotNull GuiItem getChangeCapitalChunkButton() {
 
+        Optional<Vector2D> optCapitalLocation = townData.getCapitalLocation();
         List<FilledLang> desc = new ArrayList<>();
 
-
-        Optional<Vector2D> optVector2D = townData.getCapitalLocation();
-        boolean capitalPresent = optVector2D.isPresent();
-        optVector2D.ifPresent(vector2D -> desc.add(Lang.GUI_CAPITAL_CHUNK_ACTUAL_POSITION.get(Lang.DISPLAY_2D_COORDINATES.get(Integer.toString(vector2D.getX() * 16), Integer.toString(vector2D.getZ() * 16)))));
-
+        if (optCapitalLocation.isEmpty()) {
+            desc.add(Lang.GUI_NO_CAPITAL_CHUNK.get());
+        } else {
+            desc.add(Lang.GUI_CAPITAL_CHUNK_ACTUAL_POSITION.get(Lang.DISPLAY_2D_COORDINATES.get(
+                    Integer.toString(optCapitalLocation.get().getX() * 16),
+                    Integer.toString(optCapitalLocation.get().getZ() * 16))
+            ));
+            if (townData.isTownCapitalOccupied()) {
+                desc.add(Lang.GUI_CAPITAL_CHUNK_OCCUPIED.get());
+            }
+        }
 
         return iconManager.get(IconKey.CHANGE_TOWN_CAPITAL_ICON)
                 .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_CAPITAL.translate(langType))
-                .setDescription(desc)
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
+                .setDescription(desc)
                 .setClickToAcceptMessage(
-                        capitalPresent ?
-                                territoryData.isAtWar() ?
-                                        Lang.CANNOT_MOVE_CAPITAL_WHILE_AT_WAR :
-                                        Lang.GUI_GENERIC_CLICK_TO_MODIFY :
-                                Lang.GUI_NO_CAPITAL_CHUNK
+                        territoryData.isAtWar() ?
+                                Lang.CANNOT_MOVE_CAPITAL_WHILE_AT_WAR :
+                                Lang.GUI_GENERIC_CLICK_TO_MODIFY
                 )
                 .setAction(action -> {
-
-                    if(territoryData.isAtWar()){
+                    if (territoryData.isAtWar()) {
                         TanChatUtils.message(player, Lang.CANNOT_MOVE_CAPITAL_WHILE_AT_WAR.get());
-                        return;
+                    } else {
+                        TanChatUtils.message(player, Lang.RIGHT_CLICK_TO_SELECT_CAPITAL.translate(tanPlayer));
+                        RightClickListener.register(player, langType, new ChangeCapital(townData, p -> open()));
                     }
-                    TanChatUtils.message(player, Lang.RIGHT_CLICK_TO_SELECT_CAPITAL.translate(tanPlayer));
-                    RightClickListener.register(player, langType, new ChangeCapital(townData, p -> open()));
                 })
                 .asGuiItem(player, langType);
-
     }
 
     private @NotNull GuiItem getChangeTagButton() {
@@ -179,9 +182,12 @@ public class TownSettingsMenu extends SettingsMenus {
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_DESC.get(
                                 switch (townRecruitingPolicy) {
-                                    case AUTHORIZE_ALL -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_OPEN.translate(langType);
-                                    case APPLICATION_OPEN -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.translate(langType);
-                                    case CLOSED -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.translate(langType);
+                                    case AUTHORIZE_ALL ->
+                                            Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_OPEN.translate(langType);
+                                    case APPLICATION_OPEN ->
+                                            Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.translate(langType);
+                                    case CLOSED ->
+                                            Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.translate(langType);
                                 }
                         )
                 )
