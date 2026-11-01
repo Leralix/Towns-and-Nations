@@ -144,7 +144,8 @@ public class ChooseWarGoal extends BasicGui {
                 ? war.getMainDefender()
                 : war.getMainAttacker();
 
-        boolean canBeSubjugated = ennemyTerritory.getHierarchyRank() < territoryData.getHierarchyRank();
+        // Territory can be subjugated only if the other territory is one rank below
+        boolean canBeSubjugated = ennemyTerritory.getHierarchyRank() + 1 == territoryData.getHierarchyRank();
 
         return iconManager.get(IconKey.WAR_GOAL_SUBJUGATE_ICON)
                 .setName(Lang.SUBJUGATE_WAR_GOAL.translate(langType))
