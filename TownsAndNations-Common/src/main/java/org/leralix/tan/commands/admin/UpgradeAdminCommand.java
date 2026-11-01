@@ -75,7 +75,6 @@ public abstract class UpgradeAdminCommand extends PlayerSubCommand {
 
     @Override
     public void perform(Player player, String[] args) {
-        System.out.println(args.length);
         if (args.length != 3) {
             TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO);
             return;
