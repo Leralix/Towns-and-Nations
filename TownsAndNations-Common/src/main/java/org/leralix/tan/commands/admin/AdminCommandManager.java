@@ -12,6 +12,8 @@ public class AdminCommandManager extends CommandManager {
         addSubCommand(new AddMoney(playerDataStorage));
         addSubCommand(new SetMoney(playerDataStorage));
         addSubCommand(new UnclaimAdminCommand(playerDataStorage));
+        addSubCommand(new AddUpgradeAdminCommand(playerDataStorage));
+        addSubCommand(new RemoveUpgradeAdminCommand(playerDataStorage));
 
         addSubCommand(new NameFilterAdminCommand());
 
