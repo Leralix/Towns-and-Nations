@@ -81,7 +81,7 @@ public class CaptureChunk {
                 continue;
             }
             LangType langType = TownsAndNations.getPlugin().getPlayerDataStorage().get(player).getLang();
-            player.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message.get(langType)));
+            player.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message.translate(langType)));
         }
     }
 

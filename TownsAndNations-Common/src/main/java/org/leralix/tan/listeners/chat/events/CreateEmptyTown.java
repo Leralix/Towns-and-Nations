@@ -41,7 +41,7 @@ public class CreateEmptyTown extends ChatListenerEvent {
 
         TownStorage townStorage = TownsAndNations.getPlugin().getTownStorage();
         if (townStorage.isNameUsed(safeTownName)) {
-            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(playerData));
+            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.translate(playerData));
             return false;
         }
 

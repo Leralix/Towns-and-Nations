@@ -8,6 +8,8 @@ import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
+import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.tan.api.interfaces.war.wargoals.TanSubjugateWargoal;
 
 import java.util.ArrayList;
@@ -15,8 +17,12 @@ import java.util.List;
 
 public class SubjugateWarGoal extends WarGoal implements TanSubjugateWargoal {
 
-    public SubjugateWarGoal() {
-        super();
+    private final String attackingTerritoryId;
+    private final String territoryToSubjugateId;
+
+    public SubjugateWarGoal(Territory attackingTerritory, Territory territoryToSubjugate) {
+        this.attackingTerritoryId = attackingTerritory.getID();
+        this.territoryToSubjugateId = territoryToSubjugate.getID();
     }
 
     @Override
@@ -31,7 +37,7 @@ public class SubjugateWarGoal extends WarGoal implements TanSubjugateWargoal {
 
     @Override
     public String getDisplayName(LangType langType) {
-        return Lang.SUBJUGATE_WAR_GOAL.get(langType);
+        return Lang.SUBJUGATE_WAR_GOAL.translate(langType);
     }
 
     @Override
@@ -51,8 +57,13 @@ public class SubjugateWarGoal extends WarGoal implements TanSubjugateWargoal {
     }
 
     @Override
-    public String getCurrentDesc(LangType langType) {
-        return Lang.GUI_WARGOAL_SUBJUGATE_WAR_GOAL_RESULT.get(langType);
+    public Placeholder getCurrentDesc() {
+        Territory attackingTerritory = TerritoryUtil.getTerritory(attackingTerritoryId);
+        Territory territoryToSubjugate = TerritoryUtil.getTerritory(territoryToSubjugateId);
+        if(attackingTerritory != null && territoryToSubjugate != null){
+            return Lang.GUI_WARGOAL_SUBJUGATE_WAR_GOAL_RESULT.get(territoryToSubjugate.getColoredName(), attackingTerritory.getColoredName());
+        }
+        return null;
     }
 
 }

@@ -53,6 +53,6 @@ public enum TimeZoneEnum {
     }
 
     public String getName(LangType langType){
-        return name.get(langType);
+        return name.translate(langType);
     }
 }

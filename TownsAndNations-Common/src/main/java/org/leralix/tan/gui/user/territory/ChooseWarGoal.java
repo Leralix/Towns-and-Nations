@@ -58,7 +58,7 @@ public class ChooseWarGoal extends BasicGui {
 
 
         return iconManager.get(IconKey.WAR_GOAL_CONQUER_ICON)
-                .setName(Lang.CONQUER_WAR_GOAL.get(langType))
+                .setName(Lang.CONQUER_WAR_GOAL.translate(langType))
                 .setDescription(Lang.CONQUER_WAR_GOAL_DESC.get())
                 .setClickToAcceptMessage(conquerAlreadyUsed ?
                         Lang.GUI_ONLY_ONE_WAR_GOAL_TYPE :
@@ -67,10 +67,10 @@ public class ChooseWarGoal extends BasicGui {
                 .setAction(
                         action -> {
                             if (conquerAlreadyUsed) {
-                                TanChatUtils.message(player, Lang.GUI_ONLY_ONE_WAR_GOAL_TYPE.get(tanPlayer), SoundEnum.NOT_ALLOWED);
+                                TanChatUtils.message(player, Lang.GUI_ONLY_ONE_WAR_GOAL_TYPE.translate(tanPlayer), SoundEnum.NOT_ALLOWED);
                                 return;
                             }
-                            TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
+                            TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.translate(langType));
                             PlayerChatListenerStorage.register(player, langType, new SelectNbChunksForConquer(war, warRole, returnGui));
                         }
                 )
@@ -82,7 +82,7 @@ public class ChooseWarGoal extends BasicGui {
         boolean isTown = territoryData instanceof Town;
 
         return iconManager.get(IconKey.WAR_GOAL_CAPTURE_LANDMARK_ICON)
-                .setName(Lang.CAPTURE_LANDMARK_WAR_GOAL.get(langType))
+                .setName(Lang.CAPTURE_LANDMARK_WAR_GOAL.translate(langType))
                 .setDescription(Lang.CAPTURE_LANDMARK_WAR_GOAL_DESC.get())
                 .setClickToAcceptMessage(
                         isTown ?
@@ -92,7 +92,7 @@ public class ChooseWarGoal extends BasicGui {
                 .setAction(
                         action -> {
                             if (!isTown) {
-                                TanChatUtils.message(player, Lang.GUI_WARGOAL_CAPTURE_LANDMARK_CANNOT_BE_USED.get(langType));
+                                TanChatUtils.message(player, Lang.GUI_WARGOAL_CAPTURE_LANDMARK_CANNOT_BE_USED.translate(langType));
                                 return;
                             }
                             new SelectLandmarkForCapture(player, territoryData, war, warRole, returnGui);
@@ -103,7 +103,7 @@ public class ChooseWarGoal extends BasicGui {
 
     private @NotNull GuiItem getCaptureFortButton() {
         return iconManager.get(IconKey.WAR_GOAL_CAPTURE_FORT_ICON)
-                .setName(Lang.CAPTURE_FORT_WAR_GOAL.get(langType))
+                .setName(Lang.CAPTURE_FORT_WAR_GOAL.translate(langType))
                 .setDescription(Lang.CAPTURE_FORT_WAR_GOAL_DESC.get())
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_SELECT)
                 .setAction(
@@ -118,7 +118,7 @@ public class ChooseWarGoal extends BasicGui {
                 .anyMatch(ConquerWarGoal.class::isInstance);
 
         return iconManager.get(IconKey.WAR_GOAL_TRIBUTE_ICON)
-                .setName(Lang.TRIBUTE_WAR_GOAL.get(langType))
+                .setName(Lang.TRIBUTE_WAR_GOAL.translate(langType))
                 .setDescription(Lang.TRIBUTE_WAR_GOAL_DESC.get(Integer.toString(Constants.getTributeDuration())))
                 .setClickToAcceptMessage(
                         tributeAlreadyUsed ?
@@ -128,10 +128,10 @@ public class ChooseWarGoal extends BasicGui {
                 .setAction(
                         action -> {
                             if (tributeAlreadyUsed) {
-                                TanChatUtils.message(player, Lang.GUI_ONLY_ONE_WAR_GOAL_TYPE.get(tanPlayer), SoundEnum.NOT_ALLOWED);
+                                TanChatUtils.message(player, Lang.GUI_ONLY_ONE_WAR_GOAL_TYPE.translate(tanPlayer), SoundEnum.NOT_ALLOWED);
                                 return;
                             }
-                            TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
+                            TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.translate(langType));
                             PlayerChatListenerStorage.register(player, langType, new SelectQuantityForTribute(war, warRole, returnGui));
                         }
                 )
@@ -140,12 +140,14 @@ public class ChooseWarGoal extends BasicGui {
 
     private @NotNull GuiItem getSubjugateButton() {
 
-        boolean canBeSubjugated = warRole == WarRole.MAIN_ATTACKER
-                ? war.getMainDefender().getHierarchyRank() < territoryData.getHierarchyRank()
-                : war.getMainAttacker().getHierarchyRank() < territoryData.getHierarchyRank();
+        Territory ennemyTerritory = warRole == WarRole.MAIN_ATTACKER
+                ? war.getMainDefender()
+                : war.getMainAttacker();
+
+        boolean canBeSubjugated = ennemyTerritory.getHierarchyRank() < territoryData.getHierarchyRank();
 
         return iconManager.get(IconKey.WAR_GOAL_SUBJUGATE_ICON)
-                .setName(Lang.SUBJUGATE_WAR_GOAL.get(langType))
+                .setName(Lang.SUBJUGATE_WAR_GOAL.translate(langType))
                 .setDescription(Lang.SUBJUGATE_WAR_GOAL_DESC.get())
                 .setClickToAcceptMessage(
                         canBeSubjugated ?
@@ -156,11 +158,11 @@ public class ChooseWarGoal extends BasicGui {
                         action -> {
 
                             if (!canBeSubjugated) {
-                                TanChatUtils.message(player, Lang.GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED.get(langType));
+                                TanChatUtils.message(player, Lang.GUI_WARGOAL_SUBJUGATE_CANNOT_BE_USED.translate(langType));
                                 return;
                             }
 
-                            war.addGoal(warRole, new SubjugateWarGoal());
+                            war.addGoal(warRole, new SubjugateWarGoal(war.getMainAttacker(), war.getMainDefender()));
                             returnGui.open();
                         }
                 )
@@ -174,7 +176,7 @@ public class ChooseWarGoal extends BasicGui {
                 : !war.getMainAttacker().getVassalsInternal().isEmpty();
 
         return iconManager.get(IconKey.WAR_GOAL_LIBERATE_ICON)
-                .setName(Lang.LIBERATE_SUBJECT_WAR_GOAL.get(langType))
+                .setName(Lang.LIBERATE_SUBJECT_WAR_GOAL.translate(langType))
                 .setDescription(Lang.LIBERATE_SUBJECT_WAR_GOAL_DESC.get())
                 .setClickToAcceptMessage(
                         doesEnemyHaveSubjects ?
@@ -184,7 +186,7 @@ public class ChooseWarGoal extends BasicGui {
                 .setAction(
                         action -> {
                             if (!doesEnemyHaveSubjects) {
-                                TanChatUtils.message(player, Lang.GUI_WARGOAL_LIBERATE_CANNOT_BE_USED.get(langType));
+                                TanChatUtils.message(player, Lang.GUI_WARGOAL_LIBERATE_CANNOT_BE_USED.translate(langType));
                                 return;
                             }
 

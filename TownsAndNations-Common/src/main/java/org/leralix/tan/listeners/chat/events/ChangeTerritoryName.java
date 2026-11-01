@@ -51,21 +51,19 @@ public class ChangeTerritoryName extends ChatListenerEvent {
         }
 
         if(newName.length() > maxSize){
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(playerData, Integer.toString(maxSize)));
+            TanChatUtils.message(playerData, Lang.MESSAGE_TOO_LONG.get(Integer.toString(maxSize)));
             return false;
         }
 
         if (territoryToRename.getBalance() < cost) {
-            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(
-                    playerData,
+            TanChatUtils.message(playerData, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(
                     territoryToRename.getColoredName(),
                     Double.toString(cost - territoryToRename.getBalance()))
             );
             return true;
         }
 
-        TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(
-                playerData,
+        TanChatUtils.message(playerData, Lang.CHANGE_MESSAGE_SUCCESS.get(
                 territoryToRename.getName(),
                 newName
         ), SoundEnum.GOOD);

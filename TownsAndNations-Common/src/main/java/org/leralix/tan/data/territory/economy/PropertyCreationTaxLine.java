@@ -43,7 +43,7 @@ public class PropertyCreationTaxLine extends ProfitLine {
 
         gui.setItem(4, 2,
                 IconManager.getInstance().get(IconKey.CREATE_TAX_ICON)
-                        .setName(Lang.GUI_TREASURY_CREATE_PROPERTY_TAX.get(lang))
+                        .setName(Lang.GUI_TREASURY_CREATE_PROPERTY_TAX.translate(lang))
                         .setDescription(
                                 Lang.GUI_TREASURY_CREATE_PROPERTY_TAX_DESC1.get(Double.toString(territoryData.getTaxOnCreatingProperty()))
                         )
@@ -54,13 +54,13 @@ public class PropertyCreationTaxLine extends ProfitLine {
                         .setAction(action -> {
                             action.setCancelled(true);
                             if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
-                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
+                                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(lang));
                                 return;
                             }
                             if (action.isLeftClick()) {
                                 new TerritoryTransactionHistory(player, territoryData, TransactionType.CREATE_PROPERTY, p -> new TreasuryMenu(player, territoryData));
                             } else if (action.isRightClick()) {
-                                TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
+                                TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.translate(lang));
                                 PlayerChatListenerStorage.register(player, lang, new SetCreatePropertyTax(territoryData, p -> new TreasuryMenu(player, territoryData)));
                             }
                         })

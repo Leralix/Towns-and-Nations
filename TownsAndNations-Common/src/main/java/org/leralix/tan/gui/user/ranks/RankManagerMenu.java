@@ -80,15 +80,15 @@ public class RankManagerMenu extends BasicGui {
 
 
         return iconManager.get(IconKey.DELETE_RANK_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_DELETE.get(tanPlayer))
+                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_DELETE.translate(tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(event -> {
                     if(!isEmpty){
-                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.get(tanPlayer), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_NOT_EMPTY.translate(tanPlayer), NOT_ALLOWED);
                         return;
                     }
                     if(isDefaultRank){
-                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_DEFAULT.get(tanPlayer), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_DELETE_ERROR_DEFAULT.translate(tanPlayer), NOT_ALLOWED);
                         return;
                     }
                     territoryData.removeRank(rankData.getID());
@@ -110,12 +110,12 @@ public class RankManagerMenu extends BasicGui {
 
 
         return iconManager.get(IconKey.SET_DEFAULT_ROLE_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT.get(langType))
+                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT.translate(langType))
                 .setDescription(description)
                 .setClickToAcceptMessage(Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT2)
                 .setAction(event -> {
                     if(isDefaultRank){
-                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT.get(tanPlayer), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_SET_DEFAULT_ALREADY_DEFAULT.translate(tanPlayer), NOT_ALLOWED);
                     }
                     else{
                         territoryData.setDefaultRank(rankData.getID());
@@ -128,7 +128,7 @@ public class RankManagerMenu extends BasicGui {
 
     private GuiItem getPayTaxRankButton() {
         return iconManager.get(IconKey.PAY_TAXES_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_PAY_TAXES_NAME.get(tanPlayer))
+                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_PAY_TAXES_NAME.translate(tanPlayer))
                 .setDescription(
                         rankData.isPayingTaxes() ?
                                 Lang.GUI_TOWN_MEMBERS_ROLE_PAY_TAXES.get() :
@@ -144,10 +144,10 @@ public class RankManagerMenu extends BasicGui {
 
     private GuiItem getRenameRankButton() {
         return iconManager.get(IconKey.RENAME_RANK_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.get(tanPlayer))
+                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_CHANGE_NAME.translate(tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(event -> {
-                    TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.WRITE_IN_CHAT_NEW_ROLE_NAME.translate(tanPlayer));
                     PlayerChatListenerStorage.register(player, langType, new RenameRank(territoryData , rankData));
                 })
                 .asGuiItem(player, langType);
@@ -155,7 +155,7 @@ public class RankManagerMenu extends BasicGui {
 
     private GuiItem increaseSalaryButton() {
         return iconManager.get(IconKey.INCREASE_SALARY_ICON)
-                .setName(Lang.GUI_LOWER_SALARY.get(tanPlayer))
+                .setName(Lang.GUI_LOWER_SALARY.translate(tanPlayer))
                 .setDescription(
                         Lang.GUI_INCREASE_1_DESC.get(),
                         Lang.GUI_INCREASE_10_DESC.get()
@@ -172,14 +172,14 @@ public class RankManagerMenu extends BasicGui {
 
     private GuiItem getSalaryIcon() {
         return iconManager.get(IconKey.CURRENT_SALARY_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_SALARY.get(tanPlayer))
+                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_SALARY.translate(tanPlayer))
                 .setDescription(Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_DESC1.get(Integer.toString(rankData.getSalary())))
                 .asGuiItem(player, langType);
     }
 
     private GuiItem lowerSalaryButton() {
         return iconManager.get(IconKey.DECREASE_SALARY_ICON)
-                .setName(Lang.GUI_LOWER_SALARY.get(tanPlayer))
+                .setName(Lang.GUI_LOWER_SALARY.translate(tanPlayer))
                 .setDescription(
                         Lang.GUI_DECREASE_1_DESC.get(),
                         Lang.GUI_DECREASE_10_DESC.get()
@@ -189,7 +189,7 @@ public class RankManagerMenu extends BasicGui {
                     int amountToRemove = event.isShiftClick() && currentSalary >= 10 ? 10 : 1;
 
                     if (currentSalary <= 0) {
-                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER.get(tanPlayer), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_SALARY_ERROR_LOWER.translate(tanPlayer), NOT_ALLOWED);
                         return;
                     }
 
@@ -204,7 +204,7 @@ public class RankManagerMenu extends BasicGui {
 
     private GuiItem getManagePermissionIcon() {
         return iconManager.get(IconKey.MANAGE_PERMISSION_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION.get(tanPlayer))
+                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_MANAGE_PERMISSION.translate(tanPlayer))
                 .setAction(event -> new ManageRankPermissionMenu(player, territoryData, rankData))
                 .asGuiItem(player, langType);
     }
@@ -213,7 +213,7 @@ public class RankManagerMenu extends BasicGui {
     private GuiItem getRankLevel() {
         RankEnum rankEnum = rankData.getRankEnum();
         return iconManager.get(rankData.getRankEnum().getBasicRankIcon())
-                .setName(rankEnum.getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.get(tanPlayer, Integer.toString(rankEnum.getLevel())))
+                .setName(rankEnum.getColor() + Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_X.get(Integer.toString(rankEnum.getLevel())).translate(tanPlayer))
                 .setClickToAcceptMessage(
                         Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC1,
                         Lang.GUI_TOWN_MEMBERS_ROLE_PRIORITY_DESC2
@@ -224,7 +224,7 @@ public class RankManagerMenu extends BasicGui {
                     boolean isInferiorOrEquals = playerRank.getRankEnum().getLevel() <= (rankData.getRankEnum().getLevel() + 1);
 
                     if(isInferiorOrEquals && !isLeader){
-                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_RANK_UP_INFERIOR_RANK.get(tanPlayer, playerRank.getColoredName()));
+                        TanChatUtils.message(tanPlayer, Lang.GUI_TOWN_MEMBERS_ROLE_RANK_UP_INFERIOR_RANK.get(playerRank.getColoredName()));
                         return;
                     }
 
@@ -244,17 +244,17 @@ public class RankManagerMenu extends BasicGui {
     private GuiItem getRankIcon() {
 
         return iconManager.get(rankData.getRankIcon())
-                .setName(Lang.GUI_BASIC_NAME.get(tanPlayer, rankData.getColoredName()))
+                .setName(Lang.GUI_BASIC_NAME.get(rankData.getColoredName()).translate(tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_TOWN_MEMBERS_ROLE_NAME_DESC1)
                 .setAction(event -> {
                     ItemStack itemMaterial = event.getCursor();
                     if(itemMaterial.getType() == Material.AIR){
-                        TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED.get(tanPlayer));
+                        TanChatUtils.message(tanPlayer, Lang.GUI_TOWN_MEMBERS_ROLE_NO_ITEM_SHOWED);
                         return;
                     }
                     rankData.setRankIcon(itemMaterial);
                     open();
-                    TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(tanPlayer));
+                    TanChatUtils.message(tanPlayer, Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS);
                 })
                 .asGuiItem(player, langType);
     }
@@ -270,7 +270,7 @@ public class RankManagerMenu extends BasicGui {
 
 
         return iconManager.get(IconKey.PLAYER_LIST_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.get(tanPlayer))
+                .setName(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO.translate(tanPlayer))
                 .setDescription(description)
                 .setClickToAcceptMessage(Lang.GUI_TOWN_MEMBERS_ROLE_MEMBER_LIST_INFO_DESC1)
                 .setAction(p -> new AssignPlayerToRankMenu(player, territoryData, rankData).open())

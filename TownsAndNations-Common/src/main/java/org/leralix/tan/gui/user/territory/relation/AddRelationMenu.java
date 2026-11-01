@@ -29,7 +29,7 @@ public class AddRelationMenu extends IteratorGUI {
 
 
     public AddRelationMenu(Player player, Territory territory, TownRelation wantedRelation) {
-        super(player, Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(wantedRelation.getName(TownsAndNations.getPlugin().getPlayerDataStorage().get(player).getLang())), 6);
+        super(player, Lang.HEADER_SELECT_ADD_TERRITORY_RELATION.get(wantedRelation.getName()), 6);
         this.territoryData = territory;
         this.wantedRelation = wantedRelation;
         open();
@@ -75,30 +75,30 @@ public class AddRelationMenu extends IteratorGUI {
                     .setAction(action -> {
 
                         if(TownsAndNations.getPlugin().getWarStorage().isTerritoryAtWarWith(territoryData, otherTerritory)){
-                            TanChatUtils.message(player, Lang.CANNOT_REMOVE_RELATION_WAR.get(tanPlayer, otherTerritory.getName()), MINOR_GOOD);
+                            TanChatUtils.message(tanPlayer, Lang.CANNOT_REMOVE_RELATION_WAR.get(otherTerritory.getName()), MINOR_GOOD);
                             return;
                         }
 
                         if (otherTerritory.haveNoLeader()) {
-                            TanChatUtils.message(player, Lang.TERRITORY_DIPLOMATIC_INVITATION_NO_LEADER.get(tanPlayer));
+                            TanChatUtils.message(tanPlayer, Lang.TERRITORY_DIPLOMATIC_INVITATION_NO_LEADER);
                             return;
                         }
 
                         if (wantedRelation.isSuperiorTo(actualRelation)) {
                             otherTerritory.addDiplomaticProposal(territoryData, wantedRelation);
-                            TanChatUtils.message(player, Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(tanPlayer, otherTerritory.getName()));
+                            TanChatUtils.message(tanPlayer, Lang.DIPLOMATIC_INVITATION_SENT_SUCCESS.get(otherTerritory.getName()));
                         } else {
                             RelationConstant relationConstant = Constants.getRelationConstants(actualRelation);
                             int trucePeriod = relationConstant.trucePeriod();
                             //If actual relation has a truce, it cannot be switched to a negative relation instantly
                             if (wantedRelation.isNegative()) {
                                 if (trucePeriod > 0) {
-                                    TanChatUtils.message(player, Lang.CURRENT_RELATION_REQUIRES_TRUCE.get(tanPlayer, Integer.toString(trucePeriod)), NOT_ALLOWED);
+                                    TanChatUtils.message(tanPlayer, Lang.CURRENT_RELATION_REQUIRES_TRUCE.get(Integer.toString(trucePeriod)), NOT_ALLOWED);
                                     return;
                                 }
                                 long nbActiveHourTruce = TruceStorage.getInstance().getRemainingTruce(territoryData, otherTerritory);
                                 if (nbActiveHourTruce > 0) {
-                                    TanChatUtils.message(player, Lang.CANNOT_SET_RELATION_TO_NEGATIVE_WHILE_TRUCE.get(tanPlayer, Long.toString(nbActiveHourTruce), otherTerritory.getColoredName()), NOT_ALLOWED);
+                                    TanChatUtils.message(tanPlayer, Lang.CANNOT_SET_RELATION_TO_NEGATIVE_WHILE_TRUCE.get(Long.toString(nbActiveHourTruce), otherTerritory.getColoredName()), NOT_ALLOWED);
                                     return;
                                 }
                             }

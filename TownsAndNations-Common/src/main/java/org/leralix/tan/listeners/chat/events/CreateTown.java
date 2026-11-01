@@ -47,7 +47,7 @@ public class CreateTown extends ChatListenerEvent {
         double playerBalance = EconomyUtil.getBalance(player);
 
         if (playerBalance < cost) {
-            TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(playerData, Double.toString(cost - playerBalance)));
+            TanChatUtils.message(playerData, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(Double.toString(cost - playerBalance)));
             return false;
         }
 
@@ -66,7 +66,7 @@ public class CreateTown extends ChatListenerEvent {
 
         TownStorage townStorage = TownsAndNations.getPlugin().getTownStorage();
         if (townStorage.isNameUsed(townName)) {
-            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(playerData));
+            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.translate(playerData));
             return false;
         }
         Town createdTown = createTown(player, playerData, townName, townStorage);

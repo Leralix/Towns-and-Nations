@@ -57,9 +57,9 @@ public class WarEndedNewsletter extends Newsletter {
             return null;
 
         return IconManager.getInstance().get(Material.SHIELD)
-                .setName(Lang.WAR_ENDED_TITLE.get(lang))
+                .setName(Lang.WAR_ENDED_TITLE.translate(lang))
                 .setDescription(
-                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(getDate())),
                         Lang.WAR_ENDED.get(
                                 winningTerritory.getColoredName(),
                                 defeatedTerritory.getColoredName(),
@@ -99,9 +99,8 @@ public class WarEndedNewsletter extends Newsletter {
         if (winningTerritory == null || defeatedTerritory == null)
             return;
 
-        TanChatUtils.message(player,
+        TanChatUtils.message(tanPlayer,
                 Lang.WAR_ENDED.get(
-                        tanPlayer,
                         winningTerritory.getColoredName(),
                         defeatedTerritory.getColoredName(),
                         Integer.toString(nbAppliedWargoals)

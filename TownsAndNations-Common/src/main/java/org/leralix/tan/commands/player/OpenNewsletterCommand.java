@@ -2,9 +2,9 @@ package org.leralix.tan.commands.player;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.gui.user.player.NewsletterMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -48,8 +48,8 @@ public class OpenNewsletterCommand extends PlayerSubCommand {
     public void perform(Player player, String[] args) {
 
         if (args.length != 1) {
-            LangType langType = playerDataStorage.get(player).getLang();
-            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+            ITanPlayer tanPlayer = playerDataStorage.get(player);
+            TanChatUtils.message(tanPlayer, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
             return;
         }
         new NewsletterMenu(player).open();

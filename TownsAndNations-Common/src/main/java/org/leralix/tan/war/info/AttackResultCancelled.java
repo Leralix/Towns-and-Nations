@@ -27,7 +27,7 @@ public class AttackResultCancelled extends AttackResult {
 
         return List.of(
                 Lang.ATTACK_ICON_CANCELLED.get(),
-                Lang.ATTACK_ICON_CANCELLED_DATE.get(exactTimeStart.get(langType))
+                Lang.ATTACK_ICON_CANCELLED_DATE.get(exactTimeStart.translate(langType))
         );
     }
 }

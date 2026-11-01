@@ -3,7 +3,7 @@ package org.leralix.tan.gui.service;
 import org.leralix.tan.gui.service.requirements.IndividualRequirement;
 import org.leralix.tan.gui.service.requirements.IndividualRequirementWithCost;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,12 +21,12 @@ public class Requirements {
         individualRequirementList.addAll(requirements);
     }
 
-    public List<String> getRequirementsParagraph(LangType langType){
-        List<String> res = new ArrayList<>();
+    public List<Placeholder> getRequirementsParagraph(){
+        List<Placeholder> res = new ArrayList<>();
 
-        res.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC3.get(langType));
+        res.add(Lang.GUI_TOWN_LEVEL_UP_UNI_DESC3);
         for(var requirement : individualRequirementList){
-            String newLine = requirement.getLine(langType);
+            Placeholder newLine = requirement.getLine();
             if(newLine != null){
                 res.add(newLine);
             }

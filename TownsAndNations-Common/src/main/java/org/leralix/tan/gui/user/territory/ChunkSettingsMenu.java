@@ -41,7 +41,7 @@ public class ChunkSettingsMenu extends BasicGui {
 
     private GuiItem getChunkIcon() {
         return iconManager.get(IconKey.LANDS_PERMISSION_ICON)
-                .setName(territoryData instanceof Town ? Lang.GUI_TOWN_CHUNK_PLAYER.get(tanPlayer) : Lang.GUI_TERRITORY_CHUNK_PLAYER.get(tanPlayer))
+                .setName(territoryData instanceof Town ? Lang.GUI_TOWN_CHUNK_PLAYER.translate(tanPlayer) : Lang.GUI_TERRITORY_CHUNK_PLAYER.translate(tanPlayer))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS))
                 .setAction(event -> new TerritoryChunkSettingsMenu(player, territoryData, this))
                 .asGuiItem(player, langType);
@@ -49,7 +49,7 @@ public class ChunkSettingsMenu extends BasicGui {
 
     private GuiItem getChunkGeneralSettings(){
         return iconManager.get(IconKey.GENERAL_SETTINGS_ICON)
-                .setName(Lang.CHUNK_GENERAL_SETTINGS.get(tanPlayer))
+                .setName(Lang.CHUNK_GENERAL_SETTINGS.translate(tanPlayer))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS))
                 .setAction(event -> new TerritoryChunkGeneralSettings(player, territoryData))
                 .asGuiItem(player, langType);
@@ -57,7 +57,7 @@ public class ChunkSettingsMenu extends BasicGui {
 
     private GuiItem getChunkMobSpawnSettings(){
         return iconManager.get(IconKey.MOBS_SPAWN_SETTINGS_ICON)
-                .setName(territoryData instanceof Town ? Lang.GUI_TOWN_CHUNK_MOB.get(tanPlayer) : Lang.GUI_TERRITORY_CHUNK_MOB.get(tanPlayer))
+                .setName(territoryData instanceof Town ? Lang.GUI_TOWN_CHUNK_MOB.translate(tanPlayer) : Lang.GUI_TERRITORY_CHUNK_MOB.translate(tanPlayer))
                 .setRequirements(
                         new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS),
                         new BooleanStatRequirement<>(territoryData, EnableMobBan.class)
@@ -68,10 +68,7 @@ public class ChunkSettingsMenu extends BasicGui {
                         new TerritoryMobSettings(player, territoryData);
                     }
                     else {
-                        TanChatUtils.message(player,
-                                (territoryData instanceof Town ? Lang.TOWN_NOT_ENOUGH_LEVEL : Lang.TERRITORY_NOT_ENOUGH_LEVEL)
-                                        .get(langType, Lang.UNLOCK_MOB_BAN.get(langType)),
-                                SoundEnum.NOT_ALLOWED);
+                        TanChatUtils.message(tanPlayer, Lang.TERRITORY_NOT_ENOUGH_LEVEL.get(Lang.UNLOCK_MOB_BAN), SoundEnum.NOT_ALLOWED);
                     }
 
                 })

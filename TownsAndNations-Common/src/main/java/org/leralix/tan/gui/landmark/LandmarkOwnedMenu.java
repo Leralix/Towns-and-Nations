@@ -51,7 +51,7 @@ public class LandmarkOwnedMenu extends BasicGui {
 
     private @NotNull GuiItem getAbandonButton() {
         return iconManager.get(IconKey.GUI_LANDMARK_ABANDON_LANDMARK)
-                .setName(Lang.GUI_REMOVE_LANDMARK.get(tanPlayer))
+                .setName(Lang.GUI_REMOVE_LANDMARK.translate(tanPlayer))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_LANDMARK))
                 .setAction(action -> {
                     landmark.removeOwnership();
@@ -64,7 +64,7 @@ public class LandmarkOwnedMenu extends BasicGui {
     private GuiItem getCollectButton() {
         int quantity = landmark.computeStoredReward(territoryData);
         return iconManager.get(quantity == 0 ? IconKey.GUI_LANDMARK_COLLECT_REWARDS_EMPTY : IconKey.GUI_LANDMARK_COLLECT_REWARDS)
-                .setName(Lang.GUI_COLLECT_LANDMARK.get(langType))
+                .setName(Lang.GUI_COLLECT_LANDMARK.translate(langType))
                 .setDescription(Lang.GUI_COLLECT_LANDMARK_DESC2.get(Integer.toString(quantity)))
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.COLLECT_LANDMARK))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
@@ -75,7 +75,7 @@ public class LandmarkOwnedMenu extends BasicGui {
                     }
 
                     landmark.giveToPlayer(player, quantity);
-                    TanChatUtils.message(player, Lang.GUI_LANDMARK_REWARD_COLLECTED.get(tanPlayer, Integer.toString(quantity)), GOOD);
+                    TanChatUtils.message(tanPlayer, Lang.GUI_LANDMARK_REWARD_COLLECTED.get(Integer.toString(quantity)), GOOD);
                     open();
                 })
                 .asGuiItem(player, langType);

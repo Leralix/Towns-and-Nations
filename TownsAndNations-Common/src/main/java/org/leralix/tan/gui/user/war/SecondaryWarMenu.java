@@ -41,7 +41,7 @@ public class SecondaryWarMenu extends AbstractWarMenu {
         boolean canLeave = Constants.canLeaveWars();
 
         return iconManager.get(IconKey.WAR_SURRENDER_ICON)
-                .setName(Lang.WAR_SURRENDER.get(langType))
+                .setName(Lang.WAR_SURRENDER.translate(langType))
                 .setClickToAcceptMessage(
                         canLeave ?
                                 Lang.GUI_GENERIC_CLICK_TO_PROCEED :

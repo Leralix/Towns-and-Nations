@@ -4,11 +4,11 @@ import org.bukkit.entity.Player;
 import org.leralix.lib.data.SoundEnum;
 import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Territory;
-import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.listeners.chat.ChatListenerEvent;
 import org.leralix.tan.storage.database.transactions.TransactionManager;
 import org.leralix.tan.storage.database.transactions.instance.RetrieveTransaction;
+import org.leralix.tan.utils.economy.EconomyUtil;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 public class RetrieveMoney extends ChatListenerEvent {
@@ -23,18 +23,18 @@ public class RetrieveMoney extends ChatListenerEvent {
 
         Double amount = parseStringToDouble(message);
         if (amount == null || amount <= 0) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(playerData));
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.translate(playerData));
             return false;
         }
 
         if (amount > territoryData.getBalance()) {
-            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(playerData, territoryData.getColoredName(), Double.toString(amount - territoryData.getBalance())));
+            TanChatUtils.message(playerData, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(territoryData.getColoredName(), Double.toString(amount - territoryData.getBalance())));
             return false;
         }
         territoryData.removeFromBalance(amount);
         EconomyUtil.addFromBalance(player, amount);
 
-        TanChatUtils.message(player, Lang.TOWN_RETRIEVE_MONEY_SUCCESS.get(playerData, Double.toString(amount)), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(playerData, Lang.TOWN_RETRIEVE_MONEY_SUCCESS.get(Double.toString(amount)), SoundEnum.MINOR_GOOD);
         TransactionManager.getInstance().register(new RetrieveTransaction(territoryData, player, amount));
         return true;
     }

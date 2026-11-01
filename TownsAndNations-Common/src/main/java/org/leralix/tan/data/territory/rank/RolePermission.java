@@ -4,7 +4,6 @@ import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.gui.cosmetic.IconKey;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
 
 public enum RolePermission {
 
@@ -51,9 +50,5 @@ public enum RolePermission {
 
     public Lang getName() {
         return name;
-    }
-
-    public String getName(LangType langType) {
-        return name.get(langType);
     }
 }

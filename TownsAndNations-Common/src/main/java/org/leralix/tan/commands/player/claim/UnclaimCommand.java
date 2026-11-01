@@ -60,8 +60,8 @@ public class UnclaimCommand extends PlayerSubCommand {
         ITanPlayer tanPlayer = playerDataStorage.get(player);
         LangType langType = tanPlayer.getLang();
         if (!(args.length == 2 || args.length == 4)) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
-            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+            TanChatUtils.message(tanPlayer, Lang.SYNTAX_ERROR);
+            TanChatUtils.message(tanPlayer, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
             return;
         }
 
@@ -73,11 +73,11 @@ public class UnclaimCommand extends PlayerSubCommand {
         if (args.length == 4) {
             String territoryType = args[1].toLowerCase();
             if (!territoryType.equals("town") && !territoryType.equals("region") && !territoryType.equals("nation")) {
-                TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
-                TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+                TanChatUtils.message(tanPlayer, Lang.SYNTAX_ERROR);
+                TanChatUtils.message(tanPlayer, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
                 return;
             }
-            chunk = TerritoryCommandUtil.parseChunkFromArgs(player, args, 2, 3, langType, getSyntax());
+            chunk = TerritoryCommandUtil.parseChunkFromArgs(player, args, 2, 3, tanPlayer, getSyntax());
             if (chunk == null) {
                 return;
             }
@@ -93,9 +93,9 @@ public class UnclaimCommand extends PlayerSubCommand {
                 }
             }
             case LandmarkClaimedChunk ignored -> {
-                TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_LANDMARK_CHUNK.get(langType));
+                TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_LANDMARK_CHUNK.translate(langType));
             }
-            default -> TanChatUtils.message(player, Lang.CHUNK_NOT_CLAIMED.get(langType));
+            default -> TanChatUtils.message(player, Lang.CHUNK_NOT_CLAIMED.translate(langType));
         }
     }
 }

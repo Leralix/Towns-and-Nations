@@ -66,9 +66,8 @@ public class DiplomacyProposalNews extends Newsletter {
         Territory receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if (receivingTerritory == null)
             return;
-        TanChatUtils.message(player,
+        TanChatUtils.message(tanPlayer,
                 Lang.DIPLOMACY_PROPOSAL_NEWSLETTER.get(
-                        tanPlayer,
                         proposingTerritory.getCustomColoredName().toLegacyText(),
                         receivingTerritory.getCustomColoredName().toLegacyText(),
                         wantedRelation.getColoredName(tanPlayer.getLang())),
@@ -100,7 +99,7 @@ public class DiplomacyProposalNews extends Newsletter {
             return null;
 
         return IconManager.getInstance().get(Material.PAPER)
-                .setName(Lang.NEWSLETTER_DIPLOMACY_PROPOSAL.get(lang, proposingTerritory.getColoredName()))
+                .setName(Lang.NEWSLETTER_DIPLOMACY_PROPOSAL.get( proposingTerritory.getColoredName()).translate(lang))
                 .setDescription(
                         Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC1.get(receivingTerritory.getColoredName(), wantedRelation.getColoredName(lang)),
                         Lang.NEWSLETTER_DIPLOMACY_PROPOSAL_DESC2.get()
@@ -110,7 +109,7 @@ public class DiplomacyProposalNews extends Newsletter {
                     action.setCancelled(true);
                     if (action.isLeftClick()) {
                         if (receivingTerritory.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TOWN_RELATION)) {
-                            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang), SoundEnum.NOT_ALLOWED);
+                            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(lang), SoundEnum.NOT_ALLOWED);
                             return;
                         }
                         new OpenDiplomacyProposalsMenu(player, receivingTerritory);

@@ -48,7 +48,7 @@ public class WikiLinkCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args) {
         LangType langType = playerDataStorage.get(player).getLang();
-        TextComponent link = Component.text(Lang.WIKI_LINK.get(langType))
+        TextComponent link = Component.text(Lang.WIKI_LINK.translate(langType))
                 .decorate(TextDecoration.BOLD)
                 .clickEvent(ClickEvent.openUrl("https://arcadia-9.gitbook.io/towns-and-nations"));
         player.sendMessage(link);

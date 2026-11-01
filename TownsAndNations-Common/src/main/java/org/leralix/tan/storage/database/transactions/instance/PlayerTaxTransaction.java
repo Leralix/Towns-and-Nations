@@ -48,12 +48,12 @@ public class PlayerTaxTransaction extends AbstractTransaction {
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
         return iconManager.get(IconKey.PLAYER_TAX_TRANSACTION)
-                .setName(Lang.PLAYER_TAX_TRANSACTION.get(langType))
+                .setName(Lang.PLAYER_TAX_TRANSACTION.translate(langType))
                 .setDescription(
                         Lang.TRANSACTION_FROM.get(getPlayerName(playerID, langType)),
                         Lang.TRANSACTION_TO.get(getTerritoryName(townID, langType)),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount)),
-                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate()))
+                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(getDate()))
                 )
                 .asGuiItem(player, langType);
     }

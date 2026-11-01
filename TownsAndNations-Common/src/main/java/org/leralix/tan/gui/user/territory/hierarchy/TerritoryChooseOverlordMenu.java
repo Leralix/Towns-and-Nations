@@ -52,7 +52,7 @@ public class TerritoryChooseOverlordMenu extends IteratorGUI {
                     .setAction(action -> {
                         if (action.isLeftClick()) {
                             if (territoryData.haveOverlord()) {
-                                TanChatUtils.message(player, Lang.TOWN_ALREADY_HAVE_OVERLORD.get(langType), SoundEnum.NOT_ALLOWED);
+                                TanChatUtils.message(player, Lang.TOWN_ALREADY_HAVE_OVERLORD.translate(langType), SoundEnum.NOT_ALLOWED);
                                 return;
                             }
 

@@ -36,6 +36,6 @@ public class PlayerTownColoredName extends PapiEntry {
 
         return tanPlayer.hasTown() ?
                 tanPlayer.getTown().getColoredName() :
-                Lang.NO_TOWN.get(tanPlayer);
+                Lang.NO_TOWN.translate(tanPlayer);
     }
 }

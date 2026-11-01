@@ -132,7 +132,7 @@ public class NationData extends TerritoryData implements Nation, TanNation {
     @Override
     public IconBuilder getIconWithInformations(LangType langType) {
         Territory capital = getCapital();
-        String capitalName = capital == null ? Lang.NO_REGION.get(langType) : capital.getName();
+        String capitalName = capital == null ? Lang.NO_REGION.translate(langType) : capital.getName();
         return IconManager.getInstance().get(getIcon())
                 .setName(ChatColor.GOLD + getName())
                 .setDescription(

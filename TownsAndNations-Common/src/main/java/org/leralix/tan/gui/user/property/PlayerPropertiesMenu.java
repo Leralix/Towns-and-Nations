@@ -60,16 +60,16 @@ public class PlayerPropertiesMenu extends IteratorGUI {
 
 
         return iconManager.get(IconKey.CREATE_NEW_PROPERTY_ICON)
-                .setName(Lang.GUI_PLAYER_NEW_PROPERTY.get(tanPlayer))
+                .setName(Lang.GUI_PLAYER_NEW_PROPERTY.translate(tanPlayer))
                 .setDescription(description)
                 .setRequirements(requirements)
                 .setAction(event -> {
                     if(!tanPlayer.hasTown()){
-                        TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer), SoundEnum.NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.translate(tanPlayer), SoundEnum.NOT_ALLOWED);
                         return;
                     }
 
-                    TanChatUtils.message(player, Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.get(langType));
+                    TanChatUtils.message(player, Lang.PLAYER_RIGHT_CLICK_2_POINTS_TO_CREATE_PROPERTY.translate(langType));
                     RightClickListener.register(player, langType, new CreatePlayerPropertyEvent(player, tanPlayer, tanPlayer.getTown()));
                     player.closeInventory();
                 })
@@ -84,7 +84,7 @@ public class PlayerPropertiesMenu extends IteratorGUI {
             guiItems.add(
                     iconManager.get(propertyData.getIcon())
                             .setName(propertyData.getName())
-                            .setDescription(propertyData.getBasicDescription(langType))
+                            .setDescription(propertyData.getBasicDescription())
                             .setAction(event -> new PlayerPropertyManager(player, propertyData, p -> open()))
                             .asGuiItem(player, langType)
             );

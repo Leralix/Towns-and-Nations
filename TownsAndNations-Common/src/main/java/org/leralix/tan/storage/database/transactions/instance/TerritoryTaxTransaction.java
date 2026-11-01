@@ -47,12 +47,12 @@ public class TerritoryTaxTransaction extends AbstractTransaction {
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
         return iconManager.get(IconKey.TERRITORY_TAX_ICON)
-                .setName(Lang.TERRITORY_TAX_TRANSACTION.get(langType))
+                .setName(Lang.TERRITORY_TAX_TRANSACTION.translate(langType))
                 .setDescription(
                         Lang.TRANSACTION_FROM.get(getTerritoryName(senderID, langType)),
                         Lang.TRANSACTION_TO.get(getTerritoryName(recieverID, langType)),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount)),
-                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate()))
+                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(getDate()))
                 )
                 .asGuiItem(player, langType);
     }

@@ -2,7 +2,7 @@ package org.leralix.tan.gui.service.requirements;
 
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 
 public class LevelRequirement extends IndividualRequirement {
 
@@ -15,12 +15,12 @@ public class LevelRequirement extends IndividualRequirement {
     }
 
     @Override
-    public String getLine(LangType langType) {
+    public Placeholder getLine() {
         int currentLevel = territoryData.getNewLevel().getMainLevel();
         if(isInvalid()){
-            return Lang.REQUIREMENT_MAIN_LEVEL_NEGATIVE.get(langType, Integer.toString(currentLevel), Integer.toString(requiredLevel));
+            return Lang.REQUIREMENT_MAIN_LEVEL_NEGATIVE.get(Integer.toString(currentLevel), Integer.toString(requiredLevel));
         } else {
-            return Lang.REQUIREMENT_MAIN_LEVEL_POSITIVE.get(langType, Integer.toString(currentLevel), Integer.toString(requiredLevel));
+            return Lang.REQUIREMENT_MAIN_LEVEL_POSITIVE.get(Integer.toString(currentLevel), Integer.toString(requiredLevel));
         }
     }
 

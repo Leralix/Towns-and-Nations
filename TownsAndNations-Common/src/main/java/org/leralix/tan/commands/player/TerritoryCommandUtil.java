@@ -41,41 +41,41 @@ public final class TerritoryCommandUtil {
         switch (territoryArg) {
             case "town" -> {
                 if (!tanPlayer.hasTown()) {
-                    TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
+                    TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.translate(langType));
                     return null;
                 }
                 return tanPlayer.getTown();
             }
             case "region" -> {
                 if (!tanPlayer.hasRegion()) {
-                    TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(langType));
+                    TanChatUtils.message(player, Lang.PLAYER_NO_REGION.translate(langType));
                     return null;
                 }
                 return tanPlayer.getRegion();
             }
             case "nation" -> {
                 if (!tanPlayer.hasNation()) {
-                    TanChatUtils.message(player, Lang.PLAYER_NO_NATION.get(langType));
+                    TanChatUtils.message(player, Lang.PLAYER_NO_NATION.translate(langType));
                     return null;
                 }
                 return tanPlayer.getNation();
             }
             default -> {
-                TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(syntax).getDefault());
+                TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(syntax).translateDefault());
                 return null;
             }
         }
     }
 
-    public static Chunk parseChunkFromArgs(Player player, String[] args, int xIndex, int zIndex, LangType langType, String syntax) {
+    public static Chunk parseChunkFromArgs(Player player, String[] args, int xIndex, int zIndex, ITanPlayer tanPlayer, String syntax) {
         int x;
         int z;
         try {
             x = Integer.parseInt(args[xIndex]);
             z = Integer.parseInt(args[zIndex]);
         } catch (NumberFormatException e) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
-            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, syntax));
+            TanChatUtils.message(tanPlayer, Lang.SYNTAX_ERROR);
+            TanChatUtils.message(tanPlayer, Lang.CORRECT_SYNTAX_INFO.get(syntax));
             return null;
         }
         return player.getWorld().getChunkAt(x, z);

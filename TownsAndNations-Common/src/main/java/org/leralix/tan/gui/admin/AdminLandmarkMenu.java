@@ -42,7 +42,7 @@ public class AdminLandmarkMenu extends BasicGui {
     private @NotNull GuiItem getDeleteLandmarkButton() {
 
         return iconManager.get(IconKey.DELETE_LANDMARK_ICON)
-                .setName(Lang.ADMIN_GUI_DELETE_LANDMARK.get(langType))
+                .setName(Lang.ADMIN_GUI_DELETE_LANDMARK.translate(langType))
                 .setDescription(Lang.ADMIN_GUI_DELETE_LANDMARK_DESC1.get())
                 .setAction(action -> {
                     landmark.deleteLandmark();
@@ -57,7 +57,7 @@ public class AdminLandmarkMenu extends BasicGui {
         ItemStack ressources = landmark.getResources();
 
         return iconManager.get(ressources)
-                .setName(Lang.LANDMARK_PRODUCTION_NAME.get(langType))
+                .setName(Lang.LANDMARK_PRODUCTION_NAME.translate(langType))
                 .setDescription(Lang.SPECIFIC_LANDMARK_ICON_DESC1.get(Integer.toString(ressources.getAmount()), ressources.getType().name().toLowerCase()))
                 .setClickToAcceptMessage(Lang.SPECIFIC_LANDMARK_ICON_SWITCH_REWARD)
                 .setAction(action -> {
@@ -65,7 +65,7 @@ public class AdminLandmarkMenu extends BasicGui {
                     if (itemOnCursor.getType() == Material.AIR) {
                         return;
                     }
-                    TanChatUtils.message(player, Lang.ADMIN_GUI_LANDMARK_REWARD_SET.get(langType, Integer.toString(itemOnCursor.getAmount()), itemOnCursor.getType().name()), GOOD);
+                    TanChatUtils.message(tanPlayer, Lang.ADMIN_GUI_LANDMARK_REWARD_SET.get(Integer.toString(itemOnCursor.getAmount()), itemOnCursor.getType().name()), GOOD);
                     landmark.setReward(itemOnCursor);
                     open();
                 })
@@ -74,10 +74,10 @@ public class AdminLandmarkMenu extends BasicGui {
 
     private @NotNull GuiItem getRenameLandmarkButton() {
         return iconManager.get(IconKey.LANDMARK_RENAME_ICON)
-                .setName(Lang.ADMIN_GUI_CHANGE_LANDMARK_NAME.get(langType))
+                .setName(Lang.ADMIN_GUI_CHANGE_LANDMARK_NAME.translate(langType))
                 .setDescription(Lang.ADMIN_GUI_CHANGE_LANDMARK_NAME_DESC1.get())
                 .setAction(action -> {
-                    TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
+                    TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.translate(langType));
                     PlayerChatListenerStorage.register(player, langType, new ChangeLandmarkName(landmark, Constants.getLandmarkMaxNameSize(), p -> open()));
                 })
                 .asGuiItem(player, langType);

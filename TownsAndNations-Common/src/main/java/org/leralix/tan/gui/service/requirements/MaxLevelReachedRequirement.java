@@ -1,14 +1,14 @@
 package org.leralix.tan.gui.service.requirements;
 
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 
 
 public class MaxLevelReachedRequirement extends IndividualRequirement{
 
     @Override
-    public String getLine(LangType langType) {
-        return Lang.MAX_LEVEL_REACHED.get(langType);
+    public Placeholder getLine() {
+        return Lang.MAX_LEVEL_REACHED;
     }
 
     @Override

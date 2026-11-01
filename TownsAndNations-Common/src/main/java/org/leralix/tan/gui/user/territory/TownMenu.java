@@ -33,7 +33,7 @@ public class TownMenu extends TerritoryMenu {
 
     private GuiItem getLandmarksButton() {
         return IconManager.getInstance().get(IconKey.TOWN_LANDMARKS_ICON)
-                .setName(Lang.ADMIN_GUI_LANDMARK_ICON.get(tanPlayer.getLang()))
+                .setName(Lang.ADMIN_GUI_LANDMARK_ICON.translate(tanPlayer.getLang()))
                 .setDescription(Lang.ADMIN_GUI_LANDMARK_DESC1.get())
                 .setAction(event -> new PlayerOwnedLandmarksMenu(player, townData))
                 .asGuiItem(player, langType);

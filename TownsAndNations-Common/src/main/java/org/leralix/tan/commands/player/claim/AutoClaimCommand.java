@@ -2,9 +2,9 @@ package org.leralix.tan.commands.player.claim;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.gui.scope.ClaimType;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.PlayerAutoClaimStorage;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
@@ -55,10 +55,10 @@ public class AutoClaimCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args) {
 
-        LangType langType = playerDataStorage.get(player).getLang();
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
 
         if (args.length != 2) {
-            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+            TanChatUtils.message(tanPlayer, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
             return;
         }
 
@@ -67,21 +67,21 @@ public class AutoClaimCommand extends PlayerSubCommand {
         switch (message) {
             case "town" -> {
                 PlayerAutoClaimStorage.addPlayer(player, ClaimType.TOWN);
-                TanChatUtils.message(player, Lang.AUTO_CLAIM_ON_FOR.get(langType, ClaimType.TOWN.getTypeCommand()));
+                TanChatUtils.message(tanPlayer, Lang.AUTO_CLAIM_ON_FOR.get(ClaimType.TOWN.getTypeCommand()));
             }
             case "region" -> {
                 PlayerAutoClaimStorage.addPlayer(player, ClaimType.REGION);
-                TanChatUtils.message(player, Lang.AUTO_CLAIM_ON_FOR.get(langType, ClaimType.REGION.getTypeCommand()));
+                TanChatUtils.message(tanPlayer, Lang.AUTO_CLAIM_ON_FOR.get(ClaimType.REGION.getTypeCommand()));
             }
             case "nation" -> {
                 PlayerAutoClaimStorage.addPlayer(player, ClaimType.NATION);
-                TanChatUtils.message(player, Lang.AUTO_CLAIM_ON_FOR.get(langType, ClaimType.NATION.getTypeCommand()));
+                TanChatUtils.message(tanPlayer, Lang.AUTO_CLAIM_ON_FOR.get(ClaimType.NATION.getTypeCommand()));
             }
             case "stop" -> {
                 PlayerAutoClaimStorage.removePlayer(player);
-                TanChatUtils.message(player, Lang.AUTO_CLAIM_OFF.get(langType));
+                TanChatUtils.message(tanPlayer, Lang.AUTO_CLAIM_OFF);
             }
-            default -> TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+            default -> TanChatUtils.message(tanPlayer, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
     }
 }

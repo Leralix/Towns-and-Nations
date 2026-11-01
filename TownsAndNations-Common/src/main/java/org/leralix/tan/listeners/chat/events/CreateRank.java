@@ -30,11 +30,11 @@ public class CreateRank extends ChatListenerEvent {
         }
 
         if (rankName.length() > maxNameSize) {
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(playerData, Integer.toString(maxNameSize)));
+            TanChatUtils.message(playerData, Lang.MESSAGE_TOO_LONG.get(Integer.toString(maxNameSize)));
             return false;
         }
         if (territoryData.isRankNameUsed(rankName)) {
-            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(playerData));
+            TanChatUtils.message(playerData, Lang.NAME_ALREADY_USED);
             return false;
         }
 

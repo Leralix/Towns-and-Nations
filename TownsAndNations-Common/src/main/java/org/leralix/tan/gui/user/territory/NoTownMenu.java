@@ -41,26 +41,26 @@ public class NoTownMenu extends BasicGui {
         int townPrice = Constants.getTownCost();
 
         return IconManager.getInstance().get(IconKey.CREATE_TOWN_ICON)
-                .setName(Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.get(tanPlayer))
+                .setName(Lang.GUI_NO_TOWN_CREATE_NEW_TOWN.translate(tanPlayer))
                 .setDescription(Lang.GUI_NO_TOWN_CREATE_NEW_TOWN_DESC1.get(Integer.toString(townPrice)))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction( action -> {
                     if(!player.hasPermission("tan.base.town.create")){
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer), NOT_ALLOWED);
                         return;
                     }
 
                     double playerMoney = EconomyUtil.getBalance(player);
                     if (playerMoney < townPrice) {
-                        TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(tanPlayer, Double.toString(townPrice - playerMoney)), NOT_ALLOWED);
+                        TanChatUtils.message(tanPlayer, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(Double.toString(townPrice - playerMoney)), NOT_ALLOWED);
                     }
                     else {
                         if(Constants.shouldSetCapitalAtCreation()){
-                            TanChatUtils.message(player, Lang.RIGHT_CLICK_TO_SELECT_CAPITAL.get(tanPlayer));
+                            TanChatUtils.message(tanPlayer, Lang.RIGHT_CLICK_TO_SELECT_CAPITAL);
                             RightClickListener.register(player, langType, new ChooseCapital(tanPlayer, townPrice));
                         }
                         else {
-                            TanChatUtils.message(player, Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get(tanPlayer));
+                            TanChatUtils.message(tanPlayer, Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT);
                             PlayerChatListenerStorage.register(player, langType, new CreateTown(townPrice));
                         }
                     }
@@ -71,7 +71,7 @@ public class NoTownMenu extends BasicGui {
     private GuiItem getBrowseTownsButton() {
 
         return IconManager.getInstance().get(IconKey.BROWSE_TOWN_ICON)
-                .setName(Lang.GUI_NO_TOWN_JOIN_A_TOWN.get(tanPlayer))
+                .setName(Lang.GUI_NO_TOWN_JOIN_A_TOWN.translate(tanPlayer))
                 .setDescription(
                         Lang.GUI_NO_TOWN_JOIN_A_TOWN_DESC1.get(Integer.toString(TownsAndNations.getPlugin().getTownStorage().getNumberOfTown()))
                 )

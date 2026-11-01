@@ -4,7 +4,7 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.rank.RankData;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 
 public class RankDifferenceRequirement extends IndividualRequirement {
 
@@ -20,10 +20,10 @@ public class RankDifferenceRequirement extends IndividualRequirement {
     }
 
     @Override
-    public String getLine(LangType langType) {
+    public Placeholder getLine() {
         return isInvalid() ?
-                Lang.REQUIREMENT_RANK_LEVEL_NEGATIVE.get(langType, territoryData.getRank(tanPlayer).getName(), rankToCompare.getName()) :
-                Lang.REQUIREMENT_RANK_LEVEL_POSITIVE.get(langType, territoryData.getRank(tanPlayer).getName(), rankToCompare.getName());
+                Lang.REQUIREMENT_RANK_LEVEL_NEGATIVE.get(territoryData.getRank(tanPlayer).getName(), rankToCompare.getName()) :
+                Lang.REQUIREMENT_RANK_LEVEL_POSITIVE.get(territoryData.getRank(tanPlayer).getName(), rankToCompare.getName());
     }
 
     @Override

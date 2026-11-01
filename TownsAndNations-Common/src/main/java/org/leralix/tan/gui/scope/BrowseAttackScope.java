@@ -24,6 +24,6 @@ public enum BrowseAttackScope implements DisplayableEnum {
 
     @Override
     public String getDisplayName(LangType langType) {
-        return name.get(langType);
+        return name.translate(langType);
     }
 }

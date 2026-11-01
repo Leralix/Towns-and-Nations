@@ -6,6 +6,7 @@ import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.tan.api.interfaces.war.wargoals.TanLiberateWargoal;
 
@@ -32,7 +33,7 @@ public class LiberateWarGoal extends WarGoal implements TanLiberateWargoal {
 
     @Override
     public String getDisplayName(LangType langType) {
-        return Lang.LIBERATE_SUBJECT_WAR_GOAL.get(langType);
+        return Lang.LIBERATE_SUBJECT_WAR_GOAL.translate(langType);
     }
 
     @Override
@@ -44,10 +45,10 @@ public class LiberateWarGoal extends WarGoal implements TanLiberateWargoal {
     }
 
     @Override
-    public String getCurrentDesc(LangType langType) {
+    public Placeholder getCurrentDesc() {
         if(getTerritoryToLiberate() == null)
             return null;
-        return Lang.GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT.get(langType, getTerritoryToLiberate().getName());
+        return Lang.GUI_WARGOAL_LIBERATE_WAR_GOAL_RESULT.get(getTerritoryToLiberate().getName());
     }
 
     @Override

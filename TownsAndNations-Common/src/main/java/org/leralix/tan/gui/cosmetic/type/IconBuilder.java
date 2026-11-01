@@ -14,6 +14,7 @@ import org.leralix.tan.gui.service.requirements.IndividualRequirement;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 import org.leralix.tan.utils.text.TanChatUtils;
 
 import java.util.ArrayList;
@@ -109,7 +110,7 @@ public class IconBuilder {
 
         if (meta != null) {
             meta.setDisplayName(name);
-            meta.setLore(generateDescription(langType));
+            meta.setLore(generateDescription().stream().map(placeholder -> placeholder.translate(langType)).toList());
             meta.removeAttributeModifier(Attribute.ARMOR);
             meta.removeAttributeModifier(Attribute.ARMOR_TOUGHNESS);
             meta.removeAttributeModifier(Attribute.ATTACK_DAMAGE);
@@ -124,7 +125,7 @@ public class IconBuilder {
         } else {
             return ItemBuilder.from(item).asGuiItem(event -> {
                 if (requirements.isInvalid()) {
-                    TanChatUtils.message(player, Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.get(langType), SoundEnum.NOT_ALLOWED);
+                    TanChatUtils.message(player, Lang.GUI_TOWN_LEVEL_UP_UNI_REQ_NOT_MET.translate(langType), SoundEnum.NOT_ALLOWED);
                     return;
                 }
                 requirements.actionConsume();
@@ -133,22 +134,17 @@ public class IconBuilder {
         }
     }
 
-    private List<String> generateDescription(LangType langType) {
-        List<String> res = new ArrayList<>();
+    private List<Placeholder> generateDescription() {
 
-        for(FilledLang filledLang : description){
-            res.add(filledLang.get(langType));
-        }
+        List<Placeholder> res = new ArrayList<>(description);
 
         if (!hidePrerequisites && action != null && !requirements.isEmpty()) {
-            res.add("");
-            res.addAll(requirements.getRequirementsParagraph(langType));
+            res.add(Lang.EMPTY);
+            res.addAll(requirements.getRequirementsParagraph());
         }
         if(action != null){
-            res.add("");
-            for(Lang messages : clickForActionMessage){
-                res.add(messages.get(langType));
-            }
+            res.add(Lang.EMPTY);
+            res.addAll(clickForActionMessage);
         }
         return res;
     }

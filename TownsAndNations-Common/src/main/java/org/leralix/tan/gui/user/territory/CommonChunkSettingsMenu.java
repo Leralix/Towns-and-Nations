@@ -44,7 +44,7 @@ public abstract class CommonChunkSettingsMenu extends IteratorGUI {
             SpecificChunkConfig specificChunkConfig = getSpecificChunkConfig(type);
 
             IconBuilder item = iconManager.get(type.getIconKey())
-                    .setName(type.getName().get(tanPlayer));
+                    .setName(type.getName().translate(tanPlayer));
 
             if(specificChunkConfig.isLocked()){
                 item.setDescription(

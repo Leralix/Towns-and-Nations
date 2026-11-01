@@ -30,7 +30,7 @@ public final class NewsletterGuiItemUtil {
         return IconManager.getInstance().get(iconKey)
                 .setName(title)
                 .setDescription(
-                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, date)),
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(date)),
                         message,
                         Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ.get()
                 )

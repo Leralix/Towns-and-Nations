@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
 import org.leralix.lib.data.SoundEnum;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.gui.scope.ClaimAction;
 import org.leralix.tan.gui.scope.ClaimType;
 import org.leralix.tan.gui.scope.MapSettings;
@@ -61,16 +62,16 @@ public class MapCommand extends PlayerSubCommand {
             openMap(player, new MapSettings(args[1], args[2]));
             return;
         }
-        LangType langType = playerDataStorage.get(player).getLang();
-        TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.get(langType), SoundEnum.NOT_ALLOWED);
-        TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+        ITanPlayer tanPlayer = playerDataStorage.get(player);
+        TanChatUtils.message(tanPlayer, Lang.TOO_MANY_ARGS_ERROR, SoundEnum.NOT_ALLOWED);
+        TanChatUtils.message(tanPlayer, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
     }
 
     public void openMap(Player player, MapSettings settings) {
         LangType langType = playerDataStorage.get(player).getLang();
         int radius = 4;
         Map<Integer, Component> text = new HashMap<>();
-        Component claimType = Component.text(Lang.MAP_CLAIM_TYPE.get(langType)).color(TextColor.color(0xAAAAAA));
+        Component claimType = Component.text(Lang.MAP_CLAIM_TYPE.translate(langType)).color(TextColor.color(0xAAAAAA));
         text.put(-4, claimType);
         Component typeButton = settings.getMapTypeButton(langType);
         text.put(-3, typeButton);

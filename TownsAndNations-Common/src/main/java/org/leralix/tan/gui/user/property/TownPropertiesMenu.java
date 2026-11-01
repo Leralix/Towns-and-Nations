@@ -41,15 +41,15 @@ public class TownPropertiesMenu extends IteratorGUI {
 
             res.add(iconManager.get(townProperty.getIcon())
                     .setName(townProperty.getName())
-                    .setDescription(townProperty.getBasicDescription(langType))
+                    .setDescription(townProperty.getBasicDescription())
                     .setAction(event -> {
                         event.setCancelled(true);
                         if(!tanPlayer.hasTown()){
-                            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(tanPlayer), NOT_ALLOWED);
+                            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.translate(tanPlayer), NOT_ALLOWED);
                             return;
                         }
                         if(!townData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_PROPERTY)){
-                            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
+                            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer), NOT_ALLOWED);
                             return;
                         }
                         new TownPropertyManager(player, townProperty, townData);

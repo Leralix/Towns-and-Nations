@@ -15,19 +15,19 @@ public abstract class BooleanStat extends IndividualStat {
 
     protected FilledLang getStatReward(LangType langType, int level) {
         if(level == 0){
-            return Lang.UPGRADE_LINE_LOCKED_UNLOCKED.get(getStatName().get(langType));
+            return Lang.UPGRADE_LINE_LOCKED_UNLOCKED.get(getStatName().translate(langType));
         }
         else {
-            return Lang.UPGRADE_LINE_UNLOCKED.get(getStatName().get(langType));
+            return Lang.UPGRADE_LINE_UNLOCKED.get(getStatName().translate(langType));
         }
     }
 
     public FilledLang getStatReward(LangType langType) {
         if(state){
-            return Lang.UPGRADE_LINE_UNLOCKED.get(getStatName().get(langType));
+            return Lang.UPGRADE_LINE_UNLOCKED.get(getStatName().translate(langType));
         }
         else {
-            return Lang.UPGRADE_LINE_LOCKED.get(getStatName().get(langType));
+            return Lang.UPGRADE_LINE_LOCKED.get(getStatName().translate(langType));
         }
     }
 

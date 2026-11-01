@@ -46,7 +46,7 @@ public class TerritoryChunkGeneralSettings extends IteratorGUI {
             res.add(generalChunkSetting.getIcon(iconManager, settingType, tanPlayer.getLang())
                     .setAction(action -> {
                         if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_CLAIM_SETTINGS)) {
-                            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
+                            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer), NOT_ALLOWED);
                             return;
                         }
                         generalSettings.put(generalChunkSetting, !generalSettings.getOrDefault(generalChunkSetting, false));

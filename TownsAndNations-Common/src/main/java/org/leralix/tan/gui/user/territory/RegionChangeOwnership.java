@@ -58,7 +58,7 @@ public class RegionChangeOwnership extends IteratorGUI {
                                         () -> {
                                             regionData.setLeaderID(offlinePlayer.getUniqueId());
                                             regionData.broadcastMessageWithSound(Lang.GUI_REGION_SETTINGS_REGION_CHANGE_LEADER_BROADCAST.get(offlinePlayer.getName()), GOOD);
-                                            TanChatUtils.message(player, Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(tanPlayer, offlinePlayer.getName()));
+                                            TanChatUtils.message(tanPlayer, Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(offlinePlayer.getName()));
                                             returnGUI.open();
                                         },
                                         this::open

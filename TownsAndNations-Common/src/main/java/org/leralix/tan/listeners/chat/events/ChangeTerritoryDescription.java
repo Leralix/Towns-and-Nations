@@ -37,7 +37,7 @@ public class ChangeTerritoryDescription extends ChatListenerEvent {
         }
 
         if (message.length() > maxSize) {
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(playerData, Integer.toString(maxSize)));
+            TanChatUtils.message(playerData, Lang.MESSAGE_TOO_LONG.get(Integer.toString(maxSize)));
             return false;
         }
 
@@ -49,7 +49,7 @@ public class ChangeTerritoryDescription extends ChatListenerEvent {
             FileUtil.addLineToHistory(Lang.HISTORY_REGION_MESSAGE_CHANGED.get(player.getName(), territoryData.getName(), message));
         }
         territoryData.setDescription(message);
-        TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(playerData));
+        TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.translate(playerData));
         openGui(guiCallback, player);
         return true;
     }

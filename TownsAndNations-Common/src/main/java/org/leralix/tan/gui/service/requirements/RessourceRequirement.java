@@ -5,7 +5,7 @@ import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.upgrade.Upgrade;
 import org.leralix.tan.gui.service.requirements.upgrade.ItemRequirementBuilder;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 import org.leralix.tan.utils.gameplay.InventoryUtil;
 
 import java.util.List;
@@ -25,14 +25,18 @@ public class RessourceRequirement extends IndividualRequirementWithCost {
     }
 
     @Override
-    public String getLine(LangType langType) {
+    public Placeholder getLine() {
         int quantity = getRequiredQuantity();
-        String name = info.getCustomName() != null ? info.getCustomName() : info.getItemScope().getName(langType);
+
+        List<Placeholder> placeholders = List.of(
+                Lang.of(Integer.toString(quantity)),
+                info.getCustomName() != null ? Lang.of(info.getCustomName()) : info.getItemScope().getName()
+        );
         if(isInvalid()){
-            return Lang.REQUIREMENT_RESOURCES_NEGATIVE.get(langType, Integer.toString(quantity), name);
+            return Lang.REQUIREMENT_RESOURCES_NEGATIVE.get(placeholders);
         }
         else {
-            return Lang.REQUIREMENT_RESOURCES_POSITIVE.get(langType, Integer.toString(quantity), name);
+            return Lang.REQUIREMENT_RESOURCES_POSITIVE.get(placeholders);
         }
     }
 

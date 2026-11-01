@@ -16,7 +16,6 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Town;
 import org.leralix.tan.gui.user.property.PlayerPropertyManager;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
 import org.leralix.tan.listeners.interact.ListenerState;
 import org.leralix.tan.listeners.interact.RightClickListenerEvent;
 import org.leralix.tan.utils.constants.Constants;
@@ -44,7 +43,6 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
     @Override
     public ListenerState execute(PlayerInteractEvent event) {
 
-        LangType langType = tanPlayer.getLang();
 
         Block block = event.getClickedBlock();
         if (block == null)
@@ -52,18 +50,18 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
 
         IClaimedChunk claimedChunk = TownsAndNations.getPlugin().getClaimStorage().get(block.getChunk());
         if (!(claimedChunk instanceof TownClaimedChunk townClaimedChunk && townClaimedChunk.getTown().isPlayerIn(player))) {
-            TanChatUtils.message(player, Lang.POSITION_NOT_IN_CLAIMED_CHUNK.get(langType));
+            TanChatUtils.message(tanPlayer, Lang.POSITION_NOT_IN_CLAIMED_CHUNK);
             return ListenerState.FAILURE;
         }
 
         if (!tanPlayer.hasTown()) {
-            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(langType));
+            TanChatUtils.message(tanPlayer, Lang.PLAYER_NO_TOWN);
             return ListenerState.FAILURE;
         }
 
         if (position1 == null) {
             position1 = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
-            TanChatUtils.message(player, Lang.PLAYER_FIRST_POINT_SET.get(langType, position1.toString()));
+            TanChatUtils.message(tanPlayer, Lang.PLAYER_FIRST_POINT_SET.get(position1.toString()));
             return ListenerState.CONTINUE;
         }
         if (position2 == null) {
@@ -72,31 +70,31 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
             Vector3D vector3D = new Vector3D(block.getX(), block.getY(), block.getZ(), block.getWorld().getUID().toString());
 
             if (isOverlapingOtherProperty(position1, vector3D)) {
-                TanChatUtils.message(player, Lang.PROPERTY_OVERLAPING.get(langType));
+                TanChatUtils.message(tanPlayer, Lang.PROPERTY_OVERLAPING);
                 return ListenerState.FAILURE;
             }
 
             if (isTooBig(vector3D, maxPropertySize)) {
-                TanChatUtils.message(player, Lang.PLAYER_PROPERTY_TOO_BIG.get(langType, Integer.toString(maxPropertySize)));
+                TanChatUtils.message(tanPlayer, Lang.PLAYER_PROPERTY_TOO_BIG.get(Integer.toString(maxPropertySize)));
                 return ListenerState.FAILURE;
             }
 
             cost = NumberUtil.roundWithDigits(getTotalCost(vector3D));
             if (EconomyUtil.getBalance(player) < cost) {
-                TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(langType, Double.toString(cost - EconomyUtil.getBalance(player))));
+                TanChatUtils.message(tanPlayer, Lang.PLAYER_NOT_ENOUGH_MONEY_EXTENDED.get(Double.toString(cost - EconomyUtil.getBalance(player))));
                 return ListenerState.SUCCESS;
             }
             EconomyUtil.removeFromBalance(player, cost);
 
             position2 = vector3D;
-            TanChatUtils.message(player, Lang.PLAYER_SECOND_POINT_SET.get(langType, vector3D.toString()));
-            TanChatUtils.message(player, Lang.PLAYER_PLACE_SIGN.get(langType));
+            TanChatUtils.message(tanPlayer, Lang.PLAYER_SECOND_POINT_SET.get(vector3D.toString()));
+            TanChatUtils.message(tanPlayer, Lang.PLAYER_PLACE_SIGN);
             return ListenerState.CONTINUE;
         }
 
         int margin = Constants.getMaxPropertySignMargin();
         if (!PropertyUtil.isNearProperty(block.getLocation(), position1, position2, margin)) {
-            TanChatUtils.message(player, Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(langType, Integer.toString(margin)), SoundEnum.NOT_ALLOWED);
+            TanChatUtils.message(tanPlayer, Lang.PLAYER_PROPERTY_SIGN_TOO_FAR.get(Integer.toString(margin)), SoundEnum.NOT_ALLOWED);
             return ListenerState.CONTINUE;
         }
 
@@ -106,7 +104,7 @@ public abstract class CreatePropertyEvent extends RightClickListenerEvent {
 
         new PlayerPropertyManager(player, property, HumanEntity::closeInventory);
 
-        TanChatUtils.message(player, Lang.PLAYER_PROPERTY_CREATED.get(langType), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(tanPlayer, Lang.PLAYER_PROPERTY_CREATED, SoundEnum.MINOR_GOOD);
         return ListenerState.SUCCESS;
     }
 

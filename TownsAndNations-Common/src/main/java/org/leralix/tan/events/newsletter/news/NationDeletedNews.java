@@ -49,7 +49,7 @@ public class NationDeletedNews extends Newsletter {
 
     @Override
     public void broadcast(Player player, ITanPlayer tanPlayer) {
-        TanChatUtils.message(player, Lang.NATION_DELETED_NEWSLETTER.get(tanPlayer, player.getName(), nationName), SoundEnum.GOOD);
+        TanChatUtils.message(tanPlayer, Lang.NATION_DELETED_NEWSLETTER.get(player.getName(), nationName), SoundEnum.GOOD);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class NationDeletedNews extends Newsletter {
                 lang,
                 getDate(),
                 IconKey.BROWSE_NATION_ICON,
-                Lang.NATION_DELETED_NEWSLETTER_TITLE.get(lang),
+                Lang.NATION_DELETED_NEWSLETTER_TITLE.translate(lang),
                 Lang.NATION_DELETED_NEWSLETTER.get(previousLeader.getName(), nationName),
                 this::markAsRead,
                 onClick

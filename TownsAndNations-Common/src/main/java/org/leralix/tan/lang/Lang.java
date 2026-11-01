@@ -9,11 +9,12 @@ import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.economy.EconomyUtil;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 
-public enum Lang {
+public enum Lang implements Placeholder {
     STRING,
     EMPTY,
     LANGUAGE_SUCCESSFULLY_LOADED,
@@ -21,6 +22,7 @@ public enum Lang {
     PLUGIN_DEBUG_STRING,
     NEWSLETTER_STRING,
     WIKI_LINK,
+    GENERIC_ERROR,
     PLAYER_NO_REGION,
     VALUE_EXCEED_MAXIMUM_ERROR,
     VALUE_CANNOT_BE_NEGATIVE_ERROR,
@@ -64,7 +66,6 @@ public enum Lang {
     CHUNK_CLAIMED_SUCCESS_LIMITED,
     TOWN_INVITE_COMMAND_DESC,
     PLAYER_NOT_FOUND,
-    TOWN_NOT_ENOUGH_LEVEL,
     TERRITORY_NOT_ENOUGH_LEVEL,
     CHAT_SCOPE_TOWN_MESSAGE,
     CHAT_SCOPE_REGION_MESSAGE,
@@ -1245,22 +1246,26 @@ public enum Lang {
         return (int) ((double) completedLang.get(langType) / Lang.values().length * 100);
     }
 
+    public static Placeholder of(String stringPlaceholder) {
+        return new PlaceholderLang(stringPlaceholder);
+    }
+
     public String getDefault() {
-        return get(serverLang);
+        return translate(serverLang);
     }
 
     public FilledLang get() {
         return new FilledLang(this);
     }
 
-    public String get(ITanPlayer tanPlayer){
+    public String translate(ITanPlayer tanPlayer){
         if(tanPlayer == null) {
-            return get(serverLang);
+            return translate(serverLang);
         }
-        return get(tanPlayer.getLang());
+        return translate(tanPlayer.getLang());
     }
 
-    private String get(LangType lang) {
+    public String translate(LangType lang) {
         String translation = translations.get(lang).get(this);
         if (translation != null) {
             replaceCommonPlaceholders(translation);
@@ -1269,30 +1274,39 @@ public enum Lang {
         if(lang == LangType.ENGLISH) {
             return MESSAGE_NOT_FOUND_FOR + this.name() + IN_THIS_LANGUAGE_FILE;
         }
-        return get(LangType.ENGLISH);
+        return translate(LangType.ENGLISH);
     }
 
+
     public FilledLang get(String... placeholders) {
+        List<Placeholder> placeholderList = Arrays.stream(placeholders).map(string -> (Placeholder) PlaceholderLang.of(string)).toList();
+        return new FilledLang(this, placeholderList);
+    }
+    public FilledLang get(Placeholder... placeholders) {
         return new FilledLang(this, placeholders);
     }
 
-    public String get(ITanPlayer tanPlayer, String... placeholders) {
+    public FilledLang get(List<Placeholder> placeholders) {
+        return new FilledLang(this, placeholders);
+    }
+
+    public String translate(ITanPlayer tanPlayer, Placeholder... placeholders) {
         if(tanPlayer == null) {
-            return get(serverLang, placeholders);
+            return translate(serverLang, placeholders);
         }
-        return get(tanPlayer.getLang(), placeholders);
+        return translate(tanPlayer.getLang(), placeholders);
     }
-    public String get(LangType lang, String... placeholders) {
-        return get(lang, List.of(placeholders));
+    public String translate(LangType lang, Placeholder... placeholders) {
+        return translate(lang, List.of(placeholders));
     }
 
 
-    public String get(LangType lang, List<String> placeholders) {
+    public String translate(LangType lang, List<Placeholder> placeholders) {
         String translation = translations.get(lang).get(this);
         if (translation != null) {
             translation = ChatColor.translateAlternateColorCodes('§', translation);
             for(int i = 0; i < placeholders.size(); i++) {
-                String val = placeholders.get(i) == null ? "null" : placeholders.get(i);
+                String val = placeholders.get(i) == null ? "null" : placeholders.get(i).translate(lang);
                 translation = translation.replace("{" + i + "}",val);
             }
             translation = replaceCommonPlaceholders(translation);
@@ -1301,7 +1315,7 @@ public enum Lang {
         if(lang == LangType.ENGLISH) {
             return MESSAGE_NOT_FOUND_FOR + this.name() + IN_THIS_LANGUAGE_FILE;
         }
-        return get(LangType.ENGLISH, placeholders);
+        return translate(LangType.ENGLISH, placeholders);
     }
 
     private String replaceCommonPlaceholders(String translation) {
@@ -1323,7 +1337,7 @@ public enum Lang {
             }
         }
         if(translation.contains(CANCEL)) {
-            translation = translation.replace(CANCEL, Lang.CANCEL_WORD.get(serverLang));
+            translation = translation.replace(CANCEL, Lang.CANCEL_WORD.translate(serverLang));
         }
         return translation;
     }

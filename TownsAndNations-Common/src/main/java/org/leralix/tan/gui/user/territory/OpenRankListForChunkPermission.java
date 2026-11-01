@@ -49,8 +49,8 @@ public class OpenRankListForChunkPermission extends IteratorGUI {
                     .setDescription(
                             Lang.GUI_ADD_RANK_CURRENT_STATUS.get(
                                     isAuthorized ?
-                                            Lang.GUI_ADD_RANK_ALLOWED_PERMISSION.get(langType) :
-                                            Lang.GUI_ADD_RANK_NEUTRAL_PERMISSION.get(langType))
+                                            Lang.GUI_ADD_RANK_ALLOWED_PERMISSION.translate(langType) :
+                                            Lang.GUI_ADD_RANK_NEUTRAL_PERMISSION.translate(langType))
                     )
                     .setClickToAcceptMessage(
                             Lang.GUI_GENERIC_CLICK_TO_SWITCH

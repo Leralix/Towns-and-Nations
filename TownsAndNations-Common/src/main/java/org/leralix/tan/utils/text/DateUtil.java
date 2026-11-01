@@ -1,7 +1,7 @@
 package org.leralix.tan.utils.text;
 
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 
 public class DateUtil {
 
@@ -23,12 +23,12 @@ public class DateUtil {
         return nbHours + "h" + String.format("%02d", nbMinutes) + "m";
     }
 
-    public static String getRelativeTimeDescription(LangType langType, long date) {
+    public static Placeholder getRelativeTimeDescription(long date) {
 
         long diffSeconds = (System.currentTimeMillis() - date) / 1000;
 
         if (diffSeconds < 0) {
-            return Lang.RELATIVE_IN_FUTURE.get(langType);
+            return Lang.RELATIVE_IN_FUTURE;
         }
 
         long minutes = diffSeconds / 60;
@@ -38,17 +38,17 @@ public class DateUtil {
         long years = days / 365;
 
         if (diffSeconds < 60) {
-            return Lang.RELATIVE_TIME_SECOND.get(langType, String.valueOf(diffSeconds));
+            return Lang.RELATIVE_TIME_SECOND.get(String.valueOf(diffSeconds));
         } else if (minutes < 60) {
-            return Lang.RELATIVE_TIME_MINUTE.get(langType, String.valueOf(minutes));
+            return Lang.RELATIVE_TIME_MINUTE.get(String.valueOf(minutes));
         } else if (hours < 24) {
-            return Lang.RELATIVE_TIME_HOUR.get(langType, String.valueOf(hours));
+            return Lang.RELATIVE_TIME_HOUR.get(String.valueOf(hours));
         } else if (days < 7) {
-            return Lang.RELATIVE_TIME_DAY.get(langType, String.valueOf(days));
+            return Lang.RELATIVE_TIME_DAY.get(String.valueOf(days));
         } else if (months < 12) {
-            return Lang.RELATIVE_TIME_MONTH.get(langType, String.valueOf(months));
+            return Lang.RELATIVE_TIME_MONTH.get(String.valueOf(months));
         } else {
-            return Lang.RELATIVE_TIME_YEAR.get(langType, String.valueOf(years));
+            return Lang.RELATIVE_TIME_YEAR.get(String.valueOf(years));
         }
     }
 }

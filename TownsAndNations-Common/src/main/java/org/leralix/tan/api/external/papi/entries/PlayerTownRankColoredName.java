@@ -34,6 +34,6 @@ public class PlayerTownRankColoredName extends PapiEntry{
             return PLAYER_NOT_FOUND;
         }
 
-        return tanPlayer.hasTown() ? tanPlayer.getTownRank().getColoredName() : Lang.NO_TOWN.get(tanPlayer);
+        return tanPlayer.hasTown() ? tanPlayer.getTownRank().getColoredName() : Lang.NO_TOWN.translate(tanPlayer);
     }
 }

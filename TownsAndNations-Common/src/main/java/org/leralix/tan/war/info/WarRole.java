@@ -18,7 +18,7 @@ public enum WarRole {
     }
 
     public String getName(LangType langType) {
-        return name.get(langType);
+        return name.translate(langType);
     }
 
     public WarRole opposite() {

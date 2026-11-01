@@ -26,7 +26,7 @@ public class AdminSetTerritoryBalance extends ChatListenerEvent {
 
         Double amount = parseStringToDouble(message);
         if (amount == null) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(playerData));
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.translate(playerData));
             return false;
         }
 

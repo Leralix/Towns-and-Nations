@@ -42,7 +42,7 @@ public abstract class TerritoryMenu extends BasicGui {
         List<FilledLang> lore = TerritoryInfoLoreUtil.getTerritoryInfoLore(territoryData);
 
         return iconManager.get(IconKey.TERRITORY_ICON)
-                .setName(Lang.GUI_TOWN_NAME.get(langType, territoryData.getName()))
+                .setName(Lang.GUI_TOWN_NAME.get(territoryData.getName()).translate(langType))
                 .setDescription(lore)
                 .setClickToAcceptMessage(
                         Lang.GUI_TOWN_INFO_CHANGE_ICON,
@@ -51,7 +51,7 @@ public abstract class TerritoryMenu extends BasicGui {
                 .setAction(action -> {
 
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.TOWN_ADMINISTRATOR)) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), SoundEnum.NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(langType), SoundEnum.NOT_ALLOWED);
                         return;
                     }
 
@@ -69,7 +69,7 @@ public abstract class TerritoryMenu extends BasicGui {
 
                     ItemStack itemMaterial = action.getCursor();
                     territoryData.setIcon(new CustomIcon(itemMaterial));
-                    TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.get(langType), SoundEnum.GOOD);
+                    TanChatUtils.message(player, Lang.GUI_TOWN_MEMBERS_ROLE_CHANGED_ICON_SUCCESS.translate(langType), SoundEnum.GOOD);
                     open();
                 })
                 .asGuiItem(player, langType);
@@ -80,7 +80,7 @@ public abstract class TerritoryMenu extends BasicGui {
         boolean canTerritoryBeUpgraded = Constants.getTerritoryMaxLevel(territoryData) > 0;
 
         return IconManager.getInstance().get(IconKey.TERRITORY_LEVEL_ICON)
-                .setName(Lang.GUI_TERRITORY_UPGRADE_ICON.get(tanPlayer.getLang()))
+                .setName(Lang.GUI_TERRITORY_UPGRADE_ICON.translate(tanPlayer.getLang()))
                 .setDescription( canTerritoryBeUpgraded ? Lang.GUI_TERRITORY_UPGRADE_ICON_DESC1.get() : Lang.GUI_TERRITORY_UPGRADE_LOCKED.get())
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.UPGRADE_TOWN))
                 .setAction(event -> {
@@ -96,7 +96,7 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected GuiItem getTownTreasuryButton() {
         return iconManager.get(IconKey.TERRITORY_TREASURY_ICON)
-                .setName(Lang.GUI_TOWN_TREASURY_ICON.get(langType))
+                .setName(Lang.GUI_TOWN_TREASURY_ICON.translate(langType))
                 .setDescription(territoryData instanceof Town ? Lang.GUI_TOWN_TREASURY_ICON_DESC1.get() : Lang.GUI_TERRITORY_TREASURY_ICON_DESC1.get())
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_TAXES))
                 .setAction(event -> new TreasuryMenu(player, territoryData))
@@ -105,7 +105,7 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected GuiItem getMemberButton() {
         return iconManager.get(IconKey.TERRITORY_MEMBER_ICON)
-                .setName(Lang.GUI_TOWN_MEMBERS_ICON.get(langType))
+                .setName(Lang.GUI_TOWN_MEMBERS_ICON.translate(langType))
                 .setDescription(territoryData instanceof Town ? Lang.GUI_TOWN_MEMBERS_ICON_DESC1.get() : Lang.GUI_TERRITORY_MEMBERS_ICON_DESC1.get())
                 .setAction(event -> new TerritoryMemberMenu(player, territoryData).open())
                 .asGuiItem(player, langType);
@@ -113,7 +113,7 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected GuiItem getLandButton() {
         return iconManager.get(IconKey.TERRITORY_LAND_ICON)
-                .setName(Lang.GUI_CLAIM_ICON.get(langType))
+                .setName(Lang.GUI_CLAIM_ICON.translate(langType))
                 .setDescription(territoryData instanceof Town ? Lang.GUI_CLAIM_ICON_DESC1.get() : Lang.GUI_TERRITORY_CLAIM_ICON_DESC1.get())
                 .setAction(event -> new ChunkSettingsMenu(player, territoryData))
                 .asGuiItem(player, langType);
@@ -121,14 +121,14 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected GuiItem getBrowseButton() {
         return iconManager.get(IconKey.TERRITORY_BROWSE_ICON)
-                .setName(Lang.GUI_BROWSE_TERRITORY_ICON.get(langType))
+                .setName(Lang.GUI_BROWSE_TERRITORY_ICON.translate(langType))
                 .setAction(event -> new BrowseTerritoryMenu(player, territoryData, BrowseScope.ALL, p -> territoryData.openMainMenu(player, tanPlayer)))
                 .asGuiItem(player, langType);
     }
 
     protected GuiItem getDiplomacyButton() {
         return iconManager.get(IconKey.TERRITORY_DIPLOMACY_ICON)
-                .setName(Lang.GUI_RELATION_ICON.get(langType))
+                .setName(Lang.GUI_RELATION_ICON.translate(langType))
                 .setDescription(Lang.GUI_RELATION_ICON_DESC1.get())
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_TOWN_RELATION))
                 .setAction(event -> new OpenDiplomacyMenu(player, territoryData))
@@ -137,7 +137,7 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected GuiItem getAttackButton() {
         return iconManager.get(IconKey.TERRITORY_WAR_ICON)
-                .setName(Lang.GUI_ATTACK_ICON.get(langType))
+                .setName(Lang.GUI_ATTACK_ICON.translate(langType))
                 .setDescription(Lang.GUI_ATTACK_ICON_DESC1.get())
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_WARS))
                 .setAction(event -> new WarsMenu(player, territoryData))
@@ -146,7 +146,7 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected GuiItem getHierarchyButton() {
         return iconManager.get(IconKey.TERRITORY_HIERARCHY_ICON)
-                .setName(Lang.GUI_HIERARCHY_MENU.get(langType))
+                .setName(Lang.GUI_HIERARCHY_MENU.translate(langType))
                 .setDescription(Lang.GUI_HIERARCHY_MENU_DESC1.get())
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
                 .setAction(event -> new HierarchyMenu(player, territoryData))
@@ -155,7 +155,7 @@ public abstract class TerritoryMenu extends BasicGui {
 
     protected GuiItem getBuildingButton() {
         return iconManager.get(IconKey.TERRITORY_BUILDING_ICON)
-                .setName(Lang.GUI_BUILDING_MENU.get(langType))
+                .setName(Lang.GUI_BUILDING_MENU.translate(langType))
                 .setDescription(Lang.GUI_BUILDING_MENU_DESC1.get())
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.MANAGE_PROPERTY))
                 .setAction(event -> new BuildingMenu(player, territoryData, this))
@@ -164,7 +164,7 @@ public abstract class TerritoryMenu extends BasicGui {
 
     GuiItem createSettingsButton(FilledLang filledLang, Consumer<Player> action) {
         return iconManager.get(IconKey.TERRITORY_SETTINGS_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_ICON.get(langType))
+                .setName(Lang.GUI_TOWN_SETTINGS_ICON.translate(langType))
                 .setDescription(filledLang)
                 .setAction(event -> action.accept(player))
                 .asGuiItem(player, langType);

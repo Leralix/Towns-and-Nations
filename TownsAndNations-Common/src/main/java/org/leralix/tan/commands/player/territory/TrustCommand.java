@@ -75,12 +75,12 @@ public class TrustCommand extends PlayerSubCommand {
         }
         Territory territory = optionalTerritory.get();
         if(territory.getRank(tanPlayer).hasPermission(RolePermission.MANAGE_CLAIM_SETTINGS)){
-            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
+            TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer), NOT_ALLOWED);
             return;
         }
         ITanPlayer targetPlayer = playerDataStorage.get(Bukkit.getOfflinePlayer(args[2]));
         if(territory.isPlayerIn(targetPlayer)){
-            TanChatUtils.message(player, Lang.INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN.get(tanPlayer), NOT_ALLOWED);
+            TanChatUtils.message(player, Lang.INVITATION_ERROR_PLAYER_ALREADY_IN_TOWN.translate(tanPlayer), NOT_ALLOWED);
             return;
         }
         PermissionManager chunkPermission = territory.getChunkSettings().getChunkPermissions();

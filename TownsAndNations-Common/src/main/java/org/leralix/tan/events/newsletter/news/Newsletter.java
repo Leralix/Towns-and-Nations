@@ -88,9 +88,9 @@ public abstract class Newsletter {
             Player player
     ) {
         return IconManager.getInstance().get(material)
-                .setName(title.get(lang))
+                .setName(title.translate(lang))
                 .setDescription(
-                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(getDate())),
                         fillDescription
                 )
                 .setClickToAcceptMessage(Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ)

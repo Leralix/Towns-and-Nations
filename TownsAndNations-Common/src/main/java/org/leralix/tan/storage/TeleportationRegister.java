@@ -72,19 +72,19 @@ public class TeleportationRegister {
         EnableTownSpawn enableTownSpawn = territoryData.getNewLevel().getStat(EnableTownSpawn.class);
         //Spawn Unlocked
         if (!enableTownSpawn.isEnabled()) {
-            TanChatUtils.message(player, Lang.SPAWN_NOT_UNLOCKED.get(langType));
+            TanChatUtils.message(tanPlayer, Lang.SPAWN_NOT_UNLOCKED);
             return;
         }
 
         int secondBeforeTeleport = Constants.getTimeBeforeTeleport();
         if (isPlayerRegistered(tanPlayer.getID())) {
-            TanChatUtils.message(player, Lang.WAIT_BEFORE_ANOTHER_TELEPORTATION.get(langType));
+            TanChatUtils.message(tanPlayer, Lang.WAIT_BEFORE_ANOTHER_TELEPORTATION);
             return;
         }
 
         TeleportationData teleportationData = territoryData.getTeleportationData();
         if (!teleportationData.isSpawnSet()) {
-            TanChatUtils.message(player, Lang.SPAWN_NOT_SET.get(langType));
+            TanChatUtils.message(tanPlayer, Lang.SPAWN_NOT_SET);
             return;
         }
 
@@ -95,15 +95,15 @@ public class TeleportationRegister {
                 territoryChunk.getOwner().equals(territoryData) &&
                 !territoryChunk.isOccupied())
         ) {
-            TanChatUtils.message(player, Lang.SPAWN_INVALID.get(langType));
+            TanChatUtils.message(tanPlayer, Lang.SPAWN_INVALID);
             return;
         }
 
         if (secondBeforeTeleport > 0) {
             if (Constants.isCancelTeleportOnMovePosition()) {
-                TanChatUtils.message(player, Lang.TELEPORTATION_IN_X_SECONDS_NOT_MOVE.get(langType, Integer.toString(secondBeforeTeleport)));
+                TanChatUtils.message(tanPlayer, Lang.TELEPORTATION_IN_X_SECONDS_NOT_MOVE.get(Integer.toString(secondBeforeTeleport)));
             } else {
-                TanChatUtils.message(player, Lang.TELEPORTATION_IN_X_SECONDS.get(langType, Integer.toString(secondBeforeTeleport)));
+                TanChatUtils.message(tanPlayer, Lang.TELEPORTATION_IN_X_SECONDS.get(Integer.toString(secondBeforeTeleport)));
             }
 
             registerSpawn(tanPlayer, territoryData.getTeleportationData().getPosition().getLocation());
@@ -118,7 +118,7 @@ public class TeleportationRegister {
         EnableTownSpawn enableTownSpawn = territory.getNewLevel().getStat(EnableTownSpawn.class);
         //Spawn Unlocked
         if (!enableTownSpawn.isEnabled()) {
-            TanChatUtils.message(player, Lang.SPAWN_NOT_UNLOCKED.get(langType));
+            TanChatUtils.message(player, Lang.SPAWN_NOT_UNLOCKED.translate(langType));
             return;
         }
 
@@ -126,12 +126,12 @@ public class TeleportationRegister {
 
 
         if (isPlayerRegistered(tanPlayer.getID())) {
-            TanChatUtils.message(player, Lang.WAIT_BEFORE_ANOTHER_TELEPORTATION.get(langType));
+            TanChatUtils.message(player, Lang.WAIT_BEFORE_ANOTHER_TELEPORTATION.translate(langType));
             return;
         }
 
         if (fortData.isOccupied()) {
-            TanChatUtils.message(player, Lang.SPAWN_INVALID.get(langType));
+            TanChatUtils.message(player, Lang.SPAWN_INVALID.translate(langType));
             return;
         }
 
@@ -147,9 +147,9 @@ public class TeleportationRegister {
 
         if (secondBeforeTeleport > 0) {
             if (Constants.isCancelTeleportOnMovePosition()) {
-                TanChatUtils.message(player, Lang.TELEPORTATION_IN_X_SECONDS_NOT_MOVE.get(langType, Integer.toString(secondBeforeTeleport)));
+                TanChatUtils.message(tanPlayer, Lang.TELEPORTATION_IN_X_SECONDS_NOT_MOVE.get(Integer.toString(secondBeforeTeleport)));
             } else {
-                TanChatUtils.message(player, Lang.TELEPORTATION_IN_X_SECONDS.get(langType, Integer.toString(secondBeforeTeleport)));
+                TanChatUtils.message(tanPlayer, Lang.TELEPORTATION_IN_X_SECONDS.get(Integer.toString(secondBeforeTeleport)));
             }
 
             Location location = fortData.getPosition().getLocation();
@@ -177,7 +177,7 @@ public class TeleportationRegister {
         Player player = Bukkit.getPlayer(tanPlayer.getID());
         if (player != null) {
             player.teleport(teleportationPosition);
-            TanChatUtils.message(player, Lang.SPAWN_TELEPORTED.get(tanPlayer), SoundEnum.MINOR_GOOD);
+            TanChatUtils.message(player, Lang.SPAWN_TELEPORTED.translate(tanPlayer), SoundEnum.MINOR_GOOD);
         }
         removePlayer(tanPlayer);
     }

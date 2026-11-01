@@ -21,7 +21,7 @@ public enum NewsletterScope implements DisplayableEnum {
     }
 
     public String getDisplayName(LangType langType) {
-        return name.get(langType);
+        return name.translate(langType);
     }
 
     public NewsletterScope getNextScope() {

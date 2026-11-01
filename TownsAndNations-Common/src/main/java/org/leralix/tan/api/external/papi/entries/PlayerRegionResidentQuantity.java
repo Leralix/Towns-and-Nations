@@ -35,6 +35,6 @@ public class PlayerRegionResidentQuantity extends PapiEntry {
             return PLAYER_NOT_FOUND;
         }
 
-        return tanPlayer.hasRegion() ? Integer.toString(tanPlayer.getRegion().getTotalPlayerCount()) : Lang.NO_REGION.get(tanPlayer);
+        return tanPlayer.hasRegion() ? Integer.toString(tanPlayer.getRegion().getTotalPlayerCount()) : Lang.NO_REGION.translate(tanPlayer);
     }
 }

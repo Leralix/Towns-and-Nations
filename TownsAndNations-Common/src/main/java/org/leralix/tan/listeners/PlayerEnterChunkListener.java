@@ -102,8 +102,13 @@ public class PlayerEnterChunkListener implements Listener {
             TownRelation worstRelation = territoryChunk.getOwnerInternal().getWorstRelationWith(tanPlayer);
             if (!Constants.getRelationConstants(worstRelation).canAccessTerritory()) {
                 LangType lang = tanPlayer.getLang();
-                TanChatUtils.message(player, Lang.PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION.get(lang,
-                        territory.getColoredName(), worstRelation.getColoredName(lang)));
+                TanChatUtils.message(
+                        tanPlayer,
+                        Lang.PLAYER_CANNOT_ENTER_CHUNK_WITH_RELATION.get(
+                                territory.getColoredName(),
+                                worstRelation.getColoredName(lang)
+                        )
+                );
                 return false;
             }
 
@@ -137,21 +142,21 @@ public class PlayerEnterChunkListener implements Listener {
 
         if (chunkType == ClaimType.TOWN) {
             if (!playerStat.hasTown()) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(playerStat));
+                TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.translate(playerStat));
                 return;
             }
             playerStat.getTown().claimChunk(player, playerStat, nextChunk);
         }
         if (chunkType == ClaimType.REGION) {
             if (!playerStat.hasRegion()) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(playerStat));
+                TanChatUtils.message(player, Lang.PLAYER_NO_REGION.translate(playerStat));
                 return;
             }
             playerStat.getRegion().claimChunk(player, playerStat, nextChunk);
         }
         if (chunkType == ClaimType.NATION) {
             if (!playerStat.hasNation()) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_NATION.get(playerStat));
+                TanChatUtils.message(player, Lang.PLAYER_NO_NATION.translate(playerStat));
                 return;
             }
             playerStat.getNation().claimChunk(player, playerStat, nextChunk);

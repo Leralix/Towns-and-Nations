@@ -76,17 +76,15 @@ public class DiplomacyAcceptedNews extends Newsletter {
         LangType lang = tanPlayer.getLang();
 
         if (isRelationWorse) {
-            TanChatUtils.message(player,
+            TanChatUtils.message(tanPlayer,
                     Lang.BROADCAST_RELATION_WORSEN.get(
-                            lang,
                             proposingTerritory.getCustomColoredName().toLegacyText(),
                             receivingTerritory.getCustomColoredName().toLegacyText(),
                             wantedRelation.getColoredName(lang)),
                     SoundEnum.BAD);
         } else {
-            TanChatUtils.message(player,
+            TanChatUtils.message(tanPlayer,
                     Lang.BROADCAST_RELATION_IMPROVE.get(
-                            lang,
                             proposingTerritory.getCustomColoredName().toLegacyText(),
                             receivingTerritory.getCustomColoredName().toLegacyText(),
                             wantedRelation.getColoredName(lang)),
@@ -106,9 +104,9 @@ public class DiplomacyAcceptedNews extends Newsletter {
 
 
         return IconManager.getInstance().get(IconKey.NEWSLETTER_DIPLOMACY_ACCEPTED_ICON)
-                .setName(Lang.DIPLOMACY_ACCEPT_NEWSLETTER_TITLE.get(lang))
+                .setName(Lang.DIPLOMACY_ACCEPT_NEWSLETTER_TITLE.translate(lang))
                 .setDescription(
-                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(getDate())),
                         Lang.DIPLOMACY_ACCEPT_NEWSLETTER.get(proposingTerritory.getCustomColoredName().toLegacyText(), receivingTerritory.getCustomColoredName().toLegacyText(), wantedRelation.getColoredName(lang))
                 )
                 .setClickToAcceptMessage(Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ)

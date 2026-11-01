@@ -56,14 +56,14 @@ public class CreatingPropertyTransaction extends AbstractTransaction {
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
 
         return iconManager.get(IconKey.PROPERTY_CREATE_TRANSACTION)
-                .setName(Lang.SELL_PROPERTY_TRANSACTION.get(langType))
+                .setName(Lang.SELL_PROPERTY_TRANSACTION.translate(langType))
                 .setDescription(
                         Lang.TRANSACTION_FROM.get(getColoredName(creatorID, langType)), // Owner can be a territory or a player
                         Lang.TRANSACTION_TO.get(getTerritoryName(territoryID, langType)),
                         Lang.TRANSACTION_PROPERTY.get(getPropertyName(territoryID, propertyID, langType)),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount)),
                         Lang.TRANSACTION_FLAT_TAX.get(Double.toString(taxPerBlock)),
-                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate()))
+                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(getDate()))
                 )
                 .asGuiItem(player, langType);
     }

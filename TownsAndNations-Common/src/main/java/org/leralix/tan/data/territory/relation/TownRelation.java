@@ -3,6 +3,7 @@ package org.leralix.tan.data.territory.relation;
 import org.bukkit.ChatColor;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 import org.leralix.tan.war.info.BoundaryType;
 import org.tan.api.enums.EDiplomacyState;
 
@@ -31,8 +32,8 @@ public enum TownRelation {
         this.negative = negative;
     }
 
-    public String getName(LangType langType) {
-        return name.get(langType);
+    public Placeholder getName() {
+        return name;
     }
 
     public ChatColor getColor() {
@@ -40,7 +41,7 @@ public enum TownRelation {
     }
 
     public String getColoredName(LangType langType) {
-        return color + getName(langType);
+        return color + getName().translate(langType);
     }
 
     public boolean canBeChanged() {

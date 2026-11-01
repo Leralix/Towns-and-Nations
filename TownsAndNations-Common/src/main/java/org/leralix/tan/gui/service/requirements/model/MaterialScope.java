@@ -1,7 +1,8 @@
 package org.leralix.tan.gui.service.requirements.model;
 
 import org.bukkit.Material;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.Placeholder;
 
 public class MaterialScope extends ItemScope{
 
@@ -18,8 +19,8 @@ public class MaterialScope extends ItemScope{
     }
 
     @Override
-    public String getName(LangType langType) {
+    public Placeholder getName() {
         String name = materialInScope.name().toLowerCase().replace("_", " ");
-        return name.substring(0, 1).toUpperCase() + name.substring(1);
+        return Lang.of(name.substring(0, 1).toUpperCase() + name.substring(1));
     }
 }

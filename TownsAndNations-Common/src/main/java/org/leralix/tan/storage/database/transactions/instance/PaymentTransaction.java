@@ -43,12 +43,12 @@ public class PaymentTransaction extends AbstractTransaction {
     @Override
     public GuiItem getIcon(IconManager iconManager, Player player, LangType langType) {
         return iconManager.get(IconKey.PAYMENT_TRANSACTION)
-                .setName(Lang.PAYMENT_TRANSACTION_NAME.get(langType))
+                .setName(Lang.PAYMENT_TRANSACTION_NAME.translate(langType))
                 .setDescription(
                         Lang.TRANSACTION_FROM.get(getPlayerName(senderID, langType)),
                         Lang.TRANSACTION_TO.get(getPlayerName(receiverID, langType)),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount)),
-                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate()))
+                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(getDate()))
                 )
                 .asGuiItem(player, langType);
     }

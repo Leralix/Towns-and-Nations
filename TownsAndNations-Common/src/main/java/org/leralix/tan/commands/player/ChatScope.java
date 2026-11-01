@@ -1,7 +1,7 @@
 package org.leralix.tan.commands.player;
 
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 
 public enum ChatScope {
     CITY(Lang.CITY_SCOPE),
@@ -16,7 +16,7 @@ public enum ChatScope {
         this.name = name;
     }
 
-    public String getName(LangType langType) {
-        return name.get(langType);
+    public Placeholder getName() {
+        return name;
     }
 }

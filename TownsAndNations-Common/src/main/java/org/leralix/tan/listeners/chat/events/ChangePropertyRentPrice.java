@@ -29,7 +29,7 @@ public class ChangePropertyRentPrice extends ChatListenerEvent {
                 amount = 0;
             }
         } catch (NumberFormatException e) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(playerData));
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.translate(playerData));
             return false;
         }
 

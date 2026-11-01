@@ -68,7 +68,7 @@ public class HierarchyMenu extends BasicGui {
     private @NotNull GuiItem getJoinOverlordButton() {
 
         return iconManager.get(Material.WRITABLE_BOOK)
-                .setName(Lang.BROWSE_OVERLORD_INVITATION.get(langType))
+                .setName(Lang.BROWSE_OVERLORD_INVITATION.translate(langType))
                 .setDescription(
                         Lang.BROWSE_OVERLORD_INVITATION_DESC1.get(Integer.toString(territoryData.getNumberOfVassalisationProposals()))
                 )
@@ -81,14 +81,14 @@ public class HierarchyMenu extends BasicGui {
 
     private GuiItem createOverlordInfo(Territory overlord) {
         return iconManager.get(overlord.getIcon())
-                .setName(Lang.OVERLORD_GUI.get(langType))
+                .setName(Lang.OVERLORD_GUI.translate(langType))
                 .setDescription(Lang.GUI_OVERLORD_INFO.get(overlord.getName()))
                 .asGuiItem(player, langType);
     }
 
     private GuiItem createNoCurrentOverlordInfo(ITanPlayer tanPlayer) {
         return iconManager.get(Material.GOLDEN_HELMET)
-                .setName(Lang.OVERLORD_GUI.get(tanPlayer))
+                .setName(Lang.OVERLORD_GUI.translate(tanPlayer))
                 .setDescription(Lang.NO_OVERLORD.get())
                 .asGuiItem(player, langType);
     }
@@ -96,7 +96,7 @@ public class HierarchyMenu extends BasicGui {
     private GuiItem createNoOverlordPossibleInfo() {
 
         return iconManager.get(Material.IRON_BARS)
-                .setName(Lang.OVERLORD_GUI.get(langType))
+                .setName(Lang.OVERLORD_GUI.translate(langType))
                 .setDescription(Lang.CANNOT_HAVE_OVERLORD.get())
                 .asGuiItem(player, langType);
     }
@@ -104,22 +104,22 @@ public class HierarchyMenu extends BasicGui {
     private GuiItem createDeclareIndependenceButton(Player player, Territory territoryData, ITanPlayer tanPlayer, Territory overlord) {
 
         return iconManager.get(Material.SPRUCE_DOOR)
-                .setName(Lang.GUI_OVERLORD_DECLARE_INDEPENDENCE.get(langType))
+                .setName(Lang.GUI_OVERLORD_DECLARE_INDEPENDENCE.translate(langType))
                 .setDescription(Lang.GUI_OVERLORD_DECLARE_INDEPENDENCE_DESC1.get())
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
                     action.setCancelled(true);
                     if (!territoryData.haveOverlord()) {
-                        TanChatUtils.message(player, Lang.TERRITORY_NO_OVERLORD.get(tanPlayer));
+                        TanChatUtils.message(player, Lang.TERRITORY_NO_OVERLORD.translate(tanPlayer));
                         open();
                         return;
                     }
 
                     if (territoryData.isCapital()) {
                         if (overlord instanceof Nation) {
-                            TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_NATION_CAPITAL.get(tanPlayer, territoryData.getColoredName()));
+                            TanChatUtils.message(tanPlayer, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_NATION_CAPITAL.get(territoryData.getColoredName()));
                         } else {
-                            TanChatUtils.message(player, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL.get(tanPlayer, territoryData.getColoredName()));
+                            TanChatUtils.message(tanPlayer, Lang.CANNOT_DECLARE_INDEPENDENCE_BECAUSE_CAPITAL.get(territoryData.getColoredName()));
                         }
                         return;
                     }
@@ -147,12 +147,12 @@ public class HierarchyMenu extends BasicGui {
 
     private GuiItem createDonateToOverlordButton(Player player, ITanPlayer tanPlayer, Territory overlord) {
         return iconManager.get(Material.DIAMOND)
-                .setName(Lang.GUI_OVERLORD_DONATE.get(langType))
+                .setName(Lang.GUI_OVERLORD_DONATE.translate(langType))
                 .setDescription(Lang.GUI_OVERLORD_DONATE_DESC1.get())
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
                     action.setCancelled(true);
-                    TanChatUtils.message(player, Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.WRITE_IN_CHAT_AMOUNT_OF_MONEY_FOR_DONATION.translate(tanPlayer));
                     PlayerChatListenerStorage.register(player, tanPlayer.getLang(), new DonateToTerritory(overlord));
                 })
                 .asGuiItem(player, langType);
@@ -162,7 +162,7 @@ public class HierarchyMenu extends BasicGui {
         if (territoryData.canHaveVassals()) {
 
             IconKey iconKey = (territoryData instanceof Nation) ? IconKey.REGION_BASE_ICON : IconKey.TOWN_BASE_ICON;
-            String name = (territoryData instanceof Nation) ? Lang.GUI_NATION_REGION_LIST.get(tanPlayer) : Lang.GUI_REGION_TOWN_LIST.get(tanPlayer);
+            String name = (territoryData instanceof Nation) ? Lang.GUI_NATION_REGION_LIST.translate(tanPlayer) : Lang.GUI_REGION_TOWN_LIST.translate(tanPlayer);
             FilledLang desc = (territoryData instanceof Nation) ? Lang.GUI_NATION_REGION_LIST_DESC1.get() : Lang.GUI_REGION_TOWN_LIST_DESC1.get();
 
             gui.setItem(2, 6, iconManager.get(iconKey)
@@ -172,14 +172,14 @@ public class HierarchyMenu extends BasicGui {
                     .asGuiItem(player, tanPlayer.getLang()));
 
             gui.setItem(1, 7, iconManager.get(Material.GOLDEN_SWORD)
-                    .setName(Lang.VASSAL_GUI.get(tanPlayer))
+                    .setName(Lang.VASSAL_GUI.translate(tanPlayer))
                     .setDescription(Lang.VASSAL_GUI_DESC1.get(territoryData.getColoredName(), Integer.toString(territoryData.getVassalCount())))
                     .asGuiItem(player, langType));
         }
 
         else {
             var info = iconManager.get(Material.IRON_BARS)
-                    .setName(Lang.VASSAL_GUI.get(tanPlayer))
+                    .setName(Lang.VASSAL_GUI.translate(tanPlayer))
                     .setDescription(Lang.CANNOT_HAVE_VASSAL.get())
                     .asGuiItem(player, langType);
 

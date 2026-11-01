@@ -71,7 +71,7 @@ public class MinimapManager {
 
         LangType langType = playerDataStorage.get(player).getLang();
         TextComponent title = Component
-                .text(Lang.MINIMAP_TITLE.get(langType))
+                .text(Lang.MINIMAP_TITLE.translate(langType))
                 .decorate(TextDecoration.BOLD);
 
         if (objective == null) {

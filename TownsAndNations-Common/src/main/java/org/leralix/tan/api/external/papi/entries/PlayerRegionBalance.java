@@ -34,6 +34,6 @@ public class PlayerRegionBalance extends PapiEntry {
             return PLAYER_NOT_FOUND;
         }
 
-        return tanPlayer.hasRegion() ? Double.toString(tanPlayer.getRegion().getBalance()) : Lang.NO_REGION.get(tanPlayer);
+        return tanPlayer.hasRegion() ? Double.toString(tanPlayer.getRegion().getBalance()) : Lang.NO_REGION.translate(tanPlayer);
     }
 }

@@ -47,7 +47,7 @@ public class FileUtil {
 
         try (FileWriter fw = new FileWriter(archiveFile, true);
              BufferedWriter bw = new BufferedWriter(fw)) {
-            bw.write("[" + LocalDate.now() + "] " + lineToAdd.getDefault());
+            bw.write("[" + LocalDate.now() + "] " + lineToAdd.translateDefault());
             bw.newLine();
         } catch (IOException e) {
             TownsAndNations.getPlugin().getLogger().severe(ERROR_MESSAGE);

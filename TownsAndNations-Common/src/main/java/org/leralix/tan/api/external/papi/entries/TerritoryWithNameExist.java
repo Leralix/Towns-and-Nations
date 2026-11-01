@@ -32,10 +32,10 @@ public class TerritoryWithNameExist extends PapiEntry {
 
         String[] values = extractValues(params);
         if (values.length == 0)
-            return Lang.INVALID_VALUE.get(tanPlayer);
+            return Lang.INVALID_VALUE.translate(tanPlayer);
         String name = values[0];
         if (name == null)
-            return Lang.INVALID_VALUE.get(tanPlayer);
+            return Lang.INVALID_VALUE.translate(tanPlayer);
 
         return getTerritoryByName(name) != null ? Constants.getTruePlaceholderString()
                 : Constants.getFalsePlaceholderString();

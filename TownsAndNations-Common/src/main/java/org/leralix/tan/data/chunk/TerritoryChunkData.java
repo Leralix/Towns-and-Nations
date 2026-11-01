@@ -20,6 +20,7 @@ import org.leralix.tan.data.territory.relation.TownRelation;
 import org.leralix.tan.data.upgrade.rewards.numeric.ChunkCap;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.PlaceholderLang;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.territory.ChunkUtil;
@@ -86,8 +87,8 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
 
     @Override
     protected void playerCantPerformAction(Player player, LangType langType) {
-        TanChatUtils.message(player, Lang.PLAYER_ACTION_NO_PERMISSION.get());
-        TanChatUtils.message(player, Lang.CHUNK_BELONGS_TO.get(getOwner().getName()));
+        TanChatUtils.message(player, Lang.PLAYER_ACTION_NO_PERMISSION);
+        TanChatUtils.message(player, Lang.CHUNK_BELONGS_TO.get(PlaceholderLang.of(getOwner().getName())));
     }
 
     @Override
@@ -110,7 +111,7 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
         TownRelation relation = enteringPlayerTown.getRelationWith(territoryData);
 
         if (relation == TownRelation.WAR && Constants.notifyWhenEnemyEnterTerritory()) {
-            TanChatUtils.message(player, Lang.CHUNK_ENTER_TOWN_AT_WAR.get(tanPlayer.getLang()));
+            TanChatUtils.message(player, Lang.CHUNK_ENTER_TOWN_AT_WAR.translate(tanPlayer.getLang()));
             territoryData.broadCastBarMessage(Lang.CHUNK_INTRUSION_ALERT.get(enteringPlayerTown.getName(), player.getName()));
         }
     }
@@ -125,16 +126,16 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
 
         String text = chunkCoordinateString();
         if (isOccupied()) {
-            text += Lang.CHUNK_OWNER_OCCUPIER.get(langType, getOwner().getColoredName(), getOccupier().getColoredName());
+            text += Lang.CHUNK_OWNER_OCCUPIER.get(getOwner().getColoredName(), getOccupier().getColoredName());
         } else {
-            text += Lang.CHUNK_OWNER.get(langType, getOwner().getColoredName());
+            text += Lang.CHUNK_OWNER.get(getOwner().getColoredName());
         }
 
         String icon;
         var optFort = getFortOnChunk();
         if (optFort.isPresent()){
             icon = "🛖";
-            text += "\n" + Lang.FORT_NAME.get(langType, optFort.get().getName());
+            text += "\n" + Lang.FORT_NAME.get(optFort.get().getName());
         }
         else {
             if(isOccupied()){
@@ -145,7 +146,7 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
             }
         }
 
-        text += "\n" + Lang.LEFT_CLICK_TO_CLAIM.get(langType);
+        text += "\n" + Lang.LEFT_CLICK_TO_CLAIM.translate(langType);
 
         return Component.text(icon)
                 .color(TextColor.color(getOccupierInternal().getChunkColorCode()))
@@ -167,33 +168,33 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
         //If owner territory contains the player, regular check
         if (ownerTerritory.isPlayerIn(player)) {
             if (!ownerTerritory.checkPlayerPermission(tanPlayer, TerritoryPermission.UNCLAIM_CHUNK)) {
-                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(langType), SoundEnum.NOT_ALLOWED);
+                TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(langType), SoundEnum.NOT_ALLOWED);
                 return;
             }
 
             if (ownerTerritory instanceof Town ownerTown) {
                 for (PropertyData propertyData : ownerTown.getPropertiesInternal()) {
                     if (propertyData.isInChunk(this)) {
-                        TanChatUtils.message(player, Lang.PROPERTY_IN_CHUNK.get(langType, propertyData.getName()));
+                        TanChatUtils.message(player, Lang.PROPERTY_IN_CHUNK.get(propertyData.getName()));
                         return;
                     }
                 }
             }
 
             if (ChunkUtil.chunkContainsBuildings(this, ownerTerritory)) {
-                TanChatUtils.message(player, Lang.BUILDINGS_OR_CAPITAL_IN_CHUNK.get(langType));
+                TanChatUtils.message(player, Lang.BUILDINGS_OR_CAPITAL_IN_CHUNK.translate(langType));
                 return;
             }
 
             if (isOccupied()) {
-                TanChatUtils.message(player, Lang.CHUNK_OCCUPIED_CANT_UNCLAIM.get(langType));
+                TanChatUtils.message(player, Lang.CHUNK_OCCUPIED_CANT_UNCLAIM.translate(langType));
                 return;
             }
             if (Constants.preventOrphanChunks() &&
                     !Constants.allowNonAdjacentChunksFor(getType()) &&
                     ChunkUtil.doesUnclaimCauseOrphan(this)
             ) {
-                TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_BECAUSE_CREATE_ORPHAN.get(langType));
+                TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_BECAUSE_CREATE_ORPHAN.translate(langType));
                 return;
             }
 
@@ -202,11 +203,11 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
 
             ChunkCap chunkCap = ownerTerritory.getNewLevel().getStat(ChunkCap.class);
             if (chunkCap.isUnlimited()) {
-                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(ownerTerritory.getColoredName()));
+                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(ownerTerritory.getColoredName()).translate(langType));
             } else {
                 String currentChunks = Integer.toString(ownerTerritory.getNumberOfClaimedChunk());
                 String maxChunks = Integer.toString(chunkCap.getMaxAmount());
-                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(ownerTerritory.getColoredName(), currentChunks, maxChunks));
+                TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_LIMITED.get(ownerTerritory.getColoredName(), currentChunks, maxChunks).translate(langType));
             }
         } else {
             // Special case: one of the player's territories can conquer chunks due to a past war.
@@ -214,7 +215,7 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
                 if (territoryData.canConquerChunk(this)) {
 
                     if (isOccupied()) {
-                        TanChatUtils.message(player, Lang.CHUNK_OCCUPIED_CANT_UNCLAIM.get(langType));
+                        TanChatUtils.message(player, Lang.CHUNK_OCCUPIED_CANT_UNCLAIM.translate(langType));
                         return;
                     }
 
@@ -222,18 +223,18 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
                             !Constants.allowNonAdjacentChunksFor(ownerTerritory) &&
                             ChunkUtil.doesUnclaimCauseOrphan(this)
                     ) {
-                        TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_BECAUSE_CREATE_ORPHAN.get(langType));
+                        TanChatUtils.message(player, Lang.CANNOT_UNCLAIM_BECAUSE_CREATE_ORPHAN.translate(langType));
                         return;
                     }
 
 
                     TownsAndNations.getPlugin().getClaimStorage().unclaimChunkAndUpdate(this);
-                    TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(langType, ownerTerritory.getColoredName()), SoundEnum.MINOR_GOOD);
+                    TanChatUtils.message(player, Lang.CHUNK_UNCLAIMED_SUCCESS_UNLIMITED.get(ownerTerritory.getColoredName()).translate(langType), SoundEnum.MINOR_GOOD);
                     return;
                 }
             }
             // Player is not part of territory
-            TanChatUtils.message(player, Lang.PLAYER_NOT_IN_TERRITORY.get(langType, ownerTerritory.getColoredName()));
+            TanChatUtils.message(player, Lang.PLAYER_NOT_IN_TERRITORY.get(ownerTerritory.getColoredName()).translate(langType));
         }
     }
 
@@ -325,7 +326,7 @@ public abstract class TerritoryChunkData extends ChunkData implements TerritoryC
                 if (property.isPlayerAllowed(permissionType, tanPlayer)) {
                     return true;
                 } else {
-                    TanChatUtils.message(player, property.getDenyMessage(tanPlayer.getLang()));
+                    TanChatUtils.message(player, property.getDenyMessage());
                     return false;
                 }
             }

@@ -49,9 +49,9 @@ public class TerritoryVassalProposalNews extends Newsletter {
             return null;
 
         return IconManager.getInstance().get(Material.GOLDEN_HELMET)
-                .setName(Lang.NEWSLETTER_JOIN_REGION_PROPOSAL.get(lang))
+                .setName(Lang.NEWSLETTER_JOIN_REGION_PROPOSAL.translate(lang))
                 .setDescription(
-                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(lang, getDate())),
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(getDate())),
                         Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(proposingTerritory.getColoredName(), receivingTerritory.getColoredName())
                 )
                 .setClickToAcceptMessage(Lang.NEWSLETTER_RIGHT_CLICK_TO_MARK_AS_READ)
@@ -73,7 +73,7 @@ public class TerritoryVassalProposalNews extends Newsletter {
             return null;
 
         return IconManager.getInstance().get(Material.GOLDEN_HELMET)
-                .setName(Lang.NEWSLETTER_JOIN_REGION_PROPOSAL.get(lang))
+                .setName(Lang.NEWSLETTER_JOIN_REGION_PROPOSAL.translate(lang))
                 .setDescription(
                         Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC1.get(proposingTerritory.getColoredName(), receivingTerritory.getColoredName()),
                         Lang.NEWSLETTER_JOIN_REGION_PROPOSAL_DESC2.get()
@@ -114,7 +114,7 @@ public class TerritoryVassalProposalNews extends Newsletter {
         Territory receivingTerritory = TerritoryUtil.getTerritory(receivingTerritoryID);
         if (receivingTerritory == null)
             return;
-        TanChatUtils.message(player, Lang.TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER.get(tanPlayer, proposingTerritory.getColoredName(), receivingTerritory.getColoredName()), SoundEnum.MINOR_BAD);
+        TanChatUtils.message(tanPlayer, Lang.TOWN_JOIN_REGION_PROPOSAL_NEWSLETTER.get(proposingTerritory.getColoredName(), receivingTerritory.getColoredName()), SoundEnum.MINOR_BAD);
     }
 
     public String getProposingTerritoryID() {

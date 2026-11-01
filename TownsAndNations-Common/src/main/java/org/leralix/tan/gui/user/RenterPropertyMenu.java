@@ -40,17 +40,17 @@ public class RenterPropertyMenu extends PropertyMenus {
 
     private GuiItem getStopRentPropertyButton() {
         return iconManager.get(IconKey.STOP_RENTING_PROPERTY_ICON)
-                .setName(Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY.get(tanPlayer))
+                .setName(Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY.translate(tanPlayer))
                 .setDescription(Lang.GUI_PROPERTY_STOP_RENTING_PROPERTY_DESC1.get())
                 .setAction(action -> {
                     propertyData.expelRenter(true);
 
-                    TanChatUtils.message(player, Lang.PROPERTY_RENTER_LEAVE_RENTER_SIDE.get(tanPlayer, propertyData.getName()), MINOR_GOOD);
+                    TanChatUtils.message(tanPlayer, Lang.PROPERTY_RENTER_LEAVE_RENTER_SIDE.get(propertyData.getName()), MINOR_GOOD);
 
                     TanOwner owner = propertyData.getOwner();
                     if(owner instanceof PlayerOwned playerOwned){
                         Player playerOwn = Bukkit.getPlayer(UUID.fromString(playerOwned.getID()));
-                        TanChatUtils.message(playerOwn, Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(langType, player.getName(), propertyData.getName()), MINOR_BAD);
+                        TanChatUtils.message(playerOwn, Lang.PROPERTY_RENTER_LEAVE_OWNER_SIDE.get(player.getName(), propertyData.getName()), MINOR_BAD);
                     }
 
                     player.closeInventory();

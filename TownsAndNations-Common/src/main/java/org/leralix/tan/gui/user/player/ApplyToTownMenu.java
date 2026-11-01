@@ -43,9 +43,9 @@ public class ApplyToTownMenu extends IteratorGUI {
                     .addDescription(
                             Lang.GUI_TOWN_RECRUITING_POLICY.get(
                                     switch (recruitingPolicy) {
-                                        case AUTHORIZE_ALL -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_OPEN.get(langType);
-                                        case APPLICATION_OPEN -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.get(langType);
-                                        case CLOSED -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.get(langType);
+                                        case AUTHORIZE_ALL -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_OPEN.translate(langType);
+                                        case APPLICATION_OPEN -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.translate(langType);
+                                        case CLOSED -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.translate(langType);
                                     }
                             )
                     )
@@ -66,7 +66,7 @@ public class ApplyToTownMenu extends IteratorGUI {
                             }
                             else {
                                 if (!player.hasPermission("tan.base.town.join")) {
-                                    TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), SoundEnum.NOT_ALLOWED);
+                                    TanChatUtils.message(tanPlayer, Lang.PLAYER_NO_PERMISSION, SoundEnum.NOT_ALLOWED);
                                     return;
                                 }
                                 if (specificTownData.isPlayerAlreadyRequested(player)) {
@@ -74,13 +74,13 @@ public class ApplyToTownMenu extends IteratorGUI {
                                 }
 
                                 specificTownData.addPlayerJoinRequest(player);
-                                TanChatUtils.message(player, Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(tanPlayer, specificTownData.getName()));
+                                TanChatUtils.message(tanPlayer, Lang.PLAYER_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(specificTownData.getName()));
                                 open();
                             }
                         }
                         if (action.isRightClick() && specificTownData.isPlayerAlreadyRequested(player)) {
                             specificTownData.removePlayerJoinRequest(player.getUniqueId());
-                            TanChatUtils.message(player, Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.get(tanPlayer));
+                            TanChatUtils.message(player, Lang.PLAYER_REMOVE_ASK_TO_JOIN_TOWN_PLAYER_SIDE.translate(tanPlayer));
                             open();
                         }
                     })

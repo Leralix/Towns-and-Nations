@@ -44,19 +44,19 @@ public abstract class ProfitLine implements Comparable<ProfitLine> {
 
     protected void addDecreaseItem(Gui gui, Player player, ITanPlayer playerData, LangType lang, double taxRate) {
         gui.setItem(2, 2, IconManager.getInstance().get(IconKey.TAX_DECREASE_ICON)
-                .setName(Lang.GUI_TREASURY_LOWER_TAX.get(lang))
+                .setName(Lang.GUI_TREASURY_LOWER_TAX.translate(lang))
                 .setDescription(
                         Lang.GUI_DECREASE_1_DESC.get(),
                         Lang.GUI_DECREASE_10_DESC.get()
                 )
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(lang));
                         return;
                     }
                     int amountToRemove = action.isShiftClick() && taxRate > 10 ? 10 : 1;
                     if (taxRate < 1) {
-                        TanChatUtils.message(player, Lang.GUI_TREASURY_CANT_TAX_LESS.get(lang));
+                        TanChatUtils.message(player, Lang.GUI_TREASURY_CANT_TAX_LESS.translate(lang));
                         return;
                     }
                     SoundUtil.playSound(player, SoundEnum.REMOVE);
@@ -69,7 +69,7 @@ public abstract class ProfitLine implements Comparable<ProfitLine> {
 
     protected void addInfoItem(Gui gui, Player player, LangType lang, ITanPlayer playerData, double taxRate) {
         gui.setItem(2, 3, IconManager.getInstance().get(IconKey.TAX_INFO_ICON)
-                .setName(Lang.GUI_TREASURY_FLAT_TAX.get(lang))
+                .setName(Lang.GUI_TREASURY_FLAT_TAX.translate(lang))
                 .setDescription(
                         Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(Double.toString(taxRate)),
                         Lang.GUI_GENERIC_CLICK_TO_OPEN_HISTORY.get(),
@@ -77,14 +77,14 @@ public abstract class ProfitLine implements Comparable<ProfitLine> {
                 )
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(lang));
                         return;
                     }
                     action.setCancelled(true);
                     if (action.isLeftClick()) {
                         new TerritoryTransactionHistory(player, territoryData, TransactionType.TERRITORY_TAX, p -> new TreasuryMenu(player, territoryData));
                     } else if (action.isRightClick()) {
-                        TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
+                        TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.translate(lang));
                         PlayerChatListenerStorage.register(player, lang, new SetTerritoryTax(territoryData, p -> new TreasuryMenu(player, territoryData)));
                     }
                 })
@@ -94,14 +94,14 @@ public abstract class ProfitLine implements Comparable<ProfitLine> {
 
     protected void addIncreaseItem(Gui gui, Player player, ITanPlayer playerData, LangType lang) {
         gui.setItem(2, 4, IconManager.getInstance().get(IconKey.TAX_INCREASE_ICON)
-                .setName(Lang.GUI_TREASURY_INCREASE_TAX.get(lang))
+                .setName(Lang.GUI_TREASURY_INCREASE_TAX.translate(lang))
                 .setDescription(
                         Lang.GUI_INCREASE_1_DESC.get(),
                         Lang.GUI_INCREASE_10_DESC.get()
                 )
                 .setAction(action -> {
                     if (!territoryData.doesPlayerHavePermission(playerData, RolePermission.MANAGE_TAXES)) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(lang));
                         return;
                     }
                     int amountToAdd = action.isShiftClick() ? 10 : 1;

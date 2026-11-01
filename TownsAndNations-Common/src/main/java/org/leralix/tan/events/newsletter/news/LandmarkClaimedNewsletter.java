@@ -13,6 +13,7 @@ import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
 import org.leralix.tan.utils.gameplay.TerritoryUtil;
 import org.leralix.tan.utils.text.DateUtil;
+import org.leralix.tan.utils.text.TanChatUtils;
 import org.tan.api.interfaces.buildings.TanLandmark;
 import org.tan.api.interfaces.territory.TanTerritory;
 
@@ -53,9 +54,9 @@ public class LandmarkClaimedNewsletter extends Newsletter {
         }
 
         return IconManager.getInstance().get(Material.CHEST)
-                .setName(Lang.LANDMARK_CLAIMED_NEWSLETTER_TITLE.get(langType))
+                .setName(Lang.LANDMARK_CLAIMED_NEWSLETTER_TITLE.translate(langType))
                 .setDescription(
-                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate())),
+                        Lang.NEWSLETTER_DATE.get(DateUtil.getRelativeTimeDescription(getDate())),
                         Lang.LANDMARK_CLAIMED_NEWSLETTER.get(newOwner.getColoredName(), landmark.getName())
                 )
                 .setAction(event -> {
@@ -89,6 +90,6 @@ public class LandmarkClaimedNewsletter extends Newsletter {
     public void broadcast(Player player, ITanPlayer tanPlayer) {
         Territory newOwner = TerritoryUtil.getTerritory(newOwnerID);
         Landmark landmark = TownsAndNations.getPlugin().getLandmarkStorage().get(landmarkID);
-        Lang.LANDMARK_CLAIMED_NEWSLETTER.get(tanPlayer, newOwner.getColoredName(), landmark.getName());
+        TanChatUtils.message(tanPlayer, Lang.LANDMARK_CLAIMED_NEWSLETTER.get(newOwner.getColoredName(), landmark.getName()));
     }
 }

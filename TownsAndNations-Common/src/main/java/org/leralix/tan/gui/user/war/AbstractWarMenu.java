@@ -35,7 +35,7 @@ public abstract class AbstractWarMenu extends BasicGui {
         }
 
         return iconManager.get(IconKey.WAR_DEFENDER_SIDE_ICON)
-                .setName(Lang.GUI_DEFENDING_SIDE_ICON.get(langType))
+                .setName(Lang.GUI_DEFENDING_SIDE_ICON.translate(langType))
                 .setDescription(description);
     }
 
@@ -49,7 +49,7 @@ public abstract class AbstractWarMenu extends BasicGui {
         }
 
         return iconManager.get(IconKey.WAR_ATTACKER_SIDE_ICON)
-                .setName(Lang.GUI_ATTACKING_SIDE_ICON.get(langType))
+                .setName(Lang.GUI_ATTACKING_SIDE_ICON.translate(langType))
                 .setDescription(description);
     }
 

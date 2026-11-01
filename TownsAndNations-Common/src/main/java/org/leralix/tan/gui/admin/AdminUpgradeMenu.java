@@ -22,7 +22,7 @@ public class AdminUpgradeMenu extends UpgradeMenu {
     @Override
     protected @NotNull GuiItem getUpgradeItem(Upgrade upgrade, int levelOfUpgrade, int maxLevelOfUpgrade) {
         return iconManager.get(upgrade.getIconMaterial())
-                .setName(upgrade.getName(langType))
+                .setName(upgrade.getName().translate(langType))
                 .setDescription(buildUpgradeDescription(upgrade, levelOfUpgrade, maxLevelOfUpgrade))
                 .setClickToAcceptMessage(
                         Lang.GUI_GENERIC_CLICK_TO_UPGRADE,
@@ -36,7 +36,7 @@ public class AdminUpgradeMenu extends UpgradeMenu {
                             return;
                         }
                         territoryData.getNewLevel().levelUp(upgrade);
-                        TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
+                        TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.translate(langType), SoundEnum.LEVEL_UP);
                         SoundUtil.playSound(player, SoundEnum.ADD);
                         open();
                     } else if (action.isRightClick()) {
@@ -58,7 +58,7 @@ public class AdminUpgradeMenu extends UpgradeMenu {
         int currentLevel = level.getMainLevel();
 
         return iconManager.get(org.leralix.tan.gui.cosmetic.IconKey.LEVEL_UP_ICON)
-                .setName(Lang.GUI_TERRITORY_LEVEL_UP.get(langType))
+                .setName(Lang.GUI_TERRITORY_LEVEL_UP.translate(langType))
                 .setDescription(
                         Lang.GUI_TOWN_LEVEL_UP_DESC1.get(Integer.toString(currentLevel))
                 )
@@ -69,7 +69,7 @@ public class AdminUpgradeMenu extends UpgradeMenu {
                 .setAction(action -> {
                     if (action.isLeftClick()) {
                         territoryData.getNewLevel().levelUpMain();
-                        TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.get(langType), SoundEnum.LEVEL_UP);
+                        TanChatUtils.message(player, Lang.BASIC_LEVEL_UP.translate(langType), SoundEnum.LEVEL_UP);
                         SoundUtil.playSound(player, SoundEnum.ADD);
                         open();
                     } else if (action.isRightClick()) {

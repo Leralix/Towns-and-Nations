@@ -47,14 +47,14 @@ public class PlayerJoinListener implements Listener {
         TeamUtils.setIndividualScoreBoard(player);
         LangType langType = tanPlayer.getLang();
         if(player.hasPermission("tan.debug") && !TownsAndNations.getPlugin().isLatestVersion()){
-            TanChatUtils.message(player, Lang.NEW_VERSION_AVAILABLE.get(langType, TownsAndNations.getPlugin().getLatestVersion().toString()));
-            TanChatUtils.message(player, Lang.NEW_VERSION_AVAILABLE_2.get(langType));
+            TanChatUtils.message(tanPlayer, Lang.NEW_VERSION_AVAILABLE.get(TownsAndNations.getPlugin().getLatestVersion().toString()));
+            TanChatUtils.message(tanPlayer, Lang.NEW_VERSION_AVAILABLE_2);
         }
 
         int nbNewsletterForPlayer = NewsletterStorage.getInstance().getNbUnreadNewsletterForPlayer(player, tanPlayer);
         if (nbNewsletterForPlayer > 0) {
-            TanChatUtils.message(player, Lang.NEWSLETTER_STRING.get(langType) + Lang.NEWSLETTER_GREETING.get(langType, Integer.toString(nbNewsletterForPlayer)));
-            TextComponent message = new TextComponent(Lang.CLICK_TO_OPEN_NEWSLETTER.get(langType));
+            TanChatUtils.message(player, Lang.NEWSLETTER_STRING.translate(langType) + Lang.NEWSLETTER_GREETING.get(Integer.toString(nbNewsletterForPlayer)).translate(langType));
+            TextComponent message = new TextComponent(Lang.CLICK_TO_OPEN_NEWSLETTER.translate(langType));
             message.setColor(ChatColor.GOLD);
             message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tan newsletter"));
             player.spigot().sendMessage(message);

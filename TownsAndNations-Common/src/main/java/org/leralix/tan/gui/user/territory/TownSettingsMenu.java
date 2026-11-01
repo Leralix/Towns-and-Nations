@@ -82,11 +82,11 @@ public class TownSettingsMenu extends SettingsMenus {
 
         Optional<Vector2D> optVector2D = townData.getCapitalLocation();
         boolean capitalPresent = optVector2D.isPresent();
-        optVector2D.ifPresent(vector2D -> desc.add(Lang.GUI_CAPITAL_CHUNK_ACTUAL_POSITION.get(Lang.DISPLAY_2D_COORDINATES.get(langType, Integer.toString(vector2D.getX() * 16), Integer.toString(vector2D.getZ() * 16)))));
+        optVector2D.ifPresent(vector2D -> desc.add(Lang.GUI_CAPITAL_CHUNK_ACTUAL_POSITION.get(Lang.DISPLAY_2D_COORDINATES.get(Integer.toString(vector2D.getX() * 16), Integer.toString(vector2D.getZ() * 16)))));
 
 
         return iconManager.get(IconKey.CHANGE_TOWN_CAPITAL_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_CAPITAL.get(langType))
+                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_CAPITAL.translate(langType))
                 .setDescription(desc)
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
                 .setClickToAcceptMessage(
@@ -102,7 +102,7 @@ public class TownSettingsMenu extends SettingsMenus {
                         TanChatUtils.message(player, Lang.CANNOT_MOVE_CAPITAL_WHILE_AT_WAR.get());
                         return;
                     }
-                    TanChatUtils.message(player, Lang.RIGHT_CLICK_TO_SELECT_CAPITAL.get(tanPlayer));
+                    TanChatUtils.message(player, Lang.RIGHT_CLICK_TO_SELECT_CAPITAL.translate(tanPlayer));
                     RightClickListener.register(player, langType, new ChangeCapital(townData, p -> open()));
                 })
                 .asGuiItem(player, langType);
@@ -111,12 +111,12 @@ public class TownSettingsMenu extends SettingsMenus {
 
     private @NotNull GuiItem getChangeTagButton() {
         return iconManager.get(IconKey.CHANGE_TOWN_TAG_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TAG.get(langType))
+                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TAG.translate(langType))
                 .setDescription(Lang.GUI_TOWN_SETTINGS_CHANGE_TAG_DESC1.get(townData.getFormatedTag()))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_MODIFY)
                 .setRequirements(new RankPermissionRequirement(territoryData, tanPlayer, RolePermission.TOWN_ADMINISTRATOR))
                 .setAction(action -> {
-                    TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.get(langType));
+                    TanChatUtils.message(player, Lang.ENTER_NEW_VALUE.translate(langType));
                     PlayerChatListenerStorage.register(player, langType, new ChangeTownTag(townData, p -> open()));
                 })
                 .asGuiItem(player, langType);
@@ -124,7 +124,7 @@ public class TownSettingsMenu extends SettingsMenus {
 
     private GuiItem getDeleteButton() {
         return iconManager.get(IconKey.TOWN_DELETE_TOWN_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_DELETE_TOWN.get(tanPlayer))
+                .setName(Lang.GUI_TOWN_SETTINGS_DELETE_TOWN.translate(tanPlayer))
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC1.get(townData.getName()),
                         Lang.GUI_TOWN_SETTINGS_DELETE_TOWN_DESC2.get()
@@ -135,17 +135,17 @@ public class TownSettingsMenu extends SettingsMenus {
                 .setAction(event -> {
                     event.setCancelled(true);
                     if (townData.isCapital()) {
-                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(tanPlayer, townData.getOverlordInternal().get().getColoredName()));
+                        TanChatUtils.message(tanPlayer, Lang.CANNOT_DELETE_TERRITORY_IF_CAPITAL.get(townData.getOverlordInternal().get().getColoredName()));
                         return;
                     }
 
                     if (!TownsAndNations.getPlugin().getWarStorage().getWarsOfTerritory(territoryData).isEmpty()) {
-                        TanChatUtils.message(player, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR.get(langType), SoundEnum.NOT_ALLOWED);
+                        TanChatUtils.message(tanPlayer, Lang.CANNOT_DELETE_TERRITORY_IF_AT_WAR, SoundEnum.NOT_ALLOWED);
                         return;
                     }
 
                     if (!player.hasPermission("tan.base.town.disband")) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(tanPlayer), NOT_ALLOWED);
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(tanPlayer), NOT_ALLOWED);
                         return;
                     }
 
@@ -175,13 +175,13 @@ public class TownSettingsMenu extends SettingsMenus {
         };
 
         return iconManager.get(iconKey)
-                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION.get(tanPlayer))
+                .setName(Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION.translate(tanPlayer))
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_DESC.get(
                                 switch (townRecruitingPolicy) {
-                                    case AUTHORIZE_ALL -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_OPEN.get(langType);
-                                    case APPLICATION_OPEN -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.get(langType);
-                                    case CLOSED -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.get(langType);
+                                    case AUTHORIZE_ALL -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_OPEN.translate(langType);
+                                    case APPLICATION_OPEN -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_ACCEPT.translate(langType);
+                                    case CLOSED -> Lang.GUI_TOWN_SETTINGS_CHANGE_TOWN_APPLICATION_NOT_ACCEPT.translate(langType);
                                 }
                         )
                 )
@@ -196,7 +196,7 @@ public class TownSettingsMenu extends SettingsMenus {
 
     protected @NotNull GuiItem getChangeOwnershipButton() {
         return iconManager.get(IconKey.TERRITORY_CHANGE_OWNER_ICON)
-                .setName(Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.get(tanPlayer))
+                .setName(Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP.translate(tanPlayer))
                 .setDescription(
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC1.get(),
                         Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_DESC2.get()

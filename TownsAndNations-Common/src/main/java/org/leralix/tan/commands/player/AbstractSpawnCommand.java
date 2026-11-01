@@ -48,21 +48,21 @@ public abstract class AbstractSpawnCommand extends PlayerSubCommand {
                     case "town" -> {
                         var territoryData = townStorage.get(playerData);
                         if (territoryData == null) {
-                            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.get(playerData.getLang()));
+                            TanChatUtils.message(player, Lang.PLAYER_NO_TOWN.translate(playerData.getLang()));
                         }
                         yield territoryData;
                     }
                     case "region" -> {
                         var territoryData = regionStorage.get(playerData);
                         if (territoryData == null) {
-                            TanChatUtils.message(player, Lang.PLAYER_NO_REGION.get(playerData.getLang()));
+                            TanChatUtils.message(player, Lang.PLAYER_NO_REGION.translate(playerData.getLang()));
                         }
                         yield territoryData;
                     }
                     case "nation" -> {
                         var territoryData = nationDataStorage.get(playerData);
                         if (territoryData == null) {
-                            TanChatUtils.message(player, Lang.PLAYER_NO_NATION.get(playerData.getLang()));
+                            TanChatUtils.message(player, Lang.PLAYER_NO_NATION.translate(playerData.getLang()));
                         }
                         yield territoryData;
                     }

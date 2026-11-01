@@ -16,6 +16,7 @@ import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.permission.ChunkPermissionType;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 import org.leralix.tan.utils.constants.Constants;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -69,13 +70,13 @@ public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
         }
 
 
-        TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.get(tanPlayer));
+        TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.translate(tanPlayer));
         return false;
     }
 
     @Override
     protected void playerCantPerformAction(Player player, LangType langType) {
-        TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.get(langType));
+        TanChatUtils.message(player, Lang.CANNOT_DO_IN_LANDMARK.translate(langType));
     }
 
     @Override
@@ -104,11 +105,11 @@ public class LandmarkClaimedChunk extends ChunkData implements LandmarkChunk {
 
         Territory ownerTerritory = getLandMark().getOwner();
 
-        String mapMessage = ownerTerritory != null ?
-                Lang.CHUNK_OWNER.get(langType, ownerTerritory.getName()) :
-                Lang.CHUNK_NOT_CLAIMED.get(langType);
+        Placeholder mapMessage = ownerTerritory != null ?
+                Lang.CHUNK_OWNER.get(ownerTerritory.getName()) :
+                Lang.CHUNK_NOT_CLAIMED;
 
-        String text = chunkCoordinateString() + ChatColor.GOLD + getLandMark().getName() + "\n" + mapMessage;
+        String text = chunkCoordinateString() + ChatColor.GOLD + getLandMark().getName() + "\n" + mapMessage.translate(langType);
         int color = ownerTerritory != null ? ownerTerritory.getChunkColorCode() : 0xFFAA00;
 
         return Component.text("❇")

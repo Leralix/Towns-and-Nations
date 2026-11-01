@@ -1,12 +1,14 @@
 package org.leralix.tan.war.wargoals;
 
 import org.bukkit.Material;
+import org.jspecify.annotations.Nullable;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.gui.cosmetic.IconManager;
 import org.leralix.tan.gui.cosmetic.type.IconBuilder;
 import org.leralix.tan.lang.FilledLang;
 import org.leralix.tan.lang.Lang;
 import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 import org.tan.api.interfaces.war.wargoals.TanWargoal;
 
 import java.util.List;
@@ -35,6 +37,6 @@ public abstract class WarGoal implements TanWargoal {
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_RIGHT_CLICK_TO_DELETE);
     }
 
-    public abstract String getCurrentDesc(LangType langType);
+    public abstract @Nullable Placeholder getCurrentDesc();
 
 }

@@ -16,12 +16,12 @@ public abstract class DoubleNumericStat extends IndividualStat {
     public FilledLang getStatReward(LangType langType, int level, int maxLevel) {
         if (level >= maxLevel) {
             return Lang.UPGRADE_LINE_INT_MAX.get(
-                    getStatName().get(langType),
+                    getStatName().translate(langType),
                     getMathSign(amount * maxLevel)
             );
         } else {
             return Lang.UPGRADE_LINE_INT.get(
-                    getStatName().get(langType),
+                    getStatName().translate(langType),
                     getMathSign(amount * level),
                     getMathSign(amount)
             );
@@ -32,7 +32,7 @@ public abstract class DoubleNumericStat extends IndividualStat {
 
     public FilledLang getStatReward(LangType langType) {
         return Lang.UPGRADE_LINE_INT_MAX.get(
-                getStatName().get(langType),
+                getStatName().translate(langType),
                 getMathSign(amount));
     }
 

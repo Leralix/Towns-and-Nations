@@ -33,7 +33,7 @@ public enum GeneralChunkSetting {
     public IconBuilder getIcon(IconManager iconManager, boolean isEnabled, LangType lang) {
 
         IconBuilder iconBuilder = iconManager.get(this.iconKey)
-                .setName(name.get(lang));
+                .setName(name.translate(lang));
 
         InteractionStatus state = Constants.getChunkSettings(this);
         boolean canBeModified = state != InteractionStatus.ALWAYS && state != InteractionStatus.NEVER && state != InteractionStatus.WAR_ONLY;
@@ -42,7 +42,7 @@ public enum GeneralChunkSetting {
 
 
         if(canBeModified) {
-            String status = isEnabled ? Lang.ENABLED.get(lang) : Lang.DISABLED.get(lang);
+            String status = isEnabled ? Lang.ENABLED.translate(lang) : Lang.DISABLED.translate(lang);
 
             List<FilledLang> desc = new ArrayList<>();
             desc.add(Lang.CURRENT_STATE.get(status));
@@ -55,10 +55,10 @@ public enum GeneralChunkSetting {
         else {
 
             if(state == InteractionStatus.ALWAYS){
-                iconBuilder.setDescription(Lang.CURRENT_STATE.get(Lang.ENABLED.get(lang)));
+                iconBuilder.setDescription(Lang.CURRENT_STATE.get(Lang.ENABLED.translate(lang)));
             }
             else if (state == InteractionStatus.NEVER) {
-                iconBuilder.setDescription(Lang.CURRENT_STATE.get(Lang.DISABLED.get(lang)));
+                iconBuilder.setDescription(Lang.CURRENT_STATE.get(Lang.DISABLED.translate(lang)));
             }
             iconBuilder.setClickToAcceptMessage(Lang.CANNOT_BE_MODIFIED);
         }

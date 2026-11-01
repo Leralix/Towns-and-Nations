@@ -40,6 +40,6 @@ public class OtherPlayerNationName extends PapiEntry {
 
         ITanPlayer otherTanPlayer = playerDataStorage.get(playerSelected);
 
-        return otherTanPlayer.hasNation() ? otherTanPlayer.getNation().getName() : Lang.NO_NATION.get(tanPlayer);
+        return otherTanPlayer.hasNation() ? otherTanPlayer.getNation().getName() : Lang.NO_NATION.translate(tanPlayer);
     }
 }

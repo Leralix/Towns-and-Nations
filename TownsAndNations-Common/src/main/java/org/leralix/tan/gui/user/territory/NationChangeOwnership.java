@@ -58,7 +58,7 @@ public class NationChangeOwnership extends IteratorGUI {
                                         () -> {
                                             nationData.setLeaderID(offlinePlayer.getUniqueId());
                                             nationData.broadcastMessageWithSound(Lang.GUI_NATION_SETTINGS_NATION_CHANGE_LEADER_BROADCAST.get(offlinePlayer.getName()), GOOD);
-                                            TanChatUtils.message(player, Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(tanPlayer, offlinePlayer.getName()));
+                                            TanChatUtils.message(tanPlayer, Lang.GUI_TOWN_SETTINGS_TRANSFER_OWNERSHIP_TO_SPECIFIC_PLAYER_SUCCESS.get(offlinePlayer.getName()));
                                             returnGUI.open();
                                         },
                                         this::open

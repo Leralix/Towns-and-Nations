@@ -46,7 +46,7 @@ public class WildernessChunkData extends ChunkData implements WildernessChunk {
 
     @Override
     public void playerEnterClaimedArea(Player player, ITanPlayer tanPlayer, boolean displayTerritoryColor) {
-        player.sendActionBar(Component.text(Lang.WILDERNESS.get(tanPlayer)));
+        player.sendActionBar(Component.text(Lang.WILDERNESS.translate(tanPlayer)));
     }
 
     @Override
@@ -65,8 +65,8 @@ public class WildernessChunkData extends ChunkData implements WildernessChunk {
         if (ClaimBlacklistStorage.cannotBeClaimed(this)) {
 
             String text = chunkCoordinateString() +
-                    Lang.WILDERNESS.get(langType) + "\n" +
-                    Lang.CHUNK_IS_BLACKLISTED.get(langType);
+                    Lang.WILDERNESS.translate(langType) + "\n" +
+                    Lang.CHUNK_IS_BLACKLISTED.translate(langType);
 
             return Component.text("✖")
                     .color(TextColor.color(0xFF5555))
@@ -74,8 +74,8 @@ public class WildernessChunkData extends ChunkData implements WildernessChunk {
         }
 
         String text = chunkCoordinateString() +
-                Lang.WILDERNESS.get(langType) + "\n" +
-                Lang.LEFT_CLICK_TO_CLAIM.get(langType);
+                Lang.WILDERNESS.translate(langType) + "\n" +
+                Lang.LEFT_CLICK_TO_CLAIM.translate(langType);
 
         return Component.text(isMiddleOfMap ? "🌕" : "⬜")
                 .color(TextColor.color(0xFFFFFF))

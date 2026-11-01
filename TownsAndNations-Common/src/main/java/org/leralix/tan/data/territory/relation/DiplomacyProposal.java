@@ -37,7 +37,7 @@ public class DiplomacyProposal {
         TownRelation currentRelation = askingTerritory.getRelationWith(receivingTerritory);
 
         return IconManager.getInstance().get(IconKey.DIPLOMACY_PROPOSAL_ICON)
-                .setName(Lang.DIPLOMATIC_RELATION.get(langType, askingTerritory.getColoredName()))
+                .setName(Lang.DIPLOMATIC_RELATION.get(askingTerritory.getColoredName()).translate(langType))
                 .setDescription(
                         Lang.DIPLOMATIC_RELATION_DESC1.get(relationProposal.getColoredName(langType)),
                         Lang.DIPLOMATIC_RELATION_DESC2.get(currentRelation.getColoredName(langType))

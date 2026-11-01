@@ -41,7 +41,7 @@ public class FortDataStorage implements FortStorage {
 
     @Override
     public Fort register(Vector3D position, Territory owningTerritory) {
-        FortData fort = new FortData("F" + newFortID, position, Lang.DEFAULT_FORT_NAME.get(Lang.getServerLang(), Integer.toString(newFortID)), owningTerritory);
+        FortData fort = new FortData("F" + newFortID, position, Lang.DEFAULT_FORT_NAME.get(Integer.toString(newFortID)).translateDefault(), owningTerritory);
         forts.put(fort.getID(), fort);
         save();
         newFortID++;

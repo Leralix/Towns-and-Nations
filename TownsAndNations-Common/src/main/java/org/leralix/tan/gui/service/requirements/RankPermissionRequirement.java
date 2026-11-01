@@ -4,7 +4,7 @@ import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.data.territory.Territory;
 import org.leralix.tan.data.territory.rank.RolePermission;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Placeholder;
 
 public class RankPermissionRequirement extends IndividualRequirement {
 
@@ -20,11 +20,11 @@ public class RankPermissionRequirement extends IndividualRequirement {
 
 
     @Override
-    public String getLine(LangType langType) {
+    public Placeholder getLine() {
         if (isInvalid()) {
-            return Lang.REQUIREMENT_RANK_PERMISSION_NEGATIVE.get(langType, requiredPermission.getName(langType));
+            return Lang.REQUIREMENT_RANK_PERMISSION_NEGATIVE.get(requiredPermission.getName());
         } else {
-            return Lang.REQUIREMENT_RANK_PERMISSION_POSITIVE.get(langType, requiredPermission.getName(langType));
+            return Lang.REQUIREMENT_RANK_PERMISSION_POSITIVE.get(requiredPermission.getName());
         }
     }
 

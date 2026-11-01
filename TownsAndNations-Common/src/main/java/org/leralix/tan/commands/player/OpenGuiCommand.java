@@ -3,9 +3,9 @@ package org.leralix.tan.commands.player;
 
 import org.bukkit.entity.Player;
 import org.leralix.lib.commands.PlayerSubCommand;
+import org.leralix.tan.data.player.ITanPlayer;
 import org.leralix.tan.gui.user.MainMenu;
 import org.leralix.tan.lang.Lang;
-import org.leralix.tan.lang.LangType;
 import org.leralix.tan.storage.stored.PlayerDataStorage;
 import org.leralix.tan.utils.text.TanChatUtils;
 
@@ -48,12 +48,11 @@ public class OpenGuiCommand extends PlayerSubCommand {
     @Override
     public void perform(Player player, String[] args) {
         if (args.length == 1) {
-
             getOpeningGui(player);
         } else if (args.length > 1) {
-            LangType lang = playerDataStorage.get(player).getLang();
-            TanChatUtils.message(player, Lang.TOO_MANY_ARGS_ERROR.get(lang));
-            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(lang, getSyntax()));
+            ITanPlayer tanPlayer = playerDataStorage.get(player);
+            TanChatUtils.message(tanPlayer, Lang.TOO_MANY_ARGS_ERROR);
+            TanChatUtils.message(tanPlayer, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
         }
 
     }

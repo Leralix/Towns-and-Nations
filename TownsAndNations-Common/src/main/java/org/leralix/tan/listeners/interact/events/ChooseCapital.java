@@ -42,7 +42,7 @@ public class ChooseCapital extends RightClickListenerEvent {
         ClaimChunkValidationResult result = test(selectedChunk);
 
         if(result.isSuccess()){
-            TanChatUtils.message(event.getPlayer(), Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.get(playerData));
+            TanChatUtils.message(event.getPlayer(), Lang.PLAYER_WRITE_TOWN_NAME_IN_CHAT.translate(playerData));
             PlayerChatListenerStorage.register(event.getPlayer(), playerData.getLang(), new CreateTown(cost, selectedChunk));
             return ListenerState.SUCCESS;
         }

@@ -1,13 +1,14 @@
 package org.leralix.tan.gui.service.requirements;
 
-import org.leralix.tan.lang.LangType;
+import org.leralix.tan.lang.Lang;
+import org.leralix.tan.lang.Placeholder;
 
 public class UpgradeErrorRequirement extends IndividualRequirement {
 
 
     @Override
-    public String getLine(LangType langType) {
-        return "Error";
+    public Placeholder getLine() {
+        return Lang.GENERIC_ERROR;
     }
 
     @Override

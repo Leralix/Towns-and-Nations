@@ -25,17 +25,17 @@ public class ChangeBuildingName extends ChatListenerEvent {
     public boolean execute(Player player, ITanPlayer playerData, String message) {
 
         if (message.length() > maxSize) {
-            TanChatUtils.message(player, Lang.MESSAGE_TOO_LONG.get(playerData, Integer.toString(maxSize)));
+            TanChatUtils.message(playerData, Lang.MESSAGE_TOO_LONG.get(Integer.toString(maxSize)));
             return false;
         }
 
         if(TownsAndNations.getPlugin().getFortStorage().isNameUsed(message)){
-            TanChatUtils.message(player, Lang.NAME_ALREADY_USED.get(playerData));
+            TanChatUtils.message(playerData, Lang.NAME_ALREADY_USED);
             return false;
         }
 
         propertyToRename.setName(message);
-        TanChatUtils.message(player, Lang.CHANGE_MESSAGE_SUCCESS.get(playerData));
+        TanChatUtils.message(playerData, Lang.CHANGE_MESSAGE_SUCCESS);
         openGui(guiCallback, player);
         return true;
     }

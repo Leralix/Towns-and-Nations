@@ -67,8 +67,8 @@ public class ClaimAreaCommand extends PlayerSubCommand {
         ITanPlayer tanPlayer = playerDataStorage.get(player);
         LangType langType = tanPlayer.getLang();
         if(args.length != 2 ){
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR);
-            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+            TanChatUtils.message(tanPlayer, Lang.SYNTAX_ERROR);
+            TanChatUtils.message(tanPlayer, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
             return;
         }
 
@@ -81,7 +81,7 @@ public class ClaimAreaCommand extends PlayerSubCommand {
         Territory territory = optionalTerritory.get();
 
         if(!(chunk instanceof WildernessChunk wildernessChunk)){
-            TanChatUtils.message(player, Lang.CLAIM_AREA_NOT_WILDERNESS_CHUNK.get(langType));
+            TanChatUtils.message(player, Lang.CLAIM_AREA_NOT_WILDERNESS_CHUNK.translate(langType));
             return;
         }
 
@@ -95,17 +95,17 @@ public class ClaimAreaCommand extends PlayerSubCommand {
         Optional<WildernessPolygon> optPolygon = ChunkUtil.getPolygon(wildernessChunk, territory, maxIteration);
 
         if(optPolygon.isEmpty()){
-            TanChatUtils.message(player, Lang.CLAIM_AREA_TOO_BIG.get(langType));
+            TanChatUtils.message(player, Lang.CLAIM_AREA_TOO_BIG.translate(langType));
             return;
         }
 
         WildernessPolygon polygon = optPolygon.get();
 
         if(!chunkCap.canDoAction(polygon.size())){
-            TanChatUtils.message(player, Lang.TERRITORY_NOT_ENOUGH_MONEY.get(
-                    tanPlayer,
-                    territory.getColoredName(),
-                    Double.toString(territory.getBalance() - (polygon.size() * territory.getClaimCost()))
+            TanChatUtils.message(tanPlayer,
+                    Lang.TERRITORY_NOT_ENOUGH_MONEY.get(
+                            territory.getColoredName(),
+                            Double.toString(territory.getBalance() - (polygon.size() * territory.getClaimCost()))
                     )
             );
             return;

@@ -43,6 +43,6 @@ class OtherPlayerTownTagTest extends BasicTest {
 
         String name = entry.getData(player, "player_{name}_town_tag");
 
-        assertEquals(Lang.NO_TOWN.get(langType), name);
+        assertEquals(Lang.NO_TOWN.translate(langType), name);
     }
 }

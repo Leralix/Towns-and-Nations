@@ -24,12 +24,12 @@ public abstract class SetSpecificRate extends ChatListenerEvent {
     public boolean execute(Player player, ITanPlayer playerData, String message) {
         Double amount = parseStringToDouble(message);
         if (amount == null) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.get(playerData));
+            TanChatUtils.message(player, Lang.SYNTAX_ERROR_AMOUNT.translate(playerData));
             return false;
         }
         amount = Math.clamp(amount, 0, 100);
 
-        TanChatUtils.message(player, Lang.TOWN_SET_RATE_SUCCESS.get(playerData, Double.toString(amount)), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(playerData, Lang.TOWN_SET_RATE_SUCCESS.get(Double.toString(amount)), SoundEnum.MINOR_GOOD);
 
 
         setRate(amount / 100);

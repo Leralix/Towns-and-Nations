@@ -18,22 +18,22 @@ public abstract class NumericStat extends IndividualStat {
     public FilledLang getStatReward(LangType langType, int level, int maxLevel) {
         if(isUnlimited){
             if(level == 0){
-                return Lang.UPGRADE_LINE_INFINITY_LOCKED.get(getStatName().get(langType));
+                return Lang.UPGRADE_LINE_INFINITY_LOCKED.get(getStatName().translate(langType));
             }
             else {
-                return Lang.UPGRADE_LINE_INFINITY_UNLOCKED.get(getStatName().get(langType));
+                return Lang.UPGRADE_LINE_INFINITY_UNLOCKED.get(getStatName().translate(langType));
             }
         }
         else {
             if(level >= maxLevel){
                 return Lang.UPGRADE_LINE_INT_MAX.get(
-                        getStatName().get(langType),
+                        getStatName().translate(langType),
                         getMathSign(maxAmount * maxLevel)
                 );
             }
             else {
                 return Lang.UPGRADE_LINE_INT.get(
-                        getStatName().get(langType),
+                        getStatName().translate(langType),
                         getMathSign(maxAmount * level),
                         getMathSign(maxAmount)
                 );
@@ -44,11 +44,11 @@ public abstract class NumericStat extends IndividualStat {
 
     public FilledLang getStatReward(LangType langType) {
         if(isUnlimited){
-            return Lang.UPGRADE_LINE_INFINITY_UNLOCKED.get(getStatName().get(langType));
+            return Lang.UPGRADE_LINE_INFINITY_UNLOCKED.get(getStatName().translate(langType));
         }
         else {
             return Lang.UPGRADE_LINE_INT_MAX.get(
-                    getStatName().get(langType),
+                    getStatName().translate(langType),
                     getMathSign(maxAmount));
         }
     }

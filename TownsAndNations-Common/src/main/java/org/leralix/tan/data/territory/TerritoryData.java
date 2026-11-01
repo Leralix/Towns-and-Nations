@@ -518,7 +518,7 @@ public abstract class TerritoryData implements TanTerritory, Territory {
 
         if (!validationResult.isSuccess()) {
             if (validationResult.getErrorMessage() != null) {
-                TanChatUtils.message(player, validationResult.getErrorMessage().get(playerData.getLang()));
+                TanChatUtils.message(player, validationResult.getErrorMessage().translate(playerData.getLang()));
             }
             return false;
         }
@@ -622,11 +622,11 @@ public abstract class TerritoryData implements TanTerritory, Territory {
         double playerBalance = EconomyUtil.getBalance(player);
 
         if (playerBalance < amount) {
-            TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY.get(langType));
+            TanChatUtils.message(player, Lang.PLAYER_NOT_ENOUGH_MONEY.translate(langType));
             return;
         }
         if (amount <= 0) {
-            TanChatUtils.message(player, Lang.PAY_MINIMUM_REQUIRED.get(langType));
+            TanChatUtils.message(player, Lang.PAY_MINIMUM_REQUIRED.translate(langType));
             return;
         }
 
@@ -635,7 +635,7 @@ public abstract class TerritoryData implements TanTerritory, Territory {
         addToBalance(amount);
 
         TransactionManager.getInstance().register(new DonationTransaction(this, player, amount));
-        TanChatUtils.message(player, Lang.PLAYER_SEND_MONEY_SUCCESS.get(langType, Double.toString(amount), this.getColoredName()), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(player, Lang.PLAYER_SEND_MONEY_SUCCESS.get(Double.toString(amount), this.getColoredName()).translate(langType), SoundEnum.MINOR_GOOD);
     }
 
     /**
@@ -1120,7 +1120,7 @@ public abstract class TerritoryData implements TanTerritory, Territory {
 
         for (Player player : getPlayers()) {
             LangType langType = TownsAndNations.getPlugin().getPlayerDataStorage().get(player).getLang();
-            TextComponent message = new TextComponent(filledLang.get(langType));
+            TextComponent message = new TextComponent(filledLang.translate(langType));
             message.setColor(ChatColor.GRAY);
             message.setItalic(true);
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, message);

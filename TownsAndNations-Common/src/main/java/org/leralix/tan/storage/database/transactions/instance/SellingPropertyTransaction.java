@@ -62,14 +62,14 @@ public class SellingPropertyTransaction extends AbstractTransaction {
         double taxedPart = amount * taxPercentage;
 
         return iconManager.get(IconKey.PROPERTY_BUY_TRANSACTION)
-                .setName(Lang.SELL_PROPERTY_TRANSACTION.get(langType))
+                .setName(Lang.SELL_PROPERTY_TRANSACTION.translate(langType))
                 .setDescription(
                         Lang.TRANSACTION_FROM.get(getPlayerName(buyerID, langType)),
                         Lang.TRANSACTION_TO.get(getColoredName(sellerID, langType)), // Owner can be a territory or a player
                         Lang.TRANSACTION_PROPERTY.get(getPropertyName(territoryID, propertyID, langType)),
                         Lang.TRANSACTION_AMOUNT.get(Double.toString(amount)),
                         Lang.TRANSACTION_TAX.get(Double.toString(taxPercentage), Double.toString(taxedPart)),
-                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(langType, getDate()))
+                        Lang.TRANSACTION_DATE.get(DateUtil.getRelativeTimeDescription(getDate()))
                 )
                 .asGuiItem(player, langType);
     }

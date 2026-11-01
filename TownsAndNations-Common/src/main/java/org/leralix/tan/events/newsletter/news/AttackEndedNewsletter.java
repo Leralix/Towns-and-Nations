@@ -87,6 +87,6 @@ public class AttackEndedNewsletter extends Newsletter {
         if(attackingTerritory == null || defendingTerritory == null)
             return;
 
-        TanChatUtils.message(player, Lang.ATTACK_ENDED.get(tanPlayer, attackingTerritory.getColoredName(), defendingTerritory.getColoredName()), SoundEnum.MINOR_GOOD);
+        TanChatUtils.message(tanPlayer, Lang.ATTACK_ENDED.get(attackingTerritory.getColoredName(), defendingTerritory.getColoredName()), SoundEnum.MINOR_GOOD);
     }
 }

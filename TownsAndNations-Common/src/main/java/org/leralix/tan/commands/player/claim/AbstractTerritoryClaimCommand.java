@@ -38,8 +38,8 @@ public abstract class AbstractTerritoryClaimCommand extends PlayerSubCommand {
 
         int size = args.length;
         if (size != 2 && size != 4) {
-            TanChatUtils.message(player, Lang.SYNTAX_ERROR.get(langType));
-            TanChatUtils.message(player, Lang.CORRECT_SYNTAX_INFO.get(langType, getSyntax()));
+            TanChatUtils.message(tanPlayer, Lang.SYNTAX_ERROR);
+            TanChatUtils.message(tanPlayer, Lang.CORRECT_SYNTAX_INFO.get(getSyntax()));
             return;
         }
 
@@ -55,7 +55,7 @@ public abstract class AbstractTerritoryClaimCommand extends PlayerSubCommand {
             return;
         }
 
-        Chunk chunk = TerritoryCommandUtil.parseChunkFromArgs(player, args, 2, 3, langType, getSyntax());
+        Chunk chunk = TerritoryCommandUtil.parseChunkFromArgs(player, args, 2, 3, tanPlayer, getSyntax());
         if (chunk == null) {
             return;
         }

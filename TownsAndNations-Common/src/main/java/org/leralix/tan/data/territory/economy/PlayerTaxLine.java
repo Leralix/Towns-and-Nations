@@ -71,7 +71,7 @@ public class PlayerTaxLine extends ProfitLine {
 
     private GuiItem getIncreaseButton(Player player, LangType lang, ITanPlayer tanPlayer) {
         return IconManager.getInstance().get(IconKey.TAX_INCREASE_ICON)
-                .setName(Lang.GUI_TREASURY_INCREASE_TAX.get(lang))
+                .setName(Lang.GUI_TREASURY_INCREASE_TAX.translate(lang))
                 .setDescription(
                         Lang.GUI_INCREASE_1_DESC.get(),
                         Lang.GUI_INCREASE_10_DESC.get()
@@ -80,7 +80,7 @@ public class PlayerTaxLine extends ProfitLine {
                     action.setCancelled(true);
 
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(lang));
                         return;
                     }
 
@@ -95,7 +95,7 @@ public class PlayerTaxLine extends ProfitLine {
 
     private GuiItem getInfoIcon(Player player, LangType lang, ITanPlayer tanPlayer) {
         return IconManager.getInstance().get(IconKey.TAX_INFO_ICON)
-                .setName(Lang.GUI_TREASURY_FLAT_TAX.get(lang))
+                .setName(Lang.GUI_TREASURY_FLAT_TAX.translate(lang))
                 .setDescription(
                         Lang.GUI_TREASURY_FLAT_TAX_DESC1.get(StringUtil.formatMoney(territoryData.getTax()))
                 )
@@ -106,13 +106,13 @@ public class PlayerTaxLine extends ProfitLine {
                 .setAction(action -> {
                     action.setCancelled(true);
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(lang));
                         return;
                     }
                     if (action.isLeftClick()) {
                         new TerritoryTransactionHistory(player, territoryData, TransactionType.TAXES, p -> new TreasuryMenu(player, territoryData));
                     } else if (action.isRightClick()) {
-                        TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.get(lang));
+                        TanChatUtils.message(player, Lang.TOWN_SET_TAX_IN_CHAT.translate(lang));
                         PlayerChatListenerStorage.register(player, lang, new SetTerritoryTax(territoryData, p -> new TreasuryMenu(player, territoryData)));
                     }
                 })
@@ -121,7 +121,7 @@ public class PlayerTaxLine extends ProfitLine {
 
     private GuiItem getDecreaseButton(Player player, LangType lang, ITanPlayer tanPlayer) {
         return IconManager.getInstance().get(IconKey.TAX_DECREASE_ICON)
-                .setName(Lang.GUI_TREASURY_LOWER_TAX.get(lang))
+                .setName(Lang.GUI_TREASURY_LOWER_TAX.translate(lang))
                 .setDescription(
                         Lang.GUI_DECREASE_1_DESC.get(),
                         Lang.GUI_DECREASE_10_DESC.get()
@@ -129,7 +129,7 @@ public class PlayerTaxLine extends ProfitLine {
                 .setAction(action -> {
                     action.setCancelled(true);
                     if (!territoryData.doesPlayerHavePermission(tanPlayer, RolePermission.MANAGE_TAXES)) {
-                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.get(lang));
+                        TanChatUtils.message(player, Lang.PLAYER_NO_PERMISSION.translate(lang));
                         return;
                     }
 
@@ -137,7 +137,7 @@ public class PlayerTaxLine extends ProfitLine {
                     int amountToRemove = action.isShiftClick() && currentTax > 9 ? 10 : 1;
 
                     if (currentTax <= 0) {
-                        TanChatUtils.message(player, Lang.GUI_TREASURY_CANT_TAX_LESS.get(lang));
+                        TanChatUtils.message(player, Lang.GUI_TREASURY_CANT_TAX_LESS.translate(lang));
                         return;
                     }
                     SoundUtil.playSound(player, SoundEnum.REMOVE);

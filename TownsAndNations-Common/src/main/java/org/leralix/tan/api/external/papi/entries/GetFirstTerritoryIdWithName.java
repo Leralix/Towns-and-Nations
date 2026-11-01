@@ -37,9 +37,9 @@ public class GetFirstTerritoryIdWithName extends PapiEntry {
         }
 
         String name = extractValues(params)[0];
-        if(name == null) return Lang.INVALID_NAME.get(tanPlayer);
+        if(name == null) return Lang.INVALID_NAME.translate(tanPlayer);
         Territory territoryData = getTerritoryByName(name);
-        if(territoryData == null) return Lang.INVALID_TERRITORY.get(tanPlayer);
+        if(territoryData == null) return Lang.INVALID_TERRITORY.translate(tanPlayer);
         return territoryData.getID();
     }
 }

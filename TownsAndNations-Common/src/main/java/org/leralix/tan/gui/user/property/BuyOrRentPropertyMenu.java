@@ -43,7 +43,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
         double price = propertyData.getPriceWithTax();
 
         return iconManager.get(IconKey.CONFIRM_BUY_PROPERTY_ICON)
-                .setName(Lang.CONFIRM_SALE.get(tanPlayer))
+                .setName(Lang.CONFIRM_SALE.translate(tanPlayer))
                 .setDescription(Lang.CONFIRM_SALE_DESC1.get(Double.toString(price)))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> {
@@ -55,7 +55,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
 
     private GuiItem getCancelBuyButton() {
         return iconManager.get(IconKey.CANCEL_BUY_PROPERTY_ICON)
-                .setName(Lang.CANCEL_SALE.get(tanPlayer))
+                .setName(Lang.CANCEL_SALE.translate(tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> player.closeInventory())
                 .asGuiItem(player, langType);
@@ -66,7 +66,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
         double price = propertyData.getRentPriceWithTax();
 
         return iconManager.get(IconKey.CONFIRM_RENT_PROPERTY_ICON)
-                .setName(Lang.CONFIRM_RENT.get(tanPlayer))
+                .setName(Lang.CONFIRM_RENT.translate(tanPlayer))
                 .setDescription(Lang.CONFIRM_RENT_DESC1.get(Double.toString(price)))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(event -> {
@@ -78,7 +78,7 @@ public class BuyOrRentPropertyMenu extends PropertyMenus {
 
     private GuiItem getCancelRentButton() {
         return iconManager.get(IconKey.CANCEL_RENT_PROPERTY_ICON)
-                .setName(Lang.CANCEL_RENT.get(tanPlayer))
+                .setName(Lang.CANCEL_RENT.translate(tanPlayer))
                 .setClickToAcceptMessage(Lang.GUI_GENERIC_CLICK_TO_PROCEED)
                 .setAction(action -> player.closeInventory())
                 .asGuiItem(player, langType);

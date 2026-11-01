@@ -47,7 +47,7 @@ public class LandmarkData implements Landmark, TanLandmark {
 
     public LandmarkData(String id, Vector3D position) {
         this.ID = id;
-        this.name = Lang.SPECIFIC_LANDMARK_ICON_DEFAULT_NAME.get(Lang.getServerLang(), getID());
+        this.name = Lang.SPECIFIC_LANDMARK_ICON_DEFAULT_NAME.get(getID()).translateDefault();
         this.position = position;
         this.materialName = "DIAMOND";
         this.amount = 2;
@@ -179,7 +179,7 @@ public class LandmarkData implements Landmark, TanLandmark {
 
 
         return IconManager.getInstance().get(Material.valueOf(materialName))
-                .setName(Lang.SPECIFIC_LANDMARK_NAME.get(langType, getName()))
+                .setName(Lang.SPECIFIC_LANDMARK_NAME.get(getName()).translate(langType))
                 .setDescription(description);
     }
 

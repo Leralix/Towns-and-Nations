@@ -29,6 +29,6 @@ public class PlayerTownName extends PapiEntry {
             return PLAYER_NOT_FOUND;
         }
 
-        return tanPlayer.hasTown() ? tanPlayer.getTown().getName() : Lang.NO_TOWN.get(tanPlayer);
+        return tanPlayer.hasTown() ? tanPlayer.getTown().getName() : Lang.NO_TOWN.translate(tanPlayer);
     }
 }
