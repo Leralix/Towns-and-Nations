@@ -865,7 +865,8 @@ language:
   GUI_SETTINGS_SET_FLAG_ACTION: "§7▶ Drag and drop a banner to set the new flag"
   GUI_CAPITAL_CHUNK_ACTUAL_POSITION: "§fCurrent capital chunk : §9{0}"
   CANNOT_MOVE_CAPITAL_WHILE_AT_WAR: "§cCannot move capital while at war"
-  GUI_NO_CAPITAL_CHUNK: "§cThe town does not have any claimed chunk"
+  GUI_NO_CAPITAL_CHUNK: "§cThis town does not have a capital chunk"
+  GUI_CAPITAL_CHUNK_OCCUPIED: "§cThe capital chunk is not owned by the town"
   #Select language
   HELP_US_TRANSLATE: "§fHelp us translate the plugin in your language"
   PERCENT_COMPLETED: "§6{0}%§f completed"
@@ -1220,7 +1221,7 @@ language:
   WAR_DECLARED_TITLE: "War declared"
   WAR_DECLARED: "§fWar has been declared by {0}§f against {1}"
   WAR_ENDED_TITLE: "War ended"
-  WAR_ENDED: "{0} has won against {1}§f. §e{2}§f war goals has been applied."
+  WAR_ENDED: "{0}§f has won against {1}§f. §e{2}§f war goals has been applied."
   ATTACK_WON_BY_ATTACKER: "§fThe battle between {0}§f and {1}§f has been won by {2}"
   ATTACK_WON_BY_DEFENDER_TITLE: "Defenders won"
   ATTACK_WON_BY_DEFENDER: "§fThe battle between {0}§f and {1}§f has been won by {2}"
