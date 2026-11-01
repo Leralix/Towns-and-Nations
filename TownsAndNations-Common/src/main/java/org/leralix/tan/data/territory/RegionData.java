@@ -119,6 +119,7 @@ public class RegionData extends TerritoryData implements Region {
     public void abstractClaimChunk(Chunk chunk, boolean ignoreAdjacent) {
 
         removeFromBalance(getClaimCost());
+        TownsAndNations.getPlugin().getClaimStorage().unclaimChunk(TownsAndNations.getPlugin().getClaimStorage().get(chunk));
         TownsAndNations.getPlugin().getClaimStorage().claimRegionChunk(chunk, getID());
     }
 

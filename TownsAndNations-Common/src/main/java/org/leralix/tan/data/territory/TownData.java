@@ -311,9 +311,9 @@ public class TownData extends TerritoryData implements Town {
     public void abstractClaimChunk(Chunk chunk, boolean ignoreAdjacent) {
 
         removeFromBalance(getClaimCost());
-        TownsAndNations.getPlugin().getClaimStorage().unclaimChunkAndUpdate(TownsAndNations.getPlugin().getClaimStorage().get(chunk));
-
+        TownsAndNations.getPlugin().getClaimStorage().unclaimChunk(TownsAndNations.getPlugin().getClaimStorage().get(chunk));
         ChunkData chunkClaimed = TownsAndNations.getPlugin().getClaimStorage().claimTownChunk(chunk, getID());
+
         //If this was the first claimed chunk, set the capital.
         if (getCapitalLocation().isEmpty() || isTownCapitalOccupied()) {
             setCapitalLocation(chunkClaimed.getVector2D());
